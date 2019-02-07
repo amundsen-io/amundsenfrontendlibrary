@@ -8,13 +8,15 @@ export interface AppConfig {
   browse: BrowseConfig;
   exploreSql: ExploreSqlConfig;
   google: GoogleAnalyticsConfig;
+  lineage: LineageConfig;
   navLinks: Array<LinkConfig>;
 }
 
 export interface AppConfigCustom {
-  google?: GoogleAnalyticsConfig
   browse?: BrowseConfig;
   exploreSql?: ExploreSqlConfig;
+  google?: GoogleAnalyticsConfig
+  lineage?: LineageConfig;
   navLinks?: Array<LinkConfig>;
 }
 
@@ -31,6 +33,12 @@ interface BrowseConfig {
 interface ExploreSqlConfig {
   enabled: boolean;
   generateUrl: (database: string, cluster: string, schema: string, table: string, partitionKey?: string, partitionValue?: string) => string;
+}
+
+interface LineageConfig {
+  enabled: boolean;
+  generateUrl: (database: string, cluster: string, schema: string , table: string) => string;
+  iconPath: string;
 }
 
 interface LinkConfig {
