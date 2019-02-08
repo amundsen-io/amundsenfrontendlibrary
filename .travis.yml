@@ -1,0 +1,22 @@
+matrix:
+  include:
+    - language: python
+      python:
+      - "3.6"
+      install:
+        - pip3 install -r requirements3.txt
+      script:
+        - make test
+        - make lint
+        - make mypy
+
+    - language: node_js
+      node_js:
+        - "8"
+      before_install:
+        - cd amundsen_application/static
+      install:
+        - npm install
+      script:
+        - npm run build
+        - npm run test
