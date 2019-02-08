@@ -7,7 +7,6 @@ matrix:
         - pip3 install -r requirements3.txt
       script:
         - make test
-        - make lint
 
     - language: node_js
       node_js:
@@ -18,5 +17,8 @@ matrix:
         - npm install
       script:
         - npm run build
-#        TODO - Fix and enable tests
+#        TODO - replace build with `tsc` and 'lint`
+#        - npm run tsc
+#        - npm run lint
+#        TODO - Fix and enable 'test'
 #        - npm run test
