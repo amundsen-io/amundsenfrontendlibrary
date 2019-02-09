@@ -18,10 +18,10 @@ for entry_point in iter_entry_points(group='announcement_client', name='announce
     if announcement_client_class is not None:
         ANNOUNCEMENT_CLIENT_CLASS = announcement_client_class
 
-blueprint = Blueprint('announcements', __name__, url_prefix='/api/announcements/v0')
+announcements_blueprint = Blueprint('announcements', __name__, url_prefix='/api/announcements/v0')
 
 
-@blueprint.route('/', methods=['GET'])
+@announcements_blueprint.route('/', methods=['GET'])
 def get_announcements() -> Response:
     global ANNOUNCEMENT_CLIENT_INSTANCE
     try:

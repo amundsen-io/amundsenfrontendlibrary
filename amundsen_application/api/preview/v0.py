@@ -22,10 +22,10 @@ for entry_point in iter_entry_points(group='preview_client', name='table_preview
     if preview_client_class is not None:
         PREVIEW_CLIENT_CLASS = preview_client_class
 
-blueprint = Blueprint('preview', __name__, url_prefix='/api/preview/v0')
+preview_blueprint = Blueprint('preview', __name__, url_prefix='/api/preview/v0')
 
 
-@blueprint.route('/', methods=['POST'])
+@preview_blueprint.route('/', methods=['POST'])
 def get_table_preview() -> Response:
     # TODO: Want to further separate this file into more blueprints, perhaps a Blueprint class is the way to go
     global PREVIEW_CLIENT_INSTANCE
