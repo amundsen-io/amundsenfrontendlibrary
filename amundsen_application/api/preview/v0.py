@@ -8,7 +8,6 @@ from flask import Response, jsonify, make_response, request
 from flask.blueprints import Blueprint
 
 from amundsen_application.models.preview_data import PreviewDataSchema
-from amundsen_application.models.user import load_user
 
 LOGGER = logging.getLogger(__name__)
 
