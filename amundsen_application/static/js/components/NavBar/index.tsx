@@ -53,7 +53,7 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
             <div className="nav-bar-left">
               {
                 AppConfig.logoPath &&
-                <img src={AppConfig.logoPath} />
+                <img className="logo-icon" src={AppConfig.logoPath} />
               }
               <Link to={`/`}>
                 AMUNDSEN
