@@ -49,11 +49,8 @@ class Footer extends React.Component<FooterProps, FooterState> {
       content = <div>{`Amundsen was last indexed on ${dateTimeString}`}</div>;
     }
     return (
-      <div>
-        <div className="phantom-div" />
-        <div className="footer">
-          { content }
-        </div>
+      <div className="footer">
+        { content }
       </div>
     );
   }

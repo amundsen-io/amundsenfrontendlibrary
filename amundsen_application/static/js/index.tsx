@@ -34,15 +34,17 @@ ReactDOM.render(
     <Provider store={store}>
       <BrowserRouter>
         <div>
-          <NavBar />
-          <Switch>
-            <Route path="/table_detail/:cluster/:db/:schema/:table" component={TableDetail} />
-            <Route path="/announcements" component={AnnouncementPage} />
-            <Route path="/browse" component={BrowsePage} />
-            <Route path="/search" component={SearchPage} />
-            <Route path="/404" component={NotFoundPage} />
-            <Route path="/" component={SearchPage} />
-          </Switch>
+          <div className="scrollable-content">
+            <NavBar />
+            <Switch>
+              <Route path="/table_detail/:cluster/:db/:schema/:table" component={TableDetail} />
+              <Route path="/announcements" component={AnnouncementPage} />
+              <Route path="/browse" component={BrowsePage} />
+              <Route path="/search" component={SearchPage} />
+              <Route path="/404" component={NotFoundPage} />
+              <Route path="/" component={SearchPage} />
+            </Switch>
+          </div>
           <Feedback />
           <Footer />
         </div>

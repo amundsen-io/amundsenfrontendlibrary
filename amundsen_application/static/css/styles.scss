@@ -16,3 +16,9 @@ form {
   margin-bottom: 0;
 }
 
+
+.scrollable-content {
+  overflow: scroll;
+  height: calc(100% - 60px);
+
+}

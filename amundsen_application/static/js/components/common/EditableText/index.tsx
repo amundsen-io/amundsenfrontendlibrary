@@ -161,6 +161,8 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
           placement='top'
           show={true}
           target={this.getTarget.bind(this,'textArea')}
+          container={this}
+          containerPadding={0}
         >
           <Tooltip>
             <button id='cancel' onClick={this.exitEditMode}>Cancel</button>
