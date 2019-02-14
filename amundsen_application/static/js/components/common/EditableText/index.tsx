@@ -128,15 +128,19 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
                 </Tooltip>
               </Overlay>
           }
-          <div className={"editable-text " + (this.state.value ? "" : "no-value")}>
+          <div className={"editable-text"}>
             { this.state.value }
-            <a className={ "edit-link " + (this.state.isDisabled ? "hidden" : "") }
+            <a className={ "edit-link " + (this.state.value ? "" : "no-value") }
                href="JavaScript:void(0)"
                onClick={ this.enterEditMode }
                ref={ anchor => {
                   this.editAnchorTarget = anchor;
                 }}
-            >edit</a>
+            >
+              {
+                this.state.value ? "edit" : "Add Description"
+              }
+            </a>
           </div>
         </div>
       );
