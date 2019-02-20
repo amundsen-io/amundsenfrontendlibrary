@@ -2,9 +2,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { GlobalState } from "../../../ducks/rootReducer";
-import { getPreviewData } from '../../../ducks/tableMetadata/reducer';
 
-import DataPreviewButton, { ComponentProps, DispatchFromProps, StateFromProps, getStatusFromCode } from '../../../components/TableDetail/DataPreviewButton';
+import DataPreviewButton, { ComponentProps, StateFromProps, getStatusFromCode } from '../../../components/TableDetail/DataPreviewButton';
 
 export const mapStateToProps = (state: GlobalState) => {
   return {
@@ -13,8 +12,4 @@ export const mapStateToProps = (state: GlobalState) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ getPreviewData } , dispatch);
-};
-
-export default connect<StateFromProps, DispatchFromProps, ComponentProps>(mapStateToProps, mapDispatchToProps)(DataPreviewButton);
+export default connect<StateFromProps, {}, ComponentProps>(mapStateToProps, null)(DataPreviewButton);

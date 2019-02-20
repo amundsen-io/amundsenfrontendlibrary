@@ -22,15 +22,11 @@ export interface StateFromProps {
   status: LoadingStatus;
 }
 
-export interface DispatchFromProps {
-  getPreviewData: (queryParams: PreviewQueryParams) => void;
-}
-
 export interface ComponentProps {
   queryParams: PreviewQueryParams;
 }
 
-type DataPreviewButtonProps = StateFromProps & DispatchFromProps & ComponentProps;
+type DataPreviewButtonProps = StateFromProps & ComponentProps;
 
 interface DataPreviewButtonState {
   status: LoadingStatus;
@@ -92,10 +88,6 @@ class DataPreviewButton extends React.Component<DataPreviewButtonProps, DataPrev
     }
 
     return value || '';
-  }
-
-  componentDidMount() {
-    this.props.getPreviewData(this.props.queryParams);
   }
 
   renderModalBody() {

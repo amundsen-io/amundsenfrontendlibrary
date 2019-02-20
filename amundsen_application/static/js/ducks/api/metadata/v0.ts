@@ -148,7 +148,7 @@ export function metadataGetLastIndexed() {
   });
 }
 
-export function getPreviewData(action: GetPreviewDataRequest) {
+export function metadataGetPreviewData(action: GetPreviewDataRequest) {
   return axios({
     url: '/api/preview/v0/',
     method: 'POST',

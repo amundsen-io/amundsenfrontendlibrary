@@ -2,28 +2,28 @@ import { all, call, put, select, takeEvery } from 'redux-saga/effects';
 import { SagaIterator } from 'redux-saga';
 
 import {
+  GetLastIndexedRequest, GetLastIndexed,
   GetPreviewData, GetPreviewDataRequest,
   GetTableData, GetTableDataRequest,
+  GetColumnDescription, GetColumnDescriptionRequest,
   GetTableDescription, GetTableDescriptionRequest,
+  UpdateColumnDescription, UpdateColumnDescriptionRequest,
   UpdateTableDescription, UpdateTableDescriptionRequest,
   UpdateTableOwner, UpdateTableOwnerRequest,
-  GetColumnDescription, GetColumnDescriptionRequest,
-  UpdateColumnDescription, UpdateColumnDescriptionRequest,
   UpdateTags, UpdateTagsRequest,
-  GetLastIndexedRequest, GetLastIndexed,
 } from './reducer';
 
 import {
+  metadataGetLastIndexed,
+  metadataGetPreviewData,
   metadataGetTableData,
+  metadataGetColumnDescription,
   metadataGetTableDescription,
+  metadataUpdateColumnDescription,
   metadataUpdateTableDescription,
   metadataUpdateTableOwner,
-  metadataGetColumnDescription,
-  metadataUpdateColumnDescription,
-  metadataTableTags,
   metadataUpdateTableTags,
-  metadataGetLastIndexed,
-  getPreviewData,
+  metadataTableTags,
 } from '../api/metadata/v0';
 
 // getTableData
@@ -178,7 +178,7 @@ export function* getLastIndexedWatcher(): SagaIterator {
 export function* getPreviewDataWorker(action: GetPreviewDataRequest): SagaIterator {
   let response;
   try {
-    response = yield call(getPreviewData, action);
+    response = yield call(metadataGetPreviewData, action);
     yield put({ type: GetPreviewData.SUCCESS, payload: response });
   } catch (e) {
     yield put({ type: GetPreviewData.FAILURE, payload: response });
