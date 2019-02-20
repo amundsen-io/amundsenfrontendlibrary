@@ -110,24 +110,28 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
   }
 
   render() {
-    if (!this.state.inEditMode || (this.state.inEditMode && this.state.isDisabled)){
+    if (!this.state.editable) {
       return (
         <div className='editable-container'>
-          {
-            this.state.editable &&
-              <Overlay
-                placement='top'
-                show={this.state.isDisabled}
-                target={this.getTarget.bind(this,'editAnchor')}
-              >
-                <Tooltip id='error-tooltip'>
-                  <div className="error-tooltip">
-                    <text>This text is out of date, please refresh the component</text>
-                    <button onClick={this.refreshText}>&#xe031;</button>
-                  </div>
-                </Tooltip>
-              </Overlay>
-          }
+           <div className='editable-text'>{ this.state.value }</div>
+        </div>
+      );
+    }
+    if (!this.state.inEditMode || (this.state.inEditMode && this.state.isDisabled)) {
+      return (
+        <div className='editable-container'>
+          <Overlay
+            placement='top'
+            show={this.state.isDisabled}
+            target={this.getTarget.bind(this,'editAnchor')}
+          >
+            <Tooltip id='error-tooltip'>
+              <div className="error-tooltip">
+                <text>This text is out of date, please refresh the component</text>
+                <button onClick={this.refreshText}>&#xe031;</button>
+              </div>
+            </Tooltip>
+          </Overlay>
           <div className={"editable-text"}>
             { this.state.value }
             <a className={ "edit-link " + (this.state.value ? "" : "no-value") }
@@ -170,7 +174,6 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
             <button id='save' onClick={this.updateText}>Save</button>
           </Tooltip>
         </Overlay>
-
       </div>
     );
   }
