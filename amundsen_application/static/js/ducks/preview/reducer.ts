@@ -1,6 +1,6 @@
 import { PreviewData, PreviewQueryParams } from '../../components/TableDetail/types';
 
-import { GetTableData } from '../tableMetadata/reducer';
+import { GetTableData, GetTableDataRequest } from '../tableMetadata/reducer';
 
 /* getPreviewData */
 export enum GetPreviewData {
@@ -24,7 +24,7 @@ export function getPreviewData(queryParams: PreviewQueryParams): GetPreviewDataR
 }
 /* end getPreviewData */
 
-export type PreviewDataReducerAction = GetPreviewDataRequest | GetPreviewDataResponse;
+export type PreviewDataReducerAction = GetPreviewDataRequest | GetPreviewDataResponse | GetTableDataRequest;
 
 export type PreviewDataReducerState = {
   previewData: PreviewData;
