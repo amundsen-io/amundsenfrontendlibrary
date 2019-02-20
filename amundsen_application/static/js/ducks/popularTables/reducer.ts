@@ -1,4 +1,4 @@
-import { SearchListResult } from '../../components/SearchPage/types';
+import { TableSearchResult } from '../search/types';
 
 /* getPopularTables */
 export enum GetPopularTables {
@@ -13,7 +13,7 @@ export interface GetPopularTablesRequest {
 
 interface GetPopularTablesResponse {
   type: GetPopularTables.SUCCESS | GetPopularTables.FAILURE;
-  payload: SearchListResult[];
+  payload: TableSearchResult[];
 }
 
 export function getPopularTables(): GetPopularTablesRequest {
@@ -23,7 +23,7 @@ export function getPopularTables(): GetPopularTablesRequest {
 
 export type PopularTablesReducerAction = GetPopularTablesRequest | GetPopularTablesResponse;
 
-export type PopularTablesReducerState = SearchListResult[];
+export type PopularTablesReducerState = TableSearchResult[];
 
 const initialState: PopularTablesReducerState = [];
 

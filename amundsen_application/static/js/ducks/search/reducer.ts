@@ -1,4 +1,8 @@
-import { SearchListResult } from '../../components/SearchPage/types';
+import {
+  DashboardSearchResults,
+  TableSearchResults,
+  UserSearchResults,
+} from './types';
 
 /* executeSearch */
 export enum ExecuteSearch {
@@ -30,17 +34,29 @@ export function executeSearch(term: string, pageIndex: number): ExecuteSearchReq
 export type SearchReducerAction = ExecuteSearchRequest | ExecuteSearchResponse;
 
 export interface SearchReducerState {
-  pageIndex: number;
-  searchResults: SearchListResult[];
   searchTerm: string;
-  totalResults: number;
+  dashboard?: DashboardSearchResults;
+  table: TableSearchResults;
+  user?: UserSearchResults;
 }
 
 const initialState: SearchReducerState = {
-  pageIndex: 0,
-  searchResults: [],
   searchTerm: '',
-  totalResults: 0,
+  dashboard: {
+    pageIndex: 0,
+    totalResults: 0,
+    results: [],
+  },
+  table: {
+    pageIndex: 0,
+    totalResults: 0,
+    results: [],
+  },
+  user: {
+    pageIndex: 0,
+    totalResults: 0,
+    results: [],
+  },
 };
 
 export default function reducer(state: SearchReducerState = initialState, action: SearchReducerAction): SearchReducerState {
