@@ -1,5 +1,7 @@
 import { PreviewData, PreviewQueryParams } from '../../components/TableDetail/types';
 
+import { GetTableData } from '../tableMetadata/reducer';
+
 /* getPreviewData */
 export enum GetPreviewData {
   ACTION = 'amundsen/preview/GET_PREVIEW_DATA',
@@ -39,6 +41,8 @@ export default function reducer(state: PreviewDataReducerState = initialState, a
     case GetPreviewData.SUCCESS:
     case GetPreviewData.FAILURE:
       return action.payload;
+    case GetTableData.ACTION:
+      return initialState;
     default:
       return state;
   }
