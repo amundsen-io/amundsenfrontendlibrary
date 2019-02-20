@@ -249,7 +249,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
     const previewSectionRenderer = () => {
       return (
         <div>
-          <DataPreviewButton queryParams={{'schema': data.schema, 'tableName': data.table_name}} />
+          <DataPreviewButton modalTitle={`${data.schema}.${data.tableName}`} />
           {
             AppConfig.tableProfile.isExploreEnabled &&
               <a role="button" href={this.getExploreSqlUrl()} target="_blank" className="btn btn-primary btn-block">

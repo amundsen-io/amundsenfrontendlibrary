@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Button, Modal, OverlayTrigger, Popover, Table } from 'react-bootstrap';
 import Linkify from 'react-linkify'
 
-import { PreviewData, PreviewQueryParams } from '../types';
+import { PreviewData } from '../types';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
@@ -23,7 +23,7 @@ export interface StateFromProps {
 }
 
 export interface ComponentProps {
-  queryParams: PreviewQueryParams;
+  modalTitle: string;
 }
 
 type DataPreviewButtonProps = StateFromProps & ComponentProps;
@@ -193,14 +193,6 @@ class DataPreviewButton extends React.Component<DataPreviewButtonProps, DataPrev
       return previewButton;
     }
 
-    /*
-      TODO: Propose redesign of this UI. Original design has tooltip with error
-      messages appear when hovering over the button, but:
-      1. BootStrap popover has 'flickering' issues, potential upgrade to 4.0 could fix?
-      2. Designs for a few other features use an 'info' button to indicate that there
-         is discoverable help text, why not use that here.
-    */
-
     // when button is disabled, render button with Popover
     const popoverHover = (
       <Popover id="popover-trigger-hover">
@@ -229,7 +221,7 @@ class DataPreviewButton extends React.Component<DataPreviewButtonProps, DataPrev
         <Modal show={this.state.showModal} onHide={this.handleClose}>
           <Modal.Header className="text-center" closeButton={true}>
             <Modal.Title>
-              {`${this.props.queryParams.schema}.${this.props.queryParams.tableName}`}
+              {this.props.modalTitle}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
