@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import { QueryParams, TableData } from '../types';
+import { SearchIndexParams } from '../types';
+import { TableSearchResult } from "../../../../ducks/search/types";
 
-// import './styles.scss';
+import './styles.scss';
 
 interface TableListItemProps {
-  data: TableData;
-  params: QueryParams;
+  item: TableSearchResult;
+  params: SearchIndexParams;
 }
 
 class TableListItem extends React.Component<TableListItemProps, {}> {
@@ -31,21 +32,21 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
   }*/
 
   getLink = () => {
-    const { params, data } = this.props;
-    return `/table_detail/${data.cluster}/${data.database}/${data.schema_name}/${data.name}`
+    const { item, params } = this.props;
+    return `/table_detail/${item.cluster}/${item.database}/${item.schema_name}/${item.name}`
       + `?index=${params.index}&source=${params.source}`;
   };
 
 
   render() {
-    const { data } = this.props;
+    const { item } = this.props;
     return (
       <li className="list-group-item search-list-item">
         <Link to={ this.getLink() }>
           <img className="icon icon-color icon-database" />
           <div className="resultInfo">
-            <span className="title truncated">{ `${data.schema_name}.${data.name} `}</span>
-            <span className="subtitle truncated">{ data.description }</span>
+            <span className="title truncated">{ `${item.schema_name}.${item.name} `}</span>
+            <span className="subtitle truncated">{ item.description }</span>
           </div>
           { /*createLastUpdatedTimestamp()*/ }
           <img className="icon icon-right" />

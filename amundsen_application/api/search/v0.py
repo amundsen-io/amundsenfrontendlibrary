@@ -110,10 +110,12 @@ def _search(*, search_term: str, page_index: int) -> Dict[str, Any]:
     TODO: Define an interface for envoy_client
     """
     results_dict = {
-        'results': [],
         'search_term': search_term,
-        'total_results': 0,
-        'page_index': int(page_index),
+        'tables': {
+            'total_results': 0,
+            'page_index': int(page_index),
+            'results': [],
+        },
         'msg': '',
     }
 
@@ -139,10 +141,11 @@ def _search(*, search_term: str, page_index: int) -> Dict[str, Any]:
 
         if status_code == HTTPStatus.OK:
             results_dict['msg'] = 'Success'
-            results_dict['total_results'] = response.json().get('total_results')
-
+            tables = results_dict['tables']
+            tables['total_results'] = response.json().get('total_results')
             # Filter and parse the response dictionary from the search service
             params = [
+                'type',
                 'key',
                 'name',
                 'cluster',
@@ -152,7 +155,9 @@ def _search(*, search_term: str, page_index: int) -> Dict[str, Any]:
                 'last_updated',
             ]
             results = response.json().get('results')
-            results_dict['results'] = [{key: result.get(key, None) for key in params} for result in results]
+            for result in results:
+                result['type'] = 'table'
+            tables['results'] = [{key: result.get(key, None) for key in params} for result in results]
         else:
             message = 'Encountered error: Search request failed'
             results_dict['msg'] = message

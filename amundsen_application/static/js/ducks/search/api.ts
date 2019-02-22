@@ -11,17 +11,17 @@ interface SearchResponse {
   msg: string;
   status_code: number;
   search_term: string;
-  dashboard: DashboardSearchResults;
-  table: TableSearchResults;
-  user: UserSearchResults;
+  dashboards: DashboardSearchResults;
+  tables: TableSearchResults;
+  users: UserSearchResults;
 }
 
 function transformSearchResults(data: SearchResponse): SearchReducerState {
   return {
     searchTerm: data.search_term,
-    dashboard: data.dashboard,
-    table: data.table,
-    user: data.user,
+    dashboards: data.dashboards,
+    tables: data.tables,
+    users: data.users,
   };
 }
 

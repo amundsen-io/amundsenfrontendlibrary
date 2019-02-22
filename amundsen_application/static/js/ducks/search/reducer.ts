@@ -35,27 +35,27 @@ export type SearchReducerAction = ExecuteSearchRequest | ExecuteSearchResponse;
 
 export interface SearchReducerState {
   searchTerm: string;
-  dashboard?: DashboardSearchResults;
-  table: TableSearchResults;
-  user?: UserSearchResults;
+  dashboards?: DashboardSearchResults;
+  tables: TableSearchResults;
+  users?: UserSearchResults;
 }
 
 const initialState: SearchReducerState = {
   searchTerm: '',
-  dashboard: {
-    pageIndex: 0,
-    totalResults: 0,
+  dashboards: {
+    page_index: 0,
     results: [],
+    total_results: 0,
   },
-  table: {
-    pageIndex: 0,
-    totalResults: 0,
+  tables: {
+    page_index: 0,
     results: [],
+    total_results: 0,
   },
-  user: {
-    pageIndex: 0,
-    totalResults: 0,
+  users: {
+    page_index: 0,
     results: [],
+    total_results: 0,
   },
 };
 

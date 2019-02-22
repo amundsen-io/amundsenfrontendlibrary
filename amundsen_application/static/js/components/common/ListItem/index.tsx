@@ -1,10 +1,14 @@
 import * as React from 'react'
 
-import { ListItemType, TableListItemData } from './types';
+import { SearchIndexParams} from './types';
+import { SearchResult, SearchResultType, TableSearchResult } from "../../../ducks/search/types";
+
 import TableListItem from './TableListItem';
 
-
-type ListItemProps = TableListItemData;
+interface ListItemProps {
+  params: SearchIndexParams;
+  item: SearchResult;
+}
 
 
 export default class ListItem extends React.Component<ListItemProps, {}> {
@@ -14,10 +18,10 @@ export default class ListItem extends React.Component<ListItemProps, {}> {
   }
 
   render() {
-    switch(this.props.type) {
-      case ListItemType.table:
-        return (<TableListItem data={ this.props.data } params={this.props.params}></TableListItem>);
-      // case ListItemType.person:
+    switch(this.props.item.type) {
+      case SearchResultType.table:
+        return (<TableListItem item={ this.props.item as TableSearchResult } params={this.props.params}></TableListItem>);
+      // case ListItemType.user:
       // case ListItemType.dashboard:
       // case ListItemType.column:
       default:

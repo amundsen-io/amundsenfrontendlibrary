@@ -34,8 +34,8 @@ export interface DashboardSearchResult extends SearchResult  {
 }
 
 interface SearchResults<T> {
-  pageIndex: number;
-  totalResults: number;
+  page_index: number;
+  total_results: number;
   results: T[];
 }
 

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import ListItem from '../../common/ListItem';
-import { SearchListResult } from '../../../ducks/search/types';
-import { ListItemType } from "../../common/ListItem/types";
+import { SearchResult } from '../../../ducks/search/types';
+
 
 interface SearchListProps {
-  results?: SearchListResult[];
+  results?: SearchResult[];
   params?: SearchListParams;
 }
 
@@ -15,11 +15,11 @@ interface SearchListParams {
 
 const SearchList: React.SFC<SearchListProps> = ({ results, params }) => {
   const { source , paginationStartIndex } = params;
-  const resultMap = results.map((entry, i) => {
+  const resultMap = results.map((result, i) => {
     return (
       <ListItem
-        data={entry}
-        params={{source, index: paginationStartIndex + i}}></ListItem>
+        item={ result }
+        params={{source, index: paginationStartIndex + i}} />
     );
   });
   return (
@@ -35,20 +35,3 @@ SearchList.defaultProps = {
 };
 
 export default SearchList;
-
-
-    /**
-
-    <SearchListItem
-      key={ entry.key }
-      params={{source, index: paginationStartIndex + i}}
-      title={`${entry.schema_name}.${entry.name}`}
-      subtitle={ entry.description }
-      lastUpdated = { entry.last_updated }
-      schema={ entry.schema_name }
-      cluster={ entry.cluster }
-      table={ entry.name }
-      db={ entry.database }
-  />
-
-  */
