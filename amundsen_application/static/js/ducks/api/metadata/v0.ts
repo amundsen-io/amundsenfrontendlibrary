@@ -10,16 +10,9 @@ function getTableParams(tableDataObject) {
   return `db=${database}&cluster=${cluster}&schema=${schema}&table=${table_name}`;
 }
 
-function transformPopularTables(tables) {
-  return tables.map((table) => {
-    return { ...table, type: "table"};
-  });
-}
-
-
 export function metadataPopularTables() {
   return axios.get(`${API_PATH}/popular_tables`).then((response) => {
-    return transformPopularTables(response.data.results);
+    return response.data.results;
   })
   .catch((error) => {
     return error.response.data.results;

@@ -98,6 +98,19 @@ def _create_url_with_field(*, search_term: str, page_index: int) -> str:
     return url
 
 
+# TODO - Implement these functions
+def _search_tables(*, search_term: str, page_index: int) -> Dict[str, Any]:
+    return {}
+
+
+def _search_dashboards(*, search_term: str, page_index: int) -> Dict[str, Any]:
+    return {}
+
+
+def _search_people(*, search_term: str, page_index: int) -> Dict[str, Any]:
+    return {}
+
+
 @action_logging
 def _search(*, search_term: str, page_index: int) -> Dict[str, Any]:
     """
@@ -109,13 +122,8 @@ def _search(*, search_term: str, page_index: int) -> Dict[str, Any]:
 
     TODO: Define an interface for envoy_client
     """
-    results_dict = {
+    results_dict: Dict[str, Any] = {
         'search_term': search_term,
-        'tables': {
-            'total_results': 0,
-            'page_index': int(page_index),
-            'results': [],
-        },
         'msg': '',
     }
 
@@ -141,8 +149,6 @@ def _search(*, search_term: str, page_index: int) -> Dict[str, Any]:
 
         if status_code == HTTPStatus.OK:
             results_dict['msg'] = 'Success'
-            tables = results_dict['tables']
-            tables['total_results'] = response.json().get('total_results')
             # Filter and parse the response dictionary from the search service
             params = [
                 'type',
@@ -157,7 +163,13 @@ def _search(*, search_term: str, page_index: int) -> Dict[str, Any]:
             results = response.json().get('results')
             for result in results:
                 result['type'] = 'table'
-            tables['results'] = [{key: result.get(key, None) for key in params} for result in results]
+
+            tables = {
+                'total_results': response.json().get('total_results'),
+                'page_index': int(page_index),
+                'results': [{key: result.get(key, None) for key in params} for result in results],
+            }
+            results_dict['tables'] = tables
         else:
             message = 'Encountered error: Search request failed'
             results_dict['msg'] = message
