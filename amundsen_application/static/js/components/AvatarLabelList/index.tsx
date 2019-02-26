@@ -26,7 +26,6 @@ export interface ComponentProps {
 }
 
 export interface StateFromProps {
-  isLoading: boolean;
   itemProps: Map<string, AvatarLabelProps>;
 }
 
@@ -35,7 +34,6 @@ type AvatarLabelListProps = ComponentProps & DispatchFromProps & StateFromProps;
 interface AvatarLabelListState {
   errorText: string | null;
   itemProps: Map<string, AvatarLabelProps>;
-  isLoading: boolean;
   readOnly: boolean;
   showModal: boolean;
   tempItemProps: Map<string, AvatarLabelProps>;
@@ -47,14 +45,13 @@ class AvatarLabelList extends React.Component<AvatarLabelListProps, AvatarLabelL
   public static defaultProps: AvatarLabelListProps = {
     errorText: null,
     readOnly: true,
-    isLoading: false,
     itemProps: new Map(),
     onUpdateList: () => undefined,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { isLoading, itemProps, readOnly } = nextProps;
-    return { isLoading, itemProps, readOnly, tempItemProps: itemProps };
+    const { itemProps, readOnly } = nextProps;
+    return { itemProps, readOnly, tempItemProps: itemProps };
   }
 
   constructor(props) {
@@ -62,7 +59,6 @@ class AvatarLabelList extends React.Component<AvatarLabelListProps, AvatarLabelL
 
     this.state = {
       errorText: props.errorText,
-      isLoading: false,
       itemProps: props.itemProps,
       readOnly: props.readOnly,
       showModal: false,
@@ -104,11 +100,14 @@ class AvatarLabelList extends React.Component<AvatarLabelListProps, AvatarLabelL
 
   recordAddItem = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const inputElement = this.inputRef.current;
-    const value = inputElement.value;
-    const newTempItemProps = new Map(this.state.tempItemProps);
-    newTempItemProps.set(value, { label: value });
-    this.setState({ tempItemProps: newTempItemProps });
+    console.log(this.inputRef);
+    const value = this.inputRef.current.value;
+    if (value) {
+      this.inputRef.current.value = '';
+      const newTempItemProps = new Map(this.state.tempItemProps);
+      newTempItemProps.set(value, { label: value });
+      this.setState({ tempItemProps: newTempItemProps });
+    }
   }
 
   recordDeleteItem = (key: string) => {
@@ -156,12 +155,14 @@ class AvatarLabelList extends React.Component<AvatarLabelListProps, AvatarLabelL
           <li key={`modal-list-item:${key}`}>
             { React.createElement(AvatarLabel, value) }
             <button
-              className='btn icon delete-button'
+              className='btn delete-button'
               aria-label='Delete Item'
               /* tslint:disable - TODO: Investigate jsx-no-lambda rule */
               onClick={() => this.recordDeleteItem(key)}
               /* tslint:enable */
-            />
+            >
+             <img className='icon icon-delete'/>
+            </button>
           </li>
         );
         modalItems.push(modalItem);

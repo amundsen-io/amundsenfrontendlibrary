@@ -13,10 +13,14 @@ export enum UpdateMethod {
   DELETE = 'DELETE',
 }
 
+interface UpdatePayload {
+  method: UpdateMethod;
+  id: string;
+}
+
 export interface UpdateTableOwnerRequest {
   type: UpdateTableOwner.ACTION;
-  method: UpdateMethod;
-  value: string;
+  updateArray: UpdatePayload[];
   onSuccess?: () => any;
   onFailure?: () => any;
 }
@@ -25,12 +29,11 @@ interface UpdateTableOwnerResponse {
   type: UpdateTableOwner.SUCCESS | UpdateTableOwner.FAILURE;
 }
 
-export function updateTableOwner(value: string, method: UpdateMethod, onSuccess?: () => any, onFailure?: () => any): UpdateTableOwnerRequest {
+export function updateTableOwner(updateArray: UpdatePayload[], onSuccess?: () => any, onFailure?: () => any): UpdateTableOwnerRequest {
   return {
-    value,
-    method,
     onSuccess,
     onFailure,
+    updateArray,
     type: UpdateTableOwner.ACTION,
   };
 }

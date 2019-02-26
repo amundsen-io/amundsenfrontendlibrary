@@ -87,7 +87,7 @@ export function metadataUpdateTableDescription(description, tableData) {
 
 export function metadataUpdateTableOwner(action, tableData) {
   const updatePayloads = action.updateArray.map(item => ({
-      method: item.metho,
+      method: item.method,
       url: `${API_PATH}/update_table_owner`,
       data: {
         cluster: tableData.cluster,
