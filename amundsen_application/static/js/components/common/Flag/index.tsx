@@ -5,20 +5,18 @@ import './styles.scss';
 
 interface FlagProps {
   text: string;
+  style?: string;
 }
 
-const Flag: React.SFC<FlagProps> = ({ text }) => {
-
+const Flag: React.SFC<FlagProps> = ({ text, style }) => {
   return (
-    <div className='flag-component'>
-      <label>{text.toUpperCase()}</label>
-    </div>
+    <span className={`flag label ${style}`}>{text.toUpperCase()}</span>
   );
-
 };
 
 Flag.defaultProps = {
   text: '',
+  style: 'label-default',
 };
 
 export default Flag;
