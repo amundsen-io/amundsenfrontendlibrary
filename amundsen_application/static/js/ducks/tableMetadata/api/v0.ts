@@ -85,18 +85,20 @@ export function metadataUpdateTableDescription(description, tableData) {
   }
 }
 
-export function metadataUpdateTableOwner(owner, method, tableData) {
-  return axios({
-    method,
-    url: `${API_PATH}/update_table_owner`,
-    data: {
-      owner,
-      db: tableData.database,
-      cluster: tableData.cluster,
-      schema: tableData.schema,
-      table: tableData.table_name,
+export function metadataUpdateTableOwner(action, tableData) {
+  const updatePayloads = action.updateArray.map(item => ({
+      method: item.metho,
+      url: `${API_PATH}/update_table_owner`,
+      data: {
+        cluster: tableData.cluster,
+        db: tableData.database,
+        owner: item.id,
+        schema: tableData.schema,
+        table: tableData.table_name,
+      },
     }
-  })
+  ));
+  return updatePayloads.map(payload => { axios(payload) });
 }
 
 export function metadataGetColumnDescription(columnIndex, tableData) {
