@@ -140,17 +140,19 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     if (showResultsList) {
       const startIndex = (RESULTS_PER_PAGE * page_index) + 1;
       const endIndex = RESULTS_PER_PAGE * ( page_index + 1);
-      const hasSearchResults = total_results > 0;
-      const listTitle = hasSearchResults ?
-        `${startIndex}-${Math.min(endIndex, total_results)} of ${total_results} results` :
-        'Popular Tables';
-      const infoText = hasSearchResults ?
-        "Ordered by the relevance of matches within a resource's metadata, as well as overall usage." :
-        "These are some of the most commonly accessed tables within your organization.";
+      let listTitle = `${startIndex}-${Math.min(endIndex, total_results)} of ${total_results} results`;
+      let infoText = "Ordered by the relevance of matches within a resource's metadata, as well as overall usage.";
       const searchListParams = {
-        source: hasSearchResults ? 'search_results' : 'popular_tables',
+        source: 'search_results',
         paginationStartIndex: RESULTS_PER_PAGE * page_index
       };
+
+      const showPopularTables = total_results < 1;
+      if (showPopularTables) {
+        listTitle = 'Popular Tables';
+        infoText = "These are some of the most commonly accessed tables within your organization.";
+        searchListParams.source = 'popular_tables';
+      }
 
       return (
         <div className="col-xs-12">
@@ -159,7 +161,7 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
               <label> { listTitle } </label>
               <InfoButton infoText={ infoText }/>
             </div>
-            <SearchList results={ hasSearchResults ? results : popularTables } params={ searchListParams }/>
+            <SearchList results={ showPopularTables ? popularTables : results } params={ searchListParams }/>
           </div>
           <div className="search-pagination-component">
             {

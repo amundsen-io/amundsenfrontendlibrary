@@ -3,9 +3,9 @@ import {
   DashboardSearchResults,
   TableSearchResults,
   UserSearchResults,
-} from './types';
+} from '../types';
 
-import { SearchReducerState } from "./reducer";
+import { SearchReducerState } from "../reducer";
 
 interface SearchResponse {
   msg: string;

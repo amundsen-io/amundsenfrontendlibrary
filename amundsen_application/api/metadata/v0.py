@@ -60,6 +60,7 @@ def popular_tables() -> Response:
             'database': db,
             'description': result.get('table_description'),
             'key': '{0}://{1}.{2}/{3}'.format(db, cluster, schema_name, table_name),
+            'type': 'table',
         }
 
     try:
@@ -81,8 +82,6 @@ def popular_tables() -> Response:
             response_list = response.json().get('popular_tables')
             top4 = response_list[0:min(len(response_list), POPULAR_TABLE_COUNT)]
             popular_tables = [_map_results(result) for result in top4]
-            for table in popular_tables:
-                table['type'] = 'table'
         else:
             message = 'Encountered error: Request to metadata service failed with status code ' + str(status_code)
             logging.error(message)

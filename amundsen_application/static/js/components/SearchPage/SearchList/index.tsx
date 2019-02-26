@@ -18,8 +18,9 @@ const SearchList: React.SFC<SearchListProps> = ({ results, params }) => {
   const resultMap = results.map((result, i) => {
     return (
       <ListItem
+        key={ i }
         item={ result }
-        params={{source, index: paginationStartIndex + i}} />
+        params={{ source, index: paginationStartIndex + i }} />
     );
   });
   return (

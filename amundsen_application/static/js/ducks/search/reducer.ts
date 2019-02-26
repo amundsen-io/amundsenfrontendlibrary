@@ -35,9 +35,9 @@ export type SearchReducerAction = ExecuteSearchRequest | ExecuteSearchResponse;
 
 export interface SearchReducerState {
   searchTerm: string;
-  dashboards?: DashboardSearchResults;
+  dashboards: DashboardSearchResults;
   tables: TableSearchResults;
-  users?: UserSearchResults;
+  users: UserSearchResults;
 }
 
 const initialState: SearchReducerState = {
