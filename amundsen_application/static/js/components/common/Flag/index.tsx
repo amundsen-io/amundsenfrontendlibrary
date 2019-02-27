@@ -5,18 +5,20 @@ import './styles.scss';
 
 interface FlagProps {
   text: string;
-  style?: string;
+  labelStyle?: string;
 }
 
-const Flag: React.SFC<FlagProps> = ({ text, style }) => {
+const Flag: React.SFC<FlagProps> = ({ text, labelStyle }) => {
+  // TODO: After upgrading to Bootstrap 4, this component should leverage badges
+  // https://getbootstrap.com/docs/4.1/components/badge/
   return (
-    <span className={`flag label ${style}`}>{text.toUpperCase()}</span>
+    <span className={`flag label ${labelStyle}`}>{text.toUpperCase()}</span>
   );
 };
 
 Flag.defaultProps = {
   text: '',
-  style: 'label-default',
+  labelStyle: 'label-default',
 };
 
 export default Flag;
