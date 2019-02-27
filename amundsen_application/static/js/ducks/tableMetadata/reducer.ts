@@ -1,5 +1,5 @@
-import { PreviewData, PreviewQueryParams, TableMetadata } from '../../components/TableDetail/types';
-import { UpdateTagData } from '../../components/Tags/types';
+import { PreviewData, PreviewQueryParams, TableMetadata, TableOwners, TableTags, User } from '../../components/TableDetail/types';
+import { UpdateTagData, Tag } from '../../components/Tags/types';
 
 /* getTableData */
 export enum GetTableData {
@@ -22,7 +22,9 @@ interface GetTableDataResponse {
   type: GetTableData.SUCCESS | GetTableData.FAILURE;
   payload: {
     statusCode: number;
-    tableData: TableMetadata;
+    data: TableMetadata;
+    owners: User[];
+    tags: Tag[];
   }
 }
 
@@ -200,7 +202,7 @@ export interface UpdateTagsRequest {
 }
 interface UpdateTagsResponse {
   type: UpdateTags.SUCCESS | UpdateTags.FAILURE,
-  payload: TableMetadata;
+  payload: Tag[];
 }
 
 export function updateTags(tagArray: UpdateTagData[]): UpdateTagsRequest  {
@@ -269,33 +271,62 @@ export type TableMetadataReducerAction =
 
 export interface TableMetadataReducerState {
   isLoading: boolean;
-  isLoadingTags: boolean;
   lastIndexed: number;
   preview: PreviewDataState;
   statusCode: number;
   tableData: TableMetadata;
+  tableOwners: TableOwners;
+  tableTags: TableTags;
 }
 
 const initialPreviewState = {
   data: {},
   status: null,
 };
+const initialOwnersState = {
+  isLoading: true,
+  owners: [],
+};
+const initialTagsState = {
+  isLoading: true,
+  tags: [],
+};
 const initialState: TableMetadataReducerState = {
   isLoading: true,
-  isLoadingTags: true,
   lastIndexed: null,
   preview: initialPreviewState,
   statusCode: null,
   tableData: {} as TableMetadata,
+  tableOwners: initialOwnersState,
+  tableTags: initialTagsState,
 };
 
 export default function reducer(state: TableMetadataReducerState = initialState, action: TableMetadataReducerAction): TableMetadataReducerState {
   switch (action.type) {
     case GetTableData.ACTION:
-      return { ...state, isLoading: true, isLoadingTags: true, preview: initialPreviewState };
+      return {
+        ...state,
+        isLoading: true,
+        preview: initialPreviewState,
+        tableOwners: initialOwnersState,
+        tableTags: initialTagsState,
+      };
     case GetTableData.FAILURE:
     case GetTableData.SUCCESS:
-      return { ...state, isLoading: false, isLoadingTags: false, statusCode: action.payload.statusCode, tableData: action.payload.tableData };
+      return {
+        ...state,
+        isLoading: false,
+        statusCode: action.payload.statusCode,
+        tableData: action.payload.data,
+        tableOwners: {
+          isLoading: false,
+          owners: action.payload.owners,
+        },
+        tableTags: {
+          isLoading: false,
+          tags: action.payload.tags,
+        },
+      };
     case GetTableDescription.FAILURE:
     case GetTableDescription.SUCCESS:
       return { ...state, tableData: action.payload };
@@ -310,11 +341,29 @@ export default function reducer(state: TableMetadataReducerState = initialState,
     case GetPreviewData.FAILURE:
       return { ...state, preview: action.payload };
     case UpdateTags.FAILURE:
-      return { ...state, isLoadingTags: false };
+      return {
+        ...state,
+        tableTags: {
+          ...state.tableTags,
+          isLoading: false,
+        },
+      };
     case UpdateTags.SUCCESS:
-      return { ...state, isLoadingTags: false, tableData: action.payload };
+      return {
+        ...state,
+        tableTags: {
+          isLoading: false,
+          tags: action.payload,
+        },
+      };
     case UpdateTags.ACTION:
-      return { ...state, isLoadingTags: true };
+      return {
+        ...state,
+        tableTags: {
+          ...state.tableTags,
+          isLoading: true,
+        },
+      };
     default:
       return state;
   }

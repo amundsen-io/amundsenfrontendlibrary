@@ -24,16 +24,16 @@ import {
   metadataUpdateTableOwner,
   metadataUpdateTableTags,
   metadataTableTags,
-} from '../api/metadata/v0';
+} from './api/v0';
 
 // getTableData
 export function* getTableDataWorker(action: GetTableDataRequest): SagaIterator {
   let tableData;
   try {
-    tableData = yield call(metadataGetTableData, action);
-    yield put({ type: GetTableData.SUCCESS, payload: tableData });
+    const { data, owners, tags } = yield call(metadataGetTableData, action);
+    yield put({ type: GetTableData.SUCCESS, payload: { data, owners, tags } });
   } catch (e) {
-    yield put({ type: GetTableData.FAILURE, payload: tableData });
+    yield put({ type: GetTableData.FAILURE, payload: { data: {}, owners: [], tags: [] } });
   }
 }
 
@@ -148,11 +148,10 @@ export function* updateTagsWorker(action: UpdateTagsRequest): SagaIterator {
   const tableData = state.tableMetadata.tableData;
   try {
     yield all(metadataUpdateTableTags(action, tableData));
-    const newTableData = yield call(metadataTableTags, tableData);
-    console.log(newTableData);
-    yield put({ type: UpdateTags.SUCCESS, payload: newTableData });
+    const newTags = yield call(metadataTableTags, tableData);
+    yield put({ type: UpdateTags.SUCCESS, payload: newTags });
   } catch (e) {
-    yield put({ type: UpdateTags.FAILURE, payload: tableData });
+    yield put({ type: UpdateTags.FAILURE, payload: [] });
   }
 }
 

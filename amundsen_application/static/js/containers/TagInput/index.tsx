@@ -10,8 +10,8 @@ import TagInput, { ComponentProps, DispatchFromProps, StateFromProps} from '../.
 export const mapStateToProps = (state: GlobalState) => {
   return {
     allTags: state.tags.allTags,
-    isLoading: state.tags.isLoading || state.tableMetadata.isLoadingTags,
-    tags: state.tableMetadata.tableData.tags,
+    isLoading: state.tags.isLoading || state.tableMetadata.tableTags.isLoading,
+    tags: state.tableMetadata.tableTags.tags,
   };
 };
 
