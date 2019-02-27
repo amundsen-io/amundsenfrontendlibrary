@@ -24,7 +24,7 @@ import {
 } from './tableMetadata/sagas';
 
 // Tags
-import { getAllTagsWatcher } from './tags/sagas';
+import { getAllTagsWatcher } from './allTags/sagas';
 
 // User
 import { getCurrentUserWatcher } from "./user/sagas";

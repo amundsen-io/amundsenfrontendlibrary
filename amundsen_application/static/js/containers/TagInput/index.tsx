@@ -2,15 +2,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { GlobalState } from "../../ducks/rootReducer";
-import { getAllTags } from '../../ducks/tags/reducer';
+import { getAllTags } from '../../ducks/allTags/reducer';
 import { updateTags } from '../../ducks/tableMetadata/reducer';
 
 import TagInput, { ComponentProps, DispatchFromProps, StateFromProps} from '../../components/Tags/TagInput';
 
 export const mapStateToProps = (state: GlobalState) => {
   return {
-    allTags: state.tags.allTags,
-    isLoading: state.tags.isLoading || state.tableMetadata.tableTags.isLoading,
+    allTags: state.allTags.allTags,
+    isLoading: state.allTags.isLoading || state.tableMetadata.tableTags.isLoading,
     tags: state.tableMetadata.tableTags.tags,
   };
 };
