@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { GlobalState } from "../../ducks/rootReducer";
 import { getAllTags } from '../../ducks/allTags/reducer';
-import { updateTags } from '../../ducks/tableMetadata/reducer';
+import { updateTags } from '../../ducks/tableMetadata/tags/reducer';
 
 import TagInput, { ComponentProps, DispatchFromProps, StateFromProps} from '../../components/Tags/TagInput';
 

@@ -1,7 +1,14 @@
 import { PreviewData, PreviewQueryParams, TableMetadata, TableTags, User } from '../../components/TableDetail/types';
-import { UpdateTagData, Tag } from '../../components/Tags/types';
+import { Tag } from '../../components/Tags/types';
 
 import tableOwnersReducer, { initialOwnersState, TableOwnerReducerState } from './owners/reducer';
+import tableTagsReducer, {
+  initialTagsState,
+  TableTagsReducerState,
+  UpdateTags,
+  UpdateTagsRequest,
+  UpdateTagsResponse,
+} from './tags/reducer';
 
 /* getTableData */
 export enum GetTableData {
@@ -156,30 +163,6 @@ export function updateColumnDescription(newValue: string, columnIndex: number, o
 }
 /* end updateColumnDescription */
 
-/* updateTags */
-export enum UpdateTags {
-  ACTION = 'amundsen/tags/UPDATE_TAGS',
-  SUCCESS = 'amundsen/tags/UPDATE_TAGS_SUCCESS',
-  FAILURE = 'amundsen/tags/UPDATE_TAGS_FAILURE',
-}
-
-export interface UpdateTagsRequest {
-  type: UpdateTags.ACTION,
-  tagArray: UpdateTagData[];
-}
-interface UpdateTagsResponse {
-  type: UpdateTags.SUCCESS | UpdateTags.FAILURE,
-  payload: Tag[];
-}
-
-export function updateTags(tagArray: UpdateTagData[]): UpdateTagsRequest  {
-  return {
-    tagArray,
-    type: UpdateTags.ACTION,
-  };
-}
-/* end updateTags */
-
 /* getLastIndexed */
 export enum GetLastIndexed {
   ACTION = 'amundsen/tableMetadata/GET_LAST_UPDATED',
@@ -231,9 +214,9 @@ export type TableMetadataReducerAction =
   UpdateTableDescriptionRequest | UpdateTableDescriptionResponse |
   GetColumnDescriptionRequest | GetColumnDescriptionResponse |
   UpdateColumnDescriptionRequest | UpdateColumnDescriptionResponse |
-  UpdateTagsRequest | UpdateTagsResponse |
   GetLastIndexedRequest | GetLastIndexedResponse |
-  GetPreviewDataRequest | GetPreviewDataResponse;
+  GetPreviewDataRequest | GetPreviewDataResponse |
+  UpdateTagsRequest | UpdateTagsResponse ;
 
 export interface TableMetadataReducerState {
   isLoading: boolean;
@@ -248,10 +231,6 @@ export interface TableMetadataReducerState {
 const initialPreviewState = {
   data: {},
   status: null,
-};
-const initialTagsState = {
-  isLoading: true,
-  tags: [],
 };
 const initialState: TableMetadataReducerState = {
   isLoading: true,
@@ -270,8 +249,8 @@ export default function reducer(state: TableMetadataReducerState = initialState,
         ...state,
         isLoading: true,
         preview: initialPreviewState,
-        tableOwners: initialOwnersState,
-        tableTags: initialTagsState,
+        tableOwners: tableOwnersReducer(state.tableOwners, action),
+        tableTags: tableTagsReducer(state.tableTags, action),
       };
     case GetTableData.FAILURE:
     case GetTableData.SUCCESS:
@@ -281,10 +260,7 @@ export default function reducer(state: TableMetadataReducerState = initialState,
         statusCode: action.payload.statusCode,
         tableData: action.payload.data,
         tableOwners: tableOwnersReducer(state.tableOwners, action),
-        tableTags: {
-          isLoading: false,
-          tags: action.payload.tags,
-        },
+        tableTags: tableTagsReducer(state.tableTags, action),
       };
     case GetTableDescription.FAILURE:
     case GetTableDescription.SUCCESS:
@@ -299,30 +275,10 @@ export default function reducer(state: TableMetadataReducerState = initialState,
     case GetPreviewData.SUCCESS:
     case GetPreviewData.FAILURE:
       return { ...state, preview: action.payload };
-    case UpdateTags.FAILURE:
-      return {
-        ...state,
-        tableTags: {
-          ...state.tableTags,
-          isLoading: false,
-        },
-      };
-    case UpdateTags.SUCCESS:
-      return {
-        ...state,
-        tableTags: {
-          isLoading: false,
-          tags: action.payload,
-        },
-      };
     case UpdateTags.ACTION:
-      return {
-        ...state,
-        tableTags: {
-          ...state.tableTags,
-          isLoading: true,
-        },
-      };
+    case UpdateTags.FAILURE:
+    case UpdateTags.SUCCESS:
+      return { ...state, tableTags: tableTagsReducer(state.tableTags, action) };
     default:
       return state;
   }

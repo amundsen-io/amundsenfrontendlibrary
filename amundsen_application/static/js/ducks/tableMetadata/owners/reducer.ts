@@ -54,16 +54,10 @@ export const initialOwnersState: TableOwnerReducerState = {
 export default function reducer(state: TableOwnerReducerState = initialOwnersState, action: TableOwnerReducerAction): TableOwnerReducerState {
   switch (action.type) {
     case GetTableData.ACTION:
-      return {
-        isLoading: true,
-        owners: []
-      };
+      return { isLoading: true, owners: [] };
     case GetTableData.FAILURE:
     case GetTableData.SUCCESS:
-      return {
-        isLoading: false,
-        owners: action.payload.owners,
-      }
+      return { isLoading: false, owners: action.payload.owners };
     default:
       return state;
   }

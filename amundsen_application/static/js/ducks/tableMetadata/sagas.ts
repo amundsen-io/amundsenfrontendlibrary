@@ -9,7 +9,6 @@ import {
   GetTableDescription, GetTableDescriptionRequest,
   UpdateColumnDescription, UpdateColumnDescriptionRequest,
   UpdateTableDescription, UpdateTableDescriptionRequest,
-  UpdateTags, UpdateTagsRequest,
 } from './reducer';
 
 import {
@@ -20,8 +19,6 @@ import {
   metadataGetTableDescription,
   metadataUpdateColumnDescription,
   metadataUpdateTableDescription,
-  metadataUpdateTableTags,
-  metadataTableTags,
 } from './api/v0';
 
 // getTableData
@@ -119,23 +116,6 @@ export function* updateColumnDescriptionWorker(action: UpdateColumnDescriptionRe
 
 export function* updateColumnDescriptionWatcher(): SagaIterator {
   yield takeEvery(UpdateColumnDescription.ACTION, updateColumnDescriptionWorker);
-}
-
-// updateTags
-export function* updateTagsWorker(action: UpdateTagsRequest): SagaIterator {
-  const state = yield select();
-  const tableData = state.tableMetadata.tableData;
-  try {
-    yield all(metadataUpdateTableTags(action, tableData));
-    const newTags = yield call(metadataTableTags, tableData);
-    yield put({ type: UpdateTags.SUCCESS, payload: newTags });
-  } catch (e) {
-    yield put({ type: UpdateTags.FAILURE, payload: [] });
-  }
-}
-
-export function* updateTagsWatcher(): SagaIterator {
-  yield takeEvery(UpdateTags.ACTION, updateTagsWorker);
 }
 
 // getLastIndexed
