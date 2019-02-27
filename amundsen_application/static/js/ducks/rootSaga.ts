@@ -11,6 +11,7 @@ import { getPopularTablesWatcher } from './popularTables/sagas';
 import { executeSearchWatcher } from './search/sagas';
 
 // TableDetail
+import { updateTableOwnerWatcher } from './tableMetadata/owners/sagas';
 import {
   getTableDataWatcher,
   getColumnDescriptionWatcher,
@@ -19,7 +20,6 @@ import {
   getTableDescriptionWatcher,
   updateColumnDescriptionWatcher,
   updateTableDescriptionWatcher,
-  updateTableOwnerWatcher,
   updateTagsWatcher,
 } from './tableMetadata/sagas';
 

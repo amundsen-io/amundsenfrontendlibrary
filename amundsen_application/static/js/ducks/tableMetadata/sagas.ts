@@ -9,7 +9,6 @@ import {
   GetTableDescription, GetTableDescriptionRequest,
   UpdateColumnDescription, UpdateColumnDescriptionRequest,
   UpdateTableDescription, UpdateTableDescriptionRequest,
-  UpdateTableOwner, UpdateTableOwnerRequest,
   UpdateTags, UpdateTagsRequest,
 } from './reducer';
 
@@ -21,7 +20,6 @@ import {
   metadataGetTableDescription,
   metadataUpdateColumnDescription,
   metadataUpdateTableDescription,
-  metadataUpdateTableOwner,
   metadataUpdateTableTags,
   metadataTableTags,
 } from './api/v0';
@@ -80,25 +78,6 @@ export function* updateTableDescriptionWorker(action: UpdateTableDescriptionRequ
 
 export function* updateTableDescriptionWatcher(): SagaIterator {
   yield takeEvery(UpdateTableDescription.ACTION, updateTableDescriptionWorker);
-}
-
-// updateTableOwner
-export function* updateTableOwnerWorker(action: UpdateTableOwnerRequest): SagaIterator {
-  const state = yield select();
-  try {
-    yield call(metadataUpdateTableOwner, action.value, action.method, state.tableMetadata.tableData);
-    if (action.onSuccess) {
-      yield call(action.onSuccess);
-    }
-  } catch (e) {
-    if (action.onFailure) {
-      yield call(action.onFailure);
-    }
-  }
-}
-
-export function* updateTableOwnerWatcher(): SagaIterator {
-  yield takeEvery(UpdateTableOwner.ACTION, updateTableOwnerWorker);
 }
 
 // getColumnDescription

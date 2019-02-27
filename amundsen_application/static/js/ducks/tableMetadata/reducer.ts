@@ -1,5 +1,7 @@
-import { PreviewData, PreviewQueryParams, TableMetadata, TableOwners, TableTags, User } from '../../components/TableDetail/types';
+import { PreviewData, PreviewQueryParams, TableMetadata, TableTags, User } from '../../components/TableDetail/types';
 import { UpdateTagData, Tag } from '../../components/Tags/types';
+
+import tableOwnersReducer, { initialOwnersState, TableOwnerReducerState } from './owners/reducer';
 
 /* getTableData */
 export enum GetTableData {
@@ -18,7 +20,7 @@ export interface GetTableDataRequest {
   table_name: string;
 }
 
-interface GetTableDataResponse {
+export interface GetTableDataResponse {
   type: GetTableData.SUCCESS | GetTableData.FAILURE;
   payload: {
     statusCode: number;
@@ -95,41 +97,6 @@ export function updateTableDescription(newValue: string, onSuccess?: () => any, 
   };
 }
 /* end updateTableDescription */
-
-/* updateTableOwner */
-export enum UpdateTableOwner {
-  ACTION = 'amundsen/tableMetadata/UPDATE_TABLE_OWNER',
-  SUCCESS = 'amundsen/tableMetadata/UPDATE_TABLE_OWNER_SUCCESS',
-  FAILURE = 'amundsen/tableMetadata/UPDATE_TABLE_OWNER_FAILURE',
-}
-
-export enum UpdateMethod {
-  PUT = 'PUT',
-  DELETE = 'DELETE',
-}
-
-export interface UpdateTableOwnerRequest {
-  type: UpdateTableOwner.ACTION;
-  method: UpdateMethod;
-  value: string;
-  onSuccess?: () => any;
-  onFailure?: () => any;
-}
-
-interface UpdateTableOwnerResponse {
-  type: UpdateTableOwner.SUCCESS | UpdateTableOwner.FAILURE;
-}
-
-export function updateTableOwner(value: string, method: UpdateMethod, onSuccess?: () => any, onFailure?: () => any): UpdateTableOwnerRequest {
-  return {
-    value,
-    method,
-    onSuccess,
-    onFailure,
-    type: UpdateTableOwner.ACTION,
-  };
-}
-/* end updateTableOwner */
 
 /* getColumnDescription */
 export enum GetColumnDescription {
@@ -262,7 +229,6 @@ export type TableMetadataReducerAction =
   GetTableDataRequest | GetTableDataResponse |
   GetTableDescriptionRequest | GetTableDescriptionResponse |
   UpdateTableDescriptionRequest | UpdateTableDescriptionResponse |
-  UpdateTableOwnerRequest | UpdateTableOwnerResponse |
   GetColumnDescriptionRequest | GetColumnDescriptionResponse |
   UpdateColumnDescriptionRequest | UpdateColumnDescriptionResponse |
   UpdateTagsRequest | UpdateTagsResponse |
@@ -275,17 +241,13 @@ export interface TableMetadataReducerState {
   preview: PreviewDataState;
   statusCode: number;
   tableData: TableMetadata;
-  tableOwners: TableOwners;
+  tableOwners: TableOwnerReducerState;
   tableTags: TableTags;
 }
 
 const initialPreviewState = {
   data: {},
   status: null,
-};
-const initialOwnersState = {
-  isLoading: true,
-  owners: [],
 };
 const initialTagsState = {
   isLoading: true,
@@ -318,10 +280,7 @@ export default function reducer(state: TableMetadataReducerState = initialState,
         isLoading: false,
         statusCode: action.payload.statusCode,
         tableData: action.payload.data,
-        tableOwners: {
-          isLoading: false,
-          owners: action.payload.owners,
-        },
+        tableOwners: tableOwnersReducer(state.tableOwners, action),
         tableTags: {
           isLoading: false,
           tags: action.payload.tags,
