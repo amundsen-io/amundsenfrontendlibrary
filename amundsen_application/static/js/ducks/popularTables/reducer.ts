@@ -1,4 +1,4 @@
-import { TableSearchResult } from '../search/types';
+import { TableResource } from "../../components/common/ResourceListItem/types";
 
 /* getPopularTables */
 export enum GetPopularTables {
@@ -13,7 +13,7 @@ export interface GetPopularTablesRequest {
 
 interface GetPopularTablesResponse {
   type: GetPopularTables.SUCCESS | GetPopularTables.FAILURE;
-  payload: TableSearchResult[];
+  payload: TableResource[];
 }
 
 export function getPopularTables(): GetPopularTablesRequest {
@@ -23,7 +23,7 @@ export function getPopularTables(): GetPopularTablesRequest {
 
 export type PopularTablesReducerAction = GetPopularTablesRequest | GetPopularTablesResponse;
 
-export type PopularTablesReducerState = TableSearchResult[];
+export type PopularTablesReducerState = TableResource[];
 
 const initialState: PopularTablesReducerState = [];
 

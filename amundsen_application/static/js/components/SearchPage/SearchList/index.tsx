@@ -1,10 +1,10 @@
 import * as React from 'react';
-import ListItem from '../../common/ListItem';
-import { SearchResult } from '../../../ducks/search/types';
+import ResourceListItem from '../../common/ResourceListItem';
+import { Resource } from "../../common/ResourceListItem/types";
 
 
 interface SearchListProps {
-  results?: SearchResult[];
+  results?: Resource[];
   params?: SearchListParams;
 }
 
@@ -14,18 +14,15 @@ interface SearchListParams {
 }
 
 const SearchList: React.SFC<SearchListProps> = ({ results, params }) => {
-  const { source , paginationStartIndex } = params;
-  const resultMap = results.map((result, i) => {
-    return (
-      <ListItem
-        key={ i }
-        item={ result }
-        params={{ source, index: paginationStartIndex + i }} />
-    );
-  });
+  const { source, paginationStartIndex } = params;
   return (
     <ul className="list-group">
-      { resultMap }
+      {
+        results.map((resource, index) => {
+          const logging = { source, index: paginationStartIndex + index };
+          return <ResourceListItem item={ resource } logging={ logging } key={ index } />;
+        })
+      }
     </ul>
   );
 };

@@ -1,18 +1,16 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import { SearchIndexParams } from '../types';
-import { TableSearchResult } from "../../../../ducks/search/types";
+import { LoggingParams, TableResource} from '../types';
 
 import './styles.scss';
 
 interface TableListItemProps {
-  item: TableSearchResult;
-  params: SearchIndexParams;
+  item: TableResource;
+  logging: LoggingParams;
 }
 
 class TableListItem extends React.Component<TableListItemProps, {}> {
-
   constructor(props) {
     super(props);
   }
@@ -32,9 +30,9 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
   }*/
 
   getLink = () => {
-    const { item, params } = this.props;
+    const { item, logging } = this.props;
     return `/table_detail/${item.cluster}/${item.database}/${item.schema_name}/${item.name}`
-      + `?index=${params.index}&source=${params.source}`;
+      + `?index=${logging.index}&source=${logging.source}`;
   };
 
 

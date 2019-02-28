@@ -6,6 +6,7 @@ import Pagination from 'react-js-pagination';
 import SearchBar from './SearchBar';
 import SearchList from './SearchList';
 import InfoButton from '../common/InfoButton';
+import { TableResource } from "../common/ResourceListItem/types";
 
 import { ExecuteSearchRequest } from '../../ducks/search/reducer';
 import { GetPopularTablesRequest } from '../../ducks/popularTables/reducer';
@@ -13,8 +14,6 @@ import { GetPopularTablesRequest } from '../../ducks/popularTables/reducer';
 import './styles.scss';
 import {
   DashboardSearchResults,
-  SearchResult,
-  SearchResultType,
   TableSearchResults,
   UserSearchResults
 } from "../../ducks/search/types";
@@ -23,7 +22,7 @@ const RESULTS_PER_PAGE = 10;
 
 export interface StateFromProps {
   searchTerm: string;
-  popularTables: SearchResult[];
+  popularTables: TableResource[];
 
   tables: TableSearchResults;
   dashboards: DashboardSearchResults
@@ -31,14 +30,14 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  executeSearch: (term: string, page_index: number) => ExecuteSearchRequest;
+  executeSearch: (term: string, pageIndex: number) => ExecuteSearchRequest;
   getPopularTables: () => GetPopularTablesRequest;
 }
 
 type SearchPageProps = StateFromProps & DispatchFromProps;
 
 interface SearchPageState {
-  page_index: number;
+  pageIndex: number;
   searchTerm: string;
 }
 
@@ -77,9 +76,9 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
 
     const params = qs.parse(window.location.search);
     const searchTerm = params['searchTerm'];
-    const page_index = params['page_index'];
+    const pageIndex = params['pageIndex'];
     if (searchTerm && searchTerm.length > 0) {
-      const index = page_index || '0';
+      const index = pageIndex || '0';
       this.props.executeSearch(searchTerm, index);
     }
   }
@@ -110,10 +109,10 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     this.updateQueryString(this.props.searchTerm, pageNumber - 1);
   }
 
-  updateQueryString(searchTerm, page_index) {
-    const pathName = `/search?searchTerm=${searchTerm}&page_index=${page_index}`;
+  updateQueryString(searchTerm, pageIndex) {
+    const pathName = `/search?searchTerm=${searchTerm}&pageIndex=${pageIndex}`;
     window.history.pushState({}, '', `${window.location.origin}${pathName}`);
-    this.props.executeSearch(searchTerm, page_index);
+    this.props.executeSearch(searchTerm, pageIndex);
   }
 
   // TODO: Hard-coded text strings should be translatable/customizable

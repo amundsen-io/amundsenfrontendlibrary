@@ -134,14 +134,16 @@ def _search(*, search_term: str, page_index: int) -> Dict[str, Any]:
             'last_updated': result.get('last_updated', None),
         }
 
+    tables = {
+        'page_index': int(page_index),
+        'results': [],
+        'total_results': 0,
+    }
+
     results_dict = {
         'search_term': search_term,
         'msg': '',
-        'tables': {
-            'page_index': int(page_index),
-            'results': [],
-            'total_results': 0,
-        }
+        'tables': tables,
     }
 
     try:
@@ -167,11 +169,8 @@ def _search(*, search_term: str, page_index: int) -> Dict[str, Any]:
         if status_code == HTTPStatus.OK:
             results_dict['msg'] = 'Success'
             results = response.json().get('results')
-            results_dict['tables'] = {
-                'total_results': response.json().get('total_results'),
-                'page_index': int(page_index),
-                'results': [_map_table_result(result) for result in results],
-            }
+            tables['results'] = [_map_table_result(result) for result in results]
+            tables['total_results'] = response.json().get('total_results')
         else:
             message = 'Encountered error: Search request failed'
             results_dict['msg'] = message
