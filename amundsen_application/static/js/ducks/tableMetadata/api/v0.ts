@@ -1,35 +1,17 @@
+/** TODO: We will introduce better typing for requests and responses */
 import axios from 'axios';
 
 import { GetPreviewDataRequest } from '../../tableMetadata/reducer';
 
 const API_PATH = '/api/metadata/v0';
-const sortTagsAlphabetical = (a, b) => a.tag_name.localeCompare(b.tag_name);
 
-/*** HELPERS **/
-function getTableParams(tableDataObject) {
-  const { cluster, database, schema, table_name } = tableDataObject;
-  return `db=${database}&cluster=${cluster}&schema=${schema}&table=${table_name}`;
-}
-
-function getTableDataFromResponseData(responseData) {
-  return Object.keys(responseData)
-  .filter((key) => {
-    return key != 'owners' && key !== 'tags';
-  })
-  .reduce((obj, key) => {
-    obj[key] = responseData[key];
-    return obj;
-  }, {});
-}
-
-function getTableOwnersFromResponseData(responseData) {
-  return responseData.owners;
-}
-
-function getTableTagsFromResponseData(responseData) {
-  return responseData.tags.sort(sortTagsAlphabetical);
-}
-/*** END HELPERS **/
+/** HELPERS **/
+import {
+  getTableParams,
+  getTableDataFromResponseData,
+  getTableOwnersFromResponseData,
+  getTableTagsFromResponseData
+} from './helpers';
 
 export function metadataTableTags(tableData) {
   const tableParams = getTableParams(tableData);
@@ -72,7 +54,7 @@ export function metadataGetTableData(action) {
     };
   })
   .catch((error) => {
-    return { data: {}, owners: {}, tags: {}, statusCode: error.response.status };
+    return { data: {}, owners: [], tags: [], statusCode: error.response.status };
   });
 }
 

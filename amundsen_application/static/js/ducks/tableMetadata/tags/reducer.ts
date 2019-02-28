@@ -1,5 +1,4 @@
 import { GetTableData, GetTableDataRequest, GetTableDataResponse } from '../reducer';
-
 import { UpdateTagData, Tag } from '../../../components/Tags/types';
 
 /* updateTags */

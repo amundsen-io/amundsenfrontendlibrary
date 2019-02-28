@@ -83,11 +83,6 @@ export interface TableMetadata {
   watermarks: Watermark[];
 }
 
-export interface TableTags {
-  isLoading: boolean;
-  tags: Tag[];
-}
-
 export interface Watermark {
   create_time: string;
   partition_key: string;

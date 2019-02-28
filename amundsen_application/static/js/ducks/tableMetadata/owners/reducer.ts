@@ -1,5 +1,4 @@
 import { GetTableData, GetTableDataRequest, GetTableDataResponse } from '../reducer';
-
 import { User } from '../../../components/TableDetail/types';
 
 /* updateTableOwner */

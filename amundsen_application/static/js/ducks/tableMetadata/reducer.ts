@@ -1,4 +1,4 @@
-import { PreviewData, PreviewQueryParams, TableMetadata, TableTags, User } from '../../components/TableDetail/types';
+import { PreviewData, PreviewQueryParams, TableMetadata, User } from '../../components/TableDetail/types';
 import { Tag } from '../../components/Tags/types';
 
 import tableOwnersReducer, { initialOwnersState, TableOwnerReducerState } from './owners/reducer';
@@ -225,7 +225,7 @@ export interface TableMetadataReducerState {
   statusCode: number;
   tableData: TableMetadata;
   tableOwners: TableOwnerReducerState;
-  tableTags: TableTags;
+  tableTags: TableTagsReducerState;
 }
 
 const initialPreviewState = {
