@@ -1,6 +1,6 @@
 /** TODO: We will introduce better typing for function parameters return types */
 
-const sortTagsAlphabetical = (a, b) => a.tag_name.localeCompare(b.tag_name);
+import { filterFromObj, sortTagsAlphabetical } from '../../utilMethods';
 
 /**
  * Generates the query string parameters needed for requests that act on a particular table resource.
@@ -14,14 +14,7 @@ export function getTableParams(tableDataObject) {
  * Parses the response for table metadata to create a TableMetadata object
  */
 export function getTableDataFromResponseData(responseData) {
-  return Object.keys(responseData)
-  .filter((key) => {
-    return key != 'owners' && key !== 'tags';
-  })
-  .reduce((obj, key) => {
-    obj[key] = responseData[key];
-    return obj;
-  }, {});
+  return filterFromObj(responseData, ['owners', 'tags']);
 }
 
 /**

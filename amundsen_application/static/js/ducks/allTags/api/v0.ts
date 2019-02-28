@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const sortTagsAlphabetical = (a, b) => a.tag_name.localeCompare(b.tag_name);
+import { sortTagsAlphabetical } from '../../utilMethods';
 
 export function metadataAllTags() {
   return axios.get('/api/metadata/v0/tags').then((response) => {

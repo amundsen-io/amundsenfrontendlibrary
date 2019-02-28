@@ -59,8 +59,22 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
     getPreviewData: () => undefined,
     isLoading: true,
     statusCode: null,
-    tableData: {} as TableMetadata,
-    tableOwners: {} as TableOwners,
+    tableData: {
+      columns: [],
+      is_editable: false,
+      schema: '',
+      table_name: '',
+      table_description: '',
+      table_writer: { application_url: '', description: '', id: '', name: '' },
+      partition: { is_partitioned: false },
+      table_readers: [],
+      source: { source: '', source_type: '' },
+      watermarks: [],
+    },
+    tableOwners: {
+      isLoading: true,
+      owners: [],
+    },
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -187,9 +201,9 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
     const listItemRenderer = (props) => {
       return React.createElement(AvatarLabel, {label: props.label});
     };
-    const listItemProps = tableOwners.owners ? tableOwners.owners.map((entry) => {
+    const listItemProps = tableOwners.owners.map((entry) => {
       return { label: entry.display_name };
-    }) : [];
+    });
     const listItemPropTypes = [{name:'email', property: 'label', type: 'text'}];
     const ownerSectionRenderer = (readOnly: boolean) => {
       return React.createElement(TableOwnerEditableList, {

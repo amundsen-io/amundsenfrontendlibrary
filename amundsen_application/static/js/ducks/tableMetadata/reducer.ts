@@ -232,12 +232,24 @@ const initialPreviewState = {
   data: {},
   status: null,
 };
+const initialTableDataState: TableMetadata = {
+  columns: [],
+  is_editable: false,
+  schema: '',
+  table_name: '',
+  table_description: '',
+  table_writer: { application_url: '', description: '', id: '', name: '' },
+  partition: { is_partitioned: false },
+  table_readers: [],
+  source: { source: '', source_type: '' },
+  watermarks: [],
+};
 const initialState: TableMetadataReducerState = {
   isLoading: true,
   lastIndexed: null,
   preview: initialPreviewState,
   statusCode: null,
-  tableData: {} as TableMetadata,
+  tableData: initialTableDataState,
   tableOwners: initialOwnersState,
   tableTags: initialTagsState,
 };
