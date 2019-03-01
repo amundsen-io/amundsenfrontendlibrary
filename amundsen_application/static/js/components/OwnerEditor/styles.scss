@@ -27,6 +27,10 @@
   label {
     width: 100%;
   }
+
+  .loading-spinner {
+
+  }
 }
 
 .owner-editor-modal {
@@ -67,6 +71,10 @@
         }
       }
     }
+  }
+
+  .loading-spinner {
+    margin-top: auto;
   }
 
   .btn.save-btn {

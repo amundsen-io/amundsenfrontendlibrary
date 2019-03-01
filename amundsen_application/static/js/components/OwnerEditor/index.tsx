@@ -129,7 +129,11 @@ class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorState> {
     }
 
     if (this.state.isLoading) {
-      return <LoadingSpinner/>;
+      return (
+        <Modal.Body>
+          <LoadingSpinner/>
+        </Modal.Body>
+      )
     }
 
     return (
@@ -180,10 +184,7 @@ class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorState> {
       );
     }
 
-    if (this.state.isLoading) {
-      content = <LoadingSpinner/>;
-    }
-    else if (this.state.itemProps.size === 0) {
+    if (this.state.itemProps.size === 0) {
       content = <label className="status-message">No entries exist</label>;
     }
     else {
