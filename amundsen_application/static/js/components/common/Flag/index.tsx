@@ -8,11 +8,15 @@ interface FlagProps {
   labelStyle?: string;
 }
 
+function toSentenceCase(str: string): string {
+  return `${str.charAt(0).toUpperCase()}${str.slice(1).toLowerCase()}`;
+}
+
 const Flag: React.SFC<FlagProps> = ({ text, labelStyle }) => {
   // TODO: After upgrading to Bootstrap 4, this component should leverage badges
   // https://getbootstrap.com/docs/4.1/components/badge/
   return (
-    <span className={`flag label ${labelStyle}`}>{text.toUpperCase()}</span>
+    <span className={`flag label ${labelStyle}`}>{toSentenceCase(text)}</span>
   );
 };
 
