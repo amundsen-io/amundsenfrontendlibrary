@@ -22,9 +22,9 @@ export function getTableDataFromResponseData(responseData) {
  */
 export function getTableOwnersFromResponseData(responseData) {
   // TODO: owner needs proper id, until then we have to remember that we are using display_name
-  const ownerObj = responseData.owners.reduce((obj, owner) => {
-    obj[owner.display_name] = owner;
-    return obj;
+  const ownerObj = responseData.owners.reduce((resultObj, currentOwner) => {
+    resultObj[currentOwner.display_name] = currentOwner;
+    return resultObj;
   }, {});
   return ownerObj;
 }
