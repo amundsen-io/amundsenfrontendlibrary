@@ -7,7 +7,7 @@ import { GetTableDataRequest } from '../../ducks/tableMetadata/reducer';
 
 import DataPreviewButton from '../../containers/TableDetail/DataPreviewButton';
 import TableDescEditableText from '../../containers/TableDetail/TableDescEditableText';
-import TableOwnerList from '../../containers/TableDetail/TableOwnerList';
+import OwnerEditor from '../../containers/TableDetail/OwnerEditor';
 import TagInput from '../../containers/TagInput';
 
 import AppConfig from '../../../config/config';
@@ -192,7 +192,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
     // "Owned By" section
     const ownerSectionRenderer = () => {
       return (
-        <TableOwnerList
+        <OwnerEditor
           readOnly={false}
         />
       );

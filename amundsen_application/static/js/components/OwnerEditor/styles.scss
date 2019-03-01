@@ -1,6 +1,8 @@
+/* TODO: The button styles in this file are to be migrated to _buttons-default.scsss */
+
 @import 'variables';
 
-.editable-list-component {
+.owner-editor-component {
   .btn.add-list-item {
     color: $gray-light;
     padding: 4px 1px;
@@ -27,7 +29,7 @@
   }
 }
 
-.editable-list-modal {
+.owner-editor-modal {
   .component-list li {
     margin: 0px;
     padding-top: 4px;

@@ -1,16 +1,12 @@
 import { GetTableData, GetTableDataRequest, GetTableDataResponse } from '../reducer';
-import { User } from '../../../components/TableDetail/types';
+import { UpdateMethod } from '.../../../components/OwnerEditor/types';
+import { User } from '.../../../components/TableDetail/types';
 
 /* updateTableOwner */
 export enum UpdateTableOwner {
   ACTION = 'amundsen/tableMetadata/UPDATE_TABLE_OWNER',
   SUCCESS = 'amundsen/tableMetadata/UPDATE_TABLE_OWNER_SUCCESS',
   FAILURE = 'amundsen/tableMetadata/UPDATE_TABLE_OWNER_FAILURE',
-}
-
-export enum UpdateMethod {
-  PUT = 'PUT',
-  DELETE = 'DELETE',
 }
 
 interface UpdatePayload {
@@ -25,8 +21,9 @@ export interface UpdateTableOwnerRequest {
   onFailure?: () => any;
 }
 
-interface UpdateTableOwnerResponse {
+export interface UpdateTableOwnerResponse {
   type: UpdateTableOwner.SUCCESS | UpdateTableOwner.FAILURE;
+  payload: { [id: string] : User };
 }
 
 export function updateTableOwner(updateArray: UpdatePayload[], onSuccess?: () => any, onFailure?: () => any): UpdateTableOwnerRequest {
@@ -45,21 +42,26 @@ export type TableOwnerReducerAction =
 
 export interface TableOwnerReducerState {
   isLoading: boolean;
-  owners: User[];
+  owners: { [id: string] : User };
 }
 
 export const initialOwnersState: TableOwnerReducerState = {
   isLoading: true,
-  owners: [],
+  owners: {},
 };
 
 export default function reducer(state: TableOwnerReducerState = initialOwnersState, action: TableOwnerReducerAction): TableOwnerReducerState {
   switch (action.type) {
     case GetTableData.ACTION:
-      return { isLoading: true, owners: [] };
+      return { isLoading: true, owners: {} };
     case GetTableData.FAILURE:
     case GetTableData.SUCCESS:
       return { isLoading: false, owners: action.payload.owners };
+    case UpdateTableOwner.ACTION:
+      return { ...state, isLoading: true };
+    case UpdateTableOwner.FAILURE:
+    case UpdateTableOwner.SUCCESS:
+      return { isLoading: false, owners: action.payload };
     default:
       return state;
   }

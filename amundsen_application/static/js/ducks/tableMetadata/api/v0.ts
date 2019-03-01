@@ -54,7 +54,7 @@ export function metadataGetTableData(action) {
     };
   })
   .catch((error) => {
-    return { data: {}, owners: [], tags: [], statusCode: error.response.status };
+    return { data: {}, owners: {}, tags: [], statusCode: error.response.status };
   });
 }
 
@@ -83,6 +83,17 @@ export function metadataUpdateTableDescription(description, tableData) {
       source: 'user',
     });
   }
+}
+
+export function metadataTableOwners(tableData) {
+  const tableParams = getTableParams(tableData);
+
+  return axios.get(`${API_PATH}/table?${tableParams}&index=&source=`).then((response) => {
+    return getTableOwnersFromResponseData(response.data.tableData);
+  })
+  .catch((error) => {
+    return {};
+  });
 }
 
 export function metadataUpdateTableOwner(action, tableData) {
