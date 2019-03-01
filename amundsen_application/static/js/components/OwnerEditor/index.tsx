@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import ReactDOM from 'react-dom';
 import serialize from 'form-serialize';
@@ -11,7 +10,7 @@ import { UpdateMethod } from './types';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
-const DEFAULT_ERROR_TEXT = 'There was a problem with the request, please relaod the page.';
+const DEFAULT_ERROR_TEXT = 'There was a problem with the request, please reload the page.';
 
 export interface DispatchFromProps {
   onUpdateList: (updateArray: { method: UpdateMethod; id: string; }[], onSuccess?: () => any, onFailure?: () => any) => void;
