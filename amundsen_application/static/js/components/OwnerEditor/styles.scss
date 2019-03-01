@@ -3,25 +3,10 @@
 @import 'variables';
 
 .owner-editor-component {
-  .btn.add-list-item {
-    color: $gray-light;
+  .btn.add-item-button {
     padding: 4px 1px;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
     text-align: left;
     height: 32px;
-
-    &:focus,
-    &:not(.disabled):hover,
-    &:not([disabled]):hover {
-      color: $gradient-4;
-      background-color: transparent;
-      border-color: transparent;
-
-      .icon {
-        background-color: $gradient-4;
-      }
-    }
   }
 
   label {
@@ -42,7 +27,8 @@
       background-color: $gray-lightest;
 
       .btn.delete-button {
-        display: block;
+        background-color: $gray-lightest;
+        display: block
       }
     }
 
@@ -53,19 +39,6 @@
       margin-right: 0px;
       padding: 0;
       display: none;
-      background-color: transparent;
-      border: none;
-
-      &:focus,
-      &:not(.disabled):hover,
-      &:not([disabled]):hover {
-        background-color: transparent;
-        border-color: transparent;
-
-        .icon {
-          background-color: $gradient-4;
-        }
-      }
     }
   }
 
@@ -73,34 +46,7 @@
     margin-top: auto;
   }
 
-  .btn.save-btn {
-    color: white;
-    background-color: $gradient-4;
-    border-color: $gradient-4;
-    font-family: $font-family-sans-serif-bold;
-    font-weight: $font-weight-sans-serif-bold;
-
-
-    &:focus,
-    &:not(.disabled):hover,
-    &:not([disabled]):hover {
-      color: white;
-      background-color: $gradient-5;
-      border-color: $gradient-5;
-    }
-  }
-  .btn.cancel-btn {
-    border-color: $gray-lighter;
-    font-family: $font-family-sans-serif-bold;
-    font-weight: $font-weight-sans-serif-bold;
-
-    &:focus,
-    &:not(.disabled):hover,
-    &:not([disabled]):hover {
-      background-color: $gray-lighter;
-    }
-  }
-  .btn.add-btn {
+  .btn.add-button {
     margin-left: 8px;
   }
 
