@@ -8,8 +8,8 @@ import SearchList from './SearchList';
 import InfoButton from '../common/InfoButton';
 import { TableResource } from "../common/ResourceListItem/types";
 
-import { ExecuteSearchRequest } from '../../ducks/search/reducer';
-import { GetPopularTablesRequest } from '../../ducks/popularTables/reducer';
+import { ExecuteSearchRequest } from '../../ducks/search/types';
+import { GetPopularTablesRequest } from '../../ducks/popularTables/types';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 import {

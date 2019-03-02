@@ -4,7 +4,7 @@ import { SagaIterator } from 'redux-saga';
 import {
   GetPopularTables,
   GetPopularTablesRequest,
-} from './reducer';
+} from './types';
 
 import {
   metadataPopularTables,

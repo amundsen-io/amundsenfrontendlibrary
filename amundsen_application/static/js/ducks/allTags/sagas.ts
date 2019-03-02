@@ -3,7 +3,7 @@ import { SagaIterator } from 'redux-saga';
 
 import {
   GetAllTags,
-} from './reducer';
+} from './types';
 
 import {
   metadataAllTags,

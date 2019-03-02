@@ -5,7 +5,7 @@ import {
   UserSearchResults,
 } from '../types';
 
-import { SearchReducerState } from "../reducer";
+import { SearchReducerState } from '../reducer';
 
 interface SearchResponse {
   msg: string;
@@ -28,6 +28,9 @@ function transformSearchResults(data: SearchResponse): SearchReducerState {
 export function searchExecuteSearch(action) {
   const { term, pageIndex } = action;
   return axios.get(`/api/search/v0/?query=${term}&page_index=${pageIndex}`)
-  .then((response: AxiosResponse<SearchResponse>)=> transformSearchResults(response.data))
-  .catch((error: AxiosError) => transformSearchResults(error.response.data));
+  .then((response: AxiosResponse<SearchResponse>) => transformSearchResults(response.data))
+  .catch((error: AxiosError) => {
+    const data = error.response ? error.response.data : {};
+    return transformSearchResults(data);
+  });
 }
