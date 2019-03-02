@@ -68,7 +68,7 @@ Please visit [Roadmap](docs/roadmap.md) if you are interested in Amundsen upcomi
 
 ## Community
 
-Want help? Join our [slack channel](https://bit.ly/2tFsN1X)
+Want help? Join our [slack channel](https://bit.ly/2tFsN1X). For other discussion, please use the [Amundsen mailing list][amundsen-dev@googlegroups.com].
 
 # License
 [Apache 2.0 License.](/LICENSE)
