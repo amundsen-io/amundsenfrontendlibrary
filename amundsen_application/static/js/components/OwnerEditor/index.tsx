@@ -156,7 +156,7 @@ class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorState> {
                 <li key={`modal-list-item:${key}`}>
                   { React.createElement(AvatarLabel, this.state.tempItemProps[key]) }
                   <button
-                    className='btn btn-icon delete-button'
+                    className='btn btn-flat-icon delete-button'
                     aria-label='Delete Item'
                     /* tslint:disable - TODO: Investigate jsx-no-lambda rule */
                     onClick={() => this.recordDeleteItem(key)}
@@ -209,7 +209,7 @@ class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorState> {
         {
           !this.state.readOnly &&
           <button
-           className='btn btn-icon add-item-button'
+           className='btn btn-flat-icon add-item-button'
            onClick={this.handleShow}>
              <img className='icon icon-plus-circle'/>
              <span>Add</span>

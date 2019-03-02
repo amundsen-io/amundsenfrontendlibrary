@@ -41,11 +41,12 @@
     }
   }
 
-  &.btn-icon {
+  &.btn-flat-icon {
     border: none;
     color: $gray-light;
-    -webkit-box-shadow: none !important;
     box-shadow: none !important;
+    padding: 0px;
+    text-align: left;
 
     &:focus,
     &:not(.disabled):hover,
@@ -58,7 +59,7 @@
       }
     }
   }
-  
+
   &.btn-primary {
     border-width: 2px;
     -webkit-box-shadow: 8px 9px 20px -15px rgba(0,0,0,0.46);

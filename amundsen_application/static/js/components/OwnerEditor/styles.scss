@@ -4,9 +4,8 @@
 
 .owner-editor-component {
   .btn.add-item-button {
-    padding: 4px 1px;
-    text-align: left;
     height: 32px;
+    padding: 0px 1px;
   }
 
   label {
@@ -33,11 +32,8 @@
     }
 
     .btn.delete-button {
-      height: 24px;
-      width: 24px;
       margin: auto;
       margin-right: 0px;
-      padding: 0;
       display: none;
     }
   }
