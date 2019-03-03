@@ -1,11 +1,8 @@
 import { SendingState } from '../../components/common/Feedback/types';
 
 import {
-  ResetFeedback,
-  ResetFeedbackRequest,
-  SubmitFeedback,
-  SubmitFeedbackRequest,
-  SubmitFeedbackResponse,
+  ResetFeedback, ResetFeedbackRequest,
+  SubmitFeedback, SubmitFeedbackRequest, SubmitFeedbackResponse,
 } from './types';
 
 export type SubmitFeedbackAction = SubmitFeedbackRequest | SubmitFeedbackResponse;

@@ -1,10 +1,10 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
-import { PopularTablesPayload } from '../types';
+import { PopularTablesResponse } from '../types';
 
 export function metadataPopularTables() {
   return axios.get('/api/metadata/v0/popular_tables')
-  .then((response: AxiosResponse<PopularTablesPayload>) => {
+  .then((response: AxiosResponse<PopularTablesResponse>) => {
     return response.data.results;
   })
   .catch((error: AxiosError) => {

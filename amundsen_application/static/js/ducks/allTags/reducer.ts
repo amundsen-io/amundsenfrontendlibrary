@@ -1,7 +1,5 @@
 import {
-  GetAllTags,
-  GetAllTagsRequest,
-  GetAllTagsResponse,
+  GetAllTags, GetAllTagsRequest, GetAllTagsResponse,
   Tag,
 } from './types';
 

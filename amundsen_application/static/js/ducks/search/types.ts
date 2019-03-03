@@ -10,6 +10,14 @@ interface SearchResults<T extends Resource> {
 export type DashboardSearchResults = SearchResults<DashboardResource>;
 export type TableSearchResults = SearchResults<TableResource>;
 export type UserSearchResults = SearchResults<UserResource>;
+export type SearchResponse = {
+  msg: string;
+  status_code: number;
+  search_term: string;
+  dashboards: DashboardSearchResults;
+  tables: TableSearchResults;
+  users: UserSearchResults;
+}
 
 /* executeSearch */
 export enum ExecuteSearch {

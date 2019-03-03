@@ -2,7 +2,7 @@ import { TableResource } from '../../components/common/ResourceListItem/types';
 export { TableResource };
 
 /* API */
-export interface PopularTablesPayload {
+export type PopularTablesResponse = {
   msg: string;
   results: TableResource[];
 }

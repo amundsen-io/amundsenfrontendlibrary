@@ -1,7 +1,5 @@
 import {
-  AnnouncementsGet,
-  AnnouncementsGetRequest,
-  AnnouncementsGetResponse,
+  AnnouncementsGet, AnnouncementsGetRequest, AnnouncementsGetResponse,
   AnnouncementPost,
 } from './types';
 

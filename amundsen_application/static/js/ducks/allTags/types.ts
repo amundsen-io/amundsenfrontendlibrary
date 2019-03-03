@@ -2,7 +2,7 @@ import { Tag } from '../../components/Tags/types';
 export { Tag };
 
 /* API */
-export interface AllTagsPayload {
+export type AllTagsResponse = {
   msg: string;
   tags: Tag[];
 }

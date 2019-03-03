@@ -5,7 +5,6 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { ResetFeedback, SubmitFeedback, SubmitFeedbackRequest } from './types';
 import { feedbackSubmitFeedback } from './api/v0';
 
-
 function* submitFeedbackWorker(action: SubmitFeedbackRequest): SagaIterator {
   try {
     yield call(feedbackSubmitFeedback, action);

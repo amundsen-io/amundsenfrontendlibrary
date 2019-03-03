@@ -2,7 +2,7 @@ import { AnnouncementPost } from '../../components/AnnouncementPage/types';
 export { AnnouncementPost }
 
 /* API */
-export interface AnnouncementsPayload {
+export type AnnouncementsResponse = {
   msg: string;
   posts: AnnouncementPost[];
 }
