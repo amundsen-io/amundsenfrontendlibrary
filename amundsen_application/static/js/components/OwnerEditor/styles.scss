@@ -1,0 +1,100 @@
+/* TODO: The button styles in this file are to be migrated to _buttons-default.scsss */
+
+@import 'variables';
+
+.owner-editor-component {
+  .btn.add-item-button {
+    height: 32px;
+    padding: 0px 1px;
+  }
+
+  label {
+    width: 100%;
+  }
+}
+
+.owner-editor-modal {
+  .component-list li {
+    margin: 0px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-right: 16px;
+    padding-left: 16px;
+
+    &:focus,
+    &:hover {
+      background-color: $gray-lightest;
+
+      .btn.delete-button {
+        background-color: $gray-lightest;
+        display: block
+      }
+    }
+
+    .btn.delete-button {
+      margin: auto;
+      margin-right: 0px;
+      display: none;
+    }
+  }
+
+  .loading-spinner {
+    margin-top: auto;
+  }
+
+  .btn.add-button {
+    margin-left: 8px;
+  }
+
+  .modal-body {
+    height: calc(100% - 150px);
+    margin: 15px 0px !important;
+  }
+  .modal-content {
+    height: fit-content;
+  }
+  .modal-dialog {
+    min-width: 400px;
+    height: fit-content;
+    width: fit-content;
+
+    p {
+      text-align: start;
+      margin-left: 4px;
+    }
+  }
+
+  form {
+    display: flex;
+    margin-left: 16px;
+    margin-right: 16px;
+    margin-bottom: 16px;
+  }
+  input {
+    border: 1px solid $gray-lighter;
+    border-radius: 4px;
+    outline: none;
+    padding: 4px;
+    width: 100%;
+  }
+}
+
+.status-message {
+  margin-left: 4px;
+  margin-bottom: 4px;
+  font-weight: normal;
+}
+
+.component-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: flex;
+    margin: 1px;
+    &:first-child {
+      flex-grow: 1;
+    }
+  }
+}
