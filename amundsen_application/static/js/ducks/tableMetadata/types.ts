@@ -3,11 +3,16 @@ import { UpdateTagData, Tag } from '../../components/Tags/types';
 import { UpdateMethod } from '../../components/OwnerEditor/types';
 export { PreviewData, PreviewQueryParams, TableMetadata, Tag, User, UpdateMethod, UpdateTagData };
 
+type MessageResponse = { msg: string };
+type TableData = TableMetadata & {
+  owners: User[];
+  tags: Tag[]; 
+};
 export type DescriptionResponse = { description: string; } & MessageResponse;
 export type LastIndexedResponse = { timestamp: string; } & MessageResponse;
-export type MessageResponse = { msg: string };
+
 export type PreviewDataResponse = { previewData: PreviewData; } & MessageResponse;
-export type TableDataResponse = { tableData: TableMetadata & { owners: User[], tags: Tag[] } } & MessageResponse;
+export type TableDataResponse = { tableData: TableData; } & MessageResponse;
 
 /* getTableData */
 export enum GetTableData {
