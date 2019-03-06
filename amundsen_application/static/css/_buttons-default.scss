@@ -60,6 +60,32 @@
     }
   }
 
+  // TODO: Used for profile page icon buttons, need to check if we want to unify
+  // Exact design uses dark text by default
+  // Assuming hover color should follow $brand-color-4 precedent
+  &.btn-flat-icon-dark {
+    border: none;
+    color: $gray-dark;
+    box-shadow: none !important;
+    padding: 0px;
+    text-align: left;
+    
+    .icon {
+      background-color: $gray-dark;
+    }
+
+    &:focus,
+    &:not(.disabled):hover,
+    &:not([disabled]):hover {
+      background-color: transparent;
+      color: $brand-color-4;
+
+      .icon {
+        background-color: $brand-color-4;
+      }
+    }
+  }
+
   &.btn-primary {
     border-width: 2px;
     -webkit-box-shadow: 8px 9px 20px -15px rgba(0,0,0,0.46);
