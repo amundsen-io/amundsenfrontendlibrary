@@ -17,7 +17,6 @@ import Tabs from "../common/Tabs";
 import './styles.scss';
 
 interface StateFromProps {
-  isLoading: boolean;
   user: CurrentUser;
 }
 
@@ -28,7 +27,6 @@ interface DispatchFromProps {
 type ProfilePageProps = StateFromProps & DispatchFromProps;
 
 interface ProfilePageState {
-  isLoading: boolean;
   user: CurrentUser;
 }
 
@@ -43,14 +41,13 @@ class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
     this.userId = params ? params.userId : '';
 
     this.state = {
-      isLoading: this.props.isLoading,
       user: this.props.user,
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { isLoading, user } = nextProps;
-    return { isLoading, user };
+    const { user } = nextProps;
+    return { user };
   }
 
   componentDidMount() {
@@ -92,26 +89,22 @@ class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
   }
 
   generatePageContent = () => {
-    if (this.state.isLoading) {
-      return (
-        <div className="container profile-page">
-          <LoadingSpinner/>
-        </div>
-      )
-    }
-    
     const user = this.state.user;
     return (
       <div className="container profile-page">
         <div className="profile-header">
             <div className="profile-avatar">
-              <Avatar name={user.display_name} size={74} round={true} />
+              {
+                // default Avatar looks a bit jarring -- intentionally not rendering if no display_name
+                user.display_name && user.display_name.length > 0 &&
+                <Avatar name={user.display_name} size={74} round={true} />
+              }
             </div>
             <div className="profile-details">
               <div className="profile-title">
                 <h1>{ user.display_name }</h1>
                 {
-                  !user.is_active &&
+                  (user.is_active === false) &&
                   <Flag caseType="sentenceCase" labelStyle="label-danger" text="Alumni"/>
                 }
               </div>
@@ -174,7 +167,6 @@ class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
 
 const mapStateToProps = (state: GlobalState) => {
   return {
-    isLoading: state.user.isLoading,
     user: state.user.profilePageUser,
   }
 }
