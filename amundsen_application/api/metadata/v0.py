@@ -555,7 +555,7 @@ def update_table_tags() -> Response:
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-#TODO: Implement real support
+# TODO: Implement real support
 @metadata_blueprint.route('/user', methods=['GET'])
 def get_user() -> Response:
     try:
@@ -578,7 +578,7 @@ def get_user() -> Response:
             user_info['is_active'] = False
 
         status_code = HTTPStatus.OK
-        payload = jsonify({ 'user': user_info })
+        payload = jsonify({'user': user_info})
         return make_response(payload, status_code)
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
