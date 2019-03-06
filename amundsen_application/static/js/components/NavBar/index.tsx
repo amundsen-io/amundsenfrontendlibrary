@@ -70,7 +70,9 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
               }
               {
                 this.state.currentUser &&
-                <Avatar name={this.state.currentUser.display_name} size={48} round={true}/>
+                <Link to={`/user/${this.state.currentUser.user_id}`}>
+                  <Avatar name={this.state.currentUser.display_name} size={48} round={true} />
+                </Link>
               }
             </div>
           </div>

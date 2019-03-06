@@ -16,6 +16,6 @@ def current_user() -> Response:
     if (app.config['CURRENT_USER_METHOD']):
         user = app.config['CURRENT_USER_METHOD'](app)
     else:
-        user = load_user({'display_name': '*'})
+        user = load_user({'user_id': 'test', 'display_name': '*'})
 
     return user.to_json()
