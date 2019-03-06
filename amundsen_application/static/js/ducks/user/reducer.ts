@@ -14,7 +14,6 @@ type UserReducerAction =
 
 export interface UserReducerState {
   currentUser: CurrentUser;
-  isLoading: boolean;
   profilePageUser: User;
 }
 
@@ -27,16 +26,13 @@ export function getUserById(userId: string): GetUserRequest {
 }
 
 
+const defaultUser = {
+  user_id: '',
+  display_name: '',
+};
 const initialState: UserReducerState = {
-  currentUser: {
-    user_id: '',
-    display_name: '',
-  },
-  isLoading: true,
-  profilePageUser: {
-    user_id: '',
-    display_name: '',
-  },
+  currentUser: defaultUser,
+  profilePageUser: defaultUser,
 };
 
 export default function reducer(state: UserReducerState = initialState, action: UserReducerAction): UserReducerState {
@@ -44,11 +40,10 @@ export default function reducer(state: UserReducerState = initialState, action: 
     case GetCurrentUser.SUCCESS:
       return { ...state, currentUser: action.payload };
     case GetUser.ACTION:
-      return { ...state, isLoading: true }
     case GetUser.FAILURE:
-      return { ...state, isLoading: false };
+      return { ...state, profilePageUser: defaultUser };
     case GetUser.SUCCESS:
-      return { ...state, isLoading: false, profilePageUser: action.payload };
+      return { ...state, profilePageUser: action.payload };
     default:
       return state;
   }

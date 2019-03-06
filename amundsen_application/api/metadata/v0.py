@@ -574,7 +574,7 @@ def get_user() -> Response:
             'slack_url': 'https://slack.com',
             'team_name': 'Amundsen Team',
         }
-        if user_id == 'old':
+        if user_id == 'alumni':
             user_info['is_active'] = False
 
         status_code = HTTPStatus.OK
