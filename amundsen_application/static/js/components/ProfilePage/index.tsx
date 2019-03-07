@@ -113,26 +113,26 @@ class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
               <div className="profile-icons">
                 {
                   user.is_active &&
-                  <a href={user.slack_url} className='btn btn-flat-icon-dark' target='_blank'>
+                  <a href={user.slack_url} className='btn btn-flat-icon' target='_blank'>
                     <img className='icon icon-slack'/>
                     <span>Slack</span>
                   </a>
                 }
                 {
                   user.is_active &&
-                  <a href={`mailto:${user.email}`} className='btn btn-flat-icon-dark' target='_blank'>
+                  <a href={`mailto:${user.email}`} className='btn btn-flat-icon' target='_blank'>
                     <img className='icon icon-mail'/>
                     <span>{ user.email }</span>
                   </a>
                 }
                 {
                   user.is_active &&
-                  <a href={user.profile_url} className='btn btn-flat-icon-dark' target='_blank'>
+                  <a href={user.profile_url} className='btn btn-flat-icon' target='_blank'>
                     <img className='icon icon-users'/>
                     <span>Employee Profile</span>
                   </a>
                 }
-                <a href={`https://github.com/${user.github_name}`} className='btn btn-flat-icon-dark' target='_blank'>
+                <a href={`https://github.com/${user.github_name}`} className='btn btn-flat-icon' target='_blank'>
                   <img className='icon icon-github'/>
                   <span>Github</span>
                 </a>
