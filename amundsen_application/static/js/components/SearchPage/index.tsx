@@ -80,7 +80,7 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
         title: "Pikachu",
       },{
         type: ResourceType.user,
-        active: true,
+        active: false,
         birthday: '10-10-1990',
         department: "Department",
         email: "mail@email.com",
@@ -197,7 +197,7 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
               <label> { listTitle } </label>
               <InfoButton infoText={ infoText }/>
             </div>
-            <SearchList results={ showPopularTables ? popularTables : results } params={ searchListParams }/>
+            <SearchList results={ showPopularTables ? this.props.users.results : results } params={ searchListParams }/>
           </div>
           <div className="search-pagination-component">
             {

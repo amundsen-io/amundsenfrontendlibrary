@@ -3,6 +3,7 @@ import Avatar from 'react-avatar';
 import { Link } from 'react-router-dom';
 
 import { LoggingParams, UserResource} from '../types';
+import Flag from '../../Flag';
 
 interface UserListItemProps {
   user: UserResource;
@@ -27,7 +28,13 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
           <Avatar name={ user.name } size={ 24 } round={ true } />
           <div className="content">
             <div className="col-xs-12 col-sm-6">
-              <div className="main-title">{ user.name }</div>
+              <div className="main-title">
+                { user.name }
+                {
+                  !user.active &&
+                  <Flag text="Alumni" labelStyle='danger' />
+                }
+              </div>
               <div className="description">
                 { `${user.role} on ${user.team_name}` }
               </div>

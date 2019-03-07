@@ -36,13 +36,13 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
               <div className="main-title truncated">{ `${table.schema_name}.${table.name}`}</div>
               <div className="description truncated">{ table.description }</div>
             </div>
-            <div className="col-sm-3">
+            <div className="hidden-xs col-sm-3 col-md-4">
               <div className="secondary-title">Frequent Users</div>
               {/*TODO - Replace with a link to a real user*/}
               <div className="description"><a href="#">Ash Ketchum</a></div>
             </div>
-            <div className="col-sm-3">
-              <div className="secondary-title">Last Updated</div>
+            <div className="hidden-xs col-sm-3 col-md-2">
+              <div className="secondary-title">Latest Data</div>
               <div className="description">
                 { lastUpdated }
               </div>
