@@ -91,7 +91,7 @@ class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
   render() {
     const user = this.state.user;
     return (
-      <DocumentTitle title={ `${this.state.user.display_name} - Amundsen Profile` }>
+      <DocumentTitle title={ `${user.display_name} - Amundsen Profile` }>
         <div>
           <Breadcrumb path='/' text='Search Results'/>
           <div className="container profile-page">
