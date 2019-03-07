@@ -1,10 +1,10 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
-import { CurrentUser, UserResponse } from '../types';
+import { LoggedInUser, UserResponse } from '../types';
 
-export function getCurrentUser() {
-  return axios.get(`/api/current_user`)
-    .then((response: AxiosResponse<CurrentUser>) => {
+export function getLoggedInUser() {
+  return axios.get(`/api/auth_user`)
+    .then((response: AxiosResponse<LoggedInUser>) => {
       return response.data;
     }).catch((error: AxiosError) => {
       return {};
