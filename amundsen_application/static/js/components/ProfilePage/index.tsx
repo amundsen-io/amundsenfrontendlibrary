@@ -9,7 +9,7 @@ import LoadingSpinner from '../common/LoadingSpinner';
 
 import { GlobalState } from "../../ducks/rootReducer";
 import { getUserById } from "../../ducks/user/reducer";
-import { CurrentUser, GetUserRequest } from "../../ducks/user/types";
+import { LoggedInUser, GetUserRequest } from "../../ducks/user/types";
 
 import Flag from "../common/Flag";
 import Tabs from "../common/Tabs";
@@ -17,7 +17,7 @@ import Tabs from "../common/Tabs";
 import './styles.scss';
 
 interface StateFromProps {
-  user: CurrentUser;
+  user: LoggedInUser;
 }
 
 interface DispatchFromProps {
@@ -27,7 +27,7 @@ interface DispatchFromProps {
 type ProfilePageProps = StateFromProps & DispatchFromProps;
 
 interface ProfilePageState {
-  user: CurrentUser;
+  user: LoggedInUser;
 }
 
 class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
@@ -167,7 +167,7 @@ class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
 
 const mapStateToProps = (state: GlobalState) => {
   return {
-    user: state.user.profilePageUser,
+    user: state.user.profileUser,
   }
 }
 

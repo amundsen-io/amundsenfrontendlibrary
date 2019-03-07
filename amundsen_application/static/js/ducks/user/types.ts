@@ -13,24 +13,24 @@ export interface User {
   slack_url?: string;
   team_name?: string;
 }
-export type CurrentUser = User & {};
+export type LoggedInUser = User & {};
 
 export type UserResponse = { user: User; msg: string; };
 
-/* getCurrentUser */
-export enum GetCurrentUser {
+/* getLoggedInUser */
+export enum GetLoggedInUser {
   ACTION = 'amundsen/current_user/GET_ACTION',
   SUCCESS = 'amundsen/current_user/GET_SUCCESS',
   FAILURE = 'amundsen/current_user/GET_FAILURE',
 }
 
-export interface GetCurrentUserRequest {
-  type: GetCurrentUser.ACTION;
+export interface GetLoggedInUserRequest {
+  type: GetLoggedInUser.ACTION;
 }
 
-export interface GetCurrentUserResponse {
-  type: GetCurrentUser.SUCCESS | GetCurrentUser.FAILURE;
-  payload?: CurrentUser;
+export interface GetLoggedInUserResponse {
+  type: GetLoggedInUser.SUCCESS | GetLoggedInUser.FAILURE;
+  payload?: LoggedInUser;
 }
 
 /* getUserById */
