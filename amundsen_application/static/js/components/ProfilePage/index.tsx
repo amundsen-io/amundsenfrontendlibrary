@@ -1,7 +1,6 @@
 import * as React from 'react';
 import * as DocumentTitle from 'react-document-title';
 import Avatar from 'react-avatar';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -11,6 +10,7 @@ import { GlobalState } from "../../ducks/rootReducer";
 import { getUserById } from "../../ducks/user/reducer";
 import { LoggedInUser, GetUserRequest } from "../../ducks/user/types";
 
+import Breadcrumb from "../common/Breadcrumb";
 import Flag from "../common/Flag";
 import Tabs from "../common/Tabs";
 
@@ -88,77 +88,64 @@ class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
     return tabInfo;
   }
 
-  generatePageContent = () => {
-    const user = this.state.user;
-    return (
-      <div className="container profile-page">
-        <div className="profile-header">
-            <div className="profile-avatar">
-              {
-                // default Avatar looks a bit jarring -- intentionally not rendering if no display_name
-                user.display_name && user.display_name.length > 0 &&
-                <Avatar name={user.display_name} size={74} round={true} />
-              }
-            </div>
-            <div className="profile-details">
-              <div className="profile-title">
-                <h1>{ user.display_name }</h1>
-                {
-                  (user.is_active === false) &&
-                  <Flag caseType="sentenceCase" labelStyle="label-danger" text="Alumni"/>
-                }
-              </div>
-              <text>{ `${user.role_name} on ${user.team_name}` }</text>
-              <text>{ `Manager: ${user.manager_name}` }</text>
-              <div className="profile-icons">
-                {
-                  user.is_active &&
-                  <a href={user.slack_url} className='btn btn-flat-icon' target='_blank'>
-                    <img className='icon icon-slack'/>
-                    <span>Slack</span>
-                  </a>
-                }
-                {
-                  user.is_active &&
-                  <a href={`mailto:${user.email}`} className='btn btn-flat-icon' target='_blank'>
-                    <img className='icon icon-mail'/>
-                    <span>{ user.email }</span>
-                  </a>
-                }
-                {
-                  user.is_active &&
-                  <a href={user.profile_url} className='btn btn-flat-icon' target='_blank'>
-                    <img className='icon icon-users'/>
-                    <span>Employee Profile</span>
-                  </a>
-                }
-                <a href={`https://github.com/${user.github_name}`} className='btn btn-flat-icon' target='_blank'>
-                  <img className='icon icon-github'/>
-                  <span>Github</span>
-                </a>
-              </div>
-            </div>
-        </div>
-        <div className="profile-tabs">
-          <Tabs tabs={ this.generateTabInfo() } defaultTab='frequentUses_tab' />
-        </div>
-      </div>
-    )
-  }
-
   render() {
+    const user = this.state.user;
     return (
       <DocumentTitle title={ `${this.state.user.display_name} - Amundsen Profile` }>
         <div>
-          <div className="container amundsen-crumb">
-            <Link to={`/`}>
-              <button className='btn btn-flat-icon'>
-                <img className='icon icon-left'/>
-                <span>Search Results</span>
-              </button>
-            </Link>
+          <Breadcrumb path='/' text='Search Results'/>
+          <div className="container profile-page">
+            <div className="profile-header">
+                <div className="profile-avatar">
+                  {
+                    // default Avatar looks a bit jarring -- intentionally not rendering if no display_name
+                    user.display_name && user.display_name.length > 0 &&
+                    <Avatar name={user.display_name} size={74} round={true} />
+                  }
+                </div>
+                <div className="profile-details">
+                  <div className="profile-title">
+                    <h1>{ user.display_name }</h1>
+                    {
+                      (user.is_active === false) &&
+                      <Flag caseType="sentenceCase" labelStyle="label-danger" text="Alumni"/>
+                    }
+                  </div>
+                  <text>{ `${user.role_name} on ${user.team_name}` }</text>
+                  <text>{ `Manager: ${user.manager_name}` }</text>
+                  <div className="profile-icons">
+                    {
+                      user.is_active &&
+                      <a href={user.slack_url} className='btn btn-flat-icon' target='_blank'>
+                        <img className='icon icon-slack'/>
+                        <span>Slack</span>
+                      </a>
+                    }
+                    {
+                      user.is_active &&
+                      <a href={`mailto:${user.email}`} className='btn btn-flat-icon' target='_blank'>
+                        <img className='icon icon-mail'/>
+                        <span>{ user.email }</span>
+                      </a>
+                    }
+                    {
+                      user.is_active &&
+                      <a href={user.profile_url} className='btn btn-flat-icon' target='_blank'>
+                        <img className='icon icon-users'/>
+                        <span>Employee Profile</span>
+                      </a>
+                    }
+                    <a href={`https://github.com/${user.github_name}`} className='btn btn-flat-icon' target='_blank'>
+                      <img className='icon icon-github'/>
+                      <span>Github</span>
+                    </a>
+                  </div>
+                </div>
+            </div>
+            <div className="profile-tabs">
+              <Tabs tabs={ this.generateTabInfo() } defaultTab='frequentUses_tab' />
+            </div>
           </div>
-          { this.generatePageContent() }
         </div>
       </DocumentTitle>
     );
