@@ -15,7 +15,7 @@ function transformSearchResults(data: SearchResponse): SearchReducerState {
 
 export function searchExecuteSearch(action) {
   const { term, pageIndex } = action;
-  return axios.get(`/api/search/v0/?query=${term}&page_index=${pageIndex}`)
+  return axios.get(`/api/search/v0/table?query=${term}&page_index=${pageIndex}`)
   .then((response: AxiosResponse<SearchResponse>) => transformSearchResults(response.data))
   .catch((error: AxiosError) => {
     const data = error.response ? error.response.data : {};
