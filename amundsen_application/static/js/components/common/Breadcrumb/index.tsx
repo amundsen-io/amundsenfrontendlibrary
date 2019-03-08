@@ -10,7 +10,7 @@ interface BreadcrumbProps {
 
 const Breadcrumb: React.SFC<BreadcrumbProps> = ({ path, text }) => {
   return (
-    <div className="container amundsen-breadcrumb">
+    <div className="amundsen-breadcrumb">
       <Link to={path}>
         <button className='btn btn-flat-icon'>
           <img className='icon icon-left'/>
