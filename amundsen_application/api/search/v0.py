@@ -157,9 +157,10 @@ def _search_user(*, search_term: str, page_index: int) -> Dict[str, Any]:
     }
 
     # TEST CODE
-    users['total_results'] = 0
+    users['total_results'] = 3
     users['results'] = [
         {
+            'type': 'user',
             'active': True,
             'birthday': '10-10-2000',
             'department': 'Department',
@@ -178,6 +179,7 @@ def _search_user(*, search_term: str, page_index: int) -> Dict[str, Any]:
             'title': 'Pokemon Master',
         },
         {
+            'type': 'user',
             'active': True,
             'birthday': '06-01-2000',
             'department': 'Department',
@@ -196,6 +198,7 @@ def _search_user(*, search_term: str, page_index: int) -> Dict[str, Any]:
             'title': 'Pokemon Master',
         },
         {
+            'type': 'user',
             'active': False,
             'birthday': '06-01-60',
             'department': 'Department',
@@ -214,6 +217,8 @@ def _search_user(*, search_term: str, page_index: int) -> Dict[str, Any]:
             'title': 'Pokemon Researcher',
         },
     ]
+    results_dict['msg'] = 'Success'
+    results_dict['status_code'] = HTTPStatus.OK
     return results_dict
 
 

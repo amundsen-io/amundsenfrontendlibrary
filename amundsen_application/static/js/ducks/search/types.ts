@@ -1,4 +1,10 @@
-import { Resource, DashboardResource, TableResource, UserResource } from "../../components/common/ResourceListItem/types";
+import {
+  Resource,
+  DashboardResource,
+  TableResource,
+  UserResource,
+  ResourceType
+} from "../../components/common/ResourceListItem/types";
 import { SearchReducerState } from './reducer';
 
 interface SearchResults<T extends Resource> {
@@ -14,9 +20,9 @@ export type SearchResponse = {
   msg: string;
   status_code: number;
   search_term: string;
-  dashboards: DashboardSearchResults;
-  tables: TableSearchResults;
-  users: UserSearchResults;
+  dashboards?: DashboardSearchResults;
+  tables?: TableSearchResults;
+  users?: UserSearchResults;
 }
 
 /* executeSearch */
