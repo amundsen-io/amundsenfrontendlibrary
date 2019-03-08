@@ -6,6 +6,7 @@ import {
   TableSearchResults,
   UserSearchResults,
 } from './types';
+import { ResourceType } from "../../components/common/ResourceListItem/types";
 
 export type SearchReducerAction = ExecuteSearchRequest | ExecuteSearchResponse;
 
@@ -46,7 +47,13 @@ const initialState: SearchReducerState = {
 export default function reducer(state: SearchReducerState = initialState, action: SearchReducerAction): SearchReducerState {
   switch (action.type) {
     case ExecuteSearch.SUCCESS:
-      return action.payload;
+      let newState = action.payload;
+      return {
+        searchTerm: newState.searchTerm,
+        dashboards: newState.dashboards || initialState.dashboards,
+        users: newState.users || initialState.users,
+        tables: newState.tables || initialState.tables,
+      };
     case ExecuteSearch.FAILURE:
       return initialState;
     default:

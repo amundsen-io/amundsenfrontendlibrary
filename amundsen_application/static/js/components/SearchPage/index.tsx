@@ -9,14 +9,15 @@ import InfoButton from '../common/InfoButton';
 import { ResourceType, TableResource } from "../common/ResourceListItem/types";
 
 import {
-  ExecuteSearchRequest,
   DashboardSearchResults,
+  ExecuteSearchRequest,
   TableSearchResults,
   UserSearchResults
 } from "../../ducks/search/types";
 import { GetPopularTablesRequest } from '../../ducks/popularTables/types';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+import TabsComponent from "../common/Tabs";
 
 const RESULTS_PER_PAGE = 10;
 
@@ -39,6 +40,7 @@ type SearchPageProps = StateFromProps & DispatchFromProps;
 interface SearchPageState {
   pageIndex: number;
   searchTerm: string;
+  // selectedTab: string;
 }
 
 class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
@@ -59,45 +61,8 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     },
     users: {
       page_index: 0,
-      // TODO - cleanup sample data
-      results: [{
-        type: ResourceType.user,
-        active: true,
-        birthday: '10-10-1990',
-        department: "Department",
-        email: "mail@email.com",
-        first_name: "Ash",
-        github_username: "Github User",
-        id: 12345,
-        last_name: "Ketchum",
-        manager_email: "manager@company.com",
-        name: "Ash Ketchum",
-        offboarded: false,
-        office: "city",
-        role: "Pokemon Trainer",
-        start_date: "10-10-2014",
-        team_name: "Team Red",
-        title: "Pikachu",
-      },{
-        type: ResourceType.user,
-        active: false,
-        birthday: '10-10-1990',
-        department: "Department",
-        email: "mail@email.com",
-        first_name: "Gary",
-        github_username: "Github User",
-        id: 12345,
-        last_name: "Oak",
-        manager_email: "manager@company.com",
-        name: "Gary Oak",
-        offboarded: false,
-        office: "city",
-        role: "Pokemon Trainer",
-        start_date: "10-10-2014",
-        team_name: "Team Blue",
-        title: "Eevee",
-      }],
-      total_results: 1,
+      results: [],
+      total_results: 0,
     }
   };
 
@@ -152,6 +117,36 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     this.props.executeSearch(searchTerm, pageIndex);
   }
 
+  getTabContent = (results) => {
+    const startIndex = (RESULTS_PER_PAGE * results.page_index) + 1;
+    const endIndex = RESULTS_PER_PAGE * ( results.page_index + 1);
+    let title =`${startIndex}-${Math.min(endIndex, results.total_results)} of ${results.total_results} results`;
+
+    return (
+      <div className="search-list-container">
+        <div className="search-list-header">
+          <label>{ title }</label>
+          <InfoButton infoText={ "Ordered by the relevance of matches within a resource's metadata, as well as overall usage." }/>
+        </div>
+        <SearchList results={ results.results } params={ {source: 'search_results', paginationStartIndex: 0 } }/>
+
+        <div className="search-pagination-component">
+            {
+              results.total_results > RESULTS_PER_PAGE &&
+              <Pagination
+                activePage={ results.page_index + 1 }
+                itemsCountPerPage={ RESULTS_PER_PAGE }
+                totalItemsCount={ results.total_results }
+                pageRangeDisplayed={ 10 }
+                onChange={ this.handlePageChange }
+              />
+            }
+          </div>
+      </div>
+      );
+  };
+
+
   // TODO: Hard-coded text strings should be translatable/customizable
   renderSearchResults() {
     const errorMessage = this.createErrorMessage();
@@ -167,7 +162,20 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
       )
     }
 
-    const items = this.props.tables;
+    const tabConfig = [
+      {
+        title: `Tables (${ this.props.tables.total_results })`,
+        key: 'tables',
+        content: this.getTabContent(this.props.tables),
+      },
+      {
+        title: `Users (${ this.props.users.total_results })`,
+        key: 'users',
+        content: this.getTabContent(this.props.users),
+      },
+    ];
+
+    const items = this.props.users;
     const { page_index, results, total_results } = items;
     const { popularTables } = this.props;
 
@@ -192,25 +200,11 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
 
       return (
         <div className="col-xs-12">
-          <div className="search-list-container">
-            <div className="search-list-header">
-              <label> { listTitle } </label>
-              <InfoButton infoText={ infoText }/>
-            </div>
-            <SearchList results={ showPopularTables ? this.props.users.results : results } params={ searchListParams }/>
+          <div>
+            <TabsComponent tabs={ tabConfig } defaultTab="tables" />
+            {/*<SearchList results={ showPopularTables ? popularTables : results } params={ searchListParams }/>*/}
           </div>
-          <div className="search-pagination-component">
-            {
-              total_results > RESULTS_PER_PAGE &&
-              <Pagination
-                activePage={ page_index + 1 }
-                itemsCountPerPage={ RESULTS_PER_PAGE }
-                totalItemsCount={ total_results }
-                pageRangeDisplayed={ 10 }
-                onChange={ this.handlePageChange }
-              />
-            }
-          </div>
+
         </div>
       )
     }
