@@ -6,7 +6,7 @@ import Pagination from 'react-js-pagination';
 import SearchBar from './SearchBar';
 import SearchList from './SearchList';
 import InfoButton from '../common/InfoButton';
-import { TableResource } from "../common/ResourceListItem/types";
+import { ResourceType, TableResource } from "../common/ResourceListItem/types";
 
 import {
   ExecuteSearchRequest,
@@ -59,8 +59,45 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     },
     users: {
       page_index: 0,
-      results: [],
-      total_results: 0,
+      // TODO - cleanup sample data
+      results: [{
+        type: ResourceType.user,
+        active: true,
+        birthday: '10-10-1990',
+        department: "Department",
+        email: "mail@email.com",
+        first_name: "Ash",
+        github_username: "Github User",
+        id: 12345,
+        last_name: "Ketchum",
+        manager_email: "manager@company.com",
+        name: "Ash Ketchum",
+        offboarded: false,
+        office: "city",
+        role: "Pokemon Trainer",
+        start_date: "10-10-2014",
+        team_name: "Team Red",
+        title: "Pikachu",
+      },{
+        type: ResourceType.user,
+        active: false,
+        birthday: '10-10-1990',
+        department: "Department",
+        email: "mail@email.com",
+        first_name: "Gary",
+        github_username: "Github User",
+        id: 12345,
+        last_name: "Oak",
+        manager_email: "manager@company.com",
+        name: "Gary Oak",
+        offboarded: false,
+        office: "city",
+        role: "Pokemon Trainer",
+        start_date: "10-10-2014",
+        team_name: "Team Blue",
+        title: "Eevee",
+      }],
+      total_results: 1,
     }
   };
 
@@ -160,7 +197,7 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
               <label> { listTitle } </label>
               <InfoButton infoText={ infoText }/>
             </div>
-            <SearchList results={ showPopularTables ? popularTables : results } params={ searchListParams }/>
+            <SearchList results={ showPopularTables ? this.props.users.results : results } params={ searchListParams }/>
           </div>
           <div className="search-pagination-component">
             {
