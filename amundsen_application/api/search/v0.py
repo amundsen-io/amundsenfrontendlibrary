@@ -156,8 +156,8 @@ def _search_user(*, search_term: str, page_index: int) -> Dict[str, Any]:
         'users': users,
     }
 
-
     # TEST CODE
+    users['total_results'] = 0
     users['results'] = [
         {
             'active': True,
@@ -214,8 +214,8 @@ def _search_user(*, search_term: str, page_index: int) -> Dict[str, Any]:
             'title': 'Pokemon Researcher',
         },
     ]
-
     return results_dict
+
 
 @action_logging
 def _search_table(*, search_term: str, page_index: int) -> Dict[str, Any]:
@@ -294,4 +294,3 @@ def _search_table(*, search_term: str, page_index: int) -> Dict[str, Any]:
 # TODO - Implement
 def _search_dashboard(*, search_term: str, page_index: int) -> Dict[str, Any]:
     return {}
-
