@@ -12,6 +12,7 @@ import TagInput from '../../containers/TagInput';
 
 import AppConfig from '../../../config/config';
 import AvatarLabel from '../common/AvatarLabel';
+import Breadcrumb from "../common/Breadcrumb";
 import DetailList from './DetailList';
 import EntityCard from '../common/EntityCard';
 import LoadingSpinner from '../common/LoadingSpinner';
@@ -296,13 +297,15 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
       this.props.history.push('/404');
     } else if (this.state.statusCode === 500) {
       innerContent = (
-        <div className="error-label">
+        <div className="container error-label">
+          <Breadcrumb path='/' text='Search Results'/>
           <label className="d-block m-auto">Something went wrong...</label>
         </div>
       )
     } else {
         innerContent = (
           <div className="container table-detail">
+            <Breadcrumb path='/' text='Search Results'/>
             <div className="row">
               <div className="detail-header col-xs-12 col-md-7 col-lg-8">
                   <div className="title">{ `${data.schema}.${data.table_name}` }</div>

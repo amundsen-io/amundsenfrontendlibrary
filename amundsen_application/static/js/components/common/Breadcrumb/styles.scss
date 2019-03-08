@@ -1,6 +1,8 @@
 @import 'variables';
 
-.container.amundsen-breadcrumb {
-  margin-top: 13px;
-  margin-bottom: -32px;
+.amundsen-breadcrumb {
+  // values chosen for the breadcrumb to sort-of split the difference/center
+  // itself in our 64px top margins.
+  margin-top: -40px;
+  margin-bottom: 21px;
 }
