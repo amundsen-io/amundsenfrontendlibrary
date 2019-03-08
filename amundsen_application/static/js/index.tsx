@@ -9,9 +9,9 @@ import { createStore, applyMiddleware } from 'redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
 
-
 import AnnouncementPage from './containers/AnnouncementPage';
 import BrowsePage from "./containers/BrowsePage";
+import ProfilePage from './components/ProfilePage';
 import SearchPage from './containers/SearchPage';
 import TableDetail from './containers/TableDetail';
 
@@ -40,6 +40,7 @@ ReactDOM.render(
             <Route path="/announcements" component={AnnouncementPage} />
             <Route path="/browse" component={BrowsePage} />
             <Route path="/search" component={SearchPage} />
+            <Route path="/user/:userId" component={ProfilePage} />
             <Route path="/404" component={NotFoundPage} />
             <Route path="/" component={SearchPage} />
           </Switch>

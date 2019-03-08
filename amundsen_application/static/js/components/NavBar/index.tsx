@@ -7,25 +7,25 @@ import { withRouter } from 'react-router-dom'
 
 import AppConfig from '../../../config/config';
 import { GlobalState } from "../../ducks/rootReducer";
-import { getCurrentUser } from "../../ducks/user/reducer";
-import { CurrentUser, GetCurrentUserRequest } from "../../ducks/user/types";
+import { getLoggedInUser } from "../../ducks/user/reducer";
+import { LoggedInUser, GetLoggedInUserRequest } from "../../ducks/user/types";
 
 import './styles.scss';
 
 // Props
 interface StateFromProps {
-  currentUser: CurrentUser;
+  loggedInUser: LoggedInUser;
 }
 
 interface DispatchFromProps {
-  getCurrentUser: () => GetCurrentUserRequest;
+  getLoggedInUser: () => GetLoggedInUserRequest;
 }
 
 type NavBarProps = StateFromProps & DispatchFromProps;
 
 // State
 interface NavBarState {
-  currentUser: CurrentUser;
+  loggedInUser: LoggedInUser;
 }
 
 class NavBar extends React.Component<NavBarProps, NavBarState> {
@@ -33,17 +33,17 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
     super(props);
 
     this.state = {
-      currentUser: this.props.currentUser,
+      loggedInUser: this.props.loggedInUser,
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    const { currentUser } = nextProps;
-    return { currentUser };
+    const { loggedInUser } = nextProps;
+    return { loggedInUser };
   }
 
   componentDidMount() {
-    this.props.getCurrentUser();
+    this.props.getLoggedInUser();
   }
 
   render() {
@@ -70,8 +70,10 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
                 })
               }
               {
-                this.state.currentUser &&
-                <Avatar name={this.state.currentUser.display_name} size={32} round={true}/>
+                this.state.loggedInUser &&
+                <Link to={`/user/${this.state.loggedInUser.user_id}`}>
+                  <Avatar name={this.state.loggedInUser.display_name} size={32} round={true} />
+                </Link>
               }
             </div>
           </div>
@@ -83,12 +85,12 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
 
 const mapStateToProps = (state: GlobalState) => {
   return {
-    currentUser: state.user.currentUser,
+    loggedInUser: state.user.loggedInUser,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getCurrentUser }, dispatch);
+  return bindActionCreators({ getLoggedInUser }, dispatch);
 };
 
 export default withRouter(connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(NavBar));
