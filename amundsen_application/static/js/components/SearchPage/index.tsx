@@ -85,6 +85,8 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     }
   }
 
+
+  // TODO - Modify for each resource type
   createErrorMessage() {
     const items = this.props.tables;
     const { page_index, total_results } = items;
@@ -106,6 +108,8 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     return null;
   }
 
+
+  // TODO - Update pagination event to search only the selected tab
   handlePageChange(pageNumber) {
     // subtract 1 : pagination component indexes from 1, while our api is 0-indexed
     this.updateQueryString(this.props.searchTerm, pageNumber - 1);
@@ -117,38 +121,25 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     this.props.executeSearch(searchTerm, pageIndex);
   }
 
-  getTabContent = (results) => {
-    const startIndex = (RESULTS_PER_PAGE * results.page_index) + 1;
-    const endIndex = RESULTS_PER_PAGE * ( results.page_index + 1);
-    let title =`${startIndex}-${Math.min(endIndex, results.total_results)} of ${results.total_results} results`;
-
+  renderPopularTables = () => {
+    const searchListParams = {
+      source: 'popular_tables',
+      paginationStartIndex: 0,
+    };
     return (
-      <div className="search-list-container">
-        <div className="search-list-header">
-          <label>{ title }</label>
-          <InfoButton infoText={ "Ordered by the relevance of matches within a resource's metadata, as well as overall usage." }/>
-        </div>
-        <SearchList results={ results.results } params={ {source: 'search_results', paginationStartIndex: 0 } }/>
-
-        <div className="search-pagination-component">
-            {
-              results.total_results > RESULTS_PER_PAGE &&
-              <Pagination
-                activePage={ results.page_index + 1 }
-                itemsCountPerPage={ RESULTS_PER_PAGE }
-                totalItemsCount={ results.total_results }
-                pageRangeDisplayed={ 10 }
-                onChange={ this.handlePageChange }
-              />
-            }
+        <div className="col-xs-12">
+          <div className="search-list-container">
+            <div className="search-list-header">
+              <label>Popular Tables</label>
+              <InfoButton infoText={ "These are some of the most commonly accessed tables within your organization." }/>
+            </div>
+            <SearchList results={ this.props.popularTables } params={ searchListParams }/>
           </div>
-      </div>
-      );
+        </div>
+      )
   };
 
-
-  // TODO: Hard-coded text strings should be translatable/customizable
-  renderSearchResults() {
+  renderSearchResults = () => {
     const errorMessage = this.createErrorMessage();
     if (errorMessage) {
       return (
@@ -175,49 +166,51 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
       },
     ];
 
-    const items = this.props.users;
-    const { page_index, results, total_results } = items;
-    const { popularTables } = this.props;
+    return (
+      <div className="col-xs-12">
+        <TabsComponent tabs={ tabConfig } defaultTab="tables" />
+      </div>
+    );
+  };
 
-    const showResultsList = results.length > 0 || popularTables.length > 0;
-
-    if (showResultsList) {
-      const startIndex = (RESULTS_PER_PAGE * page_index) + 1;
-      const endIndex = RESULTS_PER_PAGE * ( page_index + 1);
-      let listTitle = `${startIndex}-${Math.min(endIndex, total_results)} of ${total_results} results`;
-      let infoText = "Ordered by the relevance of matches within a resource's metadata, as well as overall usage.";
-      const searchListParams = {
-        source: 'search_results',
-        paginationStartIndex: RESULTS_PER_PAGE * page_index
-      };
-
-      const showPopularTables = total_results < 1;
-      if (showPopularTables) {
-        listTitle = 'Popular Tables';
-        infoText = "These are some of the most commonly accessed tables within your organization.";
-        searchListParams.source = 'popular_tables';
-      }
-
-      return (
-        <div className="col-xs-12">
-          <div>
-            <TabsComponent tabs={ tabConfig } defaultTab="tables" />
-            {/*<SearchList results={ showPopularTables ? popularTables : results } params={ searchListParams }/>*/}
-          </div>
-
-        </div>
-      )
-    }
-  }
 
   // TODO: Hard-coded text strings should be translatable/customizable
+  getTabContent = (results) => {
+    const startIndex = (RESULTS_PER_PAGE * results.page_index) + 1;
+    const endIndex = RESULTS_PER_PAGE * ( results.page_index + 1);
+    let title =`${startIndex}-${Math.min(endIndex, results.total_results)} of ${results.total_results} results`;
+
+    return (
+      <div className="search-list-container">
+        <div className="search-list-header">
+          <label>{ title }</label>
+          <InfoButton infoText={ "Ordered by the relevance of matches within a resource's metadata, as well as overall usage." }/>
+        </div>
+        <SearchList results={ results.results } params={ {source: 'search_results', paginationStartIndex: 0 } }/>
+        <div className="search-pagination-component">
+            {
+              results.total_results > RESULTS_PER_PAGE &&
+              <Pagination
+                activePage={ results.page_index + 1 }
+                itemsCountPerPage={ RESULTS_PER_PAGE }
+                totalItemsCount={ results.total_results }
+                pageRangeDisplayed={ 10 }
+                onChange={ this.handlePageChange }
+              />
+            }
+          </div>
+      </div>
+      );
+  };
+
   render() {
     const { searchTerm } = this.props;
     const innerContent = (
       <div className="container search-page">
         <div className="row">
           <SearchBar handleValueSubmit={ this.updateQueryString } searchTerm={ searchTerm }/>
-          { this.renderSearchResults() }
+          { searchTerm.length > 0 && this.renderSearchResults() }
+          { searchTerm.length === 0 && this.renderPopularTables()  }
         </div>
       </div>
     );
