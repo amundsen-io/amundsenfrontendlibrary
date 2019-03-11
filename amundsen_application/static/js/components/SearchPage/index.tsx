@@ -6,10 +6,11 @@ import Pagination from 'react-js-pagination';
 import SearchBar from './SearchBar';
 import SearchList from './SearchList';
 import InfoButton from '../common/InfoButton';
-import { ResourceType, TableResource } from "../common/ResourceListItem/types";
+import { Resource, ResourceType, TableResource } from "../common/ResourceListItem/types";
 
 import {
   DashboardSearchResults,
+  SearchAllOptions,
   SearchAllRequest,
   SearchResourceRequest,
   TableSearchResults,
@@ -32,7 +33,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  searchAll: (term: string, pageIndex: number) => SearchAllRequest;
+  searchAll: (term: string, options: SearchAllOptions) => SearchAllRequest;
   searchResource: (resource: ResourceType, term: string, pageIndex: number) => SearchResourceRequest;
   getPopularTables: () => GetPopularTablesRequest;
 }
@@ -40,9 +41,7 @@ export interface DispatchFromProps {
 type SearchPageProps = StateFromProps & DispatchFromProps;
 
 interface SearchPageState {
-  pageIndex: number;
-  searchTerm: string;
-  // selectedTab: string;
+  selectedTab: string;
 }
 
 class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
@@ -72,6 +71,10 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
   constructor(props) {
     super(props);
 
+    this.state = {
+      selectedTab: ResourceType.table,
+    };
+
     this.handlePageChange = this.handlePageChange.bind(this);
     this.updateQueryString = this.updateQueryString.bind(this);
   }
@@ -82,12 +85,23 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     const params = qs.parse(window.location.search);
     const searchTerm = params['searchTerm'];
     const pageIndex = params['pageIndex'];
+    const selectedTab = params['selectedTab']
+    this.setState({ selectedTab });
+
     if (searchTerm && searchTerm.length > 0) {
       const index = pageIndex || '0';
-      this.props.searchAll(searchTerm, index);
+      this.props.searchAll(searchTerm, this.getSearchOptions(pageIndex));
     }
   }
 
+
+  getSearchOptions = (pageIndex) => {
+    return {
+      dashboardIndex: (this.state.selectedTab === ResourceType.dashboard) ? pageIndex : 0,
+      userIndex: (this.state.selectedTab === ResourceType.user) ? pageIndex : 0,
+      tableIndex: (this.state.selectedTab === ResourceType.table) ? pageIndex : 0,
+    };
+  };
 
   // TODO - Modify for each resource type
   createErrorMessage() {
@@ -121,10 +135,23 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
 
   }
 
+
+
+  onChangeTab = (tab: ResourceType) => {
+    console.log(`Tab: ${tab} selected`);
+    this.setState({ selectedTab: tab });
+
+    // const pathName = `/search?searchTerm=${this.props.searchTerm}&pageIndex=&selectedTab=${tab}`;
+    // window.history.pushState({}, '', `${window.location.origin}${pathName}`);
+  };
+
+
   updateQueryString(searchTerm, pageIndex) {
-    const pathName = `/search?searchTerm=${searchTerm}&pageIndex=${pageIndex}`;
+    const pathName = `/search?searchTerm=${searchTerm}&selectedTab=${this.state.selectedTab}&pageIndex=${pageIndex}`;
     window.history.pushState({}, '', `${window.location.origin}${pathName}`);
-    this.props.searchAll(searchTerm, pageIndex);
+
+
+    this.props.searchAll(searchTerm, this.getSearchOptions(pageIndex));
   }
 
   renderPopularTables = () => {
@@ -162,19 +189,23 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     const tabConfig = [
       {
         title: `Tables (${ this.props.tables.total_results })`,
-        key: 'tables',
+        key: ResourceType.table,
         content: this.getTabContent(this.props.tables),
       },
       {
         title: `Users (${ this.props.users.total_results })`,
-        key: 'users',
+        key: ResourceType.user,
         content: this.getTabContent(this.props.users),
       },
     ];
 
     return (
       <div className="col-xs-12">
-        <TabsComponent tabs={ tabConfig } defaultTab="tables" onSelect={(tab)=> {console.log(`Tab: ${tab} selected`)}}/>
+        <TabsComponent
+          tabs={ tabConfig }
+          defaultTab={ ResourceType.table }
+          onSelect={ this.onChangeTab }
+        />
       </div>
     );
   };
@@ -213,6 +244,7 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     const { searchTerm } = this.props;
     const innerContent = (
       <div className="container search-page">
+        { `selected tab: ${ this.state.selectedTab }` }
         <div className="row">
           <SearchBar handleValueSubmit={ this.updateQueryString } searchTerm={ searchTerm }/>
           { searchTerm.length > 0 && this.renderSearchResults() }

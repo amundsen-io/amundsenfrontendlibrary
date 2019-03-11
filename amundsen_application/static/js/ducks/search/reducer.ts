@@ -1,12 +1,14 @@
 import {
   SearchAll,
+  SearchAllOptions,
   SearchAllRequest,
   SearchAllResponse,
   SearchResource,
+  SearchResourceRequest,
   SearchResourceResponse,
   DashboardSearchResults,
   TableSearchResults,
-  UserSearchResults, SearchResourceRequest,
+  UserSearchResults,
 } from './types';
 import { ResourceType } from "../../components/common/ResourceListItem/types";
 
@@ -19,9 +21,9 @@ export interface SearchReducerState {
   users: UserSearchResults;
 }
 
-export function searchAll(term: string, pageIndex: number): SearchAllRequest {
+export function searchAll(term: string, options: SearchAllOptions): SearchAllRequest {
   return {
-    pageIndex,
+    options,
     term,
     type: SearchAll.ACTION,
   };

@@ -32,8 +32,14 @@ export enum SearchAll {
   FAILURE = 'amundsen/search/SEARCH_ALL_FAILURE',
 }
 
+export interface SearchAllOptions {
+  dashboardIndex?: number;
+  tableIndex?: number;
+  userIndex?: number;
+}
+
 export interface SearchAllRequest {
-  pageIndex: number;
+  options: SearchAllOptions;
   term: string;
   type: SearchAll.ACTION;
 }

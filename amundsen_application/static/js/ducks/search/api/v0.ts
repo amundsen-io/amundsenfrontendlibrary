@@ -3,13 +3,11 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { SearchAllRequest, SearchResponse, SearchResourceRequest } from '../types';
 
 export function searchAll(action: SearchAllRequest) {
-  const { term, pageIndex } = action;
+  const { term, options } = action;
   let baseUrl = '/api/search/v0';
-  let params = `?query=${term}&page_index=${pageIndex}`;
-
   return axios.all([
-      axios.get(`${baseUrl}/table${params}`),
-      axios.get(`${baseUrl}/user${params}`),
+      axios.get(`${baseUrl}/table?query=${term}&page_index=${options.tableIndex || 0 }`),
+      axios.get(`${baseUrl}/user?query=${term}&page_index=${options.userIndex || 0 }`),
     ]).then(axios.spread((tableResponse: AxiosResponse<SearchResponse>, userResponse: AxiosResponse<SearchResponse>) => {
       return {
         searchTerm: tableResponse.data.search_term,
