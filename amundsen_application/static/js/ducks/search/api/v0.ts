@@ -1,20 +1,8 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
-import { ExecuteSearchRequest, SearchResponse } from '../types';
+import { SearchAllRequest, SearchResponse, SearchResourceRequest } from '../types';
 
-import { SearchReducerState } from '../reducer';
-import { ResourceType } from "../../../components/common/ResourceListItem/types";
-
-// function transformSearchResults(data: SearchResponse): SearchReducerState {
-//   return {
-//     searchTerm: data.search_term,
-//     dashboards: data.dashboards,
-//     tables: data.tables,
-//     users: data.users,
-//   };
-// }
-
-export function searchExecuteSearch(action: ExecuteSearchRequest) {
+export function searchAll(action: SearchAllRequest) {
   const { term, pageIndex } = action;
   let baseUrl = '/api/search/v0';
   let params = `?query=${term}&page_index=${pageIndex}`;
@@ -28,9 +16,9 @@ export function searchExecuteSearch(action: ExecuteSearchRequest) {
         tables: tableResponse.data.tables,
         users: userResponse.data.users,
       }
-  }));
+  })).catch((error: AxiosError) => {
 
-
+  });
 
   // return axios.get(url + params)
   // .then((response: AxiosResponse<SearchResponse>) => transformSearchResults(response.data))
@@ -38,4 +26,20 @@ export function searchExecuteSearch(action: ExecuteSearchRequest) {
   //   const data = error.response ? error.response.data : {};
   //   return transformSearchResults(data);
   // });
+}
+
+
+export function searchResource(action: SearchResourceRequest) {
+  const { term, pageIndex, resource } = action;
+  return axios.get(`/api/search/v0/${resource}?query=${term}&page_index=${pageIndex}`)
+    .then((response: AxiosResponse) => {
+      const { data } = response;
+      return {
+        searchTerm: data.search_term,
+        tables: data.tables,
+        users: data.users,
+      }
+    }).catch((error: AxiosError) => {
+
+    });
 }

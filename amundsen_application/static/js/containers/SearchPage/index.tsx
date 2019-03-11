@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { GlobalState } from "../../ducks/rootReducer";
-import { executeSearch } from '../../ducks/search/reducer';
+import { searchAll, searchResource } from '../../ducks/search/reducer';
 import { getPopularTables } from '../../ducks/popularTables/reducer';
 
 import SearchPage, { DispatchFromProps, StateFromProps } from '../../components/SearchPage';
@@ -18,7 +18,7 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ executeSearch, getPopularTables } , dispatch);
+  return bindActionCreators({ searchAll, searchResource, getPopularTables } , dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(SearchPage);

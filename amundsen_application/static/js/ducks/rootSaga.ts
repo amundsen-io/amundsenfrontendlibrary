@@ -8,7 +8,7 @@ import { submitFeedbackWatcher } from './feedback/sagas';
 
 // SearchPage
 import { getPopularTablesWatcher } from './popularTables/sagas';
-import { executeSearchWatcher } from './search/sagas';
+import { searchAllWatcher, searchResourceWatcher } from './search/sagas';
 
 // TableDetail
 import { updateTableOwnerWatcher } from './tableMetadata/owners/sagas';
@@ -36,7 +36,8 @@ export default function* rootSaga() {
     // FeedbackForm
     submitFeedbackWatcher(),
     // SearchPage
-    executeSearchWatcher(),
+    searchAllWatcher(),
+    searchResourceWatcher(),
     getPopularTablesWatcher(),
     // Tags
     getAllTagsWatcher(),

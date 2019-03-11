@@ -10,7 +10,8 @@ import { ResourceType, TableResource } from "../common/ResourceListItem/types";
 
 import {
   DashboardSearchResults,
-  ExecuteSearchRequest,
+  SearchAllRequest,
+  SearchResourceRequest,
   TableSearchResults,
   UserSearchResults
 } from "../../ducks/search/types";
@@ -31,7 +32,8 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  executeSearch: (term: string, pageIndex: number) => ExecuteSearchRequest;
+  searchAll: (term: string, pageIndex: number) => SearchAllRequest;
+  searchResource: (resource: ResourceType, term: string, pageIndex: number) => SearchResourceRequest;
   getPopularTables: () => GetPopularTablesRequest;
 }
 
@@ -45,7 +47,8 @@ interface SearchPageState {
 
 class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
   public static defaultProps: SearchPageProps = {
-    executeSearch: () => undefined,
+    searchAll: () => undefined,
+    searchResource: () => undefined,
     getPopularTables: () => undefined,
     searchTerm: '',
     popularTables: [],
@@ -81,7 +84,7 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     const pageIndex = params['pageIndex'];
     if (searchTerm && searchTerm.length > 0) {
       const index = pageIndex || '0';
-      this.props.executeSearch(searchTerm, index);
+      this.props.searchAll(searchTerm, index);
     }
   }
 
@@ -112,13 +115,16 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
   // TODO - Update pagination event to search only the selected tab
   handlePageChange(pageNumber) {
     // subtract 1 : pagination component indexes from 1, while our api is 0-indexed
-    this.updateQueryString(this.props.searchTerm, pageNumber - 1);
+    // this.updateQueryString(this.props.searchTerm, pageNumber - 1);
+
+    this.props.searchResource(ResourceType.table, this.props.searchTerm, pageNumber - 1);
+
   }
 
   updateQueryString(searchTerm, pageIndex) {
     const pathName = `/search?searchTerm=${searchTerm}&pageIndex=${pageIndex}`;
     window.history.pushState({}, '', `${window.location.origin}${pathName}`);
-    this.props.executeSearch(searchTerm, pageIndex);
+    this.props.searchAll(searchTerm, pageIndex);
   }
 
   renderPopularTables = () => {
@@ -168,7 +174,7 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
 
     return (
       <div className="col-xs-12">
-        <TabsComponent tabs={ tabConfig } defaultTab="tables" />
+        <TabsComponent tabs={ tabConfig } defaultTab="tables" onSelect={(tab)=> {console.log(`Tab: ${tab} selected`)}}/>
       </div>
     );
   };

@@ -1,9 +1,9 @@
 import {
   Resource,
+  ResourceType,
   DashboardResource,
   TableResource,
   UserResource,
-  ResourceType
 } from "../../components/common/ResourceListItem/types";
 import { SearchReducerState } from './reducer';
 
@@ -25,20 +25,40 @@ export type SearchResponse = {
   users?: UserSearchResults;
 }
 
-/* executeSearch */
-export enum ExecuteSearch {
-  ACTION = 'amundsen/search/EXECUTE_SEARCH',
-  SUCCESS = 'amundsen/search/EXECUTE_SEARCH_SUCCESS',
-  FAILURE = 'amundsen/search/EXECUTE_SEARCH_FAILURE',
+/* searchAll - Search all resource types */
+export enum SearchAll {
+  ACTION = 'amundsen/search/SEARCH_ALL',
+  SUCCESS = 'amundsen/search/SEARCH_ALL_SUCCESS',
+  FAILURE = 'amundsen/search/SEARCH_ALL_FAILURE',
 }
 
-export interface ExecuteSearchRequest {
-  type: ExecuteSearch.ACTION;
-  term: string;
+export interface SearchAllRequest {
   pageIndex: number;
+  term: string;
+  type: SearchAll.ACTION;
 }
 
-export interface ExecuteSearchResponse {
-  type: ExecuteSearch.SUCCESS | ExecuteSearch.FAILURE;
+export interface SearchAllResponse {
+  type: SearchAll.SUCCESS | SearchAll.FAILURE;
+  payload?: SearchReducerState;
+}
+
+
+/* searchResource - Search a single resource type */
+export enum SearchResource {
+  ACTION = 'amundsen/search/SEARCH_RESOURCE',
+  SUCCESS = 'amundsen/search/SEARCH_RESOURCE_SUCCESS',
+  FAILURE = 'amundsen/search/SEARCH_RESOURCE_FAILURE',
+}
+
+export interface SearchResourceRequest {
+  pageIndex: number;
+  resource: ResourceType;
+  term: string;
+  type: SearchResource.ACTION;
+}
+
+export interface SearchResourceResponse {
+  type: SearchResource.SUCCESS | SearchResource.FAILURE;
   payload?: SearchReducerState;
 }
