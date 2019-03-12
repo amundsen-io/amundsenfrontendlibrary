@@ -152,7 +152,8 @@ def _search_user(*, search_term: str, page_index: int) -> Dict[str, Any]:
 
     results_dict = {
         'search_term': search_term,
-        'msg': '',
+        'msg': 'Success',
+        'status_code': HTTPStatus.OK,
         'users': users,
     }
 
@@ -217,8 +218,7 @@ def _search_user(*, search_term: str, page_index: int) -> Dict[str, Any]:
             'title': 'Pokemon Researcher',
         },
     ]
-    results_dict['msg'] = 'Success'
-    results_dict['status_code'] = HTTPStatus.OK
+
     return results_dict
 
 
