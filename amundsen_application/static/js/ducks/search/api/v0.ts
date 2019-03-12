@@ -6,8 +6,8 @@ export function searchAll(action: SearchAllRequest) {
   const { term, options } = action;
   let baseUrl = '/api/search/v0';
   return axios.all([
-      axios.get(`${baseUrl}/table?query=${term}&page_index=${options.tableIndex || 0 }`),
-      axios.get(`${baseUrl}/user?query=${term}&page_index=${options.userIndex || 0 }`),
+      axios.get(`${baseUrl}/table?query=${term}&page_index=${options.tableIndex || 0}`),
+      axios.get(`${baseUrl}/user?query=${term}&page_index=${options.userIndex || 0}`),
     ]).then(axios.spread((tableResponse: AxiosResponse<SearchResponse>, userResponse: AxiosResponse<SearchResponse>) => {
       return {
         searchTerm: tableResponse.data.search_term,
@@ -15,15 +15,8 @@ export function searchAll(action: SearchAllRequest) {
         users: userResponse.data.users,
       }
   })).catch((error: AxiosError) => {
-
+    // TODO - handle errors
   });
-
-  // return axios.get(url + params)
-  // .then((response: AxiosResponse<SearchResponse>) => transformSearchResults(response.data))
-  // .catch((error: AxiosError) => {
-  //   const data = error.response ? error.response.data : {};
-  //   return transformSearchResults(data);
-  // });
 }
 
 
@@ -38,6 +31,6 @@ export function searchResource(action: SearchResourceRequest) {
         users: data.users,
       }
     }).catch((error: AxiosError) => {
-
+      // TODO - handle errors
     });
 }
