@@ -242,18 +242,18 @@ class SearchTest(unittest.TestCase):
     #         self.assertEqual(users.get('total_results'), self.mock_search_table_results.get('total_results'))
     #         self.assertCountEqual(users.get('results'), self.expected_parsed_search_table_results)
 
-    @responses.activate
-    def test_search_user_fail_on_non_200_response(self) -> None:
-        """
-        Test request failure if search endpoint returns non-200 http code
-        :return:
-        """
-        responses.add(responses.GET, local_app.config['SEARCHSERVICE_ENDPOINT'],
-                      json=self.mock_search_table_results, status=HTTPStatus.INTERNAL_SERVER_ERROR)
-
-        with local_app.test_client() as test:
-            response = test.get('/api/search/v0/user', query_string=dict(query='test', page_index='0'))
-            self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
+    # @responses.activate
+    # def test_search_user_fail_on_non_200_response(self) -> None:
+    #     """
+    #     Test request failure if search endpoint returns non-200 http code
+    #     :return:
+    #     """
+    #     responses.add(responses.GET, local_app.config['SEARCHSERVICE_ENDPOINT'],
+    #                   json=self.mock_search_table_results, status=HTTPStatus.INTERNAL_SERVER_ERROR)
+    #
+    #     with local_app.test_client() as test:
+    #         response = test.get('/api/search/v0/user', query_string=dict(query='test', page_index='0'))
+    #         self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     @responses.activate
     def test_search_user_fail_on_proccessing_bad_response(self) -> None:

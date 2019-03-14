@@ -9,14 +9,17 @@ import InfoButton from '../common/InfoButton';
 import { ResourceType, TableResource } from "../common/ResourceListItem/types";
 
 import {
-  ExecuteSearchRequest,
   DashboardSearchResults,
+  SearchAllOptions,
+  SearchAllRequest,
+  SearchResourceRequest,
   TableSearchResults,
   UserSearchResults
 } from "../../ducks/search/types";
 import { GetPopularTablesRequest } from '../../ducks/popularTables/types';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+import TabsComponent from "../common/Tabs";
 
 const RESULTS_PER_PAGE = 10;
 
@@ -30,20 +33,21 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  executeSearch: (term: string, pageIndex: number) => ExecuteSearchRequest;
+  searchAll: (term: string, options?: SearchAllOptions) => SearchAllRequest;
+  searchResource: (resource: ResourceType, term: string, pageIndex: number) => SearchResourceRequest;
   getPopularTables: () => GetPopularTablesRequest;
 }
 
 type SearchPageProps = StateFromProps & DispatchFromProps;
 
 interface SearchPageState {
-  pageIndex: number;
-  searchTerm: string;
+  selectedTab: ResourceType;
 }
 
 class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
   public static defaultProps: SearchPageProps = {
-    executeSearch: () => undefined,
+    searchAll: () => undefined,
+    searchResource: () => undefined,
     getPopularTables: () => undefined,
     searchTerm: '',
     popularTables: [],
@@ -59,147 +63,175 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     },
     users: {
       page_index: 0,
-      // TODO - cleanup sample data
-      results: [{
-        type: ResourceType.user,
-        active: true,
-        birthday: '10-10-1990',
-        department: "Department",
-        email: "mail@email.com",
-        first_name: "Ash",
-        github_username: "Github User",
-        id: 12345,
-        last_name: "Ketchum",
-        manager_email: "manager@company.com",
-        name: "Ash Ketchum",
-        offboarded: false,
-        office: "city",
-        role: "Pokemon Trainer",
-        start_date: "10-10-2014",
-        team_name: "Team Red",
-        title: "Pikachu",
-      },{
-        type: ResourceType.user,
-        active: false,
-        birthday: '10-10-1990',
-        department: "Department",
-        email: "mail@email.com",
-        first_name: "Gary",
-        github_username: "Github User",
-        id: 12345,
-        last_name: "Oak",
-        manager_email: "manager@company.com",
-        name: "Gary Oak",
-        offboarded: false,
-        office: "city",
-        role: "Pokemon Trainer",
-        start_date: "10-10-2014",
-        team_name: "Team Blue",
-        title: "Eevee",
-      }],
-      total_results: 1,
+      results: [],
+      total_results: 0,
     }
   };
 
   constructor(props) {
     super(props);
 
-    this.handlePageChange = this.handlePageChange.bind(this);
-    this.updateQueryString = this.updateQueryString.bind(this);
+    this.state = {
+      selectedTab: ResourceType.table,
+    };
   }
 
   componentDidMount() {
     this.props.getPopularTables();
 
     const params = qs.parse(window.location.search);
-    const searchTerm = params['searchTerm'];
-    const pageIndex = params['pageIndex'];
+    const { searchTerm, pageIndex, selectedTab} = params;
+
+    const validTab = this.validateTab(selectedTab);
+    this.setState({ selectedTab: validTab });
     if (searchTerm && searchTerm.length > 0) {
-      const index = pageIndex || '0';
-      this.props.executeSearch(searchTerm, index);
+      const index = pageIndex || 0;
+      this.props.searchAll(searchTerm, this.getSearchOptions(index, validTab));
+      // Update the page URL with validated parameters.
+      this.updatePageUrl(searchTerm, validTab, index);
     }
   }
 
-  createErrorMessage() {
-    const items = this.props.tables;
-    const { page_index, total_results } = items;
-    const { searchTerm } = this.props;
-    if (total_results === 0 && searchTerm.length > 0) {
-      return (
-        <label>
-          Your search - <i>{ searchTerm }</i> - did not match any tables.
-        </label>
-      )
+  validateTab = (newTab) => {
+    switch(newTab) {
+      case ResourceType.table:
+      case ResourceType.user:
+        return newTab;
+      case ResourceType.dashboard:
+      default:
+        return this.state.selectedTab;
     }
-    if (total_results > 0 && (RESULTS_PER_PAGE * page_index) + 1 > total_results) {
-      return (
-        <label>
-          Page index out of bounds for available matches.
-        </label>
-      )
-    }
-    return null;
-  }
+  };
 
-  handlePageChange(pageNumber) {
+  getSearchOptions = (pageIndex, selectedTab) => {
+    return {
+      dashboardIndex: (selectedTab === ResourceType.dashboard) ? pageIndex : 0,
+      userIndex: (selectedTab === ResourceType.user) ? pageIndex : 0,
+      tableIndex: (selectedTab === ResourceType.table) ? pageIndex : 0,
+    };
+  };
+
+  getPageIndex = (tab) => {
+    switch(tab) {
+      case ResourceType.table:
+        return this.props.tables.page_index;
+      case ResourceType.user:
+        return this.props.users.page_index;
+      case ResourceType.dashboard:
+        return this.props.dashboards.page_index;
+    }
+    return 0;
+  };
+
+  onSearchBarSubmit = (searchTerm: string) => {
+    this.props.searchAll(searchTerm);
+    this.updatePageUrl(searchTerm, this.state.selectedTab,0);
+  };
+
+  onPaginationChange = (pageNumber) => {
     // subtract 1 : pagination component indexes from 1, while our api is 0-indexed
-    this.updateQueryString(this.props.searchTerm, pageNumber - 1);
-  }
+    const index = pageNumber - 1;
 
-  updateQueryString(searchTerm, pageIndex) {
-    const pathName = `/search?searchTerm=${searchTerm}&pageIndex=${pageIndex}`;
+    this.props.searchResource(this.state.selectedTab, this.props.searchTerm, index);
+    this.updatePageUrl(this.props.searchTerm, this.state.selectedTab, index);
+  };
+
+  onTabChange = (tab: ResourceType) => {
+    const validTab = this.validateTab(tab);
+    this.setState({ selectedTab: validTab });
+    this.updatePageUrl(this.props.searchTerm, validTab, this.getPageIndex(validTab));
+  };
+
+  updatePageUrl = (searchTerm, tab, pageIndex) => {
+    const pathName = `/search?searchTerm=${searchTerm}&selectedTab=${tab}&pageIndex=${pageIndex}`;
     window.history.pushState({}, '', `${window.location.origin}${pathName}`);
-    this.props.executeSearch(searchTerm, pageIndex);
-  }
+  };
 
-  // TODO: Hard-coded text strings should be translatable/customizable
-  renderSearchResults() {
-    const errorMessage = this.createErrorMessage();
-    if (errorMessage) {
-      return (
+  renderPopularTables = () => {
+    const searchListParams = {
+      source: 'popular_tables',
+      paginationStartIndex: 0,
+    };
+    return (
         <div className="col-xs-12">
           <div className="search-list-container">
             <div className="search-list-header">
-              { errorMessage }
+              <label>Popular Tables</label>
+              <InfoButton infoText={ "These are some of the most commonly accessed tables within your organization." }/>
             </div>
+            <SearchList results={ this.props.popularTables } params={ searchListParams }/>
+          </div>
+        </div>
+      )
+  };
+
+  renderSearchResults = () => {
+    const tabConfig = [
+      {
+        title: `Tables (${ this.props.tables.total_results })`,
+        key: ResourceType.table,
+        content: this.getTabContent(this.props.tables, 'tables'),
+      },
+      {
+        title: `Users (${ this.props.users.total_results })`,
+        key: ResourceType.user,
+        content: this.getTabContent(this.props.users, 'users'),
+      },
+    ];
+
+    return (
+      <div className="col-xs-12">
+        <TabsComponent
+          tabs={ tabConfig }
+          defaultTab={ ResourceType.table }
+          activeKey={ this.state.selectedTab }
+          onSelect={ this.onTabChange }
+        />
+      </div>
+    );
+  };
+
+
+  // TODO: Hard-coded text strings should be translatable/customizable
+  getTabContent = (results, tabLabel) => {
+    const { searchTerm } = this.props;
+    const { page_index, total_results } = results;
+    const startIndex = (RESULTS_PER_PAGE * page_index) + 1;
+    const endIndex = RESULTS_PER_PAGE * ( page_index + 1);
+
+
+    // TODO - Move error messages into Tab Component
+    // Check no results
+    if (total_results === 0 && searchTerm.length > 0) {
+      return (
+        <div className="search-list-container">
+          <div className="search-error">
+            Your search - <i>{ searchTerm }</i> - did not match any { tabLabel } results.
           </div>
         </div>
       )
     }
 
-    const items = this.props.tables;
-    const { page_index, results, total_results } = items;
-    const { popularTables } = this.props;
-
-    const showResultsList = results.length > 0 || popularTables.length > 0;
-
-    if (showResultsList) {
-      const startIndex = (RESULTS_PER_PAGE * page_index) + 1;
-      const endIndex = RESULTS_PER_PAGE * ( page_index + 1);
-      let listTitle = `${startIndex}-${Math.min(endIndex, total_results)} of ${total_results} results`;
-      let infoText = "Ordered by the relevance of matches within a resource's metadata, as well as overall usage.";
-      const searchListParams = {
-        source: 'search_results',
-        paginationStartIndex: RESULTS_PER_PAGE * page_index
-      };
-
-      const showPopularTables = total_results < 1;
-      if (showPopularTables) {
-        listTitle = 'Popular Tables';
-        infoText = "These are some of the most commonly accessed tables within your organization.";
-        searchListParams.source = 'popular_tables';
-      }
-
+    // Check page_index bounds
+    if (page_index < 0 || startIndex > total_results) {
       return (
-        <div className="col-xs-12 col-md-offset-1 col-md-10">
-          <div className="search-list-container">
-            <div className="search-list-header">
-              <label> { listTitle } </label>
-              <InfoButton infoText={ infoText }/>
-            </div>
-            <SearchList results={ showPopularTables ? this.props.users.results : results } params={ searchListParams }/>
+        <div className="search-list-container">
+          <div className="search-error">
+            Page index out of bounds for available matches.
           </div>
-          <div className="search-pagination-component">
+        </div>
+      )
+    }
+
+    let title =`${startIndex}-${Math.min(endIndex, total_results)} of ${total_results} results`;
+    return (
+      <div className="search-list-container">
+        <div className="search-list-header">
+          <label>{ title }</label>
+          <InfoButton infoText={ "Ordered by the relevance of matches within a resource's metadata, as well as overall usage." }/>
+        </div>
+        <SearchList results={ results.results } params={ {source: 'search_results', paginationStartIndex: 0 } }/>
+        <div className="search-pagination-component">
             {
               total_results > RESULTS_PER_PAGE &&
               <Pagination
@@ -207,23 +239,22 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
                 itemsCountPerPage={ RESULTS_PER_PAGE }
                 totalItemsCount={ total_results }
                 pageRangeDisplayed={ 10 }
-                onChange={ this.handlePageChange }
+                onChange={ this.onPaginationChange }
               />
             }
           </div>
-        </div>
-      )
-    }
-  }
+      </div>
+      );
+  };
 
-  // TODO: Hard-coded text strings should be translatable/customizable
   render() {
     const { searchTerm } = this.props;
     const innerContent = (
       <div className="container search-page">
         <div className="row">
-          <SearchBar handleValueSubmit={ this.updateQueryString } searchTerm={ searchTerm }/>
-          { this.renderSearchResults() }
+          <SearchBar handleValueSubmit={ this.onSearchBarSubmit } searchTerm={ searchTerm }/>
+          { searchTerm.length > 0 && this.renderSearchResults() }
+          { searchTerm.length === 0 && this.renderPopularTables()  }
         </div>
       </div>
     );
