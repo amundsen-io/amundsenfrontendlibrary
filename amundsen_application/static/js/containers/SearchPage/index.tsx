@@ -9,7 +9,7 @@ import SearchPage, { DispatchFromProps, StateFromProps } from '../../components/
 
 export const mapStateToProps = (state: GlobalState) => {
   return {
-    searchTerm: state.search.searchTerm,
+    searchTerm: state.search.search_term,
     popularTables: state.popularTables,
     tables: state.search.tables,
     users: state.search.users,

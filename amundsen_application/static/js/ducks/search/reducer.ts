@@ -15,13 +15,13 @@ import { ResourceType } from "../../components/common/ResourceListItem/types";
 export type SearchReducerAction = SearchAllResponse | SearchResourceResponse;
 
 export interface SearchReducerState {
-  searchTerm: string;
+  search_term: string;
   dashboards: DashboardSearchResults;
   tables: TableSearchResults;
   users: UserSearchResults;
 }
 
-export function searchAll(term: string, options: SearchAllOptions): SearchAllRequest {
+export function searchAll(term: string, options: SearchAllOptions = {}): SearchAllRequest {
   return {
     options,
     term,
@@ -39,7 +39,7 @@ export function searchResource(resource: ResourceType, term: string, pageIndex: 
 }
 
 const initialState: SearchReducerState = {
-  searchTerm: '',
+  search_term: '',
   dashboards: {
     page_index: 0,
     results: [],
@@ -63,18 +63,14 @@ export default function reducer(state: SearchReducerState = initialState, action
     // SearchAll will reset all resources with search results or the initial state
     case SearchAll.SUCCESS:
       return {
-        searchTerm: newState.searchTerm,
-        dashboards: newState.dashboards || initialState.dashboards,
-        users: newState.users || initialState.users,
-        tables: newState.tables || initialState.tables,
+        ...initialState,
+        ...newState,
       };
     // SearchResource will set only a single resource and preserves search state for other resources
     case SearchResource.SUCCESS:
       return {
-        searchTerm: newState.searchTerm,
-        dashboards: newState.dashboards || state.dashboards,
-        users: newState.users || state.users,
-        tables: newState.tables || state.tables,
+        ...state,
+        ...newState,
       };
     case SearchAll.FAILURE:
     case SearchResource.FAILURE:

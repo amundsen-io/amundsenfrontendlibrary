@@ -6,7 +6,7 @@ import Pagination from 'react-js-pagination';
 import SearchBar from './SearchBar';
 import SearchList from './SearchList';
 import InfoButton from '../common/InfoButton';
-import { Resource, ResourceType, TableResource } from "../common/ResourceListItem/types";
+import { ResourceType, TableResource } from "../common/ResourceListItem/types";
 
 import {
   DashboardSearchResults,
@@ -33,7 +33,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  searchAll: (term: string, options: SearchAllOptions) => SearchAllRequest;
+  searchAll: (term: string, options?: SearchAllOptions) => SearchAllRequest;
   searchResource: (resource: ResourceType, term: string, pageIndex: number) => SearchResourceRequest;
   getPopularTables: () => GetPopularTablesRequest;
 }
@@ -82,29 +82,32 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     const params = qs.parse(window.location.search);
     const { searchTerm, pageIndex, selectedTab} = params;
 
-    this.updateSelectedTab(selectedTab);
+    const validTab = this.validateTab(selectedTab);
+    this.setState({ selectedTab: validTab });
     if (searchTerm && searchTerm.length > 0) {
-      const index = pageIndex || '0';
-      this.props.searchAll(searchTerm, this.getSearchOptions(index));
+      const index = pageIndex || 0;
+      this.props.searchAll(searchTerm, this.getSearchOptions(index, validTab));
+      // Update the page URL with validated parameters.
+      this.updatePageUrl(searchTerm, validTab, index);
     }
   }
 
-  updateSelectedTab = (newTab) => {
+  validateTab = (newTab) => {
     switch(newTab) {
       case ResourceType.table:
       case ResourceType.user:
-        this.setState({ selectedTab: newTab });
-        break;
+        return newTab;
       case ResourceType.dashboard:
-        break;
+      default:
+        return this.state.selectedTab;
     }
   };
 
-  getSearchOptions = (pageIndex) => {
+  getSearchOptions = (pageIndex, selectedTab) => {
     return {
-      dashboardIndex: (this.state.selectedTab === ResourceType.dashboard) ? pageIndex : 0,
-      userIndex: (this.state.selectedTab === ResourceType.user) ? pageIndex : 0,
-      tableIndex: (this.state.selectedTab === ResourceType.table) ? pageIndex : 0,
+      dashboardIndex: (selectedTab === ResourceType.dashboard) ? pageIndex : 0,
+      userIndex: (selectedTab === ResourceType.user) ? pageIndex : 0,
+      tableIndex: (selectedTab === ResourceType.table) ? pageIndex : 0,
     };
   };
 
@@ -121,7 +124,7 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
   };
 
   onSearchBarSubmit = (searchTerm: string) => {
-    this.props.searchAll(searchTerm, this.getSearchOptions(0));
+    this.props.searchAll(searchTerm);
     this.updatePageUrl(searchTerm, this.state.selectedTab,0);
   };
 
@@ -134,8 +137,9 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
   };
 
   onTabChange = (tab: ResourceType) => {
-    this.updateSelectedTab(tab);
-    this.updatePageUrl(this.props.searchTerm, tab, this.getPageIndex(tab));
+    const validTab = this.validateTab(tab);
+    this.setState({ selectedTab: validTab });
+    this.updatePageUrl(this.props.searchTerm, validTab, this.getPageIndex(validTab));
   };
 
   updatePageUrl = (searchTerm, tab, pageIndex) => {
@@ -161,53 +165,17 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
       )
   };
 
-
-  // TODO - Modify for each resource type
-  createErrorMessage() {
-    const items = this.props.tables;
-    const { page_index, total_results } = items;
-    const { searchTerm } = this.props;
-    if (total_results === 0 && searchTerm.length > 0) {
-      return (
-        <label>
-          Your search - <i>{ searchTerm }</i> - did not match any tables.
-        </label>
-      )
-    }
-    if (total_results > 0 && (RESULTS_PER_PAGE * page_index) + 1 > total_results) {
-      return (
-        <label>
-          Page index out of bounds for available matches.
-        </label>
-      )
-    }
-    return null;
-  }
-
   renderSearchResults = () => {
-    const errorMessage = this.createErrorMessage();
-    if (errorMessage) {
-      return (
-        <div className="col-xs-12">
-          <div className="search-list-container">
-            <div className="search-list-header">
-              { errorMessage }
-            </div>
-          </div>
-        </div>
-      )
-    }
-
     const tabConfig = [
       {
         title: `Tables (${ this.props.tables.total_results })`,
         key: ResourceType.table,
-        content: this.getTabContent(this.props.tables),
+        content: this.getTabContent(this.props.tables, 'tables'),
       },
       {
         title: `Users (${ this.props.users.total_results })`,
         key: ResourceType.user,
-        content: this.getTabContent(this.props.users),
+        content: this.getTabContent(this.props.users, 'users'),
       },
     ];
 
@@ -225,11 +193,35 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
 
 
   // TODO: Hard-coded text strings should be translatable/customizable
-  getTabContent = (results) => {
-    const startIndex = (RESULTS_PER_PAGE * results.page_index) + 1;
-    const endIndex = RESULTS_PER_PAGE * ( results.page_index + 1);
-    let title =`${startIndex}-${Math.min(endIndex, results.total_results)} of ${results.total_results} results`;
+  getTabContent = (results, tabLabel) => {
+    const { searchTerm } = this.props;
+    const { page_index, total_results } = results;
+    const startIndex = (RESULTS_PER_PAGE * page_index) + 1;
+    const endIndex = RESULTS_PER_PAGE * ( page_index + 1);
 
+    // Check no results
+    if (total_results === 0 && searchTerm.length > 0) {
+      return (
+        <div className="search-list-container">
+          <div className="search-error">
+            Your search - <i>{ searchTerm }</i> - did not match any { tabLabel } results.
+          </div>
+        </div>
+      )
+    }
+
+    // Check page_index bounds
+    if (page_index < 0 || startIndex > total_results) {
+      return (
+        <div className="search-list-container">
+          <div className="search-error">
+            Page index out of bounds for available matches.
+          </div>
+        </div>
+      )
+    }
+
+    let title =`${startIndex}-${Math.min(endIndex, total_results)} of ${total_results} results`;
     return (
       <div className="search-list-container">
         <div className="search-list-header">
@@ -239,11 +231,11 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
         <SearchList results={ results.results } params={ {source: 'search_results', paginationStartIndex: 0 } }/>
         <div className="search-pagination-component">
             {
-              results.total_results > RESULTS_PER_PAGE &&
+              total_results > RESULTS_PER_PAGE &&
               <Pagination
-                activePage={ results.page_index + 1 }
+                activePage={ page_index + 1 }
                 itemsCountPerPage={ RESULTS_PER_PAGE }
-                totalItemsCount={ results.total_results }
+                totalItemsCount={ total_results }
                 pageRangeDisplayed={ 10 }
                 onChange={ this.onPaginationChange }
               />
