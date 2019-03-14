@@ -199,6 +199,8 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     const startIndex = (RESULTS_PER_PAGE * page_index) + 1;
     const endIndex = RESULTS_PER_PAGE * ( page_index + 1);
 
+
+    // TODO - Move error messages into Tab Component
     // Check no results
     if (total_results === 0 && searchTerm.length > 0) {
       return (
