@@ -41,9 +41,9 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
             </div>
             <div className="hidden-xs col-sm-6">
               <div className="secondary-title">Frequently Uses</div>
-              <div className="description">
+              <div className="description truncated">
                 { /*TODO Fill this with a real value*/ }
-                <a href="#">{ user.title }</a>
+                <label>{ user.title }</label>
               </div>
             </div>
           </div>
