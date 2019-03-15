@@ -242,7 +242,7 @@ def _search_table(*, search_term: str, page_index: int) -> Dict[str, Any]:
             'description': result.get('description', None),
             'database': result.get('database', None),
             'schema_name': result.get('schema_name', None),
-            'last_updated': result.get('last_updated', None),
+            'last_updated_epoch': result.get('last_updated_epoch', None),
         }
 
     tables = {

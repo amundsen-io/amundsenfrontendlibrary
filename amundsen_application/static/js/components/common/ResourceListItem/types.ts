@@ -10,11 +10,12 @@ export interface Resource {
 
 export interface TableResource extends Resource {
   type: ResourceType.table;
-  database: string;
   cluster: string;
+  database: string;
   description: string;
   key: string;
-  last_updated: number;
+  // 'popular_tables' currently does not support 'last_updated_epoch'
+  last_updated_epoch?: number;
   name: string;
   schema_name: string;
 }

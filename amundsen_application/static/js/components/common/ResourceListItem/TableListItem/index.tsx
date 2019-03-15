@@ -22,10 +22,9 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
   render() {
     const { table } = this.props;
 
-    // TODO - default last_updated timestamp is just for testing
-    table.last_updated = table.last_updated || Date.now();
-    const dateTokens = new Date(table.last_updated).toDateString().split(' ');
-    const lastUpdated = `${dateTokens[1]} ${dateTokens[2]}, ${dateTokens[3]}`;
+    const hasLastUpdated = table.last_updated_epoch !== 0 && table.last_updated_epoch !== null;
+    const dateTokens = new Date(table.last_updated_epoch * 1000).toDateString().split(' ');
+    const dateLabel = `${dateTokens[1]} ${dateTokens[2]}, ${dateTokens[3]}`;
 
     return (
       <li className="list-group-item">
@@ -36,17 +35,22 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
               <div className="main-title truncated">{ `${table.schema_name}.${table.name}`}</div>
               <div className="description truncated">{ table.description }</div>
             </div>
-            <div className="hidden-xs col-sm-3 col-md-4">
+            <div className={ hasLastUpdated? "hidden-xs col-sm-3 col-md-4" : "hidden-xs col-sm-6"}>
               <div className="secondary-title">Frequent Users</div>
-              {/*TODO - Replace with a link to a real user*/}
-              <div className="description"><a href="#">Ash Ketchum</a></div>
-            </div>
-            <div className="hidden-xs col-sm-3 col-md-2">
-              <div className="secondary-title">Latest Data</div>
-              <div className="description">
-                { lastUpdated }
+              {/* TODO - Replace with a link to a real user */}
+              <div className="description truncated">
+                <label>Ash Ketchum, Gary Oak</label>
               </div>
             </div>
+            {
+              hasLastUpdated &&
+              <div className="hidden-xs col-sm-3 col-md-2">
+                <div className="secondary-title">Latest Data</div>
+                <div className="description truncated">
+                  { dateLabel }
+                </div>
+              </div>
+            }
           </div>
           <img className="icon icon-right" />
         </Link>

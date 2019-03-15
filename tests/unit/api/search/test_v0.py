@@ -25,7 +25,7 @@ class SearchTest(unittest.TestCase):
                     'database': 'test_db',
                     'description': 'This is a test',
                     'key': 'test_key',
-                    'last_updated': 1527283287,
+                    'last_updated_epoch': 1527283287,
                     'name': 'test_table',
                     'schema_name': 'test_schema',
                     'tags': [],
@@ -39,7 +39,7 @@ class SearchTest(unittest.TestCase):
                 'database': 'test_db',
                 'description': 'This is a test',
                 'key': 'test_key',
-                'last_updated': 1527283287,
+                'last_updated_epoch': 1527283287,
                 'name': 'test_table',
                 'schema_name': 'test_schema',
             }
