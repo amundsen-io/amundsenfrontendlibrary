@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 import { LoggingParams, TableResource} from '../types';
+import Bookmark from '../../Bookmark';
 
 interface TableListItemProps {
   table: TableResource;
@@ -29,10 +30,15 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
     return (
       <li className="list-group-item">
         <Link className="resource-list-item table-list-item" to={ this.getLink() }>
-          <img className="icon icon-database icon-color" />
+          <img className="icon icon-database icon-color " />
           <div className="content">
             <div className="col-xs-12 col-sm-6">
-              <div className="main-title truncated">{ `${table.schema_name}.${table.name}`}</div>
+              <div className="main-title">
+                <span className="truncated">
+                  { `${table.schema_name}.${table.name}`}
+                </span>
+                <Bookmark />
+              </div>
               <div className="description truncated">{ table.description }</div>
             </div>
             <div className={ hasLastUpdated? "hidden-xs col-sm-3 col-md-4" : "hidden-xs col-sm-6"}>
