@@ -8,7 +8,7 @@ import { GetTableDataRequest } from '../../ducks/tableMetadata/types';
 import DataPreviewButton from '../../containers/TableDetail/DataPreviewButton';
 import TableDescEditableText from '../../containers/TableDetail/TableDescEditableText';
 import OwnerEditor from '../../containers/TableDetail/OwnerEditor';
-import TagInput from '../../containers/TagInput';
+import TagInput from '../Tags/TagInput';
 
 import AppConfig from '../../../config/config';
 import AvatarLabel from '../common/AvatarLabel';
