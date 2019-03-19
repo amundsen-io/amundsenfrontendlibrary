@@ -24,7 +24,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   public static defaultProps: SearchBarProps = {
     handleValueSubmit: () => undefined,
-    placeholder: 'Search for data resources...', // TODO: Hard-coded text strings should be translatable/customizable
+    placeholder: 'search for data resources...', // TODO: Hard-coded text strings should be translatable/customizable
     searchTerm: '',
     subText: DEFAULT_SUBTEXT,
   };
@@ -89,19 +89,20 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   render() {
     const subTextClass = `subtext ${this.state.optionalSubTextClass}`;
     return (
-      <div id="search-bar" className="col-xs-12">
+      <div id="search-bar" className="col-xs-12 col-md-offset-1 col-md-10">
         <form className="search-bar-form" onSubmit={ this.handleValueSubmit }>
             <button className="btn btn-flat-icon search-bar-button" type="submit">
               <img className="icon icon-search" />
             </button>
             <input
-             className="search-bar-input form-control"
-             value={ this.state.searchTerm }
-             onChange={ this.handleValueChange }
-             aria-label={ this.props.placeholder }
-             placeholder={ this.props.placeholder }
-             autoFocus={ true }
-             ref={ this.inputRef }
+              id="searchInput"
+              className="search-bar-input form-control"
+              value={ this.state.searchTerm }
+              onChange={ this.handleValueChange }
+              aria-label={ this.props.placeholder }
+              placeholder={ this.props.placeholder }
+              autoFocus={ true }
+              ref={ this.inputRef }
             />
         </form>
         <div className={ subTextClass }>

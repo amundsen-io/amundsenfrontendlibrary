@@ -2,7 +2,7 @@
 
 .nav-bar {
   height: 48px;
-  border-bottom: 1px solid $gray-lighter;
+  box-shadow: 0 2px 0 -1px $gray-lightest;
   padding: 8px 32px 8px 32px;
   font-family: $font-family-sans-serif-bold;
   font-weight: $font-weight-sans-serif-bold;
