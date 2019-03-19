@@ -3,6 +3,7 @@ import Avatar from 'react-avatar';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom'
 
 import AppConfig from '../../../config/config';
 import { GlobalState } from "../../ducks/rootReducer";
@@ -90,4 +91,4 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ getCurrentUser }, dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(NavBar);
+export default withRouter(connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(NavBar));
