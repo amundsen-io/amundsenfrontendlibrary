@@ -3,6 +3,7 @@ import Avatar from 'react-avatar';
 import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom'
 
 import AppConfig from '../../../config/config';
 import { GlobalState } from "../../ducks/rootReducer";
@@ -71,7 +72,7 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
               {
                 this.state.loggedInUser &&
                 <Link to={`/user/${this.state.loggedInUser.user_id}`}>
-                  <Avatar name={this.state.loggedInUser.display_name} size={48} round={true} />
+                  <Avatar name={this.state.loggedInUser.display_name} size={32} round={true} />
                 </Link>
               }
             </div>
@@ -92,4 +93,4 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ getLoggedInUser }, dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(NavBar);
+export default withRouter(connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(NavBar));
