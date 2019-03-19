@@ -11,7 +11,7 @@ import DocumentTitle from 'react-document-title';
 
 import AnnouncementPage from './components/AnnouncementPage';
 import BrowsePage from './components/BrowsePage';
-import Feedback from './components/common/Feedback';
+import Feedback from './components/Feedback';
 import Footer from './components/Footer';
 import NavBar from './components/NavBar';
 import NotFoundPage from './components/NotFoundPage';
