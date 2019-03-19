@@ -153,7 +153,7 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
       paginationStartIndex: 0,
     };
     return (
-        <div className="col-xs-12">
+        <div className="col-xs-12 col-md-offset-1 col-md-10">
           <div className="search-list-container">
             <div className="search-list-header">
               <label>Popular Tables</label>
@@ -180,7 +180,7 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     ];
 
     return (
-      <div className="col-xs-12">
+      <div className="col-xs-12 col-md-offset-1 col-md-10">
         <TabsComponent
           tabs={ tabConfig }
           defaultTab={ ResourceType.table }
