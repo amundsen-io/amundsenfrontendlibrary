@@ -49,32 +49,10 @@
     }
   }
 
-  &.btn-default {
-    img.icon {
-      background-color: $btn-default-color;
-    }
-
-    &:not(.disabled):hover,
-    &:not([disabled]):hover,
-    &:focus {
-      background-color: $btn-default-bg-hover;
-      border-color: $btn-default-border-hover;
-      outline: none;
-    }
-  }
-
-  * {
-    vertical-align: middle;
-  }
-
-  &.btn-block {
-    margin-bottom: 4px;
-  }
-
   &.btn-flat-icon {
     border: none;
     background-color: transparent;
-    color: $text-medium;
+    color: $gray-light;
     box-shadow: none !important;
     padding: 0px;
     text-align: left;
@@ -91,6 +69,9 @@
     }
   }
 
+  &.btn-shadow {
+    box-shadow: 0 1px 3px 0 rgba(17, 17, 31, 0.12);
+  }
 
   &.disabled,
   &:disabled {
