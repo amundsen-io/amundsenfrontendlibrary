@@ -95,7 +95,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
               <img className="icon icon-search" />
             </button>
             <input
-              id="searchInput"
+              id="search-input"
               className="search-bar-input form-control"
               value={ this.state.searchTerm }
               onChange={ this.handleValueChange }

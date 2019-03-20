@@ -67,18 +67,6 @@ img.icon {
   }
 }
 
-.btn img.icon {
-
-  // Some icons need to be scaled down when inside buttons
-  &.icon-database {
-    -webkit-mask-position: 3px 3px;
-    mask-position: 3px 3px;
-
-    -webkit-mask-size: 18px 18px;
-    mask-size: 18px 18px;
-  }
-}
-
 .disabled,
 :disabled {
   > img.icon,
