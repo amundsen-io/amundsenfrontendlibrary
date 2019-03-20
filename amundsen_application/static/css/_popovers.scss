@@ -4,14 +4,14 @@
 .popover {
   background-color: $gray-darker;
   border: 1px solid $gray-darker;
-  color: $gray-lighter;
+  color: $text-light;
   font-size: 12px;
   padding: 5px;
 }
 .popover-title {
   background-color: $gray-darker;
   border-bottom: 1px solid $gray-light;
-  color: $gray-lighter;
+  color: $text-light;
   font-size: 14px;
   padding: 5px;
 }
@@ -32,7 +32,7 @@
 }
 
 .tooltip-inner {
-  padding: 0px;
+  padding: 0;
   border-radius: 3px;
   background-color: $gray-darker;
 }
@@ -50,7 +50,7 @@
   outline: none;
 }
 .tooltip-inner button:hover {
-  color: $gray-light;
+  color: $text-medium;
 }
 
 .error-tooltip {

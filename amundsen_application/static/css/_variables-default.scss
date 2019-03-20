@@ -26,7 +26,13 @@ $gray-lightest: lighten($gray-base, 95%) !default; // #f2f2f2
 
 // Scaffolding
 $body-bg:    #fff !default;
-$text-color: $gray-dark !default;
+// TODO - replace $text-color with the new $text-light, medium, dark
+
+$text-dark: $gray-dark !default;
+$text-medium: $gray !default;
+$text-light: $gray-lighter !default;
+$text-color: $text-dark !default;
+
 
 
 // Typography
