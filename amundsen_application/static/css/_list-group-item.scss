@@ -2,16 +2,19 @@
 @import 'variables';
 
 .list-group-item {
-  cursor: pointer;
   border: 1px solid $gray-light;
   border-left: none;
   border-right: none;
+  cursor: pointer;
   padding-left: 4px;
   padding-right: 4px;
-
 
   &:hover {
     border-color: $gray;
     background-color: $gray-lightest;
+  }
+
+  &:hover + li {
+    border-top-color: $gray;
   }
 }
