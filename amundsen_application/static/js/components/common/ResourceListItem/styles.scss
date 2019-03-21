@@ -4,12 +4,13 @@
   color: $text-dark;
   display: flex;
   flex-direction: row;
-  height: 40px;
+  height: 78px;
+  padding: 16px 8px;
   text-decoration: none;
 
   img.icon,
   .sb-avatar {
-    margin: auto 0 auto 8px;
+    margin: auto 0;
   }
 
   &:hover img.icon {
@@ -28,13 +29,13 @@
     }
 
     .secondary-title {
-      color: $text-light;
+      color: $text-medium;
       font-family: $font-family-sans-serif-bold;
       font-weight: $font-weight-sans-serif-bold;
     }
 
     .description {
-      color: $text-light;
+      color: $text-medium;
       display: block;
       font-size: $font-size-base;
       margin-top: 2px;

@@ -22,7 +22,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
   render() {
     const { table } = this.props;
 
-    const hasLastUpdated = table.last_updated_epoch !== 0 && table.last_updated_epoch !== null;
+    const hasLastUpdated = !!table.last_updated_epoch;
     const dateTokens = new Date(table.last_updated_epoch * 1000).toDateString().split(' ');
     const dateLabel = `${dateTokens[1]} ${dateTokens[2]}, ${dateTokens[3]}`;
 
