@@ -2,19 +2,18 @@
 @import 'variables';
 
 .list-group-item {
-  cursor: pointer;
+  border: 1px solid $gray-light;
   border-left: none;
   border-right: none;
-  padding: 16px 4px;
-}
-.list-group-item:hover {
-  border-top-color: $brand-color-2;
-  border-bottom-color: $brand-color-2;
-  background-color: $brand-color-1;
-}
-.list-group-item:hover + li {
-  border-top-color: $brand-color-2;
-}
-.list-group-item:hover + li:not(:last-child) {
-  border-bottom-color: $brand-color-2;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    border-color: $gray;
+    background-color: $gray-lightest;
+  }
+
+  &:hover + li {
+    border-top-color: $gray;
+  }
 }
