@@ -210,13 +210,9 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     // Check no results
     if (total_results === 0 && searchTerm.length > 0) {
       return (
-        <div className="col-xs-12 col-md-offset-1 col-md-10">
-          <div className="search-list-container">
-            <div className="search-list-header">
-              <label> { listTitle } </label>
-              <InfoButton infoText={ infoText }/>
-            </div>
-            <SearchList results={ showPopularTables ? popularTables : results } params={ searchListParams }/>
+        <div className="search-list-container">
+          <div className="search-error">
+            Your search - <i>{ searchTerm }</i> - did not match any { tabLabel } result
           </div>
         </div>
       )
