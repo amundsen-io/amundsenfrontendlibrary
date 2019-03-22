@@ -9,16 +9,15 @@ import { createStore, applyMiddleware } from 'redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
 
-import AnnouncementPage from './containers/AnnouncementPage';
-import BrowsePage from "./containers/BrowsePage";
-import ProfilePage from './components/ProfilePage';
-import SearchPage from './containers/SearchPage';
-import TableDetail from './containers/TableDetail';
-
-import Feedback from './components/common/Feedback';
+import AnnouncementPage from './components/AnnouncementPage';
+import BrowsePage from './components/BrowsePage';
+import Feedback from './components/Feedback';
 import Footer from './components/Footer';
 import NavBar from './components/NavBar';
 import NotFoundPage from './components/NotFoundPage';
+import ProfilePage from './components/ProfilePage';
+import SearchPage from './components/SearchPage';
+import TableDetail from './components/TableDetail';
 
 import rootReducer from './ducks/rootReducer';
 import rootSaga from './ducks/rootSaga';

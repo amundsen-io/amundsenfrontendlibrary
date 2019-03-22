@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as DocumentTitle from 'react-document-title';
 import * as qs from 'simple-query-string';
 import Pagination from 'react-js-pagination';
@@ -8,6 +10,8 @@ import SearchList from './SearchList';
 import InfoButton from '../common/InfoButton';
 import { ResourceType, TableResource } from "../common/ResourceListItem/types";
 
+import { GlobalState } from "../../ducks/rootReducer";
+import { searchAll, searchResource } from '../../ducks/search/reducer';
 import {
   DashboardSearchResults,
   SearchAllOptions,
@@ -16,7 +20,9 @@ import {
   TableSearchResults,
   UserSearchResults
 } from "../../ducks/search/types";
+import { getPopularTables } from '../../ducks/popularTables/reducer';
 import { GetPopularTablesRequest } from '../../ducks/popularTables/types';
+
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 import TabsComponent from "../common/Tabs";
@@ -44,7 +50,7 @@ interface SearchPageState {
   selectedTab: ResourceType;
 }
 
-class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
+export class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
   public static defaultProps: SearchPageProps = {
     searchAll: () => undefined,
     searchResource: () => undefined,
@@ -204,9 +210,13 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
     // Check no results
     if (total_results === 0 && searchTerm.length > 0) {
       return (
-        <div className="search-list-container">
-          <div className="search-error">
-            Your search - <i>{ searchTerm }</i> - did not match any { tabLabel } results.
+        <div className="col-xs-12 col-md-offset-1 col-md-10">
+          <div className="search-list-container">
+            <div className="search-list-header">
+              <label> { listTitle } </label>
+              <InfoButton infoText={ infoText }/>
+            </div>
+            <SearchList results={ showPopularTables ? popularTables : results } params={ searchListParams }/>
           </div>
         </div>
       )
@@ -269,4 +279,18 @@ class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
   }
 }
 
-export default SearchPage;
+export const mapStateToProps = (state: GlobalState) => {
+  return {
+    searchTerm: state.search.search_term,
+    popularTables: state.popularTables,
+    tables: state.search.tables,
+    users: state.search.users,
+    dashboards: state.search.dashboards,
+  };
+};
+
+export const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators({ searchAll, searchResource, getPopularTables } , dispatch);
+};
+
+export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(SearchPage);

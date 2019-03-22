@@ -1,8 +1,10 @@
 import * as React from 'react';
-import Avatar from 'react-avatar';
-import { Link, NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom'
+
+import Avatar from 'react-avatar';
+import { Link, NavLink } from 'react-router-dom';
 import { withRouter } from 'react-router-dom'
 
 import AppConfig from '../../../config/config';
@@ -28,7 +30,7 @@ interface NavBarState {
   loggedInUser: LoggedInUser;
 }
 
-class NavBar extends React.Component<NavBarProps, NavBarState> {
+export class NavBar extends React.Component<NavBarProps, NavBarState> {
   constructor(props) {
     super(props);
 
@@ -83,7 +85,7 @@ class NavBar extends React.Component<NavBarProps, NavBarState> {
   }
 }
 
-const mapStateToProps = (state: GlobalState) => {
+export const mapStateToProps = (state: GlobalState) => {
   return {
     loggedInUser: state.user.loggedInUser,
   }
