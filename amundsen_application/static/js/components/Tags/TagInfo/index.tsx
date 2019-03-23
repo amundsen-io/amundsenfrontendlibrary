@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '../types';
+import { log } from "../../../ducks/utilMethods";
+
 
 import './styles.scss';
 
 interface TagInfoProps {
   data: Tag;
   compact?: boolean;
+  location: string;
 }
 
 class TagInfo extends React.Component<TagInfoProps, {}> {
@@ -19,19 +22,28 @@ class TagInfo extends React.Component<TagInfoProps, {}> {
   }
 
   render() {
-    const searchUrl = `/search?searchTerm=tag:${this.props.data.tag_name}`;
+    const name = this.props.data.tag_name;
+    const searchUrl = `/search?searchTerm=tag:${name}`;
+
+    const analyticsId = `tag::${name}`;
 
     if (this.props.compact) {
       return (
-        <Link role="button" to={searchUrl} className="btn tag-button compact">
-          {this.props.data.tag_name}
+        <Link
+          role="button" to={searchUrl} className="btn tag-button compact"
+          onClick={()=> {log('click', analyticsId, 'tag', name, this.props.location)}}
+        >
+          { name }
         </Link>
       );
     }
 
     return (
-      <Link role="button" to={searchUrl} className="btn tag-button">
-        <span className="tag-name">{this.props.data.tag_name}</span>
+      <Link
+        role="button" to={searchUrl} className="btn tag-button"
+        onClick={()=> {log('click', analyticsId, 'tag', name, this.props.location)}}
+      >
+        <span className="tag-name">{ name }</span>
         <span className="tag-count">{this.props.data.tag_count}</span>
       </Link>
     );

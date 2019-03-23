@@ -11,8 +11,8 @@ import makeAnimated from 'react-select/lib/animated';
 import { GlobalState } from "../../../ducks/rootReducer";
 import { getAllTags } from '../../../ducks/allTags/reducer';
 import { GetAllTagsRequest } from '../../../ducks/allTags/types';
+import { TableMetadata, UpdateTagsRequest } from '../../../ducks/tableMetadata/types';
 import { updateTags } from '../../../ducks/tableMetadata/tags/reducer';
-import { UpdateTagsRequest } from '../../../ducks/tableMetadata/types';
 
 import TagInfo from "../TagInfo";
 import { Tag, UpdateTagMethod, UpdateTagData } from '../types';
@@ -36,6 +36,7 @@ export interface StateFromProps {
   allTags: Tag[];
   isLoading: boolean;
   tags: Tag[];
+  tableData: TableMetadata;
 }
 
 export interface DispatchFromProps {
@@ -67,6 +68,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     readOnly: true,
     tags: undefined,
     updateTags: () => void(0),
+    tableData: null,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -240,7 +242,8 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
 
     let tagBody;
     if (this.state.readOnly) {
-      tagBody = this.state.tags.map((tag, index) => <TagInfo data={tag} key={index}/>)
+      const location = `${this.props.tableData.schema}.${this.props.tableData.table_name}`;
+      tagBody = this.state.tags.map((tag, index) => <TagInfo data={tag} location={location} key={index}/>)
     } else {
       tagBody = (
         <CreatableSelect

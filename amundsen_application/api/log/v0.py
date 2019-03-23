@@ -14,34 +14,41 @@ LOGGER = logging.getLogger(__name__)
 log_blueprint = Blueprint('log', __name__, url_prefix='/api/log/v0')
 
 
-@log_blueprint.route('/', methods=['PUT'])
+@log_blueprint.route('/log_event', methods=['POST'])
 def log_generic_action() -> Response:
     """
     Log a generic action on the frontend. Captured parameters include
 
-    :param command: (Required) Name of action to be logged
-    :param key: (Optional)
-    :param value: (Optional)
-    :param source: (Optional)
+    :param command: Req. User Action E.g. click, scroll, hover, search, etc
+    :param target_id: Req. Unique identifier for the object acted upon E.g. tag::payments, table::schema.database
+    :param target_type: Opt. Type of element event took place on (button, link, tag, icon, etc)
+    :param label: Opt. Displayed text for target
+    :param location: Opt. Where the the event occurred
+    :param index: Opt. Index in a list of items
     :return:
     """
     @action_logging
-    def _log_generic_action(*, command: str, key: str, value: str, source: str) -> None:
+    def _log_generic_action(*, command: str, target_id: str, target_type:str, label: str, location: str, index: int) -> None:
         pass  # pragma: no cover
 
     try:
-        command = get_query_param(request.args, 'command', '"command" is a required parameter.')
+
+        args = request.get_json()
+        command = get_query_param(args, 'command', '"command" is a required parameter.')
+        target_id = get_query_param(args, 'target_id', '"target_id" is a required field.')
         _log_generic_action(
             command=command,
-            key=request.args.get('key', None),
-            value=request.args.get('value', None),
-            source=request.args.get('source', None)
+            target_id=target_id,
+            target_type=args.get('target_type', None),
+            label=args.get('label', None),
+            location=args.get('location', None),
+            index=args.get('index', None)
         )
-        return make_response({}, HTTPStatus.OK)
+        message = 'success'
+        return make_response(jsonify({'msg': message}), HTTPStatus.OK)
 
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
         payload = jsonify({'msg': message})
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
-
