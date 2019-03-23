@@ -74,7 +74,7 @@ class BrowsePage extends React.Component<BrowsePageProps, BrowsePageState> {
               <div className="browse-body">
                 {
                   this.state.curatedTags.map((tag, index) =>
-                    <TagInfo data={ tag } compact={ false } key={ index }/>)
+                    <TagInfo data={ tag } compact={ false } location="browse" key={ index }/>)
                 }
                 {
                   this.state.curatedTags.length > 0 && this.state.otherTags.length > 0 &&
@@ -82,7 +82,7 @@ class BrowsePage extends React.Component<BrowsePageProps, BrowsePageState> {
                 }
                 {
                   this.state.otherTags.map((tag, index) =>
-                    <TagInfo data={ tag } compact={ false } key={ index }/>)
+                    <TagInfo data={ tag } compact={ false } location="browse" key={ index }/>)
                 }
               </div>
             </div>

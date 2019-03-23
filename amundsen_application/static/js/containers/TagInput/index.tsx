@@ -12,6 +12,7 @@ export const mapStateToProps = (state: GlobalState) => {
     allTags: state.allTags.allTags,
     isLoading: state.allTags.isLoading || state.tableMetadata.tableTags.isLoading,
     tags: state.tableMetadata.tableTags.tags,
+    tableData: state.tableMetadata.tableData
   };
 };
 
