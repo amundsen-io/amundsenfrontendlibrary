@@ -1,8 +1,8 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
-export interface LoggingParams {
+export interface ActionLogParams {
   command: string;
-  target_id: string;
+  target_id?: string;
   target_type?: string;
   label?: string;
   location?: string;
@@ -12,7 +12,7 @@ export interface LoggingParams {
 const BASE_URL = '/api/log/v0/log_event';
 
 
-export function logAction(params: LoggingParams) {
+export function postActionLog(params: ActionLogParams) {
   axios.post(BASE_URL, params)
   .then((response: AxiosResponse) => {
     return response.data;

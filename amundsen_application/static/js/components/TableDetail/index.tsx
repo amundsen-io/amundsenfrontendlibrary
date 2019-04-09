@@ -20,12 +20,13 @@ import OwnerEditor from './OwnerEditor';
 import TableDescEditableText from './TableDescEditableText';
 import TagInput from '../Tags/TagInput';
 import WatermarkLabel from "./WatermarkLabel";
+import { logAction } from "../../ducks/utilMethods";
 
 import Avatar from 'react-avatar';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router';
 
-import { PreviewQueryParams, TableMetadata, TableOwners } from './types';
+import { PreviewQueryParams, TableMetadata } from './types';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
@@ -120,8 +121,16 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     if (profileUrl.length !== 0) {
       return (
         <OverlayTrigger key={fullName} trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
-          <a href={profileUrl} target='_blank' style={{ display: 'inline-block', marginLeft: '-5px',
-            backgroundColor: 'white', borderRadius: '90%'}}>
+          <a href={profileUrl} target='_blank'
+             style={{ display: 'inline-block', marginLeft: '-5px', backgroundColor: 'white', borderRadius: '90%'}}
+             onClick={() => logAction({
+               command: 'click',
+               target_id: `avatar::${fullName}`,
+               target_type: 'link',
+               label: fullName,
+               location: 'frequent users',
+             })}
+          >
             <Avatar name={fullName} size={25} round={true} style={{ border: '1px solid white' }} />
           </a>
         </OverlayTrigger>
@@ -291,7 +300,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
 
 
     return entityCardSections;
-  }
+  };
 
   render() {
     const data = this.state.tableData;

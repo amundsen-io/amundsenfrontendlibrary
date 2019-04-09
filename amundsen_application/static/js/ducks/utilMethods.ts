@@ -1,5 +1,5 @@
 import { Tag } from '../components/Tags/types';
-import { logAction } from "./log/api/v0";
+import { ActionLogParams, postActionLog } from "./log/api/v0";
 
 export function sortTagsAlphabetical(a: Tag, b: Tag): number {
   return a.tag_name.localeCompare(b.tag_name);
@@ -28,12 +28,6 @@ export function filterFromObj(initialObj: object, rejectedKeys: string[]): objec
 }
 
 
-export function log(command: string, target_id: string, target_type: string, label?: string, location?: string, index?: number) {
-  const params = { command, target_id, target_type, label, location, index };
-  ['target_type', 'label', 'location', 'index'].forEach((propName) => {
-    if (params[propName] == null || params[propName] === '') {
-      delete params[propName];
-    }
-  });
-  logAction(params);
+export function logAction(props: ActionLogParams) {
+  postActionLog(props);
 }
