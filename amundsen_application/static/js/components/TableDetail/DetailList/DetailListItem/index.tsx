@@ -38,7 +38,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
         target_id: `column::${metadata.name}`,
         target_type: 'column stats',
         label: `${metadata.name} ${metadata.type}`,
-        location: 'table details',
+        location: 'table-details',
       });
     }
 

@@ -28,7 +28,13 @@ def log_generic_action() -> Response:
     :return:
     """
     @action_logging
-    def _log_generic_action(*, command: str, target_id: str, target_type:str, label: str, location: str, index: int) -> None:
+    def _log_generic_action(*,
+                            command: str,
+                            target_id: str,
+                            target_type: str,
+                            label: str,
+                            location: str,
+                            index: int) -> None:
         pass  # pragma: no cover
 
     try:

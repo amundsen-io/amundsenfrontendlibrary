@@ -125,10 +125,10 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
              style={{ display: 'inline-block', marginLeft: '-5px', backgroundColor: 'white', borderRadius: '90%'}}
              onClick={() => logAction({
                command: 'click',
-               target_id: `avatar::${fullName}`,
+               target_id: 'frequent-users',
                target_type: 'link',
                label: fullName,
-               location: 'frequent users',
+               location: 'table-details',
              })}
           >
             <Avatar name={fullName} size={25} round={true} style={{ border: '1px solid white' }} />
@@ -155,7 +155,16 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
 
     if (appUrl.length !== 0) {
       return (
-        <a href={appUrl} target='_blank'>
+        <a href={appUrl}
+           target='_blank'
+           onClick={() => logAction({
+             command: 'click',
+             target_id: 'explore-writer',
+             target_type: 'link',
+             label: appName,
+             location: 'table-details',
+           })}
+        >
           { avatarLabel }
         </a>
       );
@@ -172,7 +181,16 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
       const avatarLabel = <AvatarLabel label={displayName} src={image}/>;
 
       return (
-        <a href={source.source} target='_blank'>
+        <a href={source.source}
+           target='_blank'
+           onClick={() => logAction({
+             command: 'click',
+             target_id: 'explore-source',
+             target_type: 'link',
+             label: displayName,
+             location: 'table-details',
+           })}
+        >
           { avatarLabel }
         </a>
       );
@@ -183,7 +201,16 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     const href = AppConfig.tableLineage.urlGenerator(this.database, this.cluster, this.schema, this.tableName);
     const displayName = `${this.schema}.${this.tableName}`;
     return (
-      <a href={ href } target='_blank'>
+      <a href={ href }
+         target='_blank'
+         onClick={() => logAction({
+           command: 'click',
+           target_id: 'explore-lineage',
+           target_type: 'link',
+           label: displayName,
+           location: 'table-details',
+         })}
+      >
         <AvatarLabel label={ displayName } src={ AppConfig.tableLineage.iconPath }/>
       </a>
     );
@@ -274,6 +301,13 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
                  href={this.getExploreSqlUrl()}
                  role="button"
                  target="_blank"
+                 onClick={() => logAction({
+                   command: 'click',
+                   target_id: 'explore-sql',
+                   target_type: 'link',
+                   label: 'Explore with SQL',
+                   location: 'table-details',
+                 })}
               >
                 <img className="icon icon-color icon-database"/>
                 Explore with SQL
@@ -349,7 +383,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
       </DocumentTitle>
     );
   }
-};
+}
 
 export const mapStateToProps = (state: GlobalState) => {
   return {
