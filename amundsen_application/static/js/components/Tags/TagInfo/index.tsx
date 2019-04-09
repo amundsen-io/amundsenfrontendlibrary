@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '../types';
-import { log } from '../../../ducks/utilMethods';
+import { logAction } from '../../../ducks/utilMethods';
 
 
 import './styles.scss';
@@ -31,7 +31,13 @@ class TagInfo extends React.Component<TagInfoProps, {}> {
       return (
         <Link
           role="button" to={searchUrl} className="btn tag-button compact"
-          onClick={()=> {log('click', analyticsId, 'tag', name, this.props.location)}}
+          onClick={() => logAction({
+            command: 'click',
+            target_id: analyticsId,
+            target_type: 'tag',
+            label: name,
+            location: this.props.location,
+          })}
         >
           { name }
         </Link>
@@ -41,7 +47,13 @@ class TagInfo extends React.Component<TagInfoProps, {}> {
     return (
       <Link
         role="button" to={searchUrl} className="btn tag-button"
-        onClick={()=> {log('click', analyticsId, 'tag', name, this.props.location)}}
+        onClick={() => logAction({
+          command: 'click',
+          target_id: analyticsId,
+          target_type: 'tag',
+          label: name,
+          location: this.props.location,
+        })}
       >
         <span className="tag-name">{ name }</span>
         <span className="tag-count">{this.props.data.tag_count}</span>

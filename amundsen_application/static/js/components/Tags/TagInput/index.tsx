@@ -239,7 +239,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     } : {
       DropdownIndicator: () => { return null },
       IndicatorSeparator: () => { return null },
-    } ;
+    };
 
     let tagBody;
     if (this.state.readOnly) {
@@ -303,6 +303,7 @@ export const mapStateToProps = (state: GlobalState) => {
     allTags: state.allTags.allTags,
     isLoading: state.allTags.isLoading || state.tableMetadata.tableTags.isLoading,
     tags: state.tableMetadata.tableTags.tags,
+    tableData: state.tableMetadata.tableData,
   };
 };
 

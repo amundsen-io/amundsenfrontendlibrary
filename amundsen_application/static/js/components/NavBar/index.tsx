@@ -8,11 +8,9 @@ import { withRouter } from 'react-router-dom'
 
 import AppConfig from '../../../config/config';
 import { GlobalState } from "../../ducks/rootReducer";
-import { executeSearch } from '../../ducks/search/reducer';
-import { getPopularTables } from '../../ducks/popularTables/reducer';
 import { getCurrentUser } from "../../ducks/user/reducer";
 import { CurrentUser, GetCurrentUserRequest } from "../../ducks/user/types";
-import { log } from "../../ducks/utilMethods";
+import { logAction } from "../../ducks/utilMethods";
 
 
 import './styles.scss';
@@ -72,7 +70,13 @@ export class NavBar extends React.Component<NavBarProps, NavBarState> {
                     return (
                       <NavLink
                         key={index} to={link.href} target={link.target}
-                        onClick={() => log('click', link.id, 'link', link.label, 'navbar')}
+                        onClick={() => logAction({
+                          command: 'click',
+                          target_id: link.id,
+                          target_type: 'link',
+                          label: link.label,
+                          location: 'navbar',
+                        })}
                       >
                         {link.label}
                       </NavLink>
@@ -81,7 +85,13 @@ export class NavBar extends React.Component<NavBarProps, NavBarState> {
                   return (
                     <a
                       key={index} href={link.href} target={link.target}
-                      onClick={() => log('click', link.id, 'link', link.label, 'navbar')}
+                      onClick={() => logAction({
+                        command: 'click',
+                        target_id: link.id,
+                        target_type: 'link',
+                        label: link.label,
+                        location: 'navbar',
+                      })}
                     >
                       {link.label}
                     </a>
