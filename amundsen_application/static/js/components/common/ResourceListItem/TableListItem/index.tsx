@@ -31,17 +31,16 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
         <Link className="resource-list-item table-list-item" to={ this.getLink() }>
           <img className="icon icon-database icon-color" />
           <div className="content">
-            <div className="col-xs-12 col-sm-6">
+            <div className={ hasLastUpdated? "col-sm-9 col-md-10" : "col-sm-12"}>
               <div className="main-title truncated">{ `${table.schema_name}.${table.name}`}</div>
               <div className="description truncated">{ table.description }</div>
             </div>
-            <div className={ hasLastUpdated? "hidden-xs col-sm-3 col-md-4" : "hidden-xs col-sm-6"}>
-              <div className="secondary-title">Frequent Users</div>
-              {/* TODO - Replace with a link to a real user */}
-              <div className="description truncated">
-                <label>Ash Ketchum, Gary Oak</label>
-              </div>
-            </div>
+            {/*<div className={ hasLastUpdated? "hidden-xs col-sm-3 col-md-4" : "hidden-xs col-sm-6"}>*/}
+              {/*<div className="secondary-title">Frequent Users</div>*/}
+              {/*<div className="description truncated">*/}
+                {/*<label> </label>*/}
+              {/*</div>*/}
+            {/*</div>*/}
             {
               hasLastUpdated &&
               <div className="hidden-xs col-sm-3 col-md-2">

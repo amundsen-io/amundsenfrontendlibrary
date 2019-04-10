@@ -161,7 +161,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     return (
         <div className="col-xs-12 col-md-offset-1 col-md-10">
           <div className="search-list-container">
-            <div className="search-list-header">
+            <div className="popular-tables-header">
               <label>Popular Tables</label>
               <InfoButton infoText={ "These are some of the most commonly accessed tables within your organization." }/>
             </div>
@@ -178,11 +178,12 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
         key: ResourceType.table,
         content: this.getTabContent(this.props.tables, 'tables'),
       },
-      {
-        title: `Users (${ this.props.users.total_results })`,
-        key: ResourceType.user,
-        content: this.getTabContent(this.props.users, 'users'),
-      },
+      // TODO PEOPLE - Uncomment when enabling people
+      // {
+      //   title: `Users (${ this.props.users.total_results })`,
+      //   key: ResourceType.user,
+      //   content: this.getTabContent(this.props.users, 'users'),
+      // },
     ];
 
     return (

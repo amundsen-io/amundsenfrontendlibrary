@@ -71,9 +71,10 @@ export class NavBar extends React.Component<NavBarProps, NavBarState> {
               }
               {
                 this.state.loggedInUser &&
-                <Link to={`/user/${this.state.loggedInUser.user_id}`}>
+                // TODO PEOPLE - Uncomment when enabling people
+                //<Link to={`/user/${this.state.loggedInUser.user_id}`}>
                   <Avatar name={this.state.loggedInUser.display_name} size={32} round={true} />
-                </Link>
+                //</Link>
               }
             </div>
           </div>

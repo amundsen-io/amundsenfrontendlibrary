@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as DocumentTitle from 'react-document-title';
-import * as $ from 'jquery';
 import * as qs from 'simple-query-string';
 
 import { GlobalState } from "../../ducks/rootReducer";
@@ -21,8 +20,6 @@ import OwnerEditor from './OwnerEditor';
 import TableDescEditableText from './TableDescEditableText';
 import TagInput from '../Tags/TagInput';
 import WatermarkLabel from "./WatermarkLabel";
-
-import { Tag } from '../Tags/types';
 
 import Avatar from 'react-avatar';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
