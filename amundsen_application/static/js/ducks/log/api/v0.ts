@@ -6,7 +6,7 @@ export interface ActionLogParams {
   target_type?: string;
   label?: string;
   location?: string;
-  index?: number;
+  value?: number;
 }
 
 const BASE_URL = '/api/log/v0/log_event';

@@ -30,6 +30,7 @@ import { PreviewQueryParams, TableMetadata } from './types';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+import ScrollTracker from "../common/ScrollTracker";
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -55,6 +56,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
   private database: string;
   private schema: string;
   private tableName: string;
+  private displayName: string;
   public static defaultProps: TableDetailProps = {
     getTableData: () => undefined,
     getPreviewData: () => undefined,
@@ -90,6 +92,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     this.database = params ? params.db : '';
     this.schema = params ? params.schema : '';
     this.tableName = params ? params.table : '';
+    this.displayName = params ? `${this.schema}.${this.tableName}` : '';
 
     this.state = {
       isLoading: props.isLoading,
@@ -173,12 +176,10 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     return avatarLabel;
   }
 
-  getAvatarForTableSource(schema, table, source) {
-
+  getAvatarForTableSource = (source) => {
     if (source !== null) {
       const image = (source.source_type === 'github')? '/static/images/github.png': '';
-      const displayName = schema + '.' + table;
-      const avatarLabel = <AvatarLabel label={displayName} src={image}/>;
+      const avatarLabel = <AvatarLabel label={this.displayName} src={image}/>;
 
       return (
         <a href={source.source}
@@ -187,7 +188,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
              command: 'click',
              target_id: 'explore-source',
              target_type: 'link',
-             label: displayName,
+             label: this.displayName,
              location: 'table-details',
            })}
         >
@@ -195,11 +196,10 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
         </a>
       );
     }
-  }
+  };
 
   getAvatarForLineage = () => {
     const href = AppConfig.tableLineage.urlGenerator(this.database, this.cluster, this.schema, this.tableName);
-    const displayName = `${this.schema}.${this.tableName}`;
     return (
       <a href={ href }
          target='_blank'
@@ -207,11 +207,11 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
            command: 'click',
            target_id: 'explore-lineage',
            target_type: 'link',
-           label: displayName,
+           label: this.displayName,
            location: 'table-details',
          })}
       >
-        <AvatarLabel label={ displayName } src={ AppConfig.tableLineage.iconPath }/>
+        <AvatarLabel label={ this.displayName } src={ AppConfig.tableLineage.iconPath }/>
       </a>
     );
   };
@@ -275,7 +275,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     const source = data.source;
     if (source && source.source !== null) {
       const sourceRenderer = () => {
-        return this.getAvatarForTableSource(data.schema, data.table_name, source);
+        return this.getAvatarForTableSource(source);
       };
 
       entityCardSections.push({'title': 'Source Code', 'contentRenderer': sourceRenderer, 'isEditable': false});
@@ -294,7 +294,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     const previewSectionRenderer = () => {
       return (
         <div>
-          <DataPreviewButton modalTitle={`${this.schema}.${this.tableName}`} />
+          <DataPreviewButton modalTitle={ this.displayName } />
           {
             AppConfig.tableProfile.isExploreEnabled &&
               <a className="btn btn-default btn-block"
@@ -374,11 +374,12 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
                 />
               </div>
             </div>
+            <ScrollTracker location="table-details" targetId={ this.displayName }/>
           </div>
         );
     }
     return (
-      <DocumentTitle title={ `${this.schema}.${this.tableName} - Amundsen Table Details` }>
+      <DocumentTitle title={ `${this.displayName} - Amundsen Table Details` }>
         { innerContent }
       </DocumentTitle>
     );

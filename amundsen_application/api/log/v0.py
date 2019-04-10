@@ -24,7 +24,7 @@ def log_generic_action() -> Response:
     :param target_type: Opt. Type of element event took place on (button, link, tag, icon, etc)
     :param label: Opt. Displayed text for target
     :param location: Opt. Where the the event occurred
-    :param index: Opt. Index in a list of items
+    :param value: Opt. Numeric value
     :return:
     """
     @action_logging
@@ -34,7 +34,7 @@ def log_generic_action() -> Response:
                             target_type: str,
                             label: str,
                             location: str,
-                            index: int) -> None:
+                            value: int) -> None:
         pass  # pragma: no cover
 
     try:
@@ -48,7 +48,7 @@ def log_generic_action() -> Response:
             target_type=args.get('target_type', None),
             label=args.get('label', None),
             location=args.get('location', None),
-            index=args.get('index', None)
+            value=args.get('value', None)
         )
         message = 'success'
         return make_response(jsonify({'msg': message}), HTTPStatus.OK)

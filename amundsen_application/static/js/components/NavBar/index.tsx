@@ -9,7 +9,6 @@ import AppConfig from '../../../config/config';
 import { GlobalState } from "../../ducks/rootReducer";
 import { getLoggedInUser } from "../../ducks/user/reducer";
 import { LoggedInUser, GetLoggedInUserRequest } from "../../ducks/user/types";
-import { log } from "../../ducks/utilMethods";
 import { logAction } from "../../ducks/utilMethods";
 
 import './styles.scss';
