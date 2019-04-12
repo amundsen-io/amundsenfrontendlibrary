@@ -22,5 +22,5 @@ def healthcheck() -> Tuple[str, int]:
 
 def favicon() -> IO[bytes]:
     """ TODO: Design team should provide us with a default icon """
-    return send_from_directory(os.path.join(app.root_path, 'static/images'),
-                               'favicon.ico', mimetype='image/vnd.microsoft.icon')  # pragma: no cover
+    return send_from_directory(os.path.join(app.root_path, 'static/images/favicon.png'),
+                               mimetype='image/vnd.microsoft.icon')  # pragma: no cover
