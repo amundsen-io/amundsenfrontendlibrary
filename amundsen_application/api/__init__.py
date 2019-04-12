@@ -1,8 +1,6 @@
-import os
-from typing import Any, IO, Tuple
+from typing import Any, Tuple
 
-from flask import Flask, render_template, send_from_directory
-from flask import current_app as app
+from flask import Flask, render_template
 
 
 def init_routes(app: Flask) -> None:
