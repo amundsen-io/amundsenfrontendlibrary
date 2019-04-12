@@ -6,7 +6,6 @@ from flask import current_app as app
 
 
 def init_routes(app: Flask) -> None:
-    app.add_url_rule('/favicon.ico', 'favicon', favicon)
     app.add_url_rule('/healthcheck', 'healthcheck', healthcheck)
     app.add_url_rule('/', 'index', index, defaults={'path': ''})  # also functions as catch_all
     app.add_url_rule('/<path:path>', 'index', index)  # catch_all
