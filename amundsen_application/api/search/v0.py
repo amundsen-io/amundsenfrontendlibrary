@@ -10,7 +10,7 @@ from flask import current_app as app
 from flask.blueprints import Blueprint
 
 from amundsen_application.log.action_log import action_logging
-from amundsen_application.api.utils.request_utils import get_query_param
+from amundsen_application.api.utils.request_utils import get_query_param, make_request_wrapper
 
 LOGGER = logging.getLogger(__name__)
 
@@ -198,14 +198,11 @@ def _search_table(*, search_term: str, page_index: int) -> Dict[str, Any]:
                                                              search_term,
                                                              page_index)
 
-        # TODO: Create an abstraction for this logic that is reused many times
-        if app.config['SEARCHSERVICE_REQUEST_CLIENT'] is not None:
-            envoy_client = app.config['SEARCHSERVICE_REQUEST_CLIENT']
-            envoy_headers = app.config['SEARCHSERVICE_REQUEST_HEADERS']
-            response = envoy_client.get(url, headers=envoy_headers, raw_response=True)
-        else:
-            with requests.Session() as s:
-                response = s.get(url, timeout=REQUEST_SESSION_TIMEOUT)
+        response = make_request_wrapper(method='GET',
+                                        url=url,
+                                        client=app.config['SEARCHSERVICE_REQUEST_CLIENT'],
+                                        headers=app.config['SEARCHSERVICE_REQUEST_HEADERS'],
+                                        timeout=REQUEST_SESSION_TIMEOUT)
 
         status_code = response.status_code
 
