@@ -1,6 +1,6 @@
 from typing import Dict
 import requests
-from flask import Response
+
 
 def get_query_param(args: Dict, param: str, error_msg: str = None) -> str:
     value = args.get(param)
@@ -10,16 +10,17 @@ def get_query_param(args: Dict, param: str, error_msg: str = None) -> str:
     return value
 
 
-def make_request_wrapper(method: str, url: str, client: any, headers: any, timeout: int) -> Response:
+# TODO: Define an interface for envoy_client
+def make_request_wrapper(method: str, url: str, client, headers, timeout: int):  # type: ignore
     if client is not None:
-        if method == 'GET':
+        if method == 'DELETE':
+            return client.delete(url, headers=headers, raw_response=True)
+        elif method == 'GET':
             return client.get(url, headers=headers, raw_response=True)
+        elif method == 'POST':
+            return client.post(url, headers=headers, raw_response=True)
         elif method == 'PUT':
             return client.put(url, headers=headers, raw_response=True)
-        elif method == 'DELETE':
-            return client.delete(url, headers=headers, raw_response=True)
-        elif method == 'UPDATE':
-            return client.update(url, headers=headers, raw_response=True)
         else:
             raise Exception('Unsupported method')
     else:
@@ -28,9 +29,9 @@ def make_request_wrapper(method: str, url: str, client: any, headers: any, timeo
                 return s.delete(url, timeout=timeout)
             elif method == 'GET':
                 return s.get(url, timeout=timeout)
+            elif method == 'POST':
+                return s.post(url, timeout=timeout)
             elif method == 'PUT':
                 return s.put(url, timeout=timeout)
-            elif method == 'UPDATE':
-                return s.update(url, timeout=timeout)
             else:
                 raise Exception('Unsupported method')

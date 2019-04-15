@@ -1,5 +1,4 @@
 import logging
-import requests
 
 from http import HTTPStatus
 
