@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { LoggingParams, UserResource} from '../types';
 import Flag from '../../Flag';
 
-interface UserListItemProps {
+export interface UserListItemProps {
   user: UserResource;
   logging: LoggingParams;
 }

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import { LoggingParams, TableResource} from '../types';
 
-interface TableListItemProps {
+export interface TableListItemProps {
   table: TableResource;
   logging: LoggingParams;
 }

@@ -4,7 +4,7 @@ import EntityCardSection, { EntityCardSectionProps } from './EntityCardSection';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
-interface EntityCardProps {
+export interface EntityCardProps {
   sections: EntityCardSectionProps[];
 }
 

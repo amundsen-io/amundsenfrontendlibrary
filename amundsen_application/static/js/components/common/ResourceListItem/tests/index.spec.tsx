@@ -5,6 +5,7 @@ import { shallow } from 'enzyme';
 import TableListItem from '../TableListItem';
 import UserListItem from '../UserListItem';
 import ResourceListItem, { ListItemProps } from '../';
+import { ResourceType } from '../types';
 
 describe('ResourceListItem', () => {
     let props: ListItemProps;
@@ -12,8 +13,8 @@ describe('ResourceListItem', () => {
 
     beforeEach(() => {
         props = {
-          loggingParams: { source: 'src', index: 0 },
-          item: { type: 'table' },
+          logging: { source: 'src', index: 0 },
+          item: { type: ResourceType.table },
         }
         subject = shallow(<ResourceListItem {...props} />);
     });
@@ -27,7 +28,7 @@ describe('ResourceListItem', () => {
         });
 
         it('renders UserListItem with correct props', () => {
-          props.item.type = 'user';
+          props.item.type = ResourceType.user;
           subject.setProps(props);
           expect(subject.find(UserListItem).props()).toMatchObject({
             logging: props.logging,
@@ -36,6 +37,7 @@ describe('ResourceListItem', () => {
         });
 
         it('renders nothing if invalid props.item.type', () => {
+          // @ts-ignore
           props.item.type = 'not a valid type';
           subject.setProps(props);
           expect(subject.props().children).toBeFalsy();

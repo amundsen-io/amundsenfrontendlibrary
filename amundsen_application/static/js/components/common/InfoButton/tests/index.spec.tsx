@@ -14,7 +14,7 @@ describe('InfoButton', () => {
           infoText: 'Some info text to share',
           title: 'Popover Title',
           placement: 'left',
-          size: 'size';
+          size: 'size',
         };
         subject = shallow(<InfoButton {...props} />);
     });

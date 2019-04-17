@@ -31,7 +31,7 @@ describe('EntityCard', () => {
 
     describe('render', () => {
         it('renders EntityCardSections', () => {
-            expect(subject.find(EntityCardSection).length).toEqual(2));
+            expect(subject.find(EntityCardSection).length).toEqual(2);
         });
 
         it('passes correct props to EntityCardSection', () => {

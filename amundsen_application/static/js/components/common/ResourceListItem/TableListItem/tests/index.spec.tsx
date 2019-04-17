@@ -7,6 +7,7 @@ import Flag from '../../../Flag';
 import { Link } from 'react-router-dom';
 
 import TableListItem, { TableListItemProps } from '../';
+import { ResourceType } from '../../types';
 
 describe('TableListItem', () => {
     let props: TableListItemProps;
@@ -16,7 +17,7 @@ describe('TableListItem', () => {
         props = {
           logging: { source: 'src', index: 0 },
           table: {
-            type: 'table',
+            type: ResourceType.table,
             cluster: '',
             database: '',
             description: '',

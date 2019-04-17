@@ -7,6 +7,7 @@ import Flag from '../../../Flag';
 import { Link } from 'react-router-dom';
 
 import UserListItem, { UserListItemProps } from '../';
+import { ResourceType } from '../../types';
 
 describe('UserListItem', () => {
     let props: UserListItemProps;
@@ -16,7 +17,7 @@ describe('UserListItem', () => {
         props = {
           logging: { source: 'src', index: 0 },
           user: {
-            type: 'user',
+            type: ResourceType.user,
             active: true,
             birthday: null,
             department: 'Department',
