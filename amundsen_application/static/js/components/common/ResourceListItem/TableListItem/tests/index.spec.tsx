@@ -45,23 +45,21 @@ describe('TableListItem', () => {
           expect(subject.find('#main-description').text()).toEqual(table.description);
         });
 
-        /*TODO(ttannis): Why does this output Mar 29, 2019 in the text but not the UI
-        it('renders secondary-description with getDateLabel result', () => {
+        it('renders secondary-description w/ getDateLabel value if table has last_updated_epoch ', () => {
+          subject.instance().getDateLabel = jest.fn(() => 'Mar 28, 2019')
           props.table.last_updated_epoch = 1553829681;
           subject.setProps(props);
           expect(subject.find('#secondary-description').text()).toEqual('Mar 28, 2019');
         });
-        */
     });
-
-    /*TODO(ttannis): Why does this output Mar 29, 2019 in the text but not the UI
     describe('getDateLabel', () => {
         it('getDateLabel returns correct string', () => {
           props.table.last_updated_epoch = 1553829681;
           subject.setProps(props);
-          expect(subject.instance().getDateLabel()).toEqual('Mar 28, 2019');
+          /* Note: Jest will convert date to UTC, expect to see different strings for an epoch value in the tests vs UI */
+          expect(subject.instance().getDateLabel()).toEqual('Mar 29, 2019');
         });
-    });*/
+    });
 
     describe('getLink', () => {
         it('getLink returns correct string', () => {

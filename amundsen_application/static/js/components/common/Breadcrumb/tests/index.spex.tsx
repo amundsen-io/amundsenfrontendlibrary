@@ -24,7 +24,7 @@ describe('Breadcrumb', () => {
             });
         });
 
-        it('renders Link with correct text', () => {
+        it('renders button with correct text within the Link', () => {
             expect(subject.find(Link).find('button').text()).toEqual(props.text);
         });
     });

@@ -49,7 +49,7 @@ describe('EntityCardSection', () => {
         });
 
         it('renders with expected content', () => {
-            expect(subject.find('.content').props().children).toEqual(<div>HI!</div>);
+            expect(subject.find('#section-content').props().children).toEqual(<div>HI!</div>);
         });
     });
 

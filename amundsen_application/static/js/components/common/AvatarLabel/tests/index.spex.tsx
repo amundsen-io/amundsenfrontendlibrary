@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 
 import { Avatar } from 'react-avatar';
 import AvatarLabel, { AvatarLabelProps } from '../';
@@ -18,18 +18,14 @@ describe('AvatarLabel', () => {
     });
 
     describe('render', () => {
-        /*TODO(ttannis) : Why can I not find Avatar
         it('renders Avatar with correct props', () => {
-            expect(subject.find(Avatar).props()).toMatchObject({
-                name: props.label,
-                src: props.src,
-                size: 24,
-                round: true,
-            });
-        });*/
+            /* Note: subject.find(Avatar) does not work - workaround is to directly check the content */
+            const expectedContent = <Avatar name={props.label} src={props.src} size={24} round={true} />;
+            expect(subject.find('#component-avatar').props().children).toEqual(expectedContent);
+        });
 
         it('renders label with correct text', () => {
-            expect(subject.find('label').text()).toEqual(props.label);
+            expect(subject.find('#component-label').text()).toEqual(props.label);
         });
     });
 });

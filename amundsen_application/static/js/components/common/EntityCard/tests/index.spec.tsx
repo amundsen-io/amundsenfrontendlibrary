@@ -34,7 +34,7 @@ describe('EntityCard', () => {
             expect(subject.find(EntityCardSection).length).toEqual(2));
         });
 
-        it('passed correct props to EntityCardSection', () => {
+        it('passes correct props to EntityCardSection', () => {
             expect(subject.find(EntityCardSection).at(0).props()).toMatchObject({
                 title: props.sections[0].title,
                 infoText: props.sections[0].infoText,
