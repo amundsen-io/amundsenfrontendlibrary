@@ -1,13 +1,10 @@
 import * as React from 'react';
-import * as Adapter from 'enzyme-adapter-react-16';
 
-import { configure, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { Overlay, Popover, Tooltip } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import EditableText, { EditableTextProps } from '../';
-
-configure({ adapter: new Adapter() });
 
 describe('EditableText', () => {
     let props: EditableTextProps;

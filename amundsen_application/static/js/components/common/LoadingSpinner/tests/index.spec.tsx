@@ -1,11 +1,8 @@
 import * as React from 'react';
-import * as Adapter from 'enzyme-adapter-react-16';
 
-import { configure, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import LoadingSpinner from '../';
-
-configure({ adapter: new Adapter() });
 
 describe('LoadingSpinner', () => {
     let subject;

@@ -1,15 +1,12 @@
 import * as React from 'react';
-import * as Adapter from 'enzyme-adapter-react-16';
 
-import { configure, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import Avatar from 'react-avatar';
 import Flag from '../../../Flag';
 import { Link } from 'react-router-dom';
 
 import TableListItem, { TableListItemProps } from '../';
-
-configure({ adapter: new Adapter() });
 
 describe('TableListItem', () => {
     let props: TableListItemProps;

@@ -1,12 +1,9 @@
 import * as React from 'react';
-import * as Adapter from 'enzyme-adapter-react-16';
 
-import { configure, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { Tab, Tabs } from 'react-bootstrap';
 import TabsComponent, { TabsProps } from '../';
-
-configure({ adapter: new Adapter() });
 
 describe('Tabs', () => {
     let props: TabsProps;

@@ -1,12 +1,9 @@
 import * as React from 'react';
-import * as Adapter from 'enzyme-adapter-react-16';
 
-import { configure, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { Link } from 'react-router-dom';
 import Breadcrumb, { BreadcrumbProps } from '../';
-
-configure({ adapter: new Adapter() });
 
 describe('Breadcrumb', () => {
     let props: BreadcrumbProps;

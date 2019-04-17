@@ -1,12 +1,9 @@
 import * as React from 'react';
-import * as Adapter from 'enzyme-adapter-react-16';
 
-import { configure, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import InfoButton, { InfoButtonProps } from '../';
-
-configure({ adapter: new Adapter() });
 
 describe('InfoButton', () => {
     let props: InfoButtonProps;

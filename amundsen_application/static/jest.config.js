@@ -16,6 +16,9 @@ module.exports = {
   roots: [
     '<rootDir>/js',
   ],
+  setupFiles: [
+    '<rootDir>/test-setup.ts'
+  ],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
     '^.+\\.js$': 'babel-jest',

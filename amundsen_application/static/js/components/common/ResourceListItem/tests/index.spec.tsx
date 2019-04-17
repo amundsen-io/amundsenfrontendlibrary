@@ -1,13 +1,10 @@
 import * as React from 'react';
-import * as Adapter from 'enzyme-adapter-react-16';
 
-import { configure, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import TableListItem from '../TableListItem';
 import UserListItem from '../UserListItem';
 import ResourceListItem, { ListItemProps } from '../';
-
-configure({ adapter: new Adapter() });
 
 describe('ResourceListItem', () => {
     let props: ListItemProps;

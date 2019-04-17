@@ -1,12 +1,9 @@
 import * as React from 'react';
-import * as Adapter from 'enzyme-adapter-react-16';
 
-import { configure, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import EntityCard, { EntityCardProps } from '../';
 import EntityCardSection from '../EntityCardSection';
-
-configure({ adapter: new Adapter() });
 
 describe('EntityCard', () => {
     let props: EntityCardProps;
