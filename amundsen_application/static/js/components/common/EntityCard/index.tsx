@@ -5,7 +5,7 @@ import EntityCardSection, { EntityCardSectionProps } from './EntityCardSection';
 import './styles.scss';
 
 interface EntityCardProps {
-  sections?: EntityCardSectionProps[];
+  sections: EntityCardSectionProps[];
 }
 
 const EntityCard: React.SFC<EntityCardProps> = ({ sections }) => {

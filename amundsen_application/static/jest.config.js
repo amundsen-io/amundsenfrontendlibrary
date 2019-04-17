@@ -1,4 +1,18 @@
 module.exports = {
+  coverageThreshold: {
+      './js/components': {
+          branches: 10, //75
+          functions: 10, //75
+          lines: 10, //75
+          statements: 10, //75
+      },
+      './js/ducks': {
+          branches: 0, //75
+          functions: 0, //75
+          lines: 0, //75
+          statements: 0, //75
+      },
+  },
   roots: [
     '<rootDir>/js',
   ],
@@ -7,7 +21,7 @@ module.exports = {
     '^.+\\.js$': 'babel-jest',
     '^.+\\.(css|scss)$': '<rootDir>/node_modules/jest-css-modules',
   },
-  testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(j|t)sx?$',
+  testRegex: '(/tests/.*|(\\.|/)(test|spec))\\.(j|t)sx?$',
   moduleFileExtensions: [
     'ts',
     'tsx',

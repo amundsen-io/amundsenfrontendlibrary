@@ -20,7 +20,7 @@ export interface ComponentProps {
   value?: string;
 }
 
-type EditableTextProps = ComponentProps & DispatchFromProps & StateFromProps;
+export type EditableTextProps = ComponentProps & DispatchFromProps & StateFromProps;
 
 interface EditableTextState {
   editable: boolean;
