@@ -13,6 +13,7 @@ from amundsen_application.models.user import load_user, dump_user
 
 from amundsen_application.api.utils.request_utils import get_query_param, make_request_wrapper
 
+
 LOGGER = logging.getLogger(__name__)
 
 REQUEST_SESSION_TIMEOUT = 10
@@ -23,6 +24,7 @@ TABLE_ENDPOINT = '/table'
 LAST_INDEXED_ENDPOINT = '/latest_updated_ts'
 POPULAR_TABLES_ENDPOINT = '/popular_tables/'
 TAGS_ENDPOINT = '/tags/'
+USER_ENDPOINT = '/user'
 
 
 def _get_table_endpoint() -> str:
@@ -515,7 +517,27 @@ def update_table_tags() -> Response:
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-# TODO: Implement
 @metadata_blueprint.route('/user', methods=['GET'])
 def get_user() -> Response:
-    return make_response(jsonify({'msg': 'Not implemented'}), HTTPStatus.NOT_IMPLEMENTED)
+    user_id = get_query_param(request.args, 'user_id')
+    url = '{0}{1}/{2}'.format(app.config['METADATASERVICE_BASE'], USER_ENDPOINT, user_id)
+
+    response = make_request_wrapper(method='GET',
+                                    url=url,
+                                    client=app.config['METADATASERVICE_REQUEST_CLIENT'],
+                                    headers=app.config['METADATASERVICE_REQUEST_HEADERS'],
+                                    timeout=REQUEST_SESSION_TIMEOUT)
+
+    status_code = response.status_code
+
+    if status_code == HTTPStatus.OK:
+        message = 'Success'
+    else:
+        message = 'Encountered error: failed to fetch user with user_id: {0}'.format(user_id)
+        logging.error(message)
+
+    payload = {
+        'msg': message,
+        'user': dump_user(load_user(response.json())),
+    }
+    return make_response(jsonify(payload), status_code)

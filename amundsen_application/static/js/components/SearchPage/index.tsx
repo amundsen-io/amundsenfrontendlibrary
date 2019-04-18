@@ -159,14 +159,12 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
       paginationStartIndex: 0,
     };
     return (
-        <div className="col-xs-12 col-md-offset-1 col-md-10">
-          <div className="search-list-container">
-            <div className="popular-tables-header">
-              <label>Popular Tables</label>
-              <InfoButton infoText={ "These are some of the most commonly accessed tables within your organization." }/>
-            </div>
-            <SearchList results={ this.props.popularTables } params={ searchListParams }/>
+        <div className="search-list-container">
+          <div className="popular-tables-header">
+            <label>Popular Tables</label>
+            <InfoButton infoText={ "These are some of the most commonly accessed tables within your organization." }/>
           </div>
+          <SearchList results={ this.props.popularTables } params={ searchListParams }/>
         </div>
       )
   };
@@ -254,9 +252,11 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     const innerContent = (
       <div className="container search-page">
         <div className="row">
-          <SearchBar handleValueSubmit={ this.onSearchBarSubmit } searchTerm={ searchTerm }/>
-          { searchTerm.length > 0 && this.renderSearchResults() }
-          { searchTerm.length === 0 && this.renderPopularTables()  }
+          <div className="col-xs-12 col-md-offset-1 col-md-10">
+            <SearchBar handleValueSubmit={ this.onSearchBarSubmit } searchTerm={ searchTerm }/>
+            { searchTerm.length > 0 && this.renderSearchResults() }
+            { searchTerm.length === 0 && this.renderPopularTables()  }
+          </div>
         </div>
       </div>
     );
