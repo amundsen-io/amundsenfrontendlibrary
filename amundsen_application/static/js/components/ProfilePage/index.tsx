@@ -58,7 +58,7 @@ class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
   createEmptyTabMessage = (message: string) => {
     return (
       <div className="empty-tab-message">
-        <text>{ message }</text>
+        <label>{ message }</label>
       </div>
     );
   };
