@@ -20,7 +20,7 @@ import OwnerEditor from './OwnerEditor';
 import TableDescEditableText from './TableDescEditableText';
 import TagInput from '../Tags/TagInput';
 import WatermarkLabel from "./WatermarkLabel";
-import { logAction } from "../../ducks/utilMethods";
+import { logClick } from "../../ducks/utilMethods";
 
 import Avatar from 'react-avatar';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
@@ -126,10 +126,8 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
         <OverlayTrigger key={fullName} trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
           <a href={profileUrl} target='_blank'
              style={{ display: 'inline-block', marginLeft: '-5px', backgroundColor: 'white', borderRadius: '90%'}}
-             onClick={() => logAction({
-               command: 'click',
+             onClick={(e) => logClick(e, {
                target_id: 'frequent-users',
-               target_type: 'link',
                label: fullName,
                location: 'table-details',
              })}
@@ -160,13 +158,8 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
       return (
         <a href={appUrl}
            target='_blank'
-           onClick={() => logAction({
-             command: 'click',
-             target_id: 'explore-writer',
-             target_type: 'link',
-             label: appName,
-             location: 'table-details',
-           })}
+           id="explore-writer"
+           onClick={(e) => logClick(e, { label: appName, location: 'table-details' }) }
         >
           { avatarLabel }
         </a>
@@ -184,13 +177,8 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
       return (
         <a href={source.source}
            target='_blank'
-           onClick={() => logAction({
-             command: 'click',
-             target_id: 'explore-source',
-             target_type: 'link',
-             label: this.displayName,
-             location: 'table-details',
-           })}
+           id="explore-source"
+           onClick={(e) => logClick(e, { label: this.displayName, location: 'table-details' }) }
         >
           { avatarLabel }
         </a>
@@ -203,13 +191,8 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     return (
       <a href={ href }
          target='_blank'
-         onClick={() => logAction({
-           command: 'click',
-           target_id: 'explore-lineage',
-           target_type: 'link',
-           label: this.displayName,
-           location: 'table-details',
-         })}
+         id="explore-lineage"
+         onClick={(e) => logClick(e, { location: 'table-details' })}
       >
         <AvatarLabel label={ this.displayName } src={ AppConfig.tableLineage.iconPath }/>
       </a>
@@ -301,13 +284,8 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
                  href={this.getExploreSqlUrl()}
                  role="button"
                  target="_blank"
-                 onClick={() => logAction({
-                   command: 'click',
-                   target_id: 'explore-sql',
-                   target_type: 'link',
-                   label: 'Explore with SQL',
-                   location: 'table-details',
-                 })}
+                 id="explore-sql"
+                 onClick={(e) => logClick(e, { location: 'table-details' })}
               >
                 <img className="icon icon-color icon-database"/>
                 Explore with SQL

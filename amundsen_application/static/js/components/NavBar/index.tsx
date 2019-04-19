@@ -9,7 +9,7 @@ import AppConfig from '../../../config/config';
 import { GlobalState } from "../../ducks/rootReducer";
 import { getLoggedInUser } from "../../ducks/user/reducer";
 import { LoggedInUser, GetLoggedInUserRequest } from "../../ducks/user/types";
-import { logAction } from "../../ducks/utilMethods";
+import { logClick } from "../../ducks/utilMethods";
 
 import './styles.scss';
 
@@ -67,14 +67,8 @@ export class NavBar extends React.Component<NavBarProps, NavBarState> {
                   if (link.use_router) {
                     return (
                       <NavLink
-                        key={index} to={link.href} target={link.target}
-                        onClick={() => logAction({
-                          command: 'click',
-                          target_id: link.id,
-                          target_type: 'link',
-                          label: link.label,
-                          location: 'navbar',
-                        })}
+                        id={ link.id } key={ index } to={ link.href } target={ link.target }
+                        onClick={(e) => logClick(e, { location: 'navbar' })}
                       >
                         {link.label}
                       </NavLink>
@@ -82,14 +76,8 @@ export class NavBar extends React.Component<NavBarProps, NavBarState> {
                   }
                   return (
                     <a
-                      key={index} href={link.href} target={link.target}
-                      onClick={() => logAction({
-                        command: 'click',
-                        target_id: link.id,
-                        target_type: 'link',
-                        label: link.label,
-                        location: 'navbar',
-                      })}
+                      id={ link.id } key={ index } href={ link.href } target={ link.target }
+                      onClick={(e) => logClick(e, { location: 'navbar' })}
                     >
                       {link.label}
                     </a>

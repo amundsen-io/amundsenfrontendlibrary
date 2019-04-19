@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { Tag } from '../types';
-import { logAction } from '../../../ducks/utilMethods';
+import { logClick } from '../../../ducks/utilMethods';
 
 import './styles.scss';
 
@@ -24,38 +24,21 @@ class TagInfo extends React.Component<TagInfoProps, {}> {
     const name = this.props.data.tag_name;
     const searchUrl = `/search?searchTerm=tag:${name}`;
 
-    const analyticsId = `tag::${name}`;
-
-    if (this.props.compact) {
-      return (
-        <Link
-          role="button" to={searchUrl} className="btn tag-button compact"
-          onClick={() => logAction({
-            command: 'click',
-            target_id: analyticsId,
-            target_type: 'tag',
-            label: name,
-            location: this.props.location,
-          })}
-        >
-          { name }
-        </Link>
-      );
-    }
-
     return (
       <Link
-        role="button" to={searchUrl} className="btn tag-button"
-        onClick={() => logAction({
-          command: 'click',
-          target_id: analyticsId,
+        id={ `tag::${name}` } role="button" to={ searchUrl }
+        className={"btn tag-button" + (this.props.compact ? " compact" : "")}
+        onClick={(e) => logClick(e, {
           target_type: 'tag',
-          label: name,
           location: this.props.location,
+          label: name,
         })}
       >
         <span className="tag-name">{ name }</span>
-        <span className="tag-count">{this.props.data.tag_count}</span>
+        {
+          !this.props.compact &&
+            <span className="tag-count">{ this.props.data.tag_count }</span>
+        }
       </Link>
     );
   }

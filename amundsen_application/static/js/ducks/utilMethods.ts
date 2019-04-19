@@ -31,3 +31,28 @@ export function filterFromObj(initialObj: object, rejectedKeys: string[]): objec
 export function logAction(props: ActionLogParams) {
   postActionLog(props);
 }
+
+export function logClick(event: React.MouseEvent<HTMLElement>, declaredProps?: ActionLogParams) {
+  const target = event.currentTarget;
+  const inferredProps: ActionLogParams = {
+    command: "click",
+    target_id: target.id,
+    label: target.innerText || target.textContent,
+  };
+
+  if (target.nodeValue !== null) {
+    inferredProps.value = target.nodeValue
+  }
+
+  let nodeName = target.nodeName.toLowerCase();
+  if (nodeName === 'a') {
+    if (target.classList.contains('btn')) {
+      nodeName = 'button';
+    } else {
+      nodeName = 'link';
+    }
+  }
+  inferredProps.target_type = nodeName;
+
+  postActionLog({ ...inferredProps, ...declaredProps });
+}

@@ -50,7 +50,7 @@ export default class ScrollTracker extends React.Component<ScrollTrackerProps, S
       command: "scroll",
       target_id: this.props.targetId,
       location: this.props.location,
-      value: threshold,
+      value: threshold.toString(),
     });
   };
 

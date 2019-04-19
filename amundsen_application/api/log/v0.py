@@ -24,7 +24,7 @@ def log_generic_action() -> Response:
     :param target_type: Opt. Type of element event took place on (button, link, tag, icon, etc)
     :param label: Opt. Displayed text for target
     :param location: Opt. Where the the event occurred
-    :param value: Opt. Numeric value
+    :param value: Opt. Value to be logged
     :return:
     """
     @action_logging
@@ -34,7 +34,7 @@ def log_generic_action() -> Response:
                             target_type: str,
                             label: str,
                             location: str,
-                            value: int) -> None:
+                            value: str) -> None:
         pass  # pragma: no cover
 
     try:

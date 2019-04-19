@@ -6,7 +6,7 @@ import Linkify from 'react-linkify'
 
 import { GlobalState } from "../../../ducks/rootReducer";
 import { PreviewData } from '../types';
-import { logAction } from '../../../ducks/utilMethods';
+import { logClick } from '../../../ducks/utilMethods';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
@@ -81,13 +81,6 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
   };
 
   handleShow = () => {
-    logAction({
-      command: 'click',
-      target_id: 'data-preview',
-      target_type: 'button',
-      label: 'Preview Data',
-      location: 'table-details',
-    });
     this.setState({ showModal: true });
   };
 
@@ -191,9 +184,14 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
 
     const previewButton = (
       <button
-       className="btn btn-default btn-block"
-       disabled={disabled}
-       onClick={this.handleShow}>
+        id="data-preview-button"
+        className="btn btn-default btn-block"
+        disabled={disabled}
+        onClick={(e) => {
+          logClick(e, { location: 'table-details' });
+          this.handleShow();
+        }}
+      >
          <img className={"icon icon-color " + iconClass} />
          <span>{buttonText}</span>
       </button>

@@ -1,12 +1,12 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
 export interface ActionLogParams {
-  command: string;
+  command?: string;
   target_id?: string;
   target_type?: string;
   label?: string;
   location?: string;
-  value?: number;
+  value?: string;
 }
 
 const BASE_URL = '/api/log/v0/log_event';
