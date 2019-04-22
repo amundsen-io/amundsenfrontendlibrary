@@ -5,6 +5,10 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 import appConfig from './config/config';
 
+function srcPath(subdir) {
+    return path.join(__dirname, "/js", subdir);
+}
+
 const config: webpack.Configuration = {
     entry: {
       main: ['babel-polyfill', path.join(__dirname, '/css/styles.scss'), path.join(__dirname, '/js/index.tsx')],
@@ -15,6 +19,10 @@ const config: webpack.Configuration = {
     },
     devtool: 'source-map',
     resolve: {
+        alias: {
+            components: path.join(__dirname, '/js/components'),
+            ducks: path.join(__dirname, '/js/ducks'),
+        },
         extensions: ['.tsx', '.ts', '.js', '.jsx', '.css', '.scss'],
     },
     module: {
