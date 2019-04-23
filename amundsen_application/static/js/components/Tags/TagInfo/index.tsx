@@ -8,7 +8,6 @@ import './styles.scss';
 interface TagInfoProps {
   data: Tag;
   compact?: boolean;
-  location: string;
 }
 
 class TagInfo extends React.Component<TagInfoProps, {}> {

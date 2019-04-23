@@ -14,7 +14,13 @@
     "moduleResolution": "node",
     "noResolve": false,
     "removeComments": true,
-    "types": [],
+    "types": ["jest"],
+    "baseUrl": "js",
+    "paths": {
+        "components/*": [ "components/*" ],
+        "config/*": [ "config/*" ],
+        "ducks/*": [ "ducks/*" ],
+    }
   },
   "exclude": [
     "node_modules",

@@ -10,7 +10,7 @@ import {
   TableSearchResults,
   UserSearchResults,
 } from './types';
-import { ResourceType } from "../../components/common/ResourceListItem/types";
+import { ResourceType } from 'components/common/ResourceListItem/types';
 
 export type SearchReducerAction = SearchAllResponse | SearchResourceResponse;
 
@@ -58,7 +58,7 @@ const initialState: SearchReducerState = {
 };
 
 export default function reducer(state: SearchReducerState = initialState, action: SearchReducerAction): SearchReducerState {
-  let newState = action.payload;
+  const newState = action.payload;
   switch (action.type) {
     // SearchAll will reset all resources with search results or the initial state
     case SearchAll.SUCCESS:

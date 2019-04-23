@@ -1,18 +1,15 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
-import ReactDOM from 'react-dom';
 import { Modal } from 'react-bootstrap';
-import Select, { components } from 'react-select';
+import { components } from 'react-select';
 import CreatableSelect from 'react-select/lib/Creatable';
-import makeAnimated from 'react-select/lib/animated';
 
-import { GlobalState } from "../../../ducks/rootReducer";
-import { getAllTags } from '../../../ducks/allTags/reducer';
-import { GetAllTagsRequest } from '../../../ducks/allTags/types';
-import { TableMetadata, UpdateTagsRequest } from '../../../ducks/tableMetadata/types';
-import { updateTags } from '../../../ducks/tableMetadata/tags/reducer';
+import { GlobalState } from 'ducks/rootReducer';
+import { getAllTags } from 'ducks/allTags/reducer';
+import { GetAllTagsRequest } from 'ducks/allTags/types';
+import { updateTags } from 'ducks/tableMetadata/tags/reducer';
+import { UpdateTagsRequest } from 'ducks/tableMetadata/types';
 
 import TagInfo from "../TagInfo";
 import { Tag, UpdateTagMethod, UpdateTagData } from '../types';
@@ -36,7 +33,6 @@ export interface StateFromProps {
   allTags: Tag[];
   isLoading: boolean;
   tags: Tag[];
-  tableData: TableMetadata;
 }
 
 export interface DispatchFromProps {
@@ -68,7 +64,6 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     readOnly: true,
     tags: undefined,
     updateTags: () => void(0),
-    tableData: null,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -117,7 +112,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     }, []);
     this.props.updateTags(tagArray);
     this.handleClose();
-  }
+  };
 
   generateCustomOptionStyle(provided, state) {
     // https://react-select.com/props#api
@@ -170,7 +165,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
       tag = actionPayload.removedValue.value;
       this.props.updateTags([{'methodName': UpdateTagMethod.DELETE, 'tagName': tag}]);
     }
-  }
+  };
 
   preventDeleteOnBackSpace(event) {
     if (event.keyCode === 8 && event.target.value.length === 0){
@@ -242,8 +237,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
 
     let tagBody;
     if (this.state.readOnly) {
-      const location = `${this.props.tableData.schema}.${this.props.tableData.table_name}`;
-      tagBody = this.state.tags.map((tag, index) => <TagInfo data={tag} location={location} key={index}/>)
+      tagBody = this.state.tags.map((tag, index) => <TagInfo data={tag} key={index}/>)
     } else {
       tagBody = (
         <CreatableSelect
@@ -302,7 +296,6 @@ export const mapStateToProps = (state: GlobalState) => {
     allTags: state.allTags.allTags,
     isLoading: state.allTags.isLoading || state.tableMetadata.tableTags.isLoading,
     tags: state.tableMetadata.tableTags.tags,
-    tableData: state.tableMetadata.tableData,
   };
 };
 
