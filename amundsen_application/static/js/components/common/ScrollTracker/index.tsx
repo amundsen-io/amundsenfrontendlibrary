@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { throttle } from 'throttle-debounce';
 import { logAction } from "../../../ducks/utilMethods";
 
 
@@ -12,26 +13,29 @@ interface ScrollTrackerState {
 }
 
 export default class ScrollTracker extends React.Component<ScrollTrackerProps, ScrollTrackerState> {
+  private readonly throttledScroll: any;
+
   constructor(props) {
     super(props);
 
     this.state = {
       thresholds: [25, 50, 75, 100]
     };
+
+    this.throttledScroll = throttle(100, false, this.onScroll);
   }
 
   componentDidMount() {
-    window.addEventListener("scroll", this.onScroll);
+    window.addEventListener("scroll", this.throttledScroll);
   }
 
   componentWillUnmount() {
-    window.removeEventListener("scroll", this.onScroll)
+    window.removeEventListener("scroll", this.throttledScroll);
   }
 
-  // TODO - Debounce this function
   onScroll = () => {
     if (this.state.thresholds.length == 0) {
-      window.removeEventListener("scroll", this.onScroll);
+      window.removeEventListener("scroll", this.throttledScroll);
       return;
     }
     const threshold = this.state.thresholds[0];
