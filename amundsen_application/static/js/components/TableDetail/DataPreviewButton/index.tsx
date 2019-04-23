@@ -187,10 +187,7 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
         id="data-preview-button"
         className="btn btn-default btn-block"
         disabled={disabled}
-        onClick={(e) => {
-          logClick(e, { location: 'table-details' });
-          this.handleShow();
-        }}
+        onClick={(e) => { logClick(e); this.handleShow(); }}
       >
          <img className={"icon icon-color " + iconClass} />
          <span>{buttonText}</span>

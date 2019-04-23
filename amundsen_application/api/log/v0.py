@@ -38,7 +38,6 @@ def log_generic_action() -> Response:
         pass  # pragma: no cover
 
     try:
-
         args = request.get_json()
         command = get_query_param(args, 'command', '"command" is a required parameter.')
         target_id = get_query_param(args, 'target_id', '"target_id" is a required field.')
@@ -50,11 +49,11 @@ def log_generic_action() -> Response:
             location=args.get('location', None),
             value=args.get('value', None)
         )
-        message = 'success'
+        message = 'Logging of {} action successful'.format(command)
         return make_response(jsonify({'msg': message}), HTTPStatus.OK)
 
     except Exception as e:
-        message = 'Encountered exception: ' + str(e)
+        message = 'Log action failed. Encountered exception: ' + str(e)
         logging.exception(message)
         payload = jsonify({'msg': message})
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)

@@ -27,11 +27,6 @@ export function filterFromObj(initialObj: object, rejectedKeys: string[]): objec
   }, {});
 }
 
-
-export function logAction(props: ActionLogParams) {
-  postActionLog(props);
-}
-
 export function logClick(event: React.MouseEvent<HTMLElement>, declaredProps?: ActionLogParams) {
   const target = event.currentTarget;
   const inferredProps: ActionLogParams = {
@@ -54,5 +49,12 @@ export function logClick(event: React.MouseEvent<HTMLElement>, declaredProps?: A
   }
   inferredProps.target_type = nodeName;
 
+  logAction({ ...inferredProps, ...declaredProps });
+}
+
+export function logAction(declaredProps: ActionLogParams) {
+  let inferredProps = {
+    location: window.location.pathname
+  };
   postActionLog({ ...inferredProps, ...declaredProps });
 }

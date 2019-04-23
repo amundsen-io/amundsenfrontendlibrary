@@ -68,7 +68,7 @@ export class NavBar extends React.Component<NavBarProps, NavBarState> {
                     return (
                       <NavLink
                         id={ link.id } key={ index } to={ link.href } target={ link.target }
-                        onClick={(e) => logClick(e, { location: 'navbar' })}
+                        onClick={logClick}
                       >
                         {link.label}
                       </NavLink>
@@ -77,7 +77,7 @@ export class NavBar extends React.Component<NavBarProps, NavBarState> {
                   return (
                     <a
                       id={ link.id } key={ index } href={ link.href } target={ link.target }
-                      onClick={(e) => logClick(e, { location: 'navbar' })}
+                      onClick={logClick}
                     >
                       {link.label}
                     </a>

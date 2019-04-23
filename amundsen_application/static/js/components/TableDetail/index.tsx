@@ -129,7 +129,6 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
              onClick={(e) => logClick(e, {
                target_id: 'frequent-users',
                label: fullName,
-               location: 'table-details',
              })}
           >
             <Avatar name={fullName} size={25} round={true} style={{ border: '1px solid white' }} />
@@ -159,7 +158,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
         <a href={appUrl}
            target='_blank'
            id="explore-writer"
-           onClick={(e) => logClick(e, { label: appName, location: 'table-details' }) }
+           onClick={logClick}
         >
           { avatarLabel }
         </a>
@@ -178,7 +177,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
         <a href={source.source}
            target='_blank'
            id="explore-source"
-           onClick={(e) => logClick(e, { label: this.displayName, location: 'table-details' }) }
+           onClick={(e) => logClick(e, { label: this.displayName }) }
         >
           { avatarLabel }
         </a>
@@ -192,7 +191,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
       <a href={ href }
          target='_blank'
          id="explore-lineage"
-         onClick={(e) => logClick(e, { location: 'table-details' })}
+         onClick={logClick}
       >
         <AvatarLabel label={ this.displayName } src={ AppConfig.tableLineage.iconPath }/>
       </a>
@@ -285,7 +284,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
                  role="button"
                  target="_blank"
                  id="explore-sql"
-                 onClick={(e) => logClick(e, { location: 'table-details' })}
+                 onClick={logClick}
               >
                 <img className="icon icon-color icon-database"/>
                 Explore with SQL
@@ -352,7 +351,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
                 />
               </div>
             </div>
-            <ScrollTracker location="table-details" targetId={ this.displayName }/>
+            <ScrollTracker targetId={ this.displayName }/>
           </div>
         );
     }

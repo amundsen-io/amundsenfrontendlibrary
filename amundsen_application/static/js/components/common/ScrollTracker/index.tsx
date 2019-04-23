@@ -4,7 +4,6 @@ import { logAction } from "../../../ducks/utilMethods";
 
 
 export interface ScrollTrackerProps {
-  location: string;
   targetId: string;
 }
 
@@ -42,7 +41,7 @@ export default class ScrollTracker extends React.Component<ScrollTrackerProps, S
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     const windowHeight = window.innerHeight || document.body.clientHeight;
     const contentHeight = document.body.offsetHeight;
-    const scrollableAmount = (contentHeight - windowHeight);
+    const scrollableAmount = Math.max(contentHeight - windowHeight, 1);
 
     if (threshold <= 100 * scrollTop / scrollableAmount) {
       this.fireAnalyticsEvent(this.state.thresholds.shift());
@@ -53,7 +52,6 @@ export default class ScrollTracker extends React.Component<ScrollTrackerProps, S
     logAction({
       command: "scroll",
       target_id: this.props.targetId,
-      location: this.props.location,
       value: threshold.toString(),
     });
   };
