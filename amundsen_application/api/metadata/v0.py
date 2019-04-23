@@ -522,11 +522,11 @@ def get_user() -> Response:
     user_id = get_query_param(request.args, 'user_id')
     url = '{0}{1}/{2}'.format(app.config['METADATASERVICE_BASE'], USER_ENDPOINT, user_id)
 
-    response = make_request_wrapper(method='GET',
-                                    url=url,
-                                    client=app.config['METADATASERVICE_REQUEST_CLIENT'],
-                                    headers=app.config['METADATASERVICE_REQUEST_HEADERS'],
-                                    timeout=REQUEST_SESSION_TIMEOUT)
+    response = request_wrapper(method='GET',
+                               url=url,
+                               client=app.config['METADATASERVICE_REQUEST_CLIENT'],
+                               headers=app.config['METADATASERVICE_REQUEST_HEADERS'],
+                               timeout_sec=REQUEST_SESSION_TIMEOUT)
 
     status_code = response.status_code
 
