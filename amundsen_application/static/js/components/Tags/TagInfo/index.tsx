@@ -22,7 +22,7 @@ class TagInfo extends React.Component<TagInfoProps, {}> {
   onClick = (e) => {
     logClick(e, {
       target_type: 'tag',
-      label: name
+      label: this.props.data.tag_name,
     });
   };
 
