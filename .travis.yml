@@ -19,7 +19,9 @@ matrix:
     install:
     - npm install
     script:
+    - npm run lint
     - npm run build
+    - npm run test
 deploy:
   provider: pypi
   user: amundsen-dev

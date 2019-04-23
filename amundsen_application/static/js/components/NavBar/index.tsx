@@ -1,14 +1,13 @@
 import * as React from 'react';
 import Avatar from 'react-avatar';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router-dom'
 
-import AppConfig from '../../../config/config';
-import { GlobalState } from "../../ducks/rootReducer";
-import { getLoggedInUser } from "../../ducks/user/reducer";
-import { LoggedInUser, GetLoggedInUserRequest } from "../../ducks/user/types";
+import AppConfig from 'config/config';
+import { GlobalState } from 'ducks/rootReducer';
+import { getLoggedInUser } from 'ducks/user/reducer';
+import { LoggedInUser, GetLoggedInUserRequest } from 'ducks/user/types';
 
 import './styles.scss';
 
