@@ -6,7 +6,7 @@ import Linkify from 'react-linkify'
 
 import { GlobalState } from 'ducks/rootReducer';
 import { PreviewData } from '../types';
-import { logClick } from '../../../ducks/utilMethods';
+import { logClick } from 'ducks/utilMethods';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';

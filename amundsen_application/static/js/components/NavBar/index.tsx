@@ -65,19 +65,13 @@ export class NavBar extends React.Component<NavBarProps, NavBarState> {
                 AppConfig.navLinks.map((link, index) => {
                   if (link.use_router) {
                     return (
-                      <NavLink
-                        id={ link.id } key={ index } to={ link.href } target={ link.target }
-                        onClick={logClick}
-                      >
+                      <NavLink id={ link.id } key={ index } to={ link.href } target={ link.target } onClick={logClick}>
                         {link.label}
                       </NavLink>
                     )
                   }
                   return (
-                    <a
-                      id={ link.id } key={ index } href={ link.href } target={ link.target }
-                      onClick={logClick}
-                    >
+                    <a id={ link.id } key={ index } href={ link.href } target={ link.target } onClick={logClick}>
                       {link.label}
                     </a>
                   )

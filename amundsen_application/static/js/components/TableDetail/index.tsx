@@ -14,6 +14,7 @@ import AvatarLabel from 'components/common/AvatarLabel';
 import Breadcrumb from 'components/common/Breadcrumb';
 import EntityCard from 'components/common/EntityCard';
 import LoadingSpinner from 'components/common/LoadingSpinner';
+import ScrollTracker from "components/common/ScrollTracker";
 import TagInput from 'components/Tags/TagInput';
 
 import DataPreviewButton from './DataPreviewButton';
@@ -21,7 +22,7 @@ import DetailList from './DetailList';
 import OwnerEditor from './OwnerEditor';
 import TableDescEditableText from './TableDescEditableText';
 import WatermarkLabel from "./WatermarkLabel";
-import { logClick } from "../../ducks/utilMethods";
+import { logClick } from 'ducks/utilMethods';
 
 import Avatar from 'react-avatar';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
@@ -31,7 +32,6 @@ import { PreviewQueryParams, TableMetadata } from './types';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
-import ScrollTracker from "../common/ScrollTracker";
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -156,11 +156,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
 
     if (appUrl.length !== 0) {
       return (
-        <a href={appUrl}
-           target='_blank'
-           id="explore-writer"
-           onClick={logClick}
-        >
+        <a href={appUrl} target='_blank' id="explore-writer" onClick={logClick}>
           { avatarLabel }
         </a>
       );
@@ -189,11 +185,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
   getAvatarForLineage = () => {
     const href = AppConfig.tableLineage.urlGenerator(this.database, this.cluster, this.schema, this.tableName);
     return (
-      <a href={ href }
-         target='_blank'
-         id="explore-lineage"
-         onClick={logClick}
-      >
+      <a href={ href } target='_blank' id="explore-lineage" onClick={logClick}>
         <AvatarLabel label={ this.displayName } src={ AppConfig.tableLineage.iconPath }/>
       </a>
     );
@@ -280,12 +272,13 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
           <DataPreviewButton modalTitle={ this.displayName } />
           {
             AppConfig.tableProfile.isExploreEnabled &&
-              <a className="btn btn-default btn-block"
-                 href={this.getExploreSqlUrl()}
-                 role="button"
-                 target="_blank"
-                 id="explore-sql"
-                 onClick={logClick}
+              <a
+                className="btn btn-default btn-block"
+                href={this.getExploreSqlUrl()}
+                role="button"
+                target="_blank"
+                id="explore-sql"
+                onClick={logClick}
               >
                 <img className="icon icon-color icon-database"/>
                 Explore with SQL
