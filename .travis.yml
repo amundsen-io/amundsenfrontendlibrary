@@ -19,8 +19,7 @@ matrix:
     install:
     - npm install
     script:
-    - npm run eslint
-    - npm run tslint
+    - npm run lint
     - npm run build
     - npm run test
 deploy:
