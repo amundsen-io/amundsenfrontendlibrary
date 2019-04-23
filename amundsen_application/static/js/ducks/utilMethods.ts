@@ -53,7 +53,7 @@ export function logClick(event: React.MouseEvent<HTMLElement>, declaredProps?: A
 }
 
 export function logAction(declaredProps: ActionLogParams) {
-  let inferredProps = {
+  const inferredProps = {
     location: window.location.pathname
   };
   postActionLog({ ...inferredProps, ...declaredProps });

@@ -19,15 +19,24 @@ class TagInfo extends React.Component<TagInfoProps, {}> {
     super(props);
   }
 
+  onClick = (e) => {
+    logClick(e, {
+      target_type: 'tag',
+      label: name
+    });
+  };
+
   render() {
     const name = this.props.data.tag_name;
     const searchUrl = `/search?searchTerm=tag:${name}`;
 
     return (
       <Link
-        id={ `tag::${name}` } role="button" to={ searchUrl }
-        className={"btn tag-button" + (this.props.compact ? " compact" : "")}
-        onClick={(e) => logClick(e, { target_type: 'tag', label: name, })}
+        id={ `tag::${name}` }
+        role="button"
+        to={ searchUrl }
+        className={ "btn tag-button" + (this.props.compact ? " compact" : "") }
+        onClick={ this.onClick }
       >
         <span className="tag-name">{ name }</span>
         {

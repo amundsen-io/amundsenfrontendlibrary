@@ -116,6 +116,12 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     this.props.getPreviewData({ schema: this.schema, tableName: this.tableName });
   }
 
+  frequentUserOnClick = (e) => {
+    logClick(e, {
+      target_id: 'frequent-users',
+    })
+  };
+
   getAvatarForUser(fullName, profileUrl) {
     const popoverHoverFocus = (
       <Popover id="popover-trigger-hover-focus">
@@ -127,10 +133,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
         <OverlayTrigger key={fullName} trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
           <a href={profileUrl} target='_blank'
              style={{ display: 'inline-block', marginLeft: '-5px', backgroundColor: 'white', borderRadius: '90%'}}
-             onClick={(e) => logClick(e, {
-               target_id: 'frequent-users',
-               label: fullName,
-             })}
+             onClick={this.frequentUserOnClick}
           >
             <Avatar name={fullName} size={25} round={true} style={{ border: '1px solid white' }} />
           </a>
@@ -171,10 +174,10 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
       const avatarLabel = <AvatarLabel label={this.displayName} src={image}/>;
 
       return (
-        <a href={source.source}
+        <a href={ source.source }
            target='_blank'
            id="explore-source"
-           onClick={(e) => logClick(e, { label: this.displayName }) }
+           onClick={ logClick }
         >
           { avatarLabel }
         </a>

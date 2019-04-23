@@ -80,7 +80,8 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
    this.setState({ showModal: false });
   };
 
-  handleShow = () => {
+  handleClick = (e) => {
+    logClick(e);
     this.setState({ showModal: true });
   };
 
@@ -187,7 +188,7 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
         id="data-preview-button"
         className="btn btn-default btn-block"
         disabled={disabled}
-        onClick={(e) => { logClick(e); this.handleShow(); }}
+        onClick={this.handleClick}
       >
          <img className={"icon icon-color " + iconClass} />
          <span>{buttonText}</span>
