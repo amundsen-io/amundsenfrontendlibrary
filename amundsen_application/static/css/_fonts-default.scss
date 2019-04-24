@@ -1,35 +1,36 @@
+@import 'variables';
 
-// Roboto for headers
+// Roboto
 @font-face {
 	font-family: 'Roboto';
 	src: url('/static/fonts/Roboto-Medium.ttf') format('truetype');
-	font-weight: 500;
+	font-weight: $font-weight-header-regular;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'Roboto';
 	src: url('/static/fonts/Roboto-Bold.ttf') format('truetype');
-	font-weight: 700;
+	font-weight: $font-weight-header-bold;
 	font-style: normal;
 }
 
 
-// Open Sans for most everything else
+// Open Sans
 @font-face {
 	font-family: 'Open Sans';
 	src: url('/static/fonts/OpenSans-Regular.ttf') format('truetype');
-	font-weight: 400;
+	font-weight: $font-weight-body-regular;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'Open Sans';
 	src: url('/static/fonts/OpenSans-SemiBold.ttf') format('truetype');
-	font-weight: 600;
+	font-weight: $font-weight-body-semi-bold;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'Open Sans';
 	src: url('/static/fonts/OpenSans-Bold.ttf') format('truetype');
-	font-weight: 700;
+	font-weight: $font-weight-body-bold;
 	font-style: normal;
 }

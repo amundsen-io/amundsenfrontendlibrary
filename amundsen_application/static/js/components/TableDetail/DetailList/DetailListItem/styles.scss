@@ -39,8 +39,8 @@
     }
     .name {
       font-size: 16px;
-      font-family: $font-family-sans-serif-bold;
-      font-weight: $font-weight-sans-serif-bold;
+      font-family: $font-family-header;
+      font-weight: $font-weight-header-regular;
       margin-right: 8px;
     }
     .type {
@@ -83,8 +83,8 @@
       .title {
         color: $text-medium;
         font-size: $font-size-small;
-        font-family: $font-family-sans-serif-bold;
-        font-weight: $font-weight-sans-serif-bold;
+        font-family: $font-family-header;
+        font-weight: $font-weight-header-regular;
       }
       .content {
         color: $brand-color-4;

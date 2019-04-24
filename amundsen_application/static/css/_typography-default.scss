@@ -1,3 +1,4 @@
+@import 'variables';
 
 // Headers use Roboto
 h1, h2, h3,
@@ -8,23 +9,23 @@ h1, h2, h3,
 h1,
 .h1 {
   font-size: 36px;
-  font-weight: 500;
+  font-weight: $font-weight-header-regular;
 }
 
 h2,
 .h2 {
   font-size: 26px;
-  font-weight: 700;
+  font-weight: $font-weight-header-bold;
 }
 
 h3,
 .h3 {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: $font-weight-header-bold;
 }
 
 
-// Everything else is Open Sans
+// Open Sans for almost everything else
 .title-1, .title-2, .title-3,
 .subtitle-1, .subtitle-2, .subtitle-3,
 body, .body-1, .body-2, .body-3 {
@@ -33,49 +34,49 @@ body, .body-1, .body-2, .body-3 {
 
 .title-1 {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: $font-weight-body-bold;
 }
 
 .title-2 {
   font-size: 16px;
-  font-weight: 700;
+  font-weight: $font-weight-body-bold;
 }
 
 .title-3 {
   font-size: 14px;
-  font-weight: 700;
+  font-weight: $font-weight-body-bold;
 }
 
 .subtitle-1 {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: $font-weight-body-semi-bold;
 }
 
 .subtitle-2 {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: $font-weight-body-semi-bold;
 }
 
 .subtitle-3 {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: $font-weight-body-semi-bold;
 }
 
 
 .body-1 {
   font-size: 20px;
-  font-weight: 400;
+  font-weight: $font-weight-body-regular;
 }
 
 .body-2 {
   font-size: 16px;
-  font-weight: 400;
+  font-weight: $font-weight-body-regular;
 }
 
 body,
 .body-3 {
   font-size: 14px;
-  font-weight: 400;
+  font-weight: $font-weight-body-regular;
 }
 
 //.body-secondary {
