@@ -153,7 +153,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
         <div className="col-xs-12 col-md-offset-1 col-md-10">
           <div className="search-list-container">
             <div className="popular-tables-header">
-              <label>{POPULAR_TABLES_LABEL}</label>
+              <label className="title-1">{POPULAR_TABLES_LABEL}</label>
               <InfoButton infoText={POPULAR_TABLES_INFO_TEXT}/>
             </div>
             <SearchList results={ this.props.popularTables } params={ searchListParams }/>

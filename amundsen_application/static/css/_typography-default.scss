@@ -3,6 +3,7 @@
 // Headers use Roboto
 h1, h2, h3,
 .h1, .h2, .h3 {
+  color: $text-dark;
   font-family: "Roboto", sans-serif;
 }
 
@@ -28,13 +29,15 @@ h3,
 // Open Sans for almost everything else
 .title-1, .title-2, .title-3,
 .subtitle-1, .subtitle-2, .subtitle-3,
-body, .body-1, .body-2, .body-3 {
+body, .body-1, .body-2, .body-3, .body-secondary {
+  color: $text-dark;
   font-family: "Open Sans", sans-serif;
 }
 
 .title-1 {
   font-size: 20px;
   font-weight: $font-weight-body-bold;
+  line-height: 24px;
 }
 
 .title-2 {
@@ -43,6 +46,7 @@ body, .body-1, .body-2, .body-3 {
 }
 
 .title-3 {
+  color: $text-medium;
   font-size: 14px;
   font-weight: $font-weight-body-bold;
 }
@@ -50,6 +54,7 @@ body, .body-1, .body-2, .body-3 {
 .subtitle-1 {
   font-size: 20px;
   font-weight: $font-weight-body-semi-bold;
+  line-height: 20px;
 }
 
 .subtitle-2 {
@@ -58,7 +63,7 @@ body, .body-1, .body-2, .body-3 {
 }
 
 .subtitle-3 {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: $font-weight-body-semi-bold;
 }
 
@@ -66,6 +71,7 @@ body, .body-1, .body-2, .body-3 {
 .body-1 {
   font-size: 20px;
   font-weight: $font-weight-body-regular;
+  line-height: 24px;
 }
 
 .body-2 {
@@ -79,19 +85,8 @@ body,
   font-weight: $font-weight-body-regular;
 }
 
-//.body-secondary {
-//
-//}
-//
-//.body-placeholder {
-//
-//}
-//
-//a {
-//
-//}
-
-
-
-
-
+.body-secondary {
+  color: $text-medium;
+  font-size: 14px;
+  font-weight: $font-weight-body-regular;
+}
