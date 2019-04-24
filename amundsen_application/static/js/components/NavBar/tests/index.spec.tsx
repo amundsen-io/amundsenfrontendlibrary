@@ -5,6 +5,9 @@ import Avatar from 'react-avatar';
 import { Link, NavLink } from 'react-router-dom';
 import { NavBar, NavBarProps, mapDispatchToProps, mapStateToProps } from '../';
 
+import { logClick } from "ducks/utilMethods";
+logClick = jest.fn();
+
 import AppConfig from 'config/config';
 AppConfig.logoPath = '/test';
 AppConfig.navLinks = [
@@ -51,12 +54,11 @@ describe('NavBar', () => {
         beforeEach(() => {
             content = subject.instance().generateNavLinks(AppConfig.navLinks);
         });
-        /*TODO: test the props of the NavLink
-        it('returns a NavLink w/ correct props if user_router is true', () => {
-            expect(shallow(content[0]).find(NavLink).exists()).toBeTruthy();
-        });*/
 
-        /*TODO: test the text of the NavLink */
+        it('returns a NavLink w/ correct props if user_router is true', () => {
+            const expectedContent = JSON.stringify(<NavLink key={0} to='/announcements' target='_blank' onClick={logClick}>Announcements</NavLink>);
+            expect(JSON.stringify(content[0])).toEqual(expectedContent);
+        });
 
         it('returns an anchor w/ correct props if user_router is false', () => {
             expect(shallow(content[1]).find('a').props()).toMatchObject({
@@ -87,25 +89,20 @@ describe('NavBar', () => {
             expect(element.props().to).toEqual('/');
         });
 
-        /* TODO: can't dive into Link
         it('renders homepage Link with correct text', () => {
             element = subject.find('#nav-bar-left').find(Link);
-            expect(element.dive().text()).toEqual('AMUNDSEN');
-        });*/
+            expect(element.children().text()).toEqual('AMUNDSEN');
+        })
 
         it('calls generateNavLinks with correct props', () => {
             expect(spy).toHaveBeenCalledWith(AppConfig.navLinks);
         });
 
-        /* TODO: cannot find Avatar
         it('renders Avatar for loggedInUser', () => {
-            element = subject.find(Avatar);
-            expect(element.props()).toMatchObject({
-              name: props.loggedInUser.display_name,
-              size: 32,
-              round: true,
-            });
-        });*/
+            /* Note: subject.find(Avatar) does not work - workaround is to directly check the content */
+            const expectedContent = <Avatar name={props.loggedInUser.display_name} size={32} round={true} />;
+            expect(subject.find('#nav-bar-avatar').props().children).toEqual(expectedContent);
+        });
     });
 });
 

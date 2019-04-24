@@ -77,8 +77,8 @@ const globalState: GlobalState = {
       display_name: 'User Name',
     },
     profileUser: {
-      user_id: '',
-      display_name: '',
+      user_id: 'user1',
+      display_name: 'User1 Name',
     },
   },
 };

@@ -65,6 +65,11 @@ export class BrowsePage extends React.Component<BrowsePageProps, BrowsePageState
     this.props.getAllTags();
   }
 
+  generateTagInfo(tagArray: Tag[]) {
+    return tagArray.map((tag, index) =>
+      <TagInfo data={ tag } compact={ false } key={ index }/>)
+  }
+
   render() {
     let innerContent;
     if (this.state.isLoading) {
@@ -77,18 +82,12 @@ export class BrowsePage extends React.Component<BrowsePageProps, BrowsePageState
               <h3 id="browse-header" className="header">Browse Tags</h3>
               <hr className="header-hr"/>
               <div id="browse-body" className="browse-body">
-                {
-                  this.state.curatedTags.map((tag, index) =>
-                    <TagInfo data={ tag } compact={ false } key={ index }/>)
-                }
+                {this.generateTagInfo(this.state.curatedTags)}
                 {
                   this.state.curatedTags.length > 0 && this.state.otherTags.length > 0 &&
                     <hr />
                 }
-                {
-                  this.state.otherTags.map((tag, index) =>
-                    <TagInfo data={ tag } compact={ false } key={ index }/>)
-                }
+                {this.generateTagInfo(this.state.otherTags)}
               </div>
             </div>
           </div>

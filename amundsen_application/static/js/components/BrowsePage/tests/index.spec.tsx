@@ -1,8 +1,7 @@
 import * as React from 'react';
 import * as DocumentTitle from 'react-document-title';
-import { BrowserRouter as Router } from 'react-router-dom';
 
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import TagInfo from 'components/Tags/TagInfo';
@@ -11,7 +10,7 @@ import { BrowsePage, BrowsePageProps, mapDispatchToProps, mapStateToProps } from
 import globalState from 'fixtures/globalState';
 
 import AppConfig from 'config/config';
-AppConfig.browse.curatedTags = ['test1', 'test3'];
+AppConfig.browse.curatedTags = ['test1'];
 
 describe('BrowsePage', () => {
     let props: BrowsePageProps;
@@ -35,7 +34,38 @@ describe('BrowsePage', () => {
         subject = shallow(<BrowsePage {...props} />);
     });
 
-    /*TODO: Test getDerivedStateFromProps */
+    describe('getDerivedStateFromProps', () => {
+        it('returns correct state if props.isLoading', () => {
+            const prevState = subject.state();
+            props.isLoading = true;
+            subject.setProps(props);
+            expect(subject.state()).toMatchObject({
+              ...prevState,
+              isLoading: true,
+            });
+        });
+
+        it('returns correct state if !props.isLoading', () => {
+            props.isLoading = false;
+            subject.setProps(props);
+            expect(subject.state()).toMatchObject({
+              curatedTags: [{ tag_count: 2, tag_name: 'test1'}],
+              otherTags: [{ tag_count: 1, tag_name: 'test2'}],
+              isLoading: false,
+            });
+        });
+
+        it('returns correct state if !props.isLoading and !AppConfig.browse.showAllTags', () => {
+            AppConfig.browse.showAllTags = false;
+            subject = shallow(<BrowsePage {...props} />);
+            expect(subject.state()).toMatchObject({
+              curatedTags: [{tag_count: 2, tag_name: 'test1'}],
+              otherTags: [],
+              isLoading: false,
+            });
+            AppConfig.browse.showAllTags = true; // reset so other tests aren't affected
+        });
+    });
 
     describe('componentDidMount', () => {
         it('calls props.getAllTags', () => {
@@ -44,6 +74,10 @@ describe('BrowsePage', () => {
     });
 
     describe('render', () => {
+        let spy;
+        beforeEach(() => {
+            spy = jest.spyOn(BrowsePage.prototype, 'generateTagInfo');
+        });
         it('renders LoadingSpinner if state.isLoading', () => {
             /* Note: For some reason setState is not updating the component in this case */
             props.isLoading = true;
@@ -59,7 +93,24 @@ describe('BrowsePage', () => {
             expect(subject.find('#browse-header').text()).toEqual('Browse Tags');
         });
 
-        /*TODO: Test rendering of browse-body*/
+        it('renders <hr> in if curatedTags.length > 0 & otherTags.length > 0 ', () => {
+            expect(subject.find('#browse-body').find('hr').exists()).toBeTruthy();
+        });
+
+        it('does not render <hr> if !(curatedTags.length > 0 & otherTags.length > 0) ', () => {
+            AppConfig.browse.curatedTags = ['test1', 'test2'];
+            subject = shallow(<BrowsePage {...props} />);
+            expect(subject.find('#browse-body').find('hr').exists()).toBeFalsy();
+            AppConfig.browse.curatedTags = ['test1']; // reset so other tests aren't affected
+        });
+
+        it('calls generateTagInfo with curatedTags', () => {
+            expect(spy).toHaveBeenCalledWith(subject.state().curatedTags);
+        });
+
+        it('call generateTagInfo with otherTags', () => {
+            expect(spy).toHaveBeenCalledWith(subject.state().otherTags);
+        });
     });
 });
 
