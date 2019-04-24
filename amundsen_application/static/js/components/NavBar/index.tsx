@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import AppConfig from 'config/config';
+import Link from 'config/config-types';
 import { GlobalState } from 'ducks/rootReducer';
 import { getLoggedInUser } from 'ducks/user/reducer';
 import { LoggedInUser, GetLoggedInUserRequest } from 'ducks/user/types';
@@ -21,7 +22,7 @@ interface DispatchFromProps {
   getLoggedInUser: () => GetLoggedInUserRequest;
 }
 
-type NavBarProps = StateFromProps & DispatchFromProps;
+export type NavBarProps = StateFromProps & DispatchFromProps;
 
 // State
 interface NavBarState {
@@ -37,13 +38,17 @@ export class NavBar extends React.Component<NavBarProps, NavBarState> {
     };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { loggedInUser } = nextProps;
-    return { loggedInUser };
-  }
-
   componentDidMount() {
     this.props.getLoggedInUser();
+  }
+
+  generateNavLinks(navLinks: LinkConfig) {
+    return navLinks.map((link, index) => {
+      if (link.use_router) {
+        return <NavLink key={index} to={link.href} target={link.target} onClick={logClick}>{link.label}</NavLink>
+      }
+      return <a key={index} href={link.href} target={link.target} onClick={logClick}>{link.label}</a>
+    });
   }
 
   render() {
@@ -51,32 +56,17 @@ export class NavBar extends React.Component<NavBarProps, NavBarState> {
       <div className="container-fluid">
         <div className="row">
           <div className="nav-bar">
-            <div className="nav-bar-left">
+            <div id="nav-bar-left" className="nav-bar-left">
               {
                 AppConfig.logoPath &&
-                <img className="logo-icon" src={AppConfig.logoPath} />
+                <img id="logo-icon" className="logo-icon" src={AppConfig.logoPath} />
               }
               <Link to={`/`}>
                 AMUNDSEN
               </Link>
             </div>
-            <div className="nav-bar-right">
-              {
-                AppConfig.navLinks.map((link, index) => {
-                  if (link.use_router) {
-                    return (
-                      <NavLink id={ link.id } key={ index } to={ link.href } target={ link.target } onClick={logClick}>
-                        {link.label}
-                      </NavLink>
-                    )
-                  }
-                  return (
-                    <a id={ link.id } key={ index } href={ link.href } target={ link.target } onClick={logClick}>
-                      {link.label}
-                    </a>
-                  )
-                })
-              }
+            <div id="nav-bar-right" className="nav-bar-right">
+              {this.generateNavLinks(AppConfig.navLinks)}
               {
                 // TODO PEOPLE - Add link to user profile
                 this.state.loggedInUser &&
@@ -96,7 +86,7 @@ export const mapStateToProps = (state: GlobalState) => {
   }
 };
 
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ getLoggedInUser }, dispatch);
 };
 

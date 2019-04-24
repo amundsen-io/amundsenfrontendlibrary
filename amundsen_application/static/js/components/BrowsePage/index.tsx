@@ -29,7 +29,7 @@ interface BrowsePageState {
   isLoading: boolean;
 }
 
-type BrowsePageProps = StateFromProps & DispatchFromProps;
+export type BrowsePageProps = StateFromProps & DispatchFromProps;
 
 export class BrowsePage extends React.Component<BrowsePageProps, BrowsePageState> {
   constructor(props) {
@@ -74,9 +74,9 @@ export class BrowsePage extends React.Component<BrowsePageProps, BrowsePageState
         <div className="container">
           <div className="row">
             <div className="col-xs-12">
-              <h3 className="header">Browse Tags</h3>
+              <h3 id="browse-header" className="header">Browse Tags</h3>
               <hr className="header-hr"/>
-              <div className="browse-body">
+              <div id="browse-body" className="browse-body">
                 {
                   this.state.curatedTags.map((tag, index) =>
                     <TagInfo data={ tag } compact={ false } key={ index }/>)
