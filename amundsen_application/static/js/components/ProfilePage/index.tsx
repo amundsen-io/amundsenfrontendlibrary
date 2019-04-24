@@ -154,6 +154,9 @@ class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
                     </div>
                   </div>
               </div>
+              <div className="profile-tabs">
+                <Tabs tabs={ this.generateTabInfo() } defaultTab='frequentUses_tab' />
+              </div>
             </div>
           </div>
         </div>
