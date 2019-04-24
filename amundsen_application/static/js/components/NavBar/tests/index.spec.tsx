@@ -6,7 +6,11 @@ import { Link, NavLink } from 'react-router-dom';
 import { NavBar, NavBarProps, mapDispatchToProps, mapStateToProps } from '../';
 
 import { logClick } from "ducks/utilMethods";
-logClick = jest.fn();
+jest.mock('ducks/utilMethods', () => {
+  return jest.fn().mockImplementation(() => {
+    return {logClick: jest.fn()};
+  });
+});
 
 import AppConfig from 'config/config';
 AppConfig.logoPath = '/test';
@@ -14,12 +18,14 @@ AppConfig.navLinks = [
   {
     label: 'Announcements',
     href: '/announcements',
+    id: 'link1',
     target: '_blank',
     use_router: true,
   },
   {
     label: 'Browse',
     href: '/browse',
+    id: 'link2',
     target: '_blank',
     use_router: false,
   }

@@ -31,6 +31,7 @@ describe('ProfilePage', () => {
           },
           getUserById: jest.fn(),
         };
+        // @ts-ignore : complains about match
         subject = shallow(<ProfilePage {...props} match={{params: {userId: 'test0'}}}/>);
     });
 
@@ -40,6 +41,7 @@ describe('ProfilePage', () => {
         });
 
         it('sets the userId as empty string if no match.params.userId', () => {
+            // @ts-ignore : complains about match
             subject = shallow(<ProfilePage {...props} match={{params: {}}}/>);
             expect(subject.instance().userId).toEqual('');
         });

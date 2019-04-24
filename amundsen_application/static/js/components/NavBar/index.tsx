@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import AppConfig from 'config/config';
-import Link from 'config/config-types';
+import { LinkConfig } from 'config/config-types';
 import { GlobalState } from 'ducks/rootReducer';
 import { getLoggedInUser } from 'ducks/user/reducer';
 import { LoggedInUser, GetLoggedInUserRequest } from 'ducks/user/types';
@@ -42,7 +42,7 @@ export class NavBar extends React.Component<NavBarProps, NavBarState> {
     this.props.getLoggedInUser();
   }
 
-  generateNavLinks(navLinks: LinkConfig) {
+  generateNavLinks(navLinks: LinkConfig[]) {
     return navLinks.map((link, index) => {
       if (link.use_router) {
         return <NavLink key={index} to={link.href} target={link.target} onClick={logClick}>{link.label}</NavLink>
