@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { throttle } from 'throttle-debounce';
-import { logAction } from "../../../ducks/utilMethods";
+import { logAction } from 'ducks/utilMethods';
 
 
 export interface ScrollTrackerProps {
