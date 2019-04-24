@@ -8,8 +8,8 @@ module.exports = {
       },
       './js/components': {
           branches: 15, // 75
-          functions: 20, // 75
-          lines: 20, // 75
+          functions: 25, // 75
+          lines: 25, // 75
           statements: 25, // 75
       },
       './js/ducks': {
