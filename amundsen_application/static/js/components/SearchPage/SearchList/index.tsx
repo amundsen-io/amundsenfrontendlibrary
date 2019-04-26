@@ -2,8 +2,7 @@ import * as React from 'react';
 import ResourceListItem from 'components/common/ResourceListItem';
 import { Resource } from 'components/common/ResourceListItem/types';
 
-
-interface SearchListProps {
+export interface SearchListProps {
   results?: Resource[];
   params?: SearchListParams;
 }
@@ -13,16 +12,18 @@ interface SearchListParams {
   paginationStartIndex?: number;
 }
 
-const SearchList: React.SFC<SearchListProps> = ({ results, params }) => {
+export const generateListItems = (results: Resource[], params?: SearchListParams) => {
   const { source, paginationStartIndex } = params;
+  return results.map((resource, index) => {
+    const logging = { source, index: paginationStartIndex + index };
+    return <ResourceListItem item={ resource } logging={ logging } key={ index } />;
+  });
+}
+
+const SearchList: React.SFC<SearchListProps> = ({ results, params }) => {
   return (
     <ul className="list-group">
-      {
-        results.map((resource, index) => {
-          const logging = { source, index: paginationStartIndex + index };
-          return <ResourceListItem item={ resource } logging={ logging } key={ index } />;
-        })
-      }
+      {generateListItems(results, params)}
     </ul>
   );
 };
