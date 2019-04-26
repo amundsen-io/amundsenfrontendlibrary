@@ -43,11 +43,11 @@ describe('AnnouncementPage', () => {
             content = shallow(subject.instance().createPost(post, 0));
         });
         it('renders the post title', () => {
-            expect(content.find('#post-title').text()).toEqual(post.title);
+            expect(content.children().at(0).children().at(0).text()).toEqual(post.title);
         });
 
         it('renders the post date', () => {
-            expect(content.find('#post-date').text()).toEqual(post.date);
+            expect(content.children().at(0).children().at(1).text()).toEqual(post.date);
         });
 
         it('renders SanitizedHTML with the post content', () => {

@@ -45,10 +45,10 @@ export class AnnouncementPage extends React.Component<AnnouncementPageProps, Ann
     return (
       <div key={`post:${postIndex}`} className='post-container'>
         <div className='post-header'>
-          <div id='post-title' className='post-title'>{post.title}</div>
-          <div id='post-date' className='post-date'>{post.date}</div>
+          <div className='post-title'>{post.title}</div>
+          <div className='post-date'>{post.date}</div>
         </div>
-        <div id='post-content' className='post-content'>
+        <div className='post-content'>
           <SanitizedHTML html={post.html_content} />
         </div>
       </div>
