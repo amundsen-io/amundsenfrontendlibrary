@@ -35,8 +35,8 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
           <img className="icon icon-database icon-color" />
           <div className="content">
             <div className={ hasLastUpdated? "col-sm-9 col-md-10" : "col-sm-12"}>
-              <div className="subtitle-2 truncated">{ `${table.schema_name}.${table.name}`}</div>
-              <div className="body-3 truncated">{ table.description }</div>
+              <div className="title-2 truncated">{ `${table.schema_name}.${table.name}`}</div>
+              <div className="body-3-secondary truncated">{ table.description }</div>
             </div>
             {/*<div className={ hasLastUpdated? "hidden-xs col-sm-3 col-md-4" : "hidden-xs col-sm-6"}>*/}
               {/*<div className="subtitle-3">Frequent Users</div>*/}
@@ -48,7 +48,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
               hasLastUpdated &&
               <div className="hidden-xs col-sm-3 col-md-2">
                 <div className="subtitle-3">Last Updated</div>
-                <div className="body-3 truncated">
+                <div className="body-3-secondary truncated">
                   { this.getDateLabel() }
                 </div>
               </div>

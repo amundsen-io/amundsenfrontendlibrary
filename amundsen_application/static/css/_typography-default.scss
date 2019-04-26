@@ -5,6 +5,7 @@ h1, h2, h3,
 .h1, .h2, .h3 {
   color: $text-dark;
   font-family: "Roboto", sans-serif;
+  margin: 0;
 }
 
 h1,
@@ -29,7 +30,7 @@ h3,
 // Open Sans for almost everything else
 .title-1, .title-2, .title-3,
 .subtitle-1, .subtitle-2, .subtitle-3,
-body, .body-1, .body-2, .body-3, .body-secondary {
+body, .body-1, .body-2, .body-3, .body-3-secondary {
   color: $text-dark;
   font-family: "Open Sans", sans-serif;
 }
@@ -67,7 +68,6 @@ body, .body-1, .body-2, .body-3, .body-secondary {
   font-weight: $font-weight-body-semi-bold;
 }
 
-
 .body-1 {
   font-size: 20px;
   font-weight: $font-weight-body-regular;
@@ -85,7 +85,7 @@ body,
   font-weight: $font-weight-body-regular;
 }
 
-.body-secondary {
+.body-3-secondary {
   color: $text-medium;
   font-size: 14px;
   font-weight: $font-weight-body-regular;

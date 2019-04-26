@@ -28,7 +28,7 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
           <Avatar name={ user.name } size={ 24 } round={ true } />
           <div className="content">
             <div className="col-xs-12 col-sm-6">
-              <div className="subtitle-2">
+              <div className="title-2">
                 { user.name }
                 {
                   !user.active &&

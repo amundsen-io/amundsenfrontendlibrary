@@ -10,11 +10,8 @@
   .detail-header {
     margin-bottom: 32px;
   }
-  .detail-header .title {
-    font-size: 32px;
+  .detail-header .detail-header-text {
     overflow-wrap: break-word;
-    font-family: $font-family-header;
-    font-weight: $font-weight-header-regular;
   }
 
   .detail-list-header > label {
