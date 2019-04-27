@@ -70,7 +70,7 @@ Please visit [Developer guidelines](docs/developer_guide.md) if you want to buil
 
 ## Roadmap
 
-Please visit [Roadmap](docs/roadmap.md) if you are interested in upcoming roadmap items for Amundsen.
+Please visit [Roadmap](https://github.com/jornh/amundsenfrontendlibrary/projects) if you are interested in upcoming roadmap items for Amundsen.
 
 ## Publication
 - [Disrupting Data Discovery](https://www.slideshare.net/taofung/strata-sf-amundsen-presentation) (Strata SF 2019)
