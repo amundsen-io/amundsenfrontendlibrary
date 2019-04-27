@@ -1,0 +1,45 @@
+version: '3'
+services:
+  atlas:
+      image: wbaa/rokku-dev-apache-atlas:0.0.8
+      container_name: atlas_amundsen
+      ports:
+          - 21000:21000
+      networks:
+        - amundsennet
+  amundsensearch:
+      image: seanazoci/amundsen-search:latest
+      container_name: amundsensearch
+      ports:
+        - 5001:5000
+      #depends_on:
+      #  - elasticsearch
+      networks:
+        - amundsennet
+  amundsenmetadata:
+      image: amundsen-metadata:latest
+      container_name: amundsenmetadata
+      depends_on:
+        - atlas
+      ports:
+        - 5002:5000
+      networks:
+        - amundsennet
+      environment:
+        - CREDENTIALS_PROXY_USER=admin
+        - CREDENTIALS_PROXY_PASSWORD=admin
+        - PROXY_HOST=atlas
+        - PROXY_PORT=21000
+        - PROXY_CLIENT=ATLAS
+  amundsenfrontend:
+      image: seanazoci/amundsen-frontend:latest
+      container_name: amundsenfrontend
+      depends_on:
+        - amundsenmetadata
+        - amundsensearch
+      ports:
+        - 5000:5000
+      networks:
+        - amundsennet
+networks:
+  amundsennet:
