@@ -40,6 +40,11 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     };
   }
 
+  /*static getDerivedStateFromProps(props, state) {
+    const { searchTerm } = props;
+    return { searchTerm };
+  }*/
+
   handleValueChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
     this.setState({ searchTerm: (event.target as HTMLInputElement).value.toLowerCase() });
   };
