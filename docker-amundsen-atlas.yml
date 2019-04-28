@@ -1,14 +1,16 @@
 version: '3'
 services:
   atlas:
-      image: wbaa/rokku-dev-apache-atlas:0.0.8
+      image: wbaa/rokku-dev-apache-atlas:latest
       container_name: atlas_amundsen
       ports:
           - 21000:21000
       networks:
         - amundsennet
+      environment:
+        - ATLAS_PROVISION_EXAMPLES=true
   amundsensearch:
-      image: seanazoci/amundsen-search:latest
+      image: amundsen-search:latest
       container_name: amundsensearch
       ports:
         - 5001:5000
@@ -32,7 +34,7 @@ services:
         - PROXY_PORT=21000
         - PROXY_CLIENT=ATLAS
   amundsenfrontend:
-      image: seanazoci/amundsen-frontend:latest
+      image: amundsen-frontend:latest
       container_name: amundsenfrontend
       depends_on:
         - amundsenmetadata
@@ -41,5 +43,8 @@ services:
         - 5000:5000
       networks:
         - amundsennet
+      environment:
+        - METADATASERVICE_BASE=http://amundsenmetadata:5000
+        - SEARCHSERVICE_BASE=http://amundsensearch:5000
 networks:
   amundsennet:
