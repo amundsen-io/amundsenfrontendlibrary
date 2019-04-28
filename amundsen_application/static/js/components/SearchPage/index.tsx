@@ -33,7 +33,6 @@ const RESULTS_PER_PAGE = 10;
 export interface StateFromProps {
   searchTerm: string;
   popularTables: TableResource[];
-
   tables: TableSearchResults;
   dashboards: DashboardSearchResults
   users: UserSearchResults;
@@ -45,35 +44,14 @@ export interface DispatchFromProps {
   getPopularTables: () => GetPopularTablesRequest;
 }
 
-type SearchPageProps = StateFromProps & DispatchFromProps;
+export type SearchPageProps = StateFromProps & DispatchFromProps;
 
 interface SearchPageState {
   selectedTab: ResourceType;
 }
 
 export class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
-  public static defaultProps: SearchPageProps = {
-    searchAll: () => undefined,
-    searchResource: () => undefined,
-    getPopularTables: () => undefined,
-    searchTerm: '',
-    popularTables: [],
-    dashboards: {
-      page_index: 0,
-      results: [],
-      total_results: 0,
-    },
-    tables: {
-      page_index: 0,
-      results: [],
-      total_results: 0,
-    },
-    users: {
-      page_index: 0,
-      results: [],
-      total_results: 0,
-    }
-  };
+  public static defaultProps: Partial<SearchPageProps> = {};
 
   constructor(props) {
     super(props);
@@ -89,17 +67,17 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     const params = qs.parse(window.location.search);
     const { searchTerm, pageIndex, selectedTab} = params;
 
-    const validTab = this.validateTab(selectedTab);
-    this.setState({ selectedTab: validTab });
+    const currentTab = this.getSelectedTabByResourceType(selectedTab);
+    this.setState({ selectedTab: currentTab });
     if (searchTerm && searchTerm.length > 0) {
       const index = pageIndex || 0;
-      this.props.searchAll(searchTerm, this.getSearchOptions(index, validTab));
+      this.props.searchAll(searchTerm, this.createSearchOptions(index, currentTab));
       // Update the page URL with validated parameters.
-      this.updatePageUrl(searchTerm, validTab, index);
+      this.updatePageUrl(searchTerm, currentTab, index);
     }
   }
 
-  validateTab = (newTab) => {
+  getSelectedTabByResourceType = (newTab: ResourceType) => {
     switch(newTab) {
       case ResourceType.table:
       case ResourceType.user:
@@ -110,7 +88,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     }
   };
 
-  getSearchOptions = (pageIndex, selectedTab) => {
+  createSearchOptions = (pageIndex: number, selectedTab: ResourceType) => {
     return {
       dashboardIndex: (selectedTab === ResourceType.dashboard) ? pageIndex : 0,
       userIndex: (selectedTab === ResourceType.user) ? pageIndex : 0,
@@ -118,7 +96,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     };
   };
 
-  getPageIndex = (tab) => {
+  getPageIndexByResourceType = (tab: ResourceType) => {
     switch(tab) {
       case ResourceType.table:
         return this.props.tables.page_index;
@@ -135,21 +113,20 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     this.updatePageUrl(searchTerm, this.state.selectedTab,0);
   };
 
-  onPaginationChange = (pageNumber) => {
+  onPaginationChange = (pageNumber: number) => {
     // subtract 1 : pagination component indexes from 1, while our api is 0-indexed
     const index = pageNumber - 1;
-
     this.props.searchResource(this.state.selectedTab, this.props.searchTerm, index);
     this.updatePageUrl(this.props.searchTerm, this.state.selectedTab, index);
   };
 
   onTabChange = (tab: ResourceType) => {
-    const validTab = this.validateTab(tab);
-    this.setState({ selectedTab: validTab });
-    this.updatePageUrl(this.props.searchTerm, validTab, this.getPageIndex(validTab));
+    const currentTab = this.getSelectedTabByResourceType(tab);
+    this.setState({ selectedTab: currentTab });
+    this.updatePageUrl(this.props.searchTerm, currentTab, this.getPageIndexByResourceType(currentTab));
   };
 
-  updatePageUrl = (searchTerm, tab, pageIndex) => {
+  updatePageUrl = (searchTerm: string, tab: ResourceType, pageIndex: number) => {
     const pathName = `/search?searchTerm=${searchTerm}&selectedTab=${tab}&pageIndex=${pageIndex}`;
     window.history.pushState({}, '', `${window.location.origin}${pathName}`);
   };
@@ -261,7 +238,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
         </div>
       </div>
     );
-    if (searchTerm !== undefined && searchTerm.length > 0) {
+    if (searchTerm.length > 0) {
       return (
         <DocumentTitle title={ searchTerm + " - Amundsen Search" }>
           { innerContent }
