@@ -15,7 +15,7 @@ import SearchList from '../SearchList';
 import globalState from 'fixtures/globalState';
 
 describe('SearchPage', () => {
-  //const eventMock = { preventDefault: jest.fn(), target: { value: 'Data Resources' } };
+  // const eventMock = { preventDefault: jest.fn(), target: { value: 'Data Resources' } };
   const setStateSpy = jest.spyOn(SearchPage.prototype, 'setState');
   const setup = (propOverrides?: Partial<SearchPageProps>) => {
     const props: SearchPageProps = {
@@ -41,36 +41,84 @@ describe('SearchPage', () => {
   });
 
   describe('componentDidMount', () => {
-    it('calls props.getPopularTables', () => {
-      const { props, wrapper } = setup();
+    let props;
+    let wrapper;
+
+    let spy;
+    let searchAllSpy;
+    let updatePageUrlSpy;
+    beforeAll(() => {
+      window.history.pushState({}, '', '/search?searchTerm=testName&selectedTab=table&pageIndex=1');
+
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+
+      spy = jest.spyOn(wrapper.instance(), 'getSelectedTabByResourceType').mockImplementation(() => { return ResourceType.user });
+      searchAllSpy = jest.spyOn(props, 'searchAll');
+      updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
+
       wrapper.instance().componentDidMount();
+    });
+
+    it('calls props.getPopularTables', () => {
       expect(props.getPopularTables).toHaveBeenCalled();
     });
 
-    /* TODO: I think I need mount
     it('calls getSelectedTabByResourceType with correct value', () => {
-      window.history.pushState({}, '', '/search?searchTerm=testName&selectedTab=table&pageIndex=0');
-      const { props, wrapper } = setup();
-      wrapper.instance().componentDidMount();
       expect(wrapper.instance().getSelectedTabByResourceType).toHaveBeenCalledWith('table');
-    });*/
+    });
 
     it('calls setState with correct value', () => {
-      window.history.pushState({}, '', '/search?searchTerm=testName&selectedTab=table&pageIndex=0');
-      const { props, wrapper } = setup();
-      wrapper.instance().componentDidMount();
-      const expectedTab = wrapper.instance().getSelectedTabByResourceType(ResourceType.table);
-      expect(setStateSpy).toHaveBeenCalledWith({ selectedTab: expectedTab });
+      expect(setStateSpy).toHaveBeenCalledWith({ selectedTab:  ResourceType.user });
     });
-    /*
-    TODO: Test this logic
-    if (searchTerm && searchTerm.length > 0) {
-      const index = pageIndex || 0;
-      this.props.searchAll(searchTerm, this.createSearchOptions(index, currentTab));
-      // Update the page URL with validated parameters.
-      this.updatePageUrl(searchTerm, currentTab, index);
-    }
-    */
+
+    describe('when searchTerm in params is valid', () => {
+      it('calls searchAll', () => {
+        expect(searchAllSpy).toHaveBeenCalled(); // TODO: test parameters
+        searchAllSpy.mockClear();
+      });
+
+      it('calls updatePageUrl', () => {
+        expect(updatePageUrlSpy).toHaveBeenCalledWith('testName', ResourceType.user, '1');
+        updatePageUrlSpy.mockClear();
+      });
+    });
+
+    describe('when searchTerm in params is undefined', () => {
+      it('does not call searchAll', () => {
+        window.history.pushState({}, '', '/search?selectedTab=table&pageIndex=1');
+        wrapper.instance().componentDidMount();
+        expect(searchAllSpy).not.toHaveBeenCalled();
+        searchAllSpy.mockClear();
+      });
+
+      it('does not call updatePageUrl', () => {
+        window.history.pushState({}, '', '/search?selectedTab=table&pageIndex=1');
+        wrapper.instance().componentDidMount();
+        expect(updatePageUrlSpy).not.toHaveBeenCalled();
+        updatePageUrlSpy.mockClear();
+      });
+    });
+
+    describe('when searchTerm in params is empty string', () => {
+      it('does not call searchAll', () => {
+        searchAllSpy.mockClear();
+        window.history.pushState({}, '', '/search?&searchTerm=selectedTab=table&pageIndex=1');
+        expect(searchAllSpy).not.toHaveBeenCalled();
+        searchAllSpy.mockClear();
+      });
+
+      it('does not call updatePageUrl', () => {
+        window.history.pushState({}, '', '/search?selectedTab=table&pageIndex=1');
+        expect(updatePageUrlSpy).not.toHaveBeenCalled();
+        updatePageUrlSpy.mockClear();
+      });
+    });
+
+    afterAll(() => {
+      spy.mockRestore();
+    })
   });
 
   describe('getSelectedTabByResourceType', () => {
@@ -95,7 +143,7 @@ describe('SearchPage', () => {
       expect(wrapper.instance().getSelectedTabByResourceType(ResourceType.dashboard)).toEqual('user');
     });
 
-    it('returns state.selectedTab if given equal to ResourceType.dashboard', () => {
+    it('default case', () => {
       wrapper.setState({ selectedTab: 'table' })
       // @ts-ignore: test for default case
       expect(wrapper.instance().getSelectedTabByResourceType('not valid')).toEqual('table');

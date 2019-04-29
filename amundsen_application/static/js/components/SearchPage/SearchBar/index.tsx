@@ -3,12 +3,14 @@ import * as React from 'react';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
-// TODO: Hard-coded text strings should be translatable/customizable
-export const PLACEHOLDER_DEFAULT = 'search for data resources...';
-export const SUBTEXT_DEFAULT = `Search within a category using the pattern with wildcard support 'category:*searchTerm*', e.g. 'schema:*core*'.
-  Current categories are 'column', 'schema', 'table', and 'tag'.`;
-export const SUBTEXT_EXTRA_COLON_ERROR = "Advanced search syntax only supports searching one category. Please remove all extra ':'";
-export const ERROR_CLASSNAME = "error";
+import {
+  ERROR_CLASSNAME,
+  PLACEHOLDER_DEFAULT,
+  SUBTEXT_DEFAULT,
+  SYNTAX_ERROR_CATEGORY,
+  SYNTAX_ERROR_PREFIX,
+  SYNTAX_ERROR_SPACING_SUFFIX,
+} from './constants';
 
 export interface SearchBarProps {
   handleValueSubmit: (term: string) => void;
@@ -45,24 +47,24 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     return { searchTerm };
   }
 
-  handleValueChange = (event: React.SyntheticEvent<HTMLInputElement>) => {
+  handleValueChange = (event: React.SyntheticEvent<HTMLInputElement>) : void => {
     this.setState({ searchTerm: (event.target as HTMLInputElement).value.toLowerCase() });
   };
 
-  handleValueSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  handleValueSubmit = (event: React.FormEvent<HTMLFormElement>) : void => {
     event.preventDefault();
     if (this.isFormValid()) {
       this.props.handleValueSubmit(this.state.searchTerm);
     }
   };
 
-  isFormValid = () => {
+  isFormValid = () : boolean => {
     const searchTerm = this.state.searchTerm;
 
     const hasAtMostOneCategory = searchTerm.split(':').length <= 2;
     if (!hasAtMostOneCategory) {
       this.setState({
-        subText: SUBTEXT_EXTRA_COLON_ERROR,
+        subText: SYNTAX_ERROR_CATEGORY,
         subTextClassName: ERROR_CLASSNAME,
       });
       return false;
@@ -73,7 +75,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
       (colonIndex >= 1 && searchTerm.charAt(colonIndex+1) !== " " &&  searchTerm.charAt(colonIndex-1) !== " ");
     if (!hasNoSpaceAroundColon) {
       this.setState({
-        subText: `Did you mean '${searchTerm.substring(0,colonIndex).trim()}:${searchTerm.substring(colonIndex+1).trim()}' ? Please remove the space around the ':'.`,
+        subText: `${SYNTAX_ERROR_PREFIX}'${searchTerm.substring(0,colonIndex).trim()}:${searchTerm.substring(colonIndex+1).trim()}'${SYNTAX_ERROR_SPACING_SUFFIX}`,
         subTextClassName: ERROR_CLASSNAME,
       });
       return false;

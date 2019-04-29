@@ -77,7 +77,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     }
   }
 
-  getSelectedTabByResourceType = (newTab: ResourceType) => {
+  getSelectedTabByResourceType = (newTab: ResourceType): ResourceType => {
     switch(newTab) {
       case ResourceType.table:
       case ResourceType.user:
@@ -96,7 +96,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     };
   };
 
-  getPageIndexByResourceType = (tab: ResourceType) => {
+  getPageIndexByResourceType = (tab: ResourceType): number => {
     switch(tab) {
       case ResourceType.table:
         return this.props.tables.page_index;
@@ -108,25 +108,25 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     return 0;
   };
 
-  onSearchBarSubmit = (searchTerm: string) => {
+  onSearchBarSubmit = (searchTerm: string): void => {
     this.props.searchAll(searchTerm);
     this.updatePageUrl(searchTerm, this.state.selectedTab,0);
   };
 
-  onPaginationChange = (pageNumber: number) => {
+  onPaginationChange = (pageNumber: number): void => {
     // subtract 1 : pagination component indexes from 1, while our api is 0-indexed
     const index = pageNumber - 1;
     this.props.searchResource(this.state.selectedTab, this.props.searchTerm, index);
     this.updatePageUrl(this.props.searchTerm, this.state.selectedTab, index);
   };
 
-  onTabChange = (tab: ResourceType) => {
+  onTabChange = (tab: ResourceType): void => {
     const currentTab = this.getSelectedTabByResourceType(tab);
     this.setState({ selectedTab: currentTab });
     this.updatePageUrl(this.props.searchTerm, currentTab, this.getPageIndexByResourceType(currentTab));
   };
 
-  updatePageUrl = (searchTerm: string, tab: ResourceType, pageIndex: number) => {
+  updatePageUrl = (searchTerm: string, tab: ResourceType, pageIndex: number): void => {
     const pathName = `/search?searchTerm=${searchTerm}&selectedTab=${tab}&pageIndex=${pageIndex}`;
     window.history.pushState({}, '', `${window.location.origin}${pathName}`);
   };

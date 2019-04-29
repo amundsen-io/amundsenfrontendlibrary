@@ -2,11 +2,9 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
-import { Avatar } from 'react-avatar';
-import SearchList, { SearchListProps, SearchListParams } from '../';
-
-import ResourceListItem from 'components/common/ResourceListItem';
 import { Resource, ResourceType } from 'components/common/ResourceListItem/types';
+import ResourceListItem from 'components/common/ResourceListItem';
+import SearchList, { SearchListProps, SearchListParams } from '../';
 
 describe('SearchList', () => {
   const setup = (propOverrides?: Partial<SearchListProps>) => {
@@ -21,18 +19,17 @@ describe('SearchList', () => {
       },
       ...propOverrides
     };
-    const wrapper = shallow(<SearchList {...props} />)
-    return { props, wrapper }
+    const wrapper = shallow(<SearchList {...props} />);
+    return { props, wrapper };
   };
 
   describe('render', () => {
     let props;
     let wrapper;
     beforeAll(() => {
-      /* Note: { props, wrapper } = setup() is not working as expected */
-      const result = setup();
-      props = result.props;
-      wrapper = result.wrapper;
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
     });
 
     it('renders unordered list', () => {

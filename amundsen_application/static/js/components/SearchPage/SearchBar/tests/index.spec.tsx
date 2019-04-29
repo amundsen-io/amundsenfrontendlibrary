@@ -2,10 +2,20 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
-import SearchBar, { SearchBarProps, SUBTEXT_DEFAULT, SUBTEXT_EXTRA_COLON_ERROR, ERROR_CLASSNAME } from '../';
+import SearchBar, { SearchBarProps } from '../';
+import {
+  ERROR_CLASSNAME,
+  SUBTEXT_DEFAULT,
+  SYNTAX_ERROR_CATEGORY,
+  SYNTAX_ERROR_PREFIX,
+  SYNTAX_ERROR_SPACING_SUFFIX,
+} from '../constants';
 
 describe('SearchBar', () => {
-  const eventMock = { preventDefault: jest.fn(), target: { value: 'Data Resources' } };
+  const valueChangeMockEvent = { target: { value: 'Data Resources' } };
+  const submitMockEvent = { preventDefault: jest.fn() };
+  const setStateSpy = jest.spyOn(SearchBar.prototype, 'setState');
+
   const setup = (propOverrides?: Partial<SearchBarProps>) => {
     const props: SearchBarProps = {
       handleValueSubmit: jest.fn(),
@@ -32,7 +42,7 @@ describe('SearchBar', () => {
   });
 
   describe('getDerivedStateFromProps', () => {
-    it('sets searchTerm on the state', () => {
+    it('sets searchTerm on state from props', () => {
       const { props, wrapper } = setup();
       const prevState = wrapper.state();
       props.searchTerm = 'newTerm';
@@ -46,34 +56,38 @@ describe('SearchBar', () => {
 
   describe('handleValueChange', () => {
     it('calls setState on searchTerm with event.target.value.toLowerCase()', () => {
-      const setStateSpy = jest.spyOn(SearchBar.prototype, 'setState');
       const { props, wrapper } = setup();
-      // @ts-ignore TODO: How to fix this complaint
-      wrapper.instance().handleValueChange(eventMock as React.SyntheticEvent<HTMLInputElement>);
-      expect(setStateSpy).toHaveBeenCalledWith({ searchTerm: 'data resources' });
-      setStateSpy.mockClear();
+      // @ts-ignore: mocked events throw type errors
+      wrapper.instance().handleValueChange(valueChangeMockEvent);
+      expect(setStateSpy).toHaveBeenCalledWith({ searchTerm: valueChangeMockEvent.target.value.toLowerCase() });
     });
   });
 
   describe('handleValueSubmit', () => {
-    it('calls event.preventDefault', () => {
-      const { props, wrapper } = setup();
-      // @ts-ignore TODO: How to fix this complaint
-      wrapper.instance().handleValueSubmit(eventMock as React.FormEvent<HTMLFormElement>);
-      expect(eventMock.preventDefault).toHaveBeenCalled();
+    let props;
+    let wrapper;
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
     });
 
-    it('submits with correct props if form is valid', () => {
-      const { props, wrapper } = setup();
-      // @ts-ignore TODO: How to fix this complaint
-      wrapper.instance().handleValueSubmit(eventMock as React.FormEvent<HTMLFormElement>);
+    it('calls event.preventDefault', () => {
+      // @ts-ignore: mocked events throw type errors
+      wrapper.instance().handleValueSubmit(submitMockEvent);
+      expect(submitMockEvent.preventDefault).toHaveBeenCalled();
+    });
+
+    it('submits with correct props if isFormValid()', () => {
+      // @ts-ignore: mocked events throw type errors
+      wrapper.instance().handleValueSubmit(submitMockEvent);
       expect(props.handleValueSubmit).toHaveBeenCalledWith(wrapper.state().searchTerm);
     });
 
-    it('does not submit if form is not valid', () => {
+    it('does not submit if !isFormValid()', () => {
       const { props, wrapper } = setup({ searchTerm: 'tag:tag1 tag:tag2' });
-      // @ts-ignore TODO: How to fix this complaint
-      wrapper.instance().handleValueSubmit(eventMock as React.FormEvent<HTMLFormElement>);
+      // @ts-ignore: mocked events throw type errors
+      wrapper.instance().handleValueSubmit(submitMockEvent);
       expect(props.handleValueSubmit).not.toHaveBeenCalled();
     });
   });
@@ -90,7 +104,7 @@ describe('SearchBar', () => {
       });
 
       it('sets state.subText correctly', () => {
-        expect(wrapper.state().subText).toEqual(SUBTEXT_EXTRA_COLON_ERROR);
+        expect(wrapper.state().subText).toEqual(SYNTAX_ERROR_CATEGORY);
       });
 
       it('sets state.subTextClassName correctly', () => {
@@ -109,7 +123,7 @@ describe('SearchBar', () => {
       });
 
       it('sets state.subText correctly', () => {
-        expect(wrapper.state().subText).toEqual(`Did you mean 'tag:tag1' ? Please remove the space around the ':'.`);
+        expect(wrapper.state().subText).toEqual(`${SYNTAX_ERROR_PREFIX}'tag:tag1'${SYNTAX_ERROR_SPACING_SUFFIX}`);
       });
 
       it('sets state.subTextClassName correctly', () => {
@@ -117,7 +131,7 @@ describe('SearchBar', () => {
       });
     });
 
-    describe('if searchTerm is valid', () => {
+    describe('if searchTerm has correct syntax', () => {
       let wrapper;
       beforeAll(() => {
         wrapper = setup({ searchTerm: 'tag:tag1' }).wrapper;
@@ -138,9 +152,16 @@ describe('SearchBar', () => {
   });
 
   describe('render', () => {
+    let props;
+    let wrapper;
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+    });
+
     describe('form', () => {
       it('renders with correct props', () => {
-        const { props, wrapper } = setup();
         expect(wrapper.find('form').props()).toMatchObject({
           className: 'search-bar-form',
           onSubmit: wrapper.instance().handleValueSubmit,
@@ -148,7 +169,6 @@ describe('SearchBar', () => {
       });
 
       it('renders input with correct default props', () => {
-        const { props, wrapper } = setup();
         expect(wrapper.find('form').find('input').props()).toMatchObject({
           'aria-label': SearchBar.defaultProps.placeholder,
           autoFocus: true,
@@ -161,22 +181,20 @@ describe('SearchBar', () => {
       });
 
       it('renders input with correct given props', () => {
-        const testPlaceholder = 'Type something to search';
-        const { props, wrapper } = setup({ placeholder: testPlaceholder, searchTerm: 'data' });
+        const { props, wrapper } = setup({ placeholder: 'Type something to search', searchTerm: 'data' });
         expect(wrapper.find('form').find('input').props()).toMatchObject({
-          'aria-label': testPlaceholder,
+          'aria-label': props.placeholder,
           autoFocus: true,
           className: 'search-bar-input form-control',
           id: 'search-input',
           onChange: wrapper.instance().handleValueChange,
-          placeholder: testPlaceholder,
+          placeholder: props.placeholder,
           value: wrapper.state().searchTerm,
         });
       });
 
       describe('submit button', () => {
         it('renders button with correct props', () => {
-          const { props, wrapper } = setup();
           expect(wrapper.find('form').find('button').props()).toMatchObject({
             className: 'btn btn-flat-icon search-bar-button',
             type: 'submit',
@@ -184,7 +202,6 @@ describe('SearchBar', () => {
         });
 
         it('renders button img with correct props', () => {
-          const { props, wrapper } = setup();
           expect(wrapper.find('form').find('button').find('img').props()).toMatchObject({
             className: 'icon icon-search',
           });
@@ -194,14 +211,12 @@ describe('SearchBar', () => {
 
     describe('subtext', () =>{
       it('renders div with correct class', () => {
-        const { props, wrapper } = setup();
         expect(wrapper.children().at(1).props()).toMatchObject({
           className: `subtext ${wrapper.state().subTextClassName}`,
         });
       });
 
       it('renders correct text', () => {
-        const { props, wrapper } = setup();
         expect(wrapper.children().at(1).text()).toEqual(wrapper.state().subText);
       });
     });
