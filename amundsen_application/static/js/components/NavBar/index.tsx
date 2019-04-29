@@ -24,12 +24,7 @@ interface DispatchFromProps {
 
 export type NavBarProps = StateFromProps & DispatchFromProps;
 
-// State
-interface NavBarState {
-  loggedInUser: LoggedInUser;
-}
-
-export class NavBar extends React.Component<NavBarProps, NavBarState> {
+export class NavBar extends React.Component<NavBarProps> {
   constructor(props) {
     super(props);
   }
