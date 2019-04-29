@@ -32,10 +32,6 @@ interface NavBarState {
 export class NavBar extends React.Component<NavBarProps, NavBarState> {
   constructor(props) {
     super(props);
-
-    this.state = {
-      loggedInUser: this.props.loggedInUser,
-    };
   }
 
   componentDidMount() {
@@ -69,9 +65,9 @@ export class NavBar extends React.Component<NavBarProps, NavBarState> {
               {this.generateNavLinks(AppConfig.navLinks)}
               {
                 // TODO PEOPLE - Add link to user profile
-                this.state.loggedInUser &&
+                this.props.loggedInUser &&
                 <div id="nav-bar-avatar">
-                  <Avatar name={this.state.loggedInUser.display_name} size={32} round={true} />
+                  <Avatar name={this.props.loggedInUser.display_name} size={32} round={true} />
                 </div>
               }
             </div>
