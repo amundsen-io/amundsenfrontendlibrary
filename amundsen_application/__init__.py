@@ -8,6 +8,7 @@ from flask import Flask
 from amundsen_application.api import init_routes
 from amundsen_application.api.v0 import blueprint
 from amundsen_application.api.announcements.v0 import announcements_blueprint
+from amundsen_application.api.log.v0 import log_blueprint
 from amundsen_application.api.mail.v0 import mail_blueprint
 from amundsen_application.api.metadata.v0 import metadata_blueprint
 from amundsen_application.api.preview.v0 import preview_blueprint
@@ -43,9 +44,12 @@ def create_app(config_module_class: str, template_folder: str = None) -> Flask:
     logging.basicConfig(format=app.config.get('LOG_FORMAT'), datefmt=app.config.get('LOG_DATE_FORMAT'))
     logging.getLogger().setLevel(app.config.get('LOG_LEVEL'))
     logging.info('Created app with config name {}'.format(config_module_class))
+    logging.info('Using metadata service at {}'.format(app.config.get('METADATASERVICE_BASE')))
+    logging.info('Using search service at {}'.format(app.config.get('SEARCHSERVICE_BASE')))
 
     app.register_blueprint(blueprint)
     app.register_blueprint(announcements_blueprint)
+    app.register_blueprint(log_blueprint)
     app.register_blueprint(mail_blueprint)
     app.register_blueprint(metadata_blueprint)
     app.register_blueprint(preview_blueprint)

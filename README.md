@@ -9,8 +9,8 @@ Amundsen is a metadata driven application for improving the productivity of data
 
 It includes three microservices and a data ingestion library.
 - [amundsenfrontendlibrary](https://github.com/lyft/amundsenfrontendlibrary): Frontend service which is a Flask application with a React frontend.
-- [amundsensearchsearchlibrary](https://github.com/lyft/amundsensearchlibrary): Search service, which leverages Elasticsearch for search capabilities, is used to power frontend metadata searching.
-- [amundsenmetadatalibrary](https://github.com/lyft/amundsenmetadatalibrary): Metadata service, which leverages Neo4j as the persistent layer, to provide various metadata.
+- [amundsensearchlibrary](https://github.com/lyft/amundsensearchlibrary): Search service, which leverages Elasticsearch for search capabilities, is used to power frontend metadata searching.
+- [amundsenmetadatalibrary](https://github.com/lyft/amundsenmetadatalibrary): Metadata service, which leverages Neo4j or Apache Atlas as the persistent layer, to provide various metadata.
 - [amundsendatabuilder](https://github.com/lyft/amundsendatabuilder): Data ingestion library for building metadata graph and search index. 
 Users could either load the data with [a python script](https://github.com/lyft/amundsendatabuilder/blob/master/example/scripts/sample_data_loader.py) with the library
 or with an [Airflow DAG](https://github.com/lyft/amundsendatabuilder/blob/master/example/dags/sample_dag.py) importing the library.
@@ -44,7 +44,7 @@ Please note that the mock images only served as demonstration purpose.
 ## Get Involved in the Community
 
 Want help or want to help? 
-Join our [slack channel](https://bit.ly/2tFsN1X) and our [mailing list](https://groups.google.com/forum/#!forum/amundsen-dev)
+Use the button in our [header](https://github.com/lyft/amundsenfrontendlibrary#amundsen) to join our slack channel. Please join our [mailing list](https://groups.google.com/forum/#!forum/amundsen-dev) as well.
 
 ## Getting started
 
@@ -72,7 +72,7 @@ Please visit [Developer guidelines](docs/developer_guide.md) if you want to buil
 
 Please visit [Roadmap](docs/roadmap.md) if you are interested in Amundsen upcoming roadmap items.
 
-## Publication
+## Publications
 - [Disrupting Data Discovery](https://www.slideshare.net/taofung/strata-sf-amundsen-presentation) (Strata SF 2019)
 - [Amundsen - Lyft's data discovery & metadata engine](https://eng.lyft.com/amundsen-lyfts-data-discovery-metadata-engine-62d27254fbb9) (Lyft engineering blog)
 - [Amundsen: A Data Discovery Platform from Lyft](https://www.slideshare.net/taofung/data-council-sf-amundsen-presentation) (Data council 19 SF)

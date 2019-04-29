@@ -4,33 +4,27 @@ import Avatar from 'react-avatar';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import LoadingSpinner from 'components/common/LoadingSpinner';
-
-import { GlobalState } from 'ducks/rootReducer';
-import { getUserById } from 'ducks/user/reducer';
-import { LoggedInUser, GetUserRequest } from 'ducks/user/types';
-
 import Breadcrumb from 'components/common/Breadcrumb';
 import Flag from 'components/common/Flag';
 import Tabs from 'components/common/Tabs';
 
+import { GlobalState } from 'ducks/rootReducer';
+import { getUserById } from 'ducks/user/reducer';
+import { User, GetUserRequest } from 'ducks/user/types';
+
 import './styles.scss';
 
 interface StateFromProps {
-  user: LoggedInUser;
+  user: User;
 }
 
 interface DispatchFromProps {
   getUserById: (userId: string) => GetUserRequest;
 }
 
-type ProfilePageProps = StateFromProps & DispatchFromProps;
+export type ProfilePageProps = StateFromProps & DispatchFromProps;
 
-interface ProfilePageState {
-  user: LoggedInUser;
-}
-
-class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
+export class ProfilePage extends React.Component<ProfilePageProps> {
   private userId: string;
 
   constructor(props) {
@@ -38,16 +32,7 @@ class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
 
     const { match } = props;
     const params = match.params;
-    this.userId = params ? params.userId : '';
-
-    this.state = {
-      user: this.props.user,
-    };
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { user } = nextProps;
-    return { user };
+    this.userId = params && params.userId ? params.userId : '';
   }
 
   componentDidMount() {
@@ -64,7 +49,7 @@ class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
   };
 
   generateTabInfo = () => {
-    const user = this.state.user;
+    const user = this.props.user;
     const tabInfo = [];
 
     // TODO: Populate tabs based on data
@@ -91,7 +76,7 @@ class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
   /* TODO: Add support to direct to 404 page for edgecase of someone typing in
      or pasting in a bad url. This would be consistent with TableDetail page behavior */
   render() {
-    const user = this.state.user;
+    const user = this.props.user;
     return (
       <DocumentTitle title={ `${user.full_name} - Amundsen Profile` }>
         <div className="container profile-page">
@@ -165,13 +150,13 @@ class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
   }
 }
 
-const mapStateToProps = (state: GlobalState) => {
+export const mapStateToProps = (state: GlobalState) => {
   return {
     user: state.user.profileUser,
   }
 };
 
-const mapDispatchToProps = (dispatch) => {
+export const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ getUserById }, dispatch);
 };
 
