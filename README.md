@@ -44,7 +44,7 @@ Please note that the mock images only served as demonstration purpose.
 ## Get Involved in the Community
 
 Want help or want to help? 
-Join our [slack channel](https://bit.ly/2FVq37z) and our [mailing list](https://groups.google.com/forum/#!forum/amundsen-dev)
+Join our [slack channel](https://github.com/lyft/amundsenfrontendlibrary#amundsen) and our [mailing list](https://groups.google.com/forum/#!forum/amundsen-dev)
 
 ## Getting started
 
