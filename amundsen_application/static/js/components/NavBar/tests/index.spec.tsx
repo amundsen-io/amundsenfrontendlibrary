@@ -40,8 +40,19 @@ describe('NavBar', () => {
     beforeEach(() => {
         props = {
           loggedInUser:  {
+            email: 'test@test.com',
+            employee_type: 'fulltime',
+            first_name: 'firstname',
+            full_name: 'firstname lastname',
+            github_username: 'githubName',
+            is_active: true,
+            last_name: 'lastname',
+            manager_fullname: 'Test Manager',
+            profile_url: 'www.test.com',
+            role_name: 'Tester',
+            slack_id: 'www.slack.com',
+            team_name: 'QA',
             user_id: 'test0',
-            display_name: 'Test User',
           },
           getLoggedInUser: jest.fn(),
         };
@@ -106,7 +117,7 @@ describe('NavBar', () => {
 
         it('renders Avatar for loggedInUser', () => {
             /* Note: subject.find(Avatar) does not work - workaround is to directly check the content */
-            const expectedContent = <Avatar name={props.loggedInUser.display_name} size={32} round={true} />;
+            const expectedContent = <Avatar name={props.loggedInUser.full_name} size={32} round={true} />;
             expect(subject.find('#nav-bar-avatar').props().children).toEqual(expectedContent);
         });
     });

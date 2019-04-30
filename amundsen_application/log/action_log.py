@@ -79,7 +79,7 @@ def _build_metrics(func_name: str,
     }  # type: Dict[str, Any]
 
     if flask_app.config['AUTH_USER_METHOD']:
-        metrics['user'] = flask_app.config['AUTH_USER_METHOD'](flask_app).email
+        metrics['user'] = flask_app.config['AUTH_USER_METHOD'](flask_app).get('email', None)
     else:
         metrics['user'] = getpass.getuser()
 
