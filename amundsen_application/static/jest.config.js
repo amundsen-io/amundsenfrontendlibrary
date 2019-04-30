@@ -7,7 +7,7 @@ module.exports = {
           statements: 50, // 100
       },
       './js/components': {
-          branches: 25, // 75
+          branches: 30, // 75
           functions: 30, // 75
           lines: 35, // 75
           statements: 35, // 75

@@ -47,3 +47,5 @@ The build commands `npm run build` and `npm run dev-build` also conduct type che
 
 ##### Unit Tests
 `npm run test` runs unit tests. Add unit tests to cover new code additions and fix any test failures before submitting a PR.
+
+To run specific tests, run `npm run test-nocov -t <regex>`, where `<regex>` is a pattern that matches the names of the test blocks that you want to run.

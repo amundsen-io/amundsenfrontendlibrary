@@ -1,3 +1,4 @@
+export const PAGINATION_PAGE_RANGE = 10;
 export const RESULTS_PER_PAGE = 10;
 
 // TODO: Hard-coded text strings should be translatable/customizable

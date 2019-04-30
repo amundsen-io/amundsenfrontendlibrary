@@ -31,6 +31,7 @@ import './styles.scss';
 import {
   DOCUMENT_TITLE_SUFFIX,
   PAGE_INDEX_ERROR_MESSAGE,
+  PAGINATION_PAGE_RANGE,
   POPULAR_TABLES_INFO_TEXT,
   POPULAR_TABLES_LABEL,
   POPULAR_TABLES_SOURCE_NAME,
@@ -227,11 +228,11 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
                 activePage={ page_index + 1 }
                 itemsCountPerPage={ RESULTS_PER_PAGE }
                 totalItemsCount={ total_results }
-                pageRangeDisplayed={ 10 }
+                pageRangeDisplayed={ PAGINATION_PAGE_RANGE }
                 onChange={ this.onPaginationChange }
               />
             }
-          </div>
+        </div>
       </div>
       );
   };

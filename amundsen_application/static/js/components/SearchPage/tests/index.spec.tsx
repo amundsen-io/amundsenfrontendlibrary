@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as DocumentTitle from 'react-document-title';
+import Pagination from 'react-js-pagination';
 
 import { shallow } from 'enzyme';
 
@@ -7,10 +8,18 @@ import { ResourceType } from 'components/common/ResourceListItem/types';
 import { SearchPage, SearchPageProps, mapDispatchToProps, mapStateToProps } from '../';
 import {
   DOCUMENT_TITLE_SUFFIX,
+  PAGINATION_PAGE_RANGE,
+  PAGE_INDEX_ERROR_MESSAGE,
   POPULAR_TABLES_INFO_TEXT,
   POPULAR_TABLES_LABEL,
   POPULAR_TABLES_SOURCE_NAME,
+  RESULTS_PER_PAGE,
+  SEARCH_ERROR_MESSAGE_INFIX,
+  SEARCH_ERROR_MESSAGE_PREFIX,
+  SEARCH_ERROR_MESSAGE_SUFFIX,
   SEARCH_INFO_TEXT,
+  SEARCH_SOURCE_NAME,
+  TABLE_RESOURCE_TITLE,
 } from '../constants';
 
 import InfoButton from 'components/common/InfoButton';
@@ -102,6 +111,17 @@ describe('SearchPage', () => {
       });
     });
 
+    describe('when pageIndex in params is undefined', () => {
+      beforeAll(() => {
+        updatePageUrlSpy.mockClear();
+        window.history.pushState({}, '', '/search?searchTerm=testName');
+        wrapper.instance().componentDidMount();
+      });
+      it('uses 0 as pageIndex', () => {
+        expect(updatePageUrlSpy).toHaveBeenCalledWith('testName', mockResourceType, 0);
+      });
+    });
+
     describe('when searchTerm in params is undefined', () => {
       beforeAll(() => {
         searchAllSpy.mockClear();
@@ -122,7 +142,7 @@ describe('SearchPage', () => {
       beforeAll(() => {
         searchAllSpy.mockClear();
         updatePageUrlSpy.mockClear();
-        window.history.pushState({}, '', `/search?&searchTerm=&selectedTab=table&pageIndex=1`);
+        window.history.pushState({}, '', `/search?searchTerm=&selectedTab=table&pageIndex=1`);
         wrapper.instance().componentDidMount();
       });
       it('does not call searchAll', () => {
@@ -344,7 +364,87 @@ describe('SearchPage', () => {
     });
   });
 
-  /* TODO: Test getTabContent */
+  describe('getTabContent', () => {
+    let content;
+
+    describe('if searchTerm but no results', () => {
+      it('renders expected search error message', () => {
+        const { props, wrapper } = setup({ searchTerm: 'data' });
+        const testResults = {
+          page_index: 0,
+          results: [],
+          total_results: 0,
+        };
+        content = shallow(wrapper.instance().getTabContent(testResults, TABLE_RESOURCE_TITLE));
+        expect(content.children().at(0).text()).toEqual(`${SEARCH_ERROR_MESSAGE_PREFIX}data${SEARCH_ERROR_MESSAGE_INFIX}tables${SEARCH_ERROR_MESSAGE_SUFFIX}`);
+      });
+    });
+
+    describe('if page index is out of bounds', () => {
+      it('renders expected page index error message', () => {
+        const { props, wrapper } = setup();
+        const testResults = {
+          page_index: 2,
+          results: [],
+          total_results: 1,
+        };
+        content = shallow(wrapper.instance().getTabContent(testResults, TABLE_RESOURCE_TITLE));
+        expect(content.children().at(0).text()).toEqual(PAGE_INDEX_ERROR_MESSAGE);
+      });
+    });
+
+    describe('if searchTerm and search results exist', () => {
+      let props;
+      let wrapper;
+      beforeAll(() => {
+        const setupResult = setup({ searchTerm: ''});
+        props = setupResult.props;
+        wrapper = setupResult.wrapper;
+        content = shallow(wrapper.instance().getTabContent(props.tables, TABLE_RESOURCE_TITLE));
+      });
+
+      it('renders correct label for content', () => {
+        expect(content.children().at(0).find('label').text()).toEqual(`1-1 of 1 results`);
+      });
+
+      it('renders InfoButton with correct props', () => {
+        expect(content.children().at(0).find(InfoButton).props()).toMatchObject({
+          infoText: SEARCH_INFO_TEXT,
+        });
+      });
+
+      it('renders SearchList with correct props', () => {
+        expect(content.children().find(SearchList).props()).toMatchObject({
+          results: props.tables.results,
+          params: {
+            source: SEARCH_SOURCE_NAME,
+            paginationStartIndex: 0,
+          },
+        });
+      });
+
+      it('does not render Pagination if total_results <= RESULTS_PER_PAGE', () => {
+        expect(content.children().find(Pagination).exists()).toBeFalsy()
+      });
+
+      it('renders Pagination with correct props if total_results > RESULTS_PER_PAGE', () => {
+        const { props, wrapper } = setup();
+        const testResults = {
+          page_index: 0,
+          results: [],
+          total_results: 11,
+        };
+        content = shallow(wrapper.instance().getTabContent(testResults, TABLE_RESOURCE_TITLE));
+        expect(content.children().find(Pagination).props()).toMatchObject({
+          activePage: 1,
+          itemsCountPerPage: RESULTS_PER_PAGE,
+          totalItemsCount: 11,
+          pageRangeDisplayed: PAGINATION_PAGE_RANGE,
+          onChange: wrapper.instance().onPaginationChange,
+        });
+      });
+    });
+  });
 
   describe('renderPopularTables', () => {
     let content;
