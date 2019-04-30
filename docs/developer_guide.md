@@ -40,7 +40,7 @@ Fix all errors before submitting a PR.
 #### JS Assets
 
 ##### Type Checking
-The build commands `npm run build` and `npm run dev-build` also conduct type checking. Run either or these commands and fix all failed checks before submitting a PR.
+The build commands `npm run build` and `npm run dev-build` also conduct type checking. Run either of these commands and fix all failed checks before submitting a PR.
 
 ##### Lint
 `npm run lint` runs the linter. Fix all lint errors before submitting a PR. `npm run lint-fix` can help auto-fix most common errors.
@@ -48,4 +48,4 @@ The build commands `npm run build` and `npm run dev-build` also conduct type che
 ##### Unit Tests
 `npm run test` runs unit tests. Add unit tests to cover new code additions and fix any test failures before submitting a PR.
 
-To run specific tests, run `npm run test-nocov -t <regex>`, where `<regex>` is a pattern that matches the names of the test blocks that you want to run.
+To run specific tests, run `npm run test-nocov -t <regex>`, where `<regex>` is any pattern that matches the names of the test blocks that you want to run.
