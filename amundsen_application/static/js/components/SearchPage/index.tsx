@@ -28,7 +28,20 @@ import { GetPopularTablesRequest } from 'ducks/popularTables/types';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
-const RESULTS_PER_PAGE = 10;
+import {
+  DOCUMENT_TITLE_SUFFIX,
+  PAGE_INDEX_ERROR_MESSAGE,
+  POPULAR_TABLES_INFO_TEXT,
+  POPULAR_TABLES_LABEL,
+  POPULAR_TABLES_SOURCE_NAME,
+  RESULTS_PER_PAGE,
+  SEARCH_ERROR_MESSAGE_INFIX,
+  SEARCH_ERROR_MESSAGE_PREFIX,
+  SEARCH_ERROR_MESSAGE_SUFFIX,
+  SEARCH_INFO_TEXT,
+  SEARCH_SOURCE_NAME,
+  TABLE_RESOURCE_TITLE,
+} from './constants';
 
 export interface StateFromProps {
   searchTerm: string;
@@ -65,7 +78,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     this.props.getPopularTables();
 
     const params = qs.parse(window.location.search);
-    const { searchTerm, pageIndex, selectedTab} = params;
+    const { searchTerm, pageIndex, selectedTab } = params;
 
     const currentTab = this.getSelectedTabByResourceType(selectedTab);
     this.setState({ selectedTab: currentTab });
@@ -114,7 +127,6 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
   };
 
   onPaginationChange = (pageNumber: number): void => {
-    // subtract 1 : pagination component indexes from 1, while our api is 0-indexed
     const index = pageNumber - 1;
     this.props.searchResource(this.state.selectedTab, this.props.searchTerm, index);
     this.updatePageUrl(this.props.searchTerm, this.state.selectedTab, index);
@@ -133,15 +145,15 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
 
   renderPopularTables = () => {
     const searchListParams = {
-      source: 'popular_tables',
+      source: POPULAR_TABLES_SOURCE_NAME,
       paginationStartIndex: 0,
     };
     return (
         <div className="col-xs-12 col-md-offset-1 col-md-10">
           <div className="search-list-container">
             <div className="popular-tables-header">
-              <label>Popular Tables</label>
-              <InfoButton infoText={ "These are some of the most commonly accessed tables within your organization." }/>
+              <label>{POPULAR_TABLES_LABEL}</label>
+              <InfoButton infoText={POPULAR_TABLES_INFO_TEXT}/>
             </div>
             <SearchList results={ this.props.popularTables } params={ searchListParams }/>
           </div>
@@ -152,9 +164,9 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
   renderSearchResults = () => {
     const tabConfig = [
       {
-        title: `Tables (${ this.props.tables.total_results })`,
+        title: `${TABLE_RESOURCE_TITLE} (${ this.props.tables.total_results })`,
         key: ResourceType.table,
-        content: this.getTabContent(this.props.tables, 'tables'),
+        content: this.getTabContent(this.props.tables, TABLE_RESOURCE_TITLE),
       },
       // TODO PEOPLE - Add users tab
     ];
@@ -171,14 +183,11 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     );
   };
 
-
-  // TODO: Hard-coded text strings should be translatable/customizable
   getTabContent = (results, tabLabel) => {
     const { searchTerm } = this.props;
     const { page_index, total_results } = results;
     const startIndex = (RESULTS_PER_PAGE * page_index) + 1;
-    const endIndex = RESULTS_PER_PAGE * ( page_index + 1);
-
+    const endIndex = RESULTS_PER_PAGE * (page_index + 1);
 
     // TODO - Move error messages into Tab Component
     // Check no results
@@ -186,7 +195,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
       return (
         <div className="search-list-container">
           <div className="search-error">
-            Your search - <i>{ searchTerm }</i> - did not match any { tabLabel } result
+            {SEARCH_ERROR_MESSAGE_PREFIX}<i>{ searchTerm }</i>{SEARCH_ERROR_MESSAGE_INFIX}{tabLabel.toLowerCase()}{SEARCH_ERROR_MESSAGE_SUFFIX}
           </div>
         </div>
       )
@@ -197,7 +206,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
       return (
         <div className="search-list-container">
           <div className="search-error">
-            Page index out of bounds for available matches.
+            {PAGE_INDEX_ERROR_MESSAGE}
           </div>
         </div>
       )
@@ -208,9 +217,9 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
       <div className="search-list-container">
         <div className="search-list-header">
           <label>{ title }</label>
-          <InfoButton infoText={ "Ordered by the relevance of matches within a resource's metadata, as well as overall usage." }/>
+          <InfoButton infoText={SEARCH_INFO_TEXT}/>
         </div>
-        <SearchList results={ results.results } params={ {source: 'search_results', paginationStartIndex: 0 } }/>
+        <SearchList results={ results.results } params={ {source: SEARCH_SOURCE_NAME, paginationStartIndex: 0 } }/>
         <div className="search-pagination-component">
             {
               total_results > RESULTS_PER_PAGE &&
@@ -240,7 +249,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     );
     if (searchTerm.length > 0) {
       return (
-        <DocumentTitle title={ searchTerm + " - Amundsen Search" }>
+        <DocumentTitle title={ `${searchTerm}${DOCUMENT_TITLE_SUFFIX}` }>
           { innerContent }
         </DocumentTitle>
       );
