@@ -66,7 +66,7 @@ describe('ProfilePage', () => {
         });
 
         it('creates text with given message', () => {
-            expect(shallow(content).find('text').text()).toEqual('Empty message');
+            expect(shallow(content).find('label').text()).toEqual('Empty message');
         });
     });
 

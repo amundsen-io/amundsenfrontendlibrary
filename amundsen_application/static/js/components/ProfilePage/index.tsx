@@ -84,7 +84,7 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
             <div className="col-xs-12 col-md-offset-1 col-md-10">
               <Breadcrumb path='/' text='Search Results'/>
               <div className="profile-header">
-                  <div className="profile-avatar">
+                  <div id="profile-avatar" className="profile-avatar">
                     {
                       // default Avatar looks a bit jarring -- intentionally not rendering if no full_name
                       user.full_name && user.full_name.length > 0 &&
@@ -92,7 +92,7 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
                     }
                   </div>
                   <div className="profile-details">
-                    <div className="profile-title">
+                    <div id="profile-title" className="profile-title">
                       <h1>{ user.full_name }</h1>
                       {
                         (!user.is_active) &&
@@ -101,37 +101,37 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
                     </div>
                     {
                       user.role_name && user.team_name &&
-                      <label>{ `${user.role_name} on ${user.team_name}` }</label>
+                      <label id="user-role">{ `${user.role_name} on ${user.team_name}` }</label>
                     }
                     {
                       user.manager_fullname &&
-                      <label>{ `Manager: ${user.manager_fullname}` }</label>
+                      <label id="user-manager">{ `Manager: ${user.manager_fullname}` }</label>
                     }
                     <div className="profile-icons">
                       {
                         user.is_active &&
-                        <a href={user.slack_id} className='btn btn-flat-icon' target='_blank'>
+                        <a id="slack-link" href={user.slack_id} className='btn btn-flat-icon' target='_blank'>
                           <img className='icon icon-slack'/>
                           <span>Slack</span>
                         </a>
                       }
                       {
                         user.is_active &&
-                        <a href={`mailto:${user.email}`} className='btn btn-flat-icon' target='_blank'>
+                        <a id="email-link" href={`mailto:${user.email}`} className='btn btn-flat-icon' target='_blank'>
                           <img className='icon icon-mail'/>
                           <span>{ user.email }</span>
                         </a>
                       }
                       {
                         user.is_active && user.profile_url &&
-                        <a href={user.profile_url} className='btn btn-flat-icon' target='_blank'>
+                        <a id="profile-link" href={user.profile_url} className='btn btn-flat-icon' target='_blank'>
                           <img className='icon icon-users'/>
                           <span>Employee Profile</span>
                         </a>
                       }
                       {
                         user.github_username &&
-                        <a href={`https://github.com/${user.github_username}`} className='btn btn-flat-icon' target='_blank'>
+                        <a id="github-link" href={`https://github.com/${user.github_username}`} className='btn btn-flat-icon' target='_blank'>
                           <img className='icon icon-github'/>
                           <span>Github</span>
                         </a>
@@ -139,7 +139,7 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
                     </div>
                   </div>
               </div>
-              <div className="profile-tabs">
+              <div id="profile-tabs" className="profile-tabs">
                 <Tabs tabs={ this.generateTabInfo() } defaultTab='frequentUses_tab' />
               </div>
             </div>
