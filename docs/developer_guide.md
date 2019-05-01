@@ -49,3 +49,5 @@ The build commands `npm run build` and `npm run dev-build` also conduct type che
 `npm run test` runs unit tests. Add unit tests to cover new code additions and fix any test failures before submitting a PR.
 
 To run specific tests, run `npm run test-nocov -t <regex>`, where `<regex>` is any pattern that matches the names of the test blocks that you want to run.
+
+See our recommendations for writing unit tests [here](https://github.com/lyft/amundsenfrontendlibrary/blob/master/docs/recommended-practices.md).
