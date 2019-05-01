@@ -75,7 +75,7 @@ const globalState: GlobalState = {
   user:  {
     loggedInUser: {
       display_name: 'firstname lastname',
-      email: 'user@test.com',
+      email: 'test@test.com',
       employee_type: 'fulltime',
       first_name: 'firstname',
       full_name: 'firstname lastname',
@@ -91,7 +91,7 @@ const globalState: GlobalState = {
     },
     profileUser: {
       display_name: 'firstname lastname',
-      email: 'target@test.com',
+      email: 'test@test.com',
       employee_type: 'fulltime',
       first_name: 'firstname',
       full_name: 'firstname lastname',

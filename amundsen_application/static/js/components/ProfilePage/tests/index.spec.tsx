@@ -17,22 +17,7 @@ describe('ProfilePage', () => {
 
     beforeEach(() => {
         props = {
-          user:  {
-            display_name: 'firstname lastname',
-            email: 'test@test.com',
-            employee_type: 'fulltime',
-            first_name: 'firstname',
-            full_name: 'firstname lastname',
-            github_username: 'githubName',
-            is_active: true,
-            last_name: 'lastname',
-            manager_fullname: 'Test Manager',
-            profile_url: 'www.test.com',
-            role_name: 'Tester',
-            slack_id: 'www.slack.com',
-            team_name: 'QA',
-            user_id: 'test0',
-          },
+          user: globalState.user.profileUser,
           getUserById: jest.fn(),
         };
         // @ts-ignore : complains about match
