@@ -40,6 +40,7 @@ describe('NavBar', () => {
     beforeEach(() => {
         props = {
           loggedInUser:  {
+            display_name: 'firstname lastname',
             email: 'test@test.com',
             employee_type: 'fulltime',
             first_name: 'firstname',
@@ -117,7 +118,7 @@ describe('NavBar', () => {
 
         it('renders Avatar for loggedInUser', () => {
             /* Note: subject.find(Avatar) does not work - workaround is to directly check the content */
-            const expectedContent = <Avatar name={props.loggedInUser.full_name} size={32} round={true} />;
+            const expectedContent = <Avatar name={props.loggedInUser.display_name} size={32} round={true} />;
             expect(subject.find('#nav-bar-avatar').props().children).toEqual(expectedContent);
         });
     });

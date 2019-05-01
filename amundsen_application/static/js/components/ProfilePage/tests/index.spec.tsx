@@ -18,10 +18,11 @@ describe('ProfilePage', () => {
     beforeEach(() => {
         props = {
           user:  {
+            display_name: 'firstname lastname',
             email: 'test@test.com',
             employee_type: 'fulltime',
             first_name: 'firstname',
-            full_name: 'Test User',
+            full_name: 'firstname lastname',
             github_username: 'githubName',
             is_active: true,
             last_name: 'lastname',
@@ -83,7 +84,7 @@ describe('ProfilePage', () => {
 
     describe('render', () => {
         it('renders DocumentTitle w/ correct title', () => {
-            expect(subject.find(DocumentTitle).props().title).toEqual(`${props.user.full_name} - Amundsen Profile`);
+            expect(subject.find(DocumentTitle).props().title).toEqual(`${props.user.display_name} - Amundsen Profile`);
         });
 
         it('renders Breadcrumb with correct props', () => {
@@ -93,20 +94,20 @@ describe('ProfilePage', () => {
             });
         });
 
-        it('renders Avatar for user.full_name', () => {
+        it('renders Avatar for user.display_name', () => {
             /* Note: subject.find(Avatar) does not work - workaround is to directly check the content */
-            const expectedContent = <Avatar name={props.user.full_name} size={74} round={true} />;
+            const expectedContent = <Avatar name={props.user.display_name} size={74} round={true} />;
             expect(subject.find('#profile-avatar').props().children).toEqual(expectedContent);
         });
 
-        it('does not render Avatar if user.full_name is empty string', () => {
-            props.user.full_name = '';
+        it('does not render Avatar if user.display_name is empty string', () => {
+            props.user.display_name = '';
             subject.setProps(props);
             expect(subject.find('#profile-avatar').children().exists()).toBeFalsy();
         });
 
-        it('renders header with full_name', () => {
-            expect(subject.find('#profile-title').find('h1').text()).toEqual(props.user.full_name);
+        it('renders header with display_name', () => {
+            expect(subject.find('#profile-title').find('h1').text()).toEqual(props.user.display_name);
         });
 
         it('renders Flag with correct props if user not active', () => {

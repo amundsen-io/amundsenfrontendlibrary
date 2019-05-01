@@ -2,6 +2,7 @@
 export interface User {
   email: string;
   employee_type: string;
+  display_name: string;
   first_name: string;
   full_name: string;
   github_username: string;

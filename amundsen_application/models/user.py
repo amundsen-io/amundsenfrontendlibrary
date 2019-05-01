@@ -14,6 +14,7 @@ redesign how User handles names
 
 class User:
     def __init__(self,
+                 display_name: str = None,
                  email: str = None,
                  employee_type: str = None,
                  first_name: str = None,
@@ -27,6 +28,7 @@ class User:
                  slack_id: str = None,
                  team_name: str = None,
                  user_id: str = None) -> None:
+        self.display_name = display_name
         self.email = email
         self.employee_type = employee_type
         self.first_name = first_name
@@ -50,6 +52,7 @@ class User:
 class UserSchema(Schema):
     email = fields.Str()
     employee_type = fields.Str()
+    display_name = fields.Str()
     first_name = fields.Str()
     full_name = fields.Str()
     github_username = fields.Str()
@@ -72,8 +75,8 @@ class UserSchema(Schema):
             if app.config['GET_PROFILE_URL']:
                 data['profile_url'] = app.config['GET_PROFILE_URL'](data['user_id'])
 
-        if not data.get('full_name', None):
-            data['full_name'] = '{} {}'.format(data.get('first_name', ''), data.get('last_name', '')).strip()
+        if not data.get('display_name', None):
+            data['display_name'] = data.get('full_name', data.get('email'))
 
         return data
 
@@ -83,6 +86,9 @@ class UserSchema(Schema):
 
     @validates_schema
     def validate_user(self, data: Dict) -> None:
+        if not data.get('display_name', None):
+            raise ValidationError('"display_name" must be provided')
+
         if not data.get('user_id', None):
             raise ValidationError('"user_id" must be provided')
 

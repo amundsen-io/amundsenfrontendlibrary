@@ -27,6 +27,7 @@ export function getUserById(userId: string): GetUserRequest {
 
 
 const defaultUser = {
+  display_name: '',
   email: '',
   employee_type: '',
   first_name: '',

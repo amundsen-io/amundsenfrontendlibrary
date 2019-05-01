@@ -78,7 +78,7 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
   render() {
     const user = this.props.user;
     return (
-      <DocumentTitle title={ `${user.full_name} - Amundsen Profile` }>
+      <DocumentTitle title={ `${user.display_name} - Amundsen Profile` }>
         <div className="container profile-page">
           <div className="row">
             <div className="col-xs-12 col-md-offset-1 col-md-10">
@@ -86,14 +86,14 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
               <div className="profile-header">
                   <div id="profile-avatar" className="profile-avatar">
                     {
-                      // default Avatar looks a bit jarring -- intentionally not rendering if no full_name
-                      user.full_name && user.full_name.length > 0 &&
-                      <Avatar name={user.full_name} size={74} round={true} />
+                      // default Avatar looks a bit jarring -- intentionally not rendering if no display_name
+                      user.display_name && user.display_name.length > 0 &&
+                      <Avatar name={user.display_name} size={74} round={true} />
                     }
                   </div>
                   <div className="profile-details">
                     <div id="profile-title" className="profile-title">
-                      <h1>{ user.full_name }</h1>
+                      <h1>{ user.display_name }</h1>
                       {
                         (!user.is_active) &&
                         <Flag caseType="sentenceCase" labelStyle="label-danger" text="Alumni"/>

@@ -62,7 +62,7 @@ export class NavBar extends React.Component<NavBarProps> {
                 // TODO PEOPLE - Add link to user profile
                 this.props.loggedInUser &&
                 <div id="nav-bar-avatar">
-                  <Avatar name={this.props.loggedInUser.full_name} size={32} round={true} />
+                  <Avatar name={this.props.loggedInUser.display_name} size={32} round={true} />
                 </div>
               }
             </div>

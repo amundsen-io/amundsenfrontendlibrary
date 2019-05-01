@@ -18,11 +18,11 @@ blueprint = Blueprint('api', __name__, url_prefix='/api')
 @blueprint.route('/auth_user', methods=['GET'])
 def current_user() -> Response:
     if app.config['AUTH_USER_METHOD']:
-        user_info = app.config['AUTH_USER_METHOD'](app)
+        user = app.config['AUTH_USER_METHOD'](app)
     else:
-        user_info = {'email': 'test@test.com', 'user_id': 'test'}
+        raise Exception('Missing auth method')
 
-    url = '{0}{1}/{2}'.format(app.config['METADATASERVICE_BASE'], USER_ENDPOINT, user_info['user_id'])
+    url = '{0}{1}/{2}'.format(app.config['METADATASERVICE_BASE'], USER_ENDPOINT, user.user_id)
 
     response = request_wrapper(method='GET',
                                url=url,
