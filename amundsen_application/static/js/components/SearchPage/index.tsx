@@ -171,12 +171,14 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     ];
 
     return (
-      <TabsComponent
-        tabs={ tabConfig }
-        defaultTab={ ResourceType.table }
-        activeKey={ this.state.selectedTab }
-        onSelect={ this.onTabChange }
-      />
+      <div>
+        <TabsComponent
+          tabs={ tabConfig }
+          defaultTab={ ResourceType.table }
+          activeKey={ this.state.selectedTab }
+          onSelect={ this.onTabChange }
+        />
+      </div>
     );
   };
 
