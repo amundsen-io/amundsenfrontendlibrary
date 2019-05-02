@@ -50,19 +50,19 @@ class User:
 
 
 class UserSchema(Schema):
-    email = fields.Str()
-    employee_type = fields.Str()
-    display_name = fields.Str()
-    first_name = fields.Str()
-    full_name = fields.Str()
-    github_username = fields.Str()
-    is_active = fields.Bool()
-    last_name = fields.Str()
-    manager_fullname = fields.Str()
-    profile_url = fields.Str()
-    role_name = fields.Str()
-    slack_id = fields.Str()
-    team_name = fields.Str()
+    display_name = fields.Str(allow_none=True)
+    email = fields.Str(allow_none=True)
+    employee_type = fields.Str(allow_none=True)
+    first_name = fields.Str(allow_none=True)
+    full_name = fields.Str(allow_none=True)
+    github_username = fields.Str(allow_none=True)
+    is_active = fields.Bool(allow_none=True)
+    last_name = fields.Str(allow_none=True)
+    manager_fullname = fields.Str(allow_none=True)
+    profile_url = fields.Str(allow_none=True)
+    role_name = fields.Str(allow_none=True)
+    slack_id = fields.Str(allow_none=True)
+    team_name = fields.Str(allow_none=True)
     user_id = fields.Str(required=True)
 
     @pre_load

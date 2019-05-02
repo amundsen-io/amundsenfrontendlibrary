@@ -10,7 +10,7 @@ from amundsen_application.api.metadata.v0 import USER_ENDPOINT
 from amundsen_application.api.utils.request_utils import request_wrapper
 from amundsen_application.models.user import load_user, dump_user
 
-REQUEST_SESSION_TIMEOUT = 10
+REQUEST_SESSION_TIMEOUT_SEC = 3
 
 LOGGER = logging.getLogger(__name__)
 
@@ -30,7 +30,7 @@ def current_user() -> Response:
                                url=url,
                                client=app.config['METADATASERVICE_REQUEST_CLIENT'],
                                headers=app.config['METADATASERVICE_REQUEST_HEADERS'],
-                               timeout_sec=REQUEST_SESSION_TIMEOUT)
+                               timeout_sec=REQUEST_SESSION_TIMEOUT_SEC)
 
     status_code = response.status_code
 
