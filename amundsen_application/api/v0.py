@@ -1,12 +1,14 @@
 import logging
 
-from flask import Response
+from http import HTTPStatus
+
+from flask import Response, jsonify, make_response
 from flask import current_app as app
 from flask.blueprints import Blueprint
 
 from amundsen_application.api.metadata.v0 import USER_ENDPOINT
 from amundsen_application.api.utils.request_utils import request_wrapper
-from amundsen_application.models.user import load_user
+from amundsen_application.models.user import load_user, dump_user
 
 REQUEST_SESSION_TIMEOUT = 10
 
@@ -30,4 +32,18 @@ def current_user() -> Response:
                                headers=app.config['METADATASERVICE_REQUEST_HEADERS'],
                                timeout_sec=REQUEST_SESSION_TIMEOUT)
 
-    return load_user(response.json()).to_json()
+    status_code = response.status_code
+
+    if status_code == HTTPStatus.OK:
+        message = 'Success'
+    else:
+        message = 'Failure'
+        logging.error(message)
+
+
+    payload = {
+        'msg': message,
+        'user': dump_user(load_user(response.json()))
+    }
+
+    return make_response(jsonify(payload), status_code)
