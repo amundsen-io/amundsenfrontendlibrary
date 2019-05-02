@@ -9,14 +9,14 @@ import { submitFeedback, resetFeedback } from 'ducks/feedback/reducer';
 
 
 export class RequestFeedbackForm extends AbstractFeedbackForm {
-  constructor(props) {
-    super(props)
-  }
-
   renderCustom() {
     return (
       <form id={AbstractFeedbackForm.FORM_ID} onSubmit={ this.submitForm }>
         <input type="hidden" name="feedback-type" value="Feature Request"/>
+        <div className="form-group">
+          <label>Subject</label>
+          <input type="text" name="subject" className="form-control" required={ true } placeholder="Enter a subject" />
+        </div>
         <div className="form-group">
           <label>Feature Summary</label>
           <textarea name="feature-summary" className="form-control" rows={3} required={ true }
@@ -27,9 +27,7 @@ export class RequestFeedbackForm extends AbstractFeedbackForm {
           <textarea name="value-prop" className="form-control" rows={5} required={ true }
                     maxLength={ 2000 } placeholder="How does this feature add value?"/>
         </div>
-        <div>
-          <button className="btn btn-default submit" type="submit">Submit</button>
-        </div>
+        <button className="btn btn-default submit" type="submit">Submit</button>
       </form>
     );
   }

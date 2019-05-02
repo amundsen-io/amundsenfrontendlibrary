@@ -8,14 +8,14 @@ import { GlobalState } from 'ducks/rootReducer';
 import { submitFeedback, resetFeedback } from 'ducks/feedback/reducer';
 
 export class BugReportFeedbackForm extends AbstractFeedbackForm {
-  constructor(props) {
-    super(props)
-  }
-
   renderCustom() {
     return (
       <form id={AbstractFeedbackForm.FORM_ID} onSubmit={ this.submitForm }>
         <input type="hidden" name="feedback-type" value="Bug Report"/>
+        <div className="form-group">
+          <label>Subject</label>
+          <input type="text" name="subject" className="form-control" required={ true } placeholder="Enter a subject" />
+        </div>
         <div className="form-group">
           <label>Bug Summary</label>
           <textarea name="bug-summary" className="form-control" required={ true }
@@ -24,11 +24,9 @@ export class BugReportFeedbackForm extends AbstractFeedbackForm {
         <div className="form-group">
           <label>Reproduction Steps</label>
           <textarea name="repro-steps" className="form-control" rows={5} required={ true }
-                    maxLength={ 2000 } placeholder="What you did to encounter this bug?"/>
+                    maxLength={ 2000 } placeholder="What did you do to encounter this bug?"/>
         </div>
-        <div>
-          <button className="btn btn-default submit" type="submit">Submit</button>
-        </div>
+        <button className="btn btn-default submit" type="submit">Submit</button>
       </form>
     );
   }

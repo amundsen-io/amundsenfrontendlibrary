@@ -8,10 +8,6 @@ import { GlobalState } from 'ducks/rootReducer';
 import { submitFeedback, resetFeedback } from 'ducks/feedback/reducer';
 
 export class RatingFeedbackForm extends AbstractFeedbackForm {
-  constructor(props) {
-    super(props)
-  }
-
   renderCustom() {
     const ratings = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
     const radioButtonSet = ratings.map(rating => (
@@ -25,19 +21,21 @@ export class RatingFeedbackForm extends AbstractFeedbackForm {
     return (
       <form id={AbstractFeedbackForm.FORM_ID} onSubmit={ this.submitForm }>
         <input type="hidden" name="feedback-type" value="NPS Rating"/>
-        <div>How likely are you to recommend this tool to a friend or co-worker?</div>
-        <div className="radio-set">
-          { radioButtonSet }
+        <div className="form-group">
+          <label>How likely are you to recommend this tool to a friend or co-worker?</label>
+          <div>
+            <div className="radio-set">
+              { radioButtonSet }
+            </div>
+            <div>
+              <div className="nps-label pull-left text-left">Not Very Likely</div>
+              <div className="nps-label pull-right text-right">Very Likely</div>
+            </div>
+          </div>
         </div>
-        <div>
-          <div className="nps-label pull-left text-left">Not Very Likely</div>
-          <div className="nps-label pull-right text-right">Very Likely</div>
-        </div>
-        <textarea name="comment" form={AbstractFeedbackForm.FORM_ID}
-          rows={ 5 } maxLength={ 2000 } placeholder="Additional Comments"/>
-        <div>
-          <button className="btn btn-default submit" type="submit">Submit</button>
-        </div>
+        <textarea className="form-control form-group" name="comment" form={AbstractFeedbackForm.FORM_ID}
+          rows={ 8 } maxLength={ 2000 } placeholder="Additional Comments"/>
+        <button className="btn btn-default submit" type="submit">Submit</button>
       </form>
     );
   }
