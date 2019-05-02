@@ -520,25 +520,38 @@ def update_table_tags() -> Response:
 
 @metadata_blueprint.route('/user', methods=['GET'])
 def get_user() -> Response:
-    user_id = get_query_param(request.args, 'user_id')
-    url = '{0}{1}/{2}'.format(app.config['METADATASERVICE_BASE'], USER_ENDPOINT, user_id)
 
-    response = request_wrapper(method='GET',
-                               url=url,
-                               client=app.config['METADATASERVICE_REQUEST_CLIENT'],
-                               headers=app.config['METADATASERVICE_REQUEST_HEADERS'],
-                               timeout_sec=REQUEST_SESSION_TIMEOUT_SEC)
+    @action_logging
+    def _log_get_user(*, user_id: str) -> None:
+        pass  # pragma: no cover
 
-    status_code = response.status_code
+    try:
+        user_id = get_query_param(request.args, 'user_id')
+        url = '{0}{1}/{2}'.format(app.config['METADATASERVICE_BASE'], USER_ENDPOINT, user_id)
 
-    if status_code == HTTPStatus.OK:
-        message = 'Success'
-    else:
-        message = 'Encountered error: failed to fetch user with user_id: {0}'.format(user_id)
-        logging.error(message)
+        _log_get_user(user_id=user_id)
 
-    payload = {
-        'msg': message,
-        'user': dump_user(load_user(response.json())),
-    }
-    return make_response(jsonify(payload), status_code)
+        response = request_wrapper(method='GET',
+                                   url=url,
+                                   client=app.config['METADATASERVICE_REQUEST_CLIENT'],
+                                   headers=app.config['METADATASERVICE_REQUEST_HEADERS'],
+                                   timeout_sec=REQUEST_SESSION_TIMEOUT_SEC)
+
+        status_code = response.status_code
+
+        if status_code == HTTPStatus.OK:
+            message = 'Success'
+        else:
+            message = 'Encountered error: failed to fetch user with user_id: {0}'.format(user_id)
+            logging.error(message)
+
+        payload = {
+            'msg': message,
+            'user': dump_user(load_user(response.json())),
+        }
+        return make_response(jsonify(payload), status_code)
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        payload = jsonify({'msg': message})
+        return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
