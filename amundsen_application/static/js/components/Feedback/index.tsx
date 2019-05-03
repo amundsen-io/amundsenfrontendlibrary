@@ -6,47 +6,49 @@ import RequestFeedbackForm from './FeedbackForm/RequestFeedbackForm';
 
 import { Button, Panel } from 'react-bootstrap';
 
+import {
+  BUTTON_CLOSE_TEXT,
+  FEEDBACK_TITLE,
+} from './constants';
+
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
-interface FeedbackProps {
+export interface FeedbackProps {
   content?: React.SFC<any>,
   title?: string,
 }
 
 interface FeedbackState {
-  open: boolean,
+  content: React.SFC<any>,
   feedbackType: FeedbackType,
-  content: React.SFC<any>
+  isOpen: boolean,
 }
 
-enum FeedbackType {
+export enum FeedbackType {
   Rating,
   Bug,
   Request,
 }
 
 export default class Feedback extends React.Component<FeedbackProps, FeedbackState> {
-  /* TODO: harcoded string that should be translatable/customizable */
   static defaultProps = {
     content: <RatingFeedbackForm />,
-    title: 'Product Feedback'
+    title: FEEDBACK_TITLE,
   };
 
   constructor(props) {
     super(props);
 
-    this.toggle = this.toggle.bind(this);
-
     this.state = {
-      open: false,
+      isOpen: false,
       content: this.props.content,
       feedbackType: FeedbackType.Rating,
     };
   }
 
-  toggle() {
-   this.setState({ open: !this.state.open });
+  toggle = () => {
+    this.setState({ isOpen: !this.state.isOpen });
   }
 
   changeType = (type: FeedbackType) => (e) =>  {
@@ -65,16 +67,15 @@ export default class Feedback extends React.Component<FeedbackProps, FeedbackSta
   };
 
   render() {
-    const expandedClass = this.state.open ? 'expanded' : 'collapsed';
+    const expandedClass = this.state.isOpen ? 'expanded' : 'collapsed';
     return (
       <div className={`feedback-component ${expandedClass}`}>
         {
-          this.state.open &&
+          this.state.isOpen &&
           <div>
             <div className="feedback-header">
-              <button type="button" className="close" aria-label="Close" onClick={this.toggle}>
+              <button type="button" className="close" aria-label={BUTTON_CLOSE_TEXT} onClick={this.toggle}>
                 <span aria-hidden="true">&times;</span>
-                <span className="sr-only">Close</span>
               </button>
               <div className="title">
                 {this.props.title.toUpperCase()}
@@ -100,7 +101,7 @@ export default class Feedback extends React.Component<FeedbackProps, FeedbackSta
           </div>
         }
         {
-          !(this.state.open) &&
+          !(this.state.isOpen) &&
           <img className='icon-speech' src='/static/images/icons/Speech.svg' onClick={this.toggle}/>
         }
       </div>

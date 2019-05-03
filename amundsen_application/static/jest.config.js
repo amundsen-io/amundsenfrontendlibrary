@@ -8,9 +8,9 @@ module.exports = {
       },
       './js/components': {
           branches: 30, // 75
-          functions: 30, // 75
-          lines: 35, // 75
-          statements: 35, // 75
+          functions: 40, // 75
+          lines: 45, // 75
+          statements: 45, // 75
       },
       './js/ducks': {
           branches: 0, // 75
