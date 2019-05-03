@@ -7,7 +7,12 @@ import { SendingState } from '../../types';
 import FeedbackForm, { FeedbackFormProps } from '../';
 import { RatingFeedbackForm } from '../RatingFeedbackForm';
 
+import {
+  SUBMIT_SUCCESS_MESSAGE,
+} from '../../constants';
+
 const mockFormData = { key1: 'val1', key2: 'val2' };
+// @ts-ignore: How to mock FormData without TypeScript error?
 global.FormData = () => (mockFormData);
 
 describe('FeedbackForm', () => {
@@ -18,7 +23,7 @@ describe('FeedbackForm', () => {
       resetFeedback: jest.fn(),
       ...propOverrides
     };
-    const wrapper = shallow(<RatingFeedbackForm {...props} />);
+    const wrapper = shallow<RatingFeedbackForm>(<RatingFeedbackForm {...props} />);
     return { props, wrapper };
   };
 
@@ -46,7 +51,7 @@ describe('FeedbackForm', () => {
 
     it('renders confirmation text if sendState is COMPLETE', () => {
       const { props, wrapper } = setup({sendState: SendingState.COMPLETE});
-      expect(wrapper.find('div.success-message').text()).toEqual('Your feedback has been successfully submitted');
+      expect(wrapper.find('div.success-message').text()).toEqual(SUBMIT_SUCCESS_MESSAGE);
     });
   });
 });

@@ -2,18 +2,27 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
-import AbstractFeedbackForm from 'components/Feedback/FeedbackForm';
+import AbstractFeedbackForm, { FeedbackFormProps } from 'components/Feedback/FeedbackForm';
 import { SendingState } from 'components/Feedback/types';
 import { RatingFeedbackForm, mapDispatchToProps, mapStateToProps } from '../';
 import {
-
+  COMMENTS_PLACEHOLDER,
+  RATING_LABEL,
+  RATING_LOW_TEXT,
+  RATING_HIGH_TEXT,
+  SUBMIT_TEXT,
 } from 'components/Feedback/constants';
 
 import globalState from 'fixtures/globalState';
 
 describe('RatingFeedbackForm', () => {
   const setup = () => {
-    return shallow(<RatingFeedbackForm/>);
+    const props: FeedbackFormProps = {
+      sendState: SendingState.IDLE,
+      submitFeedback: jest.fn(),
+      resetFeedback: jest.fn(),
+    };
+    return shallow(<RatingFeedbackForm {...props}/>);
   };
 
   it('is instance of AbstractFeedbackForm', () => {
@@ -51,7 +60,7 @@ describe('RatingFeedbackForm', () => {
         ratingComponent = ratingGroup.children().at(1);
       })
       it('renders correct label', () => {
-        expect(ratingGroup.children().at(0).find('label').text()).toEqual('How likely are you to recommend this tool to a friend or co-worker?');
+        expect(ratingGroup.children().at(0).find('label').text()).toEqual(RATING_LABEL);
       });
 
       describe('correctly renders radioButtonSet', () => {
@@ -80,11 +89,11 @@ describe('RatingFeedbackForm', () => {
       });
 
       it('renders left nps label', () => {
-        expect(ratingComponent.children().at(1).find('.nps-label.pull-left.text-left').text()).toEqual('Not Very Likely');
+        expect(ratingComponent.children().at(1).find('.nps-label.pull-left.text-left').text()).toEqual(RATING_LOW_TEXT);
       });
 
       it('renders right nps label', () => {
-        expect(ratingComponent.children().at(1).find('.nps-label.pull-right.text-right').text()).toEqual('Very Likely');
+        expect(ratingComponent.children().at(1).find('.nps-label.pull-right.text-right').text()).toEqual(RATING_HIGH_TEXT);
       });
     });
 
@@ -95,7 +104,7 @@ describe('RatingFeedbackForm', () => {
         form: AbstractFeedbackForm.FORM_ID,
         rows: 8,
         maxLength: 2000,
-        placeholder: 'Additional Comments',
+        placeholder: COMMENTS_PLACEHOLDER,
       });
     });
 
@@ -104,6 +113,10 @@ describe('RatingFeedbackForm', () => {
         className: 'btn btn-default submit',
         type: 'submit',
       });
+    });
+
+    it('renders submit button with correct text', () => {
+      expect(form.children().at(3).find('button').text()).toEqual(SUBMIT_TEXT)
     });
   });
 });

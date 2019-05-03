@@ -7,6 +7,10 @@ import { ResetFeedbackRequest, SubmitFeedbackRequest } from 'ducks/feedback/type
 
 import { SendingState } from '../types';
 
+import {
+  SUBMIT_SUCCESS_MESSAGE,
+} from '../constants';
+
 export interface StateFromProps {
   sendState: SendingState;
 }
@@ -16,7 +20,7 @@ export interface DispatchFromProps {
   resetFeedback: () => ResetFeedbackRequest;
 }
 
-type FeedbackFormProps = StateFromProps & DispatchFromProps;
+export type FeedbackFormProps = StateFromProps & DispatchFromProps;
 
 abstract class AbstractFeedbackForm extends React.Component<FeedbackFormProps> {
   public static defaultProps: Partial<FeedbackFormProps> = {};
@@ -41,7 +45,7 @@ abstract class AbstractFeedbackForm extends React.Component<FeedbackFormProps> {
     if (this.props.sendState === SendingState.COMPLETE) {
       return (
         <div className="success-message">
-          Your feedback has been successfully submitted
+          {SUBMIT_SUCCESS_MESSAGE}
         </div>
       );
     }

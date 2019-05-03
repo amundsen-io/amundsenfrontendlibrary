@@ -7,7 +7,11 @@ import RatingFeedbackForm from '../FeedbackForm/RatingFeedbackForm';
 import RequestFeedbackForm from '../FeedbackForm/RequestFeedbackForm';
 import Feedback, { FeedbackProps, FeedbackType } from '../';
 import {
-  BUTTON_CLOSE_TEXT
+  BUG_REPORT_TEXT,
+  BUTTON_CLOSE_TEXT,
+  FEEDBACK_TYPE_TEXT,
+  RATING_TEXT,
+  REQUEST_TEXT,
 } from '../constants';
 
 describe('Feedback', () => {
@@ -143,7 +147,7 @@ describe('Feedback', () => {
           expect(buttonGroup.props()).toMatchObject({
             className: 'btn-group',
             role: 'group',
-            'aria-label': 'Feedback Type Selector',
+            'aria-label': FEEDBACK_TYPE_TEXT,
           });
         });
 
@@ -155,21 +159,21 @@ describe('Feedback', () => {
           });
           it('has correct props if active', () => {
             expect(button.props()).toMatchObject({
-              type: 'button'
+              type: 'button',
               className: 'btn btn-default active',
               //onClick: changeTypeMockResult,
             });
           });
 
           it('has correct text', () => {
-            expect(button.text()).toEqual('Rating');
+            expect(button.text()).toEqual(RATING_TEXT);
           });
 
           it('has correct props if not active', () => {
             wrapper.setState({ feedbackType: FeedbackType.Bug });
             button = wrapper.children().at(0).children().at(1).children().at(0).find('button').at(0);
             expect(button.props()).toMatchObject({
-              type: 'button'
+              type: 'button',
               className: 'btn btn-default',
               //onClick: changeTypeMockResult,
             });
@@ -184,21 +188,21 @@ describe('Feedback', () => {
           });
           it('has correct props if active', () => {
             expect(button.props()).toMatchObject({
-              type: 'button'
+              type: 'button',
               className: 'btn btn-default active',
               //onClick: changeTypeMockResult,
             });
           });
 
           it('has correct text', () => {
-            expect(button.text()).toEqual('Bug Report');
+            expect(button.text()).toEqual(BUG_REPORT_TEXT);
           });
 
           it('has correct props if not active', () => {
             wrapper.setState({ feedbackType: FeedbackType.Request });
             button = wrapper.children().at(0).children().at(1).children().at(0).find('button').at(1);
             expect(button.props()).toMatchObject({
-              type: 'button'
+              type: 'button',
               className: 'btn btn-default',
               //onClick: changeTypeMockResult,
             });
@@ -213,21 +217,21 @@ describe('Feedback', () => {
           });
           it('has correct props if active', () => {
             expect(button.props()).toMatchObject({
-              type: 'button'
+              type: 'button',
               className: 'btn btn-default active',
               //onClick: changeTypeMockResult,
             });
           });
 
           it('has correct text', () => {
-            expect(button.text()).toEqual('Request');
+            expect(button.text()).toEqual(REQUEST_TEXT);
           });
 
           it('has correct props if not active', () => {
             wrapper.setState({ feedbackType: FeedbackType.Rating });
             button = wrapper.children().at(0).children().at(1).children().at(0).find('button').at(2);
             expect(button.props()).toMatchObject({
-              type: 'button'
+              type: 'button',
               className: 'btn btn-default',
               //onClick: changeTypeMockResult,
             });

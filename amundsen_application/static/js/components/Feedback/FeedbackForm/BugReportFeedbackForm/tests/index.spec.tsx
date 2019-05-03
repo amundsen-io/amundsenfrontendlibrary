@@ -2,18 +2,29 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
-import AbstractFeedbackForm from 'components/Feedback/FeedbackForm';
+import AbstractFeedbackForm, { FeedbackFormProps } from 'components/Feedback/FeedbackForm';
 import { SendingState } from 'components/Feedback/types';
 import { BugReportFeedbackForm, mapDispatchToProps, mapStateToProps } from '../';
 import {
-
+  BUG_SUMMARY_LABEL,
+  BUG_SUMMARY_PLACEHOLDER,
+  REPRO_STEPS_LABEL,
+  REPRO_STEPS_PLACEHOLDER,
+  SUBJECT_LABEL,
+  SUBJECT_PLACEHOLDER,
+  SUBMIT_TEXT,
 } from 'components/Feedback/constants';
 
 import globalState from 'fixtures/globalState';
 
 describe('BugReportFeedbackForm', () => {
   const setup = () => {
-    return shallow(<BugReportFeedbackForm/>)
+    const props: FeedbackFormProps = {
+      sendState: SendingState.IDLE,
+      submitFeedback: jest.fn(),
+      resetFeedback: jest.fn(),
+    };
+    return shallow<BugReportFeedbackForm>(<BugReportFeedbackForm {...props} />)
   };
 
   it('is instance of AbstractFeedbackForm', () => {
@@ -45,7 +56,7 @@ describe('BugReportFeedbackForm', () => {
 
     describe('renders subject input as second child', () => {
       it('renders correct label', () => {
-        expect(form.children().at(1).find('label').text()).toEqual('Subject');
+        expect(form.children().at(1).find('label').text()).toEqual(SUBJECT_LABEL);
       });
 
       it('renders input with correct props', () => {
@@ -54,14 +65,14 @@ describe('BugReportFeedbackForm', () => {
           name: 'subject',
           className: 'form-control',
           required: true,
-          placeholder: 'Enter a subject',
+          placeholder: SUBJECT_PLACEHOLDER,
         });
       });
     });
 
     describe('renders bug-summary input as third child', () => {
       it('renders correct label', () => {
-        expect(form.children().at(2).find('label').text()).toEqual('Bug Summary');
+        expect(form.children().at(2).find('label').text()).toEqual(BUG_SUMMARY_LABEL);
       });
 
       it('renders textarea with correct props', () => {
@@ -71,14 +82,14 @@ describe('BugReportFeedbackForm', () => {
           required: true,
           rows: 3,
           maxLength: 2000,
-          placeholder: 'What went wrong?',
+          placeholder: BUG_SUMMARY_PLACEHOLDER,
         });
       });
     });
 
     describe('renders repro-steps input as fourth child', () => {
       it('renders correct label', () => {
-        expect(form.children().at(3).find('label').text()).toEqual('Reproduction Steps');
+        expect(form.children().at(3).find('label').text()).toEqual(REPRO_STEPS_LABEL);
       });
 
       it('renders textarea with correct props', () => {
@@ -88,7 +99,7 @@ describe('BugReportFeedbackForm', () => {
           required: true,
           rows: 5,
           maxLength: 2000,
-          placeholder: 'What did you do to encounter this bug?',
+          placeholder: REPRO_STEPS_PLACEHOLDER,
         });
       });
     });
@@ -98,6 +109,10 @@ describe('BugReportFeedbackForm', () => {
         className: 'btn btn-default submit',
         type: 'submit',
       });
+    });
+
+    it('renders submit button with correct text', () => {
+      expect(form.find('button').text()).toEqual(SUBMIT_TEXT)
     });
   });
 });
