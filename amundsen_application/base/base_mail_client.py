@@ -1,5 +1,5 @@
 import abc
-from typing import List
+from typing import Dict, List
 
 from flask import Response
 
