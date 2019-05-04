@@ -35,13 +35,13 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
                   <Flag text="Alumni" labelStyle='danger' />
                 }
               </div>
-              <div className="body-3">
+              <div className="body-secondary-3">
                 { `${user.role} on ${user.team_name}` }
               </div>
             </div>
             <div className="hidden-xs col-sm-6">
-              <div className="subtitle-3">Frequently Uses</div>
-              <div className="body-3 truncated">
+              <div className="title-3">Frequently Uses</div>
+              <div className="body-secondary-3 truncated">
                 { /*TODO Fill this with a real value*/ }
                 <label>{ user.title }</label>
               </div>

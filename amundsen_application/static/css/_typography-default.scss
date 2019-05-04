@@ -1,10 +1,17 @@
 @import 'variables';
 
+body {
+  color: $text-dark;
+  font-family: $font-family-body;
+  font-size: 14px;
+  font-weight: $font-weight-body-regular;
+}
+
 // Headers use Roboto
 h1, h2, h3,
 .h1, .h2, .h3 {
   color: $text-dark;
-  font-family: "Roboto", sans-serif;
+  font-family: $font-family-header;
   margin: 0;
 }
 
@@ -30,8 +37,8 @@ h3,
 // Open Sans for almost everything else
 .title-1, .title-2, .title-3,
 .subtitle-1, .subtitle-2, .subtitle-3,
-body, .body-1, .body-2, .body-3, .body-3-secondary {
-  color: $text-dark;
+.body-1, .body-2, .body-3, .body-secondary-3,
+.body-link, .caption {
   font-family: "Open Sans", sans-serif;
 }
 
@@ -79,14 +86,36 @@ body, .body-1, .body-2, .body-3, .body-3-secondary {
   font-weight: $font-weight-body-regular;
 }
 
-body,
 .body-3 {
   font-size: 14px;
   font-weight: $font-weight-body-regular;
 }
 
-.body-3-secondary {
+.body-secondary-3 {
   color: $text-medium;
   font-size: 14px;
   font-weight: $font-weight-body-regular;
+}
+
+.body-link {
+  color: $brand-color-4;
+  font-size: 14px;
+}
+
+.caption {
+  color: $text-medium;
+  font-size: 12px;
+  font-weight: $font-weight-body-bold;
+}
+
+.column-type {
+  color: $brand-color-3;
+  font-size: 13px;
+  font-family: $font-family-monospace;
+}
+
+.helper-text {
+  color: $text-light;
+  font-size: 12px;
+  font-family: $font-family-body;
 }
