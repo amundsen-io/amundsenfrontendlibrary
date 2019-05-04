@@ -11,7 +11,7 @@ matrix:
     - make test
   - language: node_js
     node_js:
-    - '8'
+    - '10'
     env:
     - IS_DEPLOYABLE=false
     before_install:
