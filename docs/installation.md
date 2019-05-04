@@ -77,4 +77,4 @@ $ docker-compose -f docker-amundsen.yml up
 
 ----
 
-> Next: Dive into further [configuration](../configuration.md) | See the [developer guide](../developer_guide.md) to get a good start with hacking on the code.
+> Next: Dive into further [configuration](./configuration.md) | See the [developer guide](./developer_guide.md) to get a good start with hacking on the code.
