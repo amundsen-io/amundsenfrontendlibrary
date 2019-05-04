@@ -75,4 +75,6 @@ $ docker-compose -f docker-amundsen.yml up
 10. View UI at `http://YOUR-DOCKER-HOST-IP:5000/table_detail/gold/hive/test_schema/test_table1` or `/table_detail/gold/dynamo/test_schema/test_table2`
 11. View UI at `http://YOUR-DOCKER-HOST-IP:5000` and try to search `test`, it should return some result.
 
-> Next: ../configuration.md | ../developer_guide.md
+----
+
+> Next: Dive into further [configuration](../configuration.md) | See the [developer guide](../developer_guide.md) to get a good start with hacking on the code.
