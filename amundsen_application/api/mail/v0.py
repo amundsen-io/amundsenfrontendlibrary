@@ -54,7 +54,7 @@ def feedback() -> Response:
             message = 'Success'
         else:
             message = 'Mail client failed with status code ' + str(status_code)
-            logging.exception(message)
+            logging.error(message)
 
         return make_response(jsonify({'msg': message}), status_code)
     except Exception as e:
