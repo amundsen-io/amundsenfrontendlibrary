@@ -47,14 +47,14 @@ def feedback() -> Response:
                   value_prop=value_prop,
                   subject=subject)
 
-        response = mail_client.send_email(subject=subject, text=text_content, html=html_content, data=data)
+        response = mail_client.send_email(subject=subject, text=text_content, html=html_content, form_data=data)
         status_code = response.status_code
 
         if status_code == HTTPStatus.OK:
             message = 'Success'
         else:
             message = 'Mail client failed with status code ' + str(status_code)
-            logging.error(message)
+            logging.exception(message)
 
         return make_response(jsonify({'msg': message}), status_code)
     except Exception as e:

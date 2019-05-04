@@ -8,6 +8,7 @@ import { ResetFeedbackRequest, SubmitFeedbackRequest } from 'ducks/feedback/type
 import { SendingState } from '../types';
 
 import {
+  SUBMIT_FAILURE_MESSAGE,
   SUBMIT_SUCCESS_MESSAGE,
 } from '../constants';
 
@@ -44,8 +45,15 @@ abstract class AbstractFeedbackForm extends React.Component<FeedbackFormProps> {
     }
     if (this.props.sendState === SendingState.COMPLETE) {
       return (
-        <div className="success-message">
+        <div className="status-message">
           {SUBMIT_SUCCESS_MESSAGE}
+        </div>
+      );
+    }
+    if (this.props.sendState === SendingState.ERROR) {
+      return (
+        <div className="status-message">
+          {SUBMIT_FAILURE_MESSAGE}
         </div>
       );
     }

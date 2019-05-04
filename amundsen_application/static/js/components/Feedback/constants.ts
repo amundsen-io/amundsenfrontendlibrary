@@ -2,6 +2,7 @@
 /* Form */
 export const BUTTON_CLOSE_TEXT = 'Close';
 export const FEEDBACK_TITLE = 'Product Feedback';
+export const SUBMIT_FAILURE_MESSAGE = 'Your feedback was not submitted, please try again';
 export const SUBMIT_SUCCESS_MESSAGE = 'Your feedback has been successfully submitted';
 
 /* Button Set */

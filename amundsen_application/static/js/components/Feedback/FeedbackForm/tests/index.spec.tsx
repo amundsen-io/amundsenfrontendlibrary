@@ -8,6 +8,7 @@ import FeedbackForm, { FeedbackFormProps } from '../';
 import { RatingFeedbackForm } from '../RatingFeedbackForm';
 
 import {
+  SUBMIT_FAILURE_MESSAGE,
   SUBMIT_SUCCESS_MESSAGE,
 } from '../../constants';
 
@@ -49,9 +50,14 @@ describe('FeedbackForm', () => {
       expect(wrapper.find('LoadingSpinner').exists()).toBeTruthy();
     });
 
-    it('renders confirmation text if sendState is COMPLETE', () => {
+    it('renders confirmation status message if sendState is COMPLETE', () => {
       const { props, wrapper } = setup({sendState: SendingState.COMPLETE});
-      expect(wrapper.find('div.success-message').text()).toEqual(SUBMIT_SUCCESS_MESSAGE);
+      expect(wrapper.find('div.status-message').text()).toEqual(SUBMIT_SUCCESS_MESSAGE);
+    });
+
+    it('renders failure status message if sendState is ERROR', () => {
+      const { props, wrapper } = setup({sendState: SendingState.ERROR});
+      expect(wrapper.find('div.status-message').text()).toEqual(SUBMIT_FAILURE_MESSAGE);
     });
   });
 });
