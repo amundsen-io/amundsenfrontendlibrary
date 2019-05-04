@@ -46,6 +46,7 @@ $ docker-machine create -d virtualbox default
 $ docker-machine ls
 ```
   You should see the `default` machine listed, running on virtualbox with no errors listed.
+  
 5. Set up the docker environment using
 ```bash
 $ eval $(docker-machine env default)
@@ -73,3 +74,5 @@ $ docker-compose -f docker-amundsen.yml up
 9. Verify dummy data has been ingested by viewing in Neo4j by visiting `http://YOUR-DOCKER-HOST-IP:7474/browser/` and run `MATCH (n:Table) RETURN n LIMIT 25` in the query box. You should see two tables -- `hive.test_schema.test_table1` and `dynamo.test_schema.test_table2`.
 10. View UI at `http://YOUR-DOCKER-HOST-IP:5000/table_detail/gold/hive/test_schema/test_table1` or `/table_detail/gold/dynamo/test_schema/test_table2`
 11. View UI at `http://YOUR-DOCKER-HOST-IP:5000` and try to search `test`, it should return some result.
+
+> Next: ../configuration.md | ../developer_guide.md
