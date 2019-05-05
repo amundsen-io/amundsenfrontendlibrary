@@ -13,3 +13,11 @@ Certain features of the React application import variables from an [AppConfig](h
 ### Custom Fonts & Styles
 Fonts and css variables can be customized by modifying [fonts-custom.scss](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/static/css/_fonts-custom.scss) and
 [variables-custom.scss](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/static/css/_variables-custom.scss).
+
+### Examples
+
+#### 1) To add a custom logo you need to do the following:
+
+1. Add your logo to the folder in `amundsen_application/static/images/`
+2. Add the config for `logoPath`. For example Lyft uses the value  `"/static/images/lyft-logo.svg"`
+3. Rebuild/redeploy. The `npm run build` step will rebuild scripts file to reference the new logo image, and the `python3 setup.py install` step will updated deployed files and make the new image available on the server.
