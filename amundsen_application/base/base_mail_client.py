@@ -10,5 +10,11 @@ class BaseMailClient(abc.ABC):
         pass  # pragma: no cover
 
     @abc.abstractmethod
-    def send_email(self, sender: str, recipients: List[str], subject: str, text: str, html: str, form_data: Dict) -> Response:
+    def send_email(self,
+                   sender: str,
+                   recipients: List[str],
+                   subject: str,
+                   text: str,
+                   html: str,
+                   form_data: Dict) -> Response:
         raise NotImplementedError  # pragma: no cover

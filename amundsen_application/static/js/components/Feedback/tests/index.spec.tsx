@@ -161,7 +161,7 @@ describe('Feedback', () => {
             expect(button.props()).toMatchObject({
               type: 'button',
               className: 'btn btn-default active',
-              //onClick: changeTypeMockResult,
+              // onClick: changeTypeMockResult,
             });
           });
 
@@ -175,7 +175,7 @@ describe('Feedback', () => {
             expect(button.props()).toMatchObject({
               type: 'button',
               className: 'btn btn-default',
-              //onClick: changeTypeMockResult,
+              // onClick: changeTypeMockResult,
             });
           });
         });
@@ -190,7 +190,7 @@ describe('Feedback', () => {
             expect(button.props()).toMatchObject({
               type: 'button',
               className: 'btn btn-default active',
-              //onClick: changeTypeMockResult,
+              // onClick: changeTypeMockResult,
             });
           });
 
@@ -204,7 +204,7 @@ describe('Feedback', () => {
             expect(button.props()).toMatchObject({
               type: 'button',
               className: 'btn btn-default',
-              //onClick: changeTypeMockResult,
+              // onClick: changeTypeMockResult,
             });
           });
         });
@@ -219,7 +219,7 @@ describe('Feedback', () => {
             expect(button.props()).toMatchObject({
               type: 'button',
               className: 'btn btn-default active',
-              //onClick: changeTypeMockResult,
+              // onClick: changeTypeMockResult,
             });
           });
 
@@ -233,7 +233,7 @@ describe('Feedback', () => {
             expect(button.props()).toMatchObject({
               type: 'button',
               className: 'btn btn-default',
-              //onClick: changeTypeMockResult,
+              // onClick: changeTypeMockResult,
             });
           });
         });
