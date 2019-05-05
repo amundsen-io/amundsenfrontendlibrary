@@ -13,7 +13,7 @@ Certain features of the React application import variables from an [AppConfig](h
 #### Example: Add a custom logo
 
 1. Add your logo to the folder in `amundsen_application/static/images/`
-2. Add the config for `logoPath`. For example Lyft uses the value  `"/static/images/lyft-logo.svg"`
+2. Set the the `logoPath` key on the `AppConfigCustom` object in [config-custom.ts](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/static/js/config/config-custom.ts). For example Lyft uses the value `"/static/images/lyft-logo.svg"`
 3. Rebuild/redeploy. The `npm run build` step will rebuild scripts file to reference the new logo image, and the `python3 setup.py install` step will updated deployed files and make the new image available on the server.
 
 ### Custom Fonts & Styles
