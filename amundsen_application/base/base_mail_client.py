@@ -17,4 +17,14 @@ class BaseMailClient(abc.ABC):
                    text: str,
                    html: str,
                    form_data: Dict) -> Response:
+        """
+        Sends an email using the following parameters
+        :param sender: The sending address associated with the email
+        :param recipients: A list of receipients for the email
+        :param subject: The subject of the email
+        :param text: Plain text email content
+        :param html: HTML email content
+        :param optional_data: A dictionary of any values needed for custom implementations
+        :return:
+        """
         raise NotImplementedError  # pragma: no cover

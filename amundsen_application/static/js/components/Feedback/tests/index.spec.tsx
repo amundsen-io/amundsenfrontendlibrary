@@ -95,7 +95,7 @@ describe('Feedback', () => {
         wrapper = setupResult.wrapper;
         wrapper.instance().toggle();
 
-        changeTypeMockResult = jest.fn();
+        changeTypeMockResult = jest.fn(() => {});
         changeTypeSpy = jest.spyOn(wrapper.instance(), 'changeType').mockImplementation(() => changeTypeMockResult);
         wrapper.update();
         element = wrapper.children().at(0);
@@ -109,26 +109,20 @@ describe('Feedback', () => {
         let title;
         beforeAll(() => {
           const header = element.children().at(0);
-          button = header.children().at(0);
-          title = header.children().at(1);
+          title = header.children().at(0);
+          button = header.children().at(1);
         });
+        it('renders correct title', () => {
+          expect(title.text()).toEqual(props.title.toUpperCase());
+        });
+
         it('renders close button with correct props', () => {
           expect(button.props()).toMatchObject({
             type: 'button',
-            className: 'close',
+            className: 'btn icon close-button',
             'aria-label': BUTTON_CLOSE_TEXT,
             onClick: wrapper.instance().toggle,
           });
-        });
-
-        /* TODO: Replace '&times;'
-        it('renders close button with correct text', () => {
-          expect(button.find('span').text()).toEqual('&times;');
-        });
-        */
-
-        it('renders correct title', () => {
-          expect(title.text()).toEqual(props.title.toUpperCase());
         });
       });
 
@@ -161,7 +155,7 @@ describe('Feedback', () => {
             expect(button.props()).toMatchObject({
               type: 'button',
               className: 'btn btn-default active',
-              // onClick: changeTypeMockResult,
+              onClick: changeTypeMockResult,
             });
           });
 
@@ -175,7 +169,7 @@ describe('Feedback', () => {
             expect(button.props()).toMatchObject({
               type: 'button',
               className: 'btn btn-default',
-              // onClick: changeTypeMockResult,
+              onClick: changeTypeMockResult,
             });
           });
         });
@@ -190,7 +184,7 @@ describe('Feedback', () => {
             expect(button.props()).toMatchObject({
               type: 'button',
               className: 'btn btn-default active',
-              // onClick: changeTypeMockResult,
+              onClick: changeTypeMockResult,
             });
           });
 
@@ -204,7 +198,7 @@ describe('Feedback', () => {
             expect(button.props()).toMatchObject({
               type: 'button',
               className: 'btn btn-default',
-              // onClick: changeTypeMockResult,
+              onClick: changeTypeMockResult,
             });
           });
         });
@@ -219,7 +213,7 @@ describe('Feedback', () => {
             expect(button.props()).toMatchObject({
               type: 'button',
               className: 'btn btn-default active',
-              // onClick: changeTypeMockResult,
+              onClick: changeTypeMockResult,
             });
           });
 
@@ -233,16 +227,21 @@ describe('Feedback', () => {
             expect(button.props()).toMatchObject({
               type: 'button',
               className: 'btn btn-default',
-              // onClick: changeTypeMockResult,
+              onClick: changeTypeMockResult,
             });
           });
         });
       });
 
-      /* TODO: How to test this
+      /* Note: Using .debug() as a temporary workaround -- do not propagate this pattern.
+         Issue: The content are connected components. Enzyme will throw an error if we access that connected component without a Redux store connected.
+         Workaround: Use .debug() to check that the string representation of the rendered content is what we expect.
+         Future Solution: Connect a mock store OR refactor FeedbackForm to be the connected component on the first place, submitting the form data
+                          of its child form and refreshing it.
+      */
       it('renders state.content', () => {
-        expect(element.children().at(2)).toBeInstanceOf(RatingFeedbackForm);
-      });*/
+        expect(wrapper.children().at(0).children().at(2).debug()).toEqual('<Connect(RatingFeedbackForm) />');
+      });
 
       afterAll(() => {
         changeTypeSpy.mockRestore();

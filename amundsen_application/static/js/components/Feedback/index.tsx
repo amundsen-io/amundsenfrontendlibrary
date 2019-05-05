@@ -78,12 +78,10 @@ export default class Feedback extends React.Component<FeedbackProps, FeedbackSta
           this.state.isOpen &&
           <div>
             <div className="feedback-header">
-              <button type="button" className="close" aria-label={BUTTON_CLOSE_TEXT} onClick={this.toggle}>
-                <span aria-hidden="true">&times;</span>
-              </button>
               <div className="title">
                 {this.props.title.toUpperCase()}
               </div>
+              <button type="button" className="btn icon close-button" aria-label={BUTTON_CLOSE_TEXT} onClick={this.toggle} />
             </div>
             <div className="text-center">
               <div className="btn-group" role="group" aria-label={FEEDBACK_TYPE_TEXT}>
