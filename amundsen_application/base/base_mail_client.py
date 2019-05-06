@@ -16,7 +16,7 @@ class BaseMailClient(abc.ABC):
                    subject: str,
                    text: str,
                    html: str,
-                   form_data: Dict) -> Response:
+                   optional_data: Dict) -> Response:
         """
         Sends an email using the following parameters
         :param sender: The sending address associated with the email
