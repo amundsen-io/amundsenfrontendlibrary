@@ -160,7 +160,7 @@ describe('SearchPage', () => {
     });
   });
 
-  /*describe('getSelectedTabByResourceType', () => {
+  describe('getSelectedTabByResourceType', () => {
     let props;
     let wrapper;
     beforeAll(() => {
@@ -444,7 +444,7 @@ describe('SearchPage', () => {
         });
       });
     });
-  });*/
+  });
 
   describe('renderPopularTables', () => {
     let content;
