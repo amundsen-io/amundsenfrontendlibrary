@@ -74,7 +74,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
         <div className={'column-info ' + (isExpandable ? 'expandable' : '')} onClick={ isExpandable? this.onClick : null }>
           <div style={{ width: '100%', display: 'inline-grid' }}>
             <div className='title-row'>
-              <div className='title-2'>{metadata.name}</div>
+              <div className='name title-2'>{metadata.name}</div>
               <div className='column-type'>{metadata.type || 'null'}</div>
             </div>
           </div>

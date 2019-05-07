@@ -1,17 +1,9 @@
 @import 'variables';
 
-body {
-  color: $text-dark;
-  font-family: $font-family-body;
-  font-size: 14px;
-  font-weight: $font-weight-body-regular;
-}
-
 .text-center { text-align: center; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
 
-// Headers use Roboto
 h1, h2, h3,
 .h1, .h2, .h3 {
   color: $text-dark;
@@ -37,13 +29,18 @@ h3,
   font-weight: $font-weight-header-bold;
 }
 
+body {
+  color: $text-dark;
+  font-size: 14px;
+  font-family: $font-family-body;
+  font-weight: $font-weight-body-regular;
+}
 
-// Open Sans for almost everything else
 .title-1, .title-2, .title-3,
 .subtitle-1, .subtitle-2, .subtitle-3,
-.body-1, .body-2, .body-3, .body-secondary-3,
-.body-link, .caption {
-  font-family: "Open Sans", sans-serif;
+.body-1, .body-2, .body-3,
+.body-secondary-3, .body-link, .caption {
+  font-family: $font-family-body;
 }
 
 .title-1 {
@@ -108,7 +105,7 @@ h3,
 
 .caption {
   color: $text-medium;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: $font-weight-body-bold;
 }
 

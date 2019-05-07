@@ -350,8 +350,8 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
               <div className="col-xs-12 col-md-5 float-md-right col-lg-4">
                 <EntityCard sections={ this.createEntityCardSections() }/>
               </div>
-              <div className="detail-list-header col-xs-12 col-md-7 col-lg-8">
-                <label>Columns</label>
+              <div className="col-xs-12 col-md-7 col-lg-8">
+                <div className="detail-list-header title-1">Columns</div>
                 <DetailList
                   columns={ data.columns }
                 />
