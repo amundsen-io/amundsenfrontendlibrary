@@ -119,7 +119,7 @@ describe('Feedback', () => {
         it('renders close button with correct props', () => {
           expect(button.props()).toMatchObject({
             type: 'button',
-            className: 'btn icon close-button',
+            className: 'btn btn-close',
             'aria-label': BUTTON_CLOSE_TEXT,
             onClick: wrapper.instance().toggle,
           });
