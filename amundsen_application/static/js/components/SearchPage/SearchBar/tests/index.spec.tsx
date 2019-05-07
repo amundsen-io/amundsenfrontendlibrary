@@ -59,7 +59,8 @@ describe('SearchBar', () => {
       const { props, wrapper } = setup();
       // @ts-ignore: mocked events throw type errors
       wrapper.instance().handleValueChange(valueChangeMockEvent);
-      expect(setStateSpy).toHaveBeenCalledWith({ searchTerm: valueChangeMockEvent.target.value.toLowerCase() });
+      expect(setStateSpy).toHaveBeenCalledWith({ searchTerm: valueChangeMockEvent.target.value.toLowerCase(),
+        modifiedState: true });
     });
   });
 

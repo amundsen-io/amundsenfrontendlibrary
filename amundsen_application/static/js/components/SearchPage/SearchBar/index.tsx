@@ -23,6 +23,7 @@ interface SearchBarState {
   subTextClassName: string;
   searchTerm: string;
   subText: string;
+  modifiedState: boolean;
 }
 
 class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
@@ -39,16 +40,20 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
       subTextClassName: '',
       searchTerm: this.props.searchTerm,
       subText: this.props.subText,
+      modifiedState: false,
     };
   }
 
   static getDerivedStateFromProps(props, state) {
-    const { searchTerm } = props;
-    return { searchTerm };
+    if (!state.modifiedState) {
+      const { searchTerm } = props;
+      return { searchTerm };
+    }
+    return null;
   }
 
   handleValueChange = (event: React.SyntheticEvent<HTMLInputElement>) : void => {
-    this.setState({ searchTerm: (event.target as HTMLInputElement).value.toLowerCase() });
+    this.setState({ searchTerm: (event.target as HTMLInputElement).value.toLowerCase(), modifiedState: true });
   };
 
   handleValueSubmit = (event: React.FormEvent<HTMLFormElement>) : void => {
