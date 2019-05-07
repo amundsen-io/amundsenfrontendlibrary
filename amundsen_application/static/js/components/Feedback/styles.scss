@@ -36,6 +36,7 @@
 
   .title {
     color: $text-medium;
+    flex-grow: 1;
     font-size: 12px;
     font-family: $font-family-header;
     font-weight: $font-weight-header-regular;
@@ -50,6 +51,7 @@
   }
 
   .feedback-header {
+    display: flex;
     margin-bottom: 8px;
   }
 
