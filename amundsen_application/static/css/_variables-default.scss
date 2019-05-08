@@ -4,7 +4,8 @@
 
   $brand-color-1, $brand-color-2, $brand-color-3, $brand-color-4, $brand-color-5
 
-  $font-family-header, $font-weight-sans-serif-bold
+  $font-family-header, $font-weight-header-regular, $font-weight-header-bold
+  $font-family-body, $font-weight-body-regular, $font-weight-body-semi-bold, $font-weight-body-bold
 
   $text-dark, $text-medium, $text-light
 
@@ -55,7 +56,6 @@ $font-family-monospace:       'Menlo-Bold', Menlo, monospace !default;
 $font-family-serif:           Georgia, "Times New Roman", Times, serif !default;
 
 $font-size-small:    12px !default;
-
 $font-size-base:     14px !default;
 $font-size-large:    16px !default;
 $line-height-small:  1.5 !default;
