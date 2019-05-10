@@ -41,7 +41,7 @@ describe('TableListItem', () => {
     });
 
     it('renders table name', () => {
-      expect(wrapper.find('.content').children().at(0).children().at(0).text()).toEqual('tableSchema.tableName');
+      expect(wrapper.find('.resource-name').children().at(0).text()).toEqual('tableSchema.tableName');
     });
 
     it('renders table description', () => {

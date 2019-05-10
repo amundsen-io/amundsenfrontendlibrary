@@ -3,6 +3,8 @@ import { all } from 'redux-saga/effects';
 // AnnouncementPage
 import { announcementsGetWatcher } from "./announcements/sagas";
 
+import { addBookmarkWatcher } from "ducks/bookmark/sagas";
+
 // FeedbackForm
 import { submitFeedbackWatcher } from './feedback/sagas';
 
@@ -33,6 +35,8 @@ export default function* rootSaga() {
   yield all([
     // AnnouncementPage
     announcementsGetWatcher(),
+    // Bookmarks
+    addBookmarkWatcher(),
     // FeedbackForm
     submitFeedbackWatcher(),
     // SearchPage

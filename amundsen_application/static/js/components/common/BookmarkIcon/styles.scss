@@ -1,0 +1,36 @@
+@import 'variables';
+
+.bookmark-icon {
+  border-radius: 50%;
+  display: inline-block;
+  height: 28px;
+  margin: -4px 0 -4px 4px;
+  padding: 2px;
+  width: 28px;
+  vertical-align: bottom;
+
+  &:hover,
+  &:focus {
+    background-color: $gray-lighter;
+  }
+
+   .icon {
+    margin: 0;
+
+     &.icon-bookmark {
+      &,
+      &:hover,
+      &:focus {
+        background-color: $gray-light !important;
+      }
+    }
+
+     &.icon-bookmark-filled {
+      &,
+      &:hover,
+      &:focus {
+        background-color: gold !important;
+      }
+    }
+  }
+}

@@ -16,6 +16,10 @@ const globalState: GlobalState = {
         html_content: '<div>Just kidding</div>',
       }],
   },
+  bookmarks: {
+    myBookmarks: [],
+    bookmarksForUser: [],
+  },
   feedback: {
       sendState: SendingState.IDLE,
   },
