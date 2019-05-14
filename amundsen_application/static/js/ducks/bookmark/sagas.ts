@@ -48,23 +48,27 @@ export function* removeBookmarkWatcher(): SagaIterator {
 
  // GetBookmarks
 export function* getBookmarksWorker(action: GetBookmarksRequest): SagaIterator {
+  let response;
   try {
-    const response = yield call(getBookmarks, action);
+    response = yield call(getBookmarks, action);
+    yield put({ type: GetBookmarks.SUCCESS, payload: response.bookmark.table });
   } catch(e) {
-
-   }
+    yield put({ type: GetBookmarks.FAILURE, payload: response });
+  }
 }
-export function* getBookmarskWatcher(): SagaIterator {
+export function* getBookmarkskWatcher(): SagaIterator {
   yield takeEvery(GetBookmarks.ACTION, getBookmarksWorker)
 }
 
 
  // GetBookmarksForUser
 export function* getBookmarkForUserWorker(action: GetBookmarksForUserRequest): SagaIterator {
+  let response;
   try {
-    const response = yield call(getBookmarksForUser, action);
+    response = yield call(getBookmarksForUser, action);
+    yield put({ type: GetBookmarksForUser.SUCCESS, payload: response.bookmark.table });
   } catch(e) {
-
+    yield put({ type: GetBookmarksForUser.FAILURE, payload: response });
    }
 }
 export function* getBookmarksForUserWatcher(): SagaIterator {

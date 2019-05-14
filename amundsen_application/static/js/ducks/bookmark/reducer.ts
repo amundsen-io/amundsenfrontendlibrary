@@ -54,10 +54,7 @@ export function getBookmarksForUser(user: string): GetBookmarksForUserRequest {
 }
 
  const initialState: BookmarkReducerState = {
-  myBookmarks: [
-    { key: "hive://gold.core/dim_venues" },
-    { key: "hive://gold.redshift/dimension_applicants" }
-  ],
+  myBookmarks: [],
   bookmarksForUser: [],
 };
 
@@ -67,7 +64,11 @@ export function getBookmarksForUser(user: string): GetBookmarksForUserRequest {
     case AddBookmark.FAILURE:
     case RemoveBookmark.SUCCESS:
     case RemoveBookmark.FAILURE:
+      return;
     case GetBookmarks.SUCCESS:
+      return { ...state, myBookmarks: action.payload };
+
+
     case GetBookmarks.FAILURE:
     case GetBookmarksForUser.SUCCESS:
     case GetBookmarksForUser.FAILURE:

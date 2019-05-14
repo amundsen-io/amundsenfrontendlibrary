@@ -494,3 +494,25 @@ def get_user() -> Response:
         logging.exception(message)
         payload = jsonify({'msg': message})
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
+@metadata_blueprint.route('/bookmark', methods=['GET'])
+def get_bookmark() -> Response:
+    try:
+        user_id = 'dwon@lyft.com'
+        url = '{0}{1}/{2}/follow/'.format(app.config['METADATASERVICE_BASE'], USER_ENDPOINT, user_id)
+
+        response = request_metadata(url=url)
+        status_code = response.status_code
+
+        payload = {
+            'msg': 'success',
+            'bookmark': response.json()
+        }
+
+        return make_response(jsonify(payload), status_code)
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        payload = jsonify({'msg': message})
+        return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
