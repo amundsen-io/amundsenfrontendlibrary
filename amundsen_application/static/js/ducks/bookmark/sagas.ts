@@ -51,7 +51,7 @@ export function* getBookmarksWorker(action: GetBookmarksRequest): SagaIterator {
   let response;
   try {
     response = yield call(getBookmarks, action);
-    yield put({ type: GetBookmarks.SUCCESS, payload: response.bookmark.table });
+    yield put({ type: GetBookmarks.SUCCESS, payload: response.table_bookmarks });
   } catch(e) {
     yield put({ type: GetBookmarks.FAILURE, payload: response });
   }
@@ -66,7 +66,7 @@ export function* getBookmarkForUserWorker(action: GetBookmarksForUserRequest): S
   let response;
   try {
     response = yield call(getBookmarksForUser, action);
-    yield put({ type: GetBookmarksForUser.SUCCESS, payload: response.bookmark.table });
+    yield put({ type: GetBookmarksForUser.SUCCESS, payload: response.table_bookmarks });
   } catch(e) {
     yield put({ type: GetBookmarksForUser.FAILURE, payload: response });
    }

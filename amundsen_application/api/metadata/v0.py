@@ -11,6 +11,7 @@ from amundsen_application.log.action_log import action_logging
 
 from amundsen_application.models.user import load_user, dump_user
 
+from amundsen_application.api.utils.data_utils import get_table_key, marshall_table_partial
 from amundsen_application.api.utils.request_utils import get_query_param, request_metadata
 
 
@@ -33,15 +34,6 @@ def _get_table_endpoint() -> str:
     return table_endpoint
 
 
-def _get_table_key(args: Dict) -> str:
-    db = get_query_param(args, 'db')
-    cluster = get_query_param(args, 'cluster')
-    schema = get_query_param(args, 'schema')
-    table = get_query_param(args, 'table')
-    table_key = '{db}://{cluster}.{schema}/{table}'.format(**locals())
-    return table_key
-
-
 @metadata_blueprint.route('/popular_tables', methods=['GET'])
 def popular_tables() -> Response:
     """
@@ -51,21 +43,6 @@ def popular_tables() -> Response:
     Schema Defined Here:
     https://github.com/lyft/amundsenmetadatalibrary/blob/master/metadata_service/api/popular_tables.py
     """
-    def _map_results(result: Dict) -> Dict:
-        table_name = result.get('table_name')
-        schema_name = result.get('schema')
-        cluster = result.get('cluster')
-        db = result.get('database')
-        return {
-            'name': table_name,
-            'schema_name': schema_name,
-            'cluster': cluster,
-            'database': db,
-            'description': result.get('table_description'),
-            'key': '{0}://{1}.{2}/{3}'.format(db, cluster, schema_name, table_name),
-            'type': 'table',
-        }
-
     try:
         url = app.config['METADATASERVICE_BASE'] + POPULAR_TABLES_ENDPOINT
         response = request_metadata(url=url)
@@ -75,7 +52,7 @@ def popular_tables() -> Response:
             message = 'Success'
             response_list = response.json().get('popular_tables')
             top4 = response_list[0:min(len(response_list), app.config['POPULAR_TABLE_COUNT'])]
-            popular_tables = [_map_results(result) for result in top4]
+            popular_tables = [marshall_table_partial(result) for result in top4]
         else:
             message = 'Encountered error: Request to metadata service failed with status code ' + str(status_code)
             logging.error(message)
@@ -102,7 +79,7 @@ def get_table_metadata() -> Response:
     TODO: Define an interface for envoy_client
     """
     try:
-        table_key = _get_table_key(request.args)
+        table_key = get_table_key(request.args)
         list_item_index = get_query_param(request.args, 'index')
         list_item_source = get_query_param(request.args, 'source')
 
@@ -232,7 +209,7 @@ def _update_table_owner(*, table_key: str, method: str, owner: str) -> Dict[str,
 def update_table_owner() -> Response:
     try:
         args = request.get_json()
-        table_key = _get_table_key(args)
+        table_key = get_table_key(args)
         owner = get_query_param(args, 'owner')
 
         payload = jsonify(_update_table_owner(table_key=table_key, method=request.method, owner=owner))
@@ -274,7 +251,7 @@ def get_last_indexed() -> Response:
 def get_table_description() -> Response:
     try:
         table_endpoint = _get_table_endpoint()
-        table_key = _get_table_key(request.args)
+        table_key = get_table_key(request.args)
 
         url = '{0}/{1}/description'.format(table_endpoint, table_key)
 
@@ -299,7 +276,7 @@ def get_table_description() -> Response:
 def get_column_description() -> Response:
     try:
         table_endpoint = _get_table_endpoint()
-        table_key = _get_table_key(request.args)
+        table_key = get_table_key(request.args)
 
         column_name = get_query_param(request.args, 'column_name')
 
@@ -333,7 +310,7 @@ def put_table_description() -> Response:
         args = request.get_json()
         table_endpoint = _get_table_endpoint()
 
-        table_key = _get_table_key(args)
+        table_key = get_table_key(args)
 
         description = get_query_param(args, 'description')
         description = ' '.join(description.split())
@@ -367,7 +344,7 @@ def put_column_description() -> Response:
     try:
         args = request.get_json()
 
-        table_key = _get_table_key(args)
+        table_key = get_table_key(args)
         table_endpoint = _get_table_endpoint()
 
         column_name = get_query_param(args, 'column_name')
@@ -436,7 +413,7 @@ def update_table_tags() -> Response:
         method = request.method
 
         table_endpoint = _get_table_endpoint()
-        table_key = _get_table_key(args)
+        table_key = get_table_key(args)
 
         tag = get_query_param(args, 'tag')
 
@@ -505,9 +482,11 @@ def get_bookmark() -> Response:
         response = request_metadata(url=url)
         status_code = response.status_code
 
+        table_bookmarks = [marshall_table_partial(table) for table in response.json().get('table')]
+
         payload = {
             'msg': 'success',
-            'bookmark': response.json()
+            'table_bookmarks': table_bookmarks
         }
 
         return make_response(jsonify(payload), status_code)
