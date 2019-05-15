@@ -7,6 +7,7 @@ from typing import Any, Dict  # noqa: F401
 
 from amundsen_application.base.base_superset_preview_client import BaseSupersetPreviewClient
 
+# 'main' is an existing default Superset database which serves for demo purposes
 DEFAULT_DATABASE_MAP = {
     'main': 1,
 }
@@ -39,8 +40,12 @@ class SupersetPreviewClient(BaseSupersetPreviewClient):
 
             # Generate the sql query for the desired data preview content
             try:
+                # 'main' is an existing default Superset schema which serves for demo purposes
                 schema = 'main'  # OR params.get('schema') in a real use case
+
+                # 'ab_role' is an existing default Superset table which serves for demo purposes
                 table_name = 'ab_role'  # OR params.get('tableName') in a real use case
+
                 request_data['sql'] = 'SELECT * FROM {schema}.{table} LIMIT 50'.format(schema=schema, table=table_name)
             except Exception as e:
                 logging.error('Encountered error generating request sql: ' + str(e))
