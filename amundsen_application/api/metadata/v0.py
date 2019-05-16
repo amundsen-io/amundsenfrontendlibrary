@@ -473,16 +473,18 @@ def get_user() -> Response:
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-
 @metadata_blueprint.route('/bookmark', methods=['PUT', 'DELETE'])
 def update_bookmark() -> Response:
     try:
-        user_id = 'dwon@lyft.com'
+        if app.config['AUTH_USER_METHOD']:
+            user = app.config['AUTH_USER_METHOD'](app)
+        else:
+            raise Exception('AUTH_USER_METHOD is not configured')
 
         type = get_query_param(request.args, 'type')
         key = get_query_param(request.args, 'key')
 
-        url = '{0}{1}/{2}/follow/{3}/{4}'.format(app.config['METADATASERVICE_BASE'], USER_ENDPOINT, user_id, type, key)
+        url = '{0}{1}/{2}/follow/{3}/{4}'.format(app.config['METADATASERVICE_BASE'], USER_ENDPOINT, user.user_id, type, key)
 
         response = request_metadata(url=url, method=request.method)
         status_code = response.status_code
@@ -501,12 +503,14 @@ def update_bookmark() -> Response:
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-
 @metadata_blueprint.route('/bookmark', methods=['GET'])
 def get_bookmark() -> Response:
     try:
-        user_id = 'dwon@lyft.com'
-        url = '{0}{1}/{2}/follow/'.format(app.config['METADATASERVICE_BASE'], USER_ENDPOINT, user_id)
+        if app.config['AUTH_USER_METHOD']:
+            user = app.config['AUTH_USER_METHOD'](app)
+        else:
+            raise Exception('AUTH_USER_METHOD is not configured')
+        url = '{0}{1}/{2}/follow/'.format(app.config['METADATASERVICE_BASE'], USER_ENDPOINT, user.user_id)
 
         response = request_metadata(url=url, method=request.method)
         status_code = response.status_code
