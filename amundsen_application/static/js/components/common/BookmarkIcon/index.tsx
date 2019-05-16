@@ -14,8 +14,8 @@ interface StateFromProps {
 }
 
 interface DispatchFromProps {
-  addBookmark: (key) => AddBookmarkRequest,
-  removeBookmark: (key) => RemoveBookmarkRequest,
+  addBookmark: (key: string, type: string) => AddBookmarkRequest,
+  removeBookmark: (key: string, type: string) => RemoveBookmarkRequest,
 }
 
 interface OwnProps {
@@ -39,9 +39,9 @@ class BookmarkIcon extends React.Component<BookmarkIconProps, BookmarkIconState>
     event.preventDefault();
 
     if (this.props.isBookmarked) {
-      // Remove Bookmark
+      this.props.removeBookmark(this.props.bookmarkKey, 'table');
     } else {
-      // Add Bookmark
+      this.props.addBookmark(this.props.bookmarkKey, 'table');
     }
   };
 

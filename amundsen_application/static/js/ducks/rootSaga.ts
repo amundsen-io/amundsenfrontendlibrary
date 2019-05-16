@@ -3,7 +3,12 @@ import { all } from 'redux-saga/effects';
 // AnnouncementPage
 import { announcementsGetWatcher } from "./announcements/sagas";
 
-import { addBookmarkWatcher, getBookmarkskWatcher } from "ducks/bookmark/sagas";
+import {
+  addBookmarkWatcher,
+  getBookmarksForUserWatcher,
+  getBookmarkskWatcher,
+  removeBookmarkWatcher
+} from "ducks/bookmark/sagas";
 
 // FeedbackForm
 import { submitFeedbackWatcher } from './feedback/sagas';
@@ -37,7 +42,9 @@ export default function* rootSaga() {
     announcementsGetWatcher(),
     // Bookmarks
     addBookmarkWatcher(),
+    getBookmarksForUserWatcher(),
     getBookmarkskWatcher(),
+    removeBookmarkWatcher(),
     // FeedbackForm
     submitFeedbackWatcher(),
     // SearchPage

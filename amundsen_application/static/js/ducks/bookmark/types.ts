@@ -10,8 +10,9 @@ export enum AddBookmark {
   FAILURE = 'amundsen/bookmark/ADD_FAILURE',
 }
 export interface AddBookmarkRequest {
-  key: string;
   type: AddBookmark.ACTION,
+  resourceKey: string;
+  resourceType: string;
 }
 export interface AddBookmarkResponse {
   type: AddBookmark.SUCCESS | AddBookmark.FAILURE;
@@ -26,10 +27,15 @@ export enum RemoveBookmark {
 }
 export interface RemoveBookmarkRequest {
   type: RemoveBookmark.ACTION,
-  key: string;
+  resourceKey: string;
+  resourceType: string;
 }
 export interface RemoveBookmarkResponse {
   type: RemoveBookmark.SUCCESS | RemoveBookmark.FAILURE;
+  payload: {
+    resourceKey: string;
+    resourceType: string;
+  };
 }
 
 

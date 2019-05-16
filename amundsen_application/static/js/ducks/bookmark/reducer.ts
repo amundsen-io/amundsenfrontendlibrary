@@ -21,16 +21,18 @@ export type BookmarkReducerAction =
   RemoveBookmarkRequest | RemoveBookmarkResponse;
 
 
-export function addBookmark(key: string): AddBookmarkRequest {
+export function addBookmark(resourceKey: string, resourceType: string): AddBookmarkRequest {
   return {
-    key,
+    resourceKey,
+    resourceType,
     type: AddBookmark.ACTION,
   }
 }
 
-export function removeBookmark(key: string): RemoveBookmarkRequest {
+export function removeBookmark(resourceKey: string, resourceType: string): RemoveBookmarkRequest {
   return {
-    key,
+    resourceKey,
+    resourceType,
     type: RemoveBookmark.ACTION,
   }
 }
@@ -62,7 +64,15 @@ export function getBookmarksForUser(user: string): GetBookmarksForUserRequest {
   switch(action.type) {
     case AddBookmark.SUCCESS:
     case AddBookmark.FAILURE:
+      return;
     case RemoveBookmark.SUCCESS:
+      let { resourceKey, resourceType } = action.payload;
+      return {
+        ...state,
+        myBookmarks: state.myBookmarks.filter((bookmark) => bookmark.key !== resourceKey)
+      };
+
+
     case RemoveBookmark.FAILURE:
       return;
     case GetBookmarks.SUCCESS:

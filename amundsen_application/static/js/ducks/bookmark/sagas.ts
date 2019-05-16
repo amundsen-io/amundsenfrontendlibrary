@@ -22,10 +22,15 @@ import { SagaIterator } from 'redux-saga';
 
  // AddBookmarks
 export function* addBookmarkWorker(action: AddBookmarkRequest): SagaIterator {
+  let response;
   try {
-    const response = yield call(addBookmark, action);
-  } catch(e) {
+    yield call(addBookmark, action);
 
+    // Manage added bookmark on FE or re-fetch all bookmarks?
+    response = yield call(getBookmarks);
+    yield put({ type: GetBookmarks.SUCCESS, payload: response.table_bookmarks });
+  } catch(e) {
+    yield put({ type: AddBookmark.FAILURE, payload: response });
    }
 }
 export function* addBookmarkWatcher(): SagaIterator {
@@ -35,11 +40,14 @@ export function* addBookmarkWatcher(): SagaIterator {
 
  // RemoveBookmarks
 export function* removeBookmarkWorker(action: RemoveBookmarkRequest): SagaIterator {
+  let response;
   try {
-    const response = yield call(removeBookmark, action);
+    let { resourceKey, resourceType } = action;
+    response = yield call(removeBookmark, action);
+    yield put({ type: RemoveBookmark.SUCCESS, payload: { resourceKey, resourceType }});
   } catch(e) {
-
-   }
+    yield put({ type: RemoveBookmark.FAILURE, payload: response });
+  }
 }
 export function* removeBookmarkWatcher(): SagaIterator {
   yield takeEvery(RemoveBookmark.ACTION , removeBookmarkWorker)
@@ -50,7 +58,7 @@ export function* removeBookmarkWatcher(): SagaIterator {
 export function* getBookmarksWorker(action: GetBookmarksRequest): SagaIterator {
   let response;
   try {
-    response = yield call(getBookmarks, action);
+    response = yield call(getBookmarks);
     yield put({ type: GetBookmarks.SUCCESS, payload: response.table_bookmarks });
   } catch(e) {
     yield put({ type: GetBookmarks.FAILURE, payload: response });

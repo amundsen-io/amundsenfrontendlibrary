@@ -5,16 +5,16 @@ const API_PATH = '/api/metadata/v0';
 
  // Add or remove bookmarks for the logged in user
 export function addBookmark(action) {
-  const { key, type } = action;
-  return axios.put(`${API_PATH}/bookmark?type=${type}&key=${key}`)
+  const { resourceKey, resourceType } = action;
+  return axios.put(`${API_PATH}/bookmark?type=${resourceType}&key=${resourceKey}`)
     .then((response: AxiosResponse) => {
       return response.data;
     })
 }
 
  export function removeBookmark(action) {
-  const { key, type } = action;
-  return axios.delete(`${API_PATH}/bookmark?type=${type}&key=${key}`)
+  const { resourceKey, resourceType } = action;
+  return axios.delete(`${API_PATH}/bookmark?type=${resourceType}&key=${resourceKey}`)
     .then((response: AxiosResponse) => {
       return response.data;
     })
@@ -22,7 +22,7 @@ export function addBookmark(action) {
  }
 
  // Get logged in user's bookmarks
-export function getBookmarks(action) {
+export function getBookmarks() {
   return axios.get(`${API_PATH}/bookmark`)
     .then((response: AxiosResponse) => {
       return response.data;

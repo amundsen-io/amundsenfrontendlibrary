@@ -12,6 +12,7 @@ def get_table_key(args: Dict) -> str:
     return table_key
 
 
+# TODO - This logic should be done upstream, potentially as a module in amundsencommon
 def marshall_table_partial(table: Dict) -> Dict:
     table_name = table.get('table_name')
     schema_name = table.get('schema')
@@ -27,19 +28,3 @@ def marshall_table_partial(table: Dict) -> Dict:
         'type': 'table',
         'last_updated_epoch': table.get('last_updated_epoch', None),
     }
-
-
-
-# def _marshall_table_full(args: Dict) -> Dict:
-    # table_key = _get_table_key(args)
-    # 'type': 'table',
-    # 'key': result.get('key', None),
-    # 'name': result.get('name', None),
-    # 'cluster': result.get('cluster', None),
-    # 'description': result.get('description', None),
-    # 'database': result.get('database', None),
-    # 'schema_name': result.get('schema_name', None),
-    # 'last_updated_epoch': result.get('last_updated_epoch', None),
-
-
-

@@ -473,13 +473,42 @@ def get_user() -> Response:
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
+
+@metadata_blueprint.route('/bookmark', methods=['PUT', 'DELETE'])
+def update_bookmark() -> Response:
+    try:
+        user_id = 'dwon@lyft.com'
+
+        type = get_query_param(request.args, 'type')
+        key = get_query_param(request.args, 'key')
+
+        url = '{0}{1}/{2}/follow/{3}/{4}'.format(app.config['METADATASERVICE_BASE'], USER_ENDPOINT, user_id, type, key)
+
+        response = request_metadata(url=url, method=request.method)
+        status_code = response.status_code
+
+        payload = {
+            'msg': 'success',
+            'url': url,
+            'response': response.json()
+        }
+
+        return make_response(jsonify(payload), status_code)
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        payload = jsonify({'msg': message})
+        return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
+
 @metadata_blueprint.route('/bookmark', methods=['GET'])
 def get_bookmark() -> Response:
     try:
         user_id = 'dwon@lyft.com'
         url = '{0}{1}/{2}/follow/'.format(app.config['METADATASERVICE_BASE'], USER_ENDPOINT, user_id)
 
-        response = request_metadata(url=url)
+        response = request_metadata(url=url, method=request.method)
         status_code = response.status_code
 
         table_bookmarks = [marshall_table_partial(table) for table in response.json().get('table')]
