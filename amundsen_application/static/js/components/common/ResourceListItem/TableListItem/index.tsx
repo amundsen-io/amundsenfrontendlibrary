@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 import { LoggingParams, TableResource} from '../types';
-import BookmarkIcon from "components/common/BookmarkIcon";
+import BookmarkIcon from "components/common/Bookmark/BookmarkIcon";
 
 export interface TableListItemProps {
   table: TableResource;

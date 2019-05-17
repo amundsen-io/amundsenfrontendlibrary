@@ -8,6 +8,7 @@ import Pagination from 'react-js-pagination';
 import SearchBar from './SearchBar';
 import SearchList from './SearchList';
 
+import BookmarkList from 'components/common/Bookmark/BookmarkList'
 import InfoButton from 'components/common/InfoButton';
 import { ResourceType, TableResource } from 'components/common/ResourceListItem/types';
 import TabsComponent from 'components/common/Tabs';
@@ -156,6 +157,8 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
             <InfoButton infoText={POPULAR_TABLES_INFO_TEXT}/>
           </div>
           <SearchList results={ this.props.popularTables } params={ searchListParams }/>
+
+          <BookmarkList />
         </div>
       )
   };

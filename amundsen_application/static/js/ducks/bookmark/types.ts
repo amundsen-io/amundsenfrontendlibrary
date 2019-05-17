@@ -1,6 +1,8 @@
-// TODO - Placeholder type
-export interface Bookmark {
+import { Resource, ResourceType } from "components/common/ResourceListItem/types";
+
+export interface Bookmark extends Resource {
   key: string;
+  type: ResourceType,
 }
 
  // AddBookmark
