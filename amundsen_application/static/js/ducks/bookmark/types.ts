@@ -16,6 +16,7 @@ export interface AddBookmarkRequest {
 }
 export interface AddBookmarkResponse {
   type: AddBookmark.SUCCESS | AddBookmark.FAILURE;
+  payload: Bookmark[];
 }
 
 
@@ -62,9 +63,12 @@ export enum GetBookmarksForUser {
 }
 export interface GetBookmarksForUserRequest {
   type: GetBookmarksForUser.ACTION,
-  user: string;
+  user_id: string;
 }
 export interface GetBookmarksForUserResponse {
   type: GetBookmarksForUser.SUCCESS | GetBookmarksForUser.FAILURE;
-  payload: Bookmark[];
+  payload: {
+    bookmarks: Bookmark[],
+    user_id: string;
+  };
 }
