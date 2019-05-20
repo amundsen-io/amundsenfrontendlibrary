@@ -2,12 +2,27 @@
 
 .bookmark-icon {
   border-radius: 50%;
+  cursor: pointer;
   display: inline-block;
   height: 32px;
-  margin: -4px 0 -8px 4px;
+  margin: -6px 0 -8px 4px;
   padding: 4px;
   vertical-align: top;
   width: 32px;
+
+  &.bookmark-large {
+    height: 48px;
+    margin: 0 0 0 4px;
+    width: 48px;
+
+    .icon {
+      height: 40px;
+      -webkit-mask-size: 40px;
+      mask-size: 40px;
+      width: 40px;
+    }
+  }
+
 
   &:hover,
   &:focus {

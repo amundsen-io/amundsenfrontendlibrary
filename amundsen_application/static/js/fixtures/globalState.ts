@@ -87,6 +87,7 @@ const globalState: GlobalState = {
       database: '',
       is_editable: false,
       is_view: false,
+      key: '',
       schema: '',
       table_name: '',
       table_description: '',

@@ -33,6 +33,7 @@ import { PreviewQueryParams, TableMetadata } from './types';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+import BookmarkIcon from "components/common/Bookmark/BookmarkIcon";
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -70,6 +71,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
       database: '',
       is_editable: false,
       is_view: false,
+      key: '',
       schema: '',
       table_name: '',
       table_description: '',
@@ -334,6 +336,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
               <div className="detail-header col-xs-12 col-md-7 col-lg-8">
                 <h1 className="detail-header-text">
                   { `${data.schema}.${data.table_name}` }
+                  <BookmarkIcon bookmarkKey={ this.props.tableData.key } isLarge={ true }/>
                 </h1>
                 {
                   data.is_view && <Flag text="Table View" labelStyle="primary" />

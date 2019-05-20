@@ -156,6 +156,7 @@ def _get_table_metadata(*, table_key: str, index: int, source: str) -> Dict[str,
         ]
 
         results = {key: response.json().get(key, None) for key in params}
+        results["key"] = table_key
 
         is_editable = results['schema'] not in app.config['UNEDITABLE_SCHEMAS']
         results['is_editable'] = is_editable

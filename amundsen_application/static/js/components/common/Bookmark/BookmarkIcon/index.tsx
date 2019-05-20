@@ -20,6 +20,7 @@ interface DispatchFromProps {
 
 interface OwnProps {
   bookmarkKey: string;
+  isLarge?: boolean;
 }
 
 type BookmarkIconProps = StateFromProps & DispatchFromProps & OwnProps;
@@ -29,6 +30,12 @@ interface BookmarkIconState {
 }
 
 class BookmarkIcon extends React.Component<BookmarkIconProps, BookmarkIconState> {
+
+  public static defaultProps: OwnProps = {
+    bookmarkKey: '',
+    isLarge: false,
+  };
+
   constructor(props) {
     super(props);
   }
@@ -48,7 +55,7 @@ class BookmarkIcon extends React.Component<BookmarkIconProps, BookmarkIconState>
 
   render() {
     return (
-      <div className="bookmark-icon" onClick={ this.handleClick }>
+      <div className={"bookmark-icon " + (this.props.isLarge ? "bookmark-large" : "")} onClick={ this.handleClick }>
         <img className={"icon " + (this.props.isBookmarked ? "icon-bookmark-filled" : "icon-bookmark")}/>
       </div>
     )
