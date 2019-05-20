@@ -52,11 +52,13 @@ export function getBookmarksForUser(user_id: string): GetBookmarksForUserRequest
 
  export interface BookmarkReducerState {
   myBookmarks: Bookmark[];
+  myBookmarksIsLoaded: boolean;
   bookmarksForUser: Bookmark[];
 }
 
  const initialState: BookmarkReducerState = {
   myBookmarks: [],
+  myBookmarksIsLoaded: false,
   bookmarksForUser: [],
 };
 
@@ -71,7 +73,11 @@ export function getBookmarksForUser(user_id: string): GetBookmarksForUserRequest
 
     case AddBookmark.SUCCESS:
     case GetBookmarks.SUCCESS:
-      return { ...state, myBookmarks: action.payload };
+      return {
+        ...state,
+        myBookmarks: action.payload,
+        myBookmarksIsLoaded: true,
+      };
 
     case AddBookmark.FAILURE:
     case GetBookmarks.FAILURE:

@@ -39,7 +39,7 @@ body {
 .title-1, .title-2, .title-3,
 .subtitle-1, .subtitle-2, .subtitle-3,
 .body-1, .body-2, .body-3,
-.body-secondary-3, .body-link, .caption {
+.body-secondary-3, .body-placeholder , .body-link, .caption {
   font-family: $font-family-body;
 }
 
@@ -94,6 +94,12 @@ body {
 
 .body-secondary-3 {
   color: $text-medium;
+  font-size: 14px;
+  font-weight: $font-weight-body-regular;
+}
+
+.body-placeholder {
+  color: $text-light;
   font-size: 14px;
   font-weight: $font-weight-body-regular;
 }

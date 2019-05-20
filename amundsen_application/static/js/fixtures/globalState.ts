@@ -18,6 +18,7 @@ const globalState: GlobalState = {
   },
   bookmarks: {
     myBookmarks: [],
+    myBookmarksIsLoaded: false,
     bookmarksForUser: [],
   },
   feedback: {
