@@ -17,7 +17,15 @@ const globalState: GlobalState = {
       }],
   },
   bookmarks: {
-    myBookmarks: [],
+    myBookmarks: [
+      {
+        key: 'bookmarked_key',
+        type: ResourceType.table,
+      },
+      {
+        key: 'other_bookmarked_key',
+        type: ResourceType.table,
+    }],
     myBookmarksIsLoaded: false,
     bookmarksForUser: [],
   },

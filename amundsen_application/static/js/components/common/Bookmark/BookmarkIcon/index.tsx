@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
+import { addBookmark, removeBookmark } from "ducks/bookmark/reducer";
+import { AddBookmarkRequest, RemoveBookmarkRequest } from "ducks/bookmark/types";
 import { GlobalState } from "ducks/rootReducer";
 
 import './styles.scss'
-import { addBookmark, removeBookmark } from "ducks/bookmark/reducer";
-import { AddBookmarkRequest, RemoveBookmarkRequest } from "ducks/bookmark/types";
 
 
 interface StateFromProps {
@@ -20,26 +20,20 @@ interface DispatchFromProps {
 
 interface OwnProps {
   bookmarkKey: string;
-  isLarge?: boolean;
+  large?: boolean;
 }
 
-type BookmarkIconProps = StateFromProps & DispatchFromProps & OwnProps;
+export type BookmarkIconProps = StateFromProps & DispatchFromProps & OwnProps;
 
-interface BookmarkIconState {
-  isBookmarked: boolean;
-}
-
-class BookmarkIcon extends React.Component<BookmarkIconProps, BookmarkIconState> {
-
+export class BookmarkIcon extends React.Component<BookmarkIconProps> {
   public static defaultProps: OwnProps = {
     bookmarkKey: '',
-    isLarge: false,
+    large: false,
   };
 
   constructor(props) {
     super(props);
   }
-
 
   handleClick = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -52,10 +46,9 @@ class BookmarkIcon extends React.Component<BookmarkIconProps, BookmarkIconState>
     }
   };
 
-
   render() {
     return (
-      <div className={"bookmark-icon " + (this.props.isLarge ? "bookmark-large" : "")} onClick={ this.handleClick }>
+      <div className={"bookmark-icon " + (this.props.large ? "bookmark-large" : "")} onClick={ this.handleClick }>
         <img className={"icon " + (this.props.isBookmarked ? "icon-bookmark-filled" : "icon-bookmark")}/>
       </div>
     )
@@ -63,7 +56,7 @@ class BookmarkIcon extends React.Component<BookmarkIconProps, BookmarkIconState>
 }
 
 
-const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
+export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
   return {
     bookmarkKey: ownProps.bookmarkKey,
     isBookmarked: state.bookmarks.myBookmarks.some((bookmark) => bookmark.key === ownProps.bookmarkKey),

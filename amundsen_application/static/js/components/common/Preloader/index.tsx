@@ -13,7 +13,9 @@ interface DispatchFromProps {
   getBookmarks: () => GetBookmarksRequest;
 }
 
-class Preloader extends React.Component<DispatchFromProps>{
+export type PreloaderProps = DispatchFromProps;
+
+export class Preloader extends React.Component<PreloaderProps>{
   constructor(props) {
     super(props)
   }
