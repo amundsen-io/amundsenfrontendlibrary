@@ -11,15 +11,15 @@
   width: 32px;
 
   &.bookmark-large {
-    height: 48px;
-    margin: 0 0 0 4px;
-    width: 48px;
+    height: 40px;
+    margin: 8px 0 0 4px;
+    width: 40px;
 
     .icon {
-      height: 40px;
-      -webkit-mask-size: 40px;
-      mask-size: 40px;
-      width: 40px;
+      height: 32px;
+      -webkit-mask-size: 32px;
+      mask-size: 32px;
+      width: 32px;
     }
   }
 

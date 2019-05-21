@@ -43,9 +43,9 @@ export function getBookmarks(): GetBookmarksRequest {
   }
 }
 
-export function getBookmarksForUser(user_id: string): GetBookmarksForUserRequest {
+export function getBookmarksForUser(userId: string): GetBookmarksForUserRequest {
   return {
-    user_id,
+    userId,
     type: GetBookmarksForUser.ACTION,
   }
 }
@@ -65,7 +65,7 @@ export function getBookmarksForUser(user_id: string): GetBookmarksForUserRequest
  export default function reducer(state: BookmarkReducerState = initialState, action: BookmarkReducerAction): BookmarkReducerState {
   switch(action.type) {
     case RemoveBookmark.SUCCESS:
-      let { resourceKey, resourceType } = action.payload;
+      const { resourceKey } = action.payload;
       return {
         ...state,
         myBookmarks: state.myBookmarks.filter((bookmark) => bookmark.key !== resourceKey)
@@ -78,7 +78,6 @@ export function getBookmarksForUser(user_id: string): GetBookmarksForUserRequest
         myBookmarks: action.payload,
         myBookmarksIsLoaded: true,
       };
-
     case AddBookmark.FAILURE:
     case GetBookmarks.FAILURE:
     case GetBookmarksForUser.SUCCESS:

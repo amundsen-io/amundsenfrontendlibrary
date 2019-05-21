@@ -17,9 +17,8 @@ export function removeBookmark(resourceKey: string, resourceType: string) {
     });
  }
 
-export function getBookmarks(user_id?: string) {
-  let url = `${API_PATH}/user/bookmark` + (user_id ? `?user_id=${user_id}` : '');
-  return axios.get(url)
+export function getBookmarks(userId?: string) {
+  return axios.get(`${API_PATH}/user/bookmark` + (userId ? `?user_id=${userId}` : ''))
     .then((response: AxiosResponse) => {
       return response.data;
     });

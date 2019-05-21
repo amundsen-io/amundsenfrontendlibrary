@@ -65,12 +65,12 @@ export enum GetBookmarksForUser {
 }
 export interface GetBookmarksForUserRequest {
   type: GetBookmarksForUser.ACTION,
-  user_id: string;
+  userId: string;
 }
 export interface GetBookmarksForUserResponse {
   type: GetBookmarksForUser.SUCCESS | GetBookmarksForUser.FAILURE;
   payload: {
     bookmarks: Bookmark[],
-    user_id: string;
+    userId: string;
   };
 }

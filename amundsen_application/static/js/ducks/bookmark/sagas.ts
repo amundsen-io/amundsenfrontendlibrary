@@ -22,7 +22,7 @@ import { SagaIterator } from 'redux-saga';
  // AddBookmarks
 export function* addBookmarkWorker(action: AddBookmarkRequest): SagaIterator {
   let response;
-  let { resourceKey, resourceType } = action;
+  const { resourceKey, resourceType } = action;
 
   try {
     yield call(addBookmark, resourceKey, resourceType);
@@ -42,7 +42,7 @@ export function* addBookmarkWatcher(): SagaIterator {
  // RemoveBookmarks
 export function* removeBookmarkWorker(action: RemoveBookmarkRequest): SagaIterator {
   let response;
-  let { resourceKey, resourceType } = action;
+  const { resourceKey, resourceType } = action;
   try {
     response = yield call(removeBookmark, resourceKey, resourceType);
     yield put({ type: RemoveBookmark.SUCCESS, payload: { resourceKey, resourceType }});
@@ -73,15 +73,14 @@ export function* getBookmarkskWatcher(): SagaIterator {
  // GetBookmarksForUser
 export function* getBookmarkForUserWorker(action: GetBookmarksForUserRequest): SagaIterator {
   let response;
-  let { user_id } = action;
+  const { userId } = action;
 
   try {
-    response = yield call(getBookmarks, user_id);
-    let payload = { user_id, bookmarks: response.table_bookmarks };
+    response = yield call(getBookmarks, userId);
 
-    yield put({ payload, type: GetBookmarksForUser.SUCCESS });
+    yield put({ type: GetBookmarksForUser.SUCCESS, payload: { userId, bookmarks: response.table_bookmarks } });
   } catch(e) {
-    yield put({ payload: response, type: GetBookmarksForUser.FAILURE });
+    yield put({ type: GetBookmarksForUser.FAILURE, payload: response });
    }
 }
 export function* getBookmarksForUserWatcher(): SagaIterator {

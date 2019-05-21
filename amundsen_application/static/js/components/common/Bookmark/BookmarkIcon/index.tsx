@@ -64,11 +64,9 @@ class BookmarkIcon extends React.Component<BookmarkIconProps, BookmarkIconState>
 
 
 const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
-  let bookmarkKey = ownProps.bookmarkKey;
-  let isBookmarked = state.bookmarks.myBookmarks.some((bookmark) => bookmark.key == bookmarkKey);
   return {
-    bookmarkKey,
-    isBookmarked
+    bookmarkKey: ownProps.bookmarkKey,
+    isBookmarked: state.bookmarks.myBookmarks.some((bookmark) => bookmark.key === ownProps.bookmarkKey),
   };
 };
 
