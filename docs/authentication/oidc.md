@@ -1,5 +1,5 @@
 # OIDC (Keycloak) Authentication
-Setting up end-to-end authentication using keycloak is fairly simple and can be done using a Flask wrapper i.e., [flaskoidc](https://github.com/verdan/flaskoidc). 
+Setting up end-to-end authentication using OIDC is fairly simple and can be done using a Flask wrapper i.e., [flaskoidc](https://github.com/verdan/flaskoidc). 
 
 `flaskoidc` leverages the Flask's `before_request` functionality to authenticate each request before passing that to 
 the views. It also accepts headers on each request if available in order to validate bearer token from incoming requests. 
