@@ -29,7 +29,7 @@ export function* addBookmarkWorker(action: AddBookmarkRequest): SagaIterator {
 
     // TODO - Consider adding the newly bookmarked resource directly to local store. This would save a round trip.
     response = yield call(getBookmarks);
-    yield put({ type: AddBookmark.SUCCESS, payload: response.table_bookmarks });
+    yield put({ type: AddBookmark.SUCCESS, payload: response.bookmarks });
   } catch(e) {
     yield put({ type: AddBookmark.FAILURE, payload: response });
    }
@@ -60,7 +60,7 @@ export function* getBookmarksWorker(action: GetBookmarksRequest): SagaIterator {
   let response;
   try {
     response = yield call(getBookmarks);
-    yield put({ type: GetBookmarks.SUCCESS, payload: response.table_bookmarks });
+    yield put({ type: GetBookmarks.SUCCESS, payload: response.bookmarks });
   } catch(e) {
     yield put({ type: GetBookmarks.FAILURE, payload: response });
   }
@@ -78,7 +78,7 @@ export function* getBookmarkForUserWorker(action: GetBookmarksForUserRequest): S
   try {
     response = yield call(getBookmarks, userId);
 
-    yield put({ type: GetBookmarksForUser.SUCCESS, payload: { userId, bookmarks: response.table_bookmarks } });
+    yield put({ type: GetBookmarksForUser.SUCCESS, payload: { userId, bookmarks: response.bookmarks } });
   } catch(e) {
     yield put({ type: GetBookmarksForUser.FAILURE, payload: response });
    }

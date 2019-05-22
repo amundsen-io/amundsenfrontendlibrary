@@ -12,7 +12,6 @@ def get_table_key(args: Dict) -> str:
     return table_key
 
 
-# TODO - This logic should be done upstream, potentially as a module in amundsencommon
 def marshall_table_partial(table: Dict) -> Dict:
     table_name = table.get('table_name')
     schema_name = table.get('schema')

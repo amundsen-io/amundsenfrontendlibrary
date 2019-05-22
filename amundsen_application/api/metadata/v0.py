@@ -474,40 +474,6 @@ def get_user() -> Response:
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-@metadata_blueprint.route('/user/bookmark', methods=['PUT', 'DELETE'])
-def update_bookmark() -> Response:
-    try:
-        if app.config['AUTH_USER_METHOD']:
-            user = app.config['AUTH_USER_METHOD'](app)
-        else:
-            raise Exception('AUTH_USER_METHOD is not configured')
-
-        type = get_query_param(request.args, 'type')
-        key = get_query_param(request.args, 'key')
-
-        url = '{0}{1}/{2}/follow/{3}/{4}'.format(app.config['METADATASERVICE_BASE'],
-                                                 USER_ENDPOINT,
-                                                 user.user_id,
-                                                 type,
-                                                 key)
-
-        response = request_metadata(url=url, method=request.method)
-        status_code = response.status_code
-
-        payload = {
-            'msg': 'success',
-            'url': url,
-            'response': response.json()
-        }
-
-        return make_response(jsonify(payload), status_code)
-    except Exception as e:
-        message = 'Encountered exception: ' + str(e)
-        logging.exception(message)
-        payload = jsonify({'msg': message})
-        return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
-
-
 @metadata_blueprint.route('/user/bookmark', methods=['GET'])
 def get_bookmark() -> Response:
     try:
@@ -523,11 +489,46 @@ def get_bookmark() -> Response:
         response = request_metadata(url=url, method=request.method)
         status_code = response.status_code
 
-        table_bookmarks = [marshall_table_partial(table) for table in response.json().get('table')]
+        tables = response.json().get('table')
+        table_bookmarks = [marshall_table_partial(table) for table in tables]
 
         payload = {
             'msg': 'success',
-            'table_bookmarks': table_bookmarks
+            'bookmarks': table_bookmarks
+        }
+
+        return make_response(jsonify(payload), status_code)
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        payload = jsonify({'msg': message})
+        return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
+@metadata_blueprint.route('/user/bookmark', methods=['PUT', 'DELETE'])
+def update_bookmark() -> Response:
+    try:
+        if app.config['AUTH_USER_METHOD']:
+            user = app.config['AUTH_USER_METHOD'](app)
+        else:
+            raise Exception('AUTH_USER_METHOD is not configured')
+
+        args = request.get_json()
+        resource_type = get_query_param(args, 'type')
+        resource_key = get_query_param(args, 'key')
+
+        url = '{0}{1}/{2}/follow/{3}/{4}'.format(app.config['METADATASERVICE_BASE'],
+                                                 USER_ENDPOINT,
+                                                 user.user_id,
+                                                 resource_type,
+                                                 resource_key)
+
+        response = request_metadata(url=url, method=request.method)
+        status_code = response.status_code
+
+        payload = {
+            'msg': 'success',
+            'response': response.json()
         }
 
         return make_response(jsonify(payload), status_code)
