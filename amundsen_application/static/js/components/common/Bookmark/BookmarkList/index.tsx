@@ -13,20 +13,18 @@ import {
   BOOKMARK_TITLE,
 } from "./constants";
 
-
-
 interface StateFromProps {
   myBookmarks: Bookmark[];
   isLoaded: boolean;
 }
 
-type BookmarkListProps = StateFromProps;
+export type BookmarkListProps = StateFromProps;
 
 interface BookmarkListState {
   activePage: number;
 }
 
-class BookmarkList extends React.Component<BookmarkListProps, BookmarkListState> {
+export class BookmarkList extends React.Component<BookmarkListProps, BookmarkListState> {
   constructor(props) {
     super(props);
 
@@ -64,7 +62,7 @@ class BookmarkList extends React.Component<BookmarkListProps, BookmarkListState>
         <ul className="list-group">
           {
             displayedBookmarks.map((resource, index) => {
-              const logging = { index, source: 'Bookmarks' };
+              const logging = { index: index + this.state.activePage * ITEMS_PER_PAGE , source: 'Bookmarks' };
               return <ResourceListItem item={ resource } logging={ logging } key={ index } />;
             })
           }
@@ -88,7 +86,7 @@ class BookmarkList extends React.Component<BookmarkListProps, BookmarkListState>
 }
 
 
-const mapStateToProps = (state: GlobalState) => {
+export const mapStateToProps = (state: GlobalState) => {
   return {
     myBookmarks: state.bookmarks.myBookmarks,
     isLoaded: state.bookmarks.myBookmarksIsLoaded,

@@ -3,7 +3,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import { Link } from 'react-router-dom';
-
+import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import TableListItem, { TableListItemProps } from '../';
 import { ResourceType } from '../../types';
 
@@ -42,6 +42,10 @@ describe('TableListItem', () => {
 
     it('renders table name', () => {
       expect(wrapper.find('.resource-name').children().at(0).text()).toEqual('tableSchema.tableName');
+    });
+
+    it('renders a bookmark icon', () => {
+      expect(wrapper.find(BookmarkIcon).exists()).toBe(true);
     });
 
     it('renders table description', () => {

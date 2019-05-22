@@ -21,11 +21,13 @@ const globalState: GlobalState = {
       {
         key: 'bookmarked_key',
         type: ResourceType.table,
+        cluster: 'cluster',
+        database: 'database',
+        description: 'description',
+        name: 'name',
+        schema_name: 'schema_name',
       },
-      {
-        key: 'other_bookmarked_key',
-        type: ResourceType.table,
-    }],
+    ],
     myBookmarksIsLoaded: false,
     bookmarksForUser: [],
   },

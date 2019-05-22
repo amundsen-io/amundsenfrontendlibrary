@@ -1,9 +1,6 @@
-import { Resource, ResourceType } from "components/common/ResourceListItem/types";
+import { TableResource } from "components/common/ResourceListItem/types";
 
-export interface Bookmark extends Resource {
-  key: string;
-  type: ResourceType,
-}
+export type Bookmark = TableResource;
 
  // AddBookmark
 export enum AddBookmark {
@@ -12,7 +9,7 @@ export enum AddBookmark {
   FAILURE = 'amundsen/bookmark/ADD_FAILURE',
 }
 export interface AddBookmarkRequest {
-  type: AddBookmark.ACTION,
+  type: AddBookmark.ACTION;
   resourceKey: string;
   resourceType: string;
 }
@@ -29,7 +26,7 @@ export enum RemoveBookmark {
   FAILURE = 'amundsen/bookmark/REMOVE_FAILURE',
 }
 export interface RemoveBookmarkRequest {
-  type: RemoveBookmark.ACTION,
+  type: RemoveBookmark.ACTION;
   resourceKey: string;
   resourceType: string;
 }
@@ -49,7 +46,7 @@ export enum GetBookmarks {
   FAILURE = 'amundsen/bookmark/GET_FAILURE',
 }
 export interface GetBookmarksRequest {
-  type: GetBookmarks.ACTION,
+  type: GetBookmarks.ACTION;
 }
 export interface GetBookmarksResponse {
   type: GetBookmarks.SUCCESS | GetBookmarks.FAILURE;
@@ -64,13 +61,13 @@ export enum GetBookmarksForUser {
   FAILURE = 'amundsen/bookmark/GET_FOR_USER_FAILURE',
 }
 export interface GetBookmarksForUserRequest {
-  type: GetBookmarksForUser.ACTION,
+  type: GetBookmarksForUser.ACTION;
   userId: string;
 }
 export interface GetBookmarksForUserResponse {
   type: GetBookmarksForUser.SUCCESS | GetBookmarksForUser.FAILURE;
   payload: {
-    bookmarks: Bookmark[],
+    bookmarks: Bookmark[];
     userId: string;
   };
 }
