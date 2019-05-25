@@ -1,6 +1,7 @@
 # Installation
 
 ## Install standalone application directly from the source
+
 The following instructions are for setting up a standalone version of the Amundsen application. This approach is ideal for local development.
 ```bash
 # Clone repo
@@ -32,11 +33,11 @@ $ python3 amundsen_application/wsgi.py
 ```
 
 ## Bootstrap a default version of Amundsen using Docker
+
 The following instructions are for setting up a version of Amundsen using Docker. At the moment, we only support a bootstrap for connecting the Amundsen application to an example metadata service.
 
 1. Install `docker` and  `docker-compose`.
-2. Setup your local environment.
-   * Clone [this repo](https://github.com/lyft/amundsenfrontendlibrary) or download the [docker-amundsen.yml](https://github.com/lyft/amundsenfrontendlibrary/blob/master/docker-amundsen.yml) file directly.
+2. Clone [this repo](https://github.com/lyft/amundsenfrontendlibrary) or download the [docker-amundsen.yml](https://github.com/lyft/amundsenfrontendlibrary/blob/master/docker-amundsen.yml) file directly.
 3. Enter the directory where the `docker-amundsen.yml` file is and then:
     ```bash
     $ docker-compose -f docker-amundsen.yml up -d
@@ -51,11 +52,17 @@ The following instructions are for setting up a version of Amundsen using Docker
     $ python3 setup.py install
     $ python3 example/scripts/sample_data_loader.py
    ```
-5. You can verify dummy data has been ingested by viewing in Neo4j by visiting [`http://localhost:7474/browser/`](http://localhost:7474/browser/) and run `MATCH (n:Table) RETURN n LIMIT 25` in the query box. You should see two tables
-   1. `hive.test_schema.test_table1`
-   2. `dynamo.test_schema.test_table2`
-6. View UI at [`http://localhost:5000`](http://localhost:5000) and try to search `test`, it should return some result.
-7. From where the `docker-amundsen.yml` file is, run the following command when done:
+5. View UI at [`http://localhost:5000`](http://localhost:5000) and try to search `test`, it should return some result.
+6. From where the `docker-amundsen.yml` file is, run the following command when done:
     ```bash
     $ docker-compose -f docker-amundsen.yml down
     ```
+
+## Verify setup or troubleshooting
+
+1. You can verify dummy data has been ingested into Neo4j by by visiting [`http://localhost:7474/browser/`](http://localhost:7474/browser/) and run `MATCH (n:Table) RETURN n LIMIT 25` in the query box. You should see two tables:
+   1. `hive.test_schema.test_table1`
+   2. `dynamo.test_schema.test_table2`
+2. You can verify the data has been loaded into the metadataservice by visiting:
+   1. [`http://localhost:5000/table_detail/gold/hive/test_schema/test_table1`](http://localhost:5000/table_detail/gold/hive/test_schema/test_table1)
+   2. [`http://localhost:5000/table_detail/gold/dynamo/test_schema/test_table2`](http://localhost:5000/table_detail/gold/dynamo/test_schema/test_table2)
