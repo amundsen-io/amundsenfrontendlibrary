@@ -41,6 +41,7 @@ const globalState: GlobalState = {
   ],
   search: {
     search_term: 'testName',
+    isLoading: true,
     dashboards: {
       page_index: 0,
       results: [],

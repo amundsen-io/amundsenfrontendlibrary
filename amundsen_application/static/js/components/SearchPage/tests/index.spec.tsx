@@ -35,6 +35,7 @@ describe('SearchPage', () => {
   const setup = (propOverrides?: Partial<SearchPageProps>) => {
     const props: SearchPageProps = {
       searchTerm: globalState.search.search_term,
+      isLoading: false,
       popularTables: globalState.popularTables,
       dashboards: globalState.search.dashboards,
       tables: globalState.search.tables,

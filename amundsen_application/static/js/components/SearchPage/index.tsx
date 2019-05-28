@@ -8,6 +8,7 @@ import { RouteComponentProps } from 'react-router';
 
 import SearchBar from './SearchBar';
 import SearchList from './SearchList';
+import LoadingSpinner from 'components/common/LoadingSpinner';
 
 import InfoButton from 'components/common/InfoButton';
 import { ResourceType, TableResource } from 'components/common/ResourceListItem/types';
@@ -47,6 +48,7 @@ import {
 
 export interface StateFromProps {
   searchTerm: string;
+  isLoading: boolean;
   popularTables: TableResource[];
   tables: TableSearchResults;
   dashboards: DashboardSearchResults;
@@ -250,6 +252,16 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
       );
   };
 
+  renderTabs = () => {
+    if (this.props.isLoading) {
+      return (<LoadingSpinner/>);
+    }
+    if (this.props.searchTerm.length > 0) {
+      return this.renderSearchResults();
+    }
+    return this.renderPopularTables();
+  };
+
   render() {
     const { searchTerm } = this.props;
     const innerContent = (
@@ -257,8 +269,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
         <div className="row">
           <div className="col-xs-12 col-md-offset-1 col-md-10">
             <SearchBar handleValueSubmit={ this.onSearchBarSubmit } searchTerm={ searchTerm }/>
-            { searchTerm.length > 0 && this.renderSearchResults() }
-            { searchTerm.length === 0 && this.renderPopularTables()  }
+            { this.renderTabs() }
           </div>
         </div>
       </div>
@@ -277,6 +288,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
 export const mapStateToProps = (state: GlobalState) => {
   return {
     searchTerm: state.search.search_term,
+    isLoading: state.search.isLoading,
     popularTables: state.popularTables,
     tables: state.search.tables,
     users: state.search.users,
