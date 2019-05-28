@@ -41,7 +41,8 @@ describe('Preloader', () => {
 
 
 describe('mapDispatchToProps', () => {
-  let dispatch, props;
+  let dispatch;
+  let props;
 
   beforeAll(() => {
     dispatch = jest.fn(() => Promise.resolve());
