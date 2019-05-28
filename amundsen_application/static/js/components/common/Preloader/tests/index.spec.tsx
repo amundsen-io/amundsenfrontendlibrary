@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { Preloader, PreloaderProps } from '../';
+import { Preloader, PreloaderProps, mapDispatchToProps } from '../';
 
 describe('Preloader', () => {
   const setup = (propOverrides?: Partial<PreloaderProps>) => {
@@ -36,5 +36,23 @@ describe('Preloader', () => {
       const { wrapper } = setup();
       expect(wrapper.html()).toBeFalsy();
     });
+  });
+});
+
+
+describe('mapDispatchToProps', () => {
+  let dispatch, props;
+
+  beforeAll(() => {
+    dispatch = jest.fn(() => Promise.resolve());
+    props = mapDispatchToProps(dispatch);
+  });
+
+  it('sets getBookmarks on props', () => {
+    expect(props.getBookmarks).toBeInstanceOf(Function);
+  });
+
+  it('sets getLoggedInUser on props', () => {
+    expect(props.getLoggedInUser).toBeInstanceOf(Function);
   });
 });

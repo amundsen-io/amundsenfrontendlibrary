@@ -11,7 +11,7 @@ from amundsen_application.log.action_log import action_logging
 
 from amundsen_application.models.user import load_user, dump_user
 
-from amundsen_application.api.utils.data_utils import get_table_key, marshall_table_partial
+from amundsen_application.api.utils.metadata_utils import get_table_key, marshall_table_partial
 from amundsen_application.api.utils.request_utils import get_query_param, request_metadata
 
 
@@ -156,7 +156,7 @@ def _get_table_metadata(*, table_key: str, index: int, source: str) -> Dict[str,
         ]
 
         results = {key: response.json().get(key, None) for key in params}
-        results["key"] = table_key
+        results['key'] = table_key
 
         is_editable = results['schema'] not in app.config['UNEDITABLE_SCHEMAS']
         results['is_editable'] = is_editable
@@ -476,6 +476,12 @@ def get_user() -> Response:
 
 @metadata_blueprint.route('/user/bookmark', methods=['GET'])
 def get_bookmark() -> Response:
+    """
+    Call metadata service to fetch a specified user's bookmarks.
+    If no 'user_id' is specified, it will fetch the logged-in user's bookmarks
+    :param user_id: (optional) the user whose bookmarks are fetched.
+    :return: a JSON object with an array of bookmarks under 'bookmarks' key
+    """
     try:
         user_id = request.args.get('user_id')
         if user_id is None:
@@ -492,21 +498,22 @@ def get_bookmark() -> Response:
         tables = response.json().get('table')
         table_bookmarks = [marshall_table_partial(table) for table in tables]
 
-        payload = {
-            'msg': 'success',
-            'bookmarks': table_bookmarks
-        }
-
-        return make_response(jsonify(payload), status_code)
+        return make_response(jsonify({'msg': 'success', 'bookmarks': table_bookmarks}), status_code)
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
-        payload = jsonify({'msg': message})
-        return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
+        return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 @metadata_blueprint.route('/user/bookmark', methods=['PUT', 'DELETE'])
 def update_bookmark() -> Response:
+    """
+    Call metadata service to PUT or DELETE a bookmark
+    Params
+    :param type: Resource type for the bookmarked item. e.g. 'table'
+    :param key: Resource key for the bookmarked item.
+    :return:
+    """
     try:
         if app.config['AUTH_USER_METHOD']:
             user = app.config['AUTH_USER_METHOD'](app)
@@ -526,14 +533,8 @@ def update_bookmark() -> Response:
         response = request_metadata(url=url, method=request.method)
         status_code = response.status_code
 
-        payload = {
-            'msg': 'success',
-            'response': response.json()
-        }
-
-        return make_response(jsonify(payload), status_code)
+        return make_response(jsonify({'msg': 'success', 'response': response.json()}), status_code)
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
-        payload = jsonify({'msg': message})
-        return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
+        return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)

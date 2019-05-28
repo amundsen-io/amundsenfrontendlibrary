@@ -26,8 +26,7 @@ interface OwnProps {
 export type BookmarkIconProps = StateFromProps & DispatchFromProps & OwnProps;
 
 export class BookmarkIcon extends React.Component<BookmarkIconProps> {
-  public static defaultProps: OwnProps = {
-    bookmarkKey: '',
+  public static defaultProps: Partial<OwnProps> = {
     large: false,
   };
 

@@ -8,7 +8,7 @@ from amundsen_application import create_app
 from amundsen_application.api.metadata.v0 import \
     TABLE_ENDPOINT, LAST_INDEXED_ENDPOINT, POPULAR_TABLES_ENDPOINT, TAGS_ENDPOINT, USER_ENDPOINT
 
-from amundsen_application.api.utils.test_utils import TEST_USER_ID
+from amundsen_application.tests.test_utils import TEST_USER_ID
 
 local_app = create_app('amundsen_application.config.TestConfig')
 

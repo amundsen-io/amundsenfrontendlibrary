@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 import globalState from 'fixtures/globalState';
 
 
-import { BookmarkIcon, BookmarkIconProps, mapStateToProps } from "../";
+import { BookmarkIcon, BookmarkIconProps, mapDispatchToProps, mapStateToProps } from "../";
 
 
 describe('BookmarkIcon', () => {
@@ -58,7 +58,6 @@ describe('BookmarkIcon', () => {
     it('renders an empty bookmark when not bookmarked', () => {
       const { props, wrapper } = setup({ isBookmarked: false });
       expect(wrapper.find('.icon-bookmark').exists()).toBe(true);
-
     });
 
     it('renders a filled star when bookmarked', () => {
@@ -66,11 +65,28 @@ describe('BookmarkIcon', () => {
       expect(wrapper.find('.icon-bookmark-filled').exists()).toBe(true);
     });
 
-
     it('renders a large star when specified', () => {
       const { props, wrapper } = setup({ large: true});
       expect(wrapper.find('.bookmark-large').exists()).toBe(true);
     });
+  });
+});
+
+
+describe('mapDispatchToProps', () => {
+  let dispatch, props;
+
+  beforeAll(() => {
+    dispatch = jest.fn(() => Promise.resolve());
+    props = mapDispatchToProps(dispatch);
+  });
+
+  it('sets addBookmark on the props', () => {
+    expect(props.addBookmark).toBeInstanceOf(Function);
+  });
+
+  it('sets removeBookmark on the props', () => {
+    expect(props.removeBookmark).toBeInstanceOf(Function);
   });
 });
 

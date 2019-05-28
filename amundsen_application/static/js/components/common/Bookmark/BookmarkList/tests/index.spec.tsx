@@ -14,6 +14,7 @@ import {
 } from '../constants';
 
 describe('BookmarkList', () => {
+  const setStateSpy = jest.spyOn(BookmarkList.prototype, 'setState');
 
   const setup = (propOverrides?: Partial<BookmarkListProps>) => {
     const props: BookmarkListProps = {
@@ -80,8 +81,17 @@ describe('BookmarkList', () => {
     return { props, wrapper };
   };
 
-  describe('Render', () => {
+  describe('onPaginationChange', () => {
+    it('reduces the page index by 1 and updates state', () => {
+      const { props, wrapper } = setup();
+        const pageNumber = 3;
+        wrapper.instance().onPaginationChange(pageNumber);
+        expect(setStateSpy).toHaveBeenCalledWith({ activePage: pageNumber - 1 });
+    });
+  });
 
+
+  describe('Render', () => {
     it('Renders nothing until ready', () => {
       const { props, wrapper } = setup({ isLoaded: false });
       expect(wrapper.html()).toBeFalsy();
@@ -91,7 +101,6 @@ describe('BookmarkList', () => {
       const { props, wrapper } = setup();
       expect(wrapper.find('.title-1').text()).toEqual(BOOKMARK_TITLE);
     });
-
 
     it('Shows the EMPTY_BOOKMARK_MESSAGE when there are no bookmarks', () => {
       const { props, wrapper } = setup({ myBookmarks: [] });
@@ -123,7 +132,6 @@ describe('BookmarkList', () => {
       expect(wrapper.find(Pagination).exists()).toBe(false)
     });
   });
-
 });
 
 
@@ -132,7 +140,6 @@ describe('mapStateToProps', () => {
   beforeAll(() => {
     result = mapStateToProps(globalState);
   });
-
 
   it('sets myBookmarks on the props', () => {
     expect(result.myBookmarks).toEqual(globalState.bookmarks.myBookmarks);

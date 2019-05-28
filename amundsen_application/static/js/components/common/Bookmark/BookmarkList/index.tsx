@@ -58,7 +58,6 @@ export class BookmarkList extends React.Component<BookmarkListProps, BookmarkLis
     return (
       <div className="bookmark-list">
         <div className="title-1">{ BOOKMARK_TITLE }</div>
-
         <ul className="list-group">
           {
             displayedBookmarks.map((resource, index) => {
@@ -67,7 +66,6 @@ export class BookmarkList extends React.Component<BookmarkListProps, BookmarkLis
             })
           }
         </ul>
-
         {
           totalBookmarks > ITEMS_PER_PAGE &&
           <div className="pagination-container">

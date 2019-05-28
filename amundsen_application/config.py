@@ -1,6 +1,6 @@
 import os
 from typing import Dict, Optional, Set  # noqa: F401
-from amundsen_application.api.utils.test_utils import get_test_user
+from amundsen_application.tests.test_utils import get_test_user
 
 
 class Config:
