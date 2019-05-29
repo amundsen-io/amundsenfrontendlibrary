@@ -19,11 +19,8 @@
   color: $text-medium;
 }
 
-.nav-bar a:hover {
-  color: $brand-color-4;
-}
-
-.nav-bar a .title-3:hover {
+.nav-bar a:hover,
+.nav-bar a:hover span {
   color: $brand-color-4;
 }
 
