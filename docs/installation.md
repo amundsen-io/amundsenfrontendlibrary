@@ -40,7 +40,7 @@ The following instructions are for setting up a version of Amundsen using Docker
 2. Clone [this repo](https://github.com/lyft/amundsenfrontendlibrary) or download the [docker-amundsen.yml](https://github.com/lyft/amundsenfrontendlibrary/blob/master/docker-amundsen.yml) file directly.
 3. Enter the directory where the `docker-amundsen.yml` file is and then:
     ```bash
-    $ docker-compose -f docker-amundsen.yml up -d
+    $ docker-compose -f docker-amundsen.yml up
     ```
 4. Ingest dummy data into Neo4j by doing the following:
    * Clone [amundsendatabuilder](https://github.com/lyft/amundsendatabuilder).
@@ -58,7 +58,7 @@ The following instructions are for setting up a version of Amundsen using Docker
     $ docker-compose -f docker-amundsen.yml down
     ```
 
-## Verify setup
+### Verify setup
 
 1. You can verify dummy data has been ingested into Neo4j by by visiting [`http://localhost:7474/browser/`](http://localhost:7474/browser/) and run `MATCH (n:Table) RETURN n LIMIT 25` in the query box. You should see two tables:
    1. `hive.test_schema.test_table1`
@@ -67,13 +67,12 @@ The following instructions are for setting up a version of Amundsen using Docker
    1. [`http://localhost:5000/table_detail/gold/hive/test_schema/test_table1`](http://localhost:5000/table_detail/gold/hive/test_schema/test_table1)
    2. [`http://localhost:5000/table_detail/gold/dynamo/test_schema/test_table2`](http://localhost:5000/table_detail/gold/dynamo/test_schema/test_table2)
 
-## Troubleshooting
+### Troubleshooting
 
-1. If the docker VM doesn't have enough heap memory for Elastic Search, es-amundsen will quietly fail during `docker-compose` and cause errors in the `sample_data_loader.py` script.
+1. If the docker container doesn't have enough heap memory for Elastic Search, `es_amundsen` will fail during `docker-compose`.
    1. docker-compose error: `es_amundsen | [1]: max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144]`
-   2. sample_data_loader.py error: `ConnectionRefusedError: [Errno 61] Connection refused`
-   3. There are several ways to fix this [detailed here](https://stackoverflow.com/questions/41064572/docker-elk-vm-max-map-count)
-      1. ` $vi /etc/sysctl.conf`
+   2. Increase the heap memory [detailed instructions here](https://www.elastic.co/guide/en/elasticsearch/reference/7.1/docker.html#docker-cli-run-prod-mode)
+      1. Edit `/etc/sysctl.conf`
       2. Make entry `vm.max_map_count=262144`. Save and exit.
       3. Reload settings `$ sysctl -p`
       4. Restart `docker-compose`
