@@ -97,8 +97,11 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
       const params = qs.parse(this.props.location.search);
       const { searchTerm, pageIndex, selectedTab } = params;
       const { term, index, currentTab } = this.getSanitizedUrlParams(searchTerm, pageIndex, selectedTab);
+      const prevTerm = qs.parse(prevProps.location.search).searchTerm;
       this.setState({ selectedTab: currentTab });
-      this.props.searchAll(term, this.createSearchOptions(index, currentTab));
+      if (term !== prevTerm) {
+        this.props.searchAll(term, this.createSearchOptions(index, currentTab));
+      }
     }
   }
 
@@ -252,7 +255,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
       );
   };
 
-  renderTabs = () => {
+  renderContent = () => {
     if (this.props.isLoading) {
       return (<LoadingSpinner/>);
     }
@@ -269,7 +272,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
         <div className="row">
           <div className="col-xs-12 col-md-offset-1 col-md-10">
             <SearchBar handleValueSubmit={ this.onSearchBarSubmit } searchTerm={ searchTerm }/>
-            { this.renderTabs() }
+            { this.renderContent() }
           </div>
         </div>
       </div>

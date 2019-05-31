@@ -12,13 +12,7 @@ import {
 } from './types';
 import { ResourceType } from 'components/common/ResourceListItem/types';
 
-import {
-  GetPopularTables,
-  GetPopularTablesRequest,
-  GetPopularTablesResponse,
-} from 'ducks/popularTables/types';
-
-export type SearchReducerAction = SearchAllResponse | SearchResourceResponse | SearchAllRequest | GetPopularTablesResponse;
+export type SearchReducerAction = SearchAllResponse | SearchResourceResponse | SearchAllRequest | SearchResourceRequest;
 
 export interface SearchReducerState {
   search_term: string;
@@ -47,7 +41,7 @@ export function searchResource(resource: ResourceType, term: string, pageIndex: 
 
 const initialState: SearchReducerState = {
   search_term: '',
-  isLoading: true,
+  isLoading: false,
   dashboards: {
     page_index: 0,
     results: [],
@@ -69,6 +63,7 @@ export default function reducer(state: SearchReducerState = initialState, action
   switch (action.type) {
     // Updates search term to reflect action
     case SearchAll.ACTION:
+    case SearchResource.ACTION:
       return {
         ...state,
         search_term: action.term,
@@ -96,15 +91,7 @@ export default function reducer(state: SearchReducerState = initialState, action
         ...initialState,
         isLoading: false,
       };      
-    case GetPopularTables.SUCCESS:
-    case GetPopularTables.FAILURE:
-      return {
-        ...state,
-        isLoading: false,
-      };
     default:
-      return {
-        ...state
-      };
+      return state;
   }
 }
