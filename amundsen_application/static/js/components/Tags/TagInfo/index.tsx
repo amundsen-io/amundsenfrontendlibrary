@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { Tag } from '../types';
+import { TagsInterface } from 'interfaces/Tags';
 import { logClick } from 'ducks/utilMethods';
 
 import './styles.scss';
 
 interface TagInfoProps {
-  data: Tag;
+  data: TagsInterface.Tag;
   compact?: boolean;
 }
 

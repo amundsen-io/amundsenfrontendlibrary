@@ -8,12 +8,12 @@ import { metadataAllTags } from './api/v0';
 export function* getAllTagsWorker(): SagaIterator {
   try {
     const tags = yield call(metadataAllTags);
-    yield put({ type: GetAllTags.SUCCESS, payload: tags });
+    yield put({ type: GetAllTags.SUCCESS, payload: { tags }});
   } catch (e) {
-    yield put({ type: GetAllTags.FAILURE, payload: [] });
+    yield put({ type: GetAllTags.FAILURE, payload: { tags: [] }});
   }
 }
 
 export function* getAllTagsWatcher(): SagaIterator {
-  yield takeEvery(GetAllTags.ACTION, getAllTagsWorker);
+  yield takeEvery(GetAllTags.REQUEST, getAllTagsWorker);
 }

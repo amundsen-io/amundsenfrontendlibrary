@@ -1,32 +1,32 @@
-import {
-  GetAllTags, GetAllTagsRequest, GetAllTagsResponse,
-  Tag,
-} from './types';
+import { TagsInterface } from 'interfaces/Tags';
 
-export type AllTagsReducerAction = GetAllTagsRequest | GetAllTagsResponse;
+import { GetAllTags, GetAllTagsRequest, GetAllTagsResponse } from './types';
 
-export interface AllTagsReducerState {
-  allTags: Tag[];
-  isLoading: boolean;
-}
-
+/* ACTIONS */
 export function getAllTags(): GetAllTagsRequest {
-  return { type: GetAllTags.ACTION };
-}
+  return { type: GetAllTags.REQUEST };
+};
 
-const initialState: AllTagsReducerState = {
+/* REDUCER */
+export interface AllTagsReducerState {
+  allTags: TagsInterface.Tag[];
+  isLoading: boolean;
+};
+
+export const initialState: AllTagsReducerState = {
   allTags: [],
   isLoading: false,
 };
 
-export default function reducer(state: AllTagsReducerState = initialState, action: AllTagsReducerAction): AllTagsReducerState {
+export default function reducer(state: AllTagsReducerState = initialState, action): AllTagsReducerState {
   switch (action.type) {
-    case GetAllTags.ACTION:
+    case GetAllTags.REQUEST:
       return { ...state, isLoading: true };
     case GetAllTags.FAILURE:
+      return initialState;
     case GetAllTags.SUCCESS:
-      return { ...state, allTags: action.payload, isLoading: false };
+      return { ...state, allTags: (<GetAllTagsResponse>action).payload.tags, isLoading: false };
     default:
       return state;
   }
-}
+};

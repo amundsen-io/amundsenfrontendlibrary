@@ -1,7 +1,11 @@
 import { PreviewData, PreviewQueryParams, TableMetadata, User } from 'components/TableDetail/types';
-import { UpdateTagData, Tag } from 'components/Tags/types';
+import { UpdateTagData } from 'components/Tags/types';
 import { UpdateMethod } from 'components/TableDetail/OwnerEditor/types';
-export { PreviewData, PreviewQueryParams, TableMetadata, Tag, User, UpdateMethod, UpdateTagData };
+import { TagsInterface } from 'interfaces/Tags';
+
+type Tag = TagsInterface.Tag;
+
+export { PreviewData, PreviewQueryParams, TableMetadata, User, Tag, UpdateMethod, UpdateTagData };
 
 type MessageResponse = { msg: string };
 type TableData = TableMetadata & {
