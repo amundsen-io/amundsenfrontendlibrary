@@ -97,8 +97,8 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
       const params = qs.parse(this.props.location.search);
       const { searchTerm, pageIndex, selectedTab } = params;
       const { term, index, currentTab } = this.getSanitizedUrlParams(searchTerm, pageIndex, selectedTab);
-      const prevTerm = qs.parse(prevProps.location.search).searchTerm;
       this.setState({ selectedTab: currentTab });
+      const prevTerm = qs.parse(prevProps.location.search).searchTerm;
       if (term !== prevTerm) {
         this.props.searchAll(term, this.createSearchOptions(index, currentTab));
       }

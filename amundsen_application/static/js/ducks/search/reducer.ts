@@ -63,10 +63,14 @@ export default function reducer(state: SearchReducerState = initialState, action
   switch (action.type) {
     // Updates search term to reflect action
     case SearchAll.ACTION:
-    case SearchResource.ACTION:
       return {
         ...state,
         search_term: action.term,
+        isLoading: true,
+      };
+    case SearchResource.ACTION:
+      return {
+        ...state,
         isLoading: true,
       };
     // SearchAll will reset all resources with search results or the initial state
