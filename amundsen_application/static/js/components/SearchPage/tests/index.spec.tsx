@@ -228,67 +228,13 @@ describe('SearchPage', () => {
   });
 
   describe('componentDidUpdate', () => {
-    describe('called with a new search term', () => {
-      let props;
-      let wrapper;
-      let searchAllSpy;
-      
-      let mockSearchOptions;
-      let mockSanitizedUrlParams;
-
-      let createSearchOptionsSpy;
-      let getSanitizedUrlParamsSpy;
-
-      beforeAll(() => {
-        const setupResult = setup({
-          location: {
-            search: '/search?searchTerm=current&selectedTab=table&pageIndex=0', 
-            pathname: 'mockstr',
-            state: jest.fn(),
-            hash: 'mockstr',
-          }
-        });
-        props = setupResult.props;
-        wrapper = setupResult.wrapper;
-
-        mockSanitizedUrlParams = { 'term': 'current', ' index': 0, 'currentTab': 'table' };
-        getSanitizedUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getSanitizedUrlParams').mockImplementation(() => {
-          return mockSanitizedUrlParams;
-        });
-
-        mockSearchOptions = { 'dashboardIndex': 0, 'tableIndex': 1, 'userIndex': 0 };
-        createSearchOptionsSpy = jest.spyOn(wrapper.instance(), 'createSearchOptions').mockImplementation(() => {
-          return mockSearchOptions;
-        });
-
-        searchAllSpy = jest.spyOn(props, 'searchAll');
-
-        setStateSpy.mockClear();
-
-        const mockPrevProps = {
-          location: {
-            search: '/search?searchTerm=previous&selectedTab=table&pageIndex=0', 
-            pathname: 'mockstr',
-            state: jest.fn(),
-            hash: 'mockstr',
-          }
-        };
-        wrapper.instance().componentDidUpdate(mockPrevProps);
-      });
-
-      it('calls setState', () => {
-        expect(setStateSpy).toHaveBeenCalledWith({ selectedTab: ResourceType.table });
-      });
-
-      it('calls searchAll', () => {
-        expect(searchAllSpy).toHaveBeenCalledWith(mockSanitizedUrlParams.term, mockSearchOptions);
-      });
-    });
-  });
-
-  describe('called with a new page but with the same search term', () => {
     let searchAllSpy;
+      
+    let mockSearchOptions;
+    let mockSanitizedUrlParams;
 
+    let createSearchOptionsSpy;
+    let getSanitizedUrlParamsSpy;
     beforeAll(() => {
       const {props, wrapper} = setup({
         location: {
@@ -299,14 +245,23 @@ describe('SearchPage', () => {
         }
       });
 
+      mockSanitizedUrlParams = { 'term': 'current', ' index': 0, 'currentTab': 'table' };
+      getSanitizedUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getSanitizedUrlParams').mockImplementation(() => {
+        return mockSanitizedUrlParams;
+      });
+
+      mockSearchOptions = { 'dashboardIndex': 0, 'tableIndex': 1, 'userIndex': 0 };
+      createSearchOptionsSpy = jest.spyOn(wrapper.instance(), 'createSearchOptions').mockImplementation(() => {
+        return mockSearchOptions;
+      });
+
       searchAllSpy = jest.spyOn(props, 'searchAll');
 
-      searchAllSpy.mockClear();
       setStateSpy.mockClear();
 
       const mockPrevProps = {
         location: {
-          search: '/search?searchTerm=current&current=table&pageIndex=1', 
+          search: '/search?searchTerm=previous&selectedTab=table&pageIndex=0', 
           pathname: 'mockstr',
           state: jest.fn(),
           hash: 'mockstr',
@@ -315,9 +270,47 @@ describe('SearchPage', () => {
       wrapper.instance().componentDidUpdate(mockPrevProps);
     });
 
-    it('calls searchAll', () => {
-      expect(searchAllSpy).not.toHaveBeenCalled();
+    describe('called with a new search term', () => {
+      it('calls setState', () => {
+        expect(setStateSpy).toHaveBeenCalledWith({ selectedTab: ResourceType.table });
+      });
+
+      it('calls searchAll', () => {
+        expect(searchAllSpy).toHaveBeenCalledWith(mockSanitizedUrlParams.term, mockSearchOptions);
+      });
     });
+
+    describe('called with a new page but with the same search term', () => {  
+      beforeAll(() => {
+        const {props, wrapper} = setup({
+          location: {
+            search: '/search?searchTerm=current&selectedTab=table&pageIndex=0', 
+            pathname: 'mockstr',
+            state: jest.fn(),
+            hash: 'mockstr',
+          }
+        });
+  
+        searchAllSpy = jest.spyOn(props, 'searchAll');
+  
+        searchAllSpy.mockClear();
+        setStateSpy.mockClear();
+  
+        const mockPrevProps = {
+          location: {
+            search: '/search?searchTerm=current&current=table&pageIndex=1', 
+            pathname: 'mockstr',
+            state: jest.fn(),
+            hash: 'mockstr',
+          }
+        };
+        wrapper.instance().componentDidUpdate(mockPrevProps);
+      });
+  
+      it('does not call searchAll', () => {
+        expect(searchAllSpy).not.toHaveBeenCalled();
+      });
+    });  
   });
 
   describe('getSanitizedUrlParams', () => {
@@ -656,12 +649,12 @@ describe('SearchPage', () => {
         content = shallow(wrapper.instance().renderContent());
       });
       
-      it('renders correct label for content', () => {
+      it('renders popular tables', () => {
         expect(wrapper.instance().renderContent()).toEqual(wrapper.instance().renderPopularTables());
       });
     });
 
-    describe('search tables', () => {
+    describe('search results', () => {
       beforeAll(() => {
         const setupResult = setup({ searchTerm: 'test' });
         props = setupResult.props;
@@ -669,7 +662,7 @@ describe('SearchPage', () => {
         content = shallow(wrapper.instance().renderContent());
       });
       
-      it('renders correct label for content', () => {
+      it('renders search result', () => {
         expect(wrapper.instance().renderContent()).toEqual(wrapper.instance().renderSearchResults());
       });
     });
@@ -682,7 +675,7 @@ describe('SearchPage', () => {
         content = shallow(wrapper.instance().renderContent());
       });
       
-      it('renders correct label for content', () => {
+      it('renders loading spinner', () => {
         expect(wrapper.instance().renderContent()).toEqual(<LoadingSpinner/>);
       });
     });
@@ -809,7 +802,7 @@ describe('mapStateToProps', () => {
     expect(result.searchTerm).toEqual(globalState.search.search_term);
   });
 
-  it('sets searchTerm on the props', () => {
+  it('sets isLoading on the props', () => {
     expect(result.isLoading).toEqual(globalState.search.isLoading);
   });
 
