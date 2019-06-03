@@ -31,11 +31,11 @@ describe('PopularTables', () => {
       props = setupResult.props;
     });
     it('renders correct label for content', () => {
-      expect(wrapper.children().at(1).find('label').text()).toEqual(POPULAR_TABLES_LABEL);
+      expect(wrapper.children().find('label').text()).toEqual(POPULAR_TABLES_LABEL);
     });
 
     it('renders InfoButton with correct props', () => {
-      expect(wrapper.children().at(1).find(InfoButton).props()).toMatchObject({
+      expect(wrapper.children().find(InfoButton).props()).toMatchObject({
         infoText: POPULAR_TABLES_INFO_TEXT,
       });
     });
