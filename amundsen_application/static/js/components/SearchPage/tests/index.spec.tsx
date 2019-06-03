@@ -235,8 +235,11 @@ describe('SearchPage', () => {
 
     let createSearchOptionsSpy;
     let getSanitizedUrlParamsSpy;
+
+    let props;
+    let wrapper;
     beforeAll(() => {
-      const {props, wrapper} = setup({
+      const setupResult = setup({
         location: {
           search: '/search?searchTerm=current&selectedTab=table&pageIndex=0', 
           pathname: 'mockstr',
@@ -244,6 +247,8 @@ describe('SearchPage', () => {
           hash: 'mockstr',
         }
       });
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
 
       mockSanitizedUrlParams = { 'term': 'current', ' index': 0, 'currentTab': 'table' };
       getSanitizedUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getSanitizedUrlParams').mockImplementation(() => {
@@ -260,6 +265,7 @@ describe('SearchPage', () => {
       setStateSpy.mockClear();
 
       const mockPrevProps = {
+        searchTerm: 'previous',
         location: {
           search: '/search?searchTerm=previous&selectedTab=table&pageIndex=0', 
           pathname: 'mockstr',
@@ -270,47 +276,28 @@ describe('SearchPage', () => {
       wrapper.instance().componentDidUpdate(mockPrevProps);
     });
 
-    describe('called with a new search term', () => {
-      it('calls setState', () => {
-        expect(setStateSpy).toHaveBeenCalledWith({ selectedTab: ResourceType.table });
-      });
-
-      it('calls searchAll', () => {
-        expect(searchAllSpy).toHaveBeenCalledWith(mockSanitizedUrlParams.term, mockSearchOptions);
-      });
+    it('calls setState', () => {
+      expect(setStateSpy).toHaveBeenCalledWith({ selectedTab: ResourceType.table });
     });
 
-    describe('called with a new page but with the same search term', () => {  
-      beforeAll(() => {
-        const {props, wrapper} = setup({
-          location: {
-            search: '/search?searchTerm=current&selectedTab=table&pageIndex=0', 
-            pathname: 'mockstr',
-            state: jest.fn(),
-            hash: 'mockstr',
-          }
-        });
-  
-        searchAllSpy = jest.spyOn(props, 'searchAll');
-  
-        searchAllSpy.mockClear();
-        setStateSpy.mockClear();
-  
-        const mockPrevProps = {
-          location: {
-            search: '/search?searchTerm=current&current=table&pageIndex=1', 
-            pathname: 'mockstr',
-            state: jest.fn(),
-            hash: 'mockstr',
-          }
-        };
-        wrapper.instance().componentDidUpdate(mockPrevProps);
-      });
-  
-      it('does not call searchAll', () => {
-        expect(searchAllSpy).not.toHaveBeenCalled();
-      });
-    });  
+    it('calls searchAll if called with a new search term', () => {
+      expect(searchAllSpy).toHaveBeenCalledWith(mockSanitizedUrlParams.term, mockSearchOptions);
+    });
+
+    it('does not call searchAll if called with the same search term with a new page', () => {
+      searchAllSpy.mockClear();
+      const mockPrevProps = {
+        searchTerm: 'current',
+        location: {
+          search: '/search?searchTerm=current&current=table&pageIndex=1', 
+          pathname: 'mockstr',
+          state: jest.fn(),
+          hash: 'mockstr',
+        }
+      };
+      wrapper.instance().componentDidUpdate(mockPrevProps);
+      expect(searchAllSpy).not.toHaveBeenCalled();
+    });
   });
 
   describe('getSanitizedUrlParams', () => {
@@ -638,46 +625,19 @@ describe('SearchPage', () => {
   });
 
   describe('renderContent', () => {
-    let content;
-    let props;
-    let wrapper;
-    describe('popular tables', () => {
-      beforeAll(() => {
-        const setupResult = setup({ searchTerm: '' });
-        props = setupResult.props;
-        wrapper = setupResult.wrapper;
-        content = shallow(wrapper.instance().renderContent());
-      });
-      
-      it('renders popular tables', () => {
-        expect(wrapper.instance().renderContent()).toEqual(wrapper.instance().renderPopularTables());
-      });
+    it('renders popular tables if searchTerm is empty', () => {
+      const {props, wrapper} = setup({ searchTerm: '' });
+      expect(wrapper.instance().renderContent()).toEqual(wrapper.instance().renderPopularTables());
     });
 
-    describe('search results', () => {
-      beforeAll(() => {
-        const setupResult = setup({ searchTerm: 'test' });
-        props = setupResult.props;
-        wrapper = setupResult.wrapper;
-        content = shallow(wrapper.instance().renderContent());
-      });
-      
-      it('renders search result', () => {
-        expect(wrapper.instance().renderContent()).toEqual(wrapper.instance().renderSearchResults());
-      });
+    it('renders search results when given search term', () => {
+      const {props, wrapper} = setup({ searchTerm: 'test' });
+      expect(wrapper.instance().renderContent()).toEqual(wrapper.instance().renderSearchResults());
     });
 
-    describe('loading state', () => {
-      beforeAll(() => {
-        const setupResult = setup({ isLoading: true });
-        props = setupResult.props;
-        wrapper = setupResult.wrapper;
-        content = shallow(wrapper.instance().renderContent());
-      });
-      
-      it('renders loading spinner', () => {
-        expect(wrapper.instance().renderContent()).toEqual(<LoadingSpinner/>);
-      });
+    it('renders loading spinner when in loading state', () => {
+      const {props, wrapper} = setup({ isLoading: true });
+      expect(wrapper.instance().renderContent()).toEqual(<LoadingSpinner/>);
     });
   });
 
