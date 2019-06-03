@@ -160,8 +160,11 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
 
   renderPopularTables = () => {
     return (
+      <div className="search-list-container">
+        <BookmarkList />
         <PopularTables />
-      )
+      </div>
+    )
   };
 
   renderSearchResults = () => {

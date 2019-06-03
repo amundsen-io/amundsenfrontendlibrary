@@ -3,7 +3,6 @@ import * as React from 'react';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
-import BookmarkList from 'components/common/Bookmark/BookmarkList';
 import { POPULAR_TABLES_LABEL, POPULAR_TABLES_INFO_TEXT, POPULAR_TABLES_SOURCE_NAME } from './constants';
 import InfoButton from 'components/common/InfoButton';
 import SearchList from '../SearchList';
@@ -48,8 +47,7 @@ export class PopularTables extends React.Component<PopularTablesProps, PopularTa
 
   render() {
     return (
-      <div className="search-list-container">
-        <BookmarkList />
+      <div>
         <div className="popular-tables-header">
           <label className="title-1">{POPULAR_TABLES_LABEL}</label>
           <InfoButton infoText={POPULAR_TABLES_INFO_TEXT} />
