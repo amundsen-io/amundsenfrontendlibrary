@@ -26,7 +26,7 @@ describe('PopularTables', () => {
     let wrapper;
     let props;
     beforeAll(() => {
-      let setupResult = setup();
+      const setupResult = setup();
       wrapper = setupResult.wrapper;
       props = setupResult.props;
     });
