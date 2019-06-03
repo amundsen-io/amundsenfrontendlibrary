@@ -14,20 +14,21 @@ import { GlobalState } from 'ducks/rootReducer';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-export interface StateFromProps {
-  popularTables: TableResource[];
-}
 
 interface PopularTablesState {
 }
 
-export type PopularTablesProps = StateFromProps & DispatchFromProps;
+export interface StateFromProps {
+  popularTables: TableResource[];
+}
 
 export interface DispatchFromProps {
   getPopularTables: () => GetPopularTablesRequest;
 }
 
-class PopularTables extends React.Component<PopularTablesProps, PopularTablesState> {
+export type PopularTablesProps = StateFromProps & DispatchFromProps;
+
+export class PopularTables extends React.Component<PopularTablesProps, PopularTablesState> {
   public static defaultProps: Partial<PopularTablesProps> = {};
 
   constructor(props) {
