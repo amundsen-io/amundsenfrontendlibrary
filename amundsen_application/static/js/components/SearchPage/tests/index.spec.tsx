@@ -637,12 +637,9 @@ describe('SearchPage', () => {
   describe('renderPopularTables', () => {
     it('renders bookmark list and popular tables', () => {
       const {props, wrapper} = setup();
-      expect(wrapper.instance().renderPopularTables()).toEqual(
-        <div className="search-list-container">
-          <BookmarkList />
-          <PopularTables />
-        </div>
-      );
+      wrapper.instance().renderPopularTables();
+      expect(wrapper.contains(<BookmarkList />));
+      expect(wrapper.contains(<PopularTables />));
     });
   });
 

@@ -24,13 +24,8 @@ export interface DispatchFromProps {
 export type PopularTablesProps = StateFromProps & DispatchFromProps;
 
 export class PopularTables extends React.Component<PopularTablesProps> {
-  public static defaultProps: Partial<PopularTablesProps> = {};
-
   constructor(props) {
     super(props);
-
-    this.state = {
-    };
   }
 
   componentDidMount() {
