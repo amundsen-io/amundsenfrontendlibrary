@@ -1,0 +1,13 @@
+@import 'variables';
+
+.home-page {
+  .search-list-container {
+    margin-top: 32px;
+  }
+
+  @media (max-width: $screen-sm-max) {
+    .search-list-container {
+      margin-top: 16px;
+    }
+  }
+}

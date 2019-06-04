@@ -9,9 +9,6 @@ import { RouteComponentProps } from 'react-router';
 import SearchBar from './SearchBar';
 import SearchList from './SearchList';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import PopularTables from 'components/common/PopularTables';
-
-import BookmarkList from 'components/common/Bookmark/BookmarkList'
 import InfoButton from 'components/common/InfoButton';
 import { ResourceType, TableResource } from 'components/common/ResourceListItem/types';
 import TabsComponent from 'components/common/Tabs';
@@ -158,15 +155,6 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     this.props.history.push(pathName);
   };
 
-  renderPopularTables = () => {
-    return (
-      <div className="search-list-container">
-        <BookmarkList />
-        <PopularTables />
-      </div>
-    )
-  };
-
   renderSearchResults = () => {
     const tabConfig = [
       {
@@ -246,10 +234,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     if (this.props.isLoading) {
       return (<LoadingSpinner/>);
     }
-    if (this.props.searchTerm.length > 0) {
-      return this.renderSearchResults();
-    }
-    return this.renderPopularTables();
+    return this.renderSearchResults();
   };
 
   render() {

@@ -28,7 +28,6 @@ import SearchList from '../SearchList';
 import globalState from 'fixtures/globalState';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import BookmarkList from 'components/common/Bookmark/BookmarkList';
-import PopularTables from 'components/common/PopularTables';
 
 describe('SearchPage', () => {
   const setStateSpy = jest.spyOn(SearchPage.prototype, 'setState');
@@ -618,10 +617,10 @@ describe('SearchPage', () => {
   });
 
   describe('renderContent', () => {
-    it('renders popular tables if searchTerm is empty', () => {
-      const {props, wrapper} = setup({ searchTerm: '' });
-      expect(wrapper.instance().renderContent()).toEqual(wrapper.instance().renderPopularTables());
-    });
+    // it('renders popular tables if searchTerm is empty', () => {
+    //   const {props, wrapper} = setup({ searchTerm: '' });
+    //   expect(wrapper.instance().renderContent()).toEqual(wrapper.instance().renderPopularTables());
+    // });
 
     it('renders search results when given search term', () => {
       const {props, wrapper} = setup({ searchTerm: 'test' });
@@ -634,14 +633,14 @@ describe('SearchPage', () => {
     });
   });
 
-  describe('renderPopularTables', () => {
-    it('renders bookmark list and popular tables', () => {
-      const {props, wrapper} = setup();
-      wrapper.instance().renderPopularTables();
-      expect(wrapper.contains(<BookmarkList />));
-      expect(wrapper.contains(<PopularTables />));
-    });
-  });
+  // describe('renderPopularTables', () => {
+  //   it('renders bookmark list and popular tables', () => {
+  //     const {props, wrapper} = setup();
+  //     wrapper.instance().renderPopularTables();
+  //     expect(wrapper.contains(<BookmarkList />));
+  //     expect(wrapper.contains(<PopularTables />));
+  //   });
+  // });
 
   describe('renderSearchResults', () => {
     it('renders TabsComponent with correct props', () => {
@@ -693,12 +692,12 @@ describe('SearchPage', () => {
       expect(renderSearchResultsSpy).toHaveBeenCalled();
     });
 
-    it('calls renderPopularTables is searchTerm is empty string', () => {
-      const { props, wrapper } = setup({ searchTerm: '' });
-      const renderPopularTablesSpy = jest.spyOn(wrapper.instance(), 'renderPopularTables');
-      wrapper.setProps(props);
-      expect(renderPopularTablesSpy).toHaveBeenCalled();
-    });
+    // it('calls renderPopularTables is searchTerm is empty string', () => {
+    //   const { props, wrapper } = setup({ searchTerm: '' });
+    //   const renderPopularTablesSpy = jest.spyOn(wrapper.instance(), 'renderPopularTables');
+    //   wrapper.setProps(props);
+    //   expect(renderPopularTablesSpy).toHaveBeenCalled();
+    // });
   });
 });
 
