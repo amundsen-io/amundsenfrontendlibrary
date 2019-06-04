@@ -28,7 +28,7 @@ import SearchList from '../SearchList';
 import globalState from 'fixtures/globalState';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import BookmarkList from 'components/common/Bookmark/BookmarkList';
-import PopularTables from '../PopularTables';
+import PopularTables from 'components/common/PopularTables';
 
 describe('SearchPage', () => {
   const setStateSpy = jest.spyOn(SearchPage.prototype, 'setState');

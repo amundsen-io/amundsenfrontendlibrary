@@ -5,7 +5,7 @@ import './styles.scss';
 
 import { POPULAR_TABLES_LABEL, POPULAR_TABLES_INFO_TEXT, POPULAR_TABLES_SOURCE_NAME } from './constants';
 import InfoButton from 'components/common/InfoButton';
-import SearchList from '../SearchList';
+import SearchList from 'components/SearchPage/SearchList';
 
 import { getPopularTables } from 'ducks/popularTables/reducer';
 import { GetPopularTablesRequest, TableResource } from 'ducks/popularTables/types';

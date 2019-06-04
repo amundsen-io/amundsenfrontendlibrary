@@ -9,7 +9,7 @@ import { RouteComponentProps } from 'react-router';
 import SearchBar from './SearchBar';
 import SearchList from './SearchList';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import PopularTables from './PopularTables';
+import PopularTables from 'components/common/PopularTables';
 
 import BookmarkList from 'components/common/Bookmark/BookmarkList'
 import InfoButton from 'components/common/InfoButton';
