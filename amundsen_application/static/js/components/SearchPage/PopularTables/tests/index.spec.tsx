@@ -8,7 +8,8 @@ import {
 } from '../constants';
 import InfoButton from 'components/common/InfoButton';
 import SearchList from 'components/SearchPage/SearchList';
-import { PopularTables, PopularTablesProps } from '../';
+import globalState from 'fixtures/globalState';
+import { PopularTables, PopularTablesProps, mapStateToProps, mapDispatchToProps } from '../';
 
 describe('PopularTables', () => {
   const setup = (propOverrides?: Partial<PopularTablesProps>) => {
@@ -21,10 +22,49 @@ describe('PopularTables', () => {
 
     return { props, wrapper };
   };
+  let wrapper;
+  let props;
   
+  describe('componentDidMount', () => {
+    let getPopularTablesSpy;
+    beforeAll(() => {
+      const setupResult = setup();
+      wrapper = setupResult.wrapper;
+      props = setupResult.props;
+      getPopularTablesSpy = jest.spyOn(props, 'getPopularTables');
+    });
+
+    it('calls getPopularTables', () => {
+      expect(getPopularTablesSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('mapStateToProps', () => {
+    let result;
+
+    beforeAll(() => {
+      result = mapStateToProps(globalState);
+    });
+  
+    it('sets popularTables on the props', () => {
+      expect(result.popularTables).toEqual(globalState.popularTables);
+    });
+  });
+
+  describe('mapDispatchToProps', () => {
+    let result;
+
+    beforeAll(() => {
+      const dispatch = jest.fn(() => Promise.resolve());
+      result = mapDispatchToProps(dispatch);
+    });
+
+    it('sets getPopularTables on the props', () => {
+      expect(result.getPopularTables).toBeInstanceOf(Function);
+    });
+  });
+
   describe('render', () => {
-    let wrapper;
-    let props;
     beforeAll(() => {
       const setupResult = setup();
       wrapper = setupResult.wrapper;

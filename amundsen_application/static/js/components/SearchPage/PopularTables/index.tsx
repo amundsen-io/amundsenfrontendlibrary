@@ -13,10 +13,6 @@ import { GlobalState } from 'ducks/rootReducer';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-
-interface PopularTablesState {
-}
-
 export interface StateFromProps {
   popularTables: TableResource[];
 }
@@ -27,7 +23,7 @@ export interface DispatchFromProps {
 
 export type PopularTablesProps = StateFromProps & DispatchFromProps;
 
-export class PopularTables extends React.Component<PopularTablesProps, PopularTablesState> {
+export class PopularTables extends React.Component<PopularTablesProps> {
   public static defaultProps: Partial<PopularTablesProps> = {};
 
   constructor(props) {
@@ -37,26 +33,25 @@ export class PopularTables extends React.Component<PopularTablesProps, PopularTa
     };
   }
 
-  static getDerivedStateFromProps(props, state) {
-    return {};
-  }
-
   componentDidMount() {
     this.props.getPopularTables();
   }
 
   render() {
     return (
-      <div>
+      <>
         <div className="popular-tables-header">
           <label className="title-1">{POPULAR_TABLES_LABEL}</label>
           <InfoButton infoText={POPULAR_TABLES_INFO_TEXT} />
         </div>
-        <SearchList results={ this.props.popularTables } params={{
-          source: POPULAR_TABLES_SOURCE_NAME,
-          paginationStartIndex: 0,
-        }} />
-      </div>
+        <SearchList 
+          results={this.props.popularTables} 
+          params={{
+            source: POPULAR_TABLES_SOURCE_NAME,
+            paginationStartIndex: 0,
+          }} 
+        />
+      </>
     );
   }
 }

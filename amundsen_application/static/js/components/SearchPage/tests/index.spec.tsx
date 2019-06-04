@@ -27,6 +27,8 @@ import SearchList from '../SearchList';
 
 import globalState from 'fixtures/globalState';
 import LoadingSpinner from 'components/common/LoadingSpinner';
+import BookmarkList from 'components/common/Bookmark/BookmarkList';
+import PopularTables from '../PopularTables';
 
 describe('SearchPage', () => {
   const setStateSpy = jest.spyOn(SearchPage.prototype, 'setState');
@@ -629,6 +631,18 @@ describe('SearchPage', () => {
     it('renders loading spinner when in loading state', () => {
       const {props, wrapper} = setup({ isLoading: true });
       expect(wrapper.instance().renderContent()).toEqual(<LoadingSpinner/>);
+    });
+  });
+
+  describe('renderPopularTables', () => {
+    it('renders bookmark list and popular tables', () => {
+      const {props, wrapper} = setup();
+      expect(wrapper.instance().renderPopularTables()).toEqual(
+        <div className="search-list-container">
+          <BookmarkList />
+          <PopularTables />
+        </div>
+      );
     });
   });
 
