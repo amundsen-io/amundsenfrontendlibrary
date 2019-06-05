@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { TagsInterface } from 'interfaces/Tags';
+import { Tag } from 'interfaces';
 
 import { metadataAllTags, AllTagsResponseAPI } from '../v0';
 
@@ -8,11 +8,11 @@ jest.mock('axios');
 
 describe('metadataAllTags', () => {
   it('resolves with array of sorted result of response.data.tags on success', async () => {
-    const rawTags: TagsInterface.Tag[] = [
+    const rawTags: Tag[] = [
       {tag_count: 2, tag_name: 'test'},
       {tag_count: 1, tag_name: 'atest'}
     ];
-    const expectedTags: TagsInterface.Tag[] = [
+    const expectedTags: Tag[] = [
       {tag_count: 1, tag_name: 'atest'},
       {tag_count: 2, tag_name: 'test'}
     ];

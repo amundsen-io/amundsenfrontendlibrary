@@ -1,7 +1,7 @@
 import { ActionLogParams, postActionLog } from "./log/api/v0";
-import { TagsInterface } from 'interfaces/Tags';
+import { Tag } from 'interfaces';
 
-export function sortTagsAlphabetical(a: TagsInterface.Tag, b: TagsInterface.Tag): number {
+export function sortTagsAlphabetical(a: Tag, b: Tag): number {
   return a.tag_name.localeCompare(b.tag_name);
 }
 

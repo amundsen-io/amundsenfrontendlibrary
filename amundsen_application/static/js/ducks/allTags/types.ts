@@ -1,4 +1,4 @@
-import { TagsInterface } from 'interfaces/Tags';
+import { Tag } from 'interfaces';
 
 export enum GetAllTags {
   REQUEST = 'amundsen/allTags/GET_ALL_TAGS_REQUEST',
@@ -11,6 +11,6 @@ export interface GetAllTagsRequest {
 export interface GetAllTagsResponse {
   type: GetAllTags.SUCCESS | GetAllTags.FAILURE;
   payload: {
-    tags: TagsInterface.Tag[];
+    tags: Tag[];
   };
 }

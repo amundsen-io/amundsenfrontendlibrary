@@ -12,7 +12,7 @@ import { updateTags } from 'ducks/tableMetadata/tags/reducer';
 import { UpdateTagsRequest } from 'ducks/tableMetadata/types';
 
 import TagInfo from "../TagInfo";
-import { TagsInterface } from 'interfaces/Tags';
+import { Tag } from 'interfaces';
 import { UpdateTagMethod, UpdateTagData } from '../types';
 
 // TODO: Use css-modules instead of 'import'
@@ -23,8 +23,6 @@ const BATCH_EDIT_TAG_OPTION  = 'amundsen_batch_edit';
 
 const FILTER_COMMON_TAGS =
   (otherArray) => (current) => otherArray.filter((other) => (other.tag_name === current.tag_name)).length === 0;
-
-type Tag = TagsInterface.Tag;
 
 enum BatchEditState {
   CURRENT = 'CURRENT',

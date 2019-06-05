@@ -1,11 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 
 import { sortTagsAlphabetical } from 'ducks/utilMethods';
-import { TagsInterface } from 'interfaces/Tags';
+import { Tag } from 'interfaces';
 
 export type AllTagsResponseAPI = {
   msg: string;
-  tags: TagsInterface.Tag[];
+  tags: Tag[];
 }
 
 export function metadataAllTags() {

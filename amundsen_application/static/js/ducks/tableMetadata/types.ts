@@ -1,9 +1,7 @@
 import { PreviewData, PreviewQueryParams, TableMetadata, User } from 'components/TableDetail/types';
 import { UpdateTagData } from 'components/Tags/types';
 import { UpdateMethod } from 'components/TableDetail/OwnerEditor/types';
-import { TagsInterface } from 'interfaces/Tags';
-
-type Tag = TagsInterface.Tag;
+import { Tag } from 'interfaces';
 
 export { PreviewData, PreviewQueryParams, TableMetadata, User, Tag, UpdateMethod, UpdateTagData };
 

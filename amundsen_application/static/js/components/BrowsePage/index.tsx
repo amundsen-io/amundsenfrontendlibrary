@@ -8,13 +8,11 @@ import './styles.scss';
 import AppConfig from 'config/config';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import TagInfo from 'components/Tags/TagInfo';
-import { TagsInterface } from 'interfaces/Tags';
+import { Tag } from 'interfaces';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { getAllTags } from 'ducks/allTags/reducer';
 import { GetAllTagsRequest } from 'ducks/allTags/types';
-
-type Tag = TagsInterface.Tag;
 
 export interface StateFromProps {
   allTags: Tag[];

@@ -1,4 +1,4 @@
-import { TagsInterface } from 'interfaces/Tags';
+import { Tag } from 'interfaces';
 
 import { GetAllTags, GetAllTagsRequest, GetAllTagsResponse } from './types';
 
@@ -9,7 +9,7 @@ export function getAllTags(): GetAllTagsRequest {
 
 /* REDUCER */
 export interface AllTagsReducerState {
-  allTags: TagsInterface.Tag[];
+  allTags: Tag[];
   isLoading: boolean;
 };
 
