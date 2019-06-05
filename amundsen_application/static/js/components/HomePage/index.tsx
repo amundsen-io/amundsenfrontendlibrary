@@ -51,7 +51,7 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
           <div className="row">
             <div className="col-xs-12 col-md-offset-1 col-md-10">
               <div className="search-list-container">
-                <SearchBar handleValueSubmit={ this.onSearchBarSubmit }/>
+                <SearchBar />
                 <BookmarkList />
                 <PopularTables />
               </div>

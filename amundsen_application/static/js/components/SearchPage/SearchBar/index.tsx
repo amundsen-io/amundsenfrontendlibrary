@@ -11,9 +11,10 @@ import {
   SYNTAX_ERROR_PREFIX,
   SYNTAX_ERROR_SPACING_SUFFIX,
 } from './constants';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 export interface SearchBarProps {
-  handleValueSubmit: (term: string) => void;
+  handleValueSubmit?: (term: string) => void;
   placeholder?: string;
   searchTerm?: string;
   subText?: string;
@@ -25,7 +26,7 @@ interface SearchBarState {
   subText: string;
 }
 
-class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
+class SearchBar extends React.Component<SearchBarProps & RouteComponentProps<any>, SearchBarState> {
   public static defaultProps: Partial<SearchBarProps> = {
     placeholder: PLACEHOLDER_DEFAULT,
     searchTerm: '',
@@ -54,7 +55,8 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   handleValueSubmit = (event: React.FormEvent<HTMLFormElement>) : void => {
     event.preventDefault();
     if (this.isFormValid()) {
-      this.props.handleValueSubmit(this.state.searchTerm);
+      const pathName = `/search?searchTerm=${this.state.searchTerm}&selectedTab=table&pageIndex=0`;
+      this.props.history.push(pathName);    
     }
   };
 
@@ -111,4 +113,4 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   }
 }
 
-export default SearchBar;
+export default withRouter(SearchBar);
