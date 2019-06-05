@@ -3,13 +3,15 @@ import * as React from 'react';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
-import { GlobalState } from 'ducks/rootReducer';
 import { bindActionCreators } from 'redux';
-import SearchPage from 'components/SearchPage';
 import PopularTables from 'components/common/PopularTables';
 import BookmarkList from 'components/common/Bookmark/BookmarkList';
 import SearchBar from 'components/SearchPage/SearchBar';
 import { RouteComponentProps } from 'react-router';
+import { connect } from 'react-redux';
+import { SearchAllReset } from 'ducks/search/types';
+import { searchReset } from 'ducks/search/reducer';
+import { ResourceType } from 'components/common/ResourceListItem/types';
 
 interface HomePageState {
 }
@@ -18,6 +20,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
+  searchReset: () => SearchAllReset;
 }
 
 export type HomePageProps = StateFromProps & DispatchFromProps & RouteComponentProps<any>;
@@ -36,7 +39,16 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
     return {};
   }
 
+  createSearchOptions = (pageIndex: number, selectedTab: ResourceType) => {
+    return {
+      dashboardIndex: (selectedTab === ResourceType.dashboard) ? pageIndex : 0,
+      userIndex: (selectedTab === ResourceType.user) ? pageIndex : 0,
+      tableIndex: (selectedTab === ResourceType.table) ? pageIndex : 0,
+    };
+  };
+  
   componentDidMount() {
+    this.props.searchReset();
   }
 
   onSearchBarSubmit = (searchTerm: string): void => {
@@ -63,4 +75,8 @@ export class HomePage extends React.Component<HomePageProps, HomePageState> {
   }
 }
 
-export default HomePage;
+export const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators({ searchReset } , dispatch);
+};
+
+export default connect<DispatchFromProps>(null, mapDispatchToProps)(HomePage);

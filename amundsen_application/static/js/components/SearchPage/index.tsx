@@ -243,7 +243,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
       <div className="container search-page">
         <div className="row">
           <div className="col-xs-12 col-md-offset-1 col-md-10">
-            <SearchBar { ...searchTerm } />
+            <SearchBar />
             { this.renderContent() }
           </div>
         </div>

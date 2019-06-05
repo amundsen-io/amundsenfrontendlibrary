@@ -12,11 +12,15 @@ import {
   SYNTAX_ERROR_SPACING_SUFFIX,
 } from './constants';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { GlobalState } from 'ducks/rootReducer';
+import { connect } from 'react-redux';
+
+export interface StateFromProps {
+  searchTerm: string;
+}
 
 export interface SearchBarProps {
-  handleValueSubmit?: (term: string) => void;
   placeholder?: string;
-  searchTerm?: string;
   subText?: string;
 }
 
@@ -26,10 +30,9 @@ interface SearchBarState {
   subText: string;
 }
 
-class SearchBar extends React.Component<SearchBarProps & RouteComponentProps<any>, SearchBarState> {
+export class SearchBar extends React.Component<SearchBarProps & StateFromProps & RouteComponentProps<any>, SearchBarState> {
   public static defaultProps: Partial<SearchBarProps> = {
     placeholder: PLACEHOLDER_DEFAULT,
-    searchTerm: '',
     subText: SUBTEXT_DEFAULT,
   };
 
@@ -113,4 +116,10 @@ class SearchBar extends React.Component<SearchBarProps & RouteComponentProps<any
   }
 }
 
-export default withRouter(SearchBar);
+export const mapStateToProps = (state: GlobalState) => {
+  return {
+    searchTerm: state.search.search_term,
+  };
+};
+
+export default connect<StateFromProps>(mapStateToProps, null)(withRouter(SearchBar));
