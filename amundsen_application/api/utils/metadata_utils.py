@@ -1,22 +1,7 @@
 from typing import Dict
 from flask import current_app as app
 
-from amundsen_application.api.utils.request_utils import get_query_param
 from amundsen_application.models.user import load_user, dump_user
-
-
-def get_table_key(args: Dict) -> str:
-    """
-    Extracts the 'key' for a table resource
-    :param args: Dict which includes 'db', 'cluster', 'schema', and 'table'
-    :return: the table key
-    """
-    db = get_query_param(args, 'db')
-    cluster = get_query_param(args, 'cluster')
-    schema = get_query_param(args, 'schema')
-    table = get_query_param(args, 'table')
-    table_key = '{db}://{cluster}.{schema}/{table}'.format(**locals())
-    return table_key
 
 
 def marshall_table_partial(table: Dict) -> Dict:
@@ -46,8 +31,8 @@ def marshall_table_partial(table: Dict) -> Dict:
 def marshall_table_full(table: Dict) -> Dict:
     """
     Forms the full version of a table Dict, with additional and sanitized fields
-    :param table:
-    :return:
+    :param table: Table Dict from metadata service
+    :return: Table Dict with sanitized fields
     """
     # Filter and parse the response dictionary from the metadata service
     fields = [
@@ -56,7 +41,6 @@ def marshall_table_full(table: Dict) -> Dict:
         'database',
         'is_view',
         'key',
-        # 'last_updated_timestamp',
         'owners',
         'schema',
         'source',
@@ -66,6 +50,8 @@ def marshall_table_full(table: Dict) -> Dict:
         'table_writer',
         'tags',
         'watermarks',
+        # 'last_updated_timestamp' Exists on the response from metadata but is not used.
+        # This should also be consolidated with 'last_updated_epoch' to have the same name and format.
     ]
 
     results = {field: table.get(field, None) for field in fields}
@@ -111,25 +97,3 @@ def _get_partition_data(watermarks: Dict) -> Dict:
     return {
         'is_partitioned': False
     }
-
-
-
-#Popular Tables
-# "database": "hive",
-# "cluster": "gold",
-# "schema": "redshift",
-# "table_name": "dimension_applicants",
-# "table_description": "data for driver applicants"
-
-
-#Search Result
-# "name": "a0427171d3994c58a539bd8ca6caf557",
-# "key": "hive://gold.default/a0427171d3994c58a539bd8ca6caf557",
-# "description": null,
-# "cluster": "gold",
-# "database": "hive",
-# "schema_name": "default",
-# "column_names": [],
-# "tags": [],
-# "last_updated_epoch": 0
-

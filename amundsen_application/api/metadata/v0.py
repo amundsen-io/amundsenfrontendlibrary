@@ -11,7 +11,7 @@ from amundsen_application.log.action_log import action_logging
 
 from amundsen_application.models.user import load_user, dump_user
 
-from amundsen_application.api.utils.metadata_utils import get_table_key, marshall_table_partial, marshall_table_full
+from amundsen_application.api.utils.metadata_utils import marshall_table_partial, marshall_table_full
 from amundsen_application.api.utils.request_utils import get_query_param, request_metadata
 
 
@@ -79,7 +79,6 @@ def get_table_metadata() -> Response:
     TODO: Define an interface for envoy_client
     """
     try:
-        # table_key = get_table_key(request.args)
         table_key = get_query_param(request.args, 'key')
         list_item_index = get_query_param(request.args, 'index')
         list_item_source = get_query_param(request.args, 'source')
@@ -156,7 +155,6 @@ def _update_table_owner(*, table_key: str, method: str, owner: str) -> Dict[str,
 def update_table_owner() -> Response:
     try:
         args = request.get_json()
-        # table_key = get_table_key(args)
         table_key = get_query_param(args, 'key')
 
         owner = get_query_param(args, 'owner')
@@ -200,7 +198,6 @@ def get_last_indexed() -> Response:
 def get_table_description() -> Response:
     try:
         table_endpoint = _get_table_endpoint()
-        # table_key = get_table_key(request.args)
         table_key = get_query_param(request.args, 'key')
 
         url = '{0}/{1}/description'.format(table_endpoint, table_key)
@@ -226,7 +223,6 @@ def get_table_description() -> Response:
 def get_column_description() -> Response:
     try:
         table_endpoint = _get_table_endpoint()
-        # table_key = get_table_key(request.args)
         table_key = get_query_param(request.args, 'key')
 
         column_name = get_query_param(request.args, 'column_name')
@@ -261,7 +257,6 @@ def put_table_description() -> Response:
         args = request.get_json()
         table_endpoint = _get_table_endpoint()
 
-        # table_key = get_table_key(args)
         table_key = get_query_param(args, 'key')
 
         description = get_query_param(args, 'description')
@@ -296,7 +291,6 @@ def put_column_description() -> Response:
     try:
         args = request.get_json()
 
-        # table_key = get_table_key(args)
         table_key = get_query_param(args, 'key')
         table_endpoint = _get_table_endpoint()
 
