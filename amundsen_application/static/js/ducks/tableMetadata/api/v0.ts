@@ -33,10 +33,7 @@ export function metadataUpdateTableTags(action, tableData) {
       method: tagObject.methodName,
       url: `${API_PATH}/update_table_tags`,
       data: {
-        cluster: tableData.cluster,
-        db: tableData.database,
-        schema: tableData.schema,
-        table: tableData.table_name,
+        key: tableData.key,
         tag: tagObject.tagName,
       },
     }
@@ -82,10 +79,7 @@ export function metadataUpdateTableDescription(description: string, tableData: T
   else {
     return axios.put(`${API_PATH}/put_table_description`, {
       description,
-      db: tableData.database,
-      cluster: tableData.cluster,
-      schema: tableData.schema,
-      table: tableData.table_name,
+      key: tableData.key,
       source: 'user',
     });
   }
@@ -104,17 +98,14 @@ export function metadataTableOwners(tableData: TableMetadata) {
 }
 
 /* TODO: Typing this method generates redux-saga related type errors that need more dedicated debugging */
-export function metadataUpdateTableOwner(action, tableData) {
+export function metadataUpdateTableOwner(action, tableData: TableMetadata) {
   const updatePayloads = action.updateArray.map((item) => {
     return {
       method: item.method,
       url: `${API_PATH}/update_table_owner`,
       data: {
-        cluster: tableData.cluster,
-        db: tableData.database,
+        key: tableData.key,
         owner: item.id,
-        schema: tableData.schema,
-        table: tableData.table_name,
       },
     }
   });
@@ -142,11 +133,8 @@ export function metadataUpdateColumnDescription(description: string, columnIndex
     const columnName = tableData.columns[columnIndex].name;
     return axios.put(`${API_PATH}/put_column_description`, {
       description,
-      db: tableData.database,
-      cluster: tableData.cluster,
       column_name: columnName,
-      schema: tableData.schema,
-      table: tableData.table_name,
+      key: tableData.key,
       source: 'user',
     });
   }

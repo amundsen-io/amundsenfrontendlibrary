@@ -56,6 +56,7 @@ def marshall_table_full(table: Dict) -> Dict:
         'database',
         'is_view',
         'key',
+        # 'last_updated_timestamp',
         'owners',
         'schema',
         'source',
