@@ -5,8 +5,7 @@ import { shallow } from 'enzyme';
 import globalState from 'fixtures/globalState';
 import { ResourceType } from 'components/common/ResourceListItem/types';
 import Pagination from 'react-js-pagination';
-import ResourceListItem from 'components/common/ResourceListItem'
-import { BookmarkList, BookmarkListProps, mapStateToProps } from "../";
+import { MyBookmarks, MyBookmarksProps, mapStateToProps } from "../";
 import {
   BOOKMARK_SOURCE_NAME,
   BOOKMARK_TITLE,
@@ -16,11 +15,11 @@ import {
 import ResourceList from "components/common/ResourceList";
 import { RESULTS_PER_PAGE, SEARCH_SOURCE_NAME } from "components/SearchPage/constants";
 
-describe('BookmarkList', () => {
-  const setStateSpy = jest.spyOn(BookmarkList.prototype, 'setState');
+describe('MyBookmarks', () => {
+  const setStateSpy = jest.spyOn(MyBookmarks.prototype, 'setState');
 
-  const setup = (propOverrides?: Partial<BookmarkListProps>) => {
-    const props: BookmarkListProps = {
+  const setup = (propOverrides?: Partial<MyBookmarksProps>) => {
+    const props: MyBookmarksProps = {
       myBookmarks: [
         {
           key: 'bookmark-1',
@@ -80,7 +79,7 @@ describe('BookmarkList', () => {
       isLoaded: true,
       ...propOverrides
     };
-    const wrapper = shallow<BookmarkList>(<BookmarkList {...props} />);
+    const wrapper = shallow<MyBookmarks>(<MyBookmarks {...props} />);
     return { props, wrapper };
   };
 

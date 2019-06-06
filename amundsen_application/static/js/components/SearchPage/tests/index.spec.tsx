@@ -24,7 +24,7 @@ import TabsComponent from 'components/common/Tabs';
 
 import SearchBar from '../SearchBar';
 
-import BookmarkList from 'components/common/Bookmark/BookmarkList';
+import MyBookmarks from 'components/common/Bookmark/MyBookmarks';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import PopularTables from 'components/common/PopularTables';
 import ResourceList from 'components/common/ResourceList';
@@ -636,7 +636,7 @@ describe('SearchPage', () => {
     it('renders bookmark list and popular tables', () => {
       const {props, wrapper} = setup();
       wrapper.instance().renderPopularTables();
-      expect(wrapper.contains(<BookmarkList />));
+      expect(wrapper.contains(<MyBookmarks />));
       expect(wrapper.contains(<PopularTables />));
     });
   });

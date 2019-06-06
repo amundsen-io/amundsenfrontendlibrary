@@ -19,13 +19,13 @@ interface StateFromProps {
   isLoaded: boolean;
 }
 
-export type BookmarkListProps = StateFromProps;
+export type MyBookmarksProps = StateFromProps;
 
-interface BookmarkListState {
+interface MyBookmarksState {
   activePage: number;
 }
 
-export class BookmarkList extends React.Component<BookmarkListProps, BookmarkListState> {
+export class MyBookmarks extends React.Component<MyBookmarksProps, MyBookmarksState> {
   constructor(props) {
     super(props);
 
@@ -89,4 +89,4 @@ export const mapStateToProps = (state: GlobalState) => {
   };
 };
 
-export default connect<StateFromProps>(mapStateToProps)(BookmarkList);
+export default connect<StateFromProps>(mapStateToProps)(MyBookmarks);

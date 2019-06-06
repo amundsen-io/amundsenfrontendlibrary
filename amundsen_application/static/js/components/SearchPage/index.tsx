@@ -10,7 +10,7 @@ import SearchBar from './SearchBar';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import PopularTables from 'components/common/PopularTables';
 
-import BookmarkList from 'components/common/Bookmark/BookmarkList'
+import MyBookmarks from 'components/common/Bookmark/MyBookmarks'
 import InfoButton from 'components/common/InfoButton';
 import { ResourceType } from 'components/common/ResourceListItem/types';
 import TabsComponent from 'components/common/Tabs';
@@ -161,7 +161,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
   renderPopularTables = () => {
     return (
       <div className="search-list-container">
-        <BookmarkList />
+        <MyBookmarks />
         <PopularTables />
       </div>
     )
