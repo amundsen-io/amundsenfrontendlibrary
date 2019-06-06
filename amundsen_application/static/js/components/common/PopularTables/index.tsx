@@ -5,13 +5,13 @@ import './styles.scss';
 
 import { POPULAR_TABLES_LABEL, POPULAR_TABLES_INFO_TEXT, POPULAR_TABLES_SOURCE_NAME } from './constants';
 import InfoButton from 'components/common/InfoButton';
-import SearchList from 'components/SearchPage/SearchList';
 
 import { getPopularTables } from 'ducks/popularTables/reducer';
 import { GetPopularTablesRequest, TableResource } from 'ducks/popularTables/types';
 import { GlobalState } from 'ducks/rootReducer';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import ResourceList from "components/common/ResourceList";
 
 export interface StateFromProps {
   popularTables: TableResource[];
@@ -39,12 +39,10 @@ export class PopularTables extends React.Component<PopularTablesProps> {
           <label className="title-1">{POPULAR_TABLES_LABEL}</label>
           <InfoButton infoText={POPULAR_TABLES_INFO_TEXT} />
         </div>
-        <SearchList 
-          results={this.props.popularTables} 
-          params={{
-            source: POPULAR_TABLES_SOURCE_NAME,
-            paginationStartIndex: 0,
-          }} 
+        <ResourceList
+          resources={ this.props.popularTables }
+          source={ POPULAR_TABLES_SOURCE_NAME }
+          startIndex={ 0 }
         />
       </>
     );

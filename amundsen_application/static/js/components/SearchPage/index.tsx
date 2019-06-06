@@ -7,13 +7,12 @@ import Pagination from 'react-js-pagination';
 import { RouteComponentProps } from 'react-router';
 
 import SearchBar from './SearchBar';
-import SearchList from './SearchList';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import PopularTables from 'components/common/PopularTables';
 
 import BookmarkList from 'components/common/Bookmark/BookmarkList'
 import InfoButton from 'components/common/InfoButton';
-import { ResourceType, TableResource } from 'components/common/ResourceListItem/types';
+import { ResourceType } from 'components/common/ResourceListItem/types';
 import TabsComponent from 'components/common/Tabs';
 
 import { GlobalState } from 'ducks/rootReducer';
@@ -42,6 +41,7 @@ import {
   SEARCH_SOURCE_NAME,
   TABLE_RESOURCE_TITLE,
 } from './constants';
+import ResourceList from "components/common/ResourceList";
 
 export interface StateFromProps {
   searchTerm: string;
@@ -225,7 +225,11 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
           <label>{ title }</label>
           <InfoButton infoText={SEARCH_INFO_TEXT}/>
         </div>
-        <SearchList results={ results.results } params={ {source: SEARCH_SOURCE_NAME, paginationStartIndex: 0 } }/>
+        <ResourceList
+          resources={ results.results }
+          source={ SEARCH_SOURCE_NAME }
+          startIndex={ page_index * RESULTS_PER_PAGE }
+        />
         <div className="search-pagination-component">
             {
               total_results > RESULTS_PER_PAGE &&

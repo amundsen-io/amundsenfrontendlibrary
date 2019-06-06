@@ -7,9 +7,9 @@ import {
   POPULAR_TABLES_SOURCE_NAME,
 } from '../constants';
 import InfoButton from 'components/common/InfoButton';
-import SearchList from 'components/SearchPage/SearchList';
 import globalState from 'fixtures/globalState';
 import { PopularTables, PopularTablesProps, mapStateToProps, mapDispatchToProps } from '..';
+import ResourceList from "components/common/ResourceList";
 
 describe('PopularTables', () => {
   const setup = (propOverrides?: Partial<PopularTablesProps>) => {
@@ -80,13 +80,11 @@ describe('PopularTables', () => {
       });
     });
 
-    it('renders SearchList with correct props', () => {
-      expect(wrapper.children().find(SearchList).props()).toMatchObject({
-        results: props.popularTables,
-        params: {
-          source: POPULAR_TABLES_SOURCE_NAME,
-          paginationStartIndex: 0,
-        },
+    it('renders ResourceList with correct props', () => {
+      expect(wrapper.children().find(ResourceList).props()).toMatchObject({
+        resources: props.popularTables,
+        source: POPULAR_TABLES_SOURCE_NAME,
+        startIndex: 0,
       });
     });
   });

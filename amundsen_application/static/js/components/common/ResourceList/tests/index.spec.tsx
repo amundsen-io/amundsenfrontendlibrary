@@ -2,24 +2,22 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
-import { Resource, ResourceType } from 'components/common/ResourceListItem/types';
-import ResourceListItem from 'components/common/ResourceListItem';
-import SearchList, { SearchListProps, SearchListParams } from '../';
+import { ResourceType } from 'components/common/ResourceListItem/types';
+import ResourceListItem from 'components/common/ResourceListItem/index';
+import ResourceList, { ResourceListProps } from '../.';
 
-describe('SearchList', () => {
-  const setup = (propOverrides?: Partial<SearchListProps>) => {
-    const props: SearchListProps = {
-      results: [
+describe('ResourceList', () => {
+  const setup = (propOverrides?: Partial<ResourceListProps>) => {
+    const props: ResourceListProps = {
+      resources: [
         { type: ResourceType.table },
         { type: ResourceType.user },
       ],
-      params: {
-        source: 'testSource',
-        paginationStartIndex: 0,
-      },
+      startIndex: 0,
+      source: 'testSource',
       ...propOverrides
     };
-    const wrapper = shallow(<SearchList {...props} />);
+    const wrapper = shallow(<ResourceList {...props} />);
     return { props, wrapper };
   };
 
@@ -42,19 +40,19 @@ describe('SearchList', () => {
       });
     });
 
-    it('renders a ResourceListItem for each result', () => {
+    it('renders a ResourceListItem for each resource', () => {
       const content = wrapper.find(ResourceListItem);
-      expect(content.length).toEqual(props.results.length);
+      expect(content.length).toEqual(props.resources.length);
     });
 
     it('passes correct props to each ResourceListItem', () => {
       const content = wrapper.find(ResourceListItem);
       content.forEach((contentItem, index) => {
         expect(contentItem.props()).toMatchObject({
-          item: props.results[index],
+          item: props.resources[index],
           logging: {
-            source: props.params.source,
-            index: props.params.paginationStartIndex + index,
+            source: props.source,
+            index: props.startIndex + index,
           }
         })
       });

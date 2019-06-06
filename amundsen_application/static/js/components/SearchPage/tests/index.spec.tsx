@@ -23,12 +23,12 @@ import InfoButton from 'components/common/InfoButton';
 import TabsComponent from 'components/common/Tabs';
 
 import SearchBar from '../SearchBar';
-import SearchList from '../SearchList';
 
-import globalState from 'fixtures/globalState';
-import LoadingSpinner from 'components/common/LoadingSpinner';
 import BookmarkList from 'components/common/Bookmark/BookmarkList';
+import LoadingSpinner from 'components/common/LoadingSpinner';
 import PopularTables from 'components/common/PopularTables';
+import ResourceList from 'components/common/ResourceList';
+import globalState from 'fixtures/globalState';
 
 describe('SearchPage', () => {
   const setStateSpy = jest.spyOn(SearchPage.prototype, 'setState');
@@ -584,13 +584,11 @@ describe('SearchPage', () => {
         });
       });
 
-      it('renders SearchList with correct props', () => {
-        expect(content.children().find(SearchList).props()).toMatchObject({
-          results: props.tables.results,
-          params: {
-            source: SEARCH_SOURCE_NAME,
-            paginationStartIndex: 0,
-          },
+      it('renders ResourceList with correct props', () => {
+        expect(content.children().find(ResourceList).props()).toMatchObject({
+          resources: props.tables.results,
+          source: SEARCH_SOURCE_NAME,
+          startIndex: props.tables.page_index * RESULTS_PER_PAGE,
         });
       });
 

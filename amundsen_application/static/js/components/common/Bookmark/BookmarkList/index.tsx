@@ -5,13 +5,14 @@ import { GlobalState } from "ducks/rootReducer";
 
 import './styles.scss'
 import { Bookmark } from "ducks/bookmark/types";
-import ResourceListItem from "components/common/ResourceListItem";
 import {
-  ITEMS_PER_PAGE,
-  EMPTY_BOOKMARK_MESSAGE,
-  PAGINATION_PAGE_RANGE,
+  BOOKMARK_SOURCE_NAME,
   BOOKMARK_TITLE,
+  EMPTY_BOOKMARK_MESSAGE,
+  ITEMS_PER_PAGE,
+  PAGINATION_PAGE_RANGE,
 } from "./constants";
+import ResourceList from "components/common/ResourceList";
 
 interface StateFromProps {
   myBookmarks: Bookmark[];
@@ -58,14 +59,11 @@ export class BookmarkList extends React.Component<BookmarkListProps, BookmarkLis
     return (
       <div className="bookmark-list">
         <div className="title-1">{ BOOKMARK_TITLE }</div>
-        <ul className="list-group">
-          {
-            displayedBookmarks.map((resource, index) => {
-              const logging = { index: index + this.state.activePage * ITEMS_PER_PAGE , source: 'Bookmarks' };
-              return <ResourceListItem item={ resource } logging={ logging } key={ index } />;
-            })
-          }
-        </ul>
+        <ResourceList
+          resources={ displayedBookmarks }
+          source={ BOOKMARK_SOURCE_NAME }
+          startIndex={ this.state.activePage * ITEMS_PER_PAGE }
+        />
         {
           totalBookmarks > ITEMS_PER_PAGE &&
           <div className="pagination-container">

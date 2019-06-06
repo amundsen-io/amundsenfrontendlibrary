@@ -8,10 +8,13 @@ import Pagination from 'react-js-pagination';
 import ResourceListItem from 'components/common/ResourceListItem'
 import { BookmarkList, BookmarkListProps, mapStateToProps } from "../";
 import {
-  ITEMS_PER_PAGE,
-  EMPTY_BOOKMARK_MESSAGE,
+  BOOKMARK_SOURCE_NAME,
   BOOKMARK_TITLE,
+  EMPTY_BOOKMARK_MESSAGE,
+  ITEMS_PER_PAGE,
 } from '../constants';
+import ResourceList from "components/common/ResourceList";
+import { RESULTS_PER_PAGE, SEARCH_SOURCE_NAME } from "components/SearchPage/constants";
 
 describe('BookmarkList', () => {
   const setStateSpy = jest.spyOn(BookmarkList.prototype, 'setState');
@@ -107,9 +110,16 @@ describe('BookmarkList', () => {
       expect(wrapper.find('.empty-message').text()).toEqual(EMPTY_BOOKMARK_MESSAGE);
     });
 
-    it('Renders at most ITEMS_PER_PAGE bookmarks at once', () => {
+    it('Renders ResourceList with the correct props', () => {
       const { props, wrapper } = setup();
-      expect(wrapper.find(ResourceListItem).length).toEqual(ITEMS_PER_PAGE)
+      const startIndex = wrapper.state().activePage * ITEMS_PER_PAGE;
+      const displayedBookmarks = props.myBookmarks.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+      expect(wrapper.children().find(ResourceList).props()).toMatchObject({
+          resources: displayedBookmarks,
+          source: BOOKMARK_SOURCE_NAME,
+          startIndex: wrapper.state().activePage * RESULTS_PER_PAGE,
+        });
     });
 
     it('Renders a pagination widget when there are more than ITEMS_PER_PAGE bookmarks', () => {
