@@ -24,8 +24,8 @@ import TabsComponent from 'components/common/Tabs';
 
 import SearchBar from '../SearchBar';
 
-import MyBookmarks from 'components/common/Bookmark/MyBookmarks';
 import LoadingSpinner from 'components/common/LoadingSpinner';
+import MyBookmarks from 'components/common/Bookmark/MyBookmarks';
 import PopularTables from 'components/common/PopularTables';
 import ResourceList from 'components/common/ResourceList';
 import globalState from 'fixtures/globalState';

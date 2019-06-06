@@ -6,10 +6,10 @@ import { GlobalState } from "ducks/rootReducer";
 import './styles.scss'
 import { Bookmark } from "ducks/bookmark/types";
 import {
-  BOOKMARK_SOURCE_NAME,
   BOOKMARK_TITLE,
   EMPTY_BOOKMARK_MESSAGE,
   ITEMS_PER_PAGE,
+  MY_BOOKMARKS_SOURCE_NAME,
   PAGINATION_PAGE_RANGE,
 } from "./constants";
 import ResourceList from "components/common/ResourceList";
@@ -61,7 +61,7 @@ export class MyBookmarks extends React.Component<MyBookmarksProps, MyBookmarksSt
         <div className="title-1">{ BOOKMARK_TITLE }</div>
         <ResourceList
           resources={ displayedBookmarks }
-          source={ BOOKMARK_SOURCE_NAME }
+          source={ MY_BOOKMARKS_SOURCE_NAME }
           startIndex={ this.state.activePage * ITEMS_PER_PAGE }
         />
         {

@@ -7,13 +7,12 @@ import { ResourceType } from 'components/common/ResourceListItem/types';
 import Pagination from 'react-js-pagination';
 import { MyBookmarks, MyBookmarksProps, mapStateToProps } from "../";
 import {
-  BOOKMARK_SOURCE_NAME,
   BOOKMARK_TITLE,
   EMPTY_BOOKMARK_MESSAGE,
   ITEMS_PER_PAGE,
+  MY_BOOKMARKS_SOURCE_NAME,
 } from '../constants';
 import ResourceList from "components/common/ResourceList";
-import { RESULTS_PER_PAGE, SEARCH_SOURCE_NAME } from "components/SearchPage/constants";
 
 describe('MyBookmarks', () => {
   const setStateSpy = jest.spyOn(MyBookmarks.prototype, 'setState');
@@ -116,8 +115,8 @@ describe('MyBookmarks', () => {
 
       expect(wrapper.children().find(ResourceList).props()).toMatchObject({
           resources: displayedBookmarks,
-          source: BOOKMARK_SOURCE_NAME,
-          startIndex: wrapper.state().activePage * RESULTS_PER_PAGE,
+          source: MY_BOOKMARKS_SOURCE_NAME,
+          startIndex: wrapper.state().activePage * ITEMS_PER_PAGE,
         });
     });
 

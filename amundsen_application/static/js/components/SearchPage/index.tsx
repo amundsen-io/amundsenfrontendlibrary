@@ -10,8 +10,8 @@ import SearchBar from './SearchBar';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import PopularTables from 'components/common/PopularTables';
 
-import MyBookmarks from 'components/common/Bookmark/MyBookmarks'
 import InfoButton from 'components/common/InfoButton';
+import MyBookmarks from 'components/common/Bookmark/MyBookmarks'
 import { ResourceType } from 'components/common/ResourceListItem/types';
 import TabsComponent from 'components/common/Tabs';
 
