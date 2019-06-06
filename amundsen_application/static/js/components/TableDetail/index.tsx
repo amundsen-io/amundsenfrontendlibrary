@@ -39,6 +39,7 @@ export interface StateFromProps {
   isLoading: boolean;
   statusCode?: number;
   tableData: TableMetadata;
+  searchTerm: string;
 }
 
 export interface DispatchFromProps {
@@ -81,6 +82,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
       source: { source: '', source_type: '' },
       watermarks: [],
     },
+    searchTerm: '',
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -110,7 +112,6 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     const params = qs.parse(this.props.location.search);
     const searchIndex = params['index'];
     const source = params['source'];
-
     /* update the url stored in the browser history to remove params used for logging purposes */
     if (searchIndex !== undefined) {
       window.history.replaceState({}, '', `${window.location.origin}${window.location.pathname}`);
@@ -125,6 +126,18 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
       target_id: 'frequent-users',
     })
   };
+
+  getBreadcrumb() {
+    let path = '/';
+    let text = 'Home';
+    console.log(this.props.searchTerm);
+    if (this.props.searchTerm) {
+      path = `/search?searchTerm=${this.props.searchTerm}&selectedTab=table&pageIndex=0`
+      text = 'Search Results'
+    }
+    console.log(path);
+    return (<Breadcrumb path={ path } text={ text }/>)
+  }
 
   getAvatarForUser(fullName, profileUrl, zIndex) {
     const popoverHoverFocus = (
@@ -330,7 +343,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     } else {
         innerContent = (
           <div className="container table-detail">
-            <Breadcrumb path='/' text='Search Results'/>
+            { this.getBreadcrumb() }
             <div className="row">
               <div className="detail-header col-xs-12 col-md-7 col-lg-8">
                 <h1 className="detail-header-text">
@@ -376,6 +389,7 @@ export const mapStateToProps = (state: GlobalState) => {
     isLoading: state.tableMetadata.isLoading,
     statusCode: state.tableMetadata.statusCode,
     tableData: state.tableMetadata.tableData,
+    searchTerm: state.search.search_term,
   };
 };
 
