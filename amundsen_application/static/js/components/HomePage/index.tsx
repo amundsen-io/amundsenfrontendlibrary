@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
-import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
-import PopularTables from 'components/common/PopularTables';
 import BookmarkList from 'components/common/Bookmark/BookmarkList';
-import SearchBar from 'components/SearchPage/SearchBar';
+import PopularTables from 'components/common/PopularTables';
 import { SearchAllReset } from 'ducks/search/types';
 import { searchReset } from 'ducks/search/reducer';
-import { ResourceType } from 'components/common/ResourceListItem/types';
+import SearchBar from 'components/SearchPage/SearchBar';
+
 
 export interface DispatchFromProps {
   searchReset: () => SearchAllReset;

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
 
 // TODO: Use css-modules instead of 'import'
@@ -13,7 +14,6 @@ import {
   SYNTAX_ERROR_SPACING_SUFFIX,
 } from './constants';
 import { GlobalState } from 'ducks/rootReducer';
-import { connect } from 'react-redux';
 
 export interface StateFromProps {
   searchTerm: string;
