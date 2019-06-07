@@ -7,8 +7,8 @@ import { ResourceType } from 'components/common/ResourceListItem/types';
 import { MyBookmarks, MyBookmarksProps, mapStateToProps } from "../";
 import {
   BOOKMARK_TITLE,
-  EMPTY_BOOKMARK_MESSAGE,
   BOOKMARKS_PER_PAGE,
+  EMPTY_BOOKMARK_MESSAGE,
   MY_BOOKMARKS_SOURCE_NAME,
 } from '../constants';
 import ResourceList from "components/common/ResourceList";

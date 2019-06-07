@@ -25,14 +25,14 @@ const ResourceList: React.SFC<ResourceListProps> = ({
                                                       source,
                                                     }) => {
 
-  itemsPerPage = itemsPerPage || ITEMS_PER_PAGE;
-  itemsCount = itemsCount || items.length;
+  const itemsPerPageValue = itemsPerPage || ITEMS_PER_PAGE;
+  const itemsCountValue = itemsCount || items.length;
 
-  const startIndex = itemsPerPage * activePage;
+  const startIndex = itemsPerPageValue * activePage;
 
   let itemsToRender = items;
   if (isFullList) {
-    itemsToRender = items.slice(startIndex, startIndex + itemsPerPage);
+    itemsToRender = items.slice(startIndex, startIndex + itemsPerPageValue);
   }
 
   return (
@@ -46,12 +46,12 @@ const ResourceList: React.SFC<ResourceListProps> = ({
         }
       </ul>
       {
-        itemsCount > itemsPerPage &&
+        itemsCountValue > itemsPerPageValue &&
         <div className="text-center">
           <Pagination
             activePage={ activePage + 1 }
-            itemsCountPerPage={ itemsPerPage }
-            totalItemsCount={ itemsCount }
+            itemsCountPerPage={ itemsPerPageValue }
+            totalItemsCount={ itemsCountValue }
             pageRangeDisplayed={ PAGINATION_PAGE_RANGE }
             onChange={ onPagination }
           />

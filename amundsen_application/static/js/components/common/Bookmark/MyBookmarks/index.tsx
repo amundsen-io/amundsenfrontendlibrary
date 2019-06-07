@@ -6,8 +6,8 @@ import './styles.scss'
 import { Bookmark } from "ducks/bookmark/types";
 import {
   BOOKMARK_TITLE,
-  EMPTY_BOOKMARK_MESSAGE,
   BOOKMARKS_PER_PAGE,
+  EMPTY_BOOKMARK_MESSAGE,
   MY_BOOKMARKS_SOURCE_NAME,
 } from "./constants";
 import ResourceList from "components/common/ResourceList";
@@ -44,7 +44,7 @@ export class MyBookmarks extends React.Component<MyBookmarksProps, MyBookmarksSt
       <div className="bookmark-list">
         <div className="title-1">{ BOOKMARK_TITLE }</div>
         {
-          bookmarksLength == 0 &&
+          bookmarksLength === 0 &&
           <div className="empty-message body-placeholder">
             { EMPTY_BOOKMARK_MESSAGE }
           </div>
