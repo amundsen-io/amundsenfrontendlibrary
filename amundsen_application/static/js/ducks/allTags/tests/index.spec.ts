@@ -3,21 +3,21 @@ import * as matchers from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
 
 import { metadataAllTags } from '../api/v0';
-import reducer, { getAllTags, initialState } from '../reducer';
+import reducer, { getAllTags, initialState, AllTagsReducerState } from '../reducer';
 import { getAllTagsWatcher, getAllTagsWorker } from '../sagas';
 import { GetAllTags } from '../types';
 
 describe('allTags ducks', () => {
   describe('actions', () => {
     describe('getAllTags', () => {
-      it('should return action of type GetGetAllTagsRequest', () => {
+      it('should return action of type GetAllTagsRequest', () => {
         expect(getAllTags()).toEqual({ type: GetAllTags.REQUEST });
       });
     })
   });
 
   describe('reducer', () => {
-    let testState;
+    let testState: AllTagsReducerState;
     beforeAll(() => {
       testState = {
         allTags: [],
@@ -28,7 +28,7 @@ describe('allTags ducks', () => {
       expect(reducer(testState, { type: 'INVALID.ACTION' })).toEqual(testState);
     });
 
-    it('should handle GetAllTags.ACTION', () => {
+    it('should handle GetAllTags.REQUEST', () => {
       expect(reducer(testState, { type: GetAllTags.REQUEST })).toEqual({
         allTags: [],
         isLoading: true,
@@ -50,7 +50,7 @@ describe('allTags ducks', () => {
 
   describe('sagas', () => {
     describe('getAllTagsWatcher', () => {
-      it('takes GetAllTags.ACTION with getAllTagsWorker', () => {
+      it('takes GetAllTags.REQUEST with getAllTagsWorker', () => {
         testSaga(getAllTagsWatcher)
           .next()
           .takeEveryEffect(GetAllTags.REQUEST, getAllTagsWorker);

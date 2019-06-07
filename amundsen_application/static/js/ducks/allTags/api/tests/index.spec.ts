@@ -4,8 +4,6 @@ import { Tag } from 'interfaces';
 
 import { metadataAllTags, AllTagsResponseAPI } from '../v0';
 
-jest.mock('axios');
-
 describe('metadataAllTags', () => {
   it('resolves with array of sorted result of response.data.tags on success', async () => {
     const rawTags: Tag[] = [
