@@ -430,26 +430,6 @@ describe('SearchPage', () => {
     });
   });
 
-  describe('onSearchBarSubmit', () => {
-    let props;
-    let wrapper;
-
-    let updatePageUrlSpy;
-    beforeAll(() => {
-      const setupResult = setup();
-      props = setupResult.props;
-      wrapper = setupResult.wrapper;
-
-      updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
-
-      wrapper.instance().onSearchBarSubmit('searchTerm');
-    });
-
-    it('call updatePageUrl with correct parameters', () => {
-      expect(updatePageUrlSpy).toHaveBeenCalledWith('searchTerm', wrapper.state().selectedTab, 0);
-    });
-  });
-
   describe('onPaginationChange', () => {
     const testIndex = 10;
     let props;
@@ -680,7 +660,6 @@ describe('SearchPage', () => {
     it('renders SearchBar with correct props', () => {
       const { props, wrapper } = setup();
       expect(wrapper.find(SearchBar).props()).toMatchObject({
-        handleValueSubmit: wrapper.instance().onSearchBarSubmit,
         searchTerm: props.searchTerm,
       });
     });

@@ -134,10 +134,6 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     return 0;
   };
 
-  onSearchBarSubmit = (searchTerm: string): void => {
-    this.updatePageUrl(searchTerm, this.state.selectedTab,0);
-  };
-
   onPaginationChange = (pageNumber: number): void => {
     const index = pageNumber - 1;
     this.props.searchResource(this.state.selectedTab, this.props.searchTerm, index);

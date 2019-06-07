@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
@@ -11,7 +12,6 @@ import {
   SYNTAX_ERROR_PREFIX,
   SYNTAX_ERROR_SPACING_SUFFIX,
 } from './constants';
-import { RouteComponentProps, withRouter } from 'react-router';
 import { GlobalState } from 'ducks/rootReducer';
 import { connect } from 'react-redux';
 
@@ -19,10 +19,12 @@ export interface StateFromProps {
   searchTerm: string;
 }
 
-export interface SearchBarProps {
+export interface OwnProps {
   placeholder?: string;
   subText?: string;
 }
+
+export type SearchBarProps = StateFromProps & OwnProps & RouteComponentProps<any>;
 
 interface SearchBarState {
   subTextClassName: string;
@@ -30,7 +32,7 @@ interface SearchBarState {
   subText: string;
 }
 
-export class SearchBar extends React.Component<SearchBarProps & StateFromProps & RouteComponentProps<any>, SearchBarState> {
+export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   public static defaultProps: Partial<SearchBarProps> = {
     placeholder: PLACEHOLDER_DEFAULT,
     subText: SUBTEXT_DEFAULT,

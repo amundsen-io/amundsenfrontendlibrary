@@ -13,12 +13,12 @@ import AnnouncementPage from './components/AnnouncementPage';
 import BrowsePage from './components/BrowsePage';
 import Feedback from './components/Feedback';
 import Footer from './components/Footer';
+import HomePage from './components/HomePage'
 import NavBar from './components/NavBar';
 import NotFoundPage from './components/NotFoundPage';
 import Preloader from "components/common/Preloader";
 import ProfilePage from './components/ProfilePage';
 import SearchPage from './components/SearchPage'; 
-import HomePage from './components/HomePage'
 import TableDetail from './components/TableDetail';
 
 import rootReducer from './ducks/rootReducer';

@@ -127,7 +127,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     })
   };
 
-  getBreadcrumb() {
+  renderBreadcrumb() {
     let path = '/';
     let text = 'Home';
     if (this.props.searchTerm) {
@@ -341,7 +341,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     } else {
         innerContent = (
           <div className="container table-detail">
-            { this.getBreadcrumb() }
+            { this.renderBreadcrumb() }
             <div className="row">
               <div className="detail-header col-xs-12 col-md-7 col-lg-8">
                 <h1 className="detail-header-text">
