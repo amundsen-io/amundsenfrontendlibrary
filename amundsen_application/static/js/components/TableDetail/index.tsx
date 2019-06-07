@@ -37,9 +37,9 @@ import BookmarkIcon from "components/common/Bookmark/BookmarkIcon";
 
 export interface StateFromProps {
   isLoading: boolean;
+  searchTerm: string;
   statusCode?: number;
   tableData: TableMetadata;
-  searchTerm: string;
 }
 
 export interface DispatchFromProps {
@@ -65,6 +65,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     getTableData: () => undefined,
     getPreviewData: () => undefined,
     isLoading: true,
+    searchTerm: '',
     statusCode: null,
     tableData: {
       cluster: '',
@@ -82,7 +83,6 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
       source: { source: '', source_type: '' },
       watermarks: [],
     },
-    searchTerm: '',
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -385,9 +385,9 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
 export const mapStateToProps = (state: GlobalState) => {
   return {
     isLoading: state.tableMetadata.isLoading,
+    searchTerm: state.search.search_term,
     statusCode: state.tableMetadata.statusCode,
     tableData: state.tableMetadata.tableData,
-    searchTerm: state.search.search_term,
   };
 };
 
