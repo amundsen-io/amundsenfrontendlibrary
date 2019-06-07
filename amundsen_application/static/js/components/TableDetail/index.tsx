@@ -130,12 +130,10 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
   getBreadcrumb() {
     let path = '/';
     let text = 'Home';
-    console.log(this.props.searchTerm);
     if (this.props.searchTerm) {
       path = `/search?searchTerm=${this.props.searchTerm}&selectedTab=table&pageIndex=0`
       text = 'Search Results'
     }
-    console.log(path);
     return (<Breadcrumb path={ path } text={ text }/>)
   }
 

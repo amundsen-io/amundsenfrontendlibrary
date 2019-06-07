@@ -13,30 +13,15 @@ import { SearchAllReset } from 'ducks/search/types';
 import { searchReset } from 'ducks/search/reducer';
 import { ResourceType } from 'components/common/ResourceListItem/types';
 
-interface HomePageState {
-}
-
-export interface StateFromProps {
-}
-
 export interface DispatchFromProps {
   searchReset: () => SearchAllReset;
 }
 
-export type HomePageProps = StateFromProps & DispatchFromProps & RouteComponentProps<any>;
+export type HomePageProps = DispatchFromProps & RouteComponentProps<any>;
 
-export class HomePage extends React.Component<HomePageProps, HomePageState> {
-  public static defaultProps: Partial<HomePageProps> = {};
-
+export class HomePage extends React.Component<HomePageProps> {
   constructor(props) {
     super(props);
-
-    this.state = {
-    };
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    return {};
   }
 
   createSearchOptions = (pageIndex: number, selectedTab: ResourceType) => {
