@@ -3,7 +3,12 @@ import * as React from 'react';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
-import { POPULAR_TABLES_LABEL, POPULAR_TABLES_INFO_TEXT, POPULAR_TABLES_SOURCE_NAME } from './constants';
+import {
+  POPULAR_TABLES_LABEL,
+  POPULAR_TABLES_INFO_TEXT,
+  POPULAR_TABLES_SOURCE_NAME,
+  POPULAR_TABLES_PER_PAGE
+} from './constants';
 import InfoButton from 'components/common/InfoButton';
 
 import { getPopularTables } from 'ducks/popularTables/reducer';
@@ -23,14 +28,24 @@ export interface DispatchFromProps {
 
 export type PopularTablesProps = StateFromProps & DispatchFromProps;
 
-export class PopularTables extends React.Component<PopularTablesProps> {
+interface PopularTablesState {
+  activePage: number;
+}
+
+export class PopularTables extends React.Component<PopularTablesProps, PopularTablesState> {
   constructor(props) {
     super(props);
+
+    this.state = { activePage: 0 };
   }
 
   componentDidMount() {
     this.props.getPopularTables();
   }
+
+  onPaginationChange = (pageNumber: number) => {
+    this.setState({ activePage: pageNumber - 1 });
+  };
 
   render() {
     return (
@@ -40,9 +55,13 @@ export class PopularTables extends React.Component<PopularTablesProps> {
           <InfoButton infoText={POPULAR_TABLES_INFO_TEXT} />
         </div>
         <ResourceList
-          resources={ this.props.popularTables }
+          activePage={ this.state.activePage }
+          isFullList={ true }
+          items={ this.props.popularTables }
+          itemsCount={ this.props.popularTables.length }
+          itemsPerPage={ POPULAR_TABLES_PER_PAGE }
+          onPagination={ this.onPaginationChange }
           source={ POPULAR_TABLES_SOURCE_NAME }
-          startIndex={ 0 }
         />
       </>
     );

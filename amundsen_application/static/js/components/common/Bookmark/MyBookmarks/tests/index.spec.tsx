@@ -9,7 +9,7 @@ import { MyBookmarks, MyBookmarksProps, mapStateToProps } from "../";
 import {
   BOOKMARK_TITLE,
   EMPTY_BOOKMARK_MESSAGE,
-  ITEMS_PER_PAGE,
+  BOOKMARKS_PER_PAGE,
   MY_BOOKMARKS_SOURCE_NAME,
 } from '../constants';
 import ResourceList from "components/common/ResourceList";
@@ -110,35 +110,36 @@ describe('MyBookmarks', () => {
 
     it('Renders ResourceList with the correct props', () => {
       const { props, wrapper } = setup();
-      const startIndex = wrapper.state().activePage * ITEMS_PER_PAGE;
-      const displayedBookmarks = props.myBookmarks.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
       expect(wrapper.children().find(ResourceList).props()).toMatchObject({
-          resources: displayedBookmarks,
-          source: MY_BOOKMARKS_SOURCE_NAME,
-          startIndex: wrapper.state().activePage * ITEMS_PER_PAGE,
-        });
-    });
-
-    it('Renders a pagination widget when there are more than ITEMS_PER_PAGE bookmarks', () => {
-      const { props, wrapper } = setup();
-      expect(wrapper.find(Pagination).exists()).toBe(true)
-    });
-
-    it('Hides a pagination widget when there are fewer than ITEMS_PER_PAGE bookmarks', () => {
-      const { props, wrapper } = setup({
-        myBookmarks: [{
-          key: 'bookmark-1',
-          type: ResourceType.table,
-          cluster: 'cluster',
-          database: 'database',
-          description: 'description',
-          name: 'name',
-          schema_name: 'schema_name',
-        }]
+        isFullList: true,
+        items: props.myBookmarks,
+        itemsPerPage: BOOKMARKS_PER_PAGE,
+        activePage: 0,
+        onPagination: MyBookmarks.prototype.onPaginationChange,
+        source: MY_BOOKMARKS_SOURCE_NAME,
       });
-      expect(wrapper.find(Pagination).exists()).toBe(false)
     });
+
+    // it('Renders a pagination widget when there are more than ITEMS_PER_PAGE bookmarks', () => {
+    //   const { props, wrapper } = setup();
+    //   expect(wrapper.find(Pagination).exists()).toBe(true)
+    // });
+
+    // it('Hides a pagination widget when there are fewer than ITEMS_PER_PAGE bookmarks', () => {
+    //   const { props, wrapper } = setup({
+    //     myBookmarks: [{
+    //       key: 'bookmark-1',
+    //       type: ResourceType.table,
+    //       cluster: 'cluster',
+    //       database: 'database',
+    //       description: 'description',
+    //       name: 'name',
+    //       schema_name: 'schema_name',
+    //     }]
+    //   });
+    //   expect(wrapper.find(Pagination).exists()).toBe(false)
+    // });
   });
 });
 

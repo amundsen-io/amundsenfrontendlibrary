@@ -42,6 +42,7 @@ import {
   TABLE_RESOURCE_TITLE,
 } from './constants';
 import ResourceList from "components/common/ResourceList";
+import { POPULAR_TABLES_PER_PAGE, POPULAR_TABLES_SOURCE_NAME } from "components/common/PopularTables/constants";
 
 export interface StateFromProps {
   searchTerm: string;
@@ -226,22 +227,14 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
           <InfoButton infoText={SEARCH_INFO_TEXT}/>
         </div>
         <ResourceList
-          resources={ results.results }
+          activePage={ page_index }
+          items={ results.results }
           source={ SEARCH_SOURCE_NAME }
-          startIndex={ page_index * RESULTS_PER_PAGE }
+          isFullList={ false }
+          itemsCount={ total_results }
+          itemsPerPage={ RESULTS_PER_PAGE }
+          onPagination={ this.onPaginationChange }
         />
-        <div className="search-pagination-component">
-            {
-              total_results > RESULTS_PER_PAGE &&
-              <Pagination
-                activePage={ page_index + 1 }
-                itemsCountPerPage={ RESULTS_PER_PAGE }
-                totalItemsCount={ total_results }
-                pageRangeDisplayed={ PAGINATION_PAGE_RANGE }
-                onChange={ this.onPaginationChange }
-              />
-            }
-        </div>
       </div>
       );
   };

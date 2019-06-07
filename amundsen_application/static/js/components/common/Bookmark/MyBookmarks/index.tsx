@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import Pagination from 'react-js-pagination';
 import { GlobalState } from "ducks/rootReducer";
 
 import './styles.scss'
@@ -8,9 +7,8 @@ import { Bookmark } from "ducks/bookmark/types";
 import {
   BOOKMARK_TITLE,
   EMPTY_BOOKMARK_MESSAGE,
-  ITEMS_PER_PAGE,
+  BOOKMARKS_PER_PAGE,
   MY_BOOKMARKS_SOURCE_NAME,
-  PAGINATION_PAGE_RANGE,
 } from "./constants";
 import ResourceList from "components/common/ResourceList";
 
@@ -33,8 +31,7 @@ export class MyBookmarks extends React.Component<MyBookmarksProps, MyBookmarksSt
   }
 
   onPaginationChange = (pageNumber: number) => {
-    const index = pageNumber - 1;
-    this.setState({ activePage: index });
+    this.setState({ activePage: pageNumber - 1 });
   };
 
   render() {
@@ -42,42 +39,29 @@ export class MyBookmarks extends React.Component<MyBookmarksProps, MyBookmarksSt
       return null;
     }
 
-    const totalBookmarks = this.props.myBookmarks.length;
-    const startIndex = this.state.activePage * ITEMS_PER_PAGE;
-    const displayedBookmarks = this.props.myBookmarks.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-
-    if (totalBookmarks === 0) {
-      return (
-        <div className="bookmark-list">
-          <div className="title-1">{ BOOKMARK_TITLE }</div>
-          <div className="empty-message body-placeholder">
-            { EMPTY_BOOKMARK_MESSAGE }
-          </div>
-        </div>
-      )
-    }
+    const bookmarksLength = this.props.myBookmarks.length;
     return (
       <div className="bookmark-list">
         <div className="title-1">{ BOOKMARK_TITLE }</div>
-        <ResourceList
-          resources={ displayedBookmarks }
-          source={ MY_BOOKMARKS_SOURCE_NAME }
-          startIndex={ this.state.activePage * ITEMS_PER_PAGE }
-        />
         {
-          totalBookmarks > ITEMS_PER_PAGE &&
-          <div className="pagination-container">
-            <Pagination
-              activePage={ this.state.activePage + 1 }
-              itemsCountPerPage={ ITEMS_PER_PAGE }
-              totalItemsCount={ totalBookmarks }
-              pageRangeDisplayed={ PAGINATION_PAGE_RANGE }
-              onChange={ this.onPaginationChange }
-            />
+          bookmarksLength == 0 &&
+          <div className="empty-message body-placeholder">
+            { EMPTY_BOOKMARK_MESSAGE }
           </div>
         }
+        {
+          bookmarksLength !== 0 &&
+          <ResourceList
+            isFullList={ true }
+            items={ this.props.myBookmarks }
+            itemsPerPage={ BOOKMARKS_PER_PAGE }
+            activePage={ this.state.activePage }
+            onPagination={ this.onPaginationChange }
+            source={ MY_BOOKMARKS_SOURCE_NAME }
+          />
+        }
       </div>
-    )
+    );
   }
 }
 
