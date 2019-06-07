@@ -156,7 +156,6 @@ def update_table_owner() -> Response:
     try:
         args = request.get_json()
         table_key = get_query_param(args, 'key')
-
         owner = get_query_param(args, 'owner')
 
         payload = jsonify(_update_table_owner(table_key=table_key, method=request.method, owner=owner))

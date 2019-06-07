@@ -11,11 +11,11 @@ const API_PATH = '/api/metadata/v0';
 
 /** HELPERS **/
 import {
-  getTableParams, getTableDataFromResponseData, getTableOwnersFromResponseData, getTableTagsFromResponseData,
+  getTableQueryParams, getTableDataFromResponseData, getTableOwnersFromResponseData, getTableTagsFromResponseData,
 } from './helpers';
 
 export function metadataTableTags(tableData: TableMetadata) {
-  const tableParams = getTableParams(tableData);
+  const tableParams = getTableQueryParams(tableData);
 
   return axios.get(`${API_PATH}/table?${tableParams}&index=&source=`)
   .then((response: AxiosResponse<TableDataResponse>) => {
@@ -43,7 +43,7 @@ export function metadataUpdateTableTags(action, tableData) {
 
 export function metadataGetTableData(action: GetTableDataRequest) {
   const { searchIndex, source } = action;
-  const tableParams = getTableParams(action);
+  const tableParams = getTableQueryParams(action);
 
   return axios.get(`${API_PATH}/table?${tableParams}&index=${searchIndex}&source=${source}`)
   .then((response: AxiosResponse<TableDataResponse>) => {
@@ -61,7 +61,7 @@ export function metadataGetTableData(action: GetTableDataRequest) {
 }
 
 export function metadataGetTableDescription(tableData: TableMetadata) {
-  const tableParams = getTableParams(tableData);
+  const tableParams = getTableQueryParams(tableData);
   return axios.get(`${API_PATH}/v0/get_table_description?${tableParams}`)
   .then((response: AxiosResponse<DescriptionResponse>) => {
     tableData.table_description = response.data.description;
@@ -86,7 +86,7 @@ export function metadataUpdateTableDescription(description: string, tableData: T
 }
 
 export function metadataTableOwners(tableData: TableMetadata) {
-  const tableParams = getTableParams(tableData);
+  const tableParams = getTableQueryParams(tableData);
 
   return axios.get(`${API_PATH}/table?${tableParams}&index=&source=`)
   .then((response: AxiosResponse<TableDataResponse>) => {
@@ -98,6 +98,7 @@ export function metadataTableOwners(tableData: TableMetadata) {
 }
 
 /* TODO: Typing this method generates redux-saga related type errors that need more dedicated debugging */
+// TODO - Add 'key' to the action and remove 'tableData' as a param.
 export function metadataUpdateTableOwner(action, tableData: TableMetadata) {
   const updatePayloads = action.updateArray.map((item) => {
     return {
@@ -113,7 +114,7 @@ export function metadataUpdateTableOwner(action, tableData: TableMetadata) {
 }
 
 export function metadataGetColumnDescription(columnIndex: number, tableData: TableMetadata) {
-  const tableParams = getTableParams(tableData);
+  const tableParams = getTableQueryParams(tableData);
   const columnName = tableData.columns[columnIndex].name;
   return axios.get(`${API_PATH}/get_column_description?${tableParams}&column_name=${columnName}`)
   .then((response: AxiosResponse<DescriptionResponse>) => {

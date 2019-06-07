@@ -5,7 +5,7 @@ import { filterFromObj, sortTagsAlphabetical } from 'ducks/utilMethods';
 /**
  * Generates the query string parameters needed for requests that act on a particular table resource.
  */
-export function getTableParams(tableDataObject: TableMetadata | GetTableDataRequest): string {
+export function getTableQueryParams(tableDataObject: TableMetadata | GetTableDataRequest): string {
   const { key } = tableDataObject;
   return `key=${encodeURIComponent(key)}`;
 }
