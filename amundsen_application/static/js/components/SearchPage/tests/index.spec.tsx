@@ -585,18 +585,6 @@ describe('SearchPage', () => {
       });
 
       it('renders ResourceList with correct props', () => {
-        expect(content.children().find(ResourceList).props()).toMatchObject({
-          resources: props.tables.results,
-          source: SEARCH_SOURCE_NAME,
-          startIndex: props.tables.page_index * RESULTS_PER_PAGE,
-        });
-      });
-
-      it('does not render Pagination if total_results <= RESULTS_PER_PAGE', () => {
-        expect(content.children().find(Pagination).exists()).toBeFalsy()
-      });
-
-      it('renders Pagination with correct props if total_results > RESULTS_PER_PAGE', () => {
         const { props, wrapper } = setup();
         const testResults = {
           page_index: 0,
@@ -604,12 +592,15 @@ describe('SearchPage', () => {
           total_results: 11,
         };
         content = shallow(wrapper.instance().getTabContent(testResults, TABLE_RESOURCE_TITLE));
-        expect(content.children().find(Pagination).props()).toMatchObject({
-          activePage: 1,
-          itemsCountPerPage: RESULTS_PER_PAGE,
-          totalItemsCount: 11,
-          pageRangeDisplayed: PAGINATION_PAGE_RANGE,
-          onChange: wrapper.instance().onPaginationChange,
+
+        expect(content.children().find(ResourceList).props()).toMatchObject({
+          activePage: 0,
+          isFullList: false,
+          items: testResults.results,
+          itemsCount: testResults.total_results,
+          itemsPerPage: RESULTS_PER_PAGE,
+          onPagination: wrapper.instance().onPaginationChange,
+          source: SEARCH_SOURCE_NAME,
         });
       });
     });

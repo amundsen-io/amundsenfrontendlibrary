@@ -4,6 +4,7 @@ import { shallow } from 'enzyme';
 import {
   POPULAR_TABLES_INFO_TEXT,
   POPULAR_TABLES_LABEL,
+  POPULAR_TABLES_PER_PAGE,
   POPULAR_TABLES_SOURCE_NAME,
 } from '../constants';
 import InfoButton from 'components/common/InfoButton';
@@ -82,9 +83,12 @@ describe('PopularTables', () => {
 
     it('renders ResourceList with correct props', () => {
       expect(wrapper.children().find(ResourceList).props()).toMatchObject({
-        resources: props.popularTables,
+        activePage: 0,
+        isFullList: true,
+        items: props.popularTables,
+        itemsPerPage: POPULAR_TABLES_PER_PAGE,
+        onPagination: wrapper.instance().onPaginationChange,
         source: POPULAR_TABLES_SOURCE_NAME,
-        startIndex: 0,
       });
     });
   });

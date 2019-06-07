@@ -4,7 +4,6 @@ import { shallow } from 'enzyme';
 
 import globalState from 'fixtures/globalState';
 import { ResourceType } from 'components/common/ResourceListItem/types';
-import Pagination from 'react-js-pagination';
 import { MyBookmarks, MyBookmarksProps, mapStateToProps } from "../";
 import {
   BOOKMARK_TITLE,
@@ -116,30 +115,10 @@ describe('MyBookmarks', () => {
         items: props.myBookmarks,
         itemsPerPage: BOOKMARKS_PER_PAGE,
         activePage: 0,
-        onPagination: MyBookmarks.prototype.onPaginationChange,
+        onPagination: wrapper.instance().onPaginationChange,
         source: MY_BOOKMARKS_SOURCE_NAME,
       });
     });
-
-    // it('Renders a pagination widget when there are more than ITEMS_PER_PAGE bookmarks', () => {
-    //   const { props, wrapper } = setup();
-    //   expect(wrapper.find(Pagination).exists()).toBe(true)
-    // });
-
-    // it('Hides a pagination widget when there are fewer than ITEMS_PER_PAGE bookmarks', () => {
-    //   const { props, wrapper } = setup({
-    //     myBookmarks: [{
-    //       key: 'bookmark-1',
-    //       type: ResourceType.table,
-    //       cluster: 'cluster',
-    //       database: 'database',
-    //       description: 'description',
-    //       name: 'name',
-    //       schema_name: 'schema_name',
-    //     }]
-    //   });
-    //   expect(wrapper.find(Pagination).exists()).toBe(false)
-    // });
   });
 });
 

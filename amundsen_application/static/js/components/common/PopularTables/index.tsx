@@ -58,7 +58,6 @@ export class PopularTables extends React.Component<PopularTablesProps, PopularTa
           activePage={ this.state.activePage }
           isFullList={ true }
           items={ this.props.popularTables }
-          itemsCount={ this.props.popularTables.length }
           itemsPerPage={ POPULAR_TABLES_PER_PAGE }
           onPagination={ this.onPaginationChange }
           source={ POPULAR_TABLES_SOURCE_NAME }
