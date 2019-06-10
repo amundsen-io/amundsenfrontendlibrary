@@ -86,7 +86,7 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
         <div className="container profile-page">
           <div className="row">
             <div className="col-xs-12 col-md-offset-1 col-md-10">
-              <Breadcrumb path='/' text='Search Results'/>
+              <Breadcrumb />
               <div className="profile-header">
                   <div id="profile-avatar" className="profile-avatar">
                     {

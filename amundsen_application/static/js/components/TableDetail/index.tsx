@@ -37,7 +37,6 @@ import BookmarkIcon from "components/common/Bookmark/BookmarkIcon";
 
 export interface StateFromProps {
   isLoading: boolean;
-  searchTerm: string;
   statusCode?: number;
   tableData: TableMetadata;
 }
@@ -65,7 +64,6 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     getTableData: () => undefined,
     getPreviewData: () => undefined,
     isLoading: true,
-    searchTerm: '',
     statusCode: null,
     tableData: {
       cluster: '',
@@ -126,16 +124,6 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
       target_id: 'frequent-users',
     })
   };
-
-  renderBreadcrumb() {
-    let path = '/';
-    let text = 'Home';
-    if (this.props.searchTerm) {
-      path = `/search?searchTerm=${this.props.searchTerm}&selectedTab=table&pageIndex=0`
-      text = 'Search Results'
-    }
-    return (<Breadcrumb path={ path } text={ text }/>)
-  }
 
   getAvatarForUser(fullName, profileUrl, zIndex) {
     const popoverHoverFocus = (
@@ -334,14 +322,14 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     } else if (this.state.statusCode === 500) {
       innerContent = (
         <div className="container error-label">
-          <Breadcrumb path='/' text='Search Results'/>
+          <Breadcrumb />
           <label className="d-block m-auto">Something went wrong...</label>
         </div>
       )
     } else {
         innerContent = (
           <div className="container table-detail">
-            { this.renderBreadcrumb() }
+            <Breadcrumb />
             <div className="row">
               <div className="detail-header col-xs-12 col-md-7 col-lg-8">
                 <h1 className="detail-header-text">
@@ -385,7 +373,6 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
 export const mapStateToProps = (state: GlobalState) => {
   return {
     isLoading: state.tableMetadata.isLoading,
-    searchTerm: state.search.search_term,
     statusCode: state.tableMetadata.statusCode,
     tableData: state.tableMetadata.tableData,
   };
