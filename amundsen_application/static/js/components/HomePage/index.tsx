@@ -34,9 +34,7 @@ export class HomePage extends React.Component<HomePageProps> {
         <div className="container home-page">
           <div className="row">
             <div className="col-xs-12 col-md-offset-1 col-md-10">
-              <div className="home-element-container">
-                <SearchBar />
-              </div>
+              <SearchBar />
               <div className="home-element-container">
                 <BookmarkList />
               </div>

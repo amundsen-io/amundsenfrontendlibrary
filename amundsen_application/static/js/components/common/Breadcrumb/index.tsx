@@ -5,17 +5,22 @@ import { Link } from 'react-router-dom';
 import './styles.scss';
 import { GlobalState } from 'ducks/rootReducer';
 
+export interface OwnProps {
+  path: string;
+  text: string;
+}
+
 export interface StateFromProps {
   searchTerm: string;
 }
 
-export type BreadcrumbProps = StateFromProps;
+export type BreadcrumbProps = OwnProps & StateFromProps;
 
 const Breadcrumb: React.SFC<BreadcrumbProps> = (props) => {
-  let path = '/';
-  let text = 'Home';
+  let path = props.path;
+  let text = props.text;
   if (props.searchTerm) {
-    path = `/search?searchTerm=${props.searchTerm}&selectedTab=table&pageIndex=0`
+    path = `/search?searchTerm=${props.searchTerm}`
     text = 'Search Results'
   }
   return (
