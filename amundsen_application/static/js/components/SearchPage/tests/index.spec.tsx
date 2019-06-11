@@ -1,6 +1,5 @@
 import * as React from 'react';
 import * as DocumentTitle from 'react-document-title';
-import Pagination from 'react-js-pagination';
 
 import { shallow } from 'enzyme';
 

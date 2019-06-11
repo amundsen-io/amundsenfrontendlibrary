@@ -8,9 +8,10 @@ import { RouteComponentProps } from 'react-router';
 import SearchBar from './SearchBar';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import PopularTables from 'components/common/PopularTables';
-
-import InfoButton from 'components/common/InfoButton';
 import { ResourceType } from 'interfaces';
+import InfoButton from 'components/common/InfoButton';
+import MyBookmarks from "components/common/Bookmark/MyBookmarks";
+import ResourceList from "components/common/ResourceList";
 import TabsComponent from 'components/common/Tabs';
 
 import { GlobalState } from 'ducks/rootReducer';
@@ -38,7 +39,6 @@ import {
   SEARCH_SOURCE_NAME,
   TABLE_RESOURCE_TITLE,
 } from './constants';
-import ResourceList from "components/common/ResourceList";
 
 export interface StateFromProps {
   searchTerm: string;
