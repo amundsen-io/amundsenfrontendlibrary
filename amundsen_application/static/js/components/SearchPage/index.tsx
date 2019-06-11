@@ -10,8 +10,7 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import PopularTables from 'components/common/PopularTables';
 
 import InfoButton from 'components/common/InfoButton';
-import MyBookmarks from 'components/common/Bookmark/MyBookmarks'
-import { ResourceType } from 'components/common/ResourceListItem/types';
+import { ResourceType } from 'interfaces';
 import TabsComponent from 'components/common/Tabs';
 
 import { GlobalState } from 'ducks/rootReducer';

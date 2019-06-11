@@ -3,14 +3,14 @@ import { connect } from 'react-redux';
 import { GlobalState } from "ducks/rootReducer";
 
 import './styles.scss'
-import { Bookmark } from "ducks/bookmark/types";
+import { Bookmark } from 'interfaces';
 import {
   BOOKMARK_TITLE,
   BOOKMARKS_PER_PAGE,
   EMPTY_BOOKMARK_MESSAGE,
   MY_BOOKMARKS_SOURCE_NAME,
-} from "./constants";
-import ResourceList from "components/common/ResourceList";
+} from './constants';
+import ResourceList from 'components/common/ResourceList';
 
 interface StateFromProps {
   myBookmarks: Bookmark[];

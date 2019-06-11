@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Pagination from 'react-js-pagination';
 import ResourceListItem from 'components/common/ResourceListItem';
-import { Resource } from 'components/common/ResourceListItem/types';
+import { Resource } from 'interfaces';
 import { ITEMS_PER_PAGE, PAGINATION_PAGE_RANGE } from "./constants";
 
 

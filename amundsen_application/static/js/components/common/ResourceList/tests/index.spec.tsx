@@ -3,9 +3,9 @@ import Pagination from 'react-js-pagination';
 
 import { shallow } from 'enzyme';
 
-import { ResourceType } from 'components/common/ResourceListItem/types';
+import { ResourceType } from 'interfaces';
 import ResourceListItem from 'components/common/ResourceListItem/index';
-import ResourceList, { ResourceListProps } from '../.';
+import ResourceList, { ResourceListProps } from '../';
 
 describe('ResourceList', () => {
   const setup = (propOverrides?: Partial<ResourceListProps>) => {
