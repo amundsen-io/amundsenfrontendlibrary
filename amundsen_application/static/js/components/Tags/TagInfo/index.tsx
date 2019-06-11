@@ -28,7 +28,7 @@ class TagInfo extends React.Component<TagInfoProps, {}> {
 
   render() {
     const name = this.props.data.tag_name;
-    const searchUrl = `/search?searchTerm=tag:${name}`;
+    const searchUrl = `/search?searchTerm=tag:${name}&selectedTab=table&pageIndex=0`;
 
     return (
       <Link

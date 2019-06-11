@@ -5,15 +5,15 @@ import { shallow } from 'enzyme';
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import TagInfo from 'components/Tags/TagInfo';
-import { BrowsePage, BrowsePageProps, mapDispatchToProps, mapStateToProps } from '../';
+import { BrowseTags, BrowseTagsProps, mapDispatchToProps, mapStateToProps } from '../';
 
 import globalState from 'fixtures/globalState';
 
 import AppConfig from 'config/config';
 AppConfig.browse.curatedTags = ['test1'];
 
-describe('BrowsePage', () => {
-    let props: BrowsePageProps;
+describe('BrowseTags', () => {
+    let props: BrowseTagsProps;
     let subject;
 
     beforeEach(() => {
@@ -31,7 +31,7 @@ describe('BrowsePage', () => {
           isLoading: false,
           getAllTags: jest.fn(),
         };
-        subject = shallow(<BrowsePage {...props} />);
+        subject = shallow(<BrowseTags {...props} />);
     });
 
     describe('getDerivedStateFromProps', () => {
@@ -57,7 +57,7 @@ describe('BrowsePage', () => {
 
         it('returns correct state if !props.isLoading and !AppConfig.browse.showAllTags', () => {
             AppConfig.browse.showAllTags = false;
-            subject = shallow(<BrowsePage {...props} />);
+            subject = shallow(<BrowseTags {...props} />);
             expect(subject.state()).toMatchObject({
               curatedTags: [{tag_count: 2, tag_name: 'test1'}],
               otherTags: [],
@@ -76,7 +76,7 @@ describe('BrowsePage', () => {
     describe('render', () => {
         let spy;
         beforeEach(() => {
-            spy = jest.spyOn(BrowsePage.prototype, 'generateTagInfo');
+            spy = jest.spyOn(BrowseTags.prototype, 'generateTagInfo');
         });
         it('renders LoadingSpinner if state.isLoading', () => {
             /* Note: For some reason setState is not updating the component in this case */
@@ -99,7 +99,7 @@ describe('BrowsePage', () => {
 
         it('does not render <hr> if !(curatedTags.length > 0 & otherTags.length > 0) ', () => {
             AppConfig.browse.curatedTags = ['test1', 'test2'];
-            subject = shallow(<BrowsePage {...props} />);
+            subject = shallow(<BrowseTags {...props} />);
             expect(subject.find('#browse-body').find('hr').exists()).toBeFalsy();
             AppConfig.browse.curatedTags = ['test1']; // reset so other tests aren't affected
         });
