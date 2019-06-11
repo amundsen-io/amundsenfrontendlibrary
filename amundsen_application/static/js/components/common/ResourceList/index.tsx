@@ -32,8 +32,8 @@ class ResourceList extends React.Component<ResourceListProps, ResourceListState>
     }
   }
 
-  onPagination = (activePage: number) => {
-    activePage--;
+  onPagination = (rawPageNum: number) => {
+    const activePage = rawPageNum - 1;
     if (this.props.onPagination !== undefined) {
       this.props.onPagination(activePage);
     } else {
