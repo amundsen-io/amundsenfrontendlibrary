@@ -8,9 +8,9 @@ import {
   POPULAR_TABLES_SOURCE_NAME,
 } from '../constants';
 import InfoButton from 'components/common/InfoButton';
+import ResourceList from 'components/common/ResourceList';
 import globalState from 'fixtures/globalState';
 import { PopularTables, PopularTablesProps, mapStateToProps, mapDispatchToProps } from '..';
-import ResourceList from "components/common/ResourceList";
 
 describe('PopularTables', () => {
   const setup = (propOverrides?: Partial<PopularTablesProps>) => {

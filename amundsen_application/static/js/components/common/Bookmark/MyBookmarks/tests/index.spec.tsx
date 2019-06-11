@@ -4,14 +4,14 @@ import { shallow } from 'enzyme';
 
 import globalState from 'fixtures/globalState';
 import { ResourceType } from 'interfaces';
-import { MyBookmarks, MyBookmarksProps, mapStateToProps } from "../";
+import { MyBookmarks, MyBookmarksProps, mapStateToProps } from '../';
+import ResourceList from 'components/common/ResourceList';
 import {
   BOOKMARK_TITLE,
   BOOKMARKS_PER_PAGE,
   EMPTY_BOOKMARK_MESSAGE,
   MY_BOOKMARKS_SOURCE_NAME,
 } from '../constants';
-import ResourceList from "components/common/ResourceList";
 
 describe('MyBookmarks', () => {
   const setStateSpy = jest.spyOn(MyBookmarks.prototype, 'setState');

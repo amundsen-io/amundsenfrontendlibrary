@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { GlobalState } from "ducks/rootReducer";
+import { GlobalState } from 'ducks/rootReducer';
 
 import './styles.scss'
 import { Bookmark } from 'interfaces';

@@ -15,7 +15,7 @@ import Feedback from './components/Feedback';
 import Footer from './components/Footer';
 import NavBar from './components/NavBar';
 import NotFoundPage from './components/NotFoundPage';
-import Preloader from "components/common/Preloader";
+import Preloader from 'components/common/Preloader';
 import ProfilePage from './components/ProfilePage';
 import SearchPage from './components/SearchPage';
 import TableDetail from './components/TableDetail';

@@ -10,13 +10,13 @@ import {
   POPULAR_TABLES_PER_PAGE
 } from './constants';
 import InfoButton from 'components/common/InfoButton';
+import ResourceList from 'components/common/ResourceList';
 
 import { getPopularTables } from 'ducks/popularTables/reducer';
 import { GetPopularTablesRequest, TableResource } from 'ducks/popularTables/types';
 import { GlobalState } from 'ducks/rootReducer';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import ResourceList from "components/common/ResourceList";
 
 export interface StateFromProps {
   popularTables: TableResource[];
