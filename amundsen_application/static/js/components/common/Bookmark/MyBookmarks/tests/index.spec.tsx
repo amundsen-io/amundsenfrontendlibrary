@@ -81,16 +81,6 @@ describe('MyBookmarks', () => {
     return { props, wrapper };
   };
 
-  describe('onPaginationChange', () => {
-    it('reduces the page index by 1 and updates state', () => {
-      const { props, wrapper } = setup();
-        const pageNumber = 3;
-        wrapper.instance().onPaginationChange(pageNumber);
-        expect(setStateSpy).toHaveBeenCalledWith({ activePage: pageNumber - 1 });
-    });
-  });
-
-
   describe('Render', () => {
     it('Renders nothing until ready', () => {
       const { props, wrapper } = setup({ isLoaded: false });
@@ -114,8 +104,6 @@ describe('MyBookmarks', () => {
         isFullList: true,
         items: props.myBookmarks,
         itemsPerPage: BOOKMARKS_PER_PAGE,
-        activePage: 0,
-        onPagination: wrapper.instance().onPaginationChange,
         source: MY_BOOKMARKS_SOURCE_NAME,
       });
     });

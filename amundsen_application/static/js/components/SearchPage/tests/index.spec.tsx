@@ -470,11 +470,11 @@ describe('SearchPage', () => {
     });
 
     it('calls props.searchResource with correct parameters', () => {
-      expect(searchResourceSpy).toHaveBeenCalledWith(wrapper.state().selectedTab, props.searchTerm, testIndex - 1);
+      expect(searchResourceSpy).toHaveBeenCalledWith(wrapper.state().selectedTab, props.searchTerm, testIndex);
     });
 
     it('calls updatePageUrl with correct parameters', () => {
-      expect(updatePageUrlSpy).toHaveBeenCalledWith(props.searchTerm, wrapper.state().selectedTab, testIndex - 1);
+      expect(updatePageUrlSpy).toHaveBeenCalledWith(props.searchTerm, wrapper.state().selectedTab, testIndex);
     });
   });
 

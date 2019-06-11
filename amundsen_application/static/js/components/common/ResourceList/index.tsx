@@ -6,59 +6,78 @@ import { ITEMS_PER_PAGE, PAGINATION_PAGE_RANGE } from "./constants";
 
 
 export interface ResourceListProps {
-  activePage: number;
+  activePage?: number;
   isFullList: boolean;
   items: Resource[];
   itemsCount?: number;
   itemsPerPage?: number;
-  onPagination: (pageNumber: number) => void;
+  onPagination?: (pageNumber: number) => void;
   source: string;
 }
 
-const ResourceList: React.SFC<ResourceListProps> = ({
-                                                      activePage,
-                                                      isFullList,
-                                                      items,
-                                                      itemsCount,
-                                                      itemsPerPage,
-                                                      onPagination,
-                                                      source,
-                                                    }) => {
+interface ResourceListState {
+  activePage: number;
+}
 
-  const itemsPerPageValue = itemsPerPage || ITEMS_PER_PAGE;
-  const itemsCountValue = itemsCount || items.length;
+class ResourceList extends React.Component<ResourceListProps, ResourceListState> {
 
-  const startIndex = itemsPerPageValue * activePage;
-
-  let itemsToRender = items;
-  if (isFullList) {
-    itemsToRender = items.slice(startIndex, startIndex + itemsPerPageValue);
+  constructor(props) {
+    super(props);
+    this.state = { activePage: this.props.activePage || 0 };
   }
 
-  return (
-    <>
-      <ul className="list-group">
+  componentDidUpdate(prevProps) {
+    if (this.props.activePage !== prevProps.activePage) {
+      this.setState({ activePage: this.props.activePage });
+    }
+  }
+
+  onPagination = (activePage: number) => {
+    activePage--;
+    if (this.props.onPagination !== undefined) {
+      this.props.onPagination(activePage);
+    } else {
+      this.setState({ activePage });
+    }
+  };
+
+
+  render() {
+    const { isFullList, items, source } = this.props;
+    const itemsPerPage = this.props.itemsPerPage || ITEMS_PER_PAGE;
+    const itemsCount = this.props.itemsCount || items.length;
+    const startIndex = itemsPerPage * this.state.activePage;
+
+    let itemsToRender = items;
+    if (isFullList) {
+      itemsToRender = items.slice(startIndex, startIndex + itemsPerPage);
+    }
+
+    return (
+      <>
+        <ul className="list-group">
+          {
+            itemsToRender.map((item, idx) => {
+              const logging = { source, index: startIndex + idx };
+              return <ResourceListItem item={ item} logging={ logging } key={ idx } />;
+            })
+          }
+        </ul>
         {
-          itemsToRender.map((item, idx) => {
-            const logging = { source, index: startIndex + idx };
-            return <ResourceListItem item={ item} logging={ logging } key={ idx } />;
-          })
+          itemsCount > itemsPerPage &&
+          <div className="text-center">
+            <Pagination
+              activePage={ this.state.activePage + 1 }
+              itemsCountPerPage={ itemsPerPage }
+              totalItemsCount={ itemsCount }
+              pageRangeDisplayed={ PAGINATION_PAGE_RANGE }
+              onChange={ this.onPagination }
+            />
+          </div>
         }
-      </ul>
-      {
-        itemsCountValue > itemsPerPageValue &&
-        <div className="text-center">
-          <Pagination
-            activePage={ activePage + 1 }
-            itemsCountPerPage={ itemsPerPageValue }
-            totalItemsCount={ itemsCountValue }
-            pageRangeDisplayed={ PAGINATION_PAGE_RANGE }
-            onChange={ onPagination }
-          />
-        </div>
-      }
-    </>
-  );
-};
+      </>
+    );
+  }
+}
 
 export default ResourceList;

@@ -19,20 +19,10 @@ interface StateFromProps {
 
 export type MyBookmarksProps = StateFromProps;
 
-interface MyBookmarksState {
-  activePage: number;
-}
-
-export class MyBookmarks extends React.Component<MyBookmarksProps, MyBookmarksState> {
+export class MyBookmarks extends React.Component<MyBookmarksProps> {
   constructor(props) {
     super(props);
-
-    this.state = { activePage: 0 };
   }
-
-  onPaginationChange = (pageNumber: number) => {
-    this.setState({ activePage: pageNumber - 1 });
-  };
 
   render() {
     if (!this.props.isLoaded) {
@@ -55,8 +45,6 @@ export class MyBookmarks extends React.Component<MyBookmarksProps, MyBookmarksSt
             isFullList={ true }
             items={ this.props.myBookmarks }
             itemsPerPage={ BOOKMARKS_PER_PAGE }
-            activePage={ this.state.activePage }
-            onPagination={ this.onPaginationChange }
             source={ MY_BOOKMARKS_SOURCE_NAME }
           />
         }

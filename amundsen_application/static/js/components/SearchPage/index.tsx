@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as DocumentTitle from 'react-document-title';
 import * as qs from 'simple-query-string';
-import Pagination from 'react-js-pagination';
 import { RouteComponentProps } from 'react-router';
 
 import SearchBar from './SearchBar';
@@ -32,7 +31,6 @@ import './styles.scss';
 import {
   DOCUMENT_TITLE_SUFFIX,
   PAGE_INDEX_ERROR_MESSAGE,
-  PAGINATION_PAGE_RANGE,
   RESULTS_PER_PAGE,
   SEARCH_ERROR_MESSAGE_INFIX,
   SEARCH_ERROR_MESSAGE_PREFIX,
@@ -42,7 +40,6 @@ import {
   TABLE_RESOURCE_TITLE,
 } from './constants';
 import ResourceList from "components/common/ResourceList";
-import { POPULAR_TABLES_PER_PAGE, POPULAR_TABLES_SOURCE_NAME } from "components/common/PopularTables/constants";
 
 export interface StateFromProps {
   searchTerm: string;
@@ -143,7 +140,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
   };
 
   onPaginationChange = (pageNumber: number): void => {
-    const index = pageNumber - 1;
+    const index = pageNumber;
     this.props.searchResource(this.state.selectedTab, this.props.searchTerm, index);
     this.updatePageUrl(this.props.searchTerm, this.state.selectedTab, index);
   };

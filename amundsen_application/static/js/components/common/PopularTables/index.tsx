@@ -28,24 +28,14 @@ export interface DispatchFromProps {
 
 export type PopularTablesProps = StateFromProps & DispatchFromProps;
 
-interface PopularTablesState {
-  activePage: number;
-}
-
-export class PopularTables extends React.Component<PopularTablesProps, PopularTablesState> {
+export class PopularTables extends React.Component<PopularTablesProps> {
   constructor(props) {
     super(props);
-
-    this.state = { activePage: 0 };
   }
 
   componentDidMount() {
     this.props.getPopularTables();
   }
-
-  onPaginationChange = (pageNumber: number) => {
-    this.setState({ activePage: pageNumber - 1 });
-  };
 
   render() {
     return (
@@ -55,11 +45,9 @@ export class PopularTables extends React.Component<PopularTablesProps, PopularTa
           <InfoButton infoText={POPULAR_TABLES_INFO_TEXT} />
         </div>
         <ResourceList
-          activePage={ this.state.activePage }
           isFullList={ true }
           items={ this.props.popularTables }
           itemsPerPage={ POPULAR_TABLES_PER_PAGE }
-          onPagination={ this.onPaginationChange }
           source={ POPULAR_TABLES_SOURCE_NAME }
         />
       </>

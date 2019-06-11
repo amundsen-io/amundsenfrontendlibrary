@@ -83,11 +83,9 @@ describe('PopularTables', () => {
 
     it('renders ResourceList with correct props', () => {
       expect(wrapper.children().find(ResourceList).props()).toMatchObject({
-        activePage: 0,
         isFullList: true,
         items: props.popularTables,
         itemsPerPage: POPULAR_TABLES_PER_PAGE,
-        onPagination: wrapper.instance().onPaginationChange,
         source: POPULAR_TABLES_SOURCE_NAME,
       });
     });
