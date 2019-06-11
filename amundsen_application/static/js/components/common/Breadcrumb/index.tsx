@@ -16,11 +16,11 @@ export interface StateFromProps {
 
 export type BreadcrumbProps = OwnProps & StateFromProps;
 
-const Breadcrumb: React.SFC<BreadcrumbProps> = (props) => {
+export const Breadcrumb: React.SFC<BreadcrumbProps> = (props) => {
   let path = props.path;
   let text = props.text;
   if (props.searchTerm) {
-    path = `/search?searchTerm=${props.searchTerm}`
+    path = `/search?searchTerm=${props.searchTerm}&selectedTab=table&pageIndex=0`
     text = 'Search Results'
   }
   return (
@@ -44,6 +44,5 @@ export const mapStateToProps = (state: GlobalState) => {
     searchTerm: state.search.search_term,
   };
 };
-
 
 export default connect<StateFromProps>(mapStateToProps, null)(Breadcrumb);

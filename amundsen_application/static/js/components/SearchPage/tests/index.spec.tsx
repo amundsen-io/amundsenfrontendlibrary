@@ -597,11 +597,6 @@ describe('SearchPage', () => {
   });
 
   describe('renderContent', () => {
-    // it('renders popular tables if searchTerm is empty', () => {
-    //   const {props, wrapper} = setup({ searchTerm: '' });
-    //   expect(wrapper.instance().renderContent()).toEqual(wrapper.instance().renderPopularTables());
-    // });
-
     it('renders search results when given search term', () => {
       const {props, wrapper} = setup({ searchTerm: 'test' });
       expect(wrapper.instance().renderContent()).toEqual(wrapper.instance().renderSearchResults());
@@ -612,15 +607,6 @@ describe('SearchPage', () => {
       expect(wrapper.instance().renderContent()).toEqual(<LoadingSpinner/>);
     });
   });
-
-  // describe('renderPopularTables', () => {
-  //   it('renders bookmark list and popular tables', () => {
-  //     const {props, wrapper} = setup();
-  //     wrapper.instance().renderPopularTables();
-  //     expect(wrapper.contains(<BookmarkList />));
-  //     expect(wrapper.contains(<PopularTables />));
-  //   });
-  // });
 
   describe('renderSearchResults', () => {
     it('renders TabsComponent with correct props', () => {
@@ -659,9 +645,7 @@ describe('SearchPage', () => {
 
     it('renders SearchBar with correct props', () => {
       const { props, wrapper } = setup();
-      expect(wrapper.find(SearchBar).props()).toMatchObject({
-        searchTerm: props.searchTerm,
-      });
+      expect(wrapper.find(SearchBar));
     });
 
     it('calls renderSearchResults if searchTerm is not empty string', () => {
@@ -670,13 +654,6 @@ describe('SearchPage', () => {
       wrapper.setProps(props);
       expect(renderSearchResultsSpy).toHaveBeenCalled();
     });
-
-    // it('calls renderPopularTables is searchTerm is empty string', () => {
-    //   const { props, wrapper } = setup({ searchTerm: '' });
-    //   const renderPopularTablesSpy = jest.spyOn(wrapper.instance(), 'renderPopularTables');
-    //   wrapper.setProps(props);
-    //   expect(renderPopularTablesSpy).toHaveBeenCalled();
-    // });
   });
 });
 

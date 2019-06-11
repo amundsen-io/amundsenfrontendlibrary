@@ -1,224 +1,257 @@
-// import * as React from 'react';
+import * as React from 'react';
 
-// import { shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 
-// import SearchBar, { SearchBarProps } from '../';
-// import {
-//   ERROR_CLASSNAME,
-//   SUBTEXT_DEFAULT,
-//   SYNTAX_ERROR_CATEGORY,
-//   SYNTAX_ERROR_PREFIX,
-//   SYNTAX_ERROR_SPACING_SUFFIX,
-// } from '../constants';
+import { mapStateToProps, SearchBar, SearchBarProps } from '../';
+import {
+  ERROR_CLASSNAME,
+  SUBTEXT_DEFAULT,
+  SYNTAX_ERROR_CATEGORY,
+  SYNTAX_ERROR_PREFIX,
+  SYNTAX_ERROR_SPACING_SUFFIX,
+} from '../constants';
+import globalState from 'fixtures/globalState';
 
-// describe('SearchBar', () => {
-//   const valueChangeMockEvent = { target: { value: 'Data Resources' } };
-//   const submitMockEvent = { preventDefault: jest.fn() };
-//   const setStateSpy = jest.spyOn(SearchBar.prototype, 'setState');
+describe('SearchBar', () => {
+  const valueChangeMockEvent = { target: { value: 'Data Resources' } };
+  const submitMockEvent = { preventDefault: jest.fn() };
+  const setStateSpy = jest.spyOn(SearchBar.prototype, 'setState');
 
-//   const setup = (propOverrides?: Partial<SearchBarProps>) => {
-//     const props: SearchBarProps = {
-//       handleValueSubmit: jest.fn(),
-//       ...propOverrides
-//     };
-//     const wrapper = shallow<SearchBar>(<SearchBar {...props} />)
-//     return { props, wrapper };
-//   };
+  const setup = (propOverrides?: Partial<SearchBarProps>) => {
+    const props: SearchBarProps = {
+      searchTerm: '',
+      history: {
+        length: 2,
+        action: "POP",
+        location: jest.fn() as any,
+        push: jest.fn(),
+        replace: jest.fn(),
+        go: jest.fn(),
+        goBack: jest.fn(),
+        goForward: jest.fn(),
+        block: jest.fn(),
+        createHref: jest.fn(),
+        listen: jest.fn(),
+      },
+      location: {
+        search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1', 
+        pathname: 'mockstr',
+        state: jest.fn(),
+        hash: 'mockstr',
+      },
+      match: jest.fn() as any,
+      staticContext: jest.fn() as any,
+      ...propOverrides
+    };
+    const wrapper = shallow<SearchBar>(<SearchBar {...props} />)
+    return { props, wrapper };
+  };
 
-//   describe('constructor', () => {
-//     const searchTerm = 'data';
-//     const subText = 'I am some text';
-//     let wrapper;
-//     beforeAll(() => {
-//       wrapper = setup({ searchTerm, subText }).wrapper;
-//     });
-//     it('sets the searchTerm state from props', () => {
-//       expect(wrapper.state().searchTerm).toEqual(searchTerm);
-//     });
+  describe('constructor', () => {
+    const searchTerm = 'data';
+    const subText = 'I am some text';
+    let wrapper;
+    beforeAll(() => {
+      wrapper = setup({ searchTerm, subText }).wrapper;
+    });
+    it('sets the searchTerm state from props', () => {
+      expect(wrapper.state().searchTerm).toEqual(searchTerm);
+    });
 
-//     it('sets the subText state from props', () => {
-//       expect(wrapper.state().subText).toEqual(subText);
-//     });
-//   });
+    it('sets the subText state from props', () => {
+      expect(wrapper.state().subText).toEqual(subText);
+    });
+  });
 
-//   describe('getDerivedStateFromProps', () => {
-//     it('sets searchTerm on state from props', () => {
-//       const { props, wrapper } = setup();
-//       const prevState = wrapper.state();
-//       props.searchTerm = 'newTerm';
-//       wrapper.setProps(props);
-//       expect(wrapper.state()).toMatchObject({
-//         ...prevState,
-//         searchTerm: 'newTerm',
-//       });
-//     });
-//   });
+  describe('getDerivedStateFromProps', () => {
+    it('sets searchTerm on state from props', () => {
+      const { props, wrapper } = setup();
+      const prevState = wrapper.state();
+      props.searchTerm = 'newTerm';
+      wrapper.setProps(props);
+      expect(wrapper.state()).toMatchObject({
+        ...prevState,
+        searchTerm: 'newTerm',
+      });
+    });
+  });
 
-//   describe('handleValueChange', () => {
-//     it('calls setState on searchTerm with event.target.value.toLowerCase()', () => {
-//       const { props, wrapper } = setup();
-//       // @ts-ignore: mocked events throw type errors
-//       wrapper.instance().handleValueChange(valueChangeMockEvent);
-//       expect(setStateSpy).toHaveBeenCalledWith({ searchTerm: valueChangeMockEvent.target.value.toLowerCase() });
-//     });
-//   });
+  describe('handleValueChange', () => {
+    it('calls setState on searchTerm with event.target.value.toLowerCase()', () => {
+      const { props, wrapper } = setup();
+      // @ts-ignore: mocked events throw type errors
+      wrapper.instance().handleValueChange(valueChangeMockEvent);
+      expect(setStateSpy).toHaveBeenCalledWith({ searchTerm: valueChangeMockEvent.target.value.toLowerCase() });
+    });
+  });
 
-//   describe('handleValueSubmit', () => {
-//     let props;
-//     let wrapper;
-//     beforeAll(() => {
-//       const setupResult = setup();
-//       props = setupResult.props;
-//       wrapper = setupResult.wrapper;
-//     });
+  describe('handleValueSubmit', () => {
+    let props;
+    let wrapper;
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+    });
 
-//     it('calls event.preventDefault', () => {
-//       // @ts-ignore: mocked events throw type errors
-//       wrapper.instance().handleValueSubmit(submitMockEvent);
-//       expect(submitMockEvent.preventDefault).toHaveBeenCalled();
-//     });
+    it('calls event.preventDefault', () => {
+      // @ts-ignore: mocked events throw type errors
+      wrapper.instance().handleValueSubmit(submitMockEvent);
+      expect(submitMockEvent.preventDefault).toHaveBeenCalled();
+    });
 
-//     it('submits with correct props if isFormValid()', () => {
-//       // @ts-ignore: mocked events throw type errors
-//       wrapper.instance().handleValueSubmit(submitMockEvent);
-//       expect(props.handleValueSubmit).toHaveBeenCalledWith(wrapper.state().searchTerm);
-//     });
+    it('submits with correct props if isFormValid()', () => {
+      // @ts-ignore: mocked events throw type errors
+      wrapper.instance().handleValueSubmit(submitMockEvent);
+      expect(props.history.push).toHaveBeenCalledWith(`/search?searchTerm=${wrapper.state().searchTerm}&selectedTab=table&pageIndex=0`);
+    });
 
-//     it('does not submit if !isFormValid()', () => {
-//       const { props, wrapper } = setup({ searchTerm: 'tag:tag1 tag:tag2' });
-//       // @ts-ignore: mocked events throw type errors
-//       wrapper.instance().handleValueSubmit(submitMockEvent);
-//       expect(props.handleValueSubmit).not.toHaveBeenCalled();
-//     });
-//   });
+    it('does not submit if !isFormValid()', () => {
+      const { props, wrapper } = setup({ searchTerm: 'tag:tag1 tag:tag2' });
+      // @ts-ignore: mocked events throw type errors
+      wrapper.instance().handleValueSubmit(submitMockEvent);
+      expect(props.history.push).not.toHaveBeenCalled();
+    });
+  });
 
-//   describe('isFormValid', () => {
-//     describe('if searchTerm has more than one category', () => {
-//       let wrapper;
-//       beforeAll(() => {
-//         wrapper = setup({ searchTerm: 'tag:tag1 tag:tag2' }).wrapper;
-//       })
+  describe('isFormValid', () => {
+    describe('if searchTerm has more than one category', () => {
+      let wrapper;
+      beforeAll(() => {
+        wrapper = setup({ searchTerm: 'tag:tag1 tag:tag2' }).wrapper;
+      })
 
-//       it('returns false', () => {
-//         expect(wrapper.instance().isFormValid()).toEqual(false);
-//       });
+      it('returns false', () => {
+        expect(wrapper.instance().isFormValid()).toEqual(false);
+      });
 
-//       it('sets state.subText correctly', () => {
-//         expect(wrapper.state().subText).toEqual(SYNTAX_ERROR_CATEGORY);
-//       });
+      it('sets state.subText correctly', () => {
+        expect(wrapper.state().subText).toEqual(SYNTAX_ERROR_CATEGORY);
+      });
 
-//       it('sets state.subTextClassName correctly', () => {
-//         expect(wrapper.state().subTextClassName).toEqual(ERROR_CLASSNAME);
-//       });
-//     });
+      it('sets state.subTextClassName correctly', () => {
+        expect(wrapper.state().subTextClassName).toEqual(ERROR_CLASSNAME);
+      });
+    });
 
-//     describe('if searchTerm has incorrect colon syntax', () => {
-//       let wrapper;
-//       beforeAll(() => {
-//         wrapper = setup({ searchTerm: 'tag : tag1' }).wrapper;
-//       })
+    describe('if searchTerm has incorrect colon syntax', () => {
+      let wrapper;
+      beforeAll(() => {
+        wrapper = setup({ searchTerm: 'tag : tag1' }).wrapper;
+      })
 
-//       it('returns false', () => {
-//         expect(wrapper.instance().isFormValid()).toEqual(false);
-//       });
+      it('returns false', () => {
+        expect(wrapper.instance().isFormValid()).toEqual(false);
+      });
 
-//       it('sets state.subText correctly', () => {
-//         expect(wrapper.state().subText).toEqual(`${SYNTAX_ERROR_PREFIX}'tag:tag1'${SYNTAX_ERROR_SPACING_SUFFIX}`);
-//       });
+      it('sets state.subText correctly', () => {
+        expect(wrapper.state().subText).toEqual(`${SYNTAX_ERROR_PREFIX}'tag:tag1'${SYNTAX_ERROR_SPACING_SUFFIX}`);
+      });
 
-//       it('sets state.subTextClassName correctly', () => {
-//         expect(wrapper.state().subTextClassName).toEqual(ERROR_CLASSNAME);
-//       });
-//     });
+      it('sets state.subTextClassName correctly', () => {
+        expect(wrapper.state().subTextClassName).toEqual(ERROR_CLASSNAME);
+      });
+    });
 
-//     describe('if searchTerm has correct syntax', () => {
-//       let wrapper;
-//       beforeAll(() => {
-//         wrapper = setup({ searchTerm: 'tag:tag1' }).wrapper;
-//       })
+    describe('if searchTerm has correct syntax', () => {
+      let wrapper;
+      beforeAll(() => {
+        wrapper = setup({ searchTerm: 'tag:tag1' }).wrapper;
+      })
 
-//       it('returns true', () => {
-//         expect(wrapper.instance().isFormValid()).toEqual(true);
-//       });
+      it('returns true', () => {
+        expect(wrapper.instance().isFormValid()).toEqual(true);
+      });
 
-//       it('sets state.subText correctly', () => {
-//         expect(wrapper.state().subText).toEqual(SUBTEXT_DEFAULT);
-//       });
+      it('sets state.subText correctly', () => {
+        expect(wrapper.state().subText).toEqual(SUBTEXT_DEFAULT);
+      });
 
-//       it('sets state.subTextClassName correctly', () => {
-//         expect(wrapper.state().subTextClassName).toEqual('');
-//       });
-//     });
-//   });
+      it('sets state.subTextClassName correctly', () => {
+        expect(wrapper.state().subTextClassName).toEqual('');
+      });
+    });
+  });
 
-//   describe('render', () => {
-//     let props;
-//     let wrapper;
-//     beforeAll(() => {
-//       const setupResult = setup();
-//       props = setupResult.props;
-//       wrapper = setupResult.wrapper;
-//     });
+  describe('render', () => {
+    let props;
+    let wrapper;
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+    });
 
-//     describe('form', () => {
-//       it('renders with correct props', () => {
-//         expect(wrapper.find('form').props()).toMatchObject({
-//           className: 'search-bar-form',
-//           onSubmit: wrapper.instance().handleValueSubmit,
-//         });
-//       });
+    describe('form', () => {
+      it('renders with correct props', () => {
+        expect(wrapper.find('form').props()).toMatchObject({
+          className: 'search-bar-form',
+          onSubmit: wrapper.instance().handleValueSubmit,
+        });
+      });
 
-//       it('renders input with correct default props', () => {
-//         expect(wrapper.find('form').find('input').props()).toMatchObject({
-//           'aria-label': SearchBar.defaultProps.placeholder,
-//           autoFocus: true,
-//           className: 'h2 search-bar-input form-control',
-//           id: 'search-input',
-//           onChange: wrapper.instance().handleValueChange,
-//           placeholder: SearchBar.defaultProps.placeholder,
-//           value: wrapper.state().searchTerm,
-//         });
-//       });
+      it('renders input with correct default props', () => {
+        expect(wrapper.find('form').find('input').props()).toMatchObject({
+          'aria-label': SearchBar.defaultProps.placeholder,
+          autoFocus: true,
+          className: 'h2 search-bar-input form-control',
+          id: 'search-input',
+          onChange: wrapper.instance().handleValueChange,
+          placeholder: SearchBar.defaultProps.placeholder,
+          value: wrapper.state().searchTerm,
+        });
+      });
 
-//       it('renders input with correct given props', () => {
-//         const { props, wrapper } = setup({ placeholder: 'Type something to search', searchTerm: 'data' });
-//         expect(wrapper.find('form').find('input').props()).toMatchObject({
-//           'aria-label': props.placeholder,
-//           autoFocus: true,
-//           className: 'h2 search-bar-input form-control',
-//           id: 'search-input',
-//           onChange: wrapper.instance().handleValueChange,
-//           placeholder: props.placeholder,
-//           value: wrapper.state().searchTerm,
-//         });
-//       });
+      it('renders input with correct given props', () => {
+        const { props, wrapper } = setup({ placeholder: 'Type something to search', searchTerm: 'data' });
+        expect(wrapper.find('form').find('input').props()).toMatchObject({
+          'aria-label': props.placeholder,
+          autoFocus: true,
+          className: 'h2 search-bar-input form-control',
+          id: 'search-input',
+          onChange: wrapper.instance().handleValueChange,
+          placeholder: props.placeholder,
+          value: wrapper.state().searchTerm,
+        });
+      });
 
-//       describe('submit button', () => {
-//         it('renders button with correct props', () => {
-//           expect(wrapper.find('form').find('button').props()).toMatchObject({
-//             className: 'btn btn-flat-icon search-bar-button',
-//             type: 'submit',
-//           });
-//         });
+      describe('submit button', () => {
+        it('renders button with correct props', () => {
+          expect(wrapper.find('form').find('button').props()).toMatchObject({
+            className: 'btn btn-flat-icon search-bar-button',
+            type: 'submit',
+          });
+        });
 
-//         it('renders button img with correct props', () => {
-//           expect(wrapper.find('form').find('button').find('img').props()).toMatchObject({
-//             className: 'icon icon-search',
-//           });
-//         });
-//       });
-//     });
+        it('renders button img with correct props', () => {
+          expect(wrapper.find('form').find('button').find('img').props()).toMatchObject({
+            className: 'icon icon-search',
+          });
+        });
+      });
+    });
 
-//     describe('subtext', () =>{
-//       it('renders div with correct class', () => {
-//         expect(wrapper.children().at(1).props()).toMatchObject({
-//           className: `subtext body-secondary-3 ${wrapper.state().subTextClassName}`,
-//         });
-//       });
+    describe('subtext', () =>{
+      it('renders div with correct class', () => {
+        expect(wrapper.children().at(1).props()).toMatchObject({
+          className: `subtext body-secondary-3 ${wrapper.state().subTextClassName}`,
+        });
+      });
 
-//       it('renders correct text', () => {
-//         expect(wrapper.children().at(1).text()).toEqual(wrapper.state().subText);
-//       });
-//     });
-//   });
-// });
+      it('renders correct text', () => {
+        expect(wrapper.children().at(1).text()).toEqual(wrapper.state().subText);
+      });
+    });
+  });
+});
+
+describe('mapStateToProps', () => {
+  let result;
+  beforeAll(() => {
+    result = mapStateToProps(globalState);
+  });
+
+  it('sets searchTerm on the props', () => {
+    expect(result.searchTerm).toEqual(globalState.search.search_term);
+  });
+});
