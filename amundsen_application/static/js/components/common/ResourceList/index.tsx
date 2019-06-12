@@ -6,13 +6,16 @@ import { ITEMS_PER_PAGE, PAGINATION_PAGE_RANGE } from './constants';
 
 
 export interface ResourceListProps {
-  activePage?: number;
-  isFullList: boolean;
   items: Resource[];
+  source: string;
+
+  // The following props are only used if 'paginate' is set to true
+  paginate?: boolean;
+  activePage?: number;
+  isFullList?: boolean;
   itemsCount?: number;
   itemsPerPage?: number;
   onPagination?: (pageNumber: number) => void;
-  source: string;
 }
 
 interface ResourceListState {
@@ -20,10 +23,16 @@ interface ResourceListState {
 }
 
 class ResourceList extends React.Component<ResourceListProps, ResourceListState> {
+  public static defaultProps: Partial<ResourceListProps> = {
+    paginate: false,
+    activePage: 0,
+    itemsPerPage: ITEMS_PER_PAGE,
+    isFullList: true,
+  };
 
   constructor(props) {
     super(props);
-    this.state = { activePage: this.props.activePage || 0 };
+    this.state = { activePage: this.props.activePage };
   }
 
   componentDidUpdate(prevProps) {
@@ -43,13 +52,12 @@ class ResourceList extends React.Component<ResourceListProps, ResourceListState>
 
 
   render() {
-    const { isFullList, items, source } = this.props;
-    const itemsPerPage = this.props.itemsPerPage || ITEMS_PER_PAGE;
+    const { isFullList, items, itemsPerPage, paginate, source } = this.props;
     const itemsCount = this.props.itemsCount || items.length;
     const startIndex = itemsPerPage * this.state.activePage;
 
     let itemsToRender = items;
-    if (isFullList) {
+    if (paginate && isFullList) {
       itemsToRender = items.slice(startIndex, startIndex + itemsPerPage);
     }
 
@@ -59,11 +67,12 @@ class ResourceList extends React.Component<ResourceListProps, ResourceListState>
           {
             itemsToRender.map((item, idx) => {
               const logging = { source, index: startIndex + idx };
-              return <ResourceListItem item={ item} logging={ logging } key={ idx } />;
+              return <ResourceListItem item={ item } logging={ logging } key={ idx } />;
             })
           }
         </ul>
         {
+          paginate &&
           itemsCount > itemsPerPage &&
           <div className="text-center">
             <Pagination

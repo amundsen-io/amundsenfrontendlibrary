@@ -42,10 +42,10 @@ export class MyBookmarks extends React.Component<MyBookmarksProps> {
         {
           bookmarksLength !== 0 &&
           <ResourceList
-            isFullList={ true }
             items={ this.props.myBookmarks }
-            itemsPerPage={ BOOKMARKS_PER_PAGE }
             source={ MY_BOOKMARKS_SOURCE_NAME }
+            paginate={ true }
+            itemsPerPage={ BOOKMARKS_PER_PAGE }
           />
         }
       </div>

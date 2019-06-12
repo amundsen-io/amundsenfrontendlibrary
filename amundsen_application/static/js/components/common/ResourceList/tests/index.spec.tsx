@@ -10,6 +10,8 @@ import ResourceList, { ResourceListProps } from '../';
 describe('ResourceList', () => {
   const setup = (propOverrides?: Partial<ResourceListProps>) => {
     const props: ResourceListProps = {
+      paginate: true,
+      source: 'testSource',
       activePage: 0,
       isFullList: true,
       items: [
@@ -22,14 +24,29 @@ describe('ResourceList', () => {
       ],
       itemsPerPage: 4,
       onPagination: jest.fn(),
-      source: 'testSource',
       ...propOverrides
     };
-    const wrapper = shallow(<ResourceList {...props} />);
+    const wrapper = shallow<ResourceList>(<ResourceList {...props} />);
     return { props, wrapper };
   };
 
-  describe('render', () => {
+  describe('render with no pagination', () => {
+    let props;
+    let wrapper;
+    beforeAll(() => {
+      const setupResult = setup({ paginate: false });
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+    });
+
+    it('should render all items', () => {
+      const items = wrapper.find(ResourceListItem);
+      expect(items.length).toEqual(props.items.length);
+    });
+
+  });
+
+  describe('render with pagination', () => {
     let props;
     let wrapper;
     beforeAll(() => {
@@ -45,9 +62,7 @@ describe('ResourceList', () => {
 
     it('passes correct props to each ResourceListItem', () => {
       const content = wrapper.find(ResourceListItem);
-
       const startIndex = props.activePage * props.itemsPerPage;
-
       content.forEach((contentItem, index) => {
         expect(contentItem.props()).toMatchObject({
           item: props.items[index],
@@ -59,16 +74,35 @@ describe('ResourceList', () => {
       });
     });
 
-    it('Renders a pagination widget when there are more than ITEMS_PER_PAGE bookmarks', () => {
+    it('Renders a pagination widget when there are more than ITEMS_PER_PAGE items', () => {
       expect(wrapper.find(Pagination).exists()).toBe(true)
     });
 
-    it('Hides a pagination widget when there are fewer than ITEMS_PER_PAGE bookmarks', () => {
+    it('Hides a pagination widget when there are fewer than ITEMS_PER_PAGE items', () => {
       const { props, wrapper } = setup({
         items: [{ type: ResourceType.table }],
       });
       expect(wrapper.find(Pagination).exists()).toBe(false)
     });
+  });
 
+  describe('onPagination', () => {
+    it('calls the "onPagination" prop when it exists', () => {
+      const setupResult = setup();
+      const wrapper = setupResult.wrapper;
+      const props = setupResult.props;
+      const onPaginationSpy = jest.spyOn(props, 'onPagination');
+
+      wrapper.instance().onPagination(3);
+      expect(onPaginationSpy).toHaveBeenCalledWith(2);
+    });
+
+    it('calls "setState" when "onPagination" prop does not exist', () => {
+      const setStateSpy = jest.spyOn(ResourceList.prototype, 'setState');
+      const setupResult = setup({ onPagination: undefined });
+      const wrapper = setupResult.wrapper;
+      wrapper.instance().onPagination(3);
+      expect(setStateSpy).toHaveBeenCalledWith({ activePage: 2 });
+    });
   });
 });

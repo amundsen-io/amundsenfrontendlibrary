@@ -223,13 +223,14 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
           <InfoButton infoText={SEARCH_INFO_TEXT}/>
         </div>
         <ResourceList
+          items={ results.results }
+          source={ SEARCH_SOURCE_NAME }
+          paginate={ true }
           activePage={ page_index }
           isFullList={ false }
-          items={ results.results }
           itemsCount={ total_results }
           itemsPerPage={ RESULTS_PER_PAGE }
           onPagination={ this.onPaginationChange }
-          source={ SEARCH_SOURCE_NAME }
         />
       </div>
       );
