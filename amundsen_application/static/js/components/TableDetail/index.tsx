@@ -322,14 +322,14 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     } else if (this.state.statusCode === 500) {
       innerContent = (
         <div className="container error-label">
-          <Breadcrumb path="/" text="Home" />
+          <Breadcrumb />
           <label className="d-block m-auto">Something went wrong...</label>
         </div>
       )
     } else {
         innerContent = (
           <div className="container table-detail">
-            <Breadcrumb path="/" text="Home" />
+            <Breadcrumb />
             <div className="row">
               <div className="detail-header col-xs-12 col-md-7 col-lg-8">
                 <h1 className="detail-header-text">

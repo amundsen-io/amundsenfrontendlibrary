@@ -6,8 +6,8 @@ import './styles.scss';
 import { GlobalState } from 'ducks/rootReducer';
 
 export interface OwnProps {
-  path: string;
-  text: string;
+  path?: string;
+  text?: string;
 }
 
 export interface StateFromProps {
@@ -17,12 +17,14 @@ export interface StateFromProps {
 export type BreadcrumbProps = OwnProps & StateFromProps;
 
 export const Breadcrumb: React.SFC<BreadcrumbProps> = (props) => {
-  let path = props.path;
-  let text = props.text;
+  let path = '/';
+  let text = 'Home';
   if (props.searchTerm) {
     path = `/search?searchTerm=${props.searchTerm}&selectedTab=table&pageIndex=0`
     text = 'Search Results'
   }
+  path = props.path ? props.path : path;
+  text = props.text ? props.text : text;
   return (
     <div className="amundsen-breadcrumb">
       <Link to={path}>

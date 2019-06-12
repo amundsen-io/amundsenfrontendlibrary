@@ -48,7 +48,6 @@ describe('HomePage', () => {
 
   describe('render', () => {
     it('contains Searchbar, BookmarkList, and PopularTables', () => {
-      wrapper.instance().render();
       expect(wrapper.contains(<SearchBar />));
       expect(wrapper.contains(<BookmarkList />));
       expect(wrapper.contains(<PopularTables />));

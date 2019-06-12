@@ -33,8 +33,6 @@ describe('Breadcrumb', () => {
   describe('render with existing searchTerm', () => {
     beforeEach(() => {
       props = {
-        path: 'testPath',
-        text: 'testText',
         searchTerm: 'testTerm',
       };
       subject = shallow(<Breadcrumb {...props} />);
@@ -48,6 +46,27 @@ describe('Breadcrumb', () => {
 
     it('renders button with correct text within the Link', () => {
       expect(subject.find(Link).find('button').text()).toEqual('Search Results');
+    });
+  });
+
+  describe('render with existing searchTerm and prop overrides', () => {
+    beforeEach(() => {
+      props = {
+        path: 'testPath',
+        text: 'testText',
+        searchTerm: 'testTerm',
+      };
+      subject = shallow(<Breadcrumb {...props} />);
+    });
+
+    it('renders Link with correct path', () => {
+      expect(subject.find(Link).props()).toMatchObject({
+        to: 'testPath',
+      });
+    });
+
+    it('renders button with correct text within the Link', () => {
+      expect(subject.find(Link).find('button').text()).toEqual('testText');
     });
   });
 });

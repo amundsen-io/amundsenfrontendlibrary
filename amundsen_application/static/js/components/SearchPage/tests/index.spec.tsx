@@ -645,7 +645,7 @@ describe('SearchPage', () => {
 
     it('renders SearchBar with correct props', () => {
       const { props, wrapper } = setup();
-      expect(wrapper.find(SearchBar));
+      expect(wrapper.find(SearchBar).exists()).toBeTruthy();
     });
 
     it('calls renderSearchResults if searchTerm is not empty string', () => {
