@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { shallow, ReactWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 
 import { mapDispatchToProps, HomePage, HomePageProps } from '../';
 
@@ -8,7 +8,7 @@ import SearchBar from 'components/SearchPage/SearchBar';
 import BookmarkList from 'components/common/Bookmark/BookmarkList';
 import PopularTables from 'components/common/PopularTables';
 
-describe('SearchBar', () => {
+describe('HomePage', () => {
   const setup = (propOverrides?: Partial<HomePageProps>) => {
     const props: HomePageProps = {
       searchReset: jest.fn(),
