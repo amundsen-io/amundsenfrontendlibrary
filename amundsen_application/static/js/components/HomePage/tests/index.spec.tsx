@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { shallow } from 'enzyme';
+import { shallow, ReactWrapper } from 'enzyme';
 
 import { mapDispatchToProps, HomePage, HomePageProps } from '../';
 
@@ -38,24 +38,29 @@ describe('SearchBar', () => {
     const wrapper = shallow<HomePage>(<HomePage {...props} />)
     return { props, wrapper };
   };
+  let props;
+  let wrapper;
+  beforeAll(() => {
+    const setupResult = setup();
+    props = setupResult.props;
+    wrapper = setupResult.wrapper;
+  });
 
   describe('render', () => {
-    let props;
-    let wrapper;
-    beforeAll(() => {
-      const setupResult = setup();
-      props = setupResult.props;
-      wrapper = setupResult.wrapper;
-    });
-    describe('renderPopularTables', () => {
-    it('renders bookmark list and popular tables', () => {
-      const {props, wrapper} = setup();
+    it('contains Searchbar, BookmarkList, and PopularTables', () => {
       wrapper.instance().render();
       expect(wrapper.contains(<SearchBar />));
       expect(wrapper.contains(<BookmarkList />));
       expect(wrapper.contains(<PopularTables />));
     });
   });
+  
+  describe('componentDidMount', () => {
+    it('calls searchReset', () => {
+      const searchResetSpy = jest.spyOn(props, 'searchReset');
+      wrapper.instance().componentDidMount();
+      expect(searchResetSpy).toHaveBeenCalled;
+    });
   });
 });
 
