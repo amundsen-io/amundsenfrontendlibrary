@@ -1,20 +1,27 @@
 import {
-  GetLoggedInUser,
-  GetLoggedInUserRequest,
-  GetLoggedInUserResponse,
-  GetUser,
-  GetUserRequest,
-  GetUserResponse,
-  LoggedInUser, User
+  GetLoggedInUser, GetLoggedInUserRequest, GetLoggedInUserResponse,
+  GetUser, GetUserRequest, GetUserResponse,
+  GetUserOwn, GetUserOwnRequest, GetUserOwnResponse,
+  GetUserRead, GetUserReadRequest, GetUserReadResponse,
+  LoggedInUser,
+  User,
 } from './types';
+import { Bookmark, Resource } from 'interfaces';
 
 type UserReducerAction =
   GetLoggedInUserRequest | GetLoggedInUserResponse |
-  GetUserRequest | GetUserResponse ;
+  GetUserRequest | GetUserResponse |
+  GetUserOwnRequest | GetUserOwnResponse |
+  GetUserReadRequest | GetUserReadResponse;
 
 export interface UserReducerState {
   loggedInUser: LoggedInUser;
-  profileUser: User;
+  profile: {
+    bookmarks: Bookmark[],
+    own: Resource[],
+    read: Resource[],
+    user: User,
+  };
 }
 
 export function getLoggedInUser(): GetLoggedInUserRequest {
@@ -23,6 +30,14 @@ export function getLoggedInUser(): GetLoggedInUserRequest {
 
 export function getUserById(userId: string): GetUserRequest {
   return { userId, type: GetUser.ACTION };
+}
+
+export function getUserOwn(userId: string): GetUserOwnRequest {
+  return { type: GetUserOwn.REQUEST, payload: { userId } }
+}
+
+export function getUserRead(userId: string): GetUserReadRequest {
+  return { type: GetUserRead.REQUEST, payload: { userId } }
 }
 
 
@@ -44,7 +59,12 @@ const defaultUser = {
 };
 const initialState: UserReducerState = {
   loggedInUser: defaultUser,
-  profileUser: defaultUser,
+  profile: {
+    bookmarks: [],
+    own: [],
+    read: [],
+    user: defaultUser,
+  },
 };
 
 export default function reducer(state: UserReducerState = initialState, action: UserReducerAction): UserReducerState {
@@ -53,9 +73,28 @@ export default function reducer(state: UserReducerState = initialState, action: 
       return { ...state, loggedInUser: action.payload };
     case GetUser.ACTION:
     case GetUser.FAILURE:
-      return { ...state, profileUser: defaultUser };
+      state.profile.user= defaultUser;
+      return { ...state };
     case GetUser.SUCCESS:
-      return { ...state, profileUser: action.payload };
+      state.profile.user = action.payload;
+      return { ...state };
+
+    case GetUserOwn.REQUEST:
+    case GetUserOwn.FAILURE:
+      state.profile.own = [];
+      return { ...state };
+    case GetUserOwn.SUCCESS:
+      state.profile.own = action.payload;
+      return { ...state };
+
+    case GetUserRead.REQUEST:
+    case GetUserRead.FAILURE:
+      state.profile.read = [];
+      return { ...state };
+    case GetUserRead.SUCCESS:
+      state.profile.read = action.payload;
+      return { ...state };
+
     default:
       return state;
   }

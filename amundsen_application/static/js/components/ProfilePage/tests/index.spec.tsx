@@ -14,7 +14,7 @@ import globalState from 'fixtures/globalState';
 describe('ProfilePage', () => {
   const setup = (propOverrides?: Partial<ProfilePageProps>) => {
     const props: ProfilePageProps = {
-      user: globalState.user.profileUser,
+      user: globalState.user.profile.user,
       getUserById: jest.fn(),
       ...propOverrides
     };
@@ -110,7 +110,7 @@ describe('ProfilePage', () => {
     it('does not render Avatar if user.display_name is empty string', () => {
 
       const userCopy = {
-        ...globalState.user.profileUser,
+        ...globalState.user.profile.user,
         display_name: "",
       } ;
       const wrapper = setup({
@@ -125,7 +125,7 @@ describe('ProfilePage', () => {
 
     it('renders Flag with correct props if user not active', () => {
       const userCopy = {
-        ...globalState.user.profileUser,
+        ...globalState.user.profile.user,
         is_active: false,
       };
       const wrapper = setup({
@@ -214,6 +214,6 @@ describe('mapStateToProps', () => {
   });
 
   it('sets user on the props', () => {
-    expect(result.user).toEqual(globalState.user.profileUser);
+    expect(result.user).toEqual(globalState.user.profile.user);
   });
 });

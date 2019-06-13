@@ -508,7 +508,7 @@ def get_user_read() -> Response:
         status_code = response.status_code
         read_tables_raw = response.json().get('table')
         read_tables = [marshall_table_partial(table) for table in read_tables_raw]
-        return make_response(jsonify({'msg': 'success', 'response': read_tables}), status_code)
+        return make_response(jsonify({'msg': 'success', 'read': read_tables}), status_code)
 
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
@@ -532,7 +532,7 @@ def get_user_own() -> Response:
         status_code = response.status_code
         owned_tables_raw = response.json().get('table')
         owned_tables = [marshall_table_partial(table) for table in owned_tables_raw]
-        return make_response(jsonify({'msg': 'success', 'response': owned_tables}), status_code)
+        return make_response(jsonify({'msg': 'success', 'own': owned_tables}), status_code)
 
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
