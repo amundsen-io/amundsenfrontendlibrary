@@ -16,15 +16,11 @@ export interface StateFromProps {
 
 export type BreadcrumbProps = OwnProps & StateFromProps;
 
-export const Breadcrumb: React.SFC<BreadcrumbProps> = (props) => {
-  let path = '/';
-  let text = 'Home';
-  if (props.searchTerm) {
-    path = `/search?searchTerm=${props.searchTerm}&selectedTab=table&pageIndex=0`
+export const Breadcrumb: React.SFC<BreadcrumbProps> = ({path, text, searchTerm}) => {
+  if (searchTerm) {
+    path = `/search?searchTerm=${searchTerm}&selectedTab=table&pageIndex=0`
     text = 'Search Results'
   }
-  path = props.path ? props.path : path;
-  text = props.text ? props.text : text;
   return (
     <div className="amundsen-breadcrumb">
       <Link to={path}>
@@ -38,6 +34,8 @@ export const Breadcrumb: React.SFC<BreadcrumbProps> = (props) => {
 };
 
 Breadcrumb.defaultProps = {
+  path: '/',
+  text: 'Home',
   searchTerm: '',
 };
 
