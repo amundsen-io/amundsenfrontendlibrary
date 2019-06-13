@@ -138,8 +138,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
     this.updatePageUrl(searchTerm, this.state.selectedTab,0);
   };
 
-  onPaginationChange = (pageNumber: number): void => {
-    const index = pageNumber;
+  onPaginationChange = (index: number): void => {
     this.props.searchResource(this.state.selectedTab, this.props.searchTerm, index);
     this.updatePageUrl(this.props.searchTerm, this.state.selectedTab, index);
   };

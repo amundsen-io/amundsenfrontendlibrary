@@ -8,6 +8,7 @@ import ResourceListItem from 'components/common/ResourceListItem/index';
 import ResourceList, { ResourceListProps } from '../';
 
 describe('ResourceList', () => {
+  const setStateSpy = jest.spyOn(ResourceList.prototype, 'setState');
   const setup = (propOverrides?: Partial<ResourceListProps>) => {
     const props: ResourceListProps = {
       paginate: true,
@@ -44,6 +45,19 @@ describe('ResourceList', () => {
       expect(items.length).toEqual(props.items.length);
     });
 
+    it('passes correct props to each ResourceListItem', () => {
+      const content = wrapper.find(ResourceListItem);
+      const startIndex = props.activePage * props.itemsPerPage;
+      content.forEach((contentItem, index) => {
+        expect(contentItem.props()).toMatchObject({
+          item: props.items[index],
+          logging: {
+            source: props.source,
+            index: startIndex + index,
+          }
+        })
+      });
+    });
   });
 
   describe('render with pagination', () => {
@@ -58,20 +72,6 @@ describe('ResourceList', () => {
     it('renders at most "itemsPerPage" ResourceListItems', () => {
       const content = wrapper.find(ResourceListItem);
       expect(content.length).toEqual(props.itemsPerPage);
-    });
-
-    it('passes correct props to each ResourceListItem', () => {
-      const content = wrapper.find(ResourceListItem);
-      const startIndex = props.activePage * props.itemsPerPage;
-      content.forEach((contentItem, index) => {
-        expect(contentItem.props()).toMatchObject({
-          item: props.items[index],
-          logging: {
-            source: props.source,
-            index: startIndex + index,
-          }
-        })
-      });
     });
 
     it('Renders a pagination widget when there are more than ITEMS_PER_PAGE items', () => {
@@ -98,11 +98,23 @@ describe('ResourceList', () => {
     });
 
     it('calls "setState" when "onPagination" prop does not exist', () => {
-      const setStateSpy = jest.spyOn(ResourceList.prototype, 'setState');
+      setStateSpy.mockClear();
       const setupResult = setup({ onPagination: undefined });
       const wrapper = setupResult.wrapper;
       wrapper.instance().onPagination(3);
       expect(setStateSpy).toHaveBeenCalledWith({ activePage: 2 });
     });
+  });
+
+  describe('componentDidUpdate', () => {
+    setStateSpy.mockClear();
+    const setupResult = setup();
+    const wrapper = setupResult.wrapper;
+    const props = setupResult.props;
+    const mockPrevProps = {
+      activePage: 2,
+    };
+    wrapper.instance().componentDidUpdate(mockPrevProps);
+    expect(setStateSpy).toHaveBeenCalledWith({ activePage: 0 })
   });
 });

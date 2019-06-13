@@ -9,8 +9,9 @@ export interface ResourceListProps {
   items: Resource[];
   source: string;
 
-  // The following props are only used if 'paginate' is set to true
   paginate?: boolean;
+  // The following props are only used if 'paginate' is set to true
+  // TODO - consider nesting these into a 'paginateOptions' field
   activePage?: number;
   isFullList?: boolean;
   itemsCount?: number;
