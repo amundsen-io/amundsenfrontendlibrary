@@ -45,9 +45,8 @@ export class PopularTables extends React.Component<PopularTablesProps> {
           <InfoButton infoText={POPULAR_TABLES_INFO_TEXT} />
         </div>
         <ResourceList
-          items={ this.props.popularTables }
+          allItems={ this.props.popularTables }
           source={ POPULAR_TABLES_SOURCE_NAME }
-          paginate={ true }
           itemsPerPage={ POPULAR_TABLES_PER_PAGE }
         />
       </>

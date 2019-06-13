@@ -101,8 +101,7 @@ describe('MyBookmarks', () => {
       const { props, wrapper } = setup();
 
       expect(wrapper.children().find(ResourceList).props()).toMatchObject({
-        isFullList: true,
-        items: props.myBookmarks,
+        allItems: props.myBookmarks,
         itemsPerPage: BOOKMARKS_PER_PAGE,
         source: MY_BOOKMARKS_SOURCE_NAME,
       });

@@ -222,13 +222,11 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
           <InfoButton infoText={SEARCH_INFO_TEXT}/>
         </div>
         <ResourceList
-          items={ results.results }
+          slicedItems={ results.results }
+          slicedItemsCount={ total_results }
           source={ SEARCH_SOURCE_NAME }
-          paginate={ true }
-          activePage={ page_index }
-          isFullList={ false }
-          itemsCount={ total_results }
           itemsPerPage={ RESULTS_PER_PAGE }
+          activePage={ page_index }
           onPagination={ this.onPaginationChange }
         />
       </div>

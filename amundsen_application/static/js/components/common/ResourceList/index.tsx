@@ -6,17 +6,21 @@ import { ITEMS_PER_PAGE, PAGINATION_PAGE_RANGE } from './constants';
 
 
 export interface ResourceListProps {
-  items: Resource[];
   source: string;
-
   paginate?: boolean;
-  // The following props are only used if 'paginate' is set to true
-  // TODO - consider nesting these into a 'paginateOptions' field
-  activePage?: number;
-  isFullList?: boolean;
-  itemsCount?: number;
   itemsPerPage?: number;
+
+  // Choose to use either 'allItems' vs 'slicedItems' depending on if you're passing the entire list
+  // of items vs a pre-sliced section of all items.
+  allItems?: Resource[];
+
+  // 'slicedItems' and 'slicedItemsCount' should be used together
+  slicedItems?: Resource[];
+  slicedItemsCount?: number;
+
+  // 'onPagination' and 'activePage' should be used together
   onPagination?: (pageNumber: number) => void;
+  activePage?: number;
 }
 
 interface ResourceListState {
@@ -25,41 +29,36 @@ interface ResourceListState {
 
 class ResourceList extends React.Component<ResourceListProps, ResourceListState> {
   public static defaultProps: Partial<ResourceListProps> = {
-    paginate: false,
-    activePage: 0,
+    paginate: true,
     itemsPerPage: ITEMS_PER_PAGE,
-    isFullList: true,
   };
 
   constructor(props) {
     super(props);
-    this.state = { activePage: this.props.activePage };
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.activePage !== prevProps.activePage) {
-      this.setState({ activePage: this.props.activePage });
-    }
+    this.state = { activePage: 0 };
   }
 
   onPagination = (rawPageNum: number) => {
     const activePage = rawPageNum - 1;
     if (this.props.onPagination !== undefined) {
+      // activePage is managed externally via 'props'
       this.props.onPagination(activePage);
     } else {
+      // activePage is managed internally via 'state'.
       this.setState({ activePage });
     }
   };
 
 
   render() {
-    const { isFullList, items, itemsPerPage, paginate, source } = this.props;
-    const itemsCount = this.props.itemsCount || items.length;
-    const startIndex = itemsPerPage * this.state.activePage;
+    const { allItems, slicedItems, itemsPerPage, paginate, source } = this.props;
+    const activePage = this.props.activePage !== undefined ? this.props.activePage : this.state.activePage;
+    const itemsCount = this.props.slicedItemsCount || allItems.length;
+    const startIndex = itemsPerPage * activePage;
 
-    let itemsToRender = items;
-    if (paginate && isFullList) {
-      itemsToRender = items.slice(startIndex, startIndex + itemsPerPage);
+    let itemsToRender = slicedItems || allItems;
+    if (paginate && allItems) {
+      itemsToRender = allItems.slice(startIndex, startIndex + itemsPerPage);
     }
 
     return (
@@ -77,7 +76,7 @@ class ResourceList extends React.Component<ResourceListProps, ResourceListState>
           itemsCount > itemsPerPage &&
           <div className="text-center">
             <Pagination
-              activePage={ this.state.activePage + 1 }
+              activePage={ activePage + 1 }
               itemsCountPerPage={ itemsPerPage }
               totalItemsCount={ itemsCount }
               pageRangeDisplayed={ PAGINATION_PAGE_RANGE }

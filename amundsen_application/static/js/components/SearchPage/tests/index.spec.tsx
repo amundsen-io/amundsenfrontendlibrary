@@ -594,9 +594,8 @@ describe('SearchPage', () => {
 
         expect(content.children().find(ResourceList).props()).toMatchObject({
           activePage: 0,
-          isFullList: false,
-          items: testResults.results,
-          itemsCount: testResults.total_results,
+          slicedItems: testResults.results,
+          slicedItemsCount: testResults.total_results,
           itemsPerPage: RESULTS_PER_PAGE,
           onPagination: wrapper.instance().onPaginationChange,
           source: SEARCH_SOURCE_NAME,

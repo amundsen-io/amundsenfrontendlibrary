@@ -83,8 +83,7 @@ describe('PopularTables', () => {
 
     it('renders ResourceList with correct props', () => {
       expect(wrapper.children().find(ResourceList).props()).toMatchObject({
-        isFullList: true,
-        items: props.popularTables,
+        allItems: props.popularTables,
         itemsPerPage: POPULAR_TABLES_PER_PAGE,
         source: POPULAR_TABLES_SOURCE_NAME,
       });
