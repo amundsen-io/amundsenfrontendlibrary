@@ -24,8 +24,7 @@ import TabsComponent from 'components/common/Tabs';
 import SearchBar from '../SearchBar';
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import MyBookmarks from 'components/common/Bookmark/MyBookmarks';
-import PopularTables from 'components/common/PopularTables';
+
 import ResourceList from 'components/common/ResourceList';
 import globalState from 'fixtures/globalState';
 
@@ -430,26 +429,6 @@ describe('SearchPage', () => {
     });
   });
 
-  describe('onSearchBarSubmit', () => {
-    let props;
-    let wrapper;
-
-    let updatePageUrlSpy;
-    beforeAll(() => {
-      const setupResult = setup();
-      props = setupResult.props;
-      wrapper = setupResult.wrapper;
-
-      updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
-
-      wrapper.instance().onSearchBarSubmit('searchTerm');
-    });
-
-    it('call updatePageUrl with correct parameters', () => {
-      expect(updatePageUrlSpy).toHaveBeenCalledWith('searchTerm', wrapper.state().selectedTab, 0);
-    });
-  });
-
   describe('onPaginationChange', () => {
     const testIndex = 10;
     let props;
@@ -605,11 +584,6 @@ describe('SearchPage', () => {
   });
 
   describe('renderContent', () => {
-    it('renders popular tables if searchTerm is empty', () => {
-      const {props, wrapper} = setup({ searchTerm: '' });
-      expect(wrapper.instance().renderContent()).toEqual(wrapper.instance().renderPopularTables());
-    });
-
     it('renders search results when given search term', () => {
       const {props, wrapper} = setup({ searchTerm: 'test' });
       expect(wrapper.instance().renderContent()).toEqual(wrapper.instance().renderSearchResults());
@@ -618,15 +592,6 @@ describe('SearchPage', () => {
     it('renders loading spinner when in loading state', () => {
       const {props, wrapper} = setup({ isLoading: true });
       expect(wrapper.instance().renderContent()).toEqual(<LoadingSpinner/>);
-    });
-  });
-
-  describe('renderPopularTables', () => {
-    it('renders bookmark list and popular tables', () => {
-      const {props, wrapper} = setup();
-      wrapper.instance().renderPopularTables();
-      expect(wrapper.contains(<MyBookmarks />));
-      expect(wrapper.contains(<PopularTables />));
     });
   });
 
@@ -667,10 +632,7 @@ describe('SearchPage', () => {
 
     it('renders SearchBar with correct props', () => {
       const { props, wrapper } = setup();
-      expect(wrapper.find(SearchBar).props()).toMatchObject({
-        handleValueSubmit: wrapper.instance().onSearchBarSubmit,
-        searchTerm: props.searchTerm,
-      });
+      expect(wrapper.find(SearchBar).exists()).toBeTruthy();
     });
 
     it('calls renderSearchResults if searchTerm is not empty string', () => {
@@ -678,13 +640,6 @@ describe('SearchPage', () => {
       const renderSearchResultsSpy = jest.spyOn(wrapper.instance(), 'renderSearchResults');
       wrapper.setProps(props);
       expect(renderSearchResultsSpy).toHaveBeenCalled();
-    });
-
-    it('calls renderPopularTables is searchTerm is empty string', () => {
-      const { props, wrapper } = setup({ searchTerm: '' });
-      const renderPopularTablesSpy = jest.spyOn(wrapper.instance(), 'renderPopularTables');
-      wrapper.setProps(props);
-      expect(renderPopularTablesSpy).toHaveBeenCalled();
     });
   });
 });
