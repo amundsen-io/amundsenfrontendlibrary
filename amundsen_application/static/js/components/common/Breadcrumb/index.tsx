@@ -37,10 +37,6 @@ export const Breadcrumb: React.SFC<BreadcrumbProps> = ({path, text, searchTerm})
   );
 };
 
-Breadcrumb.defaultProps = {
-  searchTerm: '',
-};
-
 export const mapStateToProps = (state: GlobalState) => {
   return {
     searchTerm: state.search.search_term,
