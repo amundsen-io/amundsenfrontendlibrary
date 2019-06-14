@@ -34,6 +34,8 @@ interface DispatchFromProps {
 
 export type ProfilePageProps = StateFromProps & DispatchFromProps;
 
+const ITEMS_PER_PAGE = 8;
+
 export class ProfilePage extends React.Component<ProfilePageProps> {
   private userId: string;
 
@@ -65,7 +67,13 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
         </div>
       );
     }
-    return <ResourceList allItems={ resource } source={ `profile-${source}`} />
+    return (
+      <ResourceList
+        allItems={ resource }
+        source={ `profile-${source}`}
+        itemsPerPage={ ITEMS_PER_PAGE }
+      />
+    )
   };
 
   generateTabInfo = () => {
