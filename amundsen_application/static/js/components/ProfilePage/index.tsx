@@ -59,11 +59,12 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
   };
 
 
-  getTabContent = (resource: Resource[], label: string, source: string) => {
+  getTabContent = (resource: Resource[], source: string, label: string) => {
+    // TODO: consider moving logic for empty content into Tab component
     if (resource.length == 0) {
       return (
         <div className="empty-tab-message">
-          <label>User has no { label} resources.</label>
+          <label>User has no { label } resources.</label>
         </div>
       );
     }
@@ -81,18 +82,18 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
     const { bookmarks, read, own } = this.props;
 
     tabInfo.push({
-      content: this.getTabContent(read, "frequently used", "read"),
+      content: this.getTabContent(read, "read", "frequently used"),
       key: 'frequentUses_tab',
       title: `Frequently Uses (${read.length})`,
     });
 
     tabInfo.push({
-      content: this.getTabContent(bookmarks, "bookmarked", "bookmark"),
+      content: this.getTabContent(bookmarks, "bookmark", "bookmarked"),
       key: 'bookmarks_tab',
       title: `Bookmarks (${bookmarks.length})`,
     });
     tabInfo.push({
-      content: this.getTabContent(own, "owned", "own"),
+      content: this.getTabContent(own, "own", "owned"),
       key: 'owner_tab',
       title: `Owner (${own.length})`,
     });

@@ -75,7 +75,9 @@ export interface GetUserOwnRequest {
 
 export interface GetUserOwnResponse {
   type: GetUserOwn.SUCCESS | GetUserOwn.FAILURE;
-  payload?: Resource[];
+  payload?: {
+    own: Resource[];
+  }
 }
 
 /* getUserRead */
@@ -94,5 +96,7 @@ export interface GetUserReadRequest {
 
 export interface GetUserReadResponse {
   type: GetUserRead.SUCCESS | GetUserRead.FAILURE;
-  payload?: Resource[];
+  payload?: {
+    read: Resource[];
+  }
 }

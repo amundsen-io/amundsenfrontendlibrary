@@ -15,8 +15,7 @@ export function getUserById(userId: string) {
   return axios.get(`/api/metadata/v0/user?user_id=${userId}`)
     .then((response: AxiosResponse<UserResponse>) => {
       return response.data.user;
-    })
-    .catch((error: AxiosError) => {
+    }).catch((error: AxiosError) => {
       return {};
     });
 }

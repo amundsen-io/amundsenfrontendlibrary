@@ -74,26 +74,46 @@ export default function reducer(state: UserReducerState = initialState, action: 
     case GetUser.ACTION:
     case GetUser.FAILURE:
       state.profile.user= defaultUser;
-      return { ...state };
+      return { ...state }
     case GetUser.SUCCESS:
       state.profile.user = action.payload;
       return { ...state };
 
     case GetUserOwn.REQUEST:
     case GetUserOwn.FAILURE:
-      state.profile.own = [];
-      return { ...state };
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          own: [],
+        }
+      };
     case GetUserOwn.SUCCESS:
-      state.profile.own = action.payload;
-      return { ...state };
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          ...action.payload,
+        }
+      };
 
     case GetUserRead.REQUEST:
     case GetUserRead.FAILURE:
-      state.profile.read = [];
-      return { ...state };
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          read: [],
+        }
+      };
     case GetUserRead.SUCCESS:
-      state.profile.read = action.payload;
-      return { ...state };
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          ...action.payload,
+        }
+      };
 
     default:
       return state;
