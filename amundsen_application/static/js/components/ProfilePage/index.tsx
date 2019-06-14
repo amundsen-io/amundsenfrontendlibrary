@@ -15,8 +15,11 @@ import { User, GetUserRequest, GetUserOwnRequest, GetUserReadRequest } from 'duc
 import './styles.scss';
 import { Resource } from 'interfaces';
 import ResourceList from 'components/common/ResourceList';
+import { GetBookmarksForUserRequest } from 'ducks/bookmark/types';
+import { getBookmarksForUser } from 'ducks/bookmark/reducer';
 
 interface StateFromProps {
+  bookmarks: Resource[];
   user: User;
   own: Resource[];
   read: Resource[];
@@ -26,6 +29,7 @@ interface DispatchFromProps {
   getUserById: (userId: string) => GetUserRequest;
   getUserOwn: (userId: string) => GetUserOwnRequest;
   getUserRead: (userId: string) => GetUserReadRequest;
+  getBookmarksForUser: (userId: string) => GetBookmarksForUserRequest;
 }
 
 export type ProfilePageProps = StateFromProps & DispatchFromProps;
@@ -45,6 +49,7 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
     this.props.getUserById(this.userId);
     this.props.getUserOwn(this.userId);
     this.props.getUserRead(this.userId);
+    this.props.getBookmarksForUser(this.userId);
   }
 
   getUserId = () => {
@@ -65,21 +70,23 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
 
   generateTabInfo = () => {
     const tabInfo = [];
+    const { bookmarks, read, own } = this.props;
+
     tabInfo.push({
-      content: this.getTabContent(this.props.read, "frequently used", "read"),
+      content: this.getTabContent(read, "frequently used", "read"),
       key: 'frequentUses_tab',
-      title: `Frequently Uses (${this.props.read.length})`,
+      title: `Frequently Uses (${read.length})`,
     });
 
     tabInfo.push({
-      content: this.getTabContent([], "bookmarked", "bookmark"),
+      content: this.getTabContent(bookmarks, "bookmarked", "bookmark"),
       key: 'bookmarks_tab',
-      title: 'Bookmarks (0)',
+      title: `Bookmarks (${bookmarks.length})`,
     });
     tabInfo.push({
-      content: this.getTabContent(this.props.own, "owned", "own"),
+      content: this.getTabContent(own, "owned", "own"),
       key: 'owner_tab',
-      title: `Owner (${this.props.own.length})`,
+      title: `Owner (${own.length})`,
     });
 
     return tabInfo;
@@ -96,6 +103,7 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
             <div className="col-xs-12 col-md-offset-1 col-md-10">
               {/* remove hardcode to home when this page is ready for production */}
               <Breadcrumb path="/" text="Home" />
+              {/* TODO - Consider making this part a separate component */}
               <div className="profile-header">
                   <div id="profile-avatar" className="profile-avatar">
                     {
@@ -168,11 +176,12 @@ export const mapStateToProps = (state: GlobalState) => {
     user: state.user.profile.user,
     own: state.user.profile.own,
     read: state.user.profile.read,
+    bookmarks: state.bookmarks.bookmarksForUser,
   }
 };
 
 export const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ getUserById, getUserOwn, getUserRead }, dispatch);
+  return bindActionCreators({ getUserById, getUserOwn, getUserRead, getBookmarksForUser }, dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(ProfilePage);

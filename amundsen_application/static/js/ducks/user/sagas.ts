@@ -41,7 +41,6 @@ export function* getUserWatcher(): SagaIterator {
 export function* getUserOwnWorker(action: GetUserOwnRequest): SagaIterator {
   try {
     const userOwn = yield call(getUserOwn, action.payload.userId);
-    console.log(userOwn);
     yield put({ type: GetUserOwn.SUCCESS, payload: userOwn.own });
   } catch (e) {
     yield put({ type: GetUserOwn.FAILURE })
@@ -55,7 +54,6 @@ export function* getUserOwnWatcher(): SagaIterator {
 export function* getUserReadWorker(action: GetUserReadRequest): SagaIterator {
   try {
     const userRead = yield call(getUserRead, action.payload.userId);
-    console.log(userRead);
     yield put({ type: GetUserRead.SUCCESS, payload: userRead.read });
   } catch (e) {
     yield put({ type: GetUserRead.FAILURE })
