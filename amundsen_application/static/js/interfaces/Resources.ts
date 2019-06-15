@@ -1,4 +1,8 @@
-import { ResourceType } from './Enums';
+export enum ResourceType {
+  table = "table",
+  user = "user",
+  dashboard = "dashboard",
+};
 
 export interface Resource {
   type: ResourceType;
