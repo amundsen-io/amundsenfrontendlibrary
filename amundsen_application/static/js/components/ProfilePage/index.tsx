@@ -34,7 +34,7 @@ interface DispatchFromProps {
 
 export type ProfilePageProps = StateFromProps & DispatchFromProps;
 
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 6;
 
 export class ProfilePage extends React.Component<ProfilePageProps> {
   private userId: string;
