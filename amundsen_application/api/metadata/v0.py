@@ -502,8 +502,8 @@ def get_user_read() -> Response:
         user_id = get_query_param(request.args, 'user_id')
 
         url = '{0}{1}/{2}/read/'.format(app.config['METADATASERVICE_BASE'],
-                                          USER_ENDPOINT,
-                                          user_id)
+                                        USER_ENDPOINT,
+                                        user_id)
         response = request_metadata(url=url, method=request.method)
         status_code = response.status_code
         read_tables_raw = response.json().get('table')
@@ -526,8 +526,8 @@ def get_user_own() -> Response:
         user_id = get_query_param(request.args, 'user_id')
 
         url = '{0}{1}/{2}/own/'.format(app.config['METADATASERVICE_BASE'],
-                                          USER_ENDPOINT,
-                                          user_id)
+                                       USER_ENDPOINT,
+                                       user_id)
         response = request_metadata(url=url, method=request.method)
         status_code = response.status_code
         owned_tables_raw = response.json().get('table')
