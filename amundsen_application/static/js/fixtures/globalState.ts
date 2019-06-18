@@ -139,9 +139,15 @@ const globalState: GlobalState = {
       user_id: 'test0',
     },
     profile: {
-      bookmarks: [],
-      own: [],
-      read: [],
+      own: [
+        { type: ResourceType.table },
+        { type: ResourceType.table },
+        { type: ResourceType.table },
+      ],
+      read: [
+        { type: ResourceType.table },
+        { type: ResourceType.table },
+      ],
       user: {
         display_name: 'firstname lastname',
         email: 'test@test.com',

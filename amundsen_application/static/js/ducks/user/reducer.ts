@@ -6,7 +6,7 @@ import {
   LoggedInUser,
   User,
 } from './types';
-import { Bookmark, Resource } from 'interfaces';
+import { Resource } from 'interfaces';
 
 type UserReducerAction =
   GetLoggedInUserRequest | GetLoggedInUserResponse |
@@ -17,7 +17,6 @@ type UserReducerAction =
 export interface UserReducerState {
   loggedInUser: LoggedInUser;
   profile: {
-    bookmarks: Bookmark[],
     own: Resource[],
     read: Resource[],
     user: User,
@@ -60,7 +59,6 @@ const defaultUser = {
 const initialState: UserReducerState = {
   loggedInUser: defaultUser,
   profile: {
-    bookmarks: [],
     own: [],
     read: [],
     user: defaultUser,

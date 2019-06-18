@@ -18,6 +18,20 @@ import ResourceList from 'components/common/ResourceList';
 import { GetBookmarksForUserRequest } from 'ducks/bookmark/types';
 import { getBookmarksForUser } from 'ducks/bookmark/reducer';
 
+import {
+  BOOKMARKED_LABEL,
+  BOOKMARKED_SOURCE,
+  BOOKMARKED_TAB_KEY,
+  BOOKMARKED_TAB_TITLE,
+  ITEMS_PER_PAGE, OWNED_LABEL,
+  OWNED_SOURCE, OWNED_TAB_KEY,
+  OWNED_TAB_TITLE, READ_LABEL,
+  READ_SOURCE, READ_TAB_KEY,
+  READ_TAB_TITLE,
+} from './constants';
+
+
+
 interface StateFromProps {
   bookmarks: Resource[];
   user: User;
@@ -33,8 +47,6 @@ interface DispatchFromProps {
 }
 
 export type ProfilePageProps = StateFromProps & DispatchFromProps;
-
-const ITEMS_PER_PAGE = 6;
 
 export class ProfilePage extends React.Component<ProfilePageProps> {
   private userId: string;
@@ -61,7 +73,7 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
 
   getTabContent = (resource: Resource[], source: string, label: string) => {
     // TODO: consider moving logic for empty content into Tab component
-    if (resource.length == 0) {
+    if (resource.length === 0) {
       return (
         <div className="empty-tab-message">
           <label>User has no { label } resources.</label>
@@ -71,7 +83,7 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
     return (
       <ResourceList
         allItems={ resource }
-        source={ `profile-${source}`}
+        source={ source }
         itemsPerPage={ ITEMS_PER_PAGE }
       />
     )
@@ -82,20 +94,19 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
     const { bookmarks, read, own } = this.props;
 
     tabInfo.push({
-      content: this.getTabContent(read, "read", "frequently used"),
-      key: 'frequentUses_tab',
-      title: `Frequently Uses (${read.length})`,
-    });
-
-    tabInfo.push({
-      content: this.getTabContent(bookmarks, "bookmark", "bookmarked"),
-      key: 'bookmarks_tab',
-      title: `Bookmarks (${bookmarks.length})`,
+      content: this.getTabContent(read, READ_SOURCE, READ_LABEL),
+      key: READ_TAB_KEY,
+      title: `${READ_TAB_TITLE} (${read.length})`,
     });
     tabInfo.push({
-      content: this.getTabContent(own, "own", "owned"),
-      key: 'owner_tab',
-      title: `Owner (${own.length})`,
+      content: this.getTabContent(bookmarks, BOOKMARKED_SOURCE, BOOKMARKED_LABEL),
+      key: BOOKMARKED_TAB_KEY,
+      title: `${BOOKMARKED_TAB_TITLE} (${bookmarks.length})`,
+    });
+    tabInfo.push({
+      content: this.getTabContent(own, OWNED_SOURCE, OWNED_LABEL),
+      key: OWNED_TAB_KEY,
+      title: `${OWNED_TAB_TITLE} (${own.length})`,
     });
 
     return tabInfo;
