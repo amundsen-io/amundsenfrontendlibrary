@@ -10,7 +10,8 @@ import Tabs from 'components/common/Tabs';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { getUserById, getUserOwn, getUserRead } from 'ducks/user/reducer';
-import { User, GetUserRequest, GetUserOwnRequest, GetUserReadRequest } from 'ducks/user/types';
+import { PeopleUser } from 'interfaces';
+import { GetUserRequest, GetUserOwnRequest, GetUserReadRequest } from 'ducks/user/types';
 
 import './styles.scss';
 import { Resource } from 'interfaces';
@@ -34,7 +35,7 @@ import {
 
 interface StateFromProps {
   bookmarks: Resource[];
-  user: User;
+  user: PeopleUser;
   own: Resource[];
   read: Resource[];
 }
@@ -181,7 +182,7 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
                   </div>
               </div>
               <div id="profile-tabs" className="profile-tabs">
-                <Tabs tabs={ this.generateTabInfo() } defaultTab='frequentUses_tab' />
+                <Tabs tabs={ this.generateTabInfo() } defaultTab={ READ_TAB_KEY } />
               </div>
             </div>
           </div>

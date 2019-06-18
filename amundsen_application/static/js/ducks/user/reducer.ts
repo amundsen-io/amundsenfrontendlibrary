@@ -1,10 +1,14 @@
+import { LoggedInUser, PeopleUser } from 'interfaces';
+
 import {
-  GetLoggedInUser, GetLoggedInUserRequest, GetLoggedInUserResponse,
-  GetUser, GetUserRequest, GetUserResponse,
+  GetLoggedInUser,
+  GetLoggedInUserRequest,
+  GetLoggedInUserResponse,
+  GetUser,
+  GetUserRequest,
+  GetUserResponse,
   GetUserOwn, GetUserOwnRequest, GetUserOwnResponse,
   GetUserRead, GetUserReadRequest, GetUserReadResponse,
-  LoggedInUser,
-  User,
 } from './types';
 import { Resource } from 'interfaces';
 
@@ -14,31 +18,31 @@ type UserReducerAction =
   GetUserOwnRequest | GetUserOwnResponse |
   GetUserReadRequest | GetUserReadResponse;
 
+/* ACTIONS */
+export function getLoggedInUser(): GetLoggedInUserRequest {
+  return { type: GetLoggedInUser.REQUEST };
+};
+export function getUserById(userId: string): GetUserRequest {
+  return { userId, type: GetUser.REQUEST };
+};
+
+export function getUserOwn(userId: string): GetUserOwnRequest {
+  return { type: GetUserOwn.REQUEST, payload: { userId }};
+};
+
+export function getUserRead(userId: string): GetUserReadRequest {
+  return { type: GetUserRead.REQUEST, payload: { userId }};
+};
+
+/* REDUCER */
 export interface UserReducerState {
   loggedInUser: LoggedInUser;
   profile: {
     own: Resource[],
     read: Resource[],
-    user: User,
+    user: PeopleUser,
   };
-}
-
-export function getLoggedInUser(): GetLoggedInUserRequest {
-  return { type: GetLoggedInUser.ACTION };
-}
-
-export function getUserById(userId: string): GetUserRequest {
-  return { userId, type: GetUser.ACTION };
-}
-
-export function getUserOwn(userId: string): GetUserOwnRequest {
-  return { type: GetUserOwn.REQUEST, payload: { userId } }
-}
-
-export function getUserRead(userId: string): GetUserReadRequest {
-  return { type: GetUserRead.REQUEST, payload: { userId } }
-}
-
+};
 
 const defaultUser = {
   display_name: '',
@@ -68,8 +72,11 @@ const initialState: UserReducerState = {
 export default function reducer(state: UserReducerState = initialState, action: UserReducerAction): UserReducerState {
   switch (action.type) {
     case GetLoggedInUser.SUCCESS:
-      return { ...state, loggedInUser: action.payload };
-    case GetUser.ACTION:
+      return {
+        ...state,
+        loggedInUser: action.payload.user,
+      };
+    case GetUser.REQUEST:
     case GetUser.FAILURE:
       return {
         ...state,
@@ -83,10 +90,9 @@ export default function reducer(state: UserReducerState = initialState, action: 
         ...state,
         profile: {
           ...state.profile,
-          user: action.payload,
+          user: action.payload.user,
         },
       };
-
     case GetUserOwn.REQUEST:
     case GetUserOwn.FAILURE:
       return {
@@ -122,7 +128,6 @@ export default function reducer(state: UserReducerState = initialState, action: 
           ...action.payload,
         }
       };
-
     default:
       return state;
   }
