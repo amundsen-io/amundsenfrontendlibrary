@@ -230,7 +230,7 @@ describe('ProfilePage', () => {
     it('renders Tabs w/ correct props', () => {
       expect(wrapper.find('#profile-tabs').find(Tabs).props()).toMatchObject({
         tabs: wrapper.instance().generateTabInfo(),
-        defaultTab: 'frequentUses_tab',
+        defaultTab: READ_TAB_KEY,
       });
     });
 

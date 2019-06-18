@@ -1,4 +1,4 @@
-import { LoggedInUser, PeopleUser } from 'interfaces';
+import { LoggedInUser, PeopleUser, Resource } from 'interfaces';
 
 import {
   GetLoggedInUser,
@@ -10,7 +10,6 @@ import {
   GetUserOwn, GetUserOwnRequest, GetUserOwnResponse,
   GetUserRead, GetUserReadRequest, GetUserReadResponse,
 } from './types';
-import { Resource } from 'interfaces';
 
 type UserReducerAction =
   GetLoggedInUserRequest | GetLoggedInUserResponse |

@@ -10,11 +10,10 @@ import Tabs from 'components/common/Tabs';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { getUserById, getUserOwn, getUserRead } from 'ducks/user/reducer';
-import { PeopleUser } from 'interfaces';
+import { PeopleUser, Resource } from 'interfaces';
 import { GetUserRequest, GetUserOwnRequest, GetUserReadRequest } from 'ducks/user/types';
 
 import './styles.scss';
-import { Resource } from 'interfaces';
 import ResourceList from 'components/common/ResourceList';
 import { GetBookmarksForUserRequest } from 'ducks/bookmark/types';
 import { getBookmarksForUser } from 'ducks/bookmark/reducer';
