@@ -53,7 +53,7 @@ describe('allTags ducks', () => {
       it('takes GetAllTags.REQUEST with getAllTagsWorker', () => {
         testSaga(getAllTagsWatcher)
           .next()
-          .takeEveryEffect(GetAllTags.REQUEST, getAllTagsWorker);
+          .takeEvery(GetAllTags.REQUEST, getAllTagsWorker);
       });
     });
 

@@ -4,9 +4,9 @@ import { ResourceType, SearchAllOptions } from 'interfaces';
 
 import { DashboardSearchResults, TableSearchResults, UserSearchResults } from '../types';
 
-const BASE_URL = '/api/search/v0';
+export const BASE_URL = '/api/search/v0';
 
-interface SearchAPI {
+export interface SearchAPI {
   msg: string;
   status_code: number;
   search_term: string;
@@ -15,28 +15,32 @@ interface SearchAPI {
   users?: UserSearchResults;
 };
 
+export const searchAllHelper = (response: AxiosResponse<SearchAPI>) => {
+  return {
+    search_term: response.data.search_term,
+    tables: response.data.tables,
+  }
+};
+
 export function searchAll(options: SearchAllOptions, term: string) {
   return axios.all([
       axios.get(`${BASE_URL}/table?query=${term}&page_index=${options.tableIndex || 0}`),
       // TODO PEOPLE - Add request for people here
-    ]).then(axios.spread((tableResponse: AxiosResponse<SearchAPI>) => {
-      return {
-        search_term: tableResponse.data.search_term,
-        tables: tableResponse.data.tables,
-      }
-  }));
+    ]).then(axios.spread(searchAllHelper));
+};
+
+export const searchResourceHelper = (response: AxiosResponse<SearchAPI>) => {
+  const { data } = response;
+  const ret = { searchTerm: data.search_term };
+  ['tables', 'users'].forEach((key) => {
+    if (data[key]) {
+      ret[key] = data[key];
+    }
+  });
+  return ret;
 };
 
 export function searchResource(pageIndex: number, resource: ResourceType, term: string) {
   return axios.get(`${BASE_URL}/${resource}?query=${term}&page_index=${pageIndex}`)
-    .then((response: AxiosResponse<SearchAPI>) => {
-      const { data } = response;
-      const ret = { searchTerm: data.search_term };
-      ['tables', 'users'].forEach((key) => {
-        if (data[key]) {
-          ret[key] = data[key];
-        }
-      });
-      return ret;
-    });
+    .then(searchResourceHelper);
 };

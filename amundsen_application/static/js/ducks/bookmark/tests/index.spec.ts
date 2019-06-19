@@ -65,7 +65,7 @@ describe('bookmark ducks', () => {
           payload: {
             resourceKey: testResourceKey,
             resourceType: testResourceType,
-          }, 
+          },
         });
       });
     });
@@ -128,7 +128,7 @@ describe('sagas', () => {
       it('takes AddBookmark.REQUEST with addBookmarkWorker', () => {
         testSaga(addBookmarkWatcher)
           .next()
-          .takeEveryEffect(AddBookmark.REQUEST, addBookmarkWorker);
+          .takeEvery(AddBookmark.REQUEST, addBookmarkWorker);
       });
     });
 
@@ -184,7 +184,7 @@ describe('sagas', () => {
       it('takes GetBookmark.REQUEST with getBookmarksWorker', () => {
         testSaga(getBookmarksWatcher)
           .next()
-          .takeEveryEffect(GetBookmarks.REQUEST, getBookmarksWorker);
+          .takeEvery(GetBookmarks.REQUEST, getBookmarksWorker);
       });
     });
 
@@ -229,7 +229,7 @@ describe('sagas', () => {
       it('takes GetBookmarksForUser.REQUEST with getBookmarkForUserWorker', () => {
         testSaga(getBookmarksForUserWatcher)
           .next()
-          .takeEveryEffect(GetBookmarksForUser.REQUEST, getBookmarkForUserWorker);
+          .takeEvery(GetBookmarksForUser.REQUEST, getBookmarkForUserWorker);
       });
     });
 
@@ -281,7 +281,7 @@ describe('sagas', () => {
       it('takes RemoveBookmark.REQUEST with removeBookmarkWorker', () => {
         testSaga(removeBookmarkWatcher)
           .next()
-          .takeEveryEffect(RemoveBookmark.REQUEST, removeBookmarkWorker);
+          .takeEvery(RemoveBookmark.REQUEST, removeBookmarkWorker);
       });
     });
 

@@ -44,7 +44,7 @@ describe('announcements ducks', () => {
       it('takes GetAnnouncements.REQUEST with getAnnouncementsWorker', () => {
         testSaga(getAnnouncementsWatcher)
           .next()
-          .takeEveryEffect(GetAnnouncements.REQUEST, getAnnouncementsWorker);
+          .takeEvery(GetAnnouncements.REQUEST, getAnnouncementsWorker);
       });
     });
 
