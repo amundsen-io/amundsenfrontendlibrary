@@ -112,9 +112,9 @@ describe('searchResource', () => {
   });
 
   it('calls axios get with request for a resource', async () => {
-    let pageIndex = 0;
-    let resourceType = ResourceType.table;
-    let term = 'test';
+    const pageIndex = 0;
+    const resourceType = ResourceType.table;
+    const term = 'test';
     await searchResource(pageIndex, resourceType, term);
     expect(axiosMockGet).toHaveBeenCalledWith(`${BASE_URL}/${resourceType}?query=${term}&page_index=${pageIndex}`);
   });

@@ -30,8 +30,8 @@ describe('search ducks', () => {
 
   describe('actions', () => {
     it('searchAll - returns the action to search all resources', () => {
-      let term = 'test';
-      let options = {};
+      const term = 'test';
+      const options = {};
       expect(searchAll(term, options)).toEqual({
         payload: {
           options,
@@ -55,9 +55,9 @@ describe('search ducks', () => {
     });
 
     it('searchResource - returns the action to search all resources', () => {
-      let pageIndex = 0;
-      let resource = ResourceType.table;
-      let term = 'test';
+      const pageIndex = 0;
+      const resource = ResourceType.table;
+      const term = 'test';
       expect(searchResource(resource, term, pageIndex)).toEqual({
         payload: {
           pageIndex,
