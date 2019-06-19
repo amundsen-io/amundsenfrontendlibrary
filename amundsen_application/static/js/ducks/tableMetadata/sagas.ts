@@ -23,13 +23,8 @@ import {
 
 export function* getTableDataWorker(action: GetTableDataRequest): SagaIterator {
   try {
-    /* Errors will be throw if we use redux-saga 'call()' with undefined or null values.
-       As a workaround, set appropriate defaults for the optional values on the action. */
-    const { payload } = action;
-    const searchIndex = payload.searchIndex ? payload.searchIndex.toString() : '';
-    const source = payload.source || '';
-
-    const { data, owners, statusCode, tags } = yield call(metadataGetTableData, payload.key, searchIndex, source);
+    const { key, searchIndex, source } = action.payload;
+    const { data, owners, statusCode, tags } = yield call(metadataGetTableData, key, searchIndex, source);
     yield put({ type: GetTableData.SUCCESS, payload: { data, owners, statusCode, tags } });
   } catch (e) {
     yield put({ type: GetTableData.FAILURE, payload: { data: {}, owners: [], statusCode: 500, tags: [] } });

@@ -9,7 +9,9 @@ import { PreviewData, PreviewQueryParams, TableMetadata, User, Tag } from 'inter
 
 const API_PATH = '/api/metadata/v0';
 
+// TODO: Consider created shared interfaces for ducks so we can reuse MessageAPI everywhere else
 type MessageAPI = { msg: string };
+
 type TableData = TableMetadata & {
   owners: User[];
   tags: Tag[];
