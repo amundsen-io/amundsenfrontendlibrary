@@ -5,7 +5,13 @@ import { throwError } from 'redux-saga-test-plan/providers';
 import { Bookmark, ResourceType } from 'interfaces';
 
 import { addBookmark as addBkmrk, getBookmarks as getBkmrks, removeBookmark as removeBkmrk } from '../api/v0';
-import reducer, { addBookmark, getBookmarks, getBookmarksForUser, removeBookmark, initialState, BookmarkReducerState } from '../reducer';
+import reducer, {
+  addBookmark, addBookmarkFailure, addBookmarkSuccess,
+  getBookmarks, getBookmarksFailure, getBookmarksSuccess,
+  getBookmarksForUser, getBookmarksForUserFailure, getBookmarksForUserSuccess,
+  removeBookmark, removeBookmarkFailure, removeBookmarkSuccess,
+  initialState, BookmarkReducerState
+} from '../reducer';
 import {
   addBookmarkWatcher, addBookmarkWorker,
   getBookmarksWatcher, getBookmarksWorker,
@@ -20,110 +26,166 @@ import {
 } from '../types';
 
 describe('bookmark ducks', () => {
-  let testResourceKey;
-  let testResourceType;
-  let testUserId;
+  let bookmarks: Bookmark[];
+  let testResourceKey: string;
+  let testResourceType: string;
+  let testUserId: string;
   beforeAll(() => {
     testResourceKey = 'key';
     testResourceType = ResourceType.table;
     testUserId = 'userId';
+    bookmarks = [
+      {
+        key: testResourceKey,
+        type: testResourceType,
+        cluster: 'cluster',
+        database: 'database',
+        description: 'description',
+        name: 'name',
+        schema_name: 'schema_name',
+      },
+    ];
   });
+
   describe('actions', () => {
-    describe('addBookmark', () => {
-      it('should return action of type AddBookmarkRequest', () => {
-        expect(addBookmark(testResourceKey, testResourceType)).toEqual({
-          type: AddBookmark.REQUEST,
-          payload: {
-            resourceKey: testResourceKey,
-            resourceType: testResourceType,
-          },
-        });
+    it('addBookmark - returns the action to add a bookmark', () => {
+      expect(addBookmark(testResourceKey, testResourceType)).toEqual({
+        type: AddBookmark.REQUEST,
+        payload: {
+          resourceKey: testResourceKey,
+          resourceType: testResourceType,
+        },
       });
     });
 
-    describe('getBookmarks', () => {
-      it('should return action of type GetBookmarksRequest', () => {
-        expect(getBookmarks()).toEqual({ type: GetBookmarks.REQUEST });
+    it('addBookmarkFailure - returns the action to process failure', () => {
+      expect(addBookmarkFailure()).toEqual({
+        type: AddBookmark.FAILURE,
       });
     });
 
-    describe('getBookmarksForUser', () => {
-      it('should return action of type GetBookmarksForUserRequest', () => {
-        expect(getBookmarksForUser(testUserId)).toEqual({
-          type: GetBookmarksForUser.REQUEST,
-          payload: {
-            userId: testUserId,
-          },
-        });
+    it('addBookmarkSuccess - returns the action to process success', () => {
+      expect(addBookmarkSuccess(bookmarks)).toEqual({
+        type: AddBookmark.SUCCESS,
+        payload: {
+          bookmarks,
+        }
       });
     });
 
-    describe('removeBookmark', () => {
-      it('should return action of type RemoveBookmarkRequest', () => {
-        expect(removeBookmark(testResourceKey, testResourceType)).toEqual({
-          type: RemoveBookmark.REQUEST,
-          payload: {
-            resourceKey: testResourceKey,
-            resourceType: testResourceType,
-          },
-        });
+    it('getBookmarks - returns the action to get bookmarks', () => {
+      expect(getBookmarks()).toEqual({ type: GetBookmarks.REQUEST });
+    });
+
+    it('getBookmarksFailure - returns the action to process failure', () => {
+      expect(getBookmarksFailure()).toEqual({ type: GetBookmarks.FAILURE});
+    });
+
+    it('getBookmarksSuccess - returns the action to process success', () => {
+      expect(getBookmarksSuccess(bookmarks)).toEqual({
+        type: GetBookmarks.SUCCESS,
+        payload: {
+          bookmarks,
+        }
+      });
+    });
+
+    it('getBookmarksForUser - returns the action to get bookmarks for a user', () => {
+      expect(getBookmarksForUser(testUserId)).toEqual({
+        type: GetBookmarksForUser.REQUEST,
+        payload: {
+          userId: testUserId,
+        },
+      });
+    });
+
+    it('getBookmarksForUserFailure - returns the action to process failure', () => {
+      expect(getBookmarksForUserFailure()).toEqual({ type: GetBookmarksForUser.FAILURE});
+    });
+
+    it('getBookmarksForUserSuccess - returns the action to process success', () => {
+      expect(getBookmarksForUserSuccess(bookmarks)).toEqual({
+        type: GetBookmarksForUser.SUCCESS,
+        payload: {
+          bookmarks,
+        }
+      });
+    });
+
+    it('removeBookmark - returns the action to remove a bookmark', () => {
+      expect(removeBookmark(testResourceKey, testResourceType)).toEqual({
+        type: RemoveBookmark.REQUEST,
+        payload: {
+          resourceKey: testResourceKey,
+          resourceType: testResourceType,
+        },
+      });
+    });
+
+    it('removeBookmarkFailure - returns the action to process failure', () => {
+      expect(removeBookmarkFailure()).toEqual({ type: RemoveBookmark.FAILURE});
+    });
+
+    it('removeBookmarkSuccess - returns the action to process success', () => {
+      expect(removeBookmarkSuccess(testResourceKey, testResourceType)).toEqual({
+        type: RemoveBookmark.SUCCESS,
+        payload: {
+          resourceKey: testResourceKey,
+          resourceType: testResourceType,
+        },
       });
     });
   });
 
   describe('reducer', () => {
     let testState: BookmarkReducerState;
-    let bookmarkList: Bookmark[];
     beforeAll(() => {
-      bookmarkList = [
-        {
-          key: 'bookmarked_key',
-          type: ResourceType.table,
-          cluster: 'cluster',
-          database: 'database',
-          description: 'description',
-          name: 'name',
-          schema_name: 'schema_name',
-        },
-      ];
       testState = {
-        myBookmarks: bookmarkList,
+        myBookmarks: bookmarks,
         myBookmarksIsLoaded: false,
         bookmarksForUser: [],
       };
     });
     it('should return the existing state if action is not handled', () => {
       expect(reducer(testState, { type: 'INVALID.ACTION' })).toEqual(testState);
-      expect(reducer(testState, { type: AddBookmark.FAILURE })).toEqual(testState);
-      expect(reducer(testState, { type: GetBookmarks.FAILURE })).toEqual(testState);
-      expect(reducer(testState, { type: RemoveBookmark.FAILURE })).toEqual(testState);
+      expect(reducer(testState, addBookmarkFailure())).toEqual(testState);
+      expect(reducer(testState, getBookmarksFailure())).toEqual(testState);
+      expect(reducer(testState, getBookmarksForUserFailure())).toEqual(testState);
+      expect(reducer(testState, removeBookmarkFailure())).toEqual(testState);
     });
 
     it('should handle RemoveBookmark.SUCCESS', () => {
-      expect(reducer(testState, { type: RemoveBookmark.SUCCESS, payload: { resourceType: ResourceType.table, resourceKey: 'bookmarked_key' }})).toEqual({
+      expect(reducer(testState, removeBookmarkSuccess(testResourceKey, testResourceType))).toEqual({
         ...testState,
         myBookmarks: [],
       });
     });
 
     it('should handle AddBookmark.SUCCESS', () => {
-      expect(reducer(initialState, { type: AddBookmark.SUCCESS, payload: { bookmarks: bookmarkList } })).toEqual({
+      expect(reducer(initialState, addBookmarkSuccess(bookmarks))).toEqual({
         ...initialState,
-        myBookmarks: bookmarkList,
+        myBookmarks: bookmarks,
         myBookmarksIsLoaded: true,
       });
     });
 
     it('should handle GetBookmarks.SUCCESS', () => {
-      expect(reducer(initialState, { type: GetBookmarks.SUCCESS, payload: { bookmarks: bookmarkList } })).toEqual({
+      expect(reducer(initialState, getBookmarksSuccess(bookmarks))).toEqual({
         ...initialState,
-        myBookmarks: bookmarkList,
+        myBookmarks: bookmarks,
         myBookmarksIsLoaded: true,
+      });
+    });
+
+    it('should handle GetBookmarksForUser.SUCCESS', () => {
+      expect(reducer(initialState, getBookmarksForUserSuccess(bookmarks))).toEqual({
+        ...initialState,
+        bookmarksForUser: bookmarks,
       });
     });
   });
 
-describe('sagas', () => {
+  describe('sagas', () => {
     describe('addBookmarkWatcher', () => {
       it('takes AddBookmark.REQUEST with addBookmarkWorker', () => {
         testSaga(addBookmarkWatcher)
@@ -134,35 +196,17 @@ describe('sagas', () => {
 
     describe('addBookmarkWorker', () => {
       let action: AddBookmarkRequest;
-      let testResourceKey;
-      let testResourceType;
       beforeAll(() => {
-        testResourceKey = 'bookmarked_key';
-        testResourceType = ResourceType.table;
         action = addBookmark(testResourceKey, testResourceType);
       })
 
       it('adds a bookmark', () => {
-        const bookmarks = [
-          {
-            key: testResourceKey,
-            type: testResourceType,
-            cluster: 'cluster',
-            database: 'database',
-            description: 'description',
-            name: 'name',
-            schema_name: 'schema_name',
-          },
-        ];
         return expectSaga(addBookmarkWorker, action)
           .provide([
             [matchers.call.fn(addBkmrk), {}],
             [matchers.call.fn(getBkmrks), { bookmarks }],
           ])
-          .put({
-            type: AddBookmark.SUCCESS,
-            payload: { bookmarks }
-          })
+          .put(addBookmarkSuccess(bookmarks))
           .run();
       });
 
@@ -172,10 +216,7 @@ describe('sagas', () => {
             [matchers.call.fn(addBkmrk), throwError(new Error())],
             [matchers.call.fn(getBkmrks), throwError(new Error())],
           ])
-          .put({
-            type: AddBookmark.FAILURE,
-            payload: { bookmarks: [] }
-          })
+          .put(addBookmarkFailure())
           .run();
       });
     });
@@ -190,25 +231,11 @@ describe('sagas', () => {
 
     describe('getBookmarksWorker', () => {
       it('gets bookmarks', () => {
-        const bookmarks = [
-          {
-            key: testResourceKey,
-            type: testResourceType,
-            cluster: 'cluster',
-            database: 'database',
-            description: 'description',
-            name: 'name',
-            schema_name: 'schema_name',
-          },
-        ];
         return expectSaga(getBookmarksWorker)
           .provide([
             [matchers.call.fn(getBkmrks), { bookmarks }],
           ])
-          .put({
-            type: GetBookmarks.SUCCESS,
-            payload: { bookmarks }
-          })
+          .put(getBookmarksSuccess(bookmarks))
           .run();
       });
 
@@ -217,10 +244,7 @@ describe('sagas', () => {
           .provide([
             [matchers.call.fn(getBkmrks), throwError(new Error())],
           ])
-          .put({
-            type: GetBookmarks.FAILURE,
-            payload: { bookmarks: [] }
-          })
+          .put(getBookmarksFailure())
           .run();
       });
     });
@@ -235,32 +259,16 @@ describe('sagas', () => {
 
     describe('getBookmarkForUserWorker', () => {
       let action: GetBookmarksForUserRequest;
-      let testUserId;
       beforeAll(() => {
-        testUserId = 'userId';
         action = getBookmarksForUser(testUserId);
       });
 
       it('adds a bookmark', () => {
-        const bookmarks = [
-          {
-            key: testResourceKey,
-            type: testResourceType,
-            cluster: 'cluster',
-            database: 'database',
-            description: 'description',
-            name: 'name',
-            schema_name: 'schema_name',
-          },
-        ];
         return expectSaga(getBookmarkForUserWorker, action)
           .provide([
-            [matchers.call.fn(getBkmrks), { bookmarks, userId: action.payload.userId }],
+            [matchers.call.fn(getBkmrks), { bookmarks }],
           ])
-          .put({
-            type: GetBookmarksForUser.SUCCESS,
-            payload: { bookmarks, userId: action.payload.userId }
-          })
+          .put(getBookmarksForUserSuccess(bookmarks))
           .run();
       });
 
@@ -269,10 +277,7 @@ describe('sagas', () => {
           .provide([
             [matchers.call.fn(getBkmrks), throwError(new Error())],
           ])
-          .put({
-            type: GetBookmarksForUser.FAILURE,
-            payload: { bookmarks: [], userId: action.payload.userId }
-          })
+          .put(getBookmarksForUserFailure())
           .run();
       });
     });
@@ -287,11 +292,7 @@ describe('sagas', () => {
 
     describe('removeBookmarkWorker', () => {
       let action: RemoveBookmarkRequest;
-      let testResourceKey;
-      let testResourceType;
       beforeAll(() => {
-        testResourceKey = 'bookmarked_key';
-        testResourceType = ResourceType.table;
         action = removeBookmark(testResourceKey, testResourceType);
       });
 
@@ -300,10 +301,7 @@ describe('sagas', () => {
           .provide([
             [matchers.call.fn(removeBkmrk), {}],
           ])
-          .put({
-            type: RemoveBookmark.SUCCESS,
-            payload: { resourceKey: action.payload.resourceKey, resourceType: action.payload.resourceType }
-          })
+          .put(removeBookmarkSuccess(testResourceKey, testResourceType))
           .run();
       });
 
@@ -312,10 +310,7 @@ describe('sagas', () => {
           .provide([
             [matchers.call.fn(removeBkmrk), throwError(new Error())],
           ])
-          .put({
-            type: RemoveBookmark.FAILURE,
-            payload: { resourceKey: action.payload.resourceKey, resourceType: action.payload.resourceType }
-          })
+          .put(removeBookmarkFailure())
           .run();
       });
     });

@@ -14,7 +14,7 @@ export interface AddBookmarkRequest {
 }
 export interface AddBookmarkResponse {
   type: AddBookmark.SUCCESS | AddBookmark.FAILURE;
-  payload: {
+  payload?: {
     bookmarks: Bookmark[];
   }
 }
@@ -33,7 +33,7 @@ export interface RemoveBookmarkRequest {
 }
 export interface RemoveBookmarkResponse {
   type: RemoveBookmark.SUCCESS | RemoveBookmark.FAILURE;
-  payload: {
+  payload?: {
     resourceKey: string;
     resourceType: string;
   };
@@ -50,7 +50,7 @@ export interface GetBookmarksRequest {
 }
 export interface GetBookmarksResponse {
   type: GetBookmarks.SUCCESS | GetBookmarks.FAILURE;
-  payload: {
+  payload?: {
     bookmarks: Bookmark[];
   };
 }
@@ -69,7 +69,7 @@ export interface GetBookmarksForUserRequest {
 }
 export interface GetBookmarksForUserResponse {
   type: GetBookmarksForUser.SUCCESS | GetBookmarksForUser.FAILURE;
-  payload: {
+  payload?: {
     bookmarks: Bookmark[];
   };
 }
