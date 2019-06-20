@@ -1,36 +1,51 @@
 import { LoggedInUser, PeopleUser, Resource } from 'interfaces';
 
 import {
-  GetLoggedInUser,
-  GetLoggedInUserRequest,
-  GetLoggedInUserResponse,
-  GetUser,
-  GetUserRequest,
-  GetUserResponse,
+  GetLoggedInUser, GetLoggedInUserRequest, GetLoggedInUserResponse,
+  GetUser, GetUserRequest, GetUserResponse,
   GetUserOwn, GetUserOwnRequest, GetUserOwnResponse,
   GetUserRead, GetUserReadRequest, GetUserReadResponse,
 } from './types';
-
-type UserReducerAction =
-  GetLoggedInUserRequest | GetLoggedInUserResponse |
-  GetUserRequest | GetUserResponse |
-  GetUserOwnRequest | GetUserOwnResponse |
-  GetUserReadRequest | GetUserReadResponse;
 
 /* ACTIONS */
 export function getLoggedInUser(): GetLoggedInUserRequest {
   return { type: GetLoggedInUser.REQUEST };
 };
-export function getUserById(userId: string): GetUserRequest {
-  return { payload: { userId }, type: GetUser.REQUEST };
+export function getLoggedInUserFailure(): GetLoggedInUserResponse {
+  return { type: GetLoggedInUser.FAILURE };
+};
+export function getLoggedInUserSccess(user: LoggedInUser): GetLoggedInUserResponse {
+  return { type: GetLoggedInUser.SUCCESS, payload: { user } };
+};
+
+export function getUser(userId: string): GetUserRequest {
+  return { type: GetUser.REQUEST, payload: { userId } };
+};
+export function getUserFailure(): GetUserResponse {
+  return { type: GetUser.FAILURE };
+};
+export function getUserSuccess(user: PeopleUser): GetUserResponse {
+  return { type: GetUser.SUCCESS, payload: { user } };
 };
 
 export function getUserOwn(userId: string): GetUserOwnRequest {
   return { type: GetUserOwn.REQUEST, payload: { userId }};
 };
+export function getUserOwnFailure(): GetUserOwnResponse {
+  return { type: GetUserOwn.FAILURE };
+};
+export function getUserOwnSuccess(own: Resource[]): GetUserOwnResponse {
+  return { type: GetUserOwn.SUCCESS, payload: { own } };
+};
 
 export function getUserRead(userId: string): GetUserReadRequest {
   return { type: GetUserRead.REQUEST, payload: { userId }};
+};
+export function getUserReadFailure(): GetUserReadResponse {
+  return { type: GetUserRead.FAILURE };
+};
+export function getUserReadSuccess(read: Resource[]): GetUserReadResponse {
+  return { type: GetUserRead.SUCCESS, payload: { read } };
 };
 
 /* REDUCER */
@@ -68,7 +83,7 @@ const initialState: UserReducerState = {
   },
 };
 
-export default function reducer(state: UserReducerState = initialState, action: UserReducerAction): UserReducerState {
+export default function reducer(state: UserReducerState = initialState, action): UserReducerState {
   switch (action.type) {
     case GetLoggedInUser.SUCCESS:
       return {
