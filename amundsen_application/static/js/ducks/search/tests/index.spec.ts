@@ -20,6 +20,7 @@ import {
 import {
   SearchAll, SearchAllRequest, SearchAllResponse,
   SearchResource, SearchResourceRequest, SearchResourceResponse,
+  SearchResponsePayload,
 } from '../types';
 
 describe('search ducks', () => {

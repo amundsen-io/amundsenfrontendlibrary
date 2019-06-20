@@ -1,6 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 import globalState from 'fixtures/globalState';
+
+import { TableResource } from 'interfaces';
 
 import { metadataPopularTables, PopularTablesAPI } from '../v0';
 

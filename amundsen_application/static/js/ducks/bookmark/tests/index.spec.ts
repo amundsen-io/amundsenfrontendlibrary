@@ -28,7 +28,7 @@ import {
 describe('bookmark ducks', () => {
   let bookmarks: Bookmark[];
   let testResourceKey: string;
-  let testResourceType: string;
+  let testResourceType: ResourceType;
   let testUserId: string;
   beforeAll(() => {
     testResourceKey = 'key';

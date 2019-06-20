@@ -49,7 +49,7 @@ export function searchResource(resource: ResourceType, term: string, pageIndex: 
     type: SearchResource.REQUEST,
   };
 };
-export function searchResourceSuccess(searchResults: SearchResponsePayload): SearchAllResponse {
+export function searchResourceSuccess(searchResults: SearchResponsePayload): SearchResourceResponse {
   return { type: SearchResource.SUCCESS, payload: searchResults };
 };
 export function searchResourceFailure(): SearchResourceResponse {

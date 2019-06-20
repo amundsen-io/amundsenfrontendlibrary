@@ -1,10 +1,10 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+
+import { DashboardSearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
 
 import globalState from 'fixtures/globalState';
 
 import { ResourceType, SearchAllOptions } from 'interfaces';
-
-import { DashboardSearchResults, TableSearchResults, UserSearchResults } from '../types';
 
 import { searchAll, searchAllHelper, searchResource, searchResourceHelper, SearchAPI, BASE_URL } from '../v0';
 
