@@ -35,7 +35,7 @@ describe('feedback ducks', () => {
         type: SubmitFeedback.REQUEST,
         payload: {
           data: formData
-        };
+        },
       });
     });
 

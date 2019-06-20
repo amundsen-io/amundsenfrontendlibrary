@@ -118,7 +118,7 @@ describe('search ducks', () => {
     it('should handle SearchAll.FAILURE', () => {
       expect(reducer(testState, searchAllFailure())).toEqual({
         ...initialState,
-        isLoading: false;
+        isLoading: false,
       });
     });
 
@@ -129,7 +129,7 @@ describe('search ducks', () => {
     it('should handle SearchResource.REQUEST', () => {
       expect(reducer(testState, searchResource(ResourceType.table, 'test', 0))).toEqual({
         ...initialState,
-        isLoading: true;
+        isLoading: true,
       });
     });
 
@@ -144,7 +144,7 @@ describe('search ducks', () => {
     it('should handle SearchResource.FAILURE', () => {
       expect(reducer(testState, searchResourceFailure())).toEqual({
         ...initialState,
-        isLoading: false;
+        isLoading: false,
       });
     });
   });
