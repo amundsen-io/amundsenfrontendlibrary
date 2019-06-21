@@ -14,7 +14,7 @@ export function getLoggedInUser(): GetLoggedInUserRequest {
 export function getLoggedInUserFailure(): GetLoggedInUserResponse {
   return { type: GetLoggedInUser.FAILURE };
 };
-export function getLoggedInUserSccess(user: LoggedInUser): GetLoggedInUserResponse {
+export function getLoggedInUserSuccess(user: LoggedInUser): GetLoggedInUserResponse {
   return { type: GetLoggedInUser.SUCCESS, payload: { user } };
 };
 
@@ -58,7 +58,7 @@ export interface UserReducerState {
   };
 };
 
-const defaultUser = {
+export const defaultUser = {
   display_name: '',
   email: '',
   employee_type: '',
@@ -74,7 +74,7 @@ const defaultUser = {
   team_name: '',
   user_id: '',
 };
-const initialState: UserReducerState = {
+export const initialState: UserReducerState = {
   loggedInUser: defaultUser,
   profile: {
     own: [],
@@ -88,7 +88,7 @@ export default function reducer(state: UserReducerState = initialState, action):
     case GetLoggedInUser.SUCCESS:
       return {
         ...state,
-        loggedInUser: action.payload.user,
+        loggedInUser: (<GetLoggedInUserResponse>action).payload.user,
       };
     case GetUser.REQUEST:
     case GetUser.FAILURE:
@@ -104,7 +104,7 @@ export default function reducer(state: UserReducerState = initialState, action):
         ...state,
         profile: {
           ...state.profile,
-          user: action.payload.user,
+          user: (<GetUserResponse>action).payload.user,
         },
       };
     case GetUserOwn.REQUEST:
@@ -121,10 +121,9 @@ export default function reducer(state: UserReducerState = initialState, action):
         ...state,
         profile: {
           ...state.profile,
-          ...action.payload,
+          own: (<GetUserOwnResponse>action).payload.own,
         }
       };
-
     case GetUserRead.REQUEST:
     case GetUserRead.FAILURE:
       return {
@@ -139,7 +138,7 @@ export default function reducer(state: UserReducerState = initialState, action):
         ...state,
         profile: {
           ...state.profile,
-          ...action.payload,
+          read: (<GetUserReadResponse>action).payload.read,
         }
       };
     default:

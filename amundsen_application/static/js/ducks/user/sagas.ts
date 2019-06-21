@@ -14,7 +14,7 @@ import {
 } from './types';
 
 import {
-  getLoggedInUserFailure, getLoggedInUserSccess,
+  getLoggedInUserFailure, getLoggedInUserSuccess,
   getUserFailure, getUserSuccess,
   getUserOwnFailure, getUserOwnSuccess,
   getUserReadFailure, getUserReadSuccess,
@@ -23,7 +23,7 @@ import {
 export function* getLoggedInUserWorker(): SagaIterator {
   try {
     const user = yield call(loggedInUser);
-    yield put(getLoggedInUserSccess(user));
+    yield put(getLoggedInUserSuccess(user));
   } catch (e) {
     yield put(getLoggedInUserFailure());
   }
