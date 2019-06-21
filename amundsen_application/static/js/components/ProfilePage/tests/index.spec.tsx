@@ -202,7 +202,7 @@ describe('ProfilePage', () => {
       }).wrapper;
       expect(wrapper.find('#profile-title').find(Flag).props()).toMatchObject({
         caseType: 'sentenceCase',
-        labelStyle: 'label-danger',
+        labelStyle: 'danger',
         text: 'Alumni',
       });
     });

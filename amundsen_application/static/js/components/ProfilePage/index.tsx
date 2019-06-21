@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as DocumentTitle from 'react-document-title';
 import * as Avatar from 'react-avatar';
 import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
 
 import Breadcrumb from 'components/common/Breadcrumb';
@@ -30,8 +31,6 @@ import {
   READ_TAB_TITLE,
 } from './constants';
 
-
-
 interface StateFromProps {
   bookmarks: Resource[];
   user: PeopleUser;
@@ -46,7 +45,12 @@ interface DispatchFromProps {
   getBookmarksForUser: (userId: string) => GetBookmarksForUserRequest;
 }
 
-export type ProfilePageProps = StateFromProps & DispatchFromProps;
+interface RouteProps {
+  userId: string;
+}
+
+
+export type ProfilePageProps = StateFromProps & DispatchFromProps & RouteComponentProps<RouteProps>;
 
 export class ProfilePage extends React.Component<ProfilePageProps> {
   private userId: string;
@@ -54,9 +58,17 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
   constructor(props) {
     super(props);
 
-    const { match } = props;
-    const params = match.params;
+    const params = props.match.params;
     this.userId = params && params.userId ? params.userId : '';
+  }
+
+  componentDidUpdate() {
+    const userId = this.props.match.params.userId;
+
+    if (userId !== this.userId) {
+      console.log('change in userId detected')
+    }
+
   }
 
   componentDidMount() {
@@ -209,4 +221,4 @@ export const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ getUserById, getUserOwn, getUserRead, getBookmarksForUser }, dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(ProfilePage);
+export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(withRouter(ProfilePage));

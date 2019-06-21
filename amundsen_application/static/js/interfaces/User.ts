@@ -1,6 +1,8 @@
 export interface User {
   display_name: string;
+  email: string;
   profile_url: string;
+  user_id: string;
 };
 
 // Not a good name, not sure if we can consolidate yet
