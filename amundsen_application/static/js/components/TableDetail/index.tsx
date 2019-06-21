@@ -98,14 +98,16 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     this.database = params ? params.db : '';
     this.schema = params ? params.schema : '';
     this.tableName = params ? params.table : '';
+    this.key = params ? params.key : '';
     this.displayName = params ? `${this.schema}.${this.tableName}` : '';
 
     /*
-    This 'key' is the `table_uri` format described in metadataservice. Because it contains the '/' character,
+    This 'key' could be GUID for Atlas proxy or 'table_uri' for Neo4j proxy.
+    If 'key' is the `table_uri` format described in metadataservice. Because it contains the '/' character,
     we can't pass it as a single URL parameter without encodeURIComponent which makes ugly URLs.
     DO NOT CHANGE
     */
-    this.key = params ? `${this.database}://${this.cluster}.${this.schema}/${this.tableName}` : '';
+    this.key = this.key.includes(`/`) ? `${this.database}://${this.cluster}.${this.schema}/${this.tableName}` : this.key;
 
     this.state = {
       isLoading: props.isLoading,

@@ -20,15 +20,16 @@ class MetadataTest(unittest.TestCase):
                 {
                     'cluster': 'test_cluster',
                     'database': 'test_db',
+                    'description': 'This is a test',
                     'key': 'test_db://test_cluster.test_schema/test_table',
-                    'schema': 'test_schema',
-                    'table_description': 'This is a test',
-                    'table_name': 'test_table',
+                    'schema_name': 'test_schema',
                     'type': 'table',
+                    'name': 'test_table',
+                    'last_updated_epoch': None,
                 }
             ]
         }
-        self.expected_parsed_popular_tables = [
+        self.expected_popular_table = [
             {
                 'cluster': 'test_cluster',
                 'database': 'test_db',
@@ -206,20 +207,26 @@ class MetadataTest(unittest.TestCase):
                 {
                     'cluster': 'cluster',
                     'database': 'database',
-                    'schema': 'schema',
-                    'table_name': 'table_name_0',
-                    'table_description': 'description',
+                    'description': 'description',
+                    'key': 'database://cluster.schema/table_name_0',
+                    'last_updated_epoch': None,
+                    'name': 'table_name_0',
+                    'schema_name': 'schema',
+                    'type': 'table',
                 },
                 {
                     'cluster': 'cluster',
                     'database': 'database',
-                    'schema': 'schema',
-                    'table_name': 'table_name_1',
-                    'table_description': 'description',
+                    'description': 'description',
+                    'key': 'database://cluster.schema/table_name_1',
+                    'last_updated_epoch': None,
+                    'name': 'table_name_1',
+                    'schema_name': 'schema',
+                    'type': 'table',
                 },
             ]
         }
-        self.expected_parsed_bookmarks = [
+        self.expected_bookmarks = [
             {
                 'cluster': 'cluster',
                 'database': 'database',
@@ -255,7 +262,7 @@ class MetadataTest(unittest.TestCase):
             response = test.get('/api/metadata/v0/popular_tables')
             data = json.loads(response.data)
             self.assertEqual(response.status_code, HTTPStatus.OK)
-            self.assertCountEqual(data.get('results'), self.expected_parsed_popular_tables)
+            self.assertCountEqual(data.get('results'), self.expected_popular_table)
 
     @responses.activate
     def test_popular_tables_propagate_failure(self) -> None:
@@ -567,7 +574,7 @@ class MetadataTest(unittest.TestCase):
             response = test.get('/api/metadata/v0/user/bookmark')
             data = json.loads(response.data)
             self.assertEquals(response.status_code, HTTPStatus.OK)
-            self.assertCountEqual(data.get('bookmarks'), self.expected_parsed_bookmarks)
+            self.assertCountEqual(data.get('bookmarks'), self.expected_bookmarks)
 
     @responses.activate
     def test_get_bookmark_for_user(self) -> None:
@@ -582,7 +589,7 @@ class MetadataTest(unittest.TestCase):
             response = test.get('/api/metadata/v0/user/bookmark', query_string=dict(user_id=specified_user))
             data = json.loads(response.data)
             self.assertEquals(response.status_code, HTTPStatus.OK)
-            self.assertCountEqual(data.get('bookmarks'), self.expected_parsed_bookmarks)
+            self.assertCountEqual(data.get('bookmarks'), self.expected_bookmarks)
 
     @responses.activate
     def test_put_bookmark(self) -> None:

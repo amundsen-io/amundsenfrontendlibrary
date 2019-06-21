@@ -11,7 +11,7 @@ from amundsen_application.log.action_log import action_logging
 
 from amundsen_application.models.user import load_user, dump_user
 
-from amundsen_application.api.utils.metadata_utils import marshall_table_partial, marshall_table_full
+from amundsen_application.api.utils.metadata_utils import marshall_table_full
 from amundsen_application.api.utils.request_utils import get_query_param, request_metadata
 
 
@@ -52,7 +52,7 @@ def popular_tables() -> Response:
             message = 'Success'
             response_list = response.json().get('popular_tables')
             top4 = response_list[0:min(len(response_list), app.config['POPULAR_TABLE_COUNT'])]
-            popular_tables = [marshall_table_partial(result) for result in top4]
+            popular_tables = [result for result in top4]
         else:
             message = 'Encountered error: Request to metadata service failed with status code ' + str(status_code)
             logging.error(message)
@@ -441,7 +441,7 @@ def get_bookmark() -> Response:
         status_code = response.status_code
 
         tables = response.json().get('table')
-        table_bookmarks = [marshall_table_partial(table) for table in tables]
+        table_bookmarks = [table for table in tables]
 
         return make_response(jsonify({'msg': 'success', 'bookmarks': table_bookmarks}), status_code)
     except Exception as e:

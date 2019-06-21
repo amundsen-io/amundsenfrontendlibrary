@@ -4,30 +4,6 @@ from flask import current_app as app
 from amundsen_application.models.user import load_user, dump_user
 
 
-def marshall_table_partial(table: Dict) -> Dict:
-    """
-    Forms a short version of a table Dict, with selected fields and an added 'key'
-    :param table: Dict of partial table object
-    :return: partial table Dict
-
-    TODO - Unify data format returned by search and metadata.
-    """
-    table_name = table.get('table_name', '')
-    schema_name = table.get('schema', '')
-    cluster = table.get('cluster', '')
-    db = table.get('database', '')
-    return {
-        'cluster': cluster,
-        'database': db,
-        'description': table.get('table_description', ''),
-        'key': '{0}://{1}.{2}/{3}'.format(db, cluster, schema_name, table_name),
-        'name': table_name,
-        'schema_name': schema_name,
-        'type': 'table',
-        'last_updated_epoch': table.get('last_updated_epoch', None),
-    }
-
-
 def marshall_table_full(table: Dict) -> Dict:
     """
     Forms the full version of a table Dict, with additional and sanitized fields
