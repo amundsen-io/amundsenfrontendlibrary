@@ -4,7 +4,7 @@ import { LoggedInUser, PeopleUser, Resource } from 'interfaces';
 
 export type LoggedInUserAPI = { user: LoggedInUser; msg: string; };
 export type UserAPI = { user: PeopleUser; msg: string; };
-export type UserOwnAPI= { own: Resource[], msg: string; };
+export type UserOwnAPI = { own: Resource[], msg: string; };
 export type UserReadAPI = { read: Resource[], msg: string; };
 
 export function loggedInUser() {
