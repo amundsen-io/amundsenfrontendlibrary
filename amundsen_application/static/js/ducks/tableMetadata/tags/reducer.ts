@@ -8,10 +8,26 @@ import {
 /* ACTIONS */
 export function updateTags(tagArray: UpdateTagData[]): UpdateTagsRequest  {
   return {
+    type: UpdateTags.REQUEST,
     payload: {
       tagArray,
     },
-    type: UpdateTags.REQUEST,
+  };
+};
+export function updateTagsFailure(): UpdateTagsResponse  {
+  return {
+    type: UpdateTags.FAILURE,
+    payload: {
+      tags: [],
+    }
+  };
+};
+export function updateTagsSuccess(tags: Tag[]): UpdateTagsResponse  {
+  return {
+    type: UpdateTags.SUCCESS,
+    payload: {
+      tags
+    }
   };
 };
 

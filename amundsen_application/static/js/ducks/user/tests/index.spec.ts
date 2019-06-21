@@ -29,7 +29,11 @@ import {
 
 describe('user ducks', () => {
   let currentUser: LoggedInUser;
-  let otherUser: PeopleUser;
+  let otherUser: {
+    own: Resource[],
+    read: Resource[],
+    user: PeopleUser,
+  };
   let userId: string;
   beforeAll(() => {
     currentUser = globalState.user.loggedInUser;
@@ -142,9 +146,9 @@ describe('user ducks', () => {
     });
 
     it('should handle GetLoggedInUser.SUCCESS', () => {
-      expect(reducer(testState, getLoggedInUserSuccess(loggedInUser))).toEqual({
+      expect(reducer(testState, getLoggedInUserSuccess(currentUser))).toEqual({
         ...testState,
-        loggedInUser,
+        loggedInUser: currentUser,
       });
     });
 
