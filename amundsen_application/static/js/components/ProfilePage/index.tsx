@@ -137,44 +137,49 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
                       <h1>{ user.display_name }</h1>
                       {
                         (!user.is_active) &&
-                        <Flag caseType="sentenceCase" labelStyle="label-danger" text="Alumni"/>
+                        <Flag caseType="sentenceCase" labelStyle="danger" text="Alumni"/>
                       }
                     </div>
                     {
                       user.role_name && user.team_name &&
-                      <label id="user-role">{ `${user.role_name} on ${user.team_name}` }</label>
+                      <div id="user-role" className="body-2">{ `${user.role_name} on ${user.team_name}` }</div>
+                    }
+                    {/*TODO - delete when 'role_name'/'title' is added to user object in backend */}
+                    {
+                      !user.role_name && user.team_name &&
+                      <div id="user-role" className="body-2">{ `Team: ${user.team_name}` }</div>
                     }
                     {
                       user.manager_fullname &&
-                      <label id="user-manager">{ `Manager: ${user.manager_fullname}` }</label>
+                      <div id="user-manager" className="body-2">{ `Manager: ${user.manager_fullname}` }</div>
                     }
                     <div className="profile-icons">
                       {
-                        user.is_active &&
+                        user.is_active && user.slack_id &&
                         <a id="slack-link" href={user.slack_id} className='btn btn-flat-icon' target='_blank'>
-                          <img className='icon icon-slack'/>
-                          <span>Slack</span>
+                          <img className='icon icon-dark icon-slack'/>
+                          <span className="body-2">Slack</span>
                         </a>
                       }
                       {
                         user.is_active &&
                         <a id="email-link" href={`mailto:${user.email}`} className='btn btn-flat-icon' target='_blank'>
-                          <img className='icon icon-mail'/>
-                          <span>{ user.email }</span>
+                          <img className='icon icon-dark icon-mail'/>
+                          <span className="body-2">{ user.email }</span>
                         </a>
                       }
                       {
                         user.is_active && user.profile_url &&
                         <a id="profile-link" href={user.profile_url} className='btn btn-flat-icon' target='_blank'>
-                          <img className='icon icon-users'/>
-                          <span>Employee Profile</span>
+                          <img className='icon icon-dark icon-users'/>
+                          <span className="body-2">Employee Profile</span>
                         </a>
                       }
                       {
                         user.github_username &&
                         <a id="github-link" href={`https://github.com/${user.github_username}`} className='btn btn-flat-icon' target='_blank'>
-                          <img className='icon icon-github'/>
-                          <span>Github</span>
+                          <img className='icon icon-dark icon-github'/>
+                          <span className="body-2">Github</span>
                         </a>
                       }
                     </div>
