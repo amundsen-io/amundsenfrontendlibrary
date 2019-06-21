@@ -8,12 +8,28 @@ import {
 /* ACTIONS */
 export function updateTableOwner(updateArray: UpdateOwnerPayload[], onSuccess?: () => any, onFailure?: () => any): UpdateTableOwnerRequest {
   return {
+    type: UpdateTableOwner.REQUEST,
     payload: {
       onSuccess,
       onFailure,
       updateArray,
     },
-    type: UpdateTableOwner.REQUEST,
+  };
+};
+export function updateTableOwnerFailure(owners: {[id: string] : User}): UpdateTableOwnerResponse  {
+  return {
+    type: UpdateTableOwner.FAILURE,
+    payload: {
+      owners
+    }
+  };
+};
+export function updateTableOwnerSuccess(owners: {[id: string] : User}): UpdateTableOwnerResponse  {
+  return {
+    type: UpdateTableOwner.SUCCESS,
+    payload: {
+      owners
+    }
   };
 };
 
