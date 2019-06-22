@@ -1,22 +1,25 @@
-import { expectSaga, testSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
-import { throwError } from 'redux-saga-test-plan/providers';
+import { testSaga } from 'redux-saga-test-plan';
 
-import { UpdateMethod, UpdateOwnerPayload, User } from 'interfaces';
+import { OwnerDict, UpdateMethod, UpdateOwnerPayload } from 'interfaces';
 
 import globalState from 'fixtures/globalState';
 
-import { metadataUpdateTableOwner, metadataTableOwners } from '../../api/v0';
+import * as apis from '../../api/v0';
+
 import reducer, {
   updateTableOwner, updateTableOwnerFailure, updateTableOwnerSuccess,
   initialOwnersState, TableOwnerReducerState
 } from '../reducer';
 import { getTableData, getTableDataFailure, getTableDataSuccess } from '../../reducer';
+
 import { updateTableOwnerWorker, updateTableOwnerWatcher } from '../sagas';
+
 import { GetTableData, UpdateTableOwner } from '../../types';
 
+const metadataUpdateTableOwnerSpy = jest.spyOn(apis, 'metadataUpdateTableOwner').mockImplementation((payload, key) => []);
+
 describe('tableMetadata:owners ducks', () => {
-  let expectedOwners: {[id: string] : User};
+  let expectedOwners: OwnerDict;
   let updatePayload: UpdateOwnerPayload[];
   let mockSuccess;
   let mockFailure;
@@ -101,10 +104,11 @@ describe('tableMetadata:owners ducks', () => {
     });
 
     it('should handle GetTableData.FAILURE', () => {
-      expect(reducer(testState, getTableDataFailure())).toEqual({
+      const action = getTableDataFailure();
+      expect(reducer(testState, action)).toEqual({
         ...testState,
         isLoading: false,
-        owners: {},
+        owners: action.payload.owners,
       });
     });
 
@@ -127,39 +131,63 @@ describe('tableMetadata:owners ducks', () => {
       });
     });
 
-    /* TODO: These tests throw errors and warnings, more investigation needed
     describe('updateTableOwnerWorker', () => {
-      it('executes flow for updating tags and returning up to date tag array', () => {
-        testSaga(updateTableTagsWorker, updateTags(updatePayload))
-          .next()
-          .select()
-          .next({tableMetadata: { tableData: {key: 'testKey'}}})
-          .all(call(metadataUpdateTableTags, updatePayload, 'testKey'))
-          .next()
-          .call(metadataTableTags, 'testKey')
-          .next(expectedTags)
-          .put(updateTagsSuccess(expectedTags))
-          .next()
-          .isDone();
+      describe('executes flow for updating owners and returning up to date owner dict', () => {
+        let sagaTest;
+        beforeAll(() => {
+          sagaTest = (action) => {
+            return testSaga(updateTableOwnerWorker, action)
+                .next()
+                .select()
+                .next(globalState)
+                .all(apis.metadataUpdateTableOwner(updatePayload, globalState.tableMetadata.tableData.key))
+                .next()
+                .call(apis.metadataTableOwners, globalState.tableMetadata.tableData.key)
+                .next(expectedOwners)
+                .put(updateTableOwnerSuccess(expectedOwners));
+          };
+        });
+        it('without success callback', () => {
+          sagaTest(updateTableOwner(updatePayload))
+            .next()
+            .isDone();
+        });
+
+        it('with success callback', () => {
+          sagaTest(updateTableOwner(updatePayload, mockSuccess, mockFailure))
+            .next()
+            .call(mockSuccess)
+            .next()
+            .isDone();
+        });
       });
 
-      it('handles request error', () => {
-        testSaga(updateTableOwnerWorker, updateTableOwner(updatePayload, mockSuccess, mockFailure))
-          .next()
-          .select()
-          .next({
-            tableMetadata: {
-              tableData: {key: 'testKey'},
-              tableOwners: { owners: expectedOwners },
-            }
-          })
-          .throw(new Error())
-          .put(updateTableOwnerFailure(expectedOwners))
-          .next()
-          .call(mockFailure)
-          .next()
-          .isDone();
+      describe('handles request error', () => {
+        let sagaTest;
+        beforeAll(() => {
+          sagaTest = (action) => {
+            return testSaga(updateTableOwnerWorker, action)
+              .next()
+              .select()
+              .next(globalState)
+              .throw(new Error())
+              .put(updateTableOwnerFailure(globalState.tableMetadata.tableOwners.owners))
+          };
+        });
+        it('without failure callback', () => {
+          sagaTest(updateTableOwner(updatePayload))
+            .next()
+            .isDone();
+        });
+
+        it('with failure callback', () => {
+          sagaTest(updateTableOwner(updatePayload, mockSuccess, mockFailure))
+            .next()
+            .call(mockFailure)
+            .next()
+            .isDone();
+        });
       });
-    });*/
+    });
   });
 });

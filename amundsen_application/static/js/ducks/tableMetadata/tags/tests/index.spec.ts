@@ -1,19 +1,22 @@
-import { expectSaga, testSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
-import { throwError } from 'redux-saga-test-plan/providers';
+import { testSaga } from 'redux-saga-test-plan';
 
 import { UpdateMethod, UpdateTagData, Tag } from 'interfaces';
 
 import globalState from 'fixtures/globalState';
 
-import { metadataUpdateTableTags, metadataTableTags } from '../../api/v0';
+import * as apis from '../../api/v0';
+
 import reducer, {
   updateTags, updateTagsFailure, updateTagsSuccess,
   initialTagsState, TableTagsReducerState,
 } from '../reducer';
 import { getTableData, getTableDataFailure, getTableDataSuccess } from '../../reducer';
+
 import { updateTableTagsWorker, updateTableTagsWatcher } from '../sagas';
+
 import { GetTableData, UpdateTags } from '../../types';
+
+const metadataUpdateTableTagsSpy = jest.spyOn(apis, 'metadataUpdateTableTags').mockImplementation((payload, key) => []);
 
 describe('tableMetadata:tags ducks', () => {
   let expectedTags: Tag[];
@@ -92,10 +95,11 @@ describe('tableMetadata:tags ducks', () => {
     });
 
     it('should handle GetTableData.FAILURE', () => {
-      expect(reducer(testState, getTableDataFailure())).toEqual({
+      const action = getTableDataFailure();
+      expect(reducer(testState, action)).toEqual({
         ...testState,
         isLoading: false,
-        tags: [],
+        tags: action.payload.tags,
       });
     });
 
@@ -118,16 +122,15 @@ describe('tableMetadata:tags ducks', () => {
       });
     });
 
-    /* TODO: These tests throw errors and warnings, more investigation needed
     describe('updateTableTagsWorker', () => {
       it('executes flow for updating tags and returning up to date tag array', () => {
         testSaga(updateTableTagsWorker, updateTags(updatePayload))
           .next()
           .select()
-          .next({tableMetadata: { tableData: {key: 'testKey'}}})
-          .all(call(metadataUpdateTableTags, updatePayload, 'testKey'))
+          .next(globalState)
+          .all(apis.metadataUpdateTableTags(updatePayload, globalState.tableMetadata.tableData.key))
           .next()
-          .call(metadataTableTags, 'testKey')
+          .call(apis.metadataTableTags, globalState.tableMetadata.tableData.key)
           .next(expectedTags)
           .put(updateTagsSuccess(expectedTags))
           .next()
@@ -138,12 +141,12 @@ describe('tableMetadata:tags ducks', () => {
         testSaga(updateTableTagsWorker, updateTags(updatePayload))
           .next()
           .select()
-          .next({tableMetadata: { tableData: {key: 'testKey'}}})
+          .next(globalState)
           .throw(new Error())
           .put(updateTagsFailure())
           .next()
           .isDone();
       });
-    });*/
+    });
   });
 });

@@ -1,4 +1,4 @@
-import { UpdateOwnerPayload, User } from 'interfaces';
+import { OwnerDict, UpdateOwnerPayload } from 'interfaces';
 
 import {
   GetTableData, GetTableDataResponse,
@@ -8,15 +8,15 @@ import {
 /* ACTIONS */
 export function updateTableOwner(updateArray: UpdateOwnerPayload[], onSuccess?: () => any, onFailure?: () => any): UpdateTableOwnerRequest {
   return {
-    type: UpdateTableOwner.REQUEST,
     payload: {
       onSuccess,
       onFailure,
       updateArray,
     },
+    type: UpdateTableOwner.REQUEST,
   };
 };
-export function updateTableOwnerFailure(owners: {[id: string] : User}): UpdateTableOwnerResponse  {
+export function updateTableOwnerFailure(owners: OwnerDict): UpdateTableOwnerResponse  {
   return {
     type: UpdateTableOwner.FAILURE,
     payload: {
@@ -24,7 +24,7 @@ export function updateTableOwnerFailure(owners: {[id: string] : User}): UpdateTa
     }
   };
 };
-export function updateTableOwnerSuccess(owners: {[id: string] : User}): UpdateTableOwnerResponse  {
+export function updateTableOwnerSuccess(owners: OwnerDict): UpdateTableOwnerResponse  {
   return {
     type: UpdateTableOwner.SUCCESS,
     payload: {
@@ -36,7 +36,7 @@ export function updateTableOwnerSuccess(owners: {[id: string] : User}): UpdateTa
 /* REDUCER */
 export interface TableOwnerReducerState {
   isLoading: boolean;
-  owners: { [id: string] : User };
+  owners: OwnerDict;
 };
 
 export const initialOwnersState: TableOwnerReducerState = {

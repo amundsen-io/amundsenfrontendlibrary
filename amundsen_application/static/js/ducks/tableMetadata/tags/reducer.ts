@@ -8,10 +8,10 @@ import {
 /* ACTIONS */
 export function updateTags(tagArray: UpdateTagData[]): UpdateTagsRequest  {
   return {
-    type: UpdateTags.REQUEST,
     payload: {
       tagArray,
     },
+    type: UpdateTags.REQUEST,
   };
 };
 export function updateTagsFailure(): UpdateTagsResponse  {

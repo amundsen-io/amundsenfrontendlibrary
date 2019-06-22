@@ -23,3 +23,5 @@ export interface PeopleUser {
 };
 
 export type LoggedInUser = PeopleUser & {};
+
+export type OwnerDict = { [id: string] : User };
