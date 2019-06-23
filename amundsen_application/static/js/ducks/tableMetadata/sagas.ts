@@ -45,7 +45,7 @@ export function* getTableDataWatcher(): SagaIterator {
 export function* getTableDescriptionWorker(action: GetTableDescriptionRequest): SagaIterator {
   const { payload } = action;
   const state = yield select();
-  let tableData;
+  let tableData = state.tableMetadata.tableData;
   try {
     tableData = yield call(metadataGetTableDescription, state.tableMetadata.tableData);
     yield put(getTableDescriptionSuccess(tableData));
@@ -53,7 +53,7 @@ export function* getTableDescriptionWorker(action: GetTableDescriptionRequest): 
       yield call(payload.onSuccess);
     }
   } catch (e) {
-    yield put(getTableDescriptionSuccess(tableData));
+    yield put(getTableDescriptionFailure(tableData));
     if (payload.onFailure) {
       yield call(payload.onFailure);
     }
@@ -84,7 +84,7 @@ export function* updateTableDescriptionWatcher(): SagaIterator {
 export function* getColumnDescriptionWorker(action: GetColumnDescriptionRequest): SagaIterator {
   const { payload } = action;
   const state = yield select();
-  let tableData;
+  let tableData = state.tableMetadata.tableData;
   try {
     tableData = yield call(metadataGetColumnDescription, payload.columnIndex, state.tableMetadata.tableData);
     yield put(getColumnDescriptionSuccess(tableData));

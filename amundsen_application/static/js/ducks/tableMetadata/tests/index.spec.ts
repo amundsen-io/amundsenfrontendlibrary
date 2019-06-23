@@ -58,6 +58,13 @@ describe('tableMetadata ducks', () => {
   let testKey: string;
   let testIndex: string;
   let testSource: string;
+
+  let columnIndex: number;
+  let emptyPreviewData: PreviewData;
+  let newDescription: string;
+  let previewData: PreviewData;
+  let queryParams: PreviewQueryParams;
+  let testEpoch: number;
   beforeAll(() => {
     expectedData = globalState.tableMetadata.tableData;
     expectedOwners = {
@@ -74,6 +81,32 @@ describe('tableMetadata ducks', () => {
     testKey = 'tableKey';
     testIndex = '3';
     testSource = 'search';
+
+    columnIndex = 2;
+    emptyPreviewData  = {
+      columns: [],
+      data: [],
+      error_text: 'Test text',
+    };
+    newDescription = 'testVal';
+    previewData = {
+      columns: [
+        { column_name: 'col_id', column_type:'BIGINT'},
+        { column_name: 'col_1', column_type: 'VARCHAR'},
+      ],
+      data: [
+        { id: '1' },
+        { id: '2' },
+        { id: '3' },
+      ],
+      error_text: 'Test text',
+    }
+    queryParams = {
+      database: 'testDb',
+      schema: 'testSchema',
+      tableName: 'testName',
+    };
+    testEpoch = 1545925769;
   });
 
   describe('actions', () => {
@@ -136,11 +169,10 @@ describe('tableMetadata ducks', () => {
     });
 
     it('updateTableDescription - returns the action to update the table description', () => {
-      const newValue = 'testVal';
-      expect(updateTableDescription(newValue, mockSuccess, mockFailure)).toEqual({
+      expect(updateTableDescription(newDescription, mockSuccess, mockFailure)).toEqual({
         type: UpdateTableDescription.REQUEST,
         payload: {
-          newValue,
+          newValue: newDescription,
           onSuccess: mockSuccess,
           onFailure: mockFailure,
         }
@@ -148,7 +180,6 @@ describe('tableMetadata ducks', () => {
     });
 
     it('getColumnDescription - returns the action to get a column description given the index', () => {
-      const columnIndex = 3;
       expect(getColumnDescription(columnIndex, mockSuccess, mockFailure)).toEqual({
         type: GetColumnDescription.REQUEST,
         payload: {
@@ -178,13 +209,11 @@ describe('tableMetadata ducks', () => {
     });
 
     it('updateColumnDescription - returns the action to update the table description', () => {
-      const newValue = 'testVal';
-      const columnIndex = 2;
-      expect(updateColumnDescription(newValue, columnIndex, mockSuccess, mockFailure)).toEqual({
+      expect(updateColumnDescription(newDescription, columnIndex, mockSuccess, mockFailure)).toEqual({
         type: UpdateColumnDescription.REQUEST,
         payload: {
           columnIndex,
-          newValue,
+          newValue: newDescription,
           onSuccess: mockSuccess,
           onFailure: mockFailure,
         }
@@ -204,7 +233,6 @@ describe('tableMetadata ducks', () => {
     });
 
     it('getLastIndexed - returns the action to process success', () => {
-      const testEpoch = 1545925769;
       expect(getLastIndexedSuccess(testEpoch)).toEqual({
         type: GetLastIndexed.SUCCESS,
         payload: {
@@ -214,11 +242,6 @@ describe('tableMetadata ducks', () => {
     });
 
     it('getPreviewData - returns the action to get the preview table data', () => {
-      const queryParams: PreviewQueryParams = {
-        database: 'testDb',
-        schema: 'testSchema',
-        tableName: 'testName',
-      };
       expect(getPreviewData(queryParams)).toEqual({
         type: GetPreviewData.REQUEST,
         payload: {
@@ -228,46 +251,27 @@ describe('tableMetadata ducks', () => {
     });
 
     it('getPreviewDataFailure - returns the action to process failure', () => {
-      const data: PreviewData = {
-        columns: [],
-        data: [],
-        error_text: 'Test text',
-      };
-      const status = 500;
-      expect(getPreviewDataFailure(data, status)).toEqual({
+      expect(getPreviewDataFailure(emptyPreviewData, 500)).toEqual({
         type: GetPreviewData.FAILURE,
         payload: {
-          data,
-          status,
+          data: emptyPreviewData,
+          status: 500
         }
       });
     });
 
     it('getPreviewData - returns the action to process success', () => {
-      const data: PreviewData = {
-        columns: [
-          { column_name: 'col_id', column_type:'BIGINT'},
-          { column_name: 'col_1', column_type: 'VARCHAR'},
-        ],
-        data: [
-          { id: '1' },
-          { id: '2' },
-          { id: '3' },
-        ],
-        error_text: 'Test text',
-      }
-      const status = 200;
-      expect(getPreviewDataSuccess(data, status)).toEqual({
+      expect(getPreviewDataSuccess(previewData, 200)).toEqual({
         type: GetPreviewData.SUCCESS,
         payload: {
-          data,
-          status,
+          data: previewData,
+          status: 200
         }
       });
     });
   });
 
-/* TODO: Unsure how to test code involving nested reducers, will need more investigation */
+/* TODO: Code involving nested reducers is not covered, will need more investigation */
 describe('reducer', () => {
     let testState: TableMetadataReducerState;
     beforeAll(() => {
@@ -313,7 +317,6 @@ describe('reducer', () => {
     });
 
     it('should handle GetLastIndexed.SUCCESS', () => {
-      const testEpoch = 1545925769;
       expect(reducer(testState, getLastIndexedSuccess(testEpoch))).toEqual({
         ...testState,
         lastIndexed: testEpoch,
@@ -328,24 +331,11 @@ describe('reducer', () => {
     });
 
     it('should handle GetPreviewData.SUCCESS', () => {
-      const previewData: PreviewData = {
-        columns: [
-          { column_name: 'col_id', column_type:'BIGINT'},
-          { column_name: 'col_1', column_type: 'VARCHAR'},
-        ],
-        data: [
-          { id: '1' },
-          { id: '2' },
-          { id: '3' },
-        ],
-        error_text: 'Test text',
-      }
-      const status = 200;
-      expect(reducer(testState, getPreviewDataSuccess(previewData, status))).toEqual({
+      expect(reducer(testState, getPreviewDataSuccess(previewData, 200))).toEqual({
         ...testState,
         preview: {
-          status,
           data: previewData,
+          status: 200,
         }
       });
     });
@@ -362,12 +352,9 @@ describe('reducer', () => {
 
     describe('getTableDataWorker', () => {
       it('executes flow for getting table data', () => {
-        const key = 'testKey';
-        const searchIndex = '1';
-        const source = 'testSource'
-        testSaga(getTableDataWorker, getTableData(key, searchIndex, source))
+        testSaga(getTableDataWorker, getTableData(testKey, testIndex, testSource))
           .next()
-          .call(metadataGetTableData, key, searchIndex, source)
+          .call(metadataGetTableData, testKey, testIndex, testSource)
           .next({ data: expectedData, owners: expectedOwners, statusCode: expectedStatus, tags: expectedTags })
           .put(getTableDataSuccess(expectedData, expectedOwners, expectedStatus, expectedTags))
           .next()
@@ -375,7 +362,7 @@ describe('reducer', () => {
       });
 
       it('handles request error', () => {
-        testSaga(getTableDataWorker, getTableData('testKey'))
+        testSaga(getTableDataWorker, getTableData(testKey))
           .next()
           .throw(new Error())
           .put(getTableDataFailure())
@@ -393,34 +380,62 @@ describe('reducer', () => {
     });
 
     describe('getTableDescriptionWorker', () => {
-      it('executes flow for getting table description', () => {
-        const mockNewTableData = initialTableDataState;
-        testSaga(getTableDescriptionWorker, getTableDescription(mockSuccess, mockFailure))
-          .next()
-          .select()
-          .next(globalState)
-          .call(metadataGetTableDescription, globalState.tableMetadata.tableData)
-          .next(mockNewTableData)
-          .put(getTableDescriptionSuccess(mockNewTableData))
-          .next()
-          .call(mockSuccess)
-          .next()
-          .isDone();
+      describe('executes flow for getting table description', () => {
+        let sagaTest;
+        beforeAll(() => {
+          const mockNewTableData: TableMetadata = initialTableDataState;
+          sagaTest = (action) => {
+            return testSaga(getTableDescriptionWorker, action)
+              .next()
+              .select()
+              .next(globalState)
+              .call(metadataGetTableDescription, globalState.tableMetadata.tableData)
+              .next(mockNewTableData)
+              .put(getTableDescriptionSuccess(mockNewTableData))
+          };
+        });
+        it('without success callback', () => {
+          sagaTest(getTableDescription())
+            .next()
+            .isDone();
+        });
+
+        it('with success callback', () => {
+          sagaTest(getTableDescription(mockSuccess, mockFailure))
+            .next()
+            .call(mockSuccess)
+            .next()
+            .isDone();
+        });
       });
 
-      /* TODO: This test fails, needs more investigation
-      it('handles request error', () => {
-        testSaga(getTableDescriptionWorker, getTableDescription(mockSuccess, mockFailure))
-          .next()
-          .select()
-          .next(globalState)
-          .throw(new Error())
-          .put(getTableDescriptionFailure(globalState.tableMetadata.tableData))
-          .next()
-          .call(mockFailure)
-          .next()
-          .isDone();
-      });*/
+      describe('handles request error', () => {
+        let sagaTest;
+        beforeAll(() => {
+          const mockNewTableData: TableMetadata = initialTableDataState;
+          sagaTest = (action) => {
+            return testSaga(getTableDescriptionWorker, action)
+              .next()
+              .select()
+              .next(globalState)
+              .throw(new Error())
+              .put(getTableDescriptionFailure(globalState.tableMetadata.tableData))
+          };
+        });
+        it('without failure callback', () => {
+          sagaTest(getTableDescription())
+            .next()
+            .isDone();
+        });
+
+        it('with failure callback', () => {
+          sagaTest(getTableDescription(mockSuccess, mockFailure))
+            .next()
+            .call(mockFailure)
+            .next()
+            .isDone();
+        });
+      });
     });
 
     describe('updateTableDescriptionWatcher', () => {
@@ -432,28 +447,55 @@ describe('reducer', () => {
     });
 
     describe('updateTableDescriptionWorker', () => {
-      it('executes flow for update table description', () => {
-        const mockValue = 'I am a description';
-        testSaga(updateTableDescriptionWorker, updateTableDescription(mockValue, mockSuccess, mockFailure))
-          .next()
-          .select()
-          .next(globalState)
-          .call(metadataUpdateTableDescription, mockValue, globalState.tableMetadata.tableData)
-          .next()
-          .call(mockSuccess)
-          .next()
-          .isDone();
+      describe('executes flow for updating table description', () => {
+        let sagaTest;
+        beforeAll(() => {
+          sagaTest = (mockSuccess) => {
+            return testSaga(updateTableDescriptionWorker, updateTableDescription(newDescription, mockSuccess, null))
+              .next()
+              .select()
+              .next(globalState)
+              .call(metadataUpdateTableDescription, newDescription, globalState.tableMetadata.tableData)
+          };
+        });
+        it('without success callback', () => {
+          sagaTest()
+            .next()
+            .isDone();
+        });
+
+        it('with success callback', () => {
+          sagaTest(mockSuccess)
+            .next()
+            .call(mockSuccess)
+            .next()
+            .isDone();
+        });
       });
 
-      it('handles request error', () => {
-        testSaga(updateTableDescriptionWorker, updateTableDescription('I am a description', mockSuccess, mockFailure))
-          .next()
-          .select()
-          .next(globalState)
-          .throw(new Error())
-          .call(mockFailure)
-          .next()
-          .isDone();
+      describe('handles request error', () => {
+        let sagaTest;
+        beforeAll(() => {
+          sagaTest = (mockFailure) => {
+            return testSaga(updateTableDescriptionWorker, updateTableDescription(newDescription, null, mockFailure))
+              .next()
+              .select()
+              .next(globalState)
+              .throw(new Error())
+          };
+        });
+        it('without failure callback', () => {
+          sagaTest()
+            .next()
+            .isDone();
+        });
+
+        it('with failure callback', () => {
+          sagaTest(mockFailure)
+            .call(mockFailure)
+            .next()
+            .isDone();
+        });
       });
     });
 
@@ -466,36 +508,62 @@ describe('reducer', () => {
     });
 
     describe('getColumnDescriptionWorker', () => {
-      it('executes flow for getting a table column description', () => {
-        const columnIndex = 2;
-        const mockNewTableData: TableMetadata = initialTableDataState;
-        testSaga(getColumnDescriptionWorker, getColumnDescription(columnIndex, mockSuccess, mockFailure))
-          .next()
-          .select()
-          .next(globalState)
-          .call(metadataGetColumnDescription, columnIndex, globalState.tableMetadata.tableData)
-          .next(mockNewTableData)
-          .put(getColumnDescriptionSuccess(mockNewTableData))
-          .next()
-          .call(mockSuccess)
-          .next()
-          .isDone();
+      describe('executes flow for getting a table column description', () => {
+        let sagaTest;
+        beforeAll(() => {
+          const mockNewTableData: TableMetadata = initialTableDataState;
+          sagaTest = (action) => {
+            return testSaga(getColumnDescriptionWorker, action)
+              .next()
+              .select()
+              .next(globalState)
+              .call(metadataGetColumnDescription, action.payload.columnIndex, globalState.tableMetadata.tableData)
+              .next(mockNewTableData)
+              .put(getColumnDescriptionSuccess(mockNewTableData))
+          };
+        });
+        it('without success callback', () => {
+          sagaTest(getColumnDescription(columnIndex))
+            .next()
+            .isDone();
+        });
+
+        it('with success callback', () => {
+          sagaTest(getColumnDescription(columnIndex, mockSuccess, mockFailure))
+            .next()
+            .call(mockSuccess)
+            .next()
+            .isDone();
+        });
       });
 
-      /* TODO: This test fails, needs more investigation
-      it('handles request error', () => {
-        const mockState = globalState;
-        testSaga(getColumnDescriptionWorker, getColumnDescription(2, mockSuccess, mockFailure))
-          .next()
-          .select()
-          .next(mockState)
-          .throw(new Error())
-          .put(getColumnDescriptionFailure(mockState.tableMetadata.tableData))
-          .next()
-          .call(mockFailure)
-          .next()
-          .isDone();
-      });*/
+      describe('handles request error', () => {
+        let sagaTest;
+        beforeAll(() => {
+          const mockNewTableData: TableMetadata = initialTableDataState;
+          sagaTest = (action) => {
+            return testSaga(getColumnDescriptionWorker, action)
+              .next()
+              .select()
+              .next(globalState)
+              .throw(new Error())
+              .put(getColumnDescriptionFailure(globalState.tableMetadata.tableData))
+          };
+        });
+        it('without failure callback', () => {
+          sagaTest(getColumnDescription(columnIndex))
+            .next()
+            .isDone();
+        });
+
+        it('with failure callback', () => {
+          sagaTest(getColumnDescription(columnIndex, mockSuccess, mockFailure))
+            .next()
+            .call(mockFailure)
+            .next()
+            .isDone();
+        });
+      });
     });
 
     describe('updateColumnDescriptionWatcher', () => {
@@ -507,29 +575,55 @@ describe('reducer', () => {
     });
 
     describe('updateColumnDescriptionWorker', () => {
-      it('executes flow for updating a table column description', () => {
-        const columnIndex = 2;
-        const mockValue = 'I am a description';
-        testSaga(updateColumnDescriptionWorker, updateColumnDescription(mockValue, columnIndex, mockSuccess, mockFailure))
-          .next()
-          .select()
-          .next(globalState)
-          .call(metadataUpdateColumnDescription, mockValue, columnIndex, globalState.tableMetadata.tableData)
-          .next()
-          .call(mockSuccess)
-          .next()
-          .isDone();
+      describe('executes flow for updating a table column description', () => {
+        let sagaTest;
+        beforeAll(() => {
+          sagaTest = (mockSuccess) => {
+            return testSaga(updateColumnDescriptionWorker, updateColumnDescription(newDescription, columnIndex, mockSuccess, null))
+              .next()
+              .select()
+              .next(globalState)
+              .call(metadataUpdateColumnDescription, newDescription, columnIndex, globalState.tableMetadata.tableData)
+          };
+        });
+        it('without success callback', () => {
+          sagaTest()
+            .next()
+            .isDone();
+        });
+
+        it('with success callback', () => {
+          sagaTest(mockSuccess)
+            .next()
+            .call(mockSuccess)
+            .next()
+            .isDone();
+        });
       });
 
-      it('handles request error', () => {
-        testSaga(updateColumnDescriptionWorker, updateColumnDescription('I am a description', 2, mockSuccess, mockFailure))
-          .next()
-          .select()
-          .next(globalState)
-          .throw(new Error())
-          .call(mockFailure)
-          .next()
-          .isDone();
+      describe('handles request error', () => {
+        let sagaTest;
+        beforeAll(() => {
+          sagaTest = (mockFailure) => {
+            return testSaga(updateColumnDescriptionWorker, updateColumnDescription(newDescription, columnIndex, null, mockFailure))
+              .next()
+              .select()
+              .next(globalState)
+              .throw(new Error())
+          };
+        });
+        it('without failure callback', () => {
+          sagaTest()
+            .next()
+            .isDone();
+        });
+
+        it('with failure callback', () => {
+          sagaTest(mockFailure)
+            .call(mockFailure)
+            .next()
+            .isDone();
+        });
       });
     });
 
@@ -543,7 +637,6 @@ describe('reducer', () => {
 
     describe('getLastIndexedWorker', () => {
       it('executes flow for getting last indexed value', () => {
-        const testEpoch = 1545925769;
         testSaga(getLastIndexedWorker, getLastIndexed())
           .next()
           .call(metadataGetLastIndexed)
@@ -571,26 +664,37 @@ describe('reducer', () => {
       });
     });
 
-    /*describe('getPreviewDataWorker', () => {
-      it('executes flow for getting last indexed value', () => {
-        const testEpoch = 1545925769;
-        testSaga(getLastIndexedWorker, getLastIndexed())
+    describe('getPreviewDataWorker', () => {
+      it('executes flow for getting preview data', () => {
+        const mockResponse = { data: previewData, status: 200 };
+        testSaga(getPreviewDataWorker, getPreviewData(queryParams))
           .next()
-          .call(metadataGetLastIndexed)
-          .next(testEpoch)
-          .put(getLastIndexedSuccess(testEpoch))
+          .call(metadataGetPreviewData, queryParams)
+          .next(mockResponse)
+          .put(getPreviewDataSuccess(previewData, 200))
           .next()
           .isDone();
       });
 
       it('handles request error', () => {
-        testSaga(getPreviewWorker, getPreviewData())
+        const mockErrorResponse = { name: '', message: '', response: { data: previewData, status: 500 }};
+        testSaga(getPreviewDataWorker, getPreviewData(queryParams))
           .next()
-          .throw(new Error())
-          .put(getLastIndexedFailure())
+          .throw(mockErrorResponse)
+          .put(getPreviewDataFailure(previewData, 500))
           .next()
           .isDone();
       });
-    });*/
+
+      it('handles request error with response fallbacks', () => {
+        const mockErrorResponse = { name: '', message: '' };
+        testSaga(getPreviewDataWorker, getPreviewData(queryParams))
+          .next()
+          .throw(mockErrorResponse)
+          .put(getPreviewDataFailure({}, null))
+          .next()
+          .isDone();
+      });
+    });
   });
 });
