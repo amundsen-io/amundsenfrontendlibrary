@@ -21,6 +21,7 @@ class User:
                  github_username: str = None,
                  is_active: bool = True,
                  last_name: str = None,
+                 manager_email: str = None,
                  manager_fullname: str = None,
                  profile_url: str = None,
                  role_name: str = None,
@@ -35,6 +36,7 @@ class User:
         self.github_username = github_username
         self.is_active = is_active
         self.last_name = last_name
+        self.manager_email = manager_email
         self.manager_fullname = manager_fullname
         self.profile_url = profile_url
         self.role_name = role_name
@@ -53,6 +55,7 @@ class UserSchema(Schema):
     github_username = fields.Str(allow_none=True)
     is_active = fields.Bool(allow_none=True)
     last_name = fields.Str(allow_none=True)
+    manager_email = fields.Str(allow_none=True)
     manager_fullname = fields.Str(allow_none=True)
     profile_url = fields.Str(allow_none=True)
     role_name = fields.Str(allow_none=True)

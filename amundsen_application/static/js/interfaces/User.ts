@@ -16,7 +16,9 @@ export interface PeopleUser {
   github_username: string;
   is_active: boolean;
   last_name: string;
-  manager_fullname: string;
+  // Inconsistent data format from search and metadata return either `manager_email` or `manager_fullname`
+  manager_email?: string;
+  manager_fullname?: string;
   profile_url: string;
   role_name?: string;
   slack_id: string;
