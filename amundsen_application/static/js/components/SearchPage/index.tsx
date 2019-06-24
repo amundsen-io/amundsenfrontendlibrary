@@ -36,6 +36,7 @@ import {
   SEARCH_INFO_TEXT,
   SEARCH_SOURCE_NAME,
   TABLE_RESOURCE_TITLE,
+  USER_RESOURCE_TITLE,
 } from './constants';
 
 export interface StateFromProps {
@@ -155,7 +156,11 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
         key: ResourceType.table,
         content: this.getTabContent(this.props.tables, TABLE_RESOURCE_TITLE),
       },
-      // TODO PEOPLE - Add users tab
+      {
+        title: `Users (${ this.props.users.total_results })`,
+        key: ResourceType.user,
+        content: this.getTabContent(this.props.users, USER_RESOURCE_TITLE),
+      },
     ];
 
     return (

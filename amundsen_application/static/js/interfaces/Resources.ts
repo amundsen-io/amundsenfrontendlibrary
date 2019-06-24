@@ -1,3 +1,5 @@
+import { PeopleUser } from 'interfaces/User';
+
 export enum ResourceType {
   table = "table",
   user = "user",
@@ -61,24 +63,8 @@ interface User {
 */
 
 // Placeholder until the schema is defined.
-export interface UserResource extends Resource  {
+export interface UserResource extends Resource, PeopleUser {
   type: ResourceType.user;
-  active : boolean;
-  birthday : string | null;
-  department: string;
-  email: string;
-  first_name: string;
-  github_username: string;
-  id: number;
-  last_name: string;
-  manager_email : string;
-  name : string;
-  offboarded : boolean;
-  office: string;
-  role: string;
-  start_date : string;
-  team_name: string;
-  title: string;
 }
 
 // TODO - Consider just using the 'Resource' type instead

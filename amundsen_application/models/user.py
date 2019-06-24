@@ -78,6 +78,9 @@ class UserSchema(Schema):
             if app.config['GET_PROFILE_URL']:
                 data['profile_url'] = app.config['GET_PROFILE_URL'](data['user_id'])
 
+        # Fallback since search and metadata use a different key for 'full_name'
+        data['full_name'] = data.get('full_name', data.get('name'))
+
         if self. _str_no_value(data.get('display_name')):
             if self._str_no_value(data.get('full_name')):
                 data['display_name'] = data.get('email')

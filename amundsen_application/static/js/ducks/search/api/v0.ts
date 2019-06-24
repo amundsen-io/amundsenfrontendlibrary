@@ -18,11 +18,12 @@ interface SearchAPI {
 export function searchAll(options: SearchAllOptions, term: string) {
   return axios.all([
       axios.get(`${BASE_URL}/table?query=${term}&page_index=${options.tableIndex || 0}`),
-      // TODO PEOPLE - Add request for people here
-    ]).then(axios.spread((tableResponse: AxiosResponse<SearchAPI>) => {
+      axios.get(`${BASE_URL}/user?query=${term}&page_index=${options.userIndex || 0}`),
+    ]).then(axios.spread((tableResponse: AxiosResponse<SearchAPI>, userResponse: AxiosResponse<SearchAPI>) => {
       return {
         search_term: tableResponse.data.search_term,
         tables: tableResponse.data.tables,
+        users: userResponse.data.users,
       }
   }));
 };
