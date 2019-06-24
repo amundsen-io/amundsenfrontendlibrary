@@ -64,19 +64,23 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
 
   componentDidUpdate() {
     const userId = this.props.match.params.userId;
-
     if (userId !== this.userId) {
-      console.log('change in userId detected')
+      this.userId = userId;
+      this.loadUserInfo();
     }
 
   }
 
   componentDidMount() {
+    this.loadUserInfo();
+  }
+
+  loadUserInfo = () => {
     this.props.getUserById(this.userId);
     this.props.getUserOwn(this.userId);
     this.props.getUserRead(this.userId);
     this.props.getBookmarksForUser(this.userId);
-  }
+  };
 
   getUserId = () => {
     return this.userId;
@@ -106,14 +110,14 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
     const { bookmarks, read, own } = this.props;
 
     tabInfo.push({
-      content: this.getTabContent(read, READ_SOURCE, READ_LABEL),
-      key: READ_TAB_KEY,
-      title: `${READ_TAB_TITLE} (${read.length})`,
-    });
-    tabInfo.push({
       content: this.getTabContent(bookmarks, BOOKMARKED_SOURCE, BOOKMARKED_LABEL),
       key: BOOKMARKED_TAB_KEY,
       title: `${BOOKMARKED_TAB_TITLE} (${bookmarks.length})`,
+    });
+    tabInfo.push({
+      content: this.getTabContent(read, READ_SOURCE, READ_LABEL),
+      key: READ_TAB_KEY,
+      title: `${READ_TAB_TITLE} (${read.length})`,
     });
     tabInfo.push({
       content: this.getTabContent(own, OWNED_SOURCE, OWNED_LABEL),
@@ -133,8 +137,7 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
         <div className="container profile-page">
           <div className="row">
             <div className="col-xs-12 col-md-offset-1 col-md-10">
-              {/* remove hardcode to home when this page is ready for production */}
-              <Breadcrumb path="/" text="Home" />
+              <Breadcrumb />
               {/* TODO - Consider making this part a separate component */}
               <div className="profile-header">
                   <div id="profile-avatar" className="profile-avatar">
@@ -198,7 +201,7 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
                   </div>
               </div>
               <div id="profile-tabs" className="profile-tabs">
-                <Tabs tabs={ this.generateTabInfo() } defaultTab={ READ_TAB_KEY } />
+                <Tabs tabs={ this.generateTabInfo() } defaultTab={ BOOKMARKED_TAB_KEY } />
               </div>
             </div>
           </div>

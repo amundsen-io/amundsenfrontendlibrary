@@ -23,7 +23,7 @@ import {
 
 describe('ProfilePage', () => {
   const setup = (propOverrides?: Partial<ProfilePageProps>) => {
-    const props: ProfilePageProps = {
+    const props: Partial<ProfilePageProps> = {
       user: globalState.user.profile.user,
       bookmarks: [
         { type: ResourceType.table },
@@ -230,7 +230,7 @@ describe('ProfilePage', () => {
     it('renders Tabs w/ correct props', () => {
       expect(wrapper.find('#profile-tabs').find(Tabs).props()).toMatchObject({
         tabs: wrapper.instance().generateTabInfo(),
-        defaultTab: READ_TAB_KEY,
+        defaultTab: BOOKMARKED_TAB_KEY,
       });
     });
 
