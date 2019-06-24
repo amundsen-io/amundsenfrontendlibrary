@@ -161,11 +161,8 @@ describe('ProfilePage', () => {
       expect(wrapper.find(DocumentTitle).props().title).toEqual(`${props.user.display_name} - Amundsen Profile`);
     });
 
-    it('renders Breadcrumb with correct props', () => {
-      expect(wrapper.find(Breadcrumb).props()).toMatchObject({
-        path: '/',
-        text: 'Home',
-      });
+    it('renders Breadcrumb', () => {
+      expect(wrapper.find(Breadcrumb).exists()).toBe(true)
     });
 
     it('renders Avatar for user.display_name', () => {
