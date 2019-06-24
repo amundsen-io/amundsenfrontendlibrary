@@ -52,15 +52,18 @@ export class NavBar extends React.Component<NavBarProps> {
             <div id="nav-bar-right" className="nav-bar-right">
               {this.generateNavLinks(AppConfig.navLinks)}
               {
-                this.props.loggedInUser &&
-
+                this.props.loggedInUser && AppConfig.userFeature.enabled &&
                 <Link to={`/user/${this.props.loggedInUser.user_id}`}>
                   <div id="nav-bar-avatar">
                     <Avatar name={this.props.loggedInUser.display_name} size={32} round={true} />
                   </div>
                 </Link>
-
-                  // <Avatar name={this.props.loggedInUser.display_name} size={32} round={true} />
+              }
+              {
+                this.props.loggedInUser && !AppConfig.userFeature.enabled &&
+                <div id="nav-bar-avatar">
+                  <Avatar name={this.props.loggedInUser.display_name} size={32} round={true} />
+                </div>
               }
             </div>
           </div>

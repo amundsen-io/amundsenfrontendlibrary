@@ -40,6 +40,9 @@ const configDefault: AppConfig = {
       return `https://DEFAULT_EXPLORE_URL?schema=${schema}&cluster=${cluster}&db=${database}&table=${table}`;
     }
   },
+  userFeature: {
+    enabled: false,
+  }
 };
 
 export default configDefault;

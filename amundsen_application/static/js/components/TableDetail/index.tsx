@@ -134,10 +134,19 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
         { user.display_name }
       </Popover>
     );
+
+    let link = user.profile_url;
+    let target = '_blank';
+    if (AppConfig.userFeature.enabled) {
+      link = `/user/${user.user_id}`;
+      target = '';
+    }
+
     return (
       <OverlayTrigger key={user.display_name} trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
         <Link
-          to={`/user/${user.user_id}`}
+          to={ link }
+          target={ target }
           style={{ display: 'inline-block', marginLeft: '-5px', backgroundColor: 'white', borderRadius: '90%'}}
           id="frequent-users"
           onClick={logClick}

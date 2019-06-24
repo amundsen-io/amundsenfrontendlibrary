@@ -113,14 +113,14 @@ def _create_url_with_field(*, search_term: str, page_index: int) -> str:
 @action_logging
 def _search_user(*, search_term: str, page_index: int) -> Dict[str, Any]:
     """
-        call the search service endpoint and return matching results
-        :return: a json output containing search results array as 'results'
+    call the search service endpoint and return matching results
+    :return: a json output containing search results array as 'results'
 
-        Schema Defined Here: https://github.com/lyft/
-        amundsensearchlibrary/blob/master/search_service/api/search.py
+    Schema Defined Here: https://github.com/lyft/
+    amundsensearchlibrary/blob/master/search_service/api/search.py
 
-        TODO: Define an interface for envoy_client
-        """
+    TODO: Define an interface for envoy_client
+    """
 
     def _map_user_result(result: Dict) -> Dict:
         user_result = dump_user(load_user(result))
