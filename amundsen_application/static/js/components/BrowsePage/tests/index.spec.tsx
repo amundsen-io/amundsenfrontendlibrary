@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as DocumentTitle from 'react-document-title';
 
 import { shallow } from 'enzyme';
 
@@ -20,8 +21,12 @@ describe('BrowsePage', () => {
     props = setupResult.props;
     wrapper = setupResult.wrapper;
   });
-
+  
   describe('render', () => {
+    it('renders DocumentTitle w/ correct title', () => {
+      expect(wrapper.find(DocumentTitle).props().title).toEqual('Browse - Amundsen');
+    });
+    
     it('contains BrowseTags', () => {
       expect(wrapper.contains(<BrowseTags />));
     });

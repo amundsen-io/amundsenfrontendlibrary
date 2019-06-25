@@ -1,10 +1,8 @@
 import * as React from 'react';
-import * as DocumentTitle from 'react-document-title';
 
 import { shallow } from 'enzyme';
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import TagInfo from 'components/Tags/TagInfo';
 import { BrowseTags, BrowseTagsProps, mapDispatchToProps, mapStateToProps } from '../';
 
 import globalState from 'fixtures/globalState';
