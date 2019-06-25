@@ -100,7 +100,14 @@ describe('SearchBar', () => {
       expect(submitMockEvent.preventDefault).toHaveBeenCalled();
     });
 
+    it('redirects back to home if searchTerm is empty', () => {
+      // @ts-ignore: mocked events throw type errors
+      wrapper.instance().handleValueSubmit(submitMockEvent);
+      expect(props.history.push).toHaveBeenCalledWith('/');
+    });
+
     it('submits with correct props if isFormValid()', () => {
+      const { props, wrapper } = setup({ searchTerm: 'testTerm' });
       // @ts-ignore: mocked events throw type errors
       wrapper.instance().handleValueSubmit(submitMockEvent);
       expect(props.history.push).toHaveBeenCalledWith(`/search?searchTerm=${wrapper.state().searchTerm}&selectedTab=table&pageIndex=0`);
