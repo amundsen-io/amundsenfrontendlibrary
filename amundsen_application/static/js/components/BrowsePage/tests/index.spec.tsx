@@ -6,7 +6,7 @@ import { BrowsePage } from '../';
 
 import BrowseTags from 'components/BrowseTags';
 
-describe('HomePage', () => {
+describe('BrowsePage', () => {
   const setup = () => {
     const wrapper = shallow<BrowsePage>(<BrowsePage/>)
     return { props, wrapper };
