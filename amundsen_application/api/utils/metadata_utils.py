@@ -63,11 +63,9 @@ def marshall_table_full(table: Dict) -> Dict:
     results['owners'] = [_map_user_object_to_schema(owner) for owner in results['owners']]
 
     # In the list of reader_objects, sanitize the reader value on each entry
-    # Only show readers with display_name and profile_url
-    readers = [r for r in results['table_readers'] if len(r['reader'].get('profile_url', '')) > 0]
+    readers = results['table_readers']
     for reader_object in readers:
         reader_object['reader'] = _map_user_object_to_schema(reader_object['reader'])
-    results['table_readers'] = readers
 
     # If order is provided, we sort the column based on the pre-defined order
     if app.config['COLUMN_STAT_ORDER']:
