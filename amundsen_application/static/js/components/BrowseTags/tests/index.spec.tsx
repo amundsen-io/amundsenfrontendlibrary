@@ -85,12 +85,8 @@ describe('BrowseTags', () => {
             expect(subject.find(LoadingSpinner).exists()).toBeTruthy();
         });
 
-        it('renders DocumentTitle w/ correct title', () => {
-            expect(subject.find(DocumentTitle).props().title).toEqual('Browse - Amundsen');
-        });
-
         it('renders correct header', () => {
-            expect(subject.find('#browse-header').text()).toEqual('Browse Tags');
+            expect(subject.find('.title-1').text()).toEqual('Browse Tags');
         });
 
         it('renders <hr> in if curatedTags.length > 0 & otherTags.length > 0 ', () => {
