@@ -86,7 +86,7 @@ describe('BrowseTags', () => {
         });
 
         it('renders correct header', () => {
-            expect(subject.find('.title-1').text()).toEqual('Browse Tags');
+            expect(subject.find('#browse-header').text()).toEqual('Browse Tags');
         });
 
         it('renders <hr> in if curatedTags.length > 0 & otherTags.length > 0 ', () => {

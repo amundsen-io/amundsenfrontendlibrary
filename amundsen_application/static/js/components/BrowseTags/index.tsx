@@ -76,7 +76,7 @@ export class BrowseTags extends React.Component<BrowseTagsProps, BrowseTagsState
     } else {
       innerContent = (
         <div className="bookmark-list">
-          <div className="title-1">Browse Tags</div>
+          <h3 id="browse-header">Browse Tags</h3>
           <div id="browse-body" className="browse-body">
             {this.generateTagInfo(this.state.curatedTags)}
             {
