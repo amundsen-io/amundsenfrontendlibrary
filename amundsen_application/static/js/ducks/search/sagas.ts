@@ -18,7 +18,7 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
     const searchResults = yield call(searchAll, options, term);
     yield put({ type: SearchAll.SUCCESS, payload: searchResults });
   } catch (e) {
-    yield put({ type: SearchAll.FAILURE });
+    yield put({ type: SearchAll.FAILURE, payload: {term} });
   }
 };
 export function* searchAllWatcher(): SagaIterator {

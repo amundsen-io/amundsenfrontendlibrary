@@ -104,6 +104,7 @@ export default function reducer(state: SearchReducerState = initialState, action
     case SearchResource.FAILURE:
       return {
         ...initialState,
+        search_term: (<SearchAllRequest>action).payload.term,
         isLoading: false,
       };
     default:
