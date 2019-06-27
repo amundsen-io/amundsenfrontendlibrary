@@ -53,7 +53,7 @@ export class NavBar extends React.Component<NavBarProps> {
               {this.generateNavLinks(AppConfig.navLinks)}
               {
                 this.props.loggedInUser && AppConfig.userFeature.enabled &&
-                <Link to={`/user/${this.props.loggedInUser.user_id}`}>
+                <Link id="nav-bar-avatar-link" to={`/user/${this.props.loggedInUser.user_id}`}>
                   <div id="nav-bar-avatar">
                     <Avatar name={this.props.loggedInUser.display_name} size={32} round={true} />
                   </div>

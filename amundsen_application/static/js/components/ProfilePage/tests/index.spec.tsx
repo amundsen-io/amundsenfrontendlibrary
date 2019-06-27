@@ -65,6 +65,39 @@ describe('ProfilePage', () => {
   });
 
   describe('componentDidMount', () => {
+    it('calls loadUserInfo', () => {
+      const { props, wrapper } = setup();
+      const loadUserInfoSpy = jest.spyOn(wrapper.instance(), 'loadUserInfo');
+      wrapper.instance().componentDidMount();
+      expect(loadUserInfoSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('componentDidUpdate', () => {
+    let props;
+    let wrapper;
+    let loadUserInfoSpy;
+
+    beforeEach(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+      loadUserInfoSpy = jest.spyOn(wrapper.instance(), 'loadUserInfo');
+    });
+
+    it('calls loadUserInfo when userId has changes', () => {
+      wrapper.setProps({ match: { params: { userId: 'newUserId' }}});
+      expect(loadUserInfoSpy).toHaveBeenCalled();
+    });
+
+    it('does not call loadUserInfo when userId has not changed', () => {
+      wrapper.instance().componentDidUpdate();
+      expect(loadUserInfoSpy).not.toHaveBeenCalled();
+    });
+  });
+
+
+  describe('loadUserInfo', () => {
     it('calls props.getUserById', () => {
       const { props, wrapper } = setup();
       expect(props.getUserById).toHaveBeenCalled();
@@ -232,13 +265,13 @@ describe('ProfilePage', () => {
     });
 
     describe('if user.is_active', () => {
-      it('renders slack link with correct href', () => {
-        expect(wrapper.find('#slack-link').props().href).toEqual('www.slack.com');
-      });
-
-      it('renders slack link with correct text', () => {
-        expect(wrapper.find('#slack-link').find('span').text()).toEqual('Slack');
-      });
+      // it('renders slack link with correct href', () => {
+      //   expect(wrapper.find('#slack-link').props().href).toEqual('www.slack.com');
+      // });
+      //
+      // it('renders slack link with correct text', () => {
+      //   expect(wrapper.find('#slack-link').find('span').text()).toEqual('Slack');
+      // });
 
       it('renders email link with correct href', () => {
         expect(wrapper.find('#email-link').props().href).toEqual('mailto:test@test.com');

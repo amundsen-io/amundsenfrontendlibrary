@@ -62,17 +62,16 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
     this.userId = params && params.userId ? params.userId : '';
   }
 
+  componentDidMount() {
+    this.loadUserInfo();
+  }
+
   componentDidUpdate() {
     const userId = this.props.match.params.userId;
     if (userId !== this.userId) {
       this.userId = userId;
       this.loadUserInfo();
     }
-
-  }
-
-  componentDidMount() {
-    this.loadUserInfo();
   }
 
   loadUserInfo = () => {
@@ -169,13 +168,14 @@ export class ProfilePage extends React.Component<ProfilePageProps> {
                       <div id="user-manager" className="body-2">{ `Manager: ${user.manager_fullname}` }</div>
                     }
                     <div className="profile-icons">
-                      {
-                        user.is_active && user.slack_id &&
-                        <a id="slack-link" href={user.slack_id} className='btn btn-flat-icon' target='_blank'>
-                          <img className='icon icon-dark icon-slack'/>
-                          <span className="body-2">Slack</span>
-                        </a>
-                      }
+                      {/*TODO - Implement deep links to open Slack */}
+                      {/*{*/}
+                        {/*user.is_active && user.slack_id &&*/}
+                        {/*<a id="slack-link" href={user.slack_id} className='btn btn-flat-icon' target='_blank'>*/}
+                          {/*<img className='icon icon-dark icon-slack'/>*/}
+                          {/*<span className="body-2">Slack</span>*/}
+                        {/*</a>*/}
+                      {/*}*/}
                       {
                         user.is_active &&
                         <a id="email-link" href={`mailto:${user.email}`} className='btn btn-flat-icon' target='_blank'>
