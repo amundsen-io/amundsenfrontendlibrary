@@ -27,27 +27,22 @@ describe('popularTables ducks', () => {
   });
   describe('actions', () => {
     it('getPopularTables - returns the action to get popular tables', () => {
-      expect(getPopularTables()).toEqual({
-        type: GetPopularTables.REQUEST,
-      });
+      const action = getPopularTables();
+      expect(action.type).toBe(GetPopularTables.REQUEST);
     });
 
     it('getPopularTablesFailure - returns the action to process failure', () => {
-      expect(getPopularTablesFailure()).toEqual({
-        type: GetPopularTables.FAILURE,
-        payload: {
-          tables: [],
-        }
-      });
+      const action = getPopularTablesFailure();
+      const { payload } = action;
+      expect(action.type).toBe(GetPopularTables.FAILURE);
+      expect(payload.tables).toEqual([]);
     });
 
     it('getPopularTablesSuccess - returns the action to process success', () => {
-      expect(getPopularTablesSuccess(expectedTables)).toEqual({
-        type: GetPopularTables.SUCCESS,
-        payload: {
-          tables: expectedTables,
-        }
-      });
+      const action = getPopularTablesSuccess(expectedTables);
+      const { payload } = action;
+      expect(action.type).toBe(GetPopularTables.SUCCESS);
+      expect(payload.tables).toBe(expectedTables);
     });
   });
 

@@ -13,26 +13,23 @@ import { GetAnnouncements } from '../types';
 describe('announcements ducks', () => {
   describe('actions', () => {
     it('getAnnouncements - returns the action to get all tags', () => {
-      expect(getAnnouncements()).toEqual({ type: GetAnnouncements.REQUEST });
+      const action = getAnnouncements();
+      expect(action.type).toBe(GetAnnouncements.REQUEST);
     });
 
     it('getAnnouncementsFailure - returns the action to process failure', () => {
-      expect(getAnnouncementsFailure()).toEqual({
-        type: GetAnnouncements.FAILURE,
-        payload: {
-          posts: [],
-        },
-      });
+      const action = getAnnouncementsFailure();
+      const { payload } = action;
+      expect(action.type).toBe(GetAnnouncements.FAILURE);
+      expect(payload.posts).toEqual([]);
     });
 
     it('getAllTagsSuccess - returns the action to process success', () => {
       const expectedPosts = [{ date: '12/31/1999', title: 'Test', html_content: '<div>Test content</div>' }];
-      expect(getAnnouncementsSuccess(expectedPosts)).toEqual({
-        type: GetAnnouncements.SUCCESS,
-        payload: {
-          posts: expectedPosts,
-        }
-      });
+      const action = getAnnouncementsSuccess(expectedPosts);
+      const { payload } = action;
+      expect(action.type).toBe(GetAnnouncements.SUCCESS);
+      expect(payload.posts).toBe(expectedPosts);
     });
   });
 

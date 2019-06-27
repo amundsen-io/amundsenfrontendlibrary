@@ -31,30 +31,25 @@ describe('feedback ducks', () => {
 
   describe('actions', () => {
     it('submitFeedback - returns the action to submit feedback', () => {
-      expect(submitFeedback(formData)).toEqual({
-        type: SubmitFeedback.REQUEST,
-        payload: {
-          data: formData
-        },
-      });
+      const action = submitFeedback(formData);
+      const { payload } = action;
+      expect(action.type).toBe(SubmitFeedback.REQUEST);
+      expect(payload.data).toBe(formData);
     });
 
     it('submitFeedbackFailure - returns the action to process failure', () => {
-      expect(submitFeedbackFailure()).toEqual({
-        type: SubmitFeedback.FAILURE,
-      });
+      const action = submitFeedbackFailure();
+      expect(action.type).toBe(SubmitFeedback.FAILURE);
     });
 
     it('submitFeedbackSuccess - returns the action to process success', () => {
-      expect(submitFeedbackSuccess()).toEqual({
-        type: SubmitFeedback.SUCCESS,
-      });
+      const action = submitFeedbackSuccess();
+      expect(action.type).toBe(SubmitFeedback.SUCCESS);
     });
 
     it('resetFeedback - returns the action to reset feedback', () => {
-      expect(resetFeedback()).toEqual({
-        type: ResetFeedback.REQUEST,
-      });
+      const action = resetFeedback();
+      expect(action.type).toBe(ResetFeedback.REQUEST);
     });
   });
 
