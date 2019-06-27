@@ -158,7 +158,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
         content: this.getTabContent(this.props.tables, TABLE_RESOURCE_TITLE),
       },
     ];
-    if (AppConfig.userFeature.enabled) {
+    if (AppConfig.indexUsers.enabled) {
       tabConfig.push({
         title: `Users (${ this.props.users.total_results })`,
         key: ResourceType.user,

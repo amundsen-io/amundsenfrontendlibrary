@@ -11,7 +11,7 @@ export interface AppConfig {
   navLinks: Array<LinkConfig>;
   tableLineage: TableLineageConfig;
   tableProfile: TableProfileConfig;
-  userFeature: UserFeatureConfig;
+  indexUsers: indexUsersConfig;
 }
 
 export interface AppConfigCustom {
@@ -21,7 +21,7 @@ export interface AppConfigCustom {
   navLinks?: Array<LinkConfig>;
   tableLineage?: TableLineageConfig;
   tableProfile?: TableProfileConfig;
-  userFeature?: UserFeatureConfig;
+  indexUsers?: indexUsersConfig;
 }
 
 /**
@@ -83,6 +83,6 @@ export interface LinkConfig {
   use_router: boolean;
 }
 
-interface UserFeatureConfig {
+interface indexUsersConfig {
   enabled: boolean;
 }

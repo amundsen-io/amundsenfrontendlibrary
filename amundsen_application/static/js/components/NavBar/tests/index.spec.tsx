@@ -31,7 +31,7 @@ AppConfig.navLinks = [
     use_router: false,
   }
 ];
-AppConfig.userFeature.enabled = true;
+AppConfig.indexUsers.enabled = true;
 
 
 import globalState from 'fixtures/globalState';
@@ -115,12 +115,12 @@ describe('NavBar', () => {
       })
     });
 
-    it('renders a Link to the user profile if `userFeature` is enabled', () => {
+    it('renders a Link to the user profile if `indexUsers` is enabled', () => {
       expect(wrapper.find('#nav-bar-avatar-link').exists()).toBe(true)
     });
 
-    it('does not render a Link to the user profile if `userFeature` is disabled', () => {
-      AppConfig.userFeature.enabled = false;
+    it('does not render a Link to the user profile if `indexUsers` is disabled', () => {
+      AppConfig.indexUsers.enabled = false;
       const { wrapper } = setup();
       expect(wrapper.find('#nav-bar-avatar-link').exists()).toBe(false)
     });

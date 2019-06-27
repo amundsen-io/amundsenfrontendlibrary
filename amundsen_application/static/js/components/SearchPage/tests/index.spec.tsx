@@ -607,7 +607,7 @@ describe('SearchPage', () => {
     });
 
     it('renders TabsComponent with correct props', () => {
-      AppConfig.userFeature.enabled = false;
+      AppConfig.indexUsers.enabled = false;
       const content = shallow(wrapper.instance().renderSearchResults());
       const tabProps = content.find(TabsComponent).props();
       expect(tabProps.activeKey).toEqual(wrapper.state().selectedTab);
@@ -621,14 +621,14 @@ describe('SearchPage', () => {
     });
 
     it('renders only one tab if people is disabled', () => {
-      AppConfig.userFeature.enabled = false;
+      AppConfig.indexUsers.enabled = false;
       const content = shallow(wrapper.instance().renderSearchResults());
       const tabConfig = content.find(TabsComponent).props().tabs;
       expect(tabConfig.length).toEqual(1)
     });
 
-    it('renders two tabs if userFeature is enabled', () => {
-      AppConfig.userFeature.enabled = true;
+    it('renders two tabs if indexUsers is enabled', () => {
+      AppConfig.indexUsers.enabled = true;
       const content = shallow(wrapper.instance().renderSearchResults());
       const tabConfig = content.find(TabsComponent).props().tabs;
       expect(tabConfig.length).toEqual(2)

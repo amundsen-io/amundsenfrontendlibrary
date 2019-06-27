@@ -12,7 +12,7 @@ const configCustom: AppConfigCustom = {
     key: 'default-key',
     sampleRate: 100,
   },
-  userFeature: {
+  indexUsers: {
     enabled: false,
   }
 };

@@ -29,7 +29,7 @@ export function searchAll(options: SearchAllOptions, term: string) {
         searchAllResponse.tables = tableResponse.data.tables;
       })
   ];
-  if (AppConfig.userFeature.enabled) {
+  if (AppConfig.indexUsers.enabled) {
     requests.push(
       axios.get(`${BASE_URL}/user?query=${term}&page_index=${options.userIndex || 0}`)
         .then((userResponse: AxiosResponse<SearchAPI>) => {
