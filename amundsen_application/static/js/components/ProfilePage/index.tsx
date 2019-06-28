@@ -49,42 +49,37 @@ interface RouteProps {
   userId: string;
 }
 
+interface ProfilePageState {
+  userId: string;
+}
 
 export type ProfilePageProps = StateFromProps & DispatchFromProps & RouteComponentProps<RouteProps>;
 
-export class ProfilePage extends React.Component<ProfilePageProps> {
-  private userId: string;
+export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageState> {
 
   constructor(props) {
     super(props);
-
-    const params = props.match.params;
-    this.userId = params && params.userId ? params.userId : '';
+    this.state = { userId: props.match.params.userId }
   }
 
   componentDidMount() {
-    this.loadUserInfo();
+    this.loadUserInfo(this.state.userId);
   }
 
   componentDidUpdate() {
     const userId = this.props.match.params.userId;
-    if (userId !== this.userId) {
-      this.userId = userId;
-      this.loadUserInfo();
+    if (userId !== this.state.userId) {
+      this.setState({ userId });
+      this.loadUserInfo(userId);
     }
   }
 
-  loadUserInfo = () => {
-    this.props.getUserById(this.userId);
-    this.props.getUserOwn(this.userId);
-    this.props.getUserRead(this.userId);
-    this.props.getBookmarksForUser(this.userId);
+  loadUserInfo = (userId: string) => {
+    this.props.getUserById(userId);
+    this.props.getUserOwn(userId);
+    this.props.getUserRead(userId);
+    this.props.getBookmarksForUser(userId);
   };
-
-  getUserId = () => {
-    return this.userId;
-  };
-
 
   getTabContent = (resource: Resource[], source: string, label: string) => {
     // TODO: consider moving logic for empty content into Tab component

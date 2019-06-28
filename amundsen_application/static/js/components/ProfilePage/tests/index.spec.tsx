@@ -52,16 +52,6 @@ describe('ProfilePage', () => {
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
-
-    it('sets the userId if it exists on match.params', () => {
-      expect(wrapper.instance().getUserId()).toEqual('test0');
-    });
-
-    it('sets the userId as empty string if no match.params.userId', () => {
-      // @ts-ignore : complains about match
-      const wrapper = shallow<ProfilePage>(<ProfilePage {...props} match={{params: {}}}/>);
-      expect(wrapper.instance().getUserId()).toEqual('');
-    });
   });
 
   describe('componentDidMount', () => {
