@@ -155,7 +155,7 @@ describe('bookmark ducks', () => {
         },
       ];
       testState = {
-        myBookmarks: bookmarks,
+        myBookmarks: bookmarkList,
         myBookmarksIsLoaded: false,
         bookmarksForUser: bookmarkList,
       };
