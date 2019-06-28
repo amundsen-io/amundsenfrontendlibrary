@@ -6,7 +6,7 @@ import { ResourceType } from 'interfaces';
 
 import globalState from 'fixtures/globalState';
 
-import { searchAll as srchAll, searchResource as srchResource } from '../api/v0';
+import { searchResource as srchResource } from '../api/v0';
 import reducer, {
   searchAll, searchAllSuccess, searchAllFailure,
   searchResource, searchResourceSuccess, searchResourceFailure,
