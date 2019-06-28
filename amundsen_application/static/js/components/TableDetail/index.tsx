@@ -147,7 +147,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
         <Link
           to={ link }
           target={ target }
-          style={{ display: 'inline-block', marginLeft: '-5px', backgroundColor: 'white', borderRadius: '90%'}}
+          className="avatar-overlap"
           id="frequent-users"
           onClick={logClick}
         >
