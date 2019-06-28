@@ -132,11 +132,32 @@ describe('bookmark ducks', () => {
 
   describe('reducer', () => {
     let testState: BookmarkReducerState;
-    beforeAll(() => {
+    let bookmarkList: Bookmark[];
+    beforeEach(() => {
+      bookmarkList = [
+        {
+          key: 'bookmarked_key_0',
+          type: ResourceType.table,
+          cluster: 'cluster',
+          database: 'database',
+          description: 'description',
+          name: 'name',
+          schema_name: 'schema_name',
+        },
+        {
+          key: 'bookmarked_key_1',
+          type: ResourceType.table,
+          cluster: 'cluster',
+          database: 'database',
+          description: 'description',
+          name: 'name',
+          schema_name: 'schema_name',
+        },
+      ];
       testState = {
         myBookmarks: bookmarks,
         myBookmarksIsLoaded: false,
-        bookmarksForUser: [],
+        bookmarksForUser: bookmarkList,
       };
     });
     it('should return the existing state if action is not handled', () => {
@@ -148,9 +169,21 @@ describe('bookmark ducks', () => {
     });
 
     it('should handle RemoveBookmark.SUCCESS', () => {
-      expect(reducer(testState, removeBookmarkSuccess(testResourceKey, testResourceType))).toEqual({
+      const bookmarkKey = 'bookmarked_key_1';
+      const action = { type: RemoveBookmark.SUCCESS, payload: { resourceType: ResourceType.table, resourceKey: bookmarkKey }};
+      const newState = reducer(testState, action);
+      expect(newState.myBookmarks.find((bookmark) => bookmark.key === bookmarkKey)).toEqual(undefined);
+      expect(newState).toEqual({
         ...testState,
-        myBookmarks: [],
+        myBookmarks: [{
+          key: 'bookmarked_key_0',
+          type: ResourceType.table,
+          cluster: 'cluster',
+          database: 'database',
+          description: 'description',
+          name: 'name',
+          schema_name: 'schema_name',
+        }],
       });
     });
 
@@ -174,6 +207,13 @@ describe('bookmark ducks', () => {
       expect(reducer(initialState, getBookmarksForUserSuccess(bookmarks))).toEqual({
         ...initialState,
         bookmarksForUser: bookmarks,
+      });
+    });
+
+    it('should reset bookmarksForUser on GetBookmarksForUser.REQUEST', () => {
+      expect(reducer(testState, { type: GetBookmarksForUser.REQUEST, payload: { userId: 'testUser' }})).toEqual({
+        ...testState,
+        bookmarksForUser: [],
       });
     });
   });

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 
 import * as Avatar from 'react-avatar';
 import * as DocumentTitle from 'react-document-title';
@@ -29,7 +30,7 @@ import { logClick } from 'ducks/utilMethods';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router';
 
-import { PreviewQueryParams, TableMetadata } from 'interfaces';
+import { PreviewQueryParams, TableMetadata, User } from 'interfaces';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
@@ -127,35 +128,31 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     this.props.getPreviewData({ database: this.database, schema: this.schema, tableName: this.tableName });
   }
 
-  frequentUserOnClick = (e) => {
-    logClick(e, {
-      target_id: 'frequent-users',
-    })
-  };
-
-  getAvatarForUser(fullName, profileUrl, zIndex) {
+  getAvatarForUser(user: User, zIndex) {
     const popoverHoverFocus = (
       <Popover id="popover-trigger-hover-focus">
-        {fullName}
-      </Popover>);
-    if (profileUrl.length !== 0) {
-      return (
-        <OverlayTrigger key={fullName} trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
-          <a href={profileUrl} target='_blank'
-             style={{ display: 'inline-block', marginLeft: '-5px', backgroundColor: 'white', borderRadius: '90%'}}
-             onClick={this.frequentUserOnClick}
-          >
-            <Avatar name={fullName} size={25} round={true} style={{zIndex, position: 'relative'}} />
-          </a>
-        </OverlayTrigger>
-      );
+        { user.display_name }
+      </Popover>
+    );
+
+    let link = user.profile_url;
+    let target = '_blank';
+    if (AppConfig.indexUsers.enabled) {
+      link = `/user/${user.user_id}`;
+      target = '';
     }
+
     return (
-      <OverlayTrigger key={fullName} trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
-        <div style={{display: 'inline-block', marginLeft: '-5px',
-          backgroundColor: 'white', borderRadius: '90%'}}>
-          <Avatar name={fullName} size={25} round={true} style={{zIndex, position: 'relative'}}/>
-        </div>
+      <OverlayTrigger key={user.display_name} trigger={['hover', 'focus']} placement="top" overlay={popoverHoverFocus}>
+        <Link
+          to={ link }
+          target={ target }
+          className="avatar-overlap"
+          id="frequent-users"
+          onClick={logClick}
+        >
+          <Avatar name={user.display_name} size={25} round={true} style={{zIndex, position: 'relative'}} />
+        </Link>
       </OverlayTrigger>
     );
   }
@@ -195,8 +192,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     }
   };
 
-  getAvatarForLineage = () => {
-    const href = AppConfig.tableLineage.urlGenerator(this.database, this.cluster, this.schema, this.tableName);
+  renderAvatarForLineage = (href: string) => {
     return (
       <a href={ href } target='_blank' id="explore-lineage" onClick={logClick}>
         <AvatarLabel label={ this.displayName } src={ AppConfig.tableLineage.iconPath }/>
@@ -217,6 +213,14 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
 
     const entityCardSections = [];
 
+    // "Data Store" section
+    const dataStoreRenderer = () => {
+      return (
+        <label className="m-auto">{ data.database.toUpperCase() }</label>
+      );
+    };
+    entityCardSections.push({'title': 'Data Store', 'contentRenderer': dataStoreRenderer, 'isEditable': false});
+
     // "Owned By" section
     const ownerSectionRenderer = () => {
       return (
@@ -232,12 +236,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     const readerSectionRenderer = () => {
       return (data.table_readers && data.table_readers.length > 0) ?
         data.table_readers.map((entry, index) => {
-          const fullName = entry.reader.display_name;
-          const profileUrl = entry.reader.profile_url;
-
-          return (
-              this.getAvatarForUser(fullName, profileUrl, data.table_readers.length - index)
-          );
+          return this.getAvatarForUser(entry.reader, data.table_readers.length - index);
         }) :
         (<label className="m-auto">No frequent users exist</label>);
     };
@@ -271,23 +270,27 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
 
     // "Lineage" Section
     if (AppConfig.tableLineage.isEnabled) {
-      entityCardSections.push({
-        'title': 'Table Lineage' + (AppConfig.tableLineage.isBeta ? ' (beta)' : ''),
-        'contentRenderer': this.getAvatarForLineage,
-        'isEditable': false
-      });
+      const href = AppConfig.tableLineage.urlGenerator(this.database, this.cluster, this.schema, this.tableName);
+      if (!!href) {
+        entityCardSections.push({
+          'title': 'Table Lineage' + (AppConfig.tableLineage.isBeta ? ' (beta)' : ''),
+          'contentRenderer': () => { return this.renderAvatarForLineage(href) },
+          'isEditable': false
+        });
+      };
     }
 
     // "Preview" Section
     const previewSectionRenderer = () => {
+      const exploreSqlHref = AppConfig.tableProfile.isExploreEnabled ? this.getExploreSqlUrl() : '';
       return (
         <div>
           <DataPreviewButton modalTitle={ this.displayName } />
           {
-            AppConfig.tableProfile.isExploreEnabled &&
+            exploreSqlHref &&
               <a
                 className="btn btn-default btn-block"
-                href={this.getExploreSqlUrl()}
+                href={exploreSqlHref}
                 role="button"
                 target="_blank"
                 id="explore-sql"

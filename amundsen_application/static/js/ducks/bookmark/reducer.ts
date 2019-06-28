@@ -97,6 +97,11 @@ export default function reducer(state: BookmarkReducerState = initialState, acti
         myBookmarks: (<GetBookmarksResponse>action).payload.bookmarks,
         myBookmarksIsLoaded: true,
       };
+    case GetBookmarksForUser.REQUEST:
+      return {
+        ...state,
+        bookmarksForUser: [],
+      };
     case GetBookmarksForUser.SUCCESS:
       return {
         ...state,
