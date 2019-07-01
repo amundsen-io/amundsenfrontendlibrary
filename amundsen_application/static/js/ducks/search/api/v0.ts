@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
-import { ResourceType, SearchAllOptions } from 'interfaces';
+import AppConfig from 'config/config';
+import { ResourceType } from 'interfaces';
 
 import { DashboardSearchResults, TableSearchResults, UserSearchResults } from '../types';
 
@@ -15,20 +16,6 @@ export interface SearchAPI {
   users?: UserSearchResults;
 };
 
-export const searchAllHelper = (response: AxiosResponse<SearchAPI>) => {
-  return {
-    search_term: response.data.search_term,
-    tables: response.data.tables,
-  }
-};
-
-export function searchAll(options: SearchAllOptions, term: string) {
-  return axios.all([
-      axios.get(`${BASE_URL}/table?query=${term}&page_index=${options.tableIndex || 0}`),
-      // TODO PEOPLE - Add request for people here
-    ]).then(axios.spread(searchAllHelper));
-};
-
 export const searchResourceHelper = (response: AxiosResponse<SearchAPI>) => {
   const { data } = response;
   const ret = { searchTerm: data.search_term };
@@ -41,6 +28,10 @@ export const searchResourceHelper = (response: AxiosResponse<SearchAPI>) => {
 };
 
 export function searchResource(pageIndex: number, resource: ResourceType, term: string) {
+  if (resource === ResourceType.dashboard ||
+     (resource === ResourceType.user && !AppConfig.indexUsers.enabled)) {
+    return Promise.resolve({});
+  }
   return axios.get(`${BASE_URL}/${resource}?query=${term}&page_index=${pageIndex}`)
     .then(searchResourceHelper);
 };

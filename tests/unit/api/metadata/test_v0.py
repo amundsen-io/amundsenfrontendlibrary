@@ -10,7 +10,7 @@ from amundsen_application.api.metadata.v0 import \
 
 from amundsen_application.tests.test_utils import TEST_USER_ID
 
-local_app = create_app('amundsen_application.config.TestConfig')
+local_app = create_app('amundsen_application.config.TestConfig', 'tests/templates')
 
 
 class MetadataTest(unittest.TestCase):
@@ -194,6 +194,7 @@ class MetadataTest(unittest.TestCase):
             'github_username': 'githubusername',
             'is_active': True,
             'last_name': 'Lastname',
+            'manager_email': 'manager@email.com',
             'manager_fullname': 'Manager Fullname',
             'profile_url': 'https://test-profile-url.com',
             'role_name': 'SWE',

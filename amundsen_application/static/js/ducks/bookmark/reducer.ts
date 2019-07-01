@@ -54,7 +54,7 @@ export function getBookmarks(): GetBookmarksRequest {
   }
 }
 export function getBookmarksFailure(): GetBookmarksResponse {
-  return { type: GetBookmarks.FAILURE };
+  return { type: GetBookmarks.FAILURE, payload: { bookmarks: [] } };
 }
 export function getBookmarksSuccess(bookmarks: Bookmark[]): GetBookmarksResponse {
   return { type: GetBookmarks.SUCCESS, payload: { bookmarks } };
@@ -69,7 +69,7 @@ export function getBookmarksForUser(userId: string): GetBookmarksForUserRequest 
   }
 }
 export function getBookmarksForUserFailure(): GetBookmarksForUserResponse {
-  return { type: GetBookmarksForUser.FAILURE };
+  return { type: GetBookmarksForUser.FAILURE, payload: { bookmarks: [] } };
 }
 export function getBookmarksForUserSuccess(bookmarks: Bookmark[]): GetBookmarksForUserResponse {
   return { type: GetBookmarksForUser.SUCCESS, payload: { bookmarks } };
@@ -96,6 +96,11 @@ export default function reducer(state: BookmarkReducerState = initialState, acti
         ...state,
         myBookmarks: (<GetBookmarksResponse>action).payload.bookmarks,
         myBookmarksIsLoaded: true,
+      };
+    case GetBookmarksForUser.REQUEST:
+      return {
+        ...state,
+        bookmarksForUser: [],
       };
     case GetBookmarksForUser.SUCCESS:
       return {

@@ -6,6 +6,7 @@ const configDefault: AppConfig = {
     showAllTags: true,
   },
   google: {
+    enabled: false,
     key: 'default-key',
     sampleRate: 100,
   },
@@ -39,6 +40,9 @@ const configDefault: AppConfig = {
       return `https://DEFAULT_EXPLORE_URL?schema=${schema}&cluster=${cluster}&db=${database}&table=${table}`;
     }
   },
+  indexUsers: {
+    enabled: false,
+  }
 };
 
 export default configDefault;

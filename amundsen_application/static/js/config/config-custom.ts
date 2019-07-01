@@ -8,9 +8,13 @@ const configCustom: AppConfigCustom = {
     showAllTags: true,
   },
   google: {
+    enabled: false,
     key: 'default-key',
     sampleRate: 100,
   },
+  indexUsers: {
+    enabled: false,
+  }
 };
 
 export default configCustom;

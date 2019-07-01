@@ -25,7 +25,7 @@ describe('tableMetadata:owners ducks', () => {
   let mockFailure;
   beforeAll(() => {
     expectedOwners = {
-      'testId': {display_name: 'test', profile_url: 'test.io'}
+      'testId': {display_name: 'test', profile_url: 'test.io', email: 'test@test.com', user_id: 'testId'}
     };
     updatePayload = [{method: UpdateMethod.PUT, id: 'testId'}];
     mockSuccess = jest.fn();

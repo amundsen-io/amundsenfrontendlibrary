@@ -1,5 +1,7 @@
 import { SagaIterator } from 'redux-saga';
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
+
+import { ResourceType } from 'interfaces/Resources';
 
 import {
   SearchAll,
@@ -9,7 +11,7 @@ import {
 } from './types';
 
 import {
-  searchAll, searchResource,
+  searchResource,
 } from './api/v0';
 
 import {
@@ -20,8 +22,18 @@ import {
 export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
   const { options, term } = action.payload;
   try {
-    const searchResults = yield call(searchAll, options, term);
-    yield put(searchAllSuccess(searchResults));
+    const [tableResponse, userResponse, dashboardResponse] = yield all([
+      call(searchResource, options.tableIndex, ResourceType.table, term),
+      call(searchResource, options.userIndex, ResourceType.user, term),
+      call(searchResource, options.dashboardIndex, ResourceType.dashboard, term),
+    ]);
+    const searchAllResponse = {
+      search_term: term,
+      tables: tableResponse.tables,
+      users: userResponse.users,
+      dashboards: dashboardResponse.dashboards,
+    };
+    yield put({ type: SearchAll.SUCCESS, payload: searchAllResponse });
   } catch (e) {
     yield put(searchAllFailure());
   }

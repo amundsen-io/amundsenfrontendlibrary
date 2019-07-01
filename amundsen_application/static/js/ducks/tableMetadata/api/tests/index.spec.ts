@@ -18,7 +18,7 @@ describe('helpers', () => {
   beforeAll(() => {
     tableResponseData = {
       ...globalState.tableMetadata.tableData,
-      owners: [{display_name: 'test', profile_url: 'test.io'}],
+      owners: [{display_name: 'test', profile_url: 'test.io', email: 'test@test.com', user_id: 'test'}],
       tags: [{tag_count: 2, tag_name: 'zname'}, {tag_count: 1, tag_name: 'aname'}],
     };
     mockResponseData = {
@@ -38,7 +38,7 @@ describe('helpers', () => {
 
   it('getTableOwnersFromResponseData',() => {
     expect(Helpers.getTableOwnersFromResponseData(mockResponseData)).toEqual({
-      'test': {display_name: 'test', profile_url: 'test.io'}
+      'test': {display_name: 'test', profile_url: 'test.io', email: 'test@test.com', user_id: 'test'}
     });
   });
 

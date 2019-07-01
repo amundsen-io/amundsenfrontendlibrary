@@ -13,26 +13,23 @@ import { GetAllTags } from '../types';
 describe('allTags ducks', () => {
   describe('actions', () => {
     it('getAllTags - returns the action to get all tags', () => {
-      expect(getAllTags()).toEqual({ type: GetAllTags.REQUEST });
+      const action = getAllTags();
+      expect(action.type).toEqual(GetAllTags.REQUEST);
     });
 
     it('getAllTagsFailure - returns the action to process failure', () => {
-      expect(getAllTagsFailure()).toEqual({
-        type: GetAllTags.FAILURE,
-        payload: {
-          tags: [],
-        },
-      });
+      const action = getAllTagsFailure();
+      const { payload } = action;
+      expect(action.type).toBe(GetAllTags.FAILURE);
+      expect(payload.tags).toEqual([]);
     });
 
     it('getAllTagsSuccess - returns the action to process success', () => {
       const expectedTags = [{tag_count: 2, tag_name: 'test'}, {tag_count: 1, tag_name: 'test2'}];
-      expect(getAllTagsSuccess(expectedTags)).toEqual({
-        type: GetAllTags.SUCCESS,
-        payload: {
-          tags: expectedTags,
-        }
-      });
+      const action = getAllTagsSuccess(expectedTags);
+      const { payload } = action;
+      expect(action.type).toBe(GetAllTags.SUCCESS);
+      expect(payload.tags).toBe(expectedTags);
     });
   });
 

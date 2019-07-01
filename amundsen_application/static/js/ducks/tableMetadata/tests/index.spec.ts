@@ -68,7 +68,7 @@ describe('tableMetadata ducks', () => {
   beforeAll(() => {
     expectedData = globalState.tableMetadata.tableData;
     expectedOwners = {
-      'testId': {display_name: 'test', profile_url: 'test.io'}
+      'testId': {display_name: 'test', profile_url: 'test.io', email: 'test@test.com', user_id: 'testId'}
     };
     expectedTags = [{tag_count: 2, tag_name: 'test'}, {tag_count: 1, tag_name: 'test2'}];
     expectedStatus = 200;
@@ -324,9 +324,10 @@ describe('reducer', () => {
     });
 
     it('should handle GetPreviewData.FAILURE', () => {
-      expect(reducer(testState, getPreviewDataFailure({}, 500))).toEqual({
+      const action = getPreviewDataFailure({}, 500);
+      expect(reducer(testState, action)).toEqual({
         ...testState,
-        preview: initialPreviewState,
+        preview: action.payload,
       });
     });
 
