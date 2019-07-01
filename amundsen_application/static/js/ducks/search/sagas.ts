@@ -8,22 +8,21 @@ import {
   SearchResourceRequest,
 } from './types';
 
-import {
-  searchResource,
-} from './api/v0';
+import { searchResource } from './api/v0';
 import { ResourceType } from 'interfaces/Resources';
 
 import {
+  initialState,
   searchAllFailure,
   searchResourceSuccess,
-  searchResourceFailure, initialState,
+  searchResourceFailure,
 } from './reducer';
 
 export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
   const { selectedTab, pageIndex, term } = action.payload;
-  const tableIndex = selectedTab === ResourceType.table? pageIndex : 0;
-  const userIndex = selectedTab === ResourceType.user? pageIndex : 0;
-  const dashboardIndex = selectedTab === ResourceType.dashboard? pageIndex : 0;
+  const tableIndex = selectedTab === ResourceType.table ? pageIndex : 0;
+  const userIndex = selectedTab === ResourceType.user ? pageIndex : 0;
+  const dashboardIndex = selectedTab === ResourceType.dashboard ? pageIndex : 0;
 
   try {
     const [tableResponse, userResponse, dashboardResponse] = yield all([
