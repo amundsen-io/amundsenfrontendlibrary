@@ -16,7 +16,7 @@ import { ResourceType } from 'interfaces/Resources';
 import {
   searchAllFailure,
   searchResourceSuccess,
-  searchResourceFailure,
+  searchResourceFailure, initialState,
 } from './reducer';
 
 export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
@@ -34,9 +34,9 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
     const searchAllResponse = {
       selectedTab,
       search_term: term,
-      tables: tableResponse.tables,
-      users: userResponse.users,
-      dashboards: dashboardResponse.dashboards,
+      tables: tableResponse.tables || initialState.tables,
+      users: userResponse.users || initialState.users,
+      dashboards: dashboardResponse.dashboards || initialState.dashboards,
     };
     yield put({ type: SearchAll.SUCCESS, payload: searchAllResponse });
   } catch (e) {

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import './styles.scss';
 import { GlobalState } from 'ducks/rootReducer';
+import { ResourceType } from 'interfaces/Resources';
 
 export interface OwnProps {
   path?: string;
@@ -12,6 +13,10 @@ export interface OwnProps {
 
 export interface StateFromProps {
   searchTerm: string;
+  selectedTab: ResourceType;
+  dashboardIndex: number;
+  tableIndex: number;
+  userIndex: number;
 }
 
 export type BreadcrumbProps = OwnProps & StateFromProps;
@@ -23,7 +28,20 @@ export const Breadcrumb: React.SFC<BreadcrumbProps> = (props) => {
     path = '/';
     text = 'Home';
     if (props.searchTerm) {
-      path = `/search?searchTerm=${props.searchTerm}&selectedTab=table&pageIndex=0`;
+      let index = 0;
+      switch (props.selectedTab) {
+        case ResourceType.table:
+          index = props.tableIndex;
+          break;
+        case ResourceType.dashboard:
+          index = props.dashboardIndex;
+          break;
+        case ResourceType.user:
+          index = props.userIndex;
+          break;
+      }
+
+      path = `/search?searchTerm=${props.searchTerm}&selectedTab=${props.selectedTab}&pageIndex=${index}`;
       text = 'Search Results';
     }
   }
@@ -40,6 +58,10 @@ export const Breadcrumb: React.SFC<BreadcrumbProps> = (props) => {
 export const mapStateToProps = (state: GlobalState) => {
   return {
     searchTerm: state.search.search_term,
+    selectedTab: state.search.selectedTab,
+    dashboardIndex: state.search.dashboards.page_index,
+    tableIndex: state.search.tables.page_index,
+    userIndex: state.search.users.page_index,
   };
 };
 

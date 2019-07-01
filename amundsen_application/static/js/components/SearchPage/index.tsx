@@ -86,10 +86,13 @@ export class SearchPage extends React.Component<SearchPageProps> {
 
     const prevParams = qs.parse(prevProps.location.search);
 
+    // New search entered
     if (term !== prevParams.searchTerm) {
       this.props.searchAll(term, tab, index);
+    // Tab change
     } else if (tab !== this.props.selectedTab) {
       this.props.updateSearchTab(tab);
+    // Pagination change
     } else if (prevParams.pageIndex !== undefined && index !== prevParams.pageIndex) {
       this.props.searchResource(this.props.selectedTab, this.props.searchTerm, index);
     }
