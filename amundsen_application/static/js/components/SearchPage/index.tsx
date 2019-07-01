@@ -13,12 +13,12 @@ import TabsComponent from 'components/common/Tabs';
 import SearchBar from './SearchBar';
 
 import { GlobalState } from 'ducks/rootReducer';
-import { searchAll, searchResource } from 'ducks/search/reducer';
+import { searchAll, searchResource, updateSearchTab } from 'ducks/search/reducer';
 import {
   DashboardSearchResults,
   SearchAllRequest,
   SearchResourceRequest,
-  TableSearchResults,
+  TableSearchResults, UpdateSearchTabRequest,
   UserSearchResults,
 } from 'ducks/search/types';
 
@@ -42,6 +42,7 @@ import {
 
 export interface StateFromProps {
   searchTerm: string;
+  selectedTab: ResourceType;
   isLoading: boolean;
   tables: TableSearchResults;
   dashboards: DashboardSearchResults;
@@ -51,23 +52,16 @@ export interface StateFromProps {
 export interface DispatchFromProps {
   searchAll: (term: string, options?: SearchAllOptions) => SearchAllRequest;
   searchResource: (resource: ResourceType, term: string, pageIndex: number) => SearchResourceRequest;
+  updateSearchTab: (selectedTab: ResourceType) => UpdateSearchTabRequest;
 }
 
 export type SearchPageProps = StateFromProps & DispatchFromProps & RouteComponentProps<any>;
 
-interface SearchPageState {
-  selectedTab: ResourceType;
-}
-
-export class SearchPage extends React.Component<SearchPageProps, SearchPageState> {
+export class SearchPage extends React.Component<SearchPageProps> {
   public static defaultProps: Partial<SearchPageProps> = {};
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      selectedTab: ResourceType.table,
-    };
   }
 
   componentDidMount() {
@@ -103,7 +97,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
         return newTab;
       case ResourceType.dashboard:
       default:
-        return this.state.selectedTab;
+        return this.props.selectedTab;
     }
   };
 
@@ -135,13 +129,15 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
   };
 
   onPaginationChange = (index: number): void => {
-    this.props.searchResource(this.state.selectedTab, this.props.searchTerm, index);
-    this.updatePageUrl(this.props.searchTerm, this.state.selectedTab, index);
+    this.props.searchResource(this.props.selectedTab, this.props.searchTerm, index);
+    this.updatePageUrl(this.props.searchTerm, this.props.selectedTab, index);
   };
 
   onTabChange = (tab: ResourceType): void => {
+    this.props.updateSearchTab(tab);
+
     const currentTab = this.getSelectedTabByResourceType(tab);
-    this.setState({ selectedTab: currentTab });
+    // this.setState({ selectedTab: currentTab });
     this.updatePageUrl(this.props.searchTerm, currentTab, this.getPageIndexByResourceType(currentTab));
   };
 
@@ -171,7 +167,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
         <TabsComponent
           tabs={ tabConfig }
           defaultTab={ ResourceType.table }
-          activeKey={ this.state.selectedTab }
+          activeKey={ this.props.selectedTab }
           onSelect={ this.onTabChange }
         />
       </div>
@@ -259,6 +255,7 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
 export const mapStateToProps = (state: GlobalState) => {
   return {
     searchTerm: state.search.search_term,
+    selectedTab: state.search.selectedTab,
     isLoading: state.search.isLoading,
     tables: state.search.tables,
     users: state.search.users,
@@ -267,7 +264,7 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ searchAll, searchResource } , dispatch);
+  return bindActionCreators({ searchAll, searchResource, updateSearchTab }, dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(SearchPage);

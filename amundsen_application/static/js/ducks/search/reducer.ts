@@ -1,7 +1,7 @@
 import { ResourceType, SearchAllOptions } from 'interfaces';
 
 import {
-  SearchResponsePayload,
+  DashboardSearchResults,
   SearchAll,
   SearchAllRequest,
   SearchAllReset,
@@ -9,13 +9,16 @@ import {
   SearchResource,
   SearchResourceRequest,
   SearchResourceResponse,
-  DashboardSearchResults,
+  SearchResponsePayload,
   TableSearchResults,
+  UpdateSearchTab,
+  UpdateSearchTabRequest,
   UserSearchResults,
 } from './types';
 
 export interface SearchReducerState {
   search_term: string;
+  selectedTab: ResourceType;
   isLoading: boolean;
   dashboards: DashboardSearchResults;
   tables: TableSearchResults;
@@ -62,10 +65,19 @@ export function searchReset(): SearchAllReset {
   };
 };
 
+export function updateSearchTab(selectedTab: ResourceType): UpdateSearchTabRequest {
+  return {
+    payload: { selectedTab },
+    type: UpdateSearchTab.REQUEST,
+  };
+}
+
+
 /* REDUCER */
 export const initialState: SearchReducerState = {
   search_term: '',
   isLoading: false,
+  selectedTab: ResourceType.table,
   dashboards: {
     page_index: 0,
     results: [],
@@ -120,6 +132,11 @@ export default function reducer(state: SearchReducerState = initialState, action
       return {
         ...initialState,
         isLoading: false,
+      };
+    case UpdateSearchTab.REQUEST:
+      return {
+        ...state,
+        selectedTab: (<UpdateSearchTabRequest>action).payload.selectedTab
       };
     default:
       return state;

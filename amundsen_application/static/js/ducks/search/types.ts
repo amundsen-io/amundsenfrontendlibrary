@@ -62,3 +62,13 @@ export interface SearchResourceResponse {
   type: SearchResource.SUCCESS | SearchResource.FAILURE;
   payload?: SearchResponsePayload;
 };
+
+export enum UpdateSearchTab {
+  REQUEST = 'amundsen/search/UPDATE_SEARCH_TAB_REQUEST',
+}
+export interface UpdateSearchTabRequest {
+  type: UpdateSearchTab.REQUEST,
+  payload: {
+    selectedTab: ResourceType;
+  }
+}
