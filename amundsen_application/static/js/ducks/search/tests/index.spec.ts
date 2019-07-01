@@ -1,6 +1,4 @@
-import { expectSaga, testSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
-import { throwError } from 'redux-saga-test-plan/providers';
+import { testSaga } from 'redux-saga-test-plan';
 
 import { ResourceType } from 'interfaces';
 
@@ -113,7 +111,7 @@ describe('search ducks', () => {
     it('should handle SearchAll.FAILURE', () => {
       expect(reducer(testState, searchAllFailure())).toEqual({
         ...initialState,
-        isLoading: false,
+        search_term: testState.search_term,
       });
     });
 
@@ -139,7 +137,7 @@ describe('search ducks', () => {
     it('should handle SearchResource.FAILURE', () => {
       expect(reducer(testState, searchResourceFailure())).toEqual({
         ...initialState,
-        isLoading: false,
+        search_term: testState.search_term,
       });
     });
   });
