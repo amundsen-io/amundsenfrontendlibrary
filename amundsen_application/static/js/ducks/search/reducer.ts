@@ -1,4 +1,4 @@
-import { ResourceType, SearchAllOptions } from 'interfaces';
+import { ResourceType } from 'interfaces';
 
 import {
   DashboardSearchResults,
@@ -26,10 +26,11 @@ export interface SearchReducerState {
 };
 
 /* ACTIONS */
-export function searchAll(term: string, options: SearchAllOptions): SearchAllRequest {
+export function searchAll(term: string, selectedTab: ResourceType, pageIndex: number): SearchAllRequest {
   return {
     payload: {
-      options,
+      selectedTab,
+      pageIndex,
       term,
     },
     type: SearchAll.REQUEST,

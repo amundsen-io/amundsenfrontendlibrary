@@ -22,7 +22,7 @@ import {
   UserSearchResults,
 } from 'ducks/search/types';
 
-import { ResourceType, SearchAllOptions } from 'interfaces';
+import { ResourceType } from 'interfaces';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
@@ -50,7 +50,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  searchAll: (term: string, options?: SearchAllOptions) => SearchAllRequest;
+  searchAll: (term: string, selectedTab: ResourceType, pageIndex: number) => SearchAllRequest;
   searchResource: (resource: ResourceType, term: string, pageIndex: number) => SearchResourceRequest;
   updateSearchTab: (selectedTab: ResourceType) => UpdateSearchTabRequest;
 }
@@ -67,26 +67,31 @@ export class SearchPage extends React.Component<SearchPageProps> {
   componentDidMount() {
     const params = qs.parse(this.props.location.search);
     const { searchTerm, pageIndex, selectedTab } = params;
-    const { term, index, currentTab } = this.getSanitizedUrlParams(searchTerm, pageIndex, selectedTab);
-    this.setState({ selectedTab: currentTab });
+    const { term, index, tab } = this.getSanitizedUrlParams(searchTerm, pageIndex, selectedTab);
+
+    this.props.updateSearchTab(tab);
+
     if (term !== '') {
-      this.props.searchAll(term, this.createSearchOptions(index, currentTab));
-      if (currentTab !== selectedTab || pageIndex !== index) {
-        this.updatePageUrl(term, currentTab, index);
+      this.props.searchAll(term, tab, index);
+      if (tab !== selectedTab || pageIndex !== index) {
+        this.updatePageUrl(term, tab, index);
       }
     }
   }
 
   componentDidUpdate(prevProps) {
-    if (this.props.location.search !== prevProps.location.search) {
-      const params = qs.parse(this.props.location.search);
-      const { searchTerm, pageIndex, selectedTab } = params;
-      const { term, index, currentTab } = this.getSanitizedUrlParams(searchTerm, pageIndex, selectedTab);
-      this.setState({ selectedTab: currentTab });
-      const prevTerm = prevProps.searchTerm;
-      if (term !== prevTerm) {
-        this.props.searchAll(term, this.createSearchOptions(index, currentTab));
-      }
+    const searchParams = qs.parse(this.props.location.search);
+    const { searchTerm, pageIndex, selectedTab } = searchParams;
+    const { term, index, tab } = this.getSanitizedUrlParams(searchTerm, pageIndex, selectedTab);
+
+    const prevParams = qs.parse(prevProps.location.search);
+
+    if (term !== prevParams.searchTerm) {
+      this.props.searchAll(term, tab, index);
+    } else if (tab !== this.props.selectedTab) {
+      this.props.updateSearchTab(tab);
+    } else if (prevParams.pageIndex !== undefined && index !== prevParams.pageIndex) {
+      this.props.searchResource(this.props.selectedTab, this.props.searchTerm, index);
     }
   }
 
@@ -101,19 +106,11 @@ export class SearchPage extends React.Component<SearchPageProps> {
     }
   };
 
-  createSearchOptions = (pageIndex: number, selectedTab: ResourceType) => {
-    return {
-      dashboardIndex: (selectedTab === ResourceType.dashboard) ? pageIndex : 0,
-      userIndex: (selectedTab === ResourceType.user) ? pageIndex : 0,
-      tableIndex: (selectedTab === ResourceType.table) ? pageIndex : 0,
-    };
-  };
-
   getSanitizedUrlParams = (searchTerm: string, pageIndex: number, selectedTab: ResourceType) => {
-    const currentTab = this.getSelectedTabByResourceType(selectedTab);
+    const tab = this.getSelectedTabByResourceType(selectedTab);
     const index = pageIndex || 0;
     const term = searchTerm ? searchTerm : "";
-    return {term, index, currentTab};
+    return { term, index, tab };
   };
 
   getPageIndexByResourceType = (tab: ResourceType): number => {
@@ -129,16 +126,12 @@ export class SearchPage extends React.Component<SearchPageProps> {
   };
 
   onPaginationChange = (index: number): void => {
-    this.props.searchResource(this.props.selectedTab, this.props.searchTerm, index);
     this.updatePageUrl(this.props.searchTerm, this.props.selectedTab, index);
   };
 
   onTabChange = (tab: ResourceType): void => {
-    this.props.updateSearchTab(tab);
-
-    const currentTab = this.getSelectedTabByResourceType(tab);
-    // this.setState({ selectedTab: currentTab });
-    this.updatePageUrl(this.props.searchTerm, currentTab, this.getPageIndexByResourceType(currentTab));
+    const newTab = this.getSelectedTabByResourceType(tab);
+    this.updatePageUrl(this.props.searchTerm, newTab, this.getPageIndexByResourceType(newTab));
   };
 
   updatePageUrl = (searchTerm: string, tab: ResourceType, pageIndex: number): void => {

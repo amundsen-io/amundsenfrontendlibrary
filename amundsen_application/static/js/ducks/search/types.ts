@@ -2,7 +2,6 @@ import {
   DashboardResource,
   Resource,
   ResourceType,
-  SearchAllOptions,
   TableResource,
   UserResource,
 } from 'interfaces';
@@ -32,7 +31,8 @@ export enum SearchAll {
 };
 export interface SearchAllRequest {
   payload: {
-    options: SearchAllOptions;
+    selectedTab: ResourceType;
+    pageIndex: number;
     term: string;
   };
   type: SearchAll.REQUEST;
@@ -67,7 +67,7 @@ export enum UpdateSearchTab {
   REQUEST = 'amundsen/search/UPDATE_SEARCH_TAB_REQUEST',
 }
 export interface UpdateSearchTabRequest {
-  type: UpdateSearchTab.REQUEST,
+  type: UpdateSearchTab.REQUEST;
   payload: {
     selectedTab: ResourceType;
   }
