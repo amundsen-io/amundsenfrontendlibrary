@@ -50,7 +50,7 @@ export interface GetBookmarksRequest {
 }
 export interface GetBookmarksResponse {
   type: GetBookmarks.SUCCESS | GetBookmarks.FAILURE;
-  payload?: {
+  payload: {
     bookmarks: Bookmark[];
   };
 }
@@ -69,7 +69,7 @@ export interface GetBookmarksForUserRequest {
 }
 export interface GetBookmarksForUserResponse {
   type: GetBookmarksForUser.SUCCESS | GetBookmarksForUser.FAILURE;
-  payload?: {
+  payload: {
     bookmarks: Bookmark[];
   };
 }

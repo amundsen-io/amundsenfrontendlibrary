@@ -28,30 +28,24 @@ describe('tableMetadata:tags ducks', () => {
 
   describe('actions', () => {
     it('updateTags - returns the action to updateTags', () => {
-      expect(updateTags(updatePayload)).toEqual({
-        type: UpdateTags.REQUEST,
-        payload: {
-          tagArray: updatePayload
-        }
-      });
+      const action = updateTags(updatePayload);
+      const { payload } = action;
+      expect(action.type).toBe(UpdateTags.REQUEST);
+      expect(payload.tagArray).toBe(updatePayload);
     });
 
     it('updateTagsFailure - returns the action to process failure', () => {
-      expect(updateTagsFailure()).toEqual({
-        type: UpdateTags.FAILURE,
-        payload: {
-          tags: [],
-        }
-      });
+      const action = updateTagsFailure();
+      const { payload } = action;
+      expect(action.type).toBe(UpdateTags.FAILURE);
+      expect(payload.tags).toEqual([]);
     });
 
     it('updateTagsSuccess - returns the action to process success', () => {
-      expect(updateTagsSuccess(expectedTags)).toEqual({
-        type: UpdateTags.SUCCESS,
-        payload: {
-          tags: expectedTags,
-        }
-      });
+      const action = updateTagsSuccess(expectedTags);
+      const { payload } = action;
+      expect(action.type).toBe(UpdateTags.SUCCESS);
+      expect(payload.tags).toBe(expectedTags);
     });
   });
 

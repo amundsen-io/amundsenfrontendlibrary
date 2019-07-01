@@ -1,6 +1,4 @@
-import { expectSaga, testSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
-import { throwError } from 'redux-saga-test-plan/providers';
+import { testSaga } from 'redux-saga-test-plan';
 
 import { LoggedInUser, PeopleUser, Resource } from 'interfaces';
 
@@ -43,96 +41,77 @@ describe('user ducks', () => {
 
   describe('actions', () => {
     it('getLoggedInUser - returns the action to get the data for the current user', () => {
-      expect(getLoggedInUser()).toEqual({
-        type: GetLoggedInUser.REQUEST,
-      });
+      const action = getLoggedInUser();
+      expect(action.type).toBe(GetLoggedInUser.REQUEST);
     });
 
     it('getLoggedInUserSuccess - returns the action to process the success', () => {
-      expect(getLoggedInUserSuccess(currentUser)).toEqual({
-        type: GetLoggedInUser.SUCCESS,
-        payload: {
-          user: currentUser,
-        },
-      });
+      const action = getLoggedInUserSuccess(currentUser);
+      const { payload } = action;
+      expect(action.type).toBe(GetLoggedInUser.SUCCESS);
+      expect(payload.user).toBe(currentUser);
     });
 
     it('getLoggedInUserFailure - returns the action to process the failure', () => {
-      expect(getLoggedInUserFailure()).toEqual({
-        type: GetLoggedInUser.FAILURE,
-      });
+      const action = getLoggedInUserFailure();
+      expect(action.type).toBe(GetLoggedInUser.FAILURE);
     });
 
     it('getUser - returns the action to get the data for a user given an id', () => {
-      expect(getUser(userId)).toEqual({
-        type: GetUser.REQUEST,
-        payload: {
-          userId
-        }
-      });
+      const action = getUser(userId);
+      const { payload } = action;
+      expect(action.type).toBe(GetUser.REQUEST);
+      expect(payload.userId).toBe(userId);
     });
 
     it('getUserSuccess - returns the action to process the success', () => {
-      expect(getUserSuccess(otherUser.user)).toEqual({
-        type: GetUser.SUCCESS,
-        payload: {
-          user: otherUser.user,
-        },
-      });
+      const action = getUserSuccess(otherUser.user);
+      const { payload } = action;
+      expect(action.type).toBe(GetUser.SUCCESS);
+      expect(payload.user).toBe(otherUser.user);
     });
 
     it('getUserFailure - returns the action to process the failure', () => {
-      expect(getUserFailure()).toEqual({
-        type: GetUser.FAILURE,
-      });
+      const action = getUserFailure();
+      expect(action.type).toBe(GetUser.FAILURE);
     });
 
     it('getUserOwn - returns the action to get the owned resources for a user given an id', () => {
-      expect(getUserOwn(userId)).toEqual({
-        type: GetUserOwn.REQUEST,
-        payload: {
-          userId
-        }
-      });
+      const action = getUserOwn(userId);
+      const { payload } = action;
+      expect(action.type).toBe(GetUserOwn.REQUEST);
+      expect(payload.userId).toBe(userId);
     });
 
     it('getUserOwnSuccess - returns the action to process the success', () => {
-      expect(getUserOwnSuccess(otherUser.own)).toEqual({
-        type: GetUserOwn.SUCCESS,
-        payload: {
-          own: otherUser.own,
-        },
-      });
+      const action = getUserOwnSuccess(otherUser.own);
+      const { payload } = action;
+      expect(action.type).toBe(GetUserOwn.SUCCESS);
+      expect(payload.own).toBe(otherUser.own);
     });
 
     it('getUserOwnFailure - returns the action to process the failure', () => {
-      expect(getUserOwnFailure()).toEqual({
-        type: GetUserOwn.FAILURE,
-      });
+      const action = getUserOwnFailure();
+      expect(action.type).toBe(GetUserOwn.FAILURE);
     });
 
     it('getUserRead - returns the action to get the frequently used resources for a user given an id', () => {
-      expect(getUserRead(userId)).toEqual({
-        type: GetUserRead.REQUEST,
-        payload: {
-          userId
-        }
-      });
+      const action = getUserRead(userId);
+      const { payload } = action;
+      expect(action.type).toBe(GetUserRead.REQUEST);
+      expect(payload.userId).toBe(userId);
     });
 
     it('getUserReadSuccess - returns the action to process the success', () => {
-      expect(getUserReadSuccess(otherUser.read)).toEqual({
-        type: GetUserRead.SUCCESS,
-        payload: {
-          read: otherUser.read,
-        },
-      });
+      const action = getUserReadSuccess(otherUser.read);
+      const { payload } = action;
+      expect(action.type).toBe(GetUserRead.SUCCESS);
+      expect(payload.read).toBe(otherUser.read);
     });
 
     it('getUserReadFailure - returns the action to process the failure', () => {
-      expect(getUserReadFailure()).toEqual({
-        type: GetUserRead.FAILURE,
-      });
+      const action = getUserReadFailure();
+      expect(action.type).toBe(GetUserRead.FAILURE);
     });
   });
 

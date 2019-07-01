@@ -34,32 +34,26 @@ describe('tableMetadata:owners ducks', () => {
 
   describe('actions', () => {
     it('updateTableOwner - returns the action to update table owners', () => {
-      expect(updateTableOwner(updatePayload, mockSuccess, mockFailure)).toEqual({
-        type: UpdateTableOwner.REQUEST,
-        payload: {
-          updateArray: updatePayload,
-          onSuccess: mockSuccess,
-          onFailure: mockFailure,
-        }
-      });
+      const action = updateTableOwner(updatePayload, mockSuccess, mockFailure);
+      const { payload } = action;
+      expect(action.type).toBe(UpdateTableOwner.REQUEST);
+      expect(payload.updateArray).toBe(updatePayload);
+      expect(payload.onSuccess).toBe(mockSuccess);
+      expect(payload.onFailure).toBe(mockFailure);
     });
 
     it('updateTableOwnerFailure - returns the action to process failure', () => {
-      expect(updateTableOwnerFailure(expectedOwners)).toEqual({
-        type: UpdateTableOwner.FAILURE,
-        payload: {
-          owners: expectedOwners,
-        }
-      });
+      const action = updateTableOwnerFailure(expectedOwners);
+      const { payload } = action;
+      expect(action.type).toBe(UpdateTableOwner.FAILURE);
+      expect(payload.owners).toBe(expectedOwners);
     });
 
     it('updateTableOwnerSuccess - returns the action to process success', () => {
-      expect(updateTableOwnerSuccess(expectedOwners)).toEqual({
-        type: UpdateTableOwner.SUCCESS,
-        payload: {
-          owners: expectedOwners
-        }
-      });
+      const action = updateTableOwnerSuccess(expectedOwners);
+      const { payload } = action;
+      expect(action.type).toBe(UpdateTableOwner.SUCCESS);
+      expect(payload.owners).toBe(expectedOwners);
     });
   });
 

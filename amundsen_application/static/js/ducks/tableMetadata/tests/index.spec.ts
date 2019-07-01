@@ -1,6 +1,4 @@
-import { expectSaga, testSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
-import { throwError } from 'redux-saga-test-plan/providers';
+import { testSaga } from 'redux-saga-test-plan';
 
 import { PreviewData, PreviewQueryParams, TableMetadata, Tag, UpdateMethod, UpdateOwnerPayload, User } from 'interfaces';
 
@@ -111,163 +109,138 @@ describe('tableMetadata ducks', () => {
 
   describe('actions', () => {
     it('getTableData - returns the action to get table metadata', () => {
-      expect(getTableData(testKey, testIndex, testSource)).toEqual({
-        type: GetTableData.REQUEST,
-        payload: {
-          key: testKey,
-          searchIndex: testIndex,
-          source: testSource,
-        }
-      });
+      const action = getTableData(testKey, testIndex, testSource);
+      const { payload } = action;
+      expect(action.type).toBe(GetTableData.REQUEST);
+      expect(payload.key).toBe(testKey);
+      expect(payload.searchIndex).toBe(testIndex);
+      expect(payload.source).toBe(testSource);
     });
 
     it('getTableDataFailure - returns the action to process failure', () => {
-      expect(getTableDataFailure()).toEqual({
-        type: GetTableData.FAILURE,
-        payload: { data: initialTableDataState, owners: {}, statusCode: 500, tags: [] },
-      });
+      const action = getTableDataFailure();
+      const { payload } = action;
+      expect(action.type).toBe(GetTableData.FAILURE);
+      expect(payload.data).toBe(initialTableDataState);
+      expect(payload.owners).toEqual({});
+      expect(payload.statusCode).toBe(500);
+      expect(payload.tags).toEqual([]);
     });
 
     it('getTableDataSuccess - returns the action to process success', () => {
-      expect(getTableDataSuccess(expectedData, expectedOwners, expectedStatus, expectedTags)).toEqual({
-        type: GetTableData.SUCCESS,
-        payload: {
-          data: expectedData,
-          owners: expectedOwners,
-          statusCode: expectedStatus,
-          tags: expectedTags,
-        },
-      });
+      const action = getTableDataSuccess(expectedData, expectedOwners, expectedStatus, expectedTags);
+      const { payload } = action;
+      expect(action.type).toBe(GetTableData.SUCCESS);
+      expect(payload.data).toBe(expectedData);
+      expect(payload.owners).toEqual(expectedOwners);
+      expect(payload.statusCode).toBe(expectedStatus);
+      expect(payload.tags).toEqual(expectedTags);
     });
 
     it('getTableDescription - returns the action to get the table description', () => {
-      expect(getTableDescription(mockSuccess, mockFailure)).toEqual({
-        type: GetTableDescription.REQUEST,
-        payload: {
-          onSuccess: mockSuccess,
-          onFailure: mockFailure,
-        }
-      });
+      const action = getTableDescription(mockSuccess, mockFailure);
+      const { payload } = action;
+      expect(action.type).toBe(GetTableDescription.REQUEST);
+      expect(payload.onSuccess).toBe(mockSuccess);
+      expect(payload.onFailure).toBe(mockFailure);
     });
 
-    it('getTableDescription - returns the action to process failure', () => {
-      expect(getTableDescriptionFailure(expectedData)).toEqual({
-        type: GetTableDescription.FAILURE,
-        payload: {
-          tableMetadata: expectedData,
-        },
-      });
+    it('getTableDescriptionFailure - returns the action to process failure', () => {
+      const action = getTableDescriptionFailure(expectedData);
+      const { payload } = action;
+      expect(action.type).toBe(GetTableDescription.FAILURE);
+      expect(payload.tableMetadata).toBe(expectedData);
     });
 
-    it('getTableDescription - returns the action to process success', () => {
-      expect(getTableDescriptionSuccess(expectedData)).toEqual({
-        type: GetTableDescription.SUCCESS,
-        payload: {
-          tableMetadata: expectedData,
-        },
-      });
+    it('getTableDescriptionSuccess - returns the action to process success', () => {
+      const action = getTableDescriptionSuccess(expectedData);
+      const { payload } = action;
+      expect(action.type).toBe(GetTableDescription.SUCCESS);
+      expect(payload.tableMetadata).toBe(expectedData);
     });
 
     it('updateTableDescription - returns the action to update the table description', () => {
-      expect(updateTableDescription(newDescription, mockSuccess, mockFailure)).toEqual({
-        type: UpdateTableDescription.REQUEST,
-        payload: {
-          newValue: newDescription,
-          onSuccess: mockSuccess,
-          onFailure: mockFailure,
-        }
-      });
+      const action = updateTableDescription(newDescription, mockSuccess, mockFailure);
+      const { payload } = action;
+      expect(action.type).toBe(UpdateTableDescription.REQUEST);
+      expect(payload.newValue).toBe(newDescription);
+      expect(payload.onSuccess).toBe(mockSuccess);
+      expect(payload.onFailure).toBe(mockFailure);
     });
 
     it('getColumnDescription - returns the action to get a column description given the index', () => {
-      expect(getColumnDescription(columnIndex, mockSuccess, mockFailure)).toEqual({
-        type: GetColumnDescription.REQUEST,
-        payload: {
-          columnIndex,
-          onSuccess: mockSuccess,
-          onFailure: mockFailure,
-        }
-      });
+      const action = getColumnDescription(columnIndex, mockSuccess, mockFailure);
+      const { payload } = action;
+      expect(action.type).toBe(GetColumnDescription.REQUEST);
+      expect(payload.columnIndex).toBe(columnIndex);
+      expect(payload.onSuccess).toBe(mockSuccess);
+      expect(payload.onFailure).toBe(mockFailure);
     });
 
-    it('getColumnDescription - returns the action to process failure', () => {
-      expect(getColumnDescriptionFailure(expectedData)).toEqual({
-        type: GetColumnDescription.FAILURE,
-        payload: {
-          tableMetadata: expectedData,
-        },
-      });
+    it('getColumnDescriptionFailure - returns the action to process failure', () => {
+      const action = getColumnDescriptionFailure(expectedData);
+      const { payload } = action;
+      expect(action.type).toBe(GetColumnDescription.FAILURE);
+      expect(payload.tableMetadata).toBe(expectedData);
     });
 
-    it('getColumnDescription - returns the action to process success', () => {
-      expect(getColumnDescriptionSuccess(expectedData)).toEqual({
-        type: GetColumnDescription.SUCCESS,
-        payload: {
-          tableMetadata: expectedData,
-        },
-      });
+    it('getColumnDescriptionSuccess - returns the action to process success', () => {
+      const action = getColumnDescriptionSuccess(expectedData);
+      const { payload } = action;
+      expect(action.type).toBe(GetColumnDescription.SUCCESS);
+      expect(payload.tableMetadata).toBe(expectedData);
     });
 
     it('updateColumnDescription - returns the action to update the table description', () => {
-      expect(updateColumnDescription(newDescription, columnIndex, mockSuccess, mockFailure)).toEqual({
-        type: UpdateColumnDescription.REQUEST,
-        payload: {
-          columnIndex,
-          newValue: newDescription,
-          onSuccess: mockSuccess,
-          onFailure: mockFailure,
-        }
-      });
+      const action = updateColumnDescription(newDescription, columnIndex, mockSuccess, mockFailure);
+      const { payload } = action;
+      expect(action.type).toBe(UpdateColumnDescription.REQUEST);
+      expect(payload.newValue).toBe(newDescription);
+      expect(payload.columnIndex).toBe(columnIndex);
+      expect(payload.onSuccess).toBe(mockSuccess);
+      expect(payload.onFailure).toBe(mockFailure);
     });
 
     it('getLastIndexed - returns the action to get the last indexed date of the table', () => {
-      expect(getLastIndexed()).toEqual({
-        type: GetLastIndexed.REQUEST,
-      });
+      const action = getLastIndexed();
+      expect(action.type).toBe(GetLastIndexed.REQUEST);
     });
 
     it('getLastIndexedFailure - returns the action to process failure', () => {
-      expect(getLastIndexedFailure()).toEqual({
-        type: GetLastIndexed.FAILURE,
-      });
+      const action = getLastIndexedFailure();
+      expect(action.type).toBe(GetLastIndexed.FAILURE);
     });
 
-    it('getLastIndexed - returns the action to process success', () => {
-      expect(getLastIndexedSuccess(testEpoch)).toEqual({
-        type: GetLastIndexed.SUCCESS,
-        payload: {
-          lastIndexedEpoch: testEpoch
-        }
-      });
+    it('getLastIndexedSuccess - returns the action to process success', () => {
+      const action = getLastIndexedSuccess(testEpoch);
+      const { payload } = action;
+      expect(action.type).toBe(GetLastIndexed.SUCCESS);
+      expect(payload.lastIndexedEpoch).toBe(testEpoch);
     });
 
     it('getPreviewData - returns the action to get the preview table data', () => {
-      expect(getPreviewData(queryParams)).toEqual({
-        type: GetPreviewData.REQUEST,
-        payload: {
-          queryParams
-        }
-      });
+      const action = getPreviewData(queryParams);
+      const { payload } = action;
+      expect(action.type).toBe(GetPreviewData.REQUEST);
+      expect(payload.queryParams).toBe(queryParams);
     });
 
     it('getPreviewDataFailure - returns the action to process failure', () => {
-      expect(getPreviewDataFailure(emptyPreviewData, 500)).toEqual({
-        type: GetPreviewData.FAILURE,
-        payload: {
-          data: emptyPreviewData,
-          status: 500
-        }
-      });
+      const status = 500;
+      const action = getPreviewDataFailure(emptyPreviewData, status);
+      const { payload } = action;
+      expect(action.type).toBe(GetPreviewData.FAILURE);
+      expect(payload.data).toBe(emptyPreviewData);
+      expect(payload.status).toBe(status);
     });
 
-    it('getPreviewData - returns the action to process success', () => {
-      expect(getPreviewDataSuccess(previewData, 200)).toEqual({
-        type: GetPreviewData.SUCCESS,
-        payload: {
-          data: previewData,
-          status: 200
-        }
-      });
+    it('getPreviewDataSuccess - returns the action to process success', () => {
+      const status = 200;
+      const action = getPreviewDataSuccess(previewData, status);
+      const { payload } = action;
+      expect(action.type).toBe(GetPreviewData.SUCCESS);
+      expect(payload.data).toBe(previewData);
+      expect(payload.status).toBe(status);
     });
   });
 
@@ -332,12 +305,10 @@ describe('reducer', () => {
     });
 
     it('should handle GetPreviewData.SUCCESS', () => {
-      expect(reducer(testState, getPreviewDataSuccess(previewData, 200))).toEqual({
+      const action = getPreviewDataSuccess(previewData, 200);
+      expect(reducer(testState, action)).toEqual({
         ...testState,
-        preview: {
-          data: previewData,
-          status: 200,
-        }
+        preview: action.payload,
       });
     });
   });

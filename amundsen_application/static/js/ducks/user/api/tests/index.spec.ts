@@ -40,7 +40,7 @@ describe('loggedInUser', () => {
   it('returns user from response data', async () => {
     expect.assertions(1);
     await loggedInUser().then(user => {
-      expect(user).toEqual(testUser);
+      expect(user).toBe(testUser);
     });
   });
 
@@ -80,7 +80,7 @@ describe('userById', () => {
   it('returns user from response data', async () => {
     expect.assertions(1);
     await userById(testId).then(user => {
-      expect(user).toEqual(testUser);
+      expect(user).toBe(testUser);
     });
   });
 
@@ -120,7 +120,7 @@ describe('userOwn', () => {
   it('returns response data with owned resources', async () => {
     expect.assertions(1);
     await userOwn(testId).then(data => {
-      expect(data.own).toEqual(testResources);
+      expect(data.own).toBe(testResources);
     });
   });
 
@@ -160,7 +160,7 @@ describe('userRead', () => {
   it('returns response data with frequently read resources', async () => {
     expect.assertions(1);
     await userRead(testId).then(data => {
-      expect(data.read).toEqual(testResources);
+      expect(data.read).toBe(testResources);
     });
   });
 
