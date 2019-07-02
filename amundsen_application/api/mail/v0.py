@@ -75,3 +75,14 @@ def _feedback(*,
               subject: str) -> None:
     """ Logs the content of the feedback form """
     pass  # pragma: no cover
+
+
+@mail_blueprint.route('/notification', methods=['POST'])
+def notification() -> Response:
+    try:
+        data = request.get_json()
+        return make_response(jsonify({'msg': data}), HTTPStatus.OK)
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
