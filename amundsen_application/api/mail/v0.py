@@ -76,6 +76,7 @@ def _feedback(*,
     """ Logs the content of the feedback form """
     pass  # pragma: no cover
 
+
 @mail_blueprint.route('/notification', methods=['POST'])
 def notification() -> Response:
     try:
