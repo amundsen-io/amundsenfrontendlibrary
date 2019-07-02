@@ -65,36 +65,44 @@ export class SearchPage extends React.Component<SearchPageProps> {
   }
 
   componentDidMount() {
-    const params = qs.parse(this.props.location.search);
-    const { searchTerm, pageIndex, selectedTab } = params;
-    const { term, index, tab } = this.getSanitizedUrlParams(searchTerm, pageIndex, selectedTab);
+    const urlParams = this.getUrlSearchParams(this.props.location.search);
+    const propParams = this.getParamsFromGlobalState();
 
-    this.props.updateSearchTab(tab);
-
-    if (term !== '') {
-      this.props.searchAll(term, tab, index);
-      if (tab !== selectedTab || pageIndex !== index) {
-        this.updatePageUrl(term, tab, index);
+    if (urlParams.term === '') {
+      if (propParams.term !== '') {
+        this.updatePageUrl(propParams.term, propParams.tab, propParams.index, true);
+      }
+    } else {
+      if (urlParams.term !== propParams.term) {
+        this.props.searchAll(urlParams.term, urlParams.tab, urlParams.index);
+        this.updatePageUrl(urlParams.term, urlParams.tab, urlParams.index, true);
       }
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const searchParams = qs.parse(this.props.location.search);
-    const { searchTerm, pageIndex, selectedTab } = searchParams;
-    const { term, index, tab } = this.getSanitizedUrlParams(searchTerm, pageIndex, selectedTab);
+  componentDidUpdate(prevProps: SearchPageProps) {
+    const currParams = this.getUrlSearchParams(this.props.location.search);
+    const prevParams = this.getUrlSearchParams(prevProps.location.search);
+    const propParams = this.getParamsFromGlobalState();
 
-    const prevParams = qs.parse(prevProps.location.search);
+    // ULR params and global state is in sync, no further action needed
+    if (currParams.term === propParams.term &&
+        currParams.tab === propParams.tab &&
+        currParams.index === propParams.index) {
+      return;
+    }
 
-    // New search entered
-    if (term !== prevParams.searchTerm) {
-      this.props.searchAll(term, tab, index);
+    // Compare previous and current url search params to capture any new actions that need to be updated
+
+    // Search term changed
+    if (currParams.term !== prevParams.term) {
+      this.props.searchAll(currParams.term, currParams.tab, currParams.index);
     // Tab change
-    } else if (tab !== this.props.selectedTab) {
-      this.props.updateSearchTab(tab);
+    } else if (currParams.tab !== prevParams.tab) {
+      this.props.updateSearchTab(currParams.tab);
     // Pagination change
-    } else if (prevParams.pageIndex !== undefined && index !== prevParams.pageIndex) {
-      this.props.searchResource(this.props.selectedTab, this.props.searchTerm, index);
+    } else if (currParams.index !== prevParams.index) {
+      this.props.searchResource(currParams.tab, currParams.term, currParams.index);
     }
   }
 
@@ -109,12 +117,25 @@ export class SearchPage extends React.Component<SearchPageProps> {
     }
   };
 
-  getSanitizedUrlParams = (searchTerm: string, pageIndex: number, selectedTab: ResourceType) => {
-    const tab = this.getSelectedTabByResourceType(selectedTab);
-    const index = pageIndex || 0;
-    const term = searchTerm ? searchTerm : "";
-    return { term, index, tab };
+  getUrlSearchParams(search) {
+    const urlParams = qs.parse(search);
+    const { searchTerm, pageIndex, selectedTab } = urlParams;
+    const index = parseInt(pageIndex);
+    return {
+      term: searchTerm || '',
+      tab: this.getSelectedTabByResourceType(selectedTab),
+      index: isNaN(index) ? 0 : index,
+    };
   };
+
+  getParamsFromGlobalState() {
+    return {
+      term: this.props.searchTerm,
+      tab: this.props.selectedTab,
+      index: this.getPageIndexByResourceType(this.props.selectedTab),
+    };
+  }
+
 
   getPageIndexByResourceType = (tab: ResourceType): number => {
     switch(tab) {
@@ -137,9 +158,14 @@ export class SearchPage extends React.Component<SearchPageProps> {
     this.updatePageUrl(this.props.searchTerm, newTab, this.getPageIndexByResourceType(newTab));
   };
 
-  updatePageUrl = (searchTerm: string, tab: ResourceType, pageIndex: number): void => {
+  updatePageUrl = (searchTerm: string, tab: ResourceType, pageIndex: number, replace: boolean = false): void => {
     const pathName = `/search?searchTerm=${searchTerm}&selectedTab=${tab}&pageIndex=${pageIndex}`;
-    this.props.history.push(pathName);
+
+    if (replace) {
+      this.props.history.replace(pathName);
+    } else {
+      this.props.history.push(pathName);
+    }
   };
 
   renderSearchResults = () => {
