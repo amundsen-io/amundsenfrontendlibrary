@@ -111,35 +111,25 @@ describe('tableMetadata:tags ducks', () => {
     describe('updateTableTagsWatcher', () => {
       it('takes every UpdateTags.REQUEST with updateTableTagsWorker', () => {
         testSaga(updateTableTagsWatcher)
-          .next()
-          .takeEvery(UpdateTags.REQUEST, updateTableTagsWorker);
+          .next().takeEvery(UpdateTags.REQUEST, updateTableTagsWorker);
       });
     });
 
     describe('updateTableTagsWorker', () => {
       it('executes flow for updating tags and returning up to date tag array', () => {
         testSaga(updateTableTagsWorker, updateTags(updatePayload))
-          .next()
-          .select()
-          .next(globalState)
-          .all(apis.metadataUpdateTableTags(updatePayload, globalState.tableMetadata.tableData.key))
-          .next()
-          .call(apis.metadataTableTags, globalState.tableMetadata.tableData.key)
-          .next(expectedTags)
-          .put(updateTagsSuccess(expectedTags))
-          .next()
-          .isDone();
+          .next().select()
+          .next(globalState).all(apis.metadataUpdateTableTags(updatePayload, globalState.tableMetadata.tableData.key))
+          .next().call(apis.metadataTableTags, globalState.tableMetadata.tableData.key)
+          .next(expectedTags).put(updateTagsSuccess(expectedTags))
+          .next().isDone();
       });
 
       it('handles request error', () => {
         testSaga(updateTableTagsWorker, updateTags(updatePayload))
-          .next()
-          .select()
-          .next(globalState)
-          .throw(new Error())
-          .put(updateTagsFailure())
-          .next()
-          .isDone();
+          .next().select()
+          .next(globalState).throw(new Error()).put(updateTagsFailure())
+          .next().isDone();
       });
     });
   });

@@ -1,4 +1,4 @@
-import { PreviewData, PreviewQueryParams, TableMetadata, Tag, User } from 'interfaces';
+import { OwnerDict, PreviewData, PreviewQueryParams, TableMetadata, Tag, User } from 'interfaces';
 
 import {
   GetTableData, GetTableDataRequest, GetTableDataResponse,
@@ -33,7 +33,7 @@ export function getTableDataFailure(): GetTableDataResponse {
     payload: { data: initialTableDataState, owners: {}, statusCode: 500, tags: [] }
   }
 }
-export function getTableDataSuccess(data: TableMetadata, owners: { [id: string] : User }, statusCode: number, tags: Tag[]): GetTableDataResponse {
+export function getTableDataSuccess(data: TableMetadata, owners: OwnerDict, statusCode: number, tags: Tag[]): GetTableDataResponse {
   return {
     type: GetTableData.SUCCESS,
     payload: {

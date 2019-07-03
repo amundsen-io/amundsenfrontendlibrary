@@ -120,8 +120,7 @@ describe('tableMetadata:owners ducks', () => {
     describe('updateTableOwnerWatcher', () => {
       it('takes every UpdateTableOwner.REQUEST with updateTableOwnerWorker', () => {
         testSaga(updateTableOwnerWatcher)
-          .next()
-          .takeEvery(UpdateTableOwner.REQUEST, updateTableOwnerWorker);
+          .next().takeEvery(UpdateTableOwner.REQUEST, updateTableOwnerWorker);
       });
     });
 
@@ -131,28 +130,21 @@ describe('tableMetadata:owners ducks', () => {
         beforeAll(() => {
           sagaTest = (action) => {
             return testSaga(updateTableOwnerWorker, action)
-                .next()
-                .select()
-                .next(globalState)
-                .all(apis.metadataUpdateTableOwner(updatePayload, globalState.tableMetadata.tableData.key))
-                .next()
-                .call(apis.metadataTableOwners, globalState.tableMetadata.tableData.key)
-                .next(expectedOwners)
-                .put(updateTableOwnerSuccess(expectedOwners));
+                .next().select()
+                .next(globalState).all(apis.metadataUpdateTableOwner(updatePayload, globalState.tableMetadata.tableData.key))
+                .next().call(apis.metadataTableOwners, globalState.tableMetadata.tableData.key)
+                .next(expectedOwners).put(updateTableOwnerSuccess(expectedOwners));
           };
         });
         it('without success callback', () => {
           sagaTest(updateTableOwner(updatePayload))
-            .next()
-            .isDone();
+            .next().isDone();
         });
 
         it('with success callback', () => {
           sagaTest(updateTableOwner(updatePayload, mockSuccess, mockFailure))
-            .next()
-            .call(mockSuccess)
-            .next()
-            .isDone();
+            .next().call(mockSuccess)
+            .next().isDone();
         });
       });
 
@@ -161,25 +153,19 @@ describe('tableMetadata:owners ducks', () => {
         beforeAll(() => {
           sagaTest = (action) => {
             return testSaga(updateTableOwnerWorker, action)
-              .next()
-              .select()
-              .next(globalState)
-              .throw(new Error())
-              .put(updateTableOwnerFailure(globalState.tableMetadata.tableOwners.owners))
+              .next().select()
+              .next(globalState).throw(new Error()).put(updateTableOwnerFailure(globalState.tableMetadata.tableOwners.owners))
           };
         });
         it('without failure callback', () => {
           sagaTest(updateTableOwner(updatePayload))
-            .next()
-            .isDone();
+            .next().isDone();
         });
 
         it('with failure callback', () => {
           sagaTest(updateTableOwner(updatePayload, mockSuccess, mockFailure))
-            .next()
-            .call(mockFailure)
-            .next()
-            .isDone();
+            .next().call(mockFailure)
+            .next().isDone();
         });
       });
     });

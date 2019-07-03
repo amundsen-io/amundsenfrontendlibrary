@@ -317,37 +317,30 @@ describe('reducer', () => {
     describe('getTableDataWatcher', () => {
       it('takes every GetTableData.REQUEST with getTableDataWorker', () => {
         testSaga(getTableDataWatcher)
-          .next()
-          .takeEvery(GetTableData.REQUEST, getTableDataWorker);
+          .next().takeEvery(GetTableData.REQUEST, getTableDataWorker);
       });
     });
 
     describe('getTableDataWorker', () => {
       it('executes flow for getting table data', () => {
+        const mockResult = { data: expectedData, owners: expectedOwners, statusCode: expectedStatus, tags: expectedTags };
         testSaga(getTableDataWorker, getTableData(testKey, testIndex, testSource))
-          .next()
-          .call(metadataGetTableData, testKey, testIndex, testSource)
-          .next({ data: expectedData, owners: expectedOwners, statusCode: expectedStatus, tags: expectedTags })
-          .put(getTableDataSuccess(expectedData, expectedOwners, expectedStatus, expectedTags))
-          .next()
-          .isDone();
+          .next().call(metadataGetTableData, testKey, testIndex, testSource)
+          .next(mockResult).put(getTableDataSuccess(expectedData, expectedOwners, expectedStatus, expectedTags))
+          .next().isDone();
       });
 
       it('handles request error', () => {
         testSaga(getTableDataWorker, getTableData(testKey))
-          .next()
-          .throw(new Error())
-          .put(getTableDataFailure())
-          .next()
-          .isDone();
+          .next().throw(new Error()).put(getTableDataFailure())
+          .next().isDone();
       });
     });
 
     describe('getTableDescriptionWatcher', () => {
       it('takes every GetTableDescription.REQUEST with getTableDescriptionWorker', () => {
         testSaga(getTableDescriptionWatcher)
-          .next()
-          .takeEvery(GetTableDescription.REQUEST, getTableDescriptionWorker);
+          .next().takeEvery(GetTableDescription.REQUEST, getTableDescriptionWorker);
       });
     });
 
@@ -358,26 +351,20 @@ describe('reducer', () => {
           const mockNewTableData: TableMetadata = initialTableDataState;
           sagaTest = (action) => {
             return testSaga(getTableDescriptionWorker, action)
-              .next()
-              .select()
-              .next(globalState)
-              .call(metadataGetTableDescription, globalState.tableMetadata.tableData)
-              .next(mockNewTableData)
-              .put(getTableDescriptionSuccess(mockNewTableData))
+              .next().select()
+              .next(globalState).call(metadataGetTableDescription, globalState.tableMetadata.tableData)
+              .next(mockNewTableData).put(getTableDescriptionSuccess(mockNewTableData))
           };
         });
         it('without success callback', () => {
           sagaTest(getTableDescription())
-            .next()
-            .isDone();
+            .next().isDone();
         });
 
         it('with success callback', () => {
           sagaTest(getTableDescription(mockSuccess, mockFailure))
-            .next()
-            .call(mockSuccess)
-            .next()
-            .isDone();
+            .next().call(mockSuccess)
+            .next().isDone();
         });
       });
 
@@ -387,25 +374,19 @@ describe('reducer', () => {
           const mockNewTableData: TableMetadata = initialTableDataState;
           sagaTest = (action) => {
             return testSaga(getTableDescriptionWorker, action)
-              .next()
-              .select()
-              .next(globalState)
-              .throw(new Error())
-              .put(getTableDescriptionFailure(globalState.tableMetadata.tableData))
+              .next().select()
+              .next(globalState).throw(new Error()).put(getTableDescriptionFailure(globalState.tableMetadata.tableData))
           };
         });
         it('without failure callback', () => {
           sagaTest(getTableDescription())
-            .next()
-            .isDone();
+            .next().isDone();
         });
 
         it('with failure callback', () => {
           sagaTest(getTableDescription(mockSuccess, mockFailure))
-            .next()
-            .call(mockFailure)
-            .next()
-            .isDone();
+            .next().call(mockFailure)
+            .next().isDone();
         });
       });
     });
@@ -413,8 +394,7 @@ describe('reducer', () => {
     describe('updateTableDescriptionWatcher', () => {
       it('takes every UpdateTableDescription.REQUEST with updateTableDescriptionWorker', () => {
         testSaga(updateTableDescriptionWatcher)
-          .next()
-          .takeEvery(UpdateTableDescription.REQUEST, updateTableDescriptionWorker);
+          .next().takeEvery(UpdateTableDescription.REQUEST, updateTableDescriptionWorker);
       });
     });
 
@@ -424,24 +404,19 @@ describe('reducer', () => {
         beforeAll(() => {
           sagaTest = (mockSuccess) => {
             return testSaga(updateTableDescriptionWorker, updateTableDescription(newDescription, mockSuccess, null))
-              .next()
-              .select()
-              .next(globalState)
-              .call(metadataUpdateTableDescription, newDescription, globalState.tableMetadata.tableData)
+              .next().select()
+              .next(globalState).call(metadataUpdateTableDescription, newDescription, globalState.tableMetadata.tableData)
           };
         });
         it('without success callback', () => {
           sagaTest()
-            .next()
-            .isDone();
+            .next().isDone();
         });
 
         it('with success callback', () => {
           sagaTest(mockSuccess)
-            .next()
-            .call(mockSuccess)
-            .next()
-            .isDone();
+            .next().call(mockSuccess)
+            .next().isDone();
         });
       });
 
@@ -450,23 +425,19 @@ describe('reducer', () => {
         beforeAll(() => {
           sagaTest = (mockFailure) => {
             return testSaga(updateTableDescriptionWorker, updateTableDescription(newDescription, null, mockFailure))
-              .next()
-              .select()
-              .next(globalState)
-              .throw(new Error())
+              .next().select()
+              .next(globalState).throw(new Error())
           };
         });
         it('without failure callback', () => {
           sagaTest()
-            .next()
-            .isDone();
+            .next().isDone();
         });
 
         it('with failure callback', () => {
           sagaTest(mockFailure)
             .call(mockFailure)
-            .next()
-            .isDone();
+            .next().isDone();
         });
       });
     });
@@ -474,8 +445,7 @@ describe('reducer', () => {
     describe('getColumnDescriptionWatcher', () => {
       it('takes every GetColumnDescription.REQUEST with getColumnDescriptionWorker', () => {
         testSaga(getColumnDescriptionWatcher)
-          .next()
-          .takeEvery(GetColumnDescription.REQUEST, getColumnDescriptionWorker);
+          .next().takeEvery(GetColumnDescription.REQUEST, getColumnDescriptionWorker);
       });
     });
 
@@ -486,26 +456,20 @@ describe('reducer', () => {
           const mockNewTableData: TableMetadata = initialTableDataState;
           sagaTest = (action) => {
             return testSaga(getColumnDescriptionWorker, action)
-              .next()
-              .select()
-              .next(globalState)
-              .call(metadataGetColumnDescription, action.payload.columnIndex, globalState.tableMetadata.tableData)
-              .next(mockNewTableData)
-              .put(getColumnDescriptionSuccess(mockNewTableData))
+              .next().select()
+              .next(globalState).call(metadataGetColumnDescription, action.payload.columnIndex, globalState.tableMetadata.tableData)
+              .next(mockNewTableData).put(getColumnDescriptionSuccess(mockNewTableData))
           };
         });
         it('without success callback', () => {
           sagaTest(getColumnDescription(columnIndex))
-            .next()
-            .isDone();
+            .next().isDone();
         });
 
         it('with success callback', () => {
           sagaTest(getColumnDescription(columnIndex, mockSuccess, mockFailure))
-            .next()
-            .call(mockSuccess)
-            .next()
-            .isDone();
+            .next().call(mockSuccess)
+            .next().isDone();
         });
       });
 
@@ -515,25 +479,19 @@ describe('reducer', () => {
           const mockNewTableData: TableMetadata = initialTableDataState;
           sagaTest = (action) => {
             return testSaga(getColumnDescriptionWorker, action)
-              .next()
-              .select()
-              .next(globalState)
-              .throw(new Error())
-              .put(getColumnDescriptionFailure(globalState.tableMetadata.tableData))
+              .next().select()
+              .next(globalState).throw(new Error()).put(getColumnDescriptionFailure(globalState.tableMetadata.tableData))
           };
         });
         it('without failure callback', () => {
           sagaTest(getColumnDescription(columnIndex))
-            .next()
-            .isDone();
+            .next().isDone();
         });
 
         it('with failure callback', () => {
           sagaTest(getColumnDescription(columnIndex, mockSuccess, mockFailure))
-            .next()
-            .call(mockFailure)
-            .next()
-            .isDone();
+            .next().call(mockFailure)
+            .next().isDone();
         });
       });
     });
@@ -541,8 +499,7 @@ describe('reducer', () => {
     describe('updateColumnDescriptionWatcher', () => {
       it('takes every UpdateColumnDescription.REQUEST with updateColumnDescriptionWorker', () => {
         testSaga(updateColumnDescriptionWatcher)
-          .next()
-          .takeEvery(UpdateColumnDescription.REQUEST, updateColumnDescriptionWorker);
+          .next().takeEvery(UpdateColumnDescription.REQUEST, updateColumnDescriptionWorker);
       });
     });
 
@@ -552,24 +509,19 @@ describe('reducer', () => {
         beforeAll(() => {
           sagaTest = (mockSuccess) => {
             return testSaga(updateColumnDescriptionWorker, updateColumnDescription(newDescription, columnIndex, mockSuccess, null))
-              .next()
-              .select()
-              .next(globalState)
-              .call(metadataUpdateColumnDescription, newDescription, columnIndex, globalState.tableMetadata.tableData)
+              .next().select()
+              .next(globalState).call(metadataUpdateColumnDescription, newDescription, columnIndex, globalState.tableMetadata.tableData)
           };
         });
         it('without success callback', () => {
           sagaTest()
-            .next()
-            .isDone();
+            .next().isDone();
         });
 
         it('with success callback', () => {
           sagaTest(mockSuccess)
-            .next()
-            .call(mockSuccess)
-            .next()
-            .isDone();
+            .next().call(mockSuccess)
+            .next().isDone();
         });
       });
 
@@ -578,23 +530,19 @@ describe('reducer', () => {
         beforeAll(() => {
           sagaTest = (mockFailure) => {
             return testSaga(updateColumnDescriptionWorker, updateColumnDescription(newDescription, columnIndex, null, mockFailure))
-              .next()
-              .select()
-              .next(globalState)
-              .throw(new Error())
+              .next().select()
+              .next(globalState).throw(new Error())
           };
         });
         it('without failure callback', () => {
           sagaTest()
-            .next()
-            .isDone();
+            .next().isDone();
         });
 
         it('with failure callback', () => {
           sagaTest(mockFailure)
             .call(mockFailure)
-            .next()
-            .isDone();
+            .next().isDone();
         });
       });
     });
@@ -602,37 +550,29 @@ describe('reducer', () => {
     describe('getLastIndexedWatcher', () => {
       it('takes every GetLastIndexed.REQUEST with getLastIndexedWorker', () => {
         testSaga(getLastIndexedWatcher)
-          .next()
-          .takeEvery(GetLastIndexed.REQUEST, getLastIndexedWorker);
+          .next().takeEvery(GetLastIndexed.REQUEST, getLastIndexedWorker);
       });
     });
 
     describe('getLastIndexedWorker', () => {
       it('executes flow for getting last indexed value', () => {
         testSaga(getLastIndexedWorker, getLastIndexed())
-          .next()
-          .call(metadataGetLastIndexed)
-          .next(testEpoch)
-          .put(getLastIndexedSuccess(testEpoch))
-          .next()
-          .isDone();
+          .next().call(metadataGetLastIndexed)
+          .next(testEpoch).put(getLastIndexedSuccess(testEpoch))
+          .next().isDone();
       });
 
       it('handles request error', () => {
         testSaga(getLastIndexedWorker, getLastIndexed())
-          .next()
-          .throw(new Error())
-          .put(getLastIndexedFailure())
-          .next()
-          .isDone();
+          .next().throw(new Error()).put(getLastIndexedFailure())
+          .next().isDone();
       });
     });
 
     describe('getPreviewDataWatcher', () => {
       it('takes every GetPreviewData.REQUEST with getPreviewDataWorker', () => {
         testSaga(getPreviewDataWatcher)
-          .next()
-          .takeEvery(GetPreviewData.REQUEST, getPreviewDataWorker);
+          .next().takeEvery(GetPreviewData.REQUEST, getPreviewDataWorker);
       });
     });
 
@@ -640,32 +580,23 @@ describe('reducer', () => {
       it('executes flow for getting preview data', () => {
         const mockResponse = { data: previewData, status: 200 };
         testSaga(getPreviewDataWorker, getPreviewData(queryParams))
-          .next()
-          .call(metadataGetPreviewData, queryParams)
-          .next(mockResponse)
-          .put(getPreviewDataSuccess(previewData, 200))
-          .next()
-          .isDone();
+          .next().call(metadataGetPreviewData, queryParams)
+          .next(mockResponse).put(getPreviewDataSuccess(previewData, 200))
+          .next().isDone();
       });
 
       it('handles request error', () => {
         const mockErrorResponse = { name: '', message: '', response: { data: previewData, status: 500 }};
         testSaga(getPreviewDataWorker, getPreviewData(queryParams))
-          .next()
-          .throw(mockErrorResponse)
-          .put(getPreviewDataFailure(previewData, 500))
-          .next()
-          .isDone();
+          .next().throw(mockErrorResponse).put(getPreviewDataFailure(previewData, 500))
+          .next().isDone();
       });
 
       it('handles request error with response fallbacks', () => {
         const mockErrorResponse = { name: '', message: '' };
         testSaga(getPreviewDataWorker, getPreviewData(queryParams))
-          .next()
-          .throw(mockErrorResponse)
-          .put(getPreviewDataFailure({}, null))
-          .next()
-          .isDone();
+          .next().throw(mockErrorResponse).put(getPreviewDataFailure({}, null))
+          .next().isDone();
       });
     });
   });
