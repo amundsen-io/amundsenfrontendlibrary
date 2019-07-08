@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import * as DocumentTitle from 'react-document-title';
 import * as qs from 'simple-query-string';
 import { RouteComponentProps } from 'react-router';
+import { Search } from 'history';
 
 import AppConfig from 'config/config';
 import LoadingSpinner from 'components/common/LoadingSpinner';
@@ -51,7 +52,7 @@ export interface StateFromProps {
 
 export interface DispatchFromProps {
   searchAll: (term: string, selectedTab: ResourceType, pageIndex: number) => SearchAllRequest;
-  searchResource: (resource: ResourceType, term: string, pageIndex: number) => SearchResourceRequest;
+  searchResource: (term: string, resource: ResourceType, pageIndex: number) => SearchResourceRequest;
   updateSearchTab: (selectedTab: ResourceType) => UpdateSearchTabRequest;
 }
 
@@ -85,7 +86,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
     const prevParams = this.getUrlSearchParams(prevProps.location.search);
     const propParams = this.getParamsFromGlobalState();
 
-    // ULR params and global state is in sync, no further action needed
+    // URL params and global state is in sync, no further action needed
     if (currParams.term === propParams.term &&
         currParams.tab === propParams.tab &&
         currParams.index === propParams.index) {
@@ -102,7 +103,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
       this.props.updateSearchTab(currParams.tab);
     // Pagination change
     } else if (currParams.index !== prevParams.index) {
-      this.props.searchResource(currParams.tab, currParams.term, currParams.index);
+      this.props.searchResource(currParams.term, currParams.tab, currParams.index);
     }
   }
 
@@ -117,12 +118,12 @@ export class SearchPage extends React.Component<SearchPageProps> {
     }
   };
 
-  getUrlSearchParams(search) {
+  getUrlSearchParams(search: Search) {
     const urlParams = qs.parse(search);
     const { searchTerm, pageIndex, selectedTab } = urlParams;
     const index = parseInt(pageIndex);
     return {
-      term: searchTerm || '',
+      term: (searchTerm || '').trim(),
       tab: this.getSelectedTabByResourceType(selectedTab),
       index: isNaN(index) ? 0 : index,
     };

@@ -17,10 +17,11 @@ export type UserSearchResults = SearchResults<UserResource>;
 
 export interface SearchResponsePayload {
   search_term: string;
-  isLoading: boolean;
-  dashboards: DashboardSearchResults;
-  tables: TableSearchResults;
-  users: UserSearchResults;
+  selectedTab?: ResourceType;
+  isLoading?: boolean;
+  dashboards?: DashboardSearchResults;
+  tables?: TableSearchResults;
+  users?: UserSearchResults;
 };
 
 export enum SearchAll {
@@ -31,7 +32,7 @@ export enum SearchAll {
 };
 export interface SearchAllRequest {
   payload: {
-    selectedTab: ResourceType;
+    resource: ResourceType;
     pageIndex: number;
     term: string;
   };

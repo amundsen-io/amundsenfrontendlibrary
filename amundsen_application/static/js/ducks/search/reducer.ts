@@ -26,10 +26,10 @@ export interface SearchReducerState {
 };
 
 /* ACTIONS */
-export function searchAll(term: string, selectedTab: ResourceType, pageIndex: number): SearchAllRequest {
+export function searchAll(term: string, resource: ResourceType, pageIndex: number): SearchAllRequest {
   return {
     payload: {
-      selectedTab,
+      resource,
       pageIndex,
       term,
     },
@@ -43,7 +43,7 @@ export function searchAllFailure(): SearchAllResponse {
   return { type: SearchAll.FAILURE };
 };
 
-export function searchResource(resource: ResourceType, term: string, pageIndex: number): SearchResourceRequest {
+export function searchResource(term: string, resource: ResourceType, pageIndex: number): SearchResourceRequest {
   return {
     payload: {
       pageIndex,
