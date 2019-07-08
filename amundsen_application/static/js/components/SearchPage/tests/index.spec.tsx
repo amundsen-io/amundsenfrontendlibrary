@@ -28,10 +28,12 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 
 import ResourceList from 'components/common/ResourceList';
 import globalState from 'fixtures/globalState';
+import { getMockRouterProps } from 'fixtures/mockRouter';
 
 describe('SearchPage', () => {
   const setStateSpy = jest.spyOn(SearchPage.prototype, 'setState');
   const setup = (propOverrides?: Partial<SearchPageProps>) => {
+    const routerProps = getMockRouterProps<any>(null, null);
     const props: SearchPageProps = {
       searchTerm: globalState.search.search_term,
       isLoading: false,
@@ -40,27 +42,10 @@ describe('SearchPage', () => {
       users: globalState.search.users,
       searchAll: jest.fn(),
       searchResource: jest.fn(),
-      history: {
-        length: 2,
-        action: "POP",
-        location: jest.fn() as any,
-        push: jest.fn(),
-        replace: jest.fn(),
-        go: jest.fn(),
-        goBack: jest.fn(),
-        goForward: jest.fn(),
-        block: jest.fn(),
-        createHref: jest.fn(),
-        listen: jest.fn(),
-      },
-      location: {
-        search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1', 
-        pathname: 'mockstr',
-        state: jest.fn(),
-        hash: 'mockstr',
-      },
-      match: jest.fn() as any,
-      staticContext: jest.fn() as any,
+      history: routerProps.history,
+      location: routerProps.location,
+      match: routerProps.match,
+      staticContext: routerProps.staticContext,
       ...propOverrides,
     };
     const wrapper = shallow<SearchPage>(<SearchPage {...props} />)
@@ -88,7 +73,7 @@ describe('SearchPage', () => {
     beforeAll(() => {
       const setupResult = setup({
         location: {
-          search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1', 
+          search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1',
           pathname: 'mockstr',
           state: jest.fn(),
           hash: 'mockstr',
@@ -121,7 +106,7 @@ describe('SearchPage', () => {
         updatePageUrlSpy.mockClear();
         const {props, wrapper} = setup({
           location: {
-            search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1', 
+            search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1',
             pathname: 'mockstr',
             state: jest.fn(),
             hash: 'mockstr',
@@ -148,7 +133,7 @@ describe('SearchPage', () => {
       beforeAll(() => {
         const {props, wrapper} = setup({
           location: {
-            search: '/search?searchTerm=testName', 
+            search: '/search?searchTerm=testName',
             pathname: 'mockstr',
             state: jest.fn(),
             hash: 'mockstr',
@@ -172,7 +157,7 @@ describe('SearchPage', () => {
         updatePageUrlSpy.mockClear();
         const {props, wrapper} = setup({
           location: {
-            search: '/search?selectedTab=table&pageIndex=1', 
+            search: '/search?selectedTab=table&pageIndex=1',
             pathname: 'mockstr',
             state: jest.fn(),
             hash: 'mockstr',
@@ -196,7 +181,7 @@ describe('SearchPage', () => {
         updatePageUrlSpy.mockClear();
         const {props, wrapper} = setup({
           location: {
-            search: '/search?searchTerm=&selectedTab=table&pageIndex=1', 
+            search: '/search?searchTerm=&selectedTab=table&pageIndex=1',
             pathname: 'mockstr',
             state: jest.fn(),
             hash: 'mockstr',
@@ -221,7 +206,7 @@ describe('SearchPage', () => {
 
   describe('componentDidUpdate', () => {
     let searchAllSpy;
-      
+
     let mockSearchOptions;
     let mockSanitizedUrlParams;
 
@@ -233,7 +218,7 @@ describe('SearchPage', () => {
     beforeAll(() => {
       const setupResult = setup({
         location: {
-          search: '/search?searchTerm=current&selectedTab=table&pageIndex=0', 
+          search: '/search?searchTerm=current&selectedTab=table&pageIndex=0',
           pathname: 'mockstr',
           state: jest.fn(),
           hash: 'mockstr',
@@ -259,7 +244,7 @@ describe('SearchPage', () => {
       const mockPrevProps = {
         searchTerm: 'previous',
         location: {
-          search: '/search?searchTerm=previous&selectedTab=table&pageIndex=0', 
+          search: '/search?searchTerm=previous&selectedTab=table&pageIndex=0',
           pathname: 'mockstr',
           state: jest.fn(),
           hash: 'mockstr',
@@ -281,7 +266,7 @@ describe('SearchPage', () => {
       const mockPrevProps = {
         searchTerm: 'current',
         location: {
-          search: '/search?searchTerm=current&current=table&pageIndex=1', 
+          search: '/search?searchTerm=current&current=table&pageIndex=1',
           pathname: 'mockstr',
           state: jest.fn(),
           hash: 'mockstr',
@@ -298,11 +283,11 @@ describe('SearchPage', () => {
     let getSelectedTabByResourceTypeSpy;
 
     let mockSelectedTab;
-    
+
     beforeAll(() => {
       const setupResult = setup({
         location: {
-          search: '/search?searchTerm=current&selectedTab=table&pageIndex=0', 
+          search: '/search?searchTerm=current&selectedTab=table&pageIndex=0',
           pathname: 'mockstr',
           state: jest.fn(),
           hash: 'mockstr',
@@ -316,7 +301,7 @@ describe('SearchPage', () => {
       });
 
       mockSelectedTab = ResourceType.table;
-      
+
       wrapper.instance().getSanitizedUrlParams('current', 0, mockSelectedTab)
     });
 
@@ -338,7 +323,7 @@ describe('SearchPage', () => {
   describe('getSelectedTabByResourceType', () => {
     let props;
     let wrapper;
-  
+
     beforeAll(() => {
       const setupResult = setup();
       props = setupResult.props;
