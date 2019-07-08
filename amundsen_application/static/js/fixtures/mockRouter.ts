@@ -1,5 +1,4 @@
 import { RouteComponentProps } from 'react-router';
-import { match } from 'react-router-dom';
 
 import * as History from 'history';
 
