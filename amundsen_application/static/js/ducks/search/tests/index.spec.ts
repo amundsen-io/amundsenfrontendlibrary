@@ -1,6 +1,4 @@
-import { expectSaga, testSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
-import { throwError } from 'redux-saga-test-plan/providers';
+import { testSaga } from 'redux-saga-test-plan';
 
 import { ResourceType } from 'interfaces';
 
@@ -8,20 +6,18 @@ import globalState from 'fixtures/globalState';
 
 import { searchResource as srchResource } from '../api/v0';
 import reducer, {
-  searchAll, searchAllSuccess, searchAllFailure,
-  searchResource, searchResourceSuccess, searchResourceFailure,
+  initialState,
+  searchAll,
+  searchAllFailure,
+  searchAllSuccess,
+  SearchReducerState,
   searchReset,
-  initialState, SearchReducerState,
+  searchResource,
+  searchResourceFailure,
+  searchResourceSuccess,
 } from '../reducer';
-import {
-  searchAllWatcher, searchAllWorker,
-  searchResourceWatcher, searchResourceWorker
-} from '../sagas';
-import {
-  SearchAll, SearchAllRequest, SearchAllResponse,
-  SearchResource, SearchResourceRequest, SearchResourceResponse,
-  SearchResponsePayload,
-} from '../types';
+import { searchAllWatcher, searchAllWorker, searchResourceWatcher, searchResourceWorker } from '../sagas';
+import { SearchAll, SearchResource, SearchResponsePayload, } from '../types';
 
 describe('search ducks', () => {
   let expectedSearchResults: SearchResponsePayload;
@@ -32,12 +28,14 @@ describe('search ducks', () => {
   describe('actions', () => {
     it('searchAll - returns the action to search all resources', () => {
       const term = 'test';
-      const options = {};
-      const action = searchAll(term, options);
+      const resource = ResourceType.table;
+      const pageIndex = 0;
+      const action = searchAll(term, resource, pageIndex);
       const { payload } = action;
       expect(action.type).toBe(SearchAll.REQUEST);
-      expect(payload.options).toBe(options);
+      expect(payload.resource).toBe(resource);
       expect(payload.term).toBe(term);
+      expect(payload.pageIndex).toBe(pageIndex);
     });
 
     it('searchAllSuccess - returns the action to process the success', () => {
@@ -53,10 +51,10 @@ describe('search ducks', () => {
     });
 
     it('searchResource - returns the action to search all resources', () => {
-      const pageIndex = 0;
-      const resource = ResourceType.table;
       const term = 'test';
-      const action = searchResource(resource, term, pageIndex);
+      const resource = ResourceType.table;
+      const pageIndex = 0;
+      const action = searchResource(term, resource, pageIndex);
       const { payload } = action;
       expect(action.type).toBe(SearchResource.REQUEST);
       expect(payload.resource).toBe(resource);
@@ -93,8 +91,9 @@ describe('search ducks', () => {
 
     it('should handle SearchAll.REQUEST', () => {
       const term = 'testSearch';
-      const options = {};
-      expect(reducer(testState, searchAll(term, options))).toEqual({
+      const resource = ResourceType.table;
+      const pageIndex = 0;
+      expect(reducer(testState, searchAll(term, resource, pageIndex))).toEqual({
         ...testState,
         search_term: term,
         isLoading: true,
@@ -121,7 +120,7 @@ describe('search ducks', () => {
     });
 
     it('should handle SearchResource.REQUEST', () => {
-      expect(reducer(testState, searchResource(ResourceType.table, 'test', 0))).toEqual({
+      expect(reducer(testState, searchResource('test', ResourceType.table, 0))).toEqual({
         ...initialState,
         isLoading: true,
       });
@@ -167,7 +166,7 @@ describe('search ducks', () => {
       });*/
 
       it('handles request error', () => {
-        testSaga(searchAllWorker, searchAll('test', {}))
+        testSaga(searchAllWorker, searchAll('test', ResourceType.table, 0))
           .next()
           .throw(new Error())
           .put(searchAllFailure())
@@ -189,7 +188,7 @@ describe('search ducks', () => {
         const pageIndex = 0;
         const resource = ResourceType.table;
         const term = 'test';
-        testSaga(searchResourceWorker, searchResource(resource, term, pageIndex))
+        testSaga(searchResourceWorker, searchResource(term, resource, pageIndex))
           .next()
           .call(srchResource, pageIndex, resource, term)
           .next(expectedSearchResults)
@@ -199,7 +198,7 @@ describe('search ducks', () => {
       });
 
       it('handles request error', () => {
-        testSaga(searchResourceWorker, searchResource(ResourceType.table, 'test', 0))
+        testSaga(searchResourceWorker, searchResource('test', ResourceType.table, 0))
           .next()
           .throw(new Error())
           .put(searchResourceFailure())

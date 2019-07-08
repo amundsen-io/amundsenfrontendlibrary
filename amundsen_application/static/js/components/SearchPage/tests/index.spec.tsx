@@ -5,10 +5,9 @@ import { shallow } from 'enzyme';
 
 import AppConfig from 'config/config';
 import { ResourceType } from 'interfaces';
-import { SearchPage, SearchPageProps, mapDispatchToProps, mapStateToProps } from '../';
+import { mapDispatchToProps, mapStateToProps, SearchPage, SearchPageProps } from '../';
 import {
   DOCUMENT_TITLE_SUFFIX,
-  PAGINATION_PAGE_RANGE,
   PAGE_INDEX_ERROR_MESSAGE,
   RESULTS_PER_PAGE,
   SEARCH_ERROR_MESSAGE_INFIX,
@@ -34,12 +33,14 @@ describe('SearchPage', () => {
   const setup = (propOverrides?: Partial<SearchPageProps>) => {
     const props: SearchPageProps = {
       searchTerm: globalState.search.search_term,
+      selectedTab: ResourceType.table,
       isLoading: false,
       dashboards: globalState.search.dashboards,
       tables: globalState.search.tables,
       users: globalState.search.users,
       searchAll: jest.fn(),
       searchResource: jest.fn(),
+      updateSearchTab: jest.fn(),
       history: {
         length: 2,
         action: "POP",
@@ -67,12 +68,12 @@ describe('SearchPage', () => {
     return { props, wrapper };
   };
 
-  describe('constructor', () => {
-    it('sets the default selectedTab', () => {
-      const { props, wrapper } = setup();
-      expect(wrapper.state().selectedTab).toEqual(ResourceType.table);
-    });
-  });
+  // describe('constructor', () => {
+  //   it('sets the default selectedTab', () => {
+  //     const { props, wrapper } = setup();
+  //     expect(wrapper.state().selectedTab).toEqual(ResourceType.table);
+  //   });
+  // });
 
   describe('componentDidMount', () => {
     let props;
@@ -140,8 +141,8 @@ describe('SearchPage', () => {
     });
 
     describe('when pageIndex in params is undefined', () => {
-      let mockSanitizedUrlParams;
-      let getSanitizedUrlParamsSpy;
+      let mockUrlParamsSpy;
+      let getUrlParamsSpy;
 
       let updatePageUrlSpy;
 
@@ -154,15 +155,15 @@ describe('SearchPage', () => {
             hash: 'mockstr',
           }
         });
-        mockSanitizedUrlParams = { 'term': 'testName', ' index': 0, 'currentTab': 'table' };
-        getSanitizedUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getSanitizedUrlParams').mockImplementation(() => {
-          return mockSanitizedUrlParams;
+        mockUrlParamsSpy = { 'term': 'testName', ' index': 0, 'currentTab': 'table' };
+        getUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getUrlParams').mockImplementation(() => {
+          return mockUrlParamsSpy;
         });
         updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
         wrapper.instance().componentDidMount();
       });
       it('uses 0 as pageIndex', () => {
-        expect(updatePageUrlSpy).toHaveBeenCalledWith(mockSanitizedUrlParams.term, mockSanitizedUrlParams.currentTab, mockSanitizedUrlParams.index);
+        expect(updatePageUrlSpy).toHaveBeenCalledWith(mockUrlParamsSpy.term, mockUrlParamsSpy.currentTab, mockUrlParamsSpy.index);
       });
     });
 
@@ -223,10 +224,10 @@ describe('SearchPage', () => {
     let searchAllSpy;
       
     let mockSearchOptions;
-    let mockSanitizedUrlParams;
+    let mockUrlParamsSpy;
 
     let createSearchOptionsSpy;
-    let getSanitizedUrlParamsSpy;
+    let getUrlParamsSpy;
 
     let props;
     let wrapper;
@@ -242,9 +243,9 @@ describe('SearchPage', () => {
       props = setupResult.props;
       wrapper = setupResult.wrapper;
 
-      mockSanitizedUrlParams = { 'term': 'current', ' index': 0, 'currentTab': 'table' };
-      getSanitizedUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getSanitizedUrlParams').mockImplementation(() => {
-        return mockSanitizedUrlParams;
+      mockUrlParamsSpy = { 'term': 'current', ' index': 0, 'currentTab': 'table' };
+      getUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getUrlParamsSpy').mockImplementation(() => {
+        return mockUrlParamsSpy;
       });
 
       mockSearchOptions = { 'dashboardIndex': 0, 'tableIndex': 1, 'userIndex': 0 };
@@ -273,7 +274,7 @@ describe('SearchPage', () => {
     });
 
     it('calls searchAll if called with a new search term', () => {
-      expect(searchAllSpy).toHaveBeenCalledWith(mockSanitizedUrlParams.term, mockSearchOptions);
+      expect(searchAllSpy).toHaveBeenCalledWith(mockUrlParamsSpy.term, mockSearchOptions);
     });
 
     it('does not call searchAll if called with the same search term with a new page', () => {
@@ -292,7 +293,11 @@ describe('SearchPage', () => {
     });
   });
 
-  describe('getSanitizedUrlParams', () => {
+  describe('getUrlParams', () => {
+
+    // TODO - redo
+
+
     let props;
     let wrapper;
     let getSelectedTabByResourceTypeSpy;
@@ -317,7 +322,7 @@ describe('SearchPage', () => {
 
       mockSelectedTab = ResourceType.table;
       
-      wrapper.instance().getSanitizedUrlParams('current', 0, mockSelectedTab)
+      wrapper.instance().getUrlParamsSpy('current', 0, mockSelectedTab)
     });
 
     it('calls getSelectedTabByResourceType with correct value', () => {
@@ -326,12 +331,12 @@ describe('SearchPage', () => {
 
     it('output of getSanitizedUrlParams is expected', () => {
       const expected = {'term': 'current', 'index': 0, 'currentTab': ResourceType.table};
-      expect(wrapper.instance().getSanitizedUrlParams('current', 0, ResourceType.table)).toEqual(expected);
+      expect(wrapper.instance().getUrlParamsSpy('current', 0, ResourceType.table)).toEqual(expected);
     });
 
     it('output of getSanitizedUrlParams is expected for undefined vars', () => {
       const expected = {'term': '', 'index': 0, 'currentTab': ResourceType.table};
-      expect(wrapper.instance().getSanitizedUrlParams(undefined, undefined, ResourceType.table)).toEqual(expected);
+      expect(wrapper.instance().getUrlParamsSpy(undefined, undefined, ResourceType.table)).toEqual(expected);
     });
   });
 

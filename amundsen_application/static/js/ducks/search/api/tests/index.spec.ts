@@ -4,7 +4,7 @@ import { DashboardSearchResults, TableSearchResults, UserSearchResults } from 'd
 
 import globalState from 'fixtures/globalState';
 
-import { ResourceType, SearchAllOptions } from 'interfaces';
+import { ResourceType } from 'interfaces';
 
 import { searchResource, searchResourceHelper, SearchAPI, BASE_URL } from '../v0';
 
