@@ -79,10 +79,10 @@ describe('SearchPage', () => {
     let props;
     let wrapper;
     let mockSearchOptions;
-    let mockSanitizedUrlParams;
+    let mockUrlParams;
 
     let createSearchOptionsSpy;
-    let getSanitizedUrlParamsSpy;
+    let getUrlParamsSpy;
     let searchAllSpy;
     let updatePageUrlSpy;
 
@@ -98,9 +98,9 @@ describe('SearchPage', () => {
       props = setupResult.props;
       wrapper = setupResult.wrapper;
 
-      mockSanitizedUrlParams = { 'term': 'testName', ' index': 1, 'currentTab': 'table' };
-      getSanitizedUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getSanitizedUrlParams').mockImplementation(() => {
-        return mockSanitizedUrlParams;
+      mockUrlParams = { 'term': 'testName', ' index': 1, 'currentTab': 'table' };
+      getUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getUrlParams').mockImplementation(() => {
+        return mockUrlParams;
       });
       mockSearchOptions = { 'dashboardIndex': 0, 'tableIndex': 0, 'userIndex': 1 };
       createSearchOptionsSpy = jest.spyOn(wrapper.instance(), 'createSearchOptions').mockImplementation(() => {
@@ -111,10 +111,6 @@ describe('SearchPage', () => {
       setStateSpy.mockClear();
 
       wrapper.instance().componentDidMount();
-    });
-
-    it('calls setState', () => {
-      expect(setStateSpy).toHaveBeenCalledWith({ selectedTab: mockSanitizedUrlParams.currentTab });
     });
 
     describe('when searchTerm in params is valid', () => {
@@ -132,7 +128,7 @@ describe('SearchPage', () => {
         wrapper.instance().componentDidMount();
       });
       it('calls searchAll', () => {
-        expect(searchAllSpy).toHaveBeenCalledWith(mockSanitizedUrlParams.term, mockSearchOptions);
+        expect(searchAllSpy).toHaveBeenCalledWith(mockUrlParams.term, mockSearchOptions);
       });
 
       it('does not call updateURL', () => {
@@ -329,12 +325,12 @@ describe('SearchPage', () => {
       expect(getSelectedTabByResourceTypeSpy).toHaveBeenCalledWith(mockSelectedTab);
     });
 
-    it('output of getSanitizedUrlParams is expected', () => {
+    it('output of getUrlParams is expected', () => {
       const expected = {'term': 'current', 'index': 0, 'currentTab': ResourceType.table};
       expect(wrapper.instance().getUrlParamsSpy('current', 0, ResourceType.table)).toEqual(expected);
     });
 
-    it('output of getSanitizedUrlParams is expected for undefined vars', () => {
+    it('output of getUrlParams is expected for undefined vars', () => {
       const expected = {'term': '', 'index': 0, 'currentTab': ResourceType.table};
       expect(wrapper.instance().getUrlParamsSpy(undefined, undefined, ResourceType.table)).toEqual(expected);
     });

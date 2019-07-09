@@ -6,6 +6,7 @@ import {
   SearchAllRequest,
   SearchAllReset,
   SearchAllResponse,
+  SearchAllResponsePayload,
   SearchResource,
   SearchResourceRequest,
   SearchResourceResponse,
@@ -36,7 +37,7 @@ export function searchAll(term: string, resource: ResourceType, pageIndex: numbe
     type: SearchAll.REQUEST,
   };
 };
-export function searchAllSuccess(searchResults: SearchResponsePayload): SearchAllResponse {
+export function searchAllSuccess(searchResults: SearchAllResponsePayload): SearchAllResponse {
   return { type: SearchAll.SUCCESS, payload: searchResults };
 };
 export function searchAllFailure(): SearchAllResponse {

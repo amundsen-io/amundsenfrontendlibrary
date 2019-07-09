@@ -17,12 +17,18 @@ export type UserSearchResults = SearchResults<UserResource>;
 
 export interface SearchResponsePayload {
   search_term: string;
-  selectedTab?: ResourceType;
-  isLoading?: boolean;
   dashboards?: DashboardSearchResults;
   tables?: TableSearchResults;
   users?: UserSearchResults;
 };
+
+export interface SearchAllResponsePayload extends SearchResponsePayload {
+  selectedTab: ResourceType;
+  dashboards: DashboardSearchResults;
+  tables: TableSearchResults;
+  users: UserSearchResults;
+};
+
 
 export enum SearchAll {
   REQUEST = 'amundsen/search/SEARCH_ALL_REQUEST',
@@ -40,7 +46,7 @@ export interface SearchAllRequest {
 };
 export interface SearchAllResponse {
   type: SearchAll.SUCCESS | SearchAll.FAILURE;
-  payload?: SearchResponsePayload;
+  payload?: SearchAllResponsePayload;
 };
 export interface SearchAllReset {
   type: SearchAll.RESET;

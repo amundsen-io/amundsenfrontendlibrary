@@ -2,8 +2,6 @@ import { testSaga } from 'redux-saga-test-plan';
 
 import { ResourceType } from 'interfaces';
 
-import globalState from 'fixtures/globalState';
-
 import { searchResource as srchResource } from '../api/v0';
 import reducer, {
   initialState,
@@ -17,13 +15,58 @@ import reducer, {
   searchResourceSuccess,
 } from '../reducer';
 import { searchAllWatcher, searchAllWorker, searchResourceWatcher, searchResourceWorker } from '../sagas';
-import { SearchAll, SearchResource, SearchResponsePayload, } from '../types';
+import { SearchAll, SearchAllResponsePayload, SearchResource, SearchResponsePayload, } from '../types';
 
 describe('search ducks', () => {
-  let expectedSearchResults: SearchResponsePayload;
-  beforeAll(() => {
-    expectedSearchResults = globalState.search;
-  });
+  let expectedSearchResults: SearchResponsePayload = {
+    search_term: 'testName',
+    tables: {
+      page_index: 0,
+      results: [
+        {
+          cluster: 'testCluster',
+          database: 'testDatabase',
+          description: 'I have a lot of users',
+          key: 'testDatabase://testCluster.testSchema/testName',
+          last_updated_epoch: 946684799,
+          name: 'testName',
+          schema_name: 'testSchema',
+          type: ResourceType.table,
+        },
+      ],
+      total_results: 1,
+    },
+  };
+  let expectedSearchAllResults: SearchAllResponsePayload = {
+    search_term: 'testName',
+    selectedTab: ResourceType.table,
+    dashboards: {
+      page_index: 0,
+      results: [],
+      total_results: 0,
+    },
+    tables: {
+      page_index: 0,
+      results: [
+        {
+          cluster: 'testCluster',
+          database: 'testDatabase',
+          description: 'I have a lot of users',
+          key: 'testDatabase://testCluster.testSchema/testName',
+          last_updated_epoch: 946684799,
+          name: 'testName',
+          schema_name: 'testSchema',
+          type: ResourceType.table,
+        },
+      ],
+      total_results: 1,
+    },
+    users: {
+      page_index: 0,
+      results: [],
+      total_results: 0,
+    },
+  };
 
   describe('actions', () => {
     it('searchAll - returns the action to search all resources', () => {
@@ -39,7 +82,7 @@ describe('search ducks', () => {
     });
 
     it('searchAllSuccess - returns the action to process the success', () => {
-      const action = searchAllSuccess(expectedSearchResults);
+      const action = searchAllSuccess(expectedSearchAllResults);
       const { payload } = action;
       expect(action.type).toBe(SearchAll.SUCCESS);
       expect(payload).toBe(expectedSearchResults);
@@ -101,7 +144,7 @@ describe('search ducks', () => {
     });
 
     it('should handle SearchAll.SUCCESS', () => {
-      expect(reducer(testState, searchAllSuccess(expectedSearchResults))).toEqual({
+      expect(reducer(testState, searchAllSuccess(expectedSearchAllResults))).toEqual({
         ...initialState,
         ...expectedSearchResults,
         isLoading: false,

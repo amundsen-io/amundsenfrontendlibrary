@@ -5,7 +5,6 @@ import {
   SearchAll,
   SearchAllRequest,
   SearchResource,
-  SearchResponsePayload,
   SearchResourceRequest,
 } from './types';
 
@@ -32,9 +31,9 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
       call(searchResource, userIndex, ResourceType.user, term),
       call(searchResource, dashboardIndex, ResourceType.dashboard, term),
     ]);
-    const searchAllResponse: SearchResponsePayload = {
-      selectedTab: resource,
+    const searchAllResponse = {
       search_term: term,
+      selectedTab: resource,
       tables: tableResponse.tables || initialState.tables,
       users: userResponse.users || initialState.users,
       dashboards: dashboardResponse.dashboards || initialState.dashboards,
