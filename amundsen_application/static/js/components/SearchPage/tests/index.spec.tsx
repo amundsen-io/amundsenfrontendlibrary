@@ -27,6 +27,7 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 
 import ResourceList from 'components/common/ResourceList';
 import globalState from 'fixtures/globalState';
+import { searchAll } from 'ducks/search/reducer';
 
 describe('SearchPage', () => {
   const setStateSpy = jest.spyOn(SearchPage.prototype, 'setState');
@@ -68,190 +69,296 @@ describe('SearchPage', () => {
     return { props, wrapper };
   };
 
-  // describe('constructor', () => {
-  //   it('sets the default selectedTab', () => {
-  //     const { props, wrapper } = setup();
-  //     expect(wrapper.state().selectedTab).toEqual(ResourceType.table);
-  //   });
-  // });
-
   describe('componentDidMount', () => {
     let props;
     let wrapper;
-    let mockSearchOptions;
-    let mockUrlParams;
 
-    let createSearchOptionsSpy;
+    let getGlobalStateParamsSpy;
+    let tryRenderFromGlobalStateSpy;
+    let tryRenderFromFromUrlStateSpy;
     let getUrlParamsSpy;
-    let searchAllSpy;
-    let updatePageUrlSpy;
 
     beforeAll(() => {
-      const setupResult = setup({
-        location: {
-          search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1', 
-          pathname: 'mockstr',
-          state: jest.fn(),
-          hash: 'mockstr',
-        }
-      });
+      const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
 
-      mockUrlParams = { 'term': 'testName', ' index': 1, 'currentTab': 'table' };
-      getUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getUrlParams').mockImplementation(() => {
-        return mockUrlParams;
-      });
-      mockSearchOptions = { 'dashboardIndex': 0, 'tableIndex': 0, 'userIndex': 1 };
-      createSearchOptionsSpy = jest.spyOn(wrapper.instance(), 'createSearchOptions').mockImplementation(() => {
-        return mockSearchOptions;
-      });
-      searchAllSpy = jest.spyOn(props, 'searchAll');
-      updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
-      setStateSpy.mockClear();
+      getUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getUrlParams');
+      getGlobalStateParamsSpy = jest.spyOn(wrapper.instance(), 'getGlobalStateParams');
+    });
 
+
+    it('calls getUrlParams and getGlobalStateParams', () => {
       wrapper.instance().componentDidMount();
+      expect(getUrlParamsSpy).toHaveBeenCalledWith(props.location.search);
+      expect(getGlobalStateParamsSpy).toHaveBeenCalled();
     });
 
-    describe('when searchTerm in params is valid', () => {
+    describe('when rendering from GlobalState', () => {
       beforeAll(() => {
-        updatePageUrlSpy.mockClear();
-        const {props, wrapper} = setup({
-          location: {
-            search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1', 
-            pathname: 'mockstr',
-            state: jest.fn(),
-            hash: 'mockstr',
-          }
-        });
-        updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
+        tryRenderFromGlobalStateSpy = jest.spyOn(wrapper.instance(), 'shouldUpdateFromGlobalState')
+          .mockImplementationOnce(() => true);
+        tryRenderFromFromUrlStateSpy = jest.spyOn(wrapper.instance(), 'shouldUpdateFromUrlParams')
+          .mockImplementationOnce(() => false);
         wrapper.instance().componentDidMount();
       });
-      it('calls searchAll', () => {
-        expect(searchAllSpy).toHaveBeenCalledWith(mockUrlParams.term, mockSearchOptions);
+
+      it('calls shouldUpdateFromGlobalState', () => {
+        expect(tryRenderFromGlobalStateSpy).toHaveBeenCalled()
       });
 
-      it('does not call updateURL', () => {
-        expect(updatePageUrlSpy).not.toHaveBeenCalled();
+      it('does not call shouldUpdateFromUrlParams', () => {
+        expect(tryRenderFromFromUrlStateSpy).not.toHaveBeenCalled()
       });
     });
 
-    describe('when pageIndex in params is undefined', () => {
-      let mockUrlParamsSpy;
-      let getUrlParamsSpy;
-
-      let updatePageUrlSpy;
-
+    describe('when rendering from URL state', () => {
       beforeAll(() => {
-        const {props, wrapper} = setup({
-          location: {
-            search: '/search?searchTerm=testName', 
-            pathname: 'mockstr',
-            state: jest.fn(),
-            hash: 'mockstr',
-          }
-        });
-        mockUrlParamsSpy = { 'term': 'testName', ' index': 0, 'currentTab': 'table' };
-        getUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getUrlParams').mockImplementation(() => {
-          return mockUrlParamsSpy;
-        });
-        updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
+        tryRenderFromGlobalStateSpy = jest.spyOn(wrapper.instance(), 'shouldUpdateFromGlobalState')
+          .mockImplementationOnce(() => false);
+        tryRenderFromFromUrlStateSpy = jest.spyOn(wrapper.instance(), 'shouldUpdateFromUrlParams')
+          .mockImplementationOnce(() => false);
         wrapper.instance().componentDidMount();
       });
-      it('uses 0 as pageIndex', () => {
-        expect(updatePageUrlSpy).toHaveBeenCalledWith(mockUrlParamsSpy.term, mockUrlParamsSpy.currentTab, mockUrlParamsSpy.index);
+
+      it('calls shouldUpdateFromGlobalState', () => {
+        expect(tryRenderFromGlobalStateSpy).toHaveBeenCalled()
+      });
+
+      it('calls shouldUpdateFromUrlParams', () => {
+        expect(tryRenderFromFromUrlStateSpy).toHaveBeenCalled()
       });
     });
 
-    describe('when searchTerm in params is undefined', () => {
+
+
+
+    // describe('when searchTerm in params is valid', () => {
+    //   beforeAll(() => {
+    //     updatePageUrlSpy.mockClear();
+    //     const {props, wrapper} = setup({
+    //       location: {
+    //         search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1',
+    //         pathname: 'mockstr',
+    //         state: jest.fn(),
+    //         hash: 'mockstr',
+    //       }
+    //     });
+    //     updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
+    //
+    //     wrapper.instance().componentDidMount();
+    //   });
+    //   it('calls searchAll', () => {
+    //     expect(searchAllSpy).toHaveBeenCalledWith(mockUrlParams.term, mockUrlParams.currentTab, mockUrlParams.index);
+    //   });
+    //
+    //   it('does not call updateURL', () => {
+    //     expect(updatePageUrlSpy).not.toHaveBeenCalled();
+    //   });
+    // });
+
+    // describe('when pageIndex in params is undefined', () => {
+    //   let mockUrlParamsSpy;
+    //   let getUrlParamsSpy;
+    //
+    //   let updatePageUrlSpy;
+    //
+    //   beforeAll(() => {
+    //     const {props, wrapper} = setup({
+    //       location: {
+    //         search: '/search?searchTerm=testName',
+    //         pathname: 'mockstr',
+    //         state: jest.fn(),
+    //         hash: 'mockstr',
+    //       }
+    //     });
+    //     mockUrlParamsSpy = { 'term': 'testName', ' index': 0, 'currentTab': 'table' };
+    //     getUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getUrlParams').mockImplementation(() => {
+    //       return mockUrlParamsSpy;
+    //     });
+    //     updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
+    //     wrapper.instance().componentDidMount();
+    //   });
+    //   it('uses 0 as pageIndex', () => {
+    //     expect(updatePageUrlSpy).toHaveBeenCalledWith(mockUrlParamsSpy.term, mockUrlParamsSpy.currentTab, mockUrlParamsSpy.index);
+    //   });
+    // });
+
+    // describe('when searchTerm in params is undefined', () => {
+    //   beforeAll(() => {
+    //     searchAllSpy.mockClear();
+    //     updatePageUrlSpy.mockClear();
+    //     const {props, wrapper} = setup({
+    //       location: {
+    //         search: '/search?selectedTab=table&pageIndex=1',
+    //         pathname: 'mockstr',
+    //         state: jest.fn(),
+    //         hash: 'mockstr',
+    //       }
+    //     });
+    //     updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
+    //     wrapper.instance().componentDidMount();
+    //   });
+    //   it('does not call searchAll', () => {
+    //     expect(searchAllSpy).not.toHaveBeenCalled();
+    //   });
+    //
+    //   it('does not call updatePageUrl', () => {
+    //     expect(updatePageUrlSpy).not.toHaveBeenCalled();
+    //   });
+    // });
+
+    // describe('when searchTerm in params is empty string', () => {
+    //   beforeAll(() => {
+    //     searchAllSpy.mockClear();
+    //     updatePageUrlSpy.mockClear();
+    //     const {props, wrapper} = setup({
+    //       location: {
+    //         search: '/search?searchTerm=&selectedTab=table&pageIndex=1',
+    //         pathname: 'mockstr',
+    //         state: jest.fn(),
+    //         hash: 'mockstr',
+    //       }
+    //     });
+    //     updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
+    //     wrapper.instance().componentDidMount();
+    //   });
+    //   it('does not call searchAll', () => {
+    //     expect(searchAllSpy).not.toHaveBeenCalled();
+    //   });
+    //
+    //   it('does not call updatePageUrl', () => {
+    //     expect(updatePageUrlSpy).not.toHaveBeenCalled();
+    //   });
+    // });
+  });
+
+  describe('shouldUpdateFromGlobalState', () => {
+    let props;
+    let wrapper;
+
+    let mockUrlParams;
+    let mockGlobalStateParams;
+
+    let updatePageUrlSpy;
+    let returnValue;
+
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+      updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl')
+    });
+
+    describe('when urlParams.term is empty and globalState is initialized', () => {
       beforeAll(() => {
-        searchAllSpy.mockClear();
-        updatePageUrlSpy.mockClear();
-        const {props, wrapper} = setup({
-          location: {
-            search: '/search?selectedTab=table&pageIndex=1', 
-            pathname: 'mockstr',
-            state: jest.fn(),
-            hash: 'mockstr',
-          }
-        });
-        updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
-        wrapper.instance().componentDidMount();
+        updatePageUrlSpy.mockReset();
+        mockUrlParams = { term: '', tab: ResourceType.table, index: 0 };
+        mockGlobalStateParams = { term: 'test', tab: ResourceType.table, index: 2 };
+        returnValue = wrapper.instance().shouldUpdateFromGlobalState(mockUrlParams, mockGlobalStateParams);
       });
-      it('does not call searchAll', () => {
-        expect(searchAllSpy).not.toHaveBeenCalled();
+
+      it('calls updatePageUrl', () => {
+        expect(updatePageUrlSpy).toHaveBeenCalledWith(mockGlobalStateParams.term, mockGlobalStateParams.tab, mockGlobalStateParams.index, true)
+      });
+
+      it('returns a value of true', () => {
+        expect(returnValue).toBe(true);
+      });
+    });
+
+    describe('when globalState is empty', () => {
+      beforeAll(() => {
+        updatePageUrlSpy.mockReset();
+        mockUrlParams = { term: '', tab: ResourceType.table, index: 0 };
+        mockGlobalStateParams = { term: '', tab: ResourceType.table, index: 2 };
+        returnValue = wrapper.instance().shouldUpdateFromGlobalState(mockUrlParams, mockGlobalStateParams);
       });
 
       it('does not call updatePageUrl', () => {
         expect(updatePageUrlSpy).not.toHaveBeenCalled();
       });
-    });
 
-    describe('when searchTerm in params is empty string', () => {
-      beforeAll(() => {
-        searchAllSpy.mockClear();
-        updatePageUrlSpy.mockClear();
-        const {props, wrapper} = setup({
-          location: {
-            search: '/search?searchTerm=&selectedTab=table&pageIndex=1', 
-            pathname: 'mockstr',
-            state: jest.fn(),
-            hash: 'mockstr',
-          }
-        });
-        updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
-        wrapper.instance().componentDidMount();
+      it('returns a value of true', () => {
+        expect(returnValue).toBe(false);
       });
-      it('does not call searchAll', () => {
-        expect(searchAllSpy).not.toHaveBeenCalled();
-      });
-
-      it('does not call updatePageUrl', () => {
-        expect(updatePageUrlSpy).not.toHaveBeenCalled();
-      });
-    });
-
-    afterAll(() => {
-      createSearchOptionsSpy.mockRestore();
     });
   });
 
-  describe('componentDidUpdate', () => {
+  describe('shouldUpdateFromUrlParams', () => {
+    let props;
+    let wrapper;
+
+    let mockUrlParams;
+    let mockGlobalStateParams;
+
     let searchAllSpy;
-      
-    let mockSearchOptions;
-    let mockUrlParamsSpy;
+    let updatePageUrlSpy;
+    let returnValue;
 
-    let createSearchOptionsSpy;
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+      searchAllSpy = jest.spyOn(props, 'searchAll');
+      updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
+    });
+
+    describe('when urlParams.term is empty', () => {
+      beforeAll(() => {
+        searchAllSpy.mockReset();
+        updatePageUrlSpy.mockReset();
+        mockUrlParams = { term: '', tab: ResourceType.table, index: 0 };
+        mockGlobalStateParams = { term: '', tab: ResourceType.table, index: 0 };
+        returnValue = wrapper.instance().shouldUpdateFromUrlParams(mockUrlParams, mockGlobalStateParams);
+      });
+
+      it('calls updatePageUrl', () => {
+        expect(updatePageUrlSpy).not.toHaveBeenCalled();
+      });
+
+      it('returns a value of false', () => {
+        expect(returnValue).toBe(false);
+      });
+    });
+
+    describe('when urlParams are initialized and not equal to global state', () => {
+      beforeAll(() => {
+        searchAllSpy.mockReset();
+        updatePageUrlSpy.mockReset();
+        mockUrlParams = { term: 'test', tab: ResourceType.table, index: 0 };
+        mockGlobalStateParams = { term: '', tab: ResourceType.table, index: 0 };
+        returnValue = wrapper.instance().shouldUpdateFromUrlParams(mockUrlParams, mockGlobalStateParams);
+      });
+
+      it('calls searchAll', () => {
+        expect(searchAllSpy).toHaveBeenCalledWith(mockUrlParams.term, mockUrlParams.tab, mockUrlParams.index);
+      });
+
+      it('calls updatePageUrl', () => {
+        expect(updatePageUrlSpy).toHaveBeenCalledWith(mockUrlParams.term, mockUrlParams.tab, mockUrlParams.index, true)
+      });
+
+      it('returns a value of true', () => {
+        expect(returnValue).toBe(true);
+      });
+    });
+  });
+
+
+  describe('componentDidUpdate', () => {
+
+    let mockNextUrlParams;
+    let mockPrevUrlParams;
+
     let getUrlParamsSpy;
-
+    let mockIsUrlStateSynced;
     let props;
     let wrapper;
     beforeAll(() => {
-      const setupResult = setup({
-        location: {
-          search: '/search?searchTerm=current&selectedTab=table&pageIndex=0', 
-          pathname: 'mockstr',
-          state: jest.fn(),
-          hash: 'mockstr',
-        }
-      });
+      const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
-
-      mockUrlParamsSpy = { 'term': 'current', ' index': 0, 'currentTab': 'table' };
-      getUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getUrlParamsSpy').mockImplementation(() => {
-        return mockUrlParamsSpy;
-      });
-
-      mockSearchOptions = { 'dashboardIndex': 0, 'tableIndex': 1, 'userIndex': 0 };
-      createSearchOptionsSpy = jest.spyOn(wrapper.instance(), 'createSearchOptions').mockImplementation(() => {
-        return mockSearchOptions;
-      });
-
-      searchAllSpy = jest.spyOn(props, 'searchAll');
-
-      setStateSpy.mockClear();
 
       const mockPrevProps = {
         searchTerm: 'previous',
@@ -265,9 +372,21 @@ describe('SearchPage', () => {
       wrapper.instance().componentDidUpdate(mockPrevProps);
     });
 
-    it('calls setState', () => {
-      expect(setStateSpy).toHaveBeenCalledWith({ selectedTab: ResourceType.table });
+
+    describe('', () => {
+      beforeAll(() => {
+        mockNextUrlParams = { 'term': 'current', ' index': 0, 'currentTab': 'table' };
+        mockPrevUrlParams = { 'term': 'current', ' index': 0, 'currentTab': 'table' };
+        getUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getUrlParamsSpy')
+          .mockImplementationOnce(() => mockNextUrlParams)
+          .mockImplementationOnce(() => mockPrevUrlParams);
+      });
+
+
     });
+
+
+
 
     it('calls searchAll if called with a new search term', () => {
       expect(searchAllSpy).toHaveBeenCalledWith(mockUrlParamsSpy.term, mockSearchOptions);
@@ -288,6 +407,9 @@ describe('SearchPage', () => {
       expect(searchAllSpy).not.toHaveBeenCalled();
     });
   });
+
+
+
 
   describe('getUrlParams', () => {
 

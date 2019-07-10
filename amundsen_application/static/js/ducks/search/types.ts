@@ -21,14 +21,12 @@ export interface SearchResponsePayload {
   tables?: TableSearchResults;
   users?: UserSearchResults;
 };
-
 export interface SearchAllResponsePayload extends SearchResponsePayload {
   selectedTab: ResourceType;
   dashboards: DashboardSearchResults;
   tables: TableSearchResults;
   users: UserSearchResults;
 };
-
 
 export enum SearchAll {
   REQUEST = 'amundsen/search/SEARCH_ALL_REQUEST',

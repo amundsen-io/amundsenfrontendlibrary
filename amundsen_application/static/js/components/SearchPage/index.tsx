@@ -69,25 +69,21 @@ export class SearchPage extends React.Component<SearchPageProps> {
     const urlSearchParams = this.getUrlParams(this.props.location.search);
     const globalStateParams = this.getGlobalStateParams();
 
-    this.tryRenderFromGlobalState(urlSearchParams, globalStateParams) ||
-      this.tryRenderFromUrlState(urlSearchParams, globalStateParams);
+    if (this.shouldUpdateFromGlobalState(urlSearchParams, globalStateParams)) {
+       this.updatePageUrl(globalStateParams.term, globalStateParams.tab, globalStateParams.index, true);
+
+    } else if (this.shouldUpdateFromUrlParams(urlSearchParams, globalStateParams)) {
+      this.props.searchAll(urlSearchParams.term, urlSearchParams.tab, urlSearchParams.index);
+      this.updatePageUrl(urlSearchParams.term, urlSearchParams.tab, urlSearchParams.index, true);
+    }
   }
 
-  tryRenderFromGlobalState(urlParams, globalStateParams): boolean {
-    if (urlParams.term === '' && globalStateParams.term !== '') {
-      this.updatePageUrl(globalStateParams.term, globalStateParams.tab, globalStateParams.index, true);
-      return true;
-    }
-    return false;
+  shouldUpdateFromGlobalState(urlParams, globalStateParams): boolean {
+    return urlParams.term === '' && globalStateParams.term !== '';
   }
 
-  tryRenderFromUrlState(urlParams, globalSearchState) {
-    if (urlParams.term !== '' && urlParams.term !== globalSearchState.term) {
-      this.props.searchAll(urlParams.term, urlParams.tab, urlParams.index);
-      this.updatePageUrl(urlParams.term, urlParams.tab, urlParams.index, true);
-      return true;
-    }
-    return false;
+  shouldUpdateFromUrlParams(urlParams, globalSearchState) {
+    return urlParams.term !== '' && urlParams.term !== globalSearchState.term;
   }
 
   componentDidUpdate(prevProps: SearchPageProps) {
@@ -98,9 +94,15 @@ export class SearchPage extends React.Component<SearchPageProps> {
     if (this.isUrlStateSynced(nextUrlParams)) return;
 
     // Capture any updates in URL
-    this.tryUpdateSearchTerm(nextUrlParams, prevUrlParams) ||
-      this.tryUpdateTab(nextUrlParams, prevUrlParams) ||
-      this.tryUpdatePageIndex(nextUrlParams, prevUrlParams);
+    if (this.shouldUpdateSearchTerm(nextUrlParams, prevUrlParams)) {
+      this.props.searchAll(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index);
+
+    } else if (this.shouldUpdateTab(nextUrlParams, prevUrlParams)) {
+      this.props.updateSearchTab(nextUrlParams.tab)
+
+    } else if (this.shouldUpdatePageIndex(nextUrlParams, prevUrlParams)) {
+      this.props.searchResource(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index);
+    }
   }
 
   isUrlStateSynced(urlParams) {
@@ -111,28 +113,16 @@ export class SearchPage extends React.Component<SearchPageProps> {
       urlParams.index === globalStateParams.index;
   }
 
-  tryUpdateSearchTerm(nextUrlParams, prevUrlParams) {
-    if (nextUrlParams.term !== prevUrlParams.term) {
-      this.props.searchAll(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index);
-      return true;
-    }
-    return false;
+  shouldUpdateSearchTerm(nextUrlParams, prevUrlParams) {
+    return nextUrlParams.term !== prevUrlParams.term;
   }
 
-  tryUpdateTab(nextUrlParams, prevUrlParams) {
-    if (nextUrlParams.tab !== prevUrlParams.tab) {
-      this.props.updateSearchTab(nextUrlParams.tab);
-      return true;
-    }
-    return false;
+  shouldUpdateTab(nextUrlParams, prevUrlParams) {
+    return nextUrlParams.tab !== prevUrlParams.tab;
   }
 
-  tryUpdatePageIndex(nextUrlParams, prevUrlParams) {
-    if (nextUrlParams.index !== prevUrlParams.index) {
-      this.props.searchResource(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index);
-      return true;
-    }
-    return false;
+  shouldUpdatePageIndex(nextUrlParams, prevUrlParams) {
+    return nextUrlParams.index !== prevUrlParams.index;
   }
 
   getSelectedTabByResourceType = (newTab: ResourceType): ResourceType => {
