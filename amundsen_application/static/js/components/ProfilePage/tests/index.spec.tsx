@@ -39,10 +39,7 @@ describe('ProfilePage', () => {
       getUserOwn: jest.fn(),
       getUserRead: jest.fn(),
       getBookmarksForUser: jest.fn(),
-      history: routerProps.history,
-      location: routerProps.location,
-      match: routerProps.match,
-      staticContext: routerProps.staticContext,
+      ...routerProps,
       ...propOverrides
     };
     const wrapper = shallow<ProfilePage>(<ProfilePage {...props} />);

@@ -3,14 +3,16 @@ import { RouteComponentProps } from 'react-router';
 import * as History from 'history';
 
 // Mock React-Router
-export function getMockRouterProps<P>(data: P, location: History.Location): RouteComponentProps<P> {
-  const defaultLocation: History.Location = {
+export function getMockRouterProps<P>(data: P, location: Partial<History.Location>): RouteComponentProps<P> {
+  const mockLocation: History.Location = {
     hash: '',
     key: '',
     pathname: '',
     search: '',
     state: {},
+    ...location,
   };
+
   const props: RouteComponentProps<P> = {
     match: {
       isExact: true,
@@ -18,11 +20,11 @@ export function getMockRouterProps<P>(data: P, location: History.Location): Rout
       path: '',
       url: '',
     },
-    location: location || defaultLocation,
+    location: mockLocation,
     history: {
       length: 2,
       action: 'POP',
-      location: location || defaultLocation,
+      location: mockLocation,
       push: () => {},
       replace: null,
       go: null,

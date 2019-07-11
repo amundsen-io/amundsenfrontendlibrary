@@ -22,10 +22,7 @@ describe('SearchBar', () => {
   const setup = (propOverrides?: Partial<SearchBarProps>) => {
     const props: SearchBarProps = {
       searchTerm: '',
-      history: routerProps.history,
-      location: routerProps.location,
-      match: routerProps.match,
-      staticContext: routerProps.staticContext,
+      ...routerProps,
       ...propOverrides
     };
     const wrapper = shallow<SearchBar>(<SearchBar {...props} />)

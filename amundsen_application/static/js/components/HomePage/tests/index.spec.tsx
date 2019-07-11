@@ -14,17 +14,11 @@ describe('HomePage', () => {
   const setup = (propOverrides?: Partial<HomePageProps>) => {
     const mockLocation = {
       search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1',
-      pathname: 'mockstr',
-      state: jest.fn(),
-      hash: 'mockstr',
     };
     const routerProps = getMockRouterProps<any>(null, mockLocation);
     const props: HomePageProps = {
       searchReset: jest.fn(),
-      history: routerProps.history,
-      location: routerProps.location,
-      match: routerProps.match,
-      staticContext: routerProps.staticContext,
+      ...routerProps,
       ...propOverrides
     };
     const wrapper = shallow<HomePage>(<HomePage {...props} />)
