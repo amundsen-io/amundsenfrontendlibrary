@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-import { sendNotification } from '../v0';
-import { NotificationType } from 'interfaces/Notifications';
+import * as API from '../v0';
+import { NotificationType } from 'interfaces';
 
 describe('sendNotification', () => {
   it('calls axios.post with the correct params', async () => {
@@ -19,7 +19,7 @@ describe('sendNotification', () => {
         fields_requested: false,
       }
     }
-    sendNotification(
+    API.sendNotification(
       mockRequestObject.recipients,
       mockRequestObject.sender,
       mockRequestObject.notificationType,

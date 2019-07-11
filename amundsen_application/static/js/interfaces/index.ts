@@ -6,3 +6,4 @@ export * from './Search';
 export * from './TableMetadata';
 export * from './Tags';
 export * from './User';
+export * from './Notifications'
