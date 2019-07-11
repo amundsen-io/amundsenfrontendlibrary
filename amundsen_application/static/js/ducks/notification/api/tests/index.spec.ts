@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { sendNotification } from '../v0';
-import { NotificationType } from 'ducks/notification/types';
+import { NotificationType } from 'interfaces/Notifications';
 
 describe('sendNotification', () => {
   it('calls axios.post with the correct params', async () => {

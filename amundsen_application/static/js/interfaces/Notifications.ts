@@ -1,3 +1,4 @@
+// TODO: Remove notification types that can be triggered in flask layer if necessary
 export enum NotificationType {
   ADDED = 'amundsen/notification/OWNER_ADDED',
   REMOVED = 'amundsen/notification/OWNER_REMOVED',
