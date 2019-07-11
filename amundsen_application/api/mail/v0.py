@@ -83,7 +83,52 @@ def notification() -> Response:
     try:
         data = request.get_json()
         # TODO: When making a real api call, check the status code and return appropriate response
-        return make_response(jsonify({'msg': data}), HTTPStatus.OK)
+        print(data)
+        mail_client = app.config['MAIL_CLIENT']
+
+        if not mail_client:
+            message = 'An instance of BaseMailClient client must be configured on MAIL_CLIENT'
+            logging.exception(message)
+            return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
+        
+        notification_type = data['notificationType']
+        notification_type_dict = {
+            'amundsen/notification/OWNER_ADDED': {
+                'subject': 'You have been added',
+                'template': 'notification_added.html'
+            },
+            'amundsen/notification/OWNER_REMOVED': {
+                'subject': 'You have been removed',
+                'template': 'notification_removed.html'
+            },
+            'amundsen/notification/OWNER_EDITED': {
+                'subject': 'You have been edited',
+                'template': 'notification_edited.html'
+            },
+            'amundsen/notification/OWNER_REQUESTED': {
+                'subject': 'You have been requested',
+                'template': 'notification_requested.html'
+            },
+        }
+        template = render_template(notification_type_dict[notification_type]['template'])
+
+        response = mail_client.send_notification(
+            recipients=data['recipients'],
+            sender=data['sender'],
+            notification_type=notification_type,
+            optional_data=data['options'],
+            subject=notification_type_dict[notification_type]['subject'],
+            template=template,
+        )
+        status_code = response.status_code
+
+        if status_code == HTTPStatus.OK:
+            message = 'Success'
+        else:
+            message = 'Mail client failed with status code ' + str(status_code)
+            logging.error(message)
+            
+        return make_response(jsonify({'msg': message}), status_code)
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
