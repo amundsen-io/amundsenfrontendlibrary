@@ -4,7 +4,7 @@ import { LoggedInUser, PeopleUser, Resource } from 'interfaces';
 
 export type LoggedInUserAPI = { user: LoggedInUser; msg: string; };
 export type UserAPI = { user: PeopleUser; msg: string; };
-export type UserOwnAPI= { own: Resource[], msg: string; };
+export type UserOwnAPI = { own: Resource[], msg: string; };
 export type UserReadAPI = { read: Resource[], msg: string; };
 
 export function getLoggedInUser() {
@@ -14,7 +14,7 @@ export function getLoggedInUser() {
     });
 }
 
-export function getUserById(userId: string) {
+export function getUser(userId: string) {
   return axios.get(`/api/metadata/v0/user?user_id=${userId}`)
     .then((response: AxiosResponse<UserAPI>) => {
       return response.data.user;

@@ -1,12 +1,10 @@
-import { expectSaga, testSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
-import { throwError } from 'redux-saga-test-plan/providers';
+import { testSaga } from 'redux-saga-test-plan';
 
 import { TableResource } from 'interfaces';
 
 import globalState from 'fixtures/globalState';
 
-import { metadataPopularTables } from '../api/v0';
+import * as API from '../api/v0';
 import reducer, {
   getPopularTables,
   getPopularTablesFailure,
@@ -68,29 +66,23 @@ describe('popularTables ducks', () => {
     describe('getPopularTablesWatcher', () => {
       it('takes every GetPopularTables.REQUEST with getPopularTablesWorker', () => {
         testSaga(getPopularTablesWatcher)
-          .next()
-          .takeEvery(GetPopularTables.REQUEST, getPopularTablesWorker);
+          .next().takeEvery(GetPopularTables.REQUEST, getPopularTablesWorker)
+          .next().isDone();
       });
     });
 
     describe('getPopularTablesWorker', () => {
       it('executes flow for returning tables', () => {
         testSaga(getPopularTablesWorker)
-          .next()
-          .call(metadataPopularTables)
-          .next(expectedTables)
-          .put(getPopularTablesSuccess(expectedTables))
-          .next()
-          .isDone();
+          .next().call(API.getPopularTables)
+          .next(expectedTables).put(getPopularTablesSuccess(expectedTables))
+          .next().isDone();
       });
 
       it('handles request error', () => {
         testSaga(getPopularTablesWorker)
-          .next()
-          .throw(new Error())
-          .put(getPopularTablesFailure())
-          .next()
-          .isDone();
+          .next().throw(new Error()).put(getPopularTablesFailure())
+          .next().isDone();
       });
     });
   });

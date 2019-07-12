@@ -1,19 +1,21 @@
 import { SagaIterator } from 'redux-saga';
 import { all, call, put, select, takeEvery } from 'redux-saga/effects';
 
-import { UpdateTags, UpdateTagsRequest } from '../types';
+import * as API from '../api/v0';
 
-import { metadataUpdateTableTags, metadataTableTags } from '../api/v0';
+import { updateTagsFailure, updateTagsSuccess } from './reducer';
+
+import { UpdateTags, UpdateTagsRequest } from '../types';
 
 export function* updateTableTagsWorker(action: UpdateTagsRequest): SagaIterator {
   const state = yield select();
   const tableData = state.tableMetadata.tableData;
   try {
-    yield all(metadataUpdateTableTags(action.payload.tagArray, tableData.key));
-    const newTags = yield call(metadataTableTags, tableData.key);
-    yield put({ type: UpdateTags.SUCCESS, payload: { tags: newTags } });
+    yield all(API.updateTableTags(action.payload.tagArray, tableData.key));
+    const newTags = yield call(API.getTableTags, tableData.key);
+    yield put(updateTagsSuccess(newTags));
   } catch (e) {
-    yield put({ type: UpdateTags.FAILURE, payload: { tags: [] } });
+    yield put(updateTagsFailure());
   }
 };
 export function* updateTableTagsWatcher(): SagaIterator {
