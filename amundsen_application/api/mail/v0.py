@@ -47,7 +47,12 @@ def feedback() -> Response:
                   value_prop=value_prop,
                   subject=subject)
 
-        response = mail_client.send_email(subject=subject, text=text_content, html=html_content, optional_data=data)
+        options = {
+            'email_type': 'feedback',
+            'form_data': data
+        }
+
+        response = mail_client.send_email(subject=subject, text=text_content, html=html_content, options=options)
         status_code = response.status_code
 
         if status_code == HTTPStatus.OK:
@@ -83,7 +88,6 @@ def notification() -> Response:
     try:
         data = request.get_json()
         # TODO: When making a real api call, check the status code and return appropriate response
-        print(data)
         mail_client = app.config['MAIL_CLIENT']
 
         if not mail_client:
@@ -93,32 +97,33 @@ def notification() -> Response:
         
         notification_type = data['notificationType']
         notification_type_dict = {
-            'amundsen/notification/OWNER_ADDED': {
+            'added': {
                 'subject': 'You have been added',
                 'template': 'notification_added.html'
             },
-            'amundsen/notification/OWNER_REMOVED': {
+            'removed': {
                 'subject': 'You have been removed',
                 'template': 'notification_removed.html'
             },
-            'amundsen/notification/OWNER_EDITED': {
+            'edited': {
                 'subject': 'You have been edited',
                 'template': 'notification_edited.html'
             },
-            'amundsen/notification/OWNER_REQUESTED': {
+            'requested': {
                 'subject': 'You have been requested',
                 'template': 'notification_requested.html'
             },
         }
         template = render_template(notification_type_dict[notification_type]['template'])
 
-        response = mail_client.send_notification(
+        response = mail_client.send_email(
             recipients=data['recipients'],
             sender=data['sender'],
-            notification_type=notification_type,
-            optional_data=data['options'],
             subject=notification_type_dict[notification_type]['subject'],
-            template=template,
+            html=template,
+            options={
+                'email_type': 'notification'
+            },
         )
         status_code = response.status_code
 
