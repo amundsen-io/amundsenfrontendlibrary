@@ -585,16 +585,9 @@ describe('reducer', () => {
       });
 
       it('handles request error', () => {
-        const mockErrorResponse = { name: '', message: '', response: { data: previewData, status: 500 }};
+        const mockErrorResponse = { data: previewData, status: 500 };
         testSaga(getPreviewDataWorker, getPreviewData(queryParams))
           .next().throw(mockErrorResponse).put(getPreviewDataFailure(previewData, 500))
-          .next().isDone();
-      });
-
-      it('handles request error with response fallbacks', () => {
-        const mockErrorResponse = { name: '', message: '' };
-        testSaga(getPreviewDataWorker, getPreviewData(queryParams))
-          .next().throw(mockErrorResponse).put(getPreviewDataFailure({}, null))
           .next().isDone();
       });
     });
