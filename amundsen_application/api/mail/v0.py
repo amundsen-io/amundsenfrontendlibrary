@@ -6,6 +6,7 @@ from flask import Response, jsonify, make_response, render_template, request
 from flask import current_app as app
 from flask.blueprints import Blueprint
 
+from amundsen_application.api.utils.notification_utils import get_notification_content
 from amundsen_application.log.action_log import action_logging
 
 LOGGER = logging.getLogger(__name__)
@@ -94,33 +95,14 @@ def notification() -> Response:
             message = 'An instance of BaseMailClient client must be configured on MAIL_CLIENT'
             logging.exception(message)
             return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
-        
-        notification_type = data['notificationType']
-        notification_type_dict = {
-            'added': {
-                'subject': 'You have been added',
-                'template': 'notification_added.html'
-            },
-            'removed': {
-                'subject': 'You have been removed',
-                'template': 'notification_removed.html'
-            },
-            'edited': {
-                'subject': 'You have been edited',
-                'template': 'notification_edited.html'
-            },
-            'requested': {
-                'subject': 'You have been requested',
-                'template': 'notification_requested.html'
-            },
-        }
-        template = render_template(notification_type_dict[notification_type]['template'])
+
+        notification_content = get_notification_content(data['notificationType'], data['options'])
 
         response = mail_client.send_email(
             recipients=data['recipients'],
             sender=data['sender'],
-            subject=notification_type_dict[notification_type]['subject'],
-            html=template,
+            subject=notification_content['subject'],
+            html=notification_content['html'],
             options={
                 'email_type': 'notification'
             },
@@ -132,7 +114,7 @@ def notification() -> Response:
         else:
             message = 'Mail client failed with status code ' + str(status_code)
             logging.error(message)
-            
+
         return make_response(jsonify({'msg': message}), status_code)
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
