@@ -15,8 +15,8 @@ import {
   SEARCH_ERROR_MESSAGE_INFIX,
   SEARCH_ERROR_MESSAGE_PREFIX,
   SEARCH_ERROR_MESSAGE_SUFFIX,
-  SEARCH_INFO_TEXT_SUFFIX,
-  SEARCH_INFO_TEXT_TABLE_PREFIX,
+  SEARCH_INFO_TEXT_BASE,
+  SEARCH_INFO_TEXT_TABLE_SUFFIX,
   SEARCH_SOURCE_NAME,
   TABLE_RESOURCE_TITLE,
   USER_RESOURCE_TITLE,
@@ -472,13 +472,13 @@ describe('SearchPage', () => {
 
     it('returns correct text for ResourceType.table', () => {
       const text = wrapper.instance().generateInfoText(ResourceType.table);
-      const expectedText = `${SEARCH_INFO_TEXT_SUFFIX}${SEARCH_INFO_TEXT_TABLE_PREFIX}`;
+      const expectedText = `${SEARCH_INFO_TEXT_BASE}${SEARCH_INFO_TEXT_TABLE_SUFFIX}`;
       expect(text).toEqual(expectedText);
     });
 
     it('returns correct text for the default case', () => {
       const text = wrapper.instance().generateInfoText(ResourceType.user);
-      expect(text).toEqual(SEARCH_INFO_TEXT_SUFFIX);
+      expect(text).toEqual(SEARCH_INFO_TEXT_BASE);
     });
   });
 

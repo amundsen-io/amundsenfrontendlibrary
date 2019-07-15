@@ -35,8 +35,8 @@ import {
   SEARCH_ERROR_MESSAGE_INFIX,
   SEARCH_ERROR_MESSAGE_PREFIX,
   SEARCH_ERROR_MESSAGE_SUFFIX,
-  SEARCH_INFO_TEXT_SUFFIX,
-  SEARCH_INFO_TEXT_TABLE_PREFIX,
+  SEARCH_INFO_TEXT_BASE,
+  SEARCH_INFO_TEXT_TABLE_SUFFIX,
   SEARCH_SOURCE_NAME,
   TABLE_RESOURCE_TITLE,
   USER_RESOURCE_TITLE,
@@ -183,9 +183,9 @@ export class SearchPage extends React.Component<SearchPageProps, SearchPageState
   generateInfoText = (tab: ResourceType): string => {
     switch (tab) {
       case ResourceType.table:
-        return `${SEARCH_INFO_TEXT_SUFFIX}${SEARCH_INFO_TEXT_TABLE_PREFIX}`;
+        return `${SEARCH_INFO_TEXT_BASE}${SEARCH_INFO_TEXT_TABLE_SUFFIX}`;
       default:
-        return SEARCH_INFO_TEXT_SUFFIX;
+        return SEARCH_INFO_TEXT_BASE;
     }
   };
 
