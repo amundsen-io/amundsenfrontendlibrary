@@ -25,8 +25,10 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
 
   getLink = () => {
     const { table, logging } = this.props;
-    return `/table_detail/${table.cluster}/${table.database}/${table.schema_name}/${table.name}`
+    return `/table_detail/${table.key}`
       + `?index=${logging.index}&source=${logging.source}`;
+    // return `/table_detail/${table.cluster}/${table.database}/${table.schema_name}/${table.name}`
+    //   + `?index=${logging.index}&source=${logging.source}`;
   };
 
   render() {

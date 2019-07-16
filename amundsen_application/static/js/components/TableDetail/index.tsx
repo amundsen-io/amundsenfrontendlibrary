@@ -95,6 +95,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
 
     const { match } = props;
     const params = match.params;
+    this.key = params ? params.table_key : '';
     this.cluster = params ? params.cluster : '';
     this.database = params ? params.db : '';
     this.schema = params ? params.schema : '';
@@ -106,7 +107,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     we can't pass it as a single URL parameter without encodeURIComponent which makes ugly URLs.
     DO NOT CHANGE
     */
-    this.key = params ? `${this.database}://${this.cluster}.${this.schema}/${this.tableName}` : '';
+    // this.key = params ? `${this.database}://${this.cluster}.${this.schema}/${this.tableName}` : '';
 
     this.state = {
       isLoading: props.isLoading,
