@@ -18,7 +18,7 @@ import { searchAllWatcher, searchAllWorker, searchResourceWatcher, searchResourc
 import { SearchAll, SearchAllResponsePayload, SearchResource, SearchResponsePayload, } from '../types';
 
 describe('search ducks', () => {
-  let expectedSearchResults: SearchResponsePayload = {
+  const expectedSearchResults: SearchResponsePayload = {
     search_term: 'testName',
     tables: {
       page_index: 0,
@@ -37,7 +37,7 @@ describe('search ducks', () => {
       total_results: 1,
     },
   };
-  let expectedSearchAllResults: SearchAllResponsePayload = {
+  const expectedSearchAllResults: SearchAllResponsePayload = {
     search_term: 'testName',
     selectedTab: ResourceType.table,
     dashboards: {
@@ -85,7 +85,7 @@ describe('search ducks', () => {
       const action = searchAllSuccess(expectedSearchAllResults);
       const { payload } = action;
       expect(action.type).toBe(SearchAll.SUCCESS);
-      expect(payload).toBe(expectedSearchResults);
+      expect(payload).toBe(expectedSearchAllResults);
     });
 
     it('searchAllFailure - returns the action to process the failure', () => {
@@ -189,8 +189,7 @@ describe('search ducks', () => {
     describe('searchAllWatcher', () => {
       it('takes every SearchAll.REQUEST with searchAllWorker', () => {
         testSaga(searchAllWatcher)
-          .next()
-          .takeEvery(SearchAll.REQUEST, searchAllWorker);
+          .next().takeEvery(SearchAll.REQUEST, searchAllWorker);
       });
     });
 
