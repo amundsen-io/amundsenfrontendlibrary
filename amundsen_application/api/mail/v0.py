@@ -7,6 +7,7 @@ from flask import current_app as app
 from flask.blueprints import Blueprint
 
 from amundsen_application.api.utils.notification_utils import get_notification_content
+from amundsen_application.api.utils.request_utils import get_query_param
 from amundsen_application.log.action_log import action_logging
 
 LOGGER = logging.getLogger(__name__)
@@ -14,15 +15,21 @@ LOGGER = logging.getLogger(__name__)
 mail_blueprint = Blueprint('mail', __name__, url_prefix='/api/mail/v0')
 
 
-@mail_blueprint.route('/feedback', methods=['POST'])
-def feedback() -> Response:
-    """ An instance of BaseMailClient client must be configured on MAIL_CLIENT """
+def get_mail_client():
     mail_client = app.config['MAIL_CLIENT']
 
     if not mail_client:
         message = 'An instance of BaseMailClient client must be configured on MAIL_CLIENT'
         logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
+    
+    return mail_client
+
+
+@mail_blueprint.route('/feedback', methods=['POST'])
+def feedback() -> Response:
+    """ An instance of BaseMailClient client must be configured on MAIL_CLIENT """
+    mail_client = get_mail_client()
 
     try:
         data = request.form.to_dict()
@@ -88,19 +95,13 @@ def notification() -> Response:
     # TODO: Write unit tests once actual logic is implemented
     try:
         data = request.get_json()
-        # TODO: When making a real api call, check the status code and return appropriate response
-        mail_client = app.config['MAIL_CLIENT']
+        mail_client = get_mail_client()
 
-        if not mail_client:
-            message = 'An instance of BaseMailClient client must be configured on MAIL_CLIENT'
-            logging.exception(message)
-            return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
-
-        notification_content = get_notification_content(data['notificationType'], data['options'])
+        notification_content = get_notification_content(get_query_param(data, 'notificationType'), get_query_param(data, 'options'))
 
         response = mail_client.send_email(
-            recipients=data['recipients'],
-            sender=data['sender'],
+            recipients= get_query_param(data, 'recipients'),
+            sender=get_query_param(data, 'sender'),
             subject=notification_content['subject'],
             html=notification_content['html'],
             options={

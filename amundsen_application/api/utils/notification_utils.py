@@ -4,11 +4,11 @@ from typing import Dict
 
 def get_notification_content(notification_type: str, data: Dict) -> Dict:
     """
-    Forms a short version of a table Dict, with selected fields and an added 'key'
-    :param table: Dict of partial table object
-    :return: partial table Dict
-
-    TODO - Unify data format returned by search and metadata.
+    Returns a subject and a rendered html email template based off 
+    the input notification_type and data provided
+    :param notification_type: type of notification
+    :param data: data necessary to render email template content
+    :return: subject and html Dict
     """
     notification_type_dict = {
         'added': {
@@ -29,7 +29,7 @@ def get_notification_content(notification_type: str, data: Dict) -> Dict:
         },
     }
 
-    html = render_template(notification_type_dict[notification_type]['html'], form_data=data)
+    html = render_template(notification_type_dict.get(notification_type, {}).get('html'), form_data=data)
 
     return {
         'subject': notification_type_dict[notification_type]['subject'],

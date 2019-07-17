@@ -17,6 +17,7 @@ import {
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+// TODO: Delete after request component is merged in
 import { sendNotification } from 'ducks/notification/api/v0';
 import { NotificationType } from 'interfaces/Notifications';
 
@@ -55,6 +56,7 @@ export default class Feedback extends React.Component<FeedbackProps, FeedbackSta
 
   toggle = () => {
     this.setState({ isOpen: !this.state.isOpen });
+    // TODO: Delete after request component is merged in
     sendNotification(
       ['rlieu@lyft.com'],
       'rlieu@lyft.com',
