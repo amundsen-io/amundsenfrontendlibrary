@@ -35,6 +35,7 @@ import { PreviewQueryParams, TableMetadata, User } from 'interfaces';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 import BookmarkIcon from "components/common/Bookmark/BookmarkIcon";
+import RequestMetadataForm from './RequestMetadataForm';
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -341,6 +342,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
         innerContent = (
           <div className="container table-detail">
             <Breadcrumb />
+            <RequestMetadataForm />
             <div className="row">
               <div className="detail-header col-xs-12 col-md-7 col-lg-8">
                 <h1 className="detail-header-text">
