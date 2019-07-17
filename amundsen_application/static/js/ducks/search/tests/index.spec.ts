@@ -2,7 +2,8 @@ import { testSaga } from 'redux-saga-test-plan';
 
 import { ResourceType } from 'interfaces';
 
-import { searchResource as srchResource } from '../api/v0';
+import * as API from '../api/v0';
+
 import reducer, {
   initialState,
   searchAll,
@@ -154,7 +155,7 @@ describe('search ducks', () => {
     it('should handle SearchAll.FAILURE', () => {
       expect(reducer(testState, searchAllFailure())).toEqual({
         ...initialState,
-        isLoading: false,
+        search_term: testState.search_term,
       });
     });
 
@@ -180,7 +181,7 @@ describe('search ducks', () => {
     it('should handle SearchResource.FAILURE', () => {
       expect(reducer(testState, searchResourceFailure())).toEqual({
         ...initialState,
-        isLoading: false,
+        search_term: testState.search_term,
       });
     });
   });
@@ -189,7 +190,8 @@ describe('search ducks', () => {
     describe('searchAllWatcher', () => {
       it('takes every SearchAll.REQUEST with searchAllWorker', () => {
         testSaga(searchAllWatcher)
-          .next().takeEvery(SearchAll.REQUEST, searchAllWorker);
+          .next().takeEvery(SearchAll.REQUEST, searchAllWorker)
+          .next().isDone();
       });
     });
 
@@ -209,19 +211,16 @@ describe('search ducks', () => {
 
       it('handles request error', () => {
         testSaga(searchAllWorker, searchAll('test', ResourceType.table, 0))
-          .next()
-          .throw(new Error())
-          .put(searchAllFailure())
-          .next()
-          .isDone();
+          .next().throw(new Error()).put(searchAllFailure())
+          .next().isDone();
       });
     });
 
     describe('searchResourceWatcher', () => {
       it('takes every SearchResource.REQUEST with searchResourceWorker', () => {
         testSaga(searchResourceWatcher)
-          .next()
-          .takeEvery(SearchResource.REQUEST, searchResourceWorker);
+          .next().takeEvery(SearchResource.REQUEST, searchResourceWorker)
+          .next().isDone();
       });
     });
 
@@ -231,21 +230,15 @@ describe('search ducks', () => {
         const resource = ResourceType.table;
         const term = 'test';
         testSaga(searchResourceWorker, searchResource(term, resource, pageIndex))
-          .next()
-          .call(srchResource, pageIndex, resource, term)
-          .next(expectedSearchResults)
-          .put(searchResourceSuccess(expectedSearchResults))
-          .next()
-          .isDone();
+          .next().call(API.searchResource, pageIndex, resource, term)
+          .next(expectedSearchResults).put(searchResourceSuccess(expectedSearchResults))
+          .next().isDone();
       });
 
       it('handles request error', () => {
         testSaga(searchResourceWorker, searchResource('test', ResourceType.table, 0))
-          .next()
-          .throw(new Error())
-          .put(searchResourceFailure())
-          .next()
-          .isDone();
+          .next().throw(new Error()).put(searchResourceFailure())
+          .next().isDone();
       });
     });
   });

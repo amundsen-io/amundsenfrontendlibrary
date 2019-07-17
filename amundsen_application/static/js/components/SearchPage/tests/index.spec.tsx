@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as DocumentTitle from 'react-document-title';
+import * as History from 'history';
 
 import { shallow } from 'enzyme';
 
@@ -28,10 +29,12 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import ResourceList from 'components/common/ResourceList';
 import globalState from 'fixtures/globalState';
 import { searchAll, updateSearchTab } from 'ducks/search/reducer';
+import { getMockRouterProps } from 'fixtures/mockRouter';
 
 describe('SearchPage', () => {
   const setStateSpy = jest.spyOn(SearchPage.prototype, 'setState');
-  const setup = (propOverrides?: Partial<SearchPageProps>) => {
+  const setup = (propOverrides?: Partial<SearchPageProps>, location?: Partial<History.Location>) => {
+    const routerProps = getMockRouterProps<any>(null, location);
     const props: SearchPageProps = {
       searchTerm: globalState.search.search_term,
       selectedTab: ResourceType.table,
@@ -42,27 +45,7 @@ describe('SearchPage', () => {
       searchAll: jest.fn(),
       searchResource: jest.fn(),
       updateSearchTab: jest.fn(),
-      history: {
-        length: 2,
-        action: "POP",
-        location: jest.fn() as any,
-        push: jest.fn(),
-        replace: jest.fn(),
-        go: jest.fn(),
-        goBack: jest.fn(),
-        goForward: jest.fn(),
-        block: jest.fn(),
-        createHref: jest.fn(),
-        listen: jest.fn(),
-      },
-      location: {
-        search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1', 
-        pathname: 'mockstr',
-        state: jest.fn(),
-        hash: 'mockstr',
-      },
-      match: jest.fn() as any,
-      staticContext: jest.fn() as any,
+      ...routerProps,
       ...propOverrides,
     };
     const wrapper = shallow<SearchPage>(<SearchPage {...props} />)
@@ -82,7 +65,9 @@ describe('SearchPage', () => {
 
 
     beforeAll(() => {
-      const setupResult = setup();
+      const setupResult = setup(null, {
+        search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1',
+      });
       props = setupResult.props;
       wrapper = setupResult.wrapper;
 
@@ -151,7 +136,9 @@ describe('SearchPage', () => {
     let returnValue;
 
     beforeAll(() => {
-      const setupResult = setup();
+      const setupResult = setup(null, {
+        search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1',
+      });
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
@@ -187,7 +174,7 @@ describe('SearchPage', () => {
         returnValue = wrapper.instance().shouldUpdateFromGlobalState(mockUrlParams, mockGlobalStateParams);
       });
 
-      it('returns a value of true', () => {
+      it('returns a value of false', () => {
         expect(returnValue).toBe(false);
       });
     });
@@ -203,7 +190,9 @@ describe('SearchPage', () => {
     let returnValue;
 
     beforeAll(() => {
-      const setupResult = setup();
+      const setupResult = setup(null, {
+        search: '/search?searchTerm=current&selectedTab=table&pageIndex=0',
+      });
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
@@ -244,8 +233,7 @@ describe('SearchPage', () => {
       });
     });
   });
-
-
+  
   describe('componentDidUpdate', () => {
     let props;
     let wrapper;
@@ -264,7 +252,9 @@ describe('SearchPage', () => {
     let searchResourceSpy;
 
     beforeAll(() => {
-      const setupResult = setup();
+      const setupResult = setup(null, {
+        search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1',
+      });
       props = setupResult.props;
       wrapper = setupResult.wrapper;
 
@@ -340,7 +330,6 @@ describe('SearchPage', () => {
       });
     });
 
-
     describe('when the search tab has changed', () => {
       beforeAll(() => {
         mockNextUrlParams = { term: 'old term', tab: ResourceType.user, index: 0 };
@@ -404,15 +393,6 @@ describe('SearchPage', () => {
     });
   });
 
-  // describe('isUrlStateSynced', () => {
-  //   let props;
-  //   let wrapper;
-  //
-  //
-  //
-  //
-  // });
-
   describe('getUrlParams', () => {
     let props;
     let wrapper;
@@ -421,7 +401,9 @@ describe('SearchPage', () => {
     let urlParams;
 
     beforeAll(() => {
-      const setupResult = setup();
+      const setupResult = setup(null, {
+        search: '/search?searchTerm=current&selectedTab=table&pageIndex=0',
+      });
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
@@ -476,9 +458,11 @@ describe('SearchPage', () => {
   describe('getSelectedTabByResourceType', () => {
     let props;
     let wrapper;
-  
+
     beforeAll(() => {
-      const setupResult = setup();
+      const setupResult = setup(null, {
+        search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1',
+      });
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
@@ -491,51 +475,12 @@ describe('SearchPage', () => {
       expect(wrapper.instance().getSelectedTabByResourceType(ResourceType.user)).toEqual(ResourceType.user);
     });
 
-    // it('returns state.selectedTab if given equal to ResourceType.dashboard', () => {
-    //   wrapper.setState({ selectedTab: 'user' })
-    //   expect(wrapper.instance().getSelectedTabByResourceType(ResourceType.dashboard)).toEqual('user');
-    // });
-
     it('returns state.selectedTab in default case', () => {
       wrapper.setState({ selectedTab: 'table' })
       // @ts-ignore: cover default case
       expect(wrapper.instance().getSelectedTabByResourceType('not valid')).toEqual('table');
     });
   });
-
-  // describe('createSearchOptions', () => {
-  //   let props;
-  //   let wrapper;
-  //   beforeAll(() => {
-  //     const setupResult = setup();
-  //     props = setupResult.props;
-  //     wrapper = setupResult.wrapper;
-  //   });
-  //
-  //   it('generates correct options if selectedTab === ResourceType.dashboard', () => {
-  //     expect(wrapper.instance().createSearchOptions(5, ResourceType.dashboard)).toMatchObject({
-  //       dashboardIndex: 5,
-  //       userIndex: 0,
-  //       tableIndex: 0,
-  //     });
-  //   });
-  //
-  //   it('generates correct options if selectedTab === ResourceType.user', () => {
-  //     expect(wrapper.instance().createSearchOptions(5, ResourceType.user)).toMatchObject({
-  //       dashboardIndex: 0,
-  //       userIndex: 5,
-  //       tableIndex: 0,
-  //     });
-  //   });
-  //
-  //   it('generates correct options if selectedTab === ResourceType.table', () => {
-  //     expect(wrapper.instance().createSearchOptions(5, ResourceType.table)).toMatchObject({
-  //       dashboardIndex: 0,
-  //       userIndex: 0,
-  //       tableIndex: 5,
-  //     });
-  //   });
-  // });
 
   describe('getPageIndexByResourceType', () => {
     let props;
