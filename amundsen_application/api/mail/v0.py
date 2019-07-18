@@ -8,6 +8,7 @@ from flask.blueprints import Blueprint
 
 from amundsen_application.api.utils.notification_utils import get_notification_content
 from amundsen_application.api.utils.request_utils import get_query_param
+from amundsen_application.base.base_mail_client import BaseMailClient
 from amundsen_application.log.action_log import action_logging
 
 LOGGER = logging.getLogger(__name__)
@@ -15,7 +16,7 @@ LOGGER = logging.getLogger(__name__)
 mail_blueprint = Blueprint('mail', __name__, url_prefix='/api/mail/v0')
 
 
-def get_mail_client():
+def get_mail_client() -> BaseMailClient:
     mail_client = app.config['MAIL_CLIENT']
 
     if not mail_client:
@@ -99,7 +100,7 @@ def notification() -> Response:
 
         notification_content = get_notification_content(
             get_query_param(data, 'notificationType'),
-            get_query_param(data, 'options')
+            data['options']
         )
 
         response = mail_client.send_email(

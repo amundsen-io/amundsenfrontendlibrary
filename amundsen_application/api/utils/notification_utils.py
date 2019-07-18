@@ -13,19 +13,19 @@ def get_notification_content(notification_type: str, data: Dict) -> Dict:
     notification_type_dict = {
         'added': {
             'subject': 'You have been added',
-            'html': 'notification_added.html'
+            'html': 'notifications/notification_added.html'
         },
         'removed': {
             'subject': 'You have been removed',
-            'html': 'notification_removed.html'
+            'html': 'notifications/notification_removed.html'
         },
         'edited': {
             'subject': 'You have been edited',
-            'html': 'notification_edited.html'
+            'html': 'notifications/notification_edited.html'
         },
         'requested': {
             'subject': 'You have been requested',
-            'html': 'notification_requested.html'
+            'html': 'notifications/notification_requested.html'
         },
     }
 
