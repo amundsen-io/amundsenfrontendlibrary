@@ -103,7 +103,7 @@ def notification() -> Response:
         )
 
         response = mail_client.send_email(
-            recipients= get_query_param(data, 'recipients'),
+            recipients=get_query_param(data, 'recipients'),
             sender=get_query_param(data, 'sender'),
             subject=notification_content['subject'],
             html=notification_content['html'],
