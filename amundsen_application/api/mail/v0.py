@@ -99,7 +99,7 @@ def notification() -> Response:
 
         notification_content = get_notification_content(
             get_query_param(data, 'notificationType'),
-            data['options']
+            get_query_param(data, 'options')
         )
 
         response = mail_client.send_email(
