@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as DocumentTitle from 'react-document-title';
 
-import BrowseTags from 'components/BrowseTags';
+import TagsList from 'components/common/TagsList';
 
 export class BrowsePage extends React.Component {
   render() {
@@ -10,7 +10,9 @@ export class BrowsePage extends React.Component {
         <div className="container">
           <div className="row">
             <div className="col-xs-12">
-              <BrowseTags />
+              <h3 id="browse-header">Browse Tags</h3>	
+              <hr className="header-hr"/>	
+              <TagsList />
             </div>
           </div>
         </div>

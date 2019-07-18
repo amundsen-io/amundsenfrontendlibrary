@@ -11,7 +11,7 @@ import PopularTables from 'components/common/PopularTables';
 import { SearchAllReset } from 'ducks/search/types';
 import { searchReset } from 'ducks/search/reducer';
 import SearchBar from 'components/SearchPage/SearchBar';
-import BrowseTags from 'components/BrowseTags';
+import TagsList from 'components/common/TagsList';
 
 
 export interface DispatchFromProps {
@@ -36,7 +36,8 @@ export class HomePage extends React.Component<HomePageProps> {
           <div className="col-xs-12 col-md-offset-1 col-md-10">
             <SearchBar />
             <div className="home-element-container">
-              <BrowseTags />
+              <div className="title-1">Browse Tags</div>
+              <TagsList />
             </div>
             <div className="home-element-container">
               <MyBookmarks />

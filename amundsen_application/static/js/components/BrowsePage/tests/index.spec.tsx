@@ -5,7 +5,7 @@ import { shallow } from 'enzyme';
 
 import { BrowsePage } from '../';
 
-import BrowseTags from 'components/BrowseTags';
+import TagsList from 'components/common/Tagslist';
 
 describe('BrowsePage', () => {
   const setup = () => {
@@ -27,8 +27,8 @@ describe('BrowsePage', () => {
       expect(wrapper.find(DocumentTitle).props().title).toEqual('Browse - Amundsen');
     });
     
-    it('contains BrowseTags', () => {
-      expect(wrapper.contains(<BrowseTags />));
+    it('contains TagsList', () => {
+      expect(wrapper.contains(<TagsList />));
     });
   });
 });
