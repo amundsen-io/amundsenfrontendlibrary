@@ -15,7 +15,7 @@ LOGGER = logging.getLogger(__name__)
 mail_blueprint = Blueprint('mail', __name__, url_prefix='/api/mail/v0')
 
 
-def get_mail_client(): # type: ignore
+def get_mail_client():  # type: ignore
     mail_client = app.config['MAIL_CLIENT']
 
     if not mail_client:
