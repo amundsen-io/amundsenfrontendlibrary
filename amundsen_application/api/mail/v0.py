@@ -22,7 +22,7 @@ def get_mail_client():
         message = 'An instance of BaseMailClient client must be configured on MAIL_CLIENT'
         logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
-    
+
     return mail_client
 
 
@@ -97,7 +97,10 @@ def notification() -> Response:
         data = request.get_json()
         mail_client = get_mail_client()
 
-        notification_content = get_notification_content(get_query_param(data, 'notificationType'), get_query_param(data, 'options'))
+        notification_content = get_notification_content(
+            get_query_param(data, 'notificationType'),
+            get_query_param(data, 'options')
+        )
 
         response = mail_client.send_email(
             recipients= get_query_param(data, 'recipients'),

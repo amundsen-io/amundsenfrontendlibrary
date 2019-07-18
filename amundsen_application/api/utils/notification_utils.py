@@ -4,7 +4,7 @@ from typing import Dict
 
 def get_notification_content(notification_type: str, data: Dict) -> Dict:
     """
-    Returns a subject and a rendered html email template based off 
+    Returns a subject and a rendered html email template based off
     the input notification_type and data provided
     :param notification_type: type of notification
     :param data: data necessary to render email template content
