@@ -14,9 +14,10 @@ import reducer, {
   searchResource,
   searchResourceFailure,
   searchResourceSuccess,
+  updateSearchTab,
 } from '../reducer';
 import { searchAllWatcher, searchAllWorker, searchResourceWatcher, searchResourceWorker } from '../sagas';
-import { SearchAll, SearchAllResponsePayload, SearchResource, SearchResponsePayload, } from '../types';
+import { SearchAll, SearchAllResponsePayload, SearchResource, SearchResponsePayload, UpdateSearchTab, } from '../types';
 
 describe('search ducks', () => {
   const expectedSearchResults: SearchResponsePayload = {
@@ -122,6 +123,14 @@ describe('search ducks', () => {
       const action = searchReset();
       expect(action.type).toBe(SearchAll.RESET);
     });
+
+    it('updateSearchTab - returns the action to update the search tab', () => {
+      const selectedTab = ResourceType.user;
+      const action = updateSearchTab(selectedTab);
+      const payload = action.payload;
+      expect(action.type).toBe(UpdateSearchTab.REQUEST);
+      expect(payload.selectedTab).toBe(selectedTab);
+    });
   });
 
   describe('reducer', () => {
@@ -182,6 +191,14 @@ describe('search ducks', () => {
       expect(reducer(testState, searchResourceFailure())).toEqual({
         ...initialState,
         search_term: testState.search_term,
+      });
+    });
+
+    it('should handle UpdateSearchTab.REQUEST', () => {
+      const selectedTab = ResourceType.user;
+      expect(reducer(testState, updateSearchTab(selectedTab))).toEqual({
+        ...initialState,
+        selectedTab,
       });
     });
   });

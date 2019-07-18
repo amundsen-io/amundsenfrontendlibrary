@@ -568,10 +568,6 @@ describe('SearchPage', () => {
       expect(getSelectedTabByResourceTypeSpy).toHaveBeenCalledWith(givenTab);
     });
 
-    // it('calls setState with correct parameters', () => {
-    //   expect(setStateSpy).toHaveBeenCalledWith({ selectedTab: givenTab });
-    // });
-
     it('calls updatePageUrl with correct parameters', () => {
       expect(updatePageUrlSpy).toHaveBeenCalledWith(props.searchTerm, givenTab, mockPageIndex);
     });
@@ -583,15 +579,39 @@ describe('SearchPage', () => {
   });
 
   describe('updatePageUrl', () => {
+    let props;
+    let wrapper;
+    let historyPushSpy;
+    let historyReplaceSpy;
+    const pageIndex = 2;
+    const searchTerm = 'testing';
+    const tab = ResourceType.user;
+    const expectedPath = `/search?searchTerm=${searchTerm}&selectedTab=${tab}&pageIndex=${pageIndex}`;
+
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+      historyPushSpy = jest.spyOn(props.history, 'push');
+      historyReplaceSpy = jest.spyOn(props.history, 'replace');
+    });
+
     it('pushes correct update to the window state', () => {
-      const { props, wrapper } = setup();
-      const pageIndex = 2;
-      const searchTerm = 'testing';
-      const tab = ResourceType.user;
-      const expectedPath = `/search?searchTerm=${searchTerm}&selectedTab=${tab}&pageIndex=${pageIndex}`;
-      const historyPushSpy = jest.spyOn(props.history, 'push');
+      historyPushSpy.mockClear();
+      historyReplaceSpy.mockClear();
+
       wrapper.instance().updatePageUrl(searchTerm, tab, pageIndex);
       expect(historyPushSpy).toHaveBeenCalledWith(expectedPath);
+      expect(historyReplaceSpy).not.toHaveBeenCalled();
+    });
+
+    it('calls `history.replace` when replace is set to true', () => {
+      historyPushSpy.mockClear();
+      historyReplaceSpy.mockClear();
+
+      wrapper.instance().updatePageUrl(searchTerm, tab, pageIndex, true);
+      expect(historyPushSpy).not.toHaveBeenCalled();
+      expect(historyReplaceSpy).toHaveBeenCalledWith(expectedPath);
     });
   });
 
