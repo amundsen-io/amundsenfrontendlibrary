@@ -17,6 +17,13 @@ $ cd static
 $ npm run dev-build # builds the development bundle
 ```
 
+(Optional) Enable live-reload of typescript for faster development:
+Note: this does not live-reload CSS or html template files.
+```bash
+$ cd static
+$ npm run watch #starts the webpack-dev-server for hot reloading typescript.
+```
+
 To test local changes to the python files, re-run the wsgi:
 ```bash
 # in ~/<your-path-to-cloned-repo>/amundsenfrontendlibrary/amundsen_application

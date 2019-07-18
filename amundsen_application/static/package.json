@@ -12,7 +12,7 @@
     "dev-build": "TS_NODE_PROJECT='tsconfig-for-webpack.json' webpack -d --progress --config webpack.dev.ts",
     "test": "TZ=UTC jest --coverage --collectCoverageFrom=js/**/*.{js,jsx,ts,tsx}",
     "test-nocov": "TZ=UTC jest",
-    "watch": "TS_NODE_PROJECT='tsconfig-for-webpack.json' webpack -d --progress --config webpack.dev.ts --watch",
+    "watch": "TS_NODE_PROJECT='tsconfig-for-webpack.json' webpack-dev-server -d --progress --config webpack.dev.ts --watch",
     "lint": "npm run eslint && npm run tslint",
     "lint-fix": "npm run eslint-fix && npm run tslint-fix",
     "eslint": "eslint --ignore-path=.eslintignore --ext .js,.jsx .",
@@ -79,6 +79,7 @@
     "uglifyjs-webpack-plugin": "^1.1.0",
     "webpack": "^4.19.0",
     "webpack-cli": "^3.1.1",
+    "webpack-dev-server": "^3.7.2",
     "webpack-merge": "^4.1.4",
     "webpack-sources": "^1.1.0",
     "webworkify-webpack": "2.1.0"

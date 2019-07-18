@@ -15,12 +15,13 @@ const walkSync = (dir, filelist = []) => {
   return filelist;
 };
 const templatesList = walkSync('templates');
-const htmlWebpackPluginConfig = templatesList.map(file => {
+export const htmlWebpackPluginConfig = (hostname: string = '') => templatesList.map(file => {
   return new HtmlWebpackPlugin({
       filename: file,
       template: file,
       config: appConfig,
       inject: false,
+      hostname: hostname,
     });
 });
 
@@ -70,7 +71,7 @@ const config: webpack.Configuration = {
     },
     plugins: [
       new MiniCssExtractPlugin(),
-      ...htmlWebpackPluginConfig,
+      ...htmlWebpackPluginConfig(),
     ],
     optimization: {
       splitChunks: {
