@@ -1,4 +1,4 @@
-from typing import Dict, List, Union
+from typing import Dict
 
 import requests
 from flask import current_app as app
