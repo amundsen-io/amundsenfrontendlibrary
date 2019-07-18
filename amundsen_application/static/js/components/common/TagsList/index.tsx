@@ -25,7 +25,6 @@ export interface DispatchFromProps {
 interface TagsListState {
   curatedTags: Tag[];
   otherTags: Tag[];
-  isLoading: boolean;
 }
 
 export type TagsListProps = StateFromProps & DispatchFromProps;
@@ -37,7 +36,6 @@ export class TagsList extends React.Component<TagsListProps, TagsListState> {
     this.state = {
       curatedTags: [],
       otherTags: [],
-      isLoading: this.props.isLoading,
     };
   }
 
@@ -71,7 +69,7 @@ export class TagsList extends React.Component<TagsListProps, TagsListState> {
 
   render() {
     let innerContent;
-    if (this.state.isLoading) {
+    if (this.props.isLoading) {
       innerContent = <LoadingSpinner/>;
     } else {
       innerContent = (

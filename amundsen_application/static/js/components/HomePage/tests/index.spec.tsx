@@ -4,9 +4,10 @@ import { shallow } from 'enzyme';
 
 import { mapDispatchToProps, HomePage, HomePageProps } from '../';
 
-import SearchBar from 'components/SearchPage/SearchBar';
 import MyBookmarks from 'components/common/Bookmark/MyBookmarks';
 import PopularTables from 'components/common/PopularTables';
+import SearchBar from 'components/SearchPage/SearchBar';
+import TagsList from 'components/common/TagsList';
 
 describe('HomePage', () => {
   const setup = (propOverrides?: Partial<HomePageProps>) => {
@@ -47,9 +48,20 @@ describe('HomePage', () => {
   });
 
   describe('render', () => {
-    it('contains Searchbar, BookmarkList, and PopularTables', () => {
+    it('contains Searchbar', () => {
       expect(wrapper.contains(<SearchBar />));
+    });
+
+    it('contains TagsList', () => {
+      expect(wrapper.find('#browse-tags-header').text()).toEqual('Browse Tags');	
+      expect(wrapper.contains(<TagsList />));
+    });
+
+    it('contains MyBookmarks', () => {
       expect(wrapper.contains(<MyBookmarks />));
+    });
+    
+    it('contains PopularTables', () => {
       expect(wrapper.contains(<PopularTables />));
     });
   });

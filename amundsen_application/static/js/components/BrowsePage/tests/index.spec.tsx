@@ -26,6 +26,14 @@ describe('BrowsePage', () => {
       expect(wrapper.find(DocumentTitle).props().title).toEqual('Browse - Amundsen');
     });
     
+    it('renders correct header', () => {	
+      expect(wrapper.find('#browse-header').text()).toEqual('Browse Tags');	
+    });	
+
+    it('renders <hr> in if curatedTags.length > 0 & otherTags.length > 0 ', () => {	
+      expect(wrapper.contains(<hr className="header-hr"/>));
+    });
+
     it('contains TagsList', () => {
       expect(wrapper.contains(<TagsList />));
     });
