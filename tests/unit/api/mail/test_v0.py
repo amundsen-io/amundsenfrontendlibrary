@@ -40,6 +40,17 @@ class MockBadClient(BaseMailClient):
 
 
 class MailTest(unittest.TestCase):
+    def test_feedback_client_not_implemented(self) -> None:
+        """
+        Test mail client is not implemented, and endpoint should return appropriate code
+        :return:
+        """
+        with local_app.test_client() as test:
+            response = test.post('/api/mail/v0/feedback', json={
+                'rating': '10', 'comment': 'test'
+            })
+            self.assertEqual(response.status_code, HTTPStatus.NOT_IMPLEMENTED)
+
     def test_feedback_client_success(self) -> None:
         """
         Test mail client success
