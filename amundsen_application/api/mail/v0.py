@@ -15,21 +15,27 @@ LOGGER = logging.getLogger(__name__)
 mail_blueprint = Blueprint('mail', __name__, url_prefix='/api/mail/v0')
 
 
+class MailClientNotImplemented(Exception):
+    """
+    An exception when Mail Client is not implemented
+    """
+    pass
+
+
 def get_mail_client():  # type: ignore
     mail_client = app.config['MAIL_CLIENT']
 
     if not mail_client:
-        raise Exception('An instance of BaseMailClient client must be configured on MAIL_CLIENT')
+        raise MailClientNotImplemented('An instance of BaseMailClient client must be configured on MAIL_CLIENT')
 
     return mail_client
 
 
 @mail_blueprint.route('/feedback', methods=['POST'])
 def feedback() -> Response:
-    """ An instance of BaseMailClient client must be configured on MAIL_CLIENT """
-    mail_client = get_mail_client()
-
     try:
+        """ An instance of BaseMailClient client must be configured on MAIL_CLIENT """
+        mail_client = get_mail_client()
         data = request.form.to_dict()
         text_content = '\r\n'.join('{}:\r\n{}\r\n'.format(key, val) for key, val in data.items())
         html_content = render_template('email.html', form_data=data)
@@ -68,6 +74,10 @@ def feedback() -> Response:
             logging.error(message)
 
         return make_response(jsonify({'msg': message}), status_code)
+    except MailClientNotImplemented as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
@@ -92,8 +102,8 @@ def _feedback(*,
 def notification() -> Response:
     # TODO: Write unit tests once actual logic is implemented
     try:
-        data = request.get_json()
         mail_client = get_mail_client()
+        data = request.get_json()
 
         notification_content = get_notification_content(
             get_query_param(data, 'notificationType'),
@@ -118,6 +128,10 @@ def notification() -> Response:
             logging.error(message)
 
         return make_response(jsonify({'msg': message}), status_code)
+    except MailClientNotImplemented as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
