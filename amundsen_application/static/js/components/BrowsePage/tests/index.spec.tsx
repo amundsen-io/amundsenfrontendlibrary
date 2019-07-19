@@ -30,7 +30,7 @@ describe('BrowsePage', () => {
       expect(wrapper.find('#browse-header').text()).toEqual('Browse Tags');	
     });	
 
-    it('renders <hr> in if curatedTags.length > 0 & otherTags.length > 0 ', () => {	
+    it('renders <hr>', () => {	
       expect(wrapper.contains(<hr className="header-hr"/>));
     });
 
