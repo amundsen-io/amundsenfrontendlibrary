@@ -19,9 +19,7 @@ def get_mail_client():  # type: ignore
     mail_client = app.config['MAIL_CLIENT']
 
     if not mail_client:
-        message = 'An instance of BaseMailClient client must be configured on MAIL_CLIENT'
-        logging.exception(message)
-        return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
+        raise Exception('An instance of BaseMailClient client must be configured on MAIL_CLIENT')
 
     return mail_client
 
