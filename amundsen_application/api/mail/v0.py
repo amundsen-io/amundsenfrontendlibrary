@@ -6,6 +6,7 @@ from flask import Response, jsonify, make_response, render_template, request
 from flask import current_app as app
 from flask.blueprints import Blueprint
 
+from amundsen_application.api.exceptions import MailClientNotImplemented
 from amundsen_application.api.utils.notification_utils import get_notification_content
 from amundsen_application.api.utils.request_utils import get_query_param
 from amundsen_application.log.action_log import action_logging
@@ -13,13 +14,6 @@ from amundsen_application.log.action_log import action_logging
 LOGGER = logging.getLogger(__name__)
 
 mail_blueprint = Blueprint('mail', __name__, url_prefix='/api/mail/v0')
-
-
-class MailClientNotImplemented(Exception):
-    """
-    An exception when Mail Client is not implemented
-    """
-    pass
 
 
 def get_mail_client():  # type: ignore
@@ -78,8 +72,8 @@ def feedback() -> Response:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
-    except Exception as e:
-        message = 'Encountered exception: ' + str(e)
+    except Exception as e1:
+        message = 'Encountered exception: ' + str(e1)
         logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
@@ -132,7 +126,7 @@ def notification() -> Response:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
-    except Exception as e:
-        message = 'Encountered exception: ' + str(e)
+    except Exception as e1:
+        message = 'Encountered exception: ' + str(e1)
         logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
