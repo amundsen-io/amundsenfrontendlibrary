@@ -6,7 +6,7 @@ from flask import current_app as app
 REQUEST_SESSION_TIMEOUT_SEC = 3
 
 
-def get_query_param(args: Dict, param: str, error_msg: str = None):  # type: ignore
+def get_query_param(args: Dict, param: str, error_msg: str = None): -> str:
     value = args.get(param)
     if value is None:
         msg = 'A {0} parameter must be provided'.format(param) if error_msg is not None else error_msg

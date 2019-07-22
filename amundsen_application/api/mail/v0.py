@@ -8,7 +8,6 @@ from flask.blueprints import Blueprint
 
 from amundsen_application.api.exceptions import MailClientNotImplemented
 from amundsen_application.api.utils.notification_utils import get_notification_content
-from amundsen_application.api.utils.request_utils import get_query_param
 from amundsen_application.log.action_log import action_logging
 
 LOGGER = logging.getLogger(__name__)
@@ -100,13 +99,13 @@ def notification() -> Response:
         data = request.get_json()
 
         notification_content = get_notification_content(
-            get_query_param(data, 'notificationType'),
-            get_query_param(data, 'options')
+            data['notificationType'],
+            data['options']
         )
 
         response = mail_client.send_email(
-            recipients=get_query_param(data, 'recipients'),
-            sender=get_query_param(data, 'sender'),
+            recipients=data['recipients'],
+            sender=data['sender'],
             subject=notification_content['subject'],
             html=notification_content['html'],
             options={
