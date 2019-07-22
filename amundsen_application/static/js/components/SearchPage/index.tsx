@@ -85,8 +85,8 @@ export class SearchPage extends React.Component<SearchPageProps> {
     return urlParams.term === '' && globalStateParams.term !== '';
   }
 
-  shouldUpdateFromUrlParams(urlParams, globalSearchState) {
-    return urlParams.term !== '' && urlParams.term !== globalSearchState.term;
+  shouldUpdateFromUrlParams(urlParams, globalStateParams): boolean {
+    return urlParams.term !== '' && urlParams.term !== globalStateParams.term;
   }
 
   componentDidUpdate(prevProps: SearchPageProps) {
@@ -108,7 +108,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
     }
   }
 
-  isUrlStateSynced(urlParams) {
+  isUrlStateSynced(urlParams): boolean {
     const globalStateParams = this.getGlobalStateParams();
 
     return urlParams.term === globalStateParams.term &&
@@ -116,15 +116,15 @@ export class SearchPage extends React.Component<SearchPageProps> {
       urlParams.index === globalStateParams.index;
   }
 
-  shouldUpdateSearchTerm(nextUrlParams, prevUrlParams) {
+  shouldUpdateSearchTerm(nextUrlParams, prevUrlParams): boolean {
     return nextUrlParams.term !== prevUrlParams.term;
   }
 
-  shouldUpdateTab(nextUrlParams, prevUrlParams) {
+  shouldUpdateTab(nextUrlParams, prevUrlParams): boolean {
     return nextUrlParams.tab !== prevUrlParams.tab;
   }
 
-  shouldUpdatePageIndex(nextUrlParams, prevUrlParams) {
+  shouldUpdatePageIndex(nextUrlParams, prevUrlParams): boolean {
     return nextUrlParams.index !== prevUrlParams.index;
   }
 

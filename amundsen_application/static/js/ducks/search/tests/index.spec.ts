@@ -197,7 +197,7 @@ describe('search ducks', () => {
     it('should handle UpdateSearchTab.REQUEST', () => {
       const selectedTab = ResourceType.user;
       expect(reducer(testState, updateSearchTab(selectedTab))).toEqual({
-        ...initialState,
+        ...testState,
         selectedTab,
       });
     });
