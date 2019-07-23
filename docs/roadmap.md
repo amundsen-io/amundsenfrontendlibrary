@@ -21,7 +21,7 @@ The following roadmap gives an overview of what we are currently working on and 
 **Index Dashboards**
 *What*: We want to help with the discovery of existing analysis work, dashboards. This is going to help avoid reinventing the wheel, create value for less technical users and help give context on how tables are used.<br/>
 *Status*: Product + technical specs are ready, designs are ready, implementation has not started<br/>
-*Links*: [Designs](https://drive.google.com/drive/folders/12oBrcXUsDtOsuU_QvO93LTvs4Dehx6az?usp=sharing) | [Product Specifications](https://docs.google.com/document/d/16cSKgM2sCYvhKq54yfwaHKwslJEGtdS2g5dcPV4p5qo/edit?usp=sharing)
+*Links*: [Designs](https://drive.google.com/drive/folders/12oBrcXUsDtOsuU_QvO93LTvs4Dehx6az?usp=sharing) | [Product Specifications](https://docs.google.com/document/d/16cSKgM2sCYvhKq54yfwaHKwslJEGtdS2g5dcPV4p5qo/edit?usp=sharing) | [Technical RFC](https://docs.google.com/document/d/1PHk8OjcIULJ7hG0ckeMrRfTk3vXqnq5asEykgQUw-Ow/edit?usp=sharing)
 
 **Native lineage integration**<br/>
 *What*: We want to create a native lineage integration in Amundsen, to better surface how data assets interact with each other<br/>
