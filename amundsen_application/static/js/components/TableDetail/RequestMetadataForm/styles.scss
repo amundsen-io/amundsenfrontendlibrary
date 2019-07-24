@@ -5,43 +5,24 @@
   bottom: 75px;
   position: fixed;
   left: 25px;
-  z-index: 2;
+  z-index: 999;
 
   &.expanded {
     background-color: white;
     border-radius: 0 0 6px 6px;
-    border-top: 4px solid $brand-primary;
     height: auto;
     min-height: 450px;
     padding: 32px;
     width: 400px;
+    display: block;
   }
 
   &.collapsed {
-    align-items: center;
-    background-color: $brand-primary;
-    border: 2px solid white;
-    border-radius: 50%; /* makes it a circle */
-    cursor: pointer;
-    display: flex;
-    height: 48px;
-    justify-content: center;
-    margin: 0;
-    width: 48px;
-
-    &:hover {
-      opacity: 0.5;
-    }
+    display: none;
   }
 
   .title {
-    color: $text-medium;
     flex-grow: 1;
-    font-size: 12px;
-    font-family: $font-family-header;
-    font-weight: $font-weight-header-regular;
-    height: 24px;
-    line-height: 32px;
   }
 
   img.icon-speech {
@@ -50,12 +31,28 @@
     width: 24px;
   }
 
-  .feedback-header {
+  .request-header {
     display: flex;
-    margin-bottom: 8px;
   }
 
   .btn-group {
     margin: 8px auto 16px;
+  }
+
+  label {
+    display: block;
+  }
+  
+  .submit-button {
+    background-color: $brand-color-4;
+    color: white;
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: $font-weight-body-bold;
+    float: right;
+  }
+
+  .form-section {
+    margin-bottom: 24px;
   }
 }
