@@ -13,8 +13,11 @@ import {
 } from './types';
 
 import {
-  initialState, searchAllSuccess, searchAllFailure,
-  searchResourceSuccess, searchResourceFailure,
+  initialState,
+  searchAllFailure,
+  searchAllSuccess,
+  searchResourceFailure,
+  searchResourceSuccess,
 } from './reducer';
 
 export function* searchAllWorker(action: SearchAllRequest): SagaIterator {

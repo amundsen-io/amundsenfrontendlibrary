@@ -58,8 +58,12 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   };
 
   handleValueSubmit = (event: React.FormEvent<HTMLFormElement>) : void => {
-    const searchTerm = this.state.searchTerm.trim();
     event.preventDefault();
+    const searchTerm = this.state.searchTerm.trim();
+    if (this.props.searchTerm == searchTerm) {
+      return;
+    }
+
     if (this.isFormValid(searchTerm)) {
       let pathName = '/';
       if (searchTerm !== '') {

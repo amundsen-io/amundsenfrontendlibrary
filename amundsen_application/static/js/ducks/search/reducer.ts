@@ -8,9 +8,9 @@ import {
   SearchAllResponse,
   SearchAllResponsePayload,
   SearchResource,
-  SearchResponsePayload,
   SearchResourceRequest,
   SearchResourceResponse,
+  SearchResponsePayload,
   TableSearchResults,
   UpdateSearchTab,
   UpdateSearchTabRequest,
@@ -79,7 +79,7 @@ export function updateSearchTab(selectedTab: ResourceType): UpdateSearchTabReque
 export const initialState: SearchReducerState = {
   search_term: '',
   isLoading: false,
-  selectedTab: ResourceType.table,
+  selectedTab: ResourceType.default,
   dashboards: {
     page_index: 0,
     results: [],
@@ -102,11 +102,13 @@ export default function reducer(state: SearchReducerState = initialState, action
     case SearchAll.RESET:
       return initialState;
     case SearchAll.REQUEST:
-      // updates search term to reflect action
+      // updates search term, loading state, and selectedTab
+      const payload = (<SearchAllRequest>action).payload;
       return {
         ...state,
-        search_term: (<SearchAllRequest>action).payload.term,
         isLoading: true,
+        search_term: payload.term,
+        selectedTab: payload.resource,
       };
     case SearchResource.REQUEST:
       return {
@@ -116,6 +118,8 @@ export default function reducer(state: SearchReducerState = initialState, action
     case SearchAll.SUCCESS:
       // resets all resources with initial state then applies search results
       const newState = (<SearchAllResponse>action).payload;
+
+      // TODO - consider if auto-select tab logic belongs here
       return {
         ...initialState,
         ...newState,

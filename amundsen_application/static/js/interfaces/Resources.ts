@@ -1,9 +1,10 @@
 import { PeopleUser } from 'interfaces/User';
 
 export enum ResourceType {
+  dashboard = "dashboard",
+  default = "default", // Only used for default selecting tabs
   table = "table",
   user = "user",
-  dashboard = "dashboard",
 };
 
 export interface Resource {

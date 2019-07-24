@@ -93,12 +93,17 @@ export class SearchPage extends React.Component<SearchPageProps> {
     const nextUrlParams = this.getUrlParams(this.props.location.search);
     const prevUrlParams = this.getUrlParams(prevProps.location.search);
 
+    if (!this.props.isLoading && prevProps.isLoading) {
+      this.autoselectTab();
+    }
+
     // If urlParams and globalState are synced, no need to update
     if (this.isUrlStateSynced(nextUrlParams)) return;
 
     // Capture any updates in URL
     if (this.shouldUpdateSearchTerm(nextUrlParams, prevUrlParams)) {
       this.props.searchAll(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index);
+      this.updatePageUrl(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index, true);
 
     } else if (this.shouldUpdateTab(nextUrlParams, prevUrlParams)) {
       this.props.updateSearchTab(nextUrlParams.tab)
@@ -135,7 +140,8 @@ export class SearchPage extends React.Component<SearchPageProps> {
         return newTab;
       case ResourceType.dashboard:
       default:
-        return this.props.selectedTab;
+        // return this.props.selectedTab;
+        return ResourceType.default;
     }
   };
 
@@ -158,7 +164,6 @@ export class SearchPage extends React.Component<SearchPageProps> {
     };
   }
 
-
   getPageIndexByResourceType = (tab: ResourceType): number => {
     switch(tab) {
       case ResourceType.table:
@@ -178,6 +183,20 @@ export class SearchPage extends React.Component<SearchPageProps> {
   onTabChange = (tab: ResourceType): void => {
     const newTab = this.getSelectedTabByResourceType(tab);
     this.updatePageUrl(this.props.searchTerm, newTab, this.getPageIndexByResourceType(newTab));
+  };
+
+  autoselectTab = (): void => {
+    if (this.props.selectedTab === ResourceType.default) {
+      let newTab = ResourceType.table;
+      if (this.props.tables.total_results > 0) {
+        newTab = ResourceType.table;
+      } else if (this.props.users.total_results > 0) {
+        newTab = ResourceType.user;
+      } else if (this.props.dashboards.total_results > 0) {
+        newTab = ResourceType.dashboard;
+      }
+      this.updatePageUrl(this.props.searchTerm, newTab, this.getPageIndexByResourceType(newTab), true);
+    }
   };
 
   updatePageUrl = (searchTerm: string, tab: ResourceType, pageIndex: number, replace: boolean = false): void => {
@@ -210,7 +229,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
       <div>
         <TabsComponent
           tabs={ tabConfig }
-          defaultTab={ ResourceType.table }
+          // defaultTab={ ResourceType.table }
           activeKey={ this.props.selectedTab }
           onSelect={ this.onTabChange }
         />
