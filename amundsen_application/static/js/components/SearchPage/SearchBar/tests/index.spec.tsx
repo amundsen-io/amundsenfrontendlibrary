@@ -94,7 +94,7 @@ describe('SearchBar', () => {
       const { props, wrapper } = setup({ searchTerm: 'testTerm' });
       // @ts-ignore: mocked events throw type errors
       wrapper.instance().handleValueSubmit(submitMockEvent);
-      expect(historyPushSpy).toHaveBeenCalledWith(`/search?searchTerm=${wrapper.state().searchTerm}`);
+      expect(historyPushSpy).toHaveBeenCalledWith(`/search?searchTerm=${wrapper.state().searchTerm}&submit=1`);
     });
 
     it('does not submit if !isFormValid()', () => {

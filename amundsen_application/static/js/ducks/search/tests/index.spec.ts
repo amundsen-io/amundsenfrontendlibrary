@@ -149,6 +149,7 @@ describe('search ducks', () => {
       expect(reducer(testState, searchAll(term, resource, pageIndex))).toEqual({
         ...testState,
         search_term: term,
+        selectedTab: resource,
         isLoading: true,
       });
     });
@@ -157,6 +158,7 @@ describe('search ducks', () => {
       expect(reducer(testState, searchAllSuccess(expectedSearchAllResults))).toEqual({
         ...initialState,
         ...expectedSearchResults,
+        selectedTab: ResourceType.table,
         isLoading: false,
       });
     });

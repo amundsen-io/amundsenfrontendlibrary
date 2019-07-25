@@ -118,11 +118,12 @@ export class SearchPage extends React.Component<SearchPageProps> {
 
     return urlParams.term === globalStateParams.term &&
       urlParams.tab === globalStateParams.tab &&
-      urlParams.index === globalStateParams.index;
+      urlParams.index === globalStateParams.index &&
+      !urlParams.submit;
   }
 
   shouldUpdateSearchTerm(nextUrlParams, prevUrlParams): boolean {
-    return nextUrlParams.term !== prevUrlParams.term;
+    return nextUrlParams.submit || nextUrlParams.term !== prevUrlParams.term;
   }
 
   shouldUpdateTab(nextUrlParams, prevUrlParams): boolean {
@@ -140,19 +141,19 @@ export class SearchPage extends React.Component<SearchPageProps> {
         return newTab;
       case ResourceType.dashboard:
       default:
-        // return this.props.selectedTab;
         return ResourceType.default;
     }
   };
 
   getUrlParams(search: Search) {
     const urlParams = qs.parse(search);
-    const { searchTerm, pageIndex, selectedTab } = urlParams;
+    const { searchTerm, pageIndex, selectedTab, submit } = urlParams;
     const index = parseInt(pageIndex, 10);
     return {
       term: (searchTerm || '').trim(),
       tab: this.getSelectedTabByResourceType(selectedTab),
       index: isNaN(index) ? 0 : index,
+      submit: submit || 0,
     };
   };
 
@@ -229,7 +230,6 @@ export class SearchPage extends React.Component<SearchPageProps> {
       <div>
         <TabsComponent
           tabs={ tabConfig }
-          // defaultTab={ ResourceType.table }
           activeKey={ this.props.selectedTab }
           onSelect={ this.onTabChange }
         />

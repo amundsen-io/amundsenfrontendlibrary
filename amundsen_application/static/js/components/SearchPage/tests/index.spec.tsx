@@ -449,14 +449,14 @@ describe('SearchPage', () => {
       expect(urlParams.index).toEqual(0);
     });
 
-    it('defaults invalid tabs to the current tab', () => {
+    it('defaults invalid tabs to the `ResourceType.default`', () => {
       getSelectedTabByResourceTypeSpy.mockRestore();
       getSelectedTabByResourceTypeSpy = jest.spyOn(wrapper.instance(), 'getSelectedTabByResourceType');
       urlString = '/search?searchTerm=current&selectedTab=invalidTabType&pageIndex=0';
       urlParams = wrapper.instance().getUrlParams(urlString);
 
       expect(getSelectedTabByResourceTypeSpy).toHaveBeenLastCalledWith('invalidTabType');
-      expect(urlParams.tab).toEqual(props.selectedTab);
+      expect(urlParams.tab).toEqual(ResourceType.default);
     });
   });
 
@@ -476,10 +476,9 @@ describe('SearchPage', () => {
       expect(wrapper.instance().getSelectedTabByResourceType(ResourceType.user)).toEqual(ResourceType.user);
     });
 
-    it('returns state.selectedTab in default case', () => {
-      wrapper.setState({ selectedTab: 'table' })
+    it('returns ResourceType.default in for invalid tabs', () => {
       // @ts-ignore: cover default case
-      expect(wrapper.instance().getSelectedTabByResourceType('not valid')).toEqual('table');
+      expect(wrapper.instance().getSelectedTabByResourceType('not valid')).toEqual(ResourceType.default);
     });
   });
 
@@ -754,7 +753,6 @@ describe('SearchPage', () => {
       const content = shallow(wrapper.instance().renderSearchResults());
       const tabProps = content.find(TabsComponent).props();
       expect(tabProps.activeKey).toEqual(props.selectedTab);
-      expect(tabProps.defaultTab).toEqual(ResourceType.table);
       expect(tabProps.onSelect).toEqual(wrapper.instance().onTabChange);
 
       const firstTab = tabProps.tabs[0];
