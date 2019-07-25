@@ -210,6 +210,7 @@ describe('SearchPage', () => {
     let mockPrevProps;
 
     let getUrlParamsSpy;
+    let autoSelectTabSpy;
     let isUrlStateSyncedSpy;
     let shouldUpdateSearchTermSpy;
     let shouldUpdateTabSpy;
@@ -236,6 +237,7 @@ describe('SearchPage', () => {
       };
 
       getUrlParamsSpy = jest.spyOn(wrapper.instance(), 'getUrlParams');
+      autoSelectTabSpy = jest.spyOn(wrapper.instance(), 'autoSelectTab');
       isUrlStateSyncedSpy = jest.spyOn(wrapper.instance(), 'isUrlStateSynced');
       shouldUpdateSearchTermSpy = jest.spyOn(wrapper.instance(), 'shouldUpdateSearchTerm');
       shouldUpdateTabSpy = jest.spyOn(wrapper.instance(), 'shouldUpdateTab');
@@ -252,6 +254,17 @@ describe('SearchPage', () => {
       expect(getUrlParamsSpy).toHaveBeenCalledWith(props.location.search);
     });
 
+    it('calls autoSelectTab when loading just finishes', () => {
+      autoSelectTabSpy.mockClear();
+      wrapper.instance().componentDidUpdate({ ...mockPrevProps, isLoading: true });
+      expect(autoSelectTabSpy).toHaveBeenCalled();
+    });
+
+    it('does not call autoSelectTab when loading did not just finish', () => {
+      autoSelectTabSpy.mockClear();
+      wrapper.instance().componentDidUpdate({ ...mockPrevProps, isLoading: false });
+      expect(autoSelectTabSpy).not.toHaveBeenCalled();
+    });
 
     it('exits the function when isUrlStateSynced returns true', () => {
       isUrlStateSyncedSpy.mockImplementationOnce(() => true);
