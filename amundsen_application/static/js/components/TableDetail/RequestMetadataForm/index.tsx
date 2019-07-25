@@ -3,15 +3,29 @@ import './styles.scss';
 
 import { sendNotification } from 'ducks/notification/api/v0';
 import { NotificationType } from 'interfaces/Notifications';
+import { AvatarLabelProps } from 'components/common/AvatarLabel';
+import { GlobalState } from 'ducks/rootReducer';
+import { connect } from 'react-redux';
 
-interface RequestMetadataProps {
+interface StateFromProps {
+  userEmail: string;
+  tableName: string;
+  tableOwners: Array<String>;
 }
+
+type RequestMetadataProps = StateFromProps;
 
 interface RequestMetadataState {
   isOpen: boolean,
 }
 
 export class RequestMetadataForm extends React.Component<RequestMetadataProps, RequestMetadataState> {
+  public static defaultProps: RequestMetadataProps = {
+    userEmail: '',
+    tableName: '',
+    tableOwners: [],
+  };
+
   constructor(props) {
     super(props);
 
@@ -30,18 +44,19 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     const formData = new FormData(form);
     const recipients = String(formData.get('recipients')).split(",");
     const sender = String(formData.get('sender'));
-    const description_requested = formData.get('table-description') === "on" ? true : false;
-    const fields_requested = formData.get('column-description') === "on" ? true : false;
-    const comment = formData.get('details');
+    const descriptionRequested = formData.get('table-description') === "on" ? true : false;
+    const fieldsRequested = formData.get('column-description') === "on" ? true : false;
+    const comment = String(formData.get('details'));
     sendNotification(
       recipients,
       sender,
       NotificationType.REQUESTED,
       {
-        resource_name: 'redshift.dimension_applicants',
-        resource_url: 'https://amundsen.lyft.net/table_detail/gold/hive/redshift/dimension_applicants',
-        description_requested,
-        fields_requested,
+        comment,
+        resource_name: this.props.tableName,
+        resource_url: window.location.href,
+        description_requested: descriptionRequested,
+        fields_requested: fieldsRequested,
       }
     )
   };
@@ -57,11 +72,11 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
         <form onSubmit={ this.submitForm } id="RequestForm">
           <div className="form-section">
             <label>From</label>
-            <input type="email" name="sender" className="form-control" required={true} />
+            <input type="email" name="sender" className="form-control" required={true} value={this.props.userEmail}/>
           </div>
           <div className="form-section">
             <label>To</label>
-            <input type="email" name="recipients" className="form-control" required={true} multiple={true}/>
+            <input type="email" name="recipients" className="form-control" required={true} multiple={true} defaultValue={this.props.tableOwners.join(",")}/>
           </div>
           <div className="form-section">
             <label>Request Type</label>
@@ -81,4 +96,15 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
   }
 }
 
-export default RequestMetadataForm
+export const mapStateToProps = (state: GlobalState) => {
+  const userEmail = state.user.loggedInUser.email;
+  const tableName = state.tableMetadata.tableData.schema + '.' + state.tableMetadata.tableData.table_name;
+  const ownerObj = state.tableMetadata.tableOwners.owners;
+  return {
+    userEmail,
+    tableName,
+    tableOwners: Object.keys(ownerObj),
+  };
+};
+
+export default connect<StateFromProps>(mapStateToProps)(RequestMetadataForm);
