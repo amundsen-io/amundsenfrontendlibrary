@@ -118,8 +118,6 @@ export default function reducer(state: SearchReducerState = initialState, action
     case SearchAll.SUCCESS:
       // resets all resources with initial state then applies search results
       const newState = (<SearchAllResponse>action).payload;
-
-      // TODO - consider if auto-select tab logic belongs here
       return {
         ...initialState,
         ...newState,
