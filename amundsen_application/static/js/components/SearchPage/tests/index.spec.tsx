@@ -361,30 +361,37 @@ describe('SearchPage', () => {
     const wrapper = setup().wrapper;
 
     it('returns true when the search term is different', () => {
-      const nextUrlParams = { term: 'new term', tab: ResourceType.table, index: 0 };
-      const prevUrlParams = { term: 'old term', tab: ResourceType.table, index: 0 };
+      const nextUrlParams = { term: 'new term', tab: ResourceType.table, index: 0, submit: false };
+      const prevUrlParams = { term: 'old term', tab: ResourceType.table, index: 0, submit: false };
       expect(wrapper.instance().shouldUpdateSearchTerm(nextUrlParams, prevUrlParams)).toBe(true)
     });
 
     it('returns false when the search term is the same', () => {
-      const nextUrlParams = { term: 'old term', tab: ResourceType.table, index: 0 };
-      const prevUrlParams = { term: 'old term', tab: ResourceType.table, index: 0 };
+      const nextUrlParams = { term: 'old term', tab: ResourceType.table, index: 0, submit: false };
+      const prevUrlParams = { term: 'old term', tab: ResourceType.table, index: 0, submit: false };
       expect(wrapper.instance().shouldUpdateSearchTerm(nextUrlParams, prevUrlParams)).toBe(false)
     });
+
+    it('returns true when the submit has been set', () => {
+      const nextUrlParams = { term: 'old term', tab: ResourceType.table, index: 0, submit: true };
+      const prevUrlParams = { term: 'old term', tab: ResourceType.table, index: 0, submit: false };
+      expect(wrapper.instance().shouldUpdateSearchTerm(nextUrlParams, prevUrlParams)).toBe(true)
+    });
+
   });
 
   describe('shouldUpdateTab', () => {
     const wrapper = setup().wrapper;
 
     it('returns true when the tab is different', () => {
-      const nextUrlParams = { term: 'old term', tab: ResourceType.user, index: 0 };
-      const prevUrlParams = { term: 'old term', tab: ResourceType.table, index: 0 };
+      const nextUrlParams = { term: 'old term', tab: ResourceType.user, index: 0, submit: false };
+      const prevUrlParams = { term: 'old term', tab: ResourceType.table, index: 0, submit: false };
       expect(wrapper.instance().shouldUpdateTab(nextUrlParams, prevUrlParams)).toBe(true)
     });
 
     it('returns false when the tab is the same', () => {
-      const nextUrlParams = { term: 'old term', tab: ResourceType.table, index: 0 };
-      const prevUrlParams = { term: 'old term', tab: ResourceType.table, index: 0 };
+      const nextUrlParams = { term: 'old term', tab: ResourceType.table, index: 0, submit: false };
+      const prevUrlParams = { term: 'old term', tab: ResourceType.table, index: 0, submit: false };
       expect(wrapper.instance().shouldUpdateTab(nextUrlParams, prevUrlParams)).toBe(false)
     });
   });
@@ -393,14 +400,14 @@ describe('SearchPage', () => {
     const wrapper = setup().wrapper;
 
     it('returns true when the pageIndex is different', () => {
-      const nextUrlParams = { term: 'old term', tab: ResourceType.table, index: 1 };
-      const prevUrlParams = { term: 'old term', tab: ResourceType.table, index: 0 };
+      const nextUrlParams = { term: 'old term', tab: ResourceType.table, index: 1, submit: false };
+      const prevUrlParams = { term: 'old term', tab: ResourceType.table, index: 0, submit: false };
       expect(wrapper.instance().shouldUpdatePageIndex(nextUrlParams, prevUrlParams)).toBe(true)
     });
 
     it('returns false when the pageIndex is the same', () => {
-      const nextUrlParams = { term: 'old term', tab: ResourceType.table, index: 0 };
-      const prevUrlParams = { term: 'old term', tab: ResourceType.table, index: 0 };
+      const nextUrlParams = { term: 'old term', tab: ResourceType.table, index: 0, submit: false };
+      const prevUrlParams = { term: 'old term', tab: ResourceType.table, index: 0, submit: false };
       expect(wrapper.instance().shouldUpdatePageIndex(nextUrlParams, prevUrlParams)).toBe(false)
     });
   });
@@ -447,6 +454,13 @@ describe('SearchPage', () => {
       urlParams = wrapper.instance().getUrlParams(urlString);
 
       expect(urlParams.index).toEqual(0);
+    });
+
+    it('parses submit', () => {
+      urlString = '/search?searchTerm=current&submit=1';
+      urlParams = wrapper.instance().getUrlParams(urlString);
+
+      expect(urlParams.submit).toEqual(true);
     });
 
     it('defaults invalid tabs to the `ResourceType.default`', () => {
@@ -574,6 +588,51 @@ describe('SearchPage', () => {
       getSelectedTabByResourceTypeSpy.mockRestore();
       getPageIndexByResourceTypeSpy.mockRestore();
     });
+  });
+
+  describe('autoSelectTab', () => {
+    it ('auto selects table when it is not empty', () => {
+      const { props, wrapper } = setup({
+        selectedTab: ResourceType.default,
+        tables: {
+          total_results: 1,
+          page_index: 0,
+          results: []
+        },
+      });
+      const updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
+      wrapper.instance().autoSelectTab();
+      expect(updatePageUrlSpy).toHaveBeenCalledWith(props.searchTerm, ResourceType.table, 0, true)
+    });
+
+    it ('auto selects the user tab when tables are empty', () => {
+      const { props, wrapper } = setup({
+        selectedTab: ResourceType.default,
+        tables: {
+          total_results: 0,
+          page_index: 0,
+          results: []
+        },
+        users: {
+          total_results: 10,
+          page_index: 0,
+          results: []
+        }
+      });
+      const updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
+      wrapper.instance().autoSelectTab();
+      expect(updatePageUrlSpy).toHaveBeenCalledWith(props.searchTerm, ResourceType.user, 0, true)
+    });
+
+    it ('does nothing when selected tab is not default', () => {
+      const { props, wrapper } = setup({
+        selectedTab: ResourceType.table,
+      });
+      const updatePageUrlSpy = jest.spyOn(wrapper.instance(), 'updatePageUrl');
+      wrapper.instance().autoSelectTab();
+      expect(updatePageUrlSpy).not.toHaveBeenCalled();
+    });
+
   });
 
   describe('updatePageUrl', () => {

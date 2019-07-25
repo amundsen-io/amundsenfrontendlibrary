@@ -94,7 +94,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
     const prevUrlParams = this.getUrlParams(prevProps.location.search);
 
     if (!this.props.isLoading && prevProps.isLoading) {
-      this.autoselectTab();
+      this.autoSelectTab();
     }
 
     // If urlParams and globalState are synced, no need to update
@@ -153,7 +153,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
       term: (searchTerm || '').trim(),
       tab: this.getSelectedTabByResourceType(selectedTab),
       index: isNaN(index) ? 0 : index,
-      submit: submit || 0,
+      submit: !!submit,
     };
   };
 
@@ -186,7 +186,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
     this.updatePageUrl(this.props.searchTerm, newTab, this.getPageIndexByResourceType(newTab));
   };
 
-  autoselectTab = (): void => {
+  autoSelectTab = (): void => {
     if (this.props.selectedTab === ResourceType.default) {
       let newTab = ResourceType.table;
       if (this.props.tables.total_results > 0) {
