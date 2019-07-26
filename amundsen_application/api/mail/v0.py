@@ -23,8 +23,15 @@ def feedback() -> Response:
         logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
 
+    if app.config['AUTH_USER_METHOD']:
+        user_id = app.config['AUTH_USER_METHOD'](app).user_id
+    else:
+        LOGGER.warning('AUTH_USER_METHOD is not configured')
+        user_id = 'anonymous'
+
     try:
         data = request.form.to_dict()
+        data['user'] = user_id
         text_content = '\r\n'.join('{}:\r\n{}\r\n'.format(key, val) for key, val in data.items())
         html_content = render_template('email.html', form_data=data)
 
@@ -45,7 +52,8 @@ def feedback() -> Response:
                   repro_steps=repro_steps,
                   feature_summary=feature_summary,
                   value_prop=value_prop,
-                  subject=subject)
+                  subject=subject,
+                  user_id=user_id)
 
         response = mail_client.send_email(subject=subject, text=text_content, html=html_content, optional_data=data)
         status_code = response.status_code
@@ -72,6 +80,7 @@ def _feedback(*,
               repro_steps: str,
               feature_summary: str,
               value_prop: str,
-              subject: str) -> None:
+              subject: str,
+              user_id: str) -> None:
     """ Logs the content of the feedback form """
     pass  # pragma: no cover
