@@ -4,12 +4,12 @@ from http import HTTPStatus
 
 from flask import current_app as app
 from flask import jsonify, make_response, render_template, Response
-from typing import Dict
+from typing import Dict, List
 
 from amundsen_application.api.exceptions import MailClientNotImplemented
 
 
-def send_notification(notification_type, options, recipients, sender) -> Response:
+def send_notification(notification_type: str, options: Dict, recipients: List, sender: str) -> Response:
     try:
         mail_client = get_mail_client()
 
