@@ -4,6 +4,7 @@ import * as Avatar from 'react-avatar';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
+import * as qs from 'simple-query-string';
 
 import Breadcrumb from 'components/common/Breadcrumb';
 import Flag from 'components/common/Flag';
@@ -39,7 +40,7 @@ interface StateFromProps {
 }
 
 interface DispatchFromProps {
-  getUserById: (userId: string) => GetUserRequest;
+  getUserById: (userId: string, source?: string, index?: number) => GetUserRequest;
   getUserOwn: (userId: string) => GetUserOwnRequest;
   getUserRead: (userId: string) => GetUserReadRequest;
   getBookmarksForUser: (userId: string) => GetBookmarksForUserRequest;
@@ -63,7 +64,15 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
   }
 
   componentDidMount() {
-    this.loadUserInfo(this.state.userId);
+    const params = qs.parse(this.props.location.search);
+    const index = params['index'];
+    const source = params['source'];
+    /* update the url stored in the browser history to remove params used for logging purposes */
+    if (source !== undefined) {
+      window.history.replaceState({}, '', `${window.location.origin}${window.location.pathname}`);
+    }
+
+    this.loadUserInfo(this.state.userId, source, index);
   }
 
   componentDidUpdate() {
@@ -74,8 +83,8 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
     }
   }
 
-  loadUserInfo = (userId: string) => {
-    this.props.getUserById(userId);
+  loadUserInfo = (userId: string, source?: string, index?: number) => {
+    this.props.getUserById(userId, source, index);
     this.props.getUserOwn(userId);
     this.props.getUserRead(userId);
     this.props.getBookmarksForUser(userId);

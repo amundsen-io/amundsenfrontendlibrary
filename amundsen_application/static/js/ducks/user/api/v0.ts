@@ -14,8 +14,16 @@ export function getLoggedInUser() {
     });
 }
 
-export function getUser(userId: string) {
-  return axios.get(`/api/metadata/v0/user?user_id=${userId}`)
+export function getUser(userId: string, source?: string, index?: number) {
+  let url = `/api/metadata/v0/user?user_id=${userId}`;
+  if (source !== undefined) {
+    url = `${url}&source=${source}`;
+  }
+  if (index !== undefined) {
+    url = `${url}&index=${index}`;
+  }
+
+  return axios.get(url)
     .then((response: AxiosResponse<UserAPI>) => {
       return response.data.user;
     });

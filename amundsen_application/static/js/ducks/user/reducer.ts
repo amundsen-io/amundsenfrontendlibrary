@@ -18,8 +18,8 @@ export function getLoggedInUserSuccess(user: LoggedInUser): GetLoggedInUserRespo
   return { type: GetLoggedInUser.SUCCESS, payload: { user } };
 };
 
-export function getUser(userId: string): GetUserRequest {
-  return { type: GetUser.REQUEST, payload: { userId } };
+export function getUser(userId: string, source?: string, index?: number): GetUserRequest {
+  return { type: GetUser.REQUEST, payload: { userId, source, index } };
 };
 export function getUserFailure(): GetUserResponse {
   return { type: GetUser.FAILURE };
