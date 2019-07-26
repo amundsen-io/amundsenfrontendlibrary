@@ -1,6 +1,17 @@
+from flask import current_app as app
 from flask import render_template
 from typing import Dict
 
+from amundsen_application.api.exceptions import MailClientNotImplemented
+
+def get_mail_client():  # type: ignore
+    mail_client = app.config['MAIL_CLIENT']
+
+    if not mail_client:
+        raise MailClientNotImplemented('An instance of BaseMailClient client must be configured on MAIL_CLIENT')
+
+    return mail_client
+    
 
 def get_notification_content(notification_type: str, data: Dict) -> Dict:
     """

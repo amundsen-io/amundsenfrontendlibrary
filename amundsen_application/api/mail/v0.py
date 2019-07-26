@@ -3,25 +3,15 @@ import logging
 from http import HTTPStatus
 
 from flask import Response, jsonify, make_response, render_template, request
-from flask import current_app as app
 from flask.blueprints import Blueprint
 
 from amundsen_application.api.exceptions import MailClientNotImplemented
-from amundsen_application.api.utils.notification_utils import get_notification_content
+from amundsen_application.api.utils.notification_utils import get_mail_client, get_notification_content
 from amundsen_application.log.action_log import action_logging
 
 LOGGER = logging.getLogger(__name__)
 
 mail_blueprint = Blueprint('mail', __name__, url_prefix='/api/mail/v0')
-
-
-def get_mail_client():  # type: ignore
-    mail_client = app.config['MAIL_CLIENT']
-
-    if not mail_client:
-        raise MailClientNotImplemented('An instance of BaseMailClient client must be configured on MAIL_CLIENT')
-
-    return mail_client
 
 
 @mail_blueprint.route('/feedback', methods=['POST'])

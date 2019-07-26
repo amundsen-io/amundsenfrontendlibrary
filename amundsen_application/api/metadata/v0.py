@@ -12,6 +12,7 @@ from amundsen_application.log.action_log import action_logging
 from amundsen_application.models.user import load_user, dump_user
 
 from amundsen_application.api.utils.metadata_utils import marshall_table_partial, marshall_table_full
+from amundsen_application.api.utils.notification_utils import get_mail_client, get_notification_content
 from amundsen_application.api.utils.request_utils import get_query_param, request_metadata
 
 
@@ -154,9 +155,47 @@ def _update_table_owner(*, table_key: str, method: str, owner: str) -> Dict[str,
 @metadata_blueprint.route('/update_table_owner', methods=['PUT', 'DELETE'])
 def update_table_owner() -> Response:
     try:
+        user = app.config['AUTH_USER_METHOD'](app)
         args = request.get_json()
         table_key = get_query_param(args, 'key')
         owner = get_query_param(args, 'owner')
+
+        try:
+            mail_client = get_mail_client()
+
+            notification_type = 'added' if request.method == 'PUT' else 'removed'
+            notification_content = get_notification_content(
+                notification_type,
+                {}
+            )
+
+            response = mail_client.send_email(
+                recipients=[owner],
+                sender=user.email,
+                subject=notification_content['subject'],
+                html=notification_content['html'],
+                options={
+                    'email_type': 'notification'
+                },
+            )
+            status_code = response.status_code
+
+            if status_code == HTTPStatus.OK:
+                message = 'Success'
+            else:
+                message = 'Mail client failed with status code ' + str(status_code)
+                logging.error(message)
+        except MailClientNotImplemented as e:
+            message = 'Encountered exception: ' + str(e)
+            logging.exception(message)
+            return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
+        except Exception as e1:
+            message = 'Encountered exception: ' + str(e1)
+            logging.exception(message)
+            return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
+
 
         payload = jsonify(_update_table_owner(table_key=table_key, method=request.method, owner=owner))
         return make_response(payload, HTTPStatus.OK)
