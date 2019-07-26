@@ -40,7 +40,7 @@ interface StateFromProps {
 }
 
 interface DispatchFromProps {
-  getUserById: (userId: string, source?: string, index?: number) => GetUserRequest;
+  getUserById: (userId: string, index?: number, source?: string) => GetUserRequest;
   getUserOwn: (userId: string) => GetUserOwnRequest;
   getUserRead: (userId: string) => GetUserReadRequest;
   getBookmarksForUser: (userId: string) => GetBookmarksForUserRequest;
@@ -72,7 +72,7 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
       window.history.replaceState({}, '', `${window.location.origin}${window.location.pathname}`);
     }
 
-    this.loadUserInfo(this.state.userId, source, index);
+    this.loadUserInfo(this.state.userId, index, source);
   }
 
   componentDidUpdate() {
@@ -83,8 +83,8 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
     }
   }
 
-  loadUserInfo = (userId: string, source?: string, index?: number) => {
-    this.props.getUserById(userId, source, index);
+  loadUserInfo = (userId: string, index?: number, source?: string,) => {
+    this.props.getUserById(userId, index, source);
     this.props.getUserOwn(userId);
     this.props.getUserRead(userId);
     this.props.getBookmarksForUser(userId);

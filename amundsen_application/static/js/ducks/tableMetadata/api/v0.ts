@@ -48,9 +48,16 @@ export function updateTableTags(tagArray, tableKey: string) {
   return updatePayloads.map(payload => { axios(payload) });
 }
 
-export function getTableData(tableKey: string, searchIndex: string, source: string ) {
-  const tableParams = getTableQueryParams(tableKey);
-  return axios.get(`${API_PATH}/table?${tableParams}&index=${searchIndex}&source=${source}`)
+export function getTableData(tableKey: string, searchIndex?: string, source?: string ) {
+  let url = `${API_PATH}/table?${getTableQueryParams(tableKey)}`;
+  if (searchIndex !== undefined) {
+    url = `${url}&index=${searchIndex}`;
+  }
+  if (source !== undefined) {
+    url = `${url}&source=${source}`;
+  }
+
+  return axios.get(url)
   .then((response: AxiosResponse<TableDataAPI>) => {
     return {
       data: getTableDataFromResponseData(response.data),

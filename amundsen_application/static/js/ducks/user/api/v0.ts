@@ -14,13 +14,13 @@ export function getLoggedInUser() {
     });
 }
 
-export function getUser(userId: string, source?: string, index?: number) {
+export function getUser(userId: string, index?: number, source?: string) {
   let url = `/api/metadata/v0/user?user_id=${userId}`;
-  if (source !== undefined) {
-    url = `${url}&source=${source}`;
-  }
   if (index !== undefined) {
     url = `${url}&index=${index}`;
+  }
+  if (source !== undefined) {
+    url = `${url}&source=${source}`;
   }
 
   return axios.get(url)
