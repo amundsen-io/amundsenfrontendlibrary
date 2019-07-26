@@ -12,7 +12,7 @@ from amundsen_application.log.action_log import action_logging
 from amundsen_application.models.user import load_user, dump_user
 
 from amundsen_application.api.utils.metadata_utils import marshall_table_partial, marshall_table_full
-from amundsen_application.api.utils.notification_utils import get_mail_client, get_notification_content, send_notification
+from amundsen_application.api.utils.notification_utils import send_notification
 from amundsen_application.api.utils.request_utils import get_query_param, request_metadata
 
 

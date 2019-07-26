@@ -91,4 +91,3 @@ def notification() -> Response:
         logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
     return send_notification(data['notificationType'], data['options'], data['recipients'], data['sender'])
-    

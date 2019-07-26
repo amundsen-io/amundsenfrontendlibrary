@@ -53,7 +53,7 @@ def get_mail_client():  # type: ignore
         raise MailClientNotImplemented('An instance of BaseMailClient client must be configured on MAIL_CLIENT')
 
     return mail_client
-    
+
 
 def get_notification_content(notification_type: str, data: Dict) -> Dict:
     """
