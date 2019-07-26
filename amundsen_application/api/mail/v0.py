@@ -6,7 +6,7 @@ from flask import Response, jsonify, make_response, render_template, request
 from flask.blueprints import Blueprint
 
 from amundsen_application.api.exceptions import MailClientNotImplemented
-from amundsen_application.api.utils.notification_utils import get_mail_client, get_notification_content
+from amundsen_application.api.utils.notification_utils import get_mail_client, send_notification
 from amundsen_application.log.action_log import action_logging
 
 LOGGER = logging.getLogger(__name__)
@@ -85,37 +85,10 @@ def _feedback(*,
 def notification() -> Response:
     # TODO: Write unit tests once actual logic is implemented
     try:
-        mail_client = get_mail_client()
         data = request.get_json()
-
-        notification_content = get_notification_content(
-            data['notificationType'],
-            data['options']
-        )
-
-        response = mail_client.send_email(
-            recipients=data['recipients'],
-            sender=data['sender'],
-            subject=notification_content['subject'],
-            html=notification_content['html'],
-            options={
-                'email_type': 'notification'
-            },
-        )
-        status_code = response.status_code
-
-        if status_code == HTTPStatus.OK:
-            message = 'Success'
-        else:
-            message = 'Mail client failed with status code ' + str(status_code)
-            logging.error(message)
-
-        return make_response(jsonify({'msg': message}), status_code)
-    except MailClientNotImplemented as e:
+    except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
-        return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
-    except Exception as e1:
-        message = 'Encountered exception: ' + str(e1)
-        logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
+    return send_notification(data['notificationType'], data['options'], data['recipients'], data['sender'])
+    
