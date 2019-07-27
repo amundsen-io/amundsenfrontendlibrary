@@ -64,15 +64,7 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
   }
 
   componentDidMount() {
-    const params = qs.parse(this.props.location.search);
-    const index = params['index'];
-    const source = params['source'];
-    /* update the url stored in the browser history to remove params used for logging purposes */
-    if (source !== undefined) {
-      window.history.replaceState({}, '', `${window.location.origin}${window.location.pathname}`);
-    }
-
-    this.loadUserInfo(this.state.userId, index, source);
+    this.loadUserInfo(this.state.userId);
   }
 
   componentDidUpdate() {
@@ -83,12 +75,25 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
     }
   }
 
-  loadUserInfo = (userId: string, index?: number, source?: string,) => {
+  loadUserInfo = (userId: string) => {
+    const { index, source } = this.getLoggingParams(this.props.location.search);
     this.props.getUserById(userId, index, source);
     this.props.getUserOwn(userId);
     this.props.getUserRead(userId);
     this.props.getBookmarksForUser(userId);
   };
+
+  getLoggingParams = (search: string) => {
+    const params = qs.parse(search);
+    const index = params['index'];
+    const source = params['source'];
+    // Remove logging params from URL
+    if (source !== undefined || index !== undefined) {
+      window.history.replaceState({}, '', `${window.location.origin}${window.location.pathname}`);
+    }
+    return { index, source };
+  };
+
 
   getTabContent = (resource: Resource[], source: string, label: string) => {
     // TODO: consider moving logic for empty content into Tab component
