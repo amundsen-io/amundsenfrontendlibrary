@@ -9,13 +9,22 @@ from typing import Dict, List
 from amundsen_application.api.exceptions import MailClientNotImplemented
 
 
-def send_notification(notification_type: str, options: Dict, recipients: List, sender: str) -> Response:
+def send_notification(*, notification_type: str, options: Dict, recipients: List, sender: str) -> Response:
+    """
+    Sends a notification via email to a given list of recipients
+    :param notification_type: type of notification
+    :param options: data necessary to render email template content
+    :param recipients: list of recipients who should receive notification
+    :param sender: email of notification sender
+    :return: Response
+    """
+    # TODO: write tests
     try:
         mail_client = get_mail_client()
 
         notification_content = get_notification_content(
-            notification_type,
-            options
+            notification_type=notification_type,
+            options=options
         )
 
         response = mail_client.send_email(
@@ -47,6 +56,11 @@ def send_notification(notification_type: str, options: Dict, recipients: List, s
 
 
 def get_mail_client():  # type: ignore
+    """
+    Gets a mail_client object to send emails, raises an exception
+    if mail client isn't implemented
+    """
+    # TODO: write tests
     mail_client = app.config['MAIL_CLIENT']
 
     if not mail_client:
@@ -55,12 +69,12 @@ def get_mail_client():  # type: ignore
     return mail_client
 
 
-def get_notification_content(notification_type: str, data: Dict) -> Dict:
+def get_notification_content(*, notification_type: str, options: Dict) -> Dict:
     """
     Returns a subject and a rendered html email template based off
     the input notification_type and data provided
     :param notification_type: type of notification
-    :param data: data necessary to render email template content
+    :param options: data necessary to render email template content
     :return: subject and html Dict
     """
     notification_type_dict = {
@@ -82,7 +96,7 @@ def get_notification_content(notification_type: str, data: Dict) -> Dict:
         },
     }
 
-    html = render_template(notification_type_dict.get(notification_type, {}).get('html'), form_data=data)
+    html = render_template(notification_type_dict.get(notification_type, {}).get('html'), form_data=options)
 
     return {
         'subject': notification_type_dict[notification_type]['subject'],

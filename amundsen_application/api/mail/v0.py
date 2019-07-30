@@ -90,4 +90,9 @@ def notification() -> Response:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
-    return send_notification(data['notificationType'], data['options'], data['recipients'], data['sender'])
+    return send_notification(
+        notification_type=data['notificationType'],
+        options=data['options'],
+        recipients=data['recipients'],
+        sender=data['sender']
+    )

@@ -160,8 +160,19 @@ def update_table_owner() -> Response:
         table_key = get_query_param(args, 'key')
         owner = get_query_param(args, 'owner')
 
-        notification_type = 'added' if request.method == 'PUT' else 'removed'
-        send_notification(notification_type, {}, [owner], user.email)
+        notification_type = None
+        if request.method == 'PUT':
+            notification_type = 'added'
+        elif request.method == 'DELETE':
+            notification_type = 'removed'
+        else:
+            raise Exception('method not handled')
+        send_notification(
+            notification_type=notification_type,
+            options={},
+            recipients=[owner],
+            sender=user.email
+        )
 
         payload = jsonify(_update_table_owner(table_key=table_key, method=request.method, owner=owner))
         return make_response(payload, HTTPStatus.OK)
