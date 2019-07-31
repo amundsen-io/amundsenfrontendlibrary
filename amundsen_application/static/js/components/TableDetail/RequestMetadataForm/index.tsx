@@ -52,11 +52,12 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     event.preventDefault();
     const form = document.getElementById("RequestForm") as HTMLFormElement;
     const formData = new FormData(form);
-    const recipients = String(formData.get('recipients')).split(",");
-    const sender = String(formData.get('sender'));
+    const recipientString = formData.get('recipients') as string
+    const recipients = recipientString.split(",")
+    const sender = formData.get('sender') as string;
     const descriptionRequested = formData.get('table-description') === "on" ? true : false;
     const fieldsRequested = formData.get('column-description') === "on" ? true : false;
-    const comment = String(formData.get('details'));
+    const comment = formData.get('details') as string;
     sendNotification(
       recipients,
       sender,
