@@ -168,13 +168,18 @@ def update_table_owner() -> Response:
         else:
             raise Exception('method not handled')
 
+        results_dict = _get_table_metadata(table_key=table_key, index=0, source="")
+        table_data = results_dict['tableData']
+
         send_notification(
             notification_type=notification_type,
-            options={},
+            options={
+                'resource_name': '{}.{}'.format(table_data['schema'], table_data['table_name']),
+                'resource_url': 'https://amundsen.lyft.net/table_detail/gold/{}/{}/{}'.format(table_data['database'], table_data['schema'], table_data['table_name']),
+            },
             recipients=[owner],
             sender=user.email
         )
-
         payload = jsonify(_update_table_owner(table_key=table_key, method=request.method, owner=owner))
         return make_response(payload, HTTPStatus.OK)
     except Exception as e:
@@ -417,7 +422,6 @@ def get_user() -> Response:
 
         response = request_metadata(url=url)
         status_code = response.status_code
-
         if status_code == HTTPStatus.OK:
             message = 'Success'
         else:
