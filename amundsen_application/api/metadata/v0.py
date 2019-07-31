@@ -167,6 +167,7 @@ def update_table_owner() -> Response:
             notification_type = 'removed'
         else:
             raise Exception('method not handled')
+
         send_notification(
             notification_type=notification_type,
             options={},
