@@ -168,13 +168,12 @@ def update_table_owner() -> Response:
         else:
             raise Exception('method not handled')
 
-        if owner != user.email:
-            send_notification(
-                notification_type=notification_type,
-                options={},
-                recipients=[owner],
-                sender=user.email
-            )
+        send_notification(
+            notification_type=notification_type,
+            options={},
+            recipients=[owner],
+            sender=user.email
+        )
 
         payload = jsonify(_update_table_owner(table_key=table_key, method=request.method, owner=owner))
         return make_response(payload, HTTPStatus.OK)

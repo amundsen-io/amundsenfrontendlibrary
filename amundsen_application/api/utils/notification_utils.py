@@ -27,6 +27,11 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
             options=options
         )
 
+        if sender in recipients:
+            recipients.remove(sender)
+        if len(recipients) == 0:
+            raise Exception('no recipients to send')
+
         response = mail_client.send_email(
             recipients=recipients,
             sender=sender,
