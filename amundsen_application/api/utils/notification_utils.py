@@ -30,7 +30,8 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
         if sender in recipients:
             recipients.remove(sender)
         if len(recipients) == 0:
-            raise Exception('no recipients to send')
+            logging.info('No recipients exist for notification')
+            return make_response(jsonify({'msg': 'Sender is excluded from notification recipients, no recipients exist.'}), HTTPStatus.OK) 
 
         response = mail_client.send_email(
             recipients=recipients,
