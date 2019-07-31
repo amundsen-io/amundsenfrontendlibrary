@@ -93,6 +93,15 @@ export class SearchPage extends React.Component<SearchPageProps> {
     const nextUrlParams = this.getUrlParams(this.props.location.search);
     const prevUrlParams = this.getUrlParams(prevProps.location.search);
 
+    if (!this.props.isLoading && prevProps.isLoading) {
+      console.log('loading finished here!')
+      console.log(nextUrlParams);
+      const globalStateParams = this.getGlobalStateParams();
+      console.log(globalStateParams);
+      this.updatePageUrl(globalStateParams.term, globalStateParams.tab, globalStateParams.index, true);
+
+    }
+
     // If urlParams and globalState are synced, no need to update
     if (this.isUrlStateSynced(nextUrlParams)) return;
 
@@ -117,11 +126,12 @@ export class SearchPage extends React.Component<SearchPageProps> {
   }
 
   shouldUpdateSearchTerm(nextUrlParams, prevUrlParams): boolean {
-    return nextUrlParams.term !== prevUrlParams.term;
+    return nextUrlParams.term !== prevUrlParams.term ||
+      (nextUrlParams.tab == null && nextUrlParams.index == null);
   }
 
   shouldUpdateTab(nextUrlParams, prevUrlParams): boolean {
-    return nextUrlParams.tab !== prevUrlParams.tab;
+    return nextUrlParams.tab !== prevUrlParams.tab && nextUrlParams.tab !== null;
   }
 
   shouldUpdatePageIndex(nextUrlParams, prevUrlParams): boolean {
@@ -135,7 +145,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
         return newTab;
       case ResourceType.dashboard:
       default:
-        return this.props.selectedTab;
+        return null;
     }
   };
 
@@ -146,7 +156,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
     return {
       term: (searchTerm || '').trim(),
       tab: this.getSelectedTabByResourceType(selectedTab),
-      index: isNaN(index) ? 0 : index,
+      index: isNaN(index) ? null : index,
     };
   };
 
@@ -180,8 +190,13 @@ export class SearchPage extends React.Component<SearchPageProps> {
     this.updatePageUrl(this.props.searchTerm, newTab, this.getPageIndexByResourceType(newTab));
   };
 
-  updatePageUrl = (searchTerm: string, tab: ResourceType, pageIndex: number, replace: boolean = false): void => {
-    const pathName = `/search?searchTerm=${searchTerm}&selectedTab=${tab}&pageIndex=${pageIndex}`;
+  updatePageUrl = (searchTerm: string, selectedTab?: ResourceType, pageIndex?: number, replace: boolean = false): void => {
+    const queryString = qs.stringify({
+      searchTerm,
+      selectedTab,
+      pageIndex,
+    });
+    const pathName = `/search?${queryString}`;
 
     if (replace) {
       this.props.history.replace(pathName);

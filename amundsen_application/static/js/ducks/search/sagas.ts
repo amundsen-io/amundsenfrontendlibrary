@@ -1,20 +1,18 @@
 import { SagaIterator } from 'redux-saga';
 import { all, call, put, takeEvery } from 'redux-saga/effects';
 
-import { ResourceType } from 'interfaces/Resources';
+import { DEFAULT_RESOURCE_TYPE, ResourceType } from 'interfaces/Resources';
 
 import * as API from './api/v0';
 
-import {
-  SearchAll,
-  SearchAllRequest,
-  SearchResource,
-  SearchResourceRequest,
-} from './types';
+import { SearchAll, SearchAllRequest, SearchResource, SearchResourceRequest, } from './types';
 
 import {
-  initialState, searchAllSuccess, searchAllFailure,
-  searchResourceSuccess, searchResourceFailure,
+  initialState,
+  searchAllFailure,
+  searchAllSuccess,
+  searchResourceFailure,
+  searchResourceSuccess,
 } from './reducer';
 
 export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
@@ -29,14 +27,25 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
       call(API.searchResource, userIndex, ResourceType.user, term),
       call(API.searchResource, dashboardIndex, ResourceType.dashboard, term),
     ]);
-    const searchAllResponse = {
+    const response = {
       search_term: term,
-      selectedTab: resource,
+      selectedTab: resource || DEFAULT_RESOURCE_TYPE,
       tables: tableResponse.tables || initialState.tables,
       users: userResponse.users || initialState.users,
       dashboards: dashboardResponse.dashboards || initialState.dashboards,
     };
-    yield put(searchAllSuccess(searchAllResponse));
+
+    if (resource == null) {
+      console.log('resource is null');
+      if (response.tables.total_results > 0) {
+        response.selectedTab = ResourceType.table;
+      } else if (response.users.total_results > 0) {
+        response.selectedTab = ResourceType.user;
+      }
+    }
+
+
+    yield put(searchAllSuccess(response));
   } catch (e) {
     yield put(searchAllFailure());
   }
