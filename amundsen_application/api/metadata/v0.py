@@ -175,8 +175,6 @@ def update_table_owner() -> Response:
                 recipients=[owner],
                 sender=user.email
             )
-        else:
-            raise Exception('owner the same as sender')
 
         payload = jsonify(_update_table_owner(table_key=table_key, method=request.method, owner=owner))
         return make_response(payload, HTTPStatus.OK)
