@@ -3,11 +3,10 @@ import axios from 'axios';
 import * as API from '../v0';
 import { NotificationType } from 'interfaces';
 
+jest.mock('axios');
+
 describe('sendNotification', () => {
-  it('calls axios.post with the correct params', async () => {
-    const axiosSpy = jest.spyOn(axios, 'post').mockImplementation(() => {
-      return;
-    });
+  it('calls axios with the correct params', async () => {
     const mockRequestObject = {
       recipients: ['user1@test.com'],
       sender: 'user2@test.com',
@@ -25,10 +24,12 @@ describe('sendNotification', () => {
       mockRequestObject.notificationType,
       mockRequestObject.options,
     )
-    expect(axiosSpy).toHaveBeenCalledWith(
-      `/api/mail/v0/notification`,
-      mockRequestObject,
-    );
+    expect(axios).toHaveBeenCalledWith({
+      data: mockRequestObject,
+      method: 'post',
+      url: `/api/mail/v0/notification`,
+      timeout: 5000
+    });
 
   });
 });
