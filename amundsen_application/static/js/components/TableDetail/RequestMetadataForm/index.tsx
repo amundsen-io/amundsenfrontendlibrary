@@ -1,9 +1,7 @@
 import * as React from 'react';
 import './styles.scss';
 
-import { sendNotification } from 'ducks/notification/api/v0';
-import { NotificationType } from 'interfaces/Notifications';
-import { AvatarLabelProps } from 'components/common/AvatarLabel';
+import { NotificationType, SendNotificationOptions } from 'interfaces/Notifications';
 import { GlobalState } from 'ducks/rootReducer';
 import { connect } from 'react-redux';
 import {
@@ -16,6 +14,9 @@ import {
   ADDITIONAL_DETAILS,
   SEND_BUTTON,
 } from './constants'
+import { SubmitNotificationRequest } from 'ducks/notification/types';
+import { submitNotification } from 'ducks/notification/reducer';
+import { bindActionCreators } from 'redux';
 
 interface StateFromProps {
   userEmail: string;
@@ -23,18 +24,24 @@ interface StateFromProps {
   tableOwners: Array<string>;
 }
 
-type RequestMetadataProps = StateFromProps;
+export interface DispatchFromProps {
+  submitNotification: (
+    recipients: Array<string>,
+    sender: string,
+    notificationType: NotificationType,
+    options?: SendNotificationOptions
+  ) => SubmitNotificationRequest;
+}
+
+type RequestMetadataProps = StateFromProps & DispatchFromProps;
 
 interface RequestMetadataState {
   isOpen: boolean,
 }
 
 export class RequestMetadataForm extends React.Component<RequestMetadataProps, RequestMetadataState> {
-  public static defaultProps: RequestMetadataProps = {
-    userEmail: '',
-    tableName: '',
-    tableOwners: [],
-  };
+  public static defaultProps: Partial<RequestMetadataProps> = {};
+
 
   constructor(props) {
     super(props);
@@ -58,7 +65,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     const descriptionRequested = formData.get('table-description') === "on" ? true : false;
     const fieldsRequested = formData.get('column-description') === "on" ? true : false;
     const comment = formData.get('details') as string;
-    sendNotification(
+    this.props.submitNotification(
       recipients,
       sender,
       NotificationType.REQUESTED,
@@ -118,4 +125,8 @@ export const mapStateToProps = (state: GlobalState) => {
   };
 };
 
-export default connect<StateFromProps>(mapStateToProps)(RequestMetadataForm);
+export const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators({ submitNotification } , dispatch);
+};
+
+export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(RequestMetadataForm);
