@@ -17,10 +17,3 @@ export interface SubmitNotificationRequest {
 export interface SubmitNotificationResponse {
   type: SubmitNotification.SUCCESS | SubmitNotification.FAILURE;
 };
-
-export enum ResetNotification {
-  REQUEST = 'amundsen/feedback/RESET_FEEDBACK_REQUEST',
-};
-export interface ResetNotificationRequest {
-  type: SubmitNotification.REQUEST;
-};

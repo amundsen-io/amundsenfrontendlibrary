@@ -1,7 +1,6 @@
 import { NotificationType, SendNotificationOptions } from 'interfaces'
 
 import {
-  ResetNotification, ResetNotificationRequest,
   SubmitNotification, SubmitNotificationRequest, SubmitNotificationResponse
 } from './types';
 
@@ -40,8 +39,6 @@ export default function reducer(state: NotificationReducerState = initialState, 
     case SubmitNotification.SUCCESS:
       return {};
     case SubmitNotification.FAILURE:
-      return {};
-    case SubmitNotification.REQUEST:
       return {};
     default:
       return state;
