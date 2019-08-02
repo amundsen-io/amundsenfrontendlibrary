@@ -15,7 +15,7 @@ The frontend service leverages a separate [search service](https://github.com/ly
 For information about Amundsen and our other services, visit the [main repository](https://github.com/lyft/amundsen). Please also see our instructions for a [quick start](https://github.com/lyft/amundsen/blob/master/docs/installation.md#bootstrap-a-default-version-of-amundsen-using-docker) setup  of Amundsen with dummy data, and an [overview of the architecture](https://github.com/lyft/amundsen/blob/master/docs/architecture.md).
 
 ## Requirements
-- Python >= 3.4
+- Python >= 3.5
 - Node = v8.x.x or v10.x.x (v11.x.x has compatibility issues)
 - npm >= 6.x.x
 
