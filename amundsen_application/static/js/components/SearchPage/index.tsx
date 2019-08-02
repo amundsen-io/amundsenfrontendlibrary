@@ -302,6 +302,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
         <div className="row">
           <div className="col-xs-12 col-md-offset-1 col-md-10">
             <SearchBar />
+            
             { this.renderContent() }
           </div>
         </div>
