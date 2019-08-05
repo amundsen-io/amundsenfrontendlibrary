@@ -24,7 +24,6 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
     # TODO: write tests
     try:
         mail_client = get_mail_client()
-
         notification_content = get_notification_content(
             notification_type=notification_type,
             options=options,
@@ -103,19 +102,19 @@ def get_notification_content(*, notification_type: str, options: Dict, recipient
 
     notification_type_dict = {
         'added': {
-            'subject': 'You have been added',
+            'subject': 'You are now an owner of {}'.format(options['resource_name']),
             'html': 'notifications/notification_added.html'
         },
         'removed': {
-            'subject': 'You have been removed',
+            'subject': 'You have been removed as an owner of {}'.format(options['resource_name']),
             'html': 'notifications/notification_removed.html'
         },
         'edited': {
-            'subject': 'You have been edited',
+            'subject': 'Your dataset {}\'s metadata has been edited'.format(options['resource_name']),
             'html': 'notifications/notification_edited.html'
         },
         'requested': {
-            'subject': 'You have been requested',
+            'subject': '{} needs your help with {}'.format(sender_name, options['resource_name']),
             'html': 'notifications/notification_requested.html'
         },
     }

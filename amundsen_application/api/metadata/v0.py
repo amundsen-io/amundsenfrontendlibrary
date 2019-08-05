@@ -7,6 +7,8 @@ from flask import Response, jsonify, make_response, request
 from flask import current_app as app
 from flask.blueprints import Blueprint
 
+import os
+
 from amundsen_application.log.action_log import action_logging
 
 from amundsen_application.models.user import load_user, dump_user
@@ -20,7 +22,6 @@ LOGGER = logging.getLogger(__name__)
 
 
 metadata_blueprint = Blueprint('metadata', __name__, url_prefix='/api/metadata/v0')
-
 TABLE_ENDPOINT = '/table'
 LAST_INDEXED_ENDPOINT = '/latest_updated_ts'
 POPULAR_TABLES_ENDPOINT = '/popular_tables/'
@@ -170,12 +171,12 @@ def update_table_owner() -> Response:
 
         results_dict = _get_table_metadata(table_key=table_key, index=0, source="")
         table_data = results_dict['tableData']
-
         send_notification(
             notification_type=notification_type,
             options={
                 'resource_name': '{}.{}'.format(table_data['schema'], table_data['table_name']),
-                'resource_url': 'https://amundsen.lyft.net/table_detail/gold/{}/{}/{}'.format(table_data['database'], table_data['schema'], table_data['table_name']),
+                'resource_url': '{}/table_detail/gold/{}/{}/{}'.format('https://amundsen.lyft.net', table_data['database'], table_data['schema'], table_data['table_name']),
+                'sender_url': '{}/user/{}'.format('https://amundsen.lyft.net', user.email)
             },
             recipients=[owner],
             sender=user.email
