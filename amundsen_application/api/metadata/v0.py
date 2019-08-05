@@ -1,7 +1,7 @@
 import logging
 
 from http import HTTPStatus
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from flask import Response, jsonify, make_response, request
 from flask import current_app as app
@@ -389,7 +389,7 @@ def update_table_tags() -> Response:
 def get_user() -> Response:
 
     @action_logging
-    def _log_get_user(*, user_id: str, index: int, source: str) -> None:
+    def _log_get_user(*, user_id: str, index: Optional[int], source: Optional[str]) -> None:
         pass  # pragma: no cover
 
     try:
