@@ -6,12 +6,10 @@ import * as qs from 'simple-query-string';
 import { RouteComponentProps } from 'react-router';
 import { Search } from 'history';
 
-import AppConfig from 'config/config';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import InfoButton from 'components/common/InfoButton';
 import ResourceList from 'components/common/ResourceList';
-import TabsComponent from 'components/common/Tabs';
-import SearchPanel from 'components/SearchPage/SearchPanel';
+import SearchPanel from './SearchPanel';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { searchAll, searchResource, updateSearchTab } from 'ducks/search/reducer';
@@ -202,33 +200,6 @@ export class SearchPage extends React.Component<SearchPageProps> {
         break;
     }
     return content;
-
-    //
-    // const tabConfig = [
-    //   {
-    //     title: `${TABLE_RESOURCE_TITLE} (${ this.props.tables.total_results })`,
-    //     key: ResourceType.table,
-    //     content: this.getTabContent(this.props.tables, ResourceType.table),
-    //   },
-    // ];
-    // if (AppConfig.indexUsers.enabled) {
-    //   tabConfig.push({
-    //     title: `Users (${ this.props.users.total_results })`,
-    //     key: ResourceType.user,
-    //     content: this.getTabContent(this.props.users, ResourceType.user),
-    //   })
-    // }
-
-    // return (
-    //   <div>
-    //     <TabsComponent
-    //       tabs={ tabConfig }
-    //       defaultTab={ ResourceType.table }
-    //       activeKey={ this.props.selectedTab }
-    //       onSelect={ this.onTabChange }
-    //     />
-    //   </div>
-    // );
   };
 
   generateInfoText = (tab: ResourceType): string => {

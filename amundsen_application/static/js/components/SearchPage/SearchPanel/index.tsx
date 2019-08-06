@@ -6,6 +6,7 @@ import { DashboardSearchResults, TableSearchResults, UserSearchResults } from 'd
 import { TABLE_RESOURCE_TITLE, USER_RESOURCE_TITLE } from 'components/SearchPage/constants';
 import AppConfig from 'config/config';
 
+import './styles.scss';
 
 export interface StateFromProps {
   selectedTab: ResourceType,
@@ -20,7 +21,6 @@ export interface OwnProps {
 
 export type SearchPanelProps = StateFromProps & OwnProps;
 
-
 export class SearchPanel extends React.Component<SearchPanelProps> {
 
   constructor(props) {
@@ -31,12 +31,10 @@ export class SearchPanel extends React.Component<SearchPanelProps> {
     this.props.onTabChange(event.target.value);
   };
 
-
   renderRadioOption = (value: ResourceType, label: string, count: number) => {
-
     return (
       <div className="radio">
-        <label className="radio-label subtitle-3">
+        <label className="radio-label">
           <input
             type="radio"
             name="resource"
@@ -44,11 +42,10 @@ export class SearchPanel extends React.Component<SearchPanelProps> {
             checked={ this.props.selectedTab === value }
             onChange={ this.onChange }
           />
-          <span className="">{ label }</span>
-          <span className="pull-right">{ count }</span>
+          <span className="subtitle-2">{ label }</span>
+          <span className="body-secondary-3 pull-right">{ count }</span>
         </label>
       </div>
-
     );
   };
 
