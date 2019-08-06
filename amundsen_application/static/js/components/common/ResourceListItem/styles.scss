@@ -18,6 +18,7 @@
   }
 
   .content {
+    // TODO - Replace width and min-width with flex: 1
     width: 100%;
     min-width: 0; /* Needed to support `white-space: nowrap` */
 

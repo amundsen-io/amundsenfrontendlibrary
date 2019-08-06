@@ -1,6 +1,23 @@
 @import 'variables';
 
+$control-panel-width: 270px;
 .search-page {
+  display: flex;
+  min-height: calc(100% - #{$nav-bar-height + $footer-height});
+
+  .search-control-panel {
+    border-right: 4px solid $gray-light;
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: $control-panel-width;
+
+    padding: 24px;
+  }
+  .search-results {
+    flex-grow: 1;
+    width: 0; // Temporary hack since list-items use width %
+  }
+
   .tabs-component,
   .search-list-container {
     margin-top: 32px;

@@ -11,7 +11,7 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import InfoButton from 'components/common/InfoButton';
 import ResourceList from 'components/common/ResourceList';
 import TabsComponent from 'components/common/Tabs';
-import SearchBar from './SearchBar';
+import SearchPanel from 'components/SearchPage/SearchPanel';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { searchAll, searchResource, updateSearchTab } from 'ducks/search/reducer';
@@ -26,7 +26,6 @@ import {
 } from 'ducks/search/types';
 
 import { Resource, ResourceType } from 'interfaces';
-
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
@@ -43,6 +42,7 @@ import {
   TABLE_RESOURCE_TITLE,
   USER_RESOURCE_TITLE,
 } from './constants';
+
 
 export interface StateFromProps {
   searchTerm: string;
@@ -191,31 +191,44 @@ export class SearchPage extends React.Component<SearchPageProps> {
   };
 
   renderSearchResults = () => {
-    const tabConfig = [
-      {
-        title: `${TABLE_RESOURCE_TITLE} (${ this.props.tables.total_results })`,
-        key: ResourceType.table,
-        content: this.getTabContent(this.props.tables, ResourceType.table),
-      },
-    ];
-    if (AppConfig.indexUsers.enabled) {
-      tabConfig.push({
-        title: `Users (${ this.props.users.total_results })`,
-        key: ResourceType.user,
-        content: this.getTabContent(this.props.users, ResourceType.user),
-      })
-    }
+    let content = null;
 
-    return (
-      <div>
-        <TabsComponent
-          tabs={ tabConfig }
-          defaultTab={ ResourceType.table }
-          activeKey={ this.props.selectedTab }
-          onSelect={ this.onTabChange }
-        />
-      </div>
-    );
+    switch(this.props.selectedTab) {
+      case ResourceType.table:
+        content = this.getTabContent(this.props.tables, ResourceType.table);
+        break;
+      case ResourceType.user:
+        content = this.getTabContent(this.props.users, ResourceType.user);
+        break;
+    }
+    return content;
+
+    //
+    // const tabConfig = [
+    //   {
+    //     title: `${TABLE_RESOURCE_TITLE} (${ this.props.tables.total_results })`,
+    //     key: ResourceType.table,
+    //     content: this.getTabContent(this.props.tables, ResourceType.table),
+    //   },
+    // ];
+    // if (AppConfig.indexUsers.enabled) {
+    //   tabConfig.push({
+    //     title: `Users (${ this.props.users.total_results })`,
+    //     key: ResourceType.user,
+    //     content: this.getTabContent(this.props.users, ResourceType.user),
+    //   })
+    // }
+
+    // return (
+    //   <div>
+    //     <TabsComponent
+    //       tabs={ tabConfig }
+    //       defaultTab={ ResourceType.table }
+    //       activeKey={ this.props.selectedTab }
+    //       onSelect={ this.onTabChange }
+    //     />
+    //   </div>
+    // );
   };
 
   generateInfoText = (tab: ResourceType): string => {
@@ -298,13 +311,10 @@ export class SearchPage extends React.Component<SearchPageProps> {
   render() {
     const { searchTerm } = this.props;
     const innerContent = (
-      <div className="container search-page">
-        <div className="row">
-          <div className="col-xs-12 col-md-offset-1 col-md-10">
-            <SearchBar />
-            
-            { this.renderContent() }
-          </div>
+      <div className="search-page">
+        <SearchPanel onTabChange={ this.onTabChange } />
+        <div className="search-results">
+          { this.renderContent() }
         </div>
       </div>
     );
