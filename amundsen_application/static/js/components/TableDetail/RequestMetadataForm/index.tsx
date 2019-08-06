@@ -14,14 +14,15 @@ import {
   ADDITIONAL_DETAILS,
   SEND_BUTTON,
 } from './constants'
-import { SubmitNotificationRequest } from 'ducks/notification/types';
-import { submitNotification } from 'ducks/notification/reducer';
+import { OpenRequestAction, SubmitNotificationRequest } from 'ducks/notification/types';
+import { openRequest, submitNotification } from 'ducks/notification/reducer';
 import { bindActionCreators } from 'redux';
 
 interface StateFromProps {
   userEmail: string;
   tableName: string;
   tableOwners: Array<string>;
+  requestIsOpen: boolean;
 }
 
 export interface DispatchFromProps {
@@ -31,28 +32,22 @@ export interface DispatchFromProps {
     notificationType: NotificationType,
     options?: SendNotificationOptions
   ) => SubmitNotificationRequest;
+  openRequest: () => OpenRequestAction;
 }
 
-type RequestMetadataProps = StateFromProps & DispatchFromProps;
+export type RequestMetadataProps = StateFromProps & DispatchFromProps;
 
-interface RequestMetadataState {
-  isOpen: boolean,
-}
+interface RequestMetadataState {}
 
 export class RequestMetadataForm extends React.Component<RequestMetadataProps, RequestMetadataState> {
   public static defaultProps: Partial<RequestMetadataProps> = {};
 
-
   constructor(props) {
     super(props);
-
-    this.state = {
-      isOpen: true,
-    };
   }
 
   toggle = () => {
-    this.setState({ isOpen: !this.state.isOpen });
+    this.props.openRequest();
   }
 
   submitForm = (event) => {
@@ -80,7 +75,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
   };
 
   render() {
-    const expandedClass = this.state.isOpen ? 'expanded' : 'collapsed';
+    const expandedClass = this.props.requestIsOpen ? 'expanded' : 'collapsed';
     return (
       <div className={`request-component ${expandedClass}`}>
         <div className="form-section request-header">
@@ -118,15 +113,17 @@ export const mapStateToProps = (state: GlobalState) => {
   const userEmail = state.user.loggedInUser.email;
   const tableName = state.tableMetadata.tableData.schema + '.' + state.tableMetadata.tableData.table_name;
   const ownerObj = state.tableMetadata.tableOwners.owners;
+  const requestIsOpen = state.notification.requestIsOpen;
   return {
     userEmail,
     tableName,
+    requestIsOpen,
     tableOwners: Object.keys(ownerObj),
   };
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ submitNotification } , dispatch);
+  return bindActionCreators({ submitNotification, openRequest } , dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(RequestMetadataForm);

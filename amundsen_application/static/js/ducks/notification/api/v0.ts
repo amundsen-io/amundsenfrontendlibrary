@@ -11,6 +11,5 @@ export function sendNotification(recipients: Array<string>, sender: string, noti
     },
     method: 'post',
     url: `/api/mail/v0/notification`,
-    timeout: 5000
   });
 };

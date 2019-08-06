@@ -1,7 +1,7 @@
 import { NotificationType, SendNotificationOptions } from 'interfaces'
 
 import {
-  SubmitNotification, SubmitNotificationRequest, SubmitNotificationResponse
+  OpenRequest, OpenRequestAction, SubmitNotification, SubmitNotificationRequest, SubmitNotificationResponse,
 } from './types';
 
 /* ACTIONS */
@@ -27,19 +27,37 @@ export function submitNotificationSuccess(): SubmitNotificationResponse {
   };
 };
 
-/* REDUCER */
-export interface NotificationReducerState {};
+export function openRequest(): OpenRequestAction {
+  return {
+    type: OpenRequest.TOGGLE,
+  };
+};
 
-const initialState: NotificationReducerState = {};
+/* REDUCER */
+export interface NotificationReducerState {
+  requestIsOpen: boolean,
+};
+
+const initialState: NotificationReducerState = {
+  requestIsOpen: true,
+};
 
 export default function reducer(state: NotificationReducerState = initialState, action): NotificationReducerState {
   switch (action.type) {
+    case OpenRequest.TOGGLE:
+      return {
+        requestIsOpen: !state.requestIsOpen,
+      }
     case SubmitNotification.REQUEST:
-      return {};
+      return state;
     case SubmitNotification.SUCCESS:
-      return {};
+      return {
+        requestIsOpen: false,
+      };
     case SubmitNotification.FAILURE:
-      return {};
+      return {
+        requestIsOpen: false,
+      };
     default:
       return state;
   }

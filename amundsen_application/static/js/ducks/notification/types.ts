@@ -5,6 +5,7 @@ export enum SubmitNotification {
   SUCCESS = 'amundsen/notification/SUBMIT_NOTIFICATION_SUCCESS',
   FAILURE = 'amundsen/notification/SUBMIT_NOTIFICATION_FAILURE',
 };
+
 export interface SubmitNotificationRequest {
   type: SubmitNotification.REQUEST;
   payload: {
@@ -16,4 +17,12 @@ export interface SubmitNotificationRequest {
 };
 export interface SubmitNotificationResponse {
   type: SubmitNotification.SUCCESS | SubmitNotification.FAILURE;
+};
+
+export enum OpenRequest {
+  TOGGLE = 'toggle',
+};
+
+export interface OpenRequestAction {
+  type: OpenRequest.TOGGLE;
 };

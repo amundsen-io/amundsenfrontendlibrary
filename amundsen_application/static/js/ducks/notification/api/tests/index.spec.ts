@@ -28,7 +28,6 @@ describe('sendNotification', () => {
       data: mockRequestObject,
       method: 'post',
       url: `/api/mail/v0/notification`,
-      timeout: 5000
     });
 
   });
