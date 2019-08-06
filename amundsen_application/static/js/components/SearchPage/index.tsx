@@ -189,17 +189,15 @@ export class SearchPage extends React.Component<SearchPageProps> {
   };
 
   renderSearchResults = () => {
-    let content = null;
-
     switch(this.props.selectedTab) {
       case ResourceType.table:
-        content = this.getTabContent(this.props.tables, ResourceType.table);
-        break;
+        return this.getTabContent(this.props.tables, ResourceType.table);
       case ResourceType.user:
-        content = this.getTabContent(this.props.users, ResourceType.user);
-        break;
+        return this.getTabContent(this.props.users, ResourceType.user);
+      case ResourceType.dashboard:
+        return this.getTabContent(this.props.dashboards, ResourceType.dashboard);
     }
-    return content;
+    return null;
   };
 
   generateInfoText = (tab: ResourceType): string => {
