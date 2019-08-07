@@ -12,13 +12,10 @@
   min-height: 450px;
   padding: 32px;
   width: 400px;
+  display:none;
 
   &.expanded {
     display: block;
-  }
-
-  &.collapsed {
-    display: none;
   }
 
   .title {
