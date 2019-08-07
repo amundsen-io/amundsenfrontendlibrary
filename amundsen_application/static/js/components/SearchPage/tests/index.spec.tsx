@@ -24,8 +24,6 @@ import {
 import InfoButton from 'components/common/InfoButton';
 import TabsComponent from 'components/common/Tabs';
 
-import SearchBar from '../SearchBar';
-
 import LoadingSpinner from 'components/common/LoadingSpinner';
 
 import ResourceList from 'components/common/ResourceList';
@@ -200,7 +198,7 @@ describe('SearchPage', () => {
       });
     });
   });
-  
+
   describe('componentDidUpdate', () => {
     let props;
     let wrapper;
@@ -791,11 +789,6 @@ describe('SearchPage', () => {
         const { props, wrapper } = setup({ searchTerm: '' });
         expect(wrapper.find(DocumentTitle).exists()).toBeFalsy();
       });
-    });
-
-    it('renders SearchBar with correct props', () => {
-      const { props, wrapper } = setup();
-      expect(wrapper.find(SearchBar).exists()).toBeTruthy();
     });
 
     it('calls renderSearchResults if searchTerm is not empty string', () => {

@@ -3,54 +3,77 @@
 .nav-bar {
   height: 48px;
   box-shadow: 0 2px 0 -1px $gray-lightest;
-  padding: 8px 32px 8px 32px;
-  color: $text-medium;
+  padding: 0px 32px 1px 32px;
+  color: white;
   display: flex;
   flex-direction: row;
   align-items: center;
-}
+  // TODO: Update to $nav-bar-bg-or-something
+  background-color: $brand-color-5;
 
-.nav-bar sup {
-  font-size: 12px;
-}
+  .title-3 {
+    color: white;
+  }
 
-.nav-bar a {
-  text-decoration: none;
-  color: $text-medium;
-}
+  a {
+   display: inline-block;
+   height: 100%;
+   line-height: 32px;
+   text-decoration: none;
+   color: white;
+   padding-left: 8px;
+   padding-right: 8px;
 
-.nav-bar a:hover,
-.nav-bar a:hover span {
-  color: $brand-color-4;
-}
+   &:hover {
+     border-bottom: 4px solid white;
+   }
 
-.nav-bar a.active {
-  color: $brand-color-4;
-}
+   &.active {
+      border-bottom: 4px solid white;
+   }
+  }
 
-.nav-bar .nav-bar-right {
-  margin-left: auto;
-  display: flex;
-}
-.nav-bar-left > *,
-.nav-bar-right > * {
-  margin: auto 10px;
-}
-.nav-bar-left > *:first-child {
-  margin-left: 0px;
-}
-.nav-bar-right > *:last-child {
-  margin-right: 0px;
-}
+  .nav-bar-right {
+    margin-left: auto;
+    display: flex;
+  }
 
-.nav-bar .sb-avatar {
-  -webkit-box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, .76);
-  -moz-box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, .76);
-  box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, .76);
+  .nav-bar-left,
+  .nav-bar-right {
+    height: 100%;
+    padding-top: 8px;
+  }
+
+  .nav-bar-right > *:not(:last-child) {
+    margin-right: 12px;
+  }
+
+  .sb-avatar {
+    -webkit-box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, .76);
+    -moz-box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, .76);
+    box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, .76);
+
+    &:hover {
+      /*
+        TODO: The hover over the avatar is currently the white border line.
+        This should be changed to "material style circular hover effect"
+      */
+    }
+  }
+
+  .search-bar {
+    flex-grow: 1;
+    /*
+      TODO: Update left margin to match I made up 84px to achieve similar look
+      The left side of search bar should match up with the start of the search
+      results panel.
+    */
+    margin: auto 16px auto 84px;
+  }
 }
 
 .logo-icon {
   max-height: 32px;
   max-width: 144px;
-  margin-right: 20px;
+  margin-right: 16px;
 }

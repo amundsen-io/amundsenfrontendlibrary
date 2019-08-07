@@ -11,7 +11,6 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import InfoButton from 'components/common/InfoButton';
 import ResourceList from 'components/common/ResourceList';
 import TabsComponent from 'components/common/Tabs';
-import SearchBar from './SearchBar';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { searchAll, searchResource, updateSearchTab } from 'ducks/search/reducer';
@@ -301,7 +300,6 @@ export class SearchPage extends React.Component<SearchPageProps> {
       <div className="container search-page">
         <div className="row">
           <div className="col-xs-12 col-md-offset-1 col-md-10">
-            <SearchBar />
             { this.renderContent() }
           </div>
         </div>

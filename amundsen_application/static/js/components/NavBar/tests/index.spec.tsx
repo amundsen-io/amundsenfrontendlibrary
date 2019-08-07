@@ -1,10 +1,14 @@
 import * as React from 'react';
 import * as Avatar from 'react-avatar';
+import * as History from 'history';
 
 import { shallow } from 'enzyme';
 
 import { Link, NavLink } from 'react-router-dom';
 import { NavBar, NavBarProps, mapStateToProps } from '../';
+import { getMockRouterProps } from 'fixtures/mockRouter';
+
+import SearchBar from 'components/common/SearchBar';
 
 import { logClick } from "ducks/utilMethods";
 jest.mock('ducks/utilMethods', () => {
@@ -33,13 +37,14 @@ AppConfig.navLinks = [
 ];
 AppConfig.indexUsers.enabled = true;
 
-
 import globalState from 'fixtures/globalState';
 
 describe('NavBar', () => {
-  const setup = (propOverrides?: Partial<NavBarProps>) => {
+  const setup = (propOverrides?: Partial<NavBarProps>, location?: Partial<History.Location>) => {
+    const routerProps = getMockRouterProps<any>(null, location);
     const props: NavBarProps = {
       loggedInUser: globalState.user.loggedInUser,
+      ...routerProps,
       ...propOverrides
     };
     const wrapper = shallow<NavBar>(<NavBar {...props} />);
@@ -124,6 +129,23 @@ describe('NavBar', () => {
       const { wrapper } = setup();
       expect(wrapper.find('#nav-bar-avatar-link').exists()).toBe(false)
     });
+
+    describe('SearchBar', () => {
+      it('is not rendered when on hompage', () => {
+        const { props, wrapper } = setup(null, { pathname: "/" });
+        expect(wrapper.find(SearchBar).exists()).toBe(false);
+      });
+
+      it('is rendered when on any page but hompage', () => {
+        const { props, wrapper } = setup(null, { pathname: "/search" });
+        const searchBar = wrapper.find(SearchBar);
+        expect(searchBar.exists()).toBe(true);
+        expect(searchBar.props()).toMatchObject({
+          size: "small",
+        });
+      });
+    })
+
   });
 });
 

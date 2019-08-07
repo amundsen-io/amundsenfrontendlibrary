@@ -210,7 +210,7 @@ describe('SearchBar', () => {
       describe('submit button', () => {
         it('renders button with correct props', () => {
           expect(wrapper.find('form').find('button').props()).toMatchObject({
-            className: 'btn btn-flat-icon search-bar-button',
+            className: 'btn btn-flat-icon search-button',
             type: 'submit',
           });
         });
