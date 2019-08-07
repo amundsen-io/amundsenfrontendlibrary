@@ -39,7 +39,7 @@ export interface NotificationReducerState {
 };
 
 const initialState: NotificationReducerState = {
-  requestIsOpen: true,
+  requestIsOpen: false,
 };
 
 export default function reducer(state: NotificationReducerState = initialState, action): NotificationReducerState {
