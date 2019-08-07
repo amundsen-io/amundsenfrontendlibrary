@@ -2,10 +2,14 @@ import axios from 'axios';
 import { NotificationType, SendNotificationOptions } from 'interfaces'
 
 export function sendNotification(recipients: Array<string>, sender: string, notificationType: NotificationType, options?: SendNotificationOptions) {
-  return axios.post(`/api/mail/v0/notification`, {
-    recipients,
-    sender,
-    notificationType,
-    options,
-  })
+  return axios({
+    data: {
+      recipients,
+      sender,
+      notificationType,
+      options,
+    },
+    method: 'post',
+    url: `/api/mail/v0/notification`,
+  });
 };
