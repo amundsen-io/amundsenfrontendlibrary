@@ -5,15 +5,15 @@
   bottom: 75px;
   position: fixed;
   left: 25px;
-  z-index: 2;
+  z-index: 6;
+  background-color: white;
+  border-radius: 0 0 6px 6px;
+  height: auto;
+  min-height: 450px;
+  padding: 32px;
+  width: 400px;
 
   &.expanded {
-    background-color: white;
-    border-radius: 0 0 6px 6px;
-    height: auto;
-    min-height: 450px;
-    padding: 32px;
-    width: 400px;
     display: block;
   }
 
@@ -29,8 +29,9 @@
     display: flex;
   }
 
-  label {
+  .select-label {
     display: block;
+    font-weight: $font-weight-body-regular;
   }
   
   .submit-button {
@@ -40,9 +41,5 @@
     padding: 10px;
     font-weight: $font-weight-body-bold;
     float: right;
-  }
-
-  .form-section {
-    margin-bottom: 24px;
   }
 }

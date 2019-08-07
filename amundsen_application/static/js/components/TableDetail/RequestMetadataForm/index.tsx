@@ -6,8 +6,8 @@ import { GlobalState } from 'ducks/rootReducer';
 import { connect } from 'react-redux';
 import {
   TITLE_TEXT,
-  FROM,
-  TO,
+  FROM_LABEL,
+  TO_LABEL,
   REQUEST_TYPE,
   TABLE_DESCRIPTION,
   COLUMN_DESCRIPTIONS,
@@ -78,25 +78,25 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     const expandedClass = this.props.requestIsOpen ? 'expanded' : 'collapsed';
     return (
       <div className={`request-component ${expandedClass}`}>
-        <div className="form-section request-header">
+        <div className="form-group request-header">
           <h3 className="title">{TITLE_TEXT}</h3>
           <button type="button" className="btn btn-close" aria-label={"Close"} onClick={this.toggle}/>
         </div>
         <form onSubmit={ this.submitNotification } id="RequestForm">
-          <div className="form-section">
-            <label>{FROM}</label>
+          <div className="form-group">
+            <label>{FROM_LABEL}</label>
             <input type="email" name="sender" className="form-control" required={true} value={this.props.userEmail}/>
           </div>
-          <div className="form-section">
-            <label>{TO}</label>
+          <div className="form-group">
+            <label>{TO_LABEL}</label>
             <input type="email" name="recipients" className="form-control" required={true} multiple={true} defaultValue={this.props.tableOwners.join(",")}/>
           </div>
-          <div className="form-section">
+          <div className="form-group">
             <label>{REQUEST_TYPE}</label>
-            <p><input type="checkbox" name="table-description"/> {TABLE_DESCRIPTION}</p>
-            <p><input type="checkbox" name="column-description"/> {COLUMN_DESCRIPTIONS}</p>
+            <label className="select-label"><input type="checkbox" name="table-description"/> {TABLE_DESCRIPTION}</label>
+            <label className="select-label"><input type="checkbox" name="column-description"/> {COLUMN_DESCRIPTIONS}</label>
           </div>
-          <div className="form-section">
+          <div className="form-group">
             <label>{ADDITIONAL_DETAILS}</label>
             <textarea className="form-control" name="comment" rows={ 8 } maxLength={ 2000 } />
           </div>
