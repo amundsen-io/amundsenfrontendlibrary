@@ -34,7 +34,7 @@ export class OpenRequestMetadata extends React.Component<OpenRequestMetadataProp
 
   render() {
     return (
-      <a className={ "open-request" }
+      <a className="open-request"
         href="JavaScript:void(0)"
         onClick={ this.openRequest }
       >
