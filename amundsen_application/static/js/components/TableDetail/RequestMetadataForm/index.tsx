@@ -14,8 +14,8 @@ import {
   ADDITIONAL_DETAILS,
   SEND_BUTTON,
 } from './constants'
-import { OpenRequestAction, SubmitNotificationRequest } from 'ducks/notification/types';
-import { openRequest, submitNotification } from 'ducks/notification/reducer';
+import { ToggleRequestAction, SubmitNotificationRequest } from 'ducks/notification/types';
+import { toggleRequest, submitNotification } from 'ducks/notification/reducer';
 import { bindActionCreators } from 'redux';
 
 interface StateFromProps {
@@ -32,7 +32,7 @@ export interface DispatchFromProps {
     notificationType: NotificationType,
     options?: SendNotificationOptions
   ) => SubmitNotificationRequest;
-  openRequest: () => OpenRequestAction;
+  toggleRequest: () => ToggleRequestAction;
 }
 
 export type RequestMetadataProps = StateFromProps & DispatchFromProps;
@@ -47,10 +47,10 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
   }
 
   toggle = () => {
-    this.props.openRequest();
+    this.props.toggleRequest();
   }
 
-  submitForm = (event) => {
+  submitNotification = (event) => {
     event.preventDefault();
     const form = document.getElementById("RequestForm") as HTMLFormElement;
     const formData = new FormData(form);
@@ -59,7 +59,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     const sender = formData.get('sender') as string;
     const descriptionRequested = formData.get('table-description') === "on" ? true : false;
     const fieldsRequested = formData.get('column-description') === "on" ? true : false;
-    const comment = formData.get('details') as string;
+    const comment = formData.get('comment') as string;
     this.props.submitNotification(
       recipients,
       sender,
@@ -82,7 +82,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
           <h3 className="title">{TITLE_TEXT}</h3>
           <button type="button" className="btn btn-close" aria-label={"Close"} onClick={this.toggle}/>
         </div>
-        <form onSubmit={ this.submitForm } id="RequestForm">
+        <form onSubmit={ this.submitNotification } id="RequestForm">
           <div className="form-section">
             <label>{FROM}</label>
             <input type="email" name="sender" className="form-control" required={true} value={this.props.userEmail}/>
@@ -98,7 +98,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
           </div>
           <div className="form-section">
             <label>{ADDITIONAL_DETAILS}</label>
-            <textarea className="form-control" name="details" rows={ 8 } maxLength={ 2000 } />
+            <textarea className="form-control" name="comment" rows={ 8 } maxLength={ 2000 } />
           </div>
           <button className="submit-button" type="submit">
             {SEND_BUTTON}
@@ -123,7 +123,7 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ submitNotification, openRequest } , dispatch);
+  return bindActionCreators({ submitNotification, toggleRequest } , dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(RequestMetadataForm);

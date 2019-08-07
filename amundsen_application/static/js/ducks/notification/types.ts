@@ -19,10 +19,10 @@ export interface SubmitNotificationResponse {
   type: SubmitNotification.SUCCESS | SubmitNotification.FAILURE;
 };
 
-export enum OpenRequest {
+export enum ToggleRequest {
   TOGGLE = 'toggle',
 };
 
-export interface OpenRequestAction {
-  type: OpenRequest.TOGGLE;
+export interface ToggleRequestAction {
+  type: ToggleRequest.TOGGLE;
 };
