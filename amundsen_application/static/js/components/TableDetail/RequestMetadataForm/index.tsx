@@ -100,7 +100,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
             <label>{ADDITIONAL_DETAILS}</label>
             <textarea className="form-control" name="comment" rows={ 8 } maxLength={ 2000 } />
           </div>
-          <button className="submit-button" type="submit">
+          <button className="btn btn-primary" type="submit">
             {SEND_BUTTON}
           </button>
         </form>
