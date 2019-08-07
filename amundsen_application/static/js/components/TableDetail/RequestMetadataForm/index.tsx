@@ -75,9 +75,11 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
   };
 
   render() {
-    const expandedClass = this.props.requestIsOpen ? 'expanded' : null;
+    if (!this.props.requestIsOpen) {
+      return (null);
+    }
     return (
-      <div className={`request-component ${expandedClass}`}>
+      <div className={`request-component expanded`}>
         <div className="form-group request-header">
           <h3 className="title">{TITLE_TEXT}</h3>
           <button type="button" className="btn btn-close" aria-label={"Close"} onClick={this.toggle}/>
