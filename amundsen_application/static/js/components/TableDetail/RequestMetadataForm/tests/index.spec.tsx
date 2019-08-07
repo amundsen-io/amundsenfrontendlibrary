@@ -56,8 +56,8 @@ describe('RequestMetadataForm', () => {
           comment: mockFormData['comment'],
           resource_name: props.tableName,
           resource_url: window.location.href,
-          description_requested: mockFormData['table-description'] === "on" ? true : false,
-          fields_requested: mockFormData['fields-requested'] === "on" ? true : false,
+          description_requested: true,
+          fields_requested: false,
         }
       );
     });
