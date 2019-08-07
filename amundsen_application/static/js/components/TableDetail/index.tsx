@@ -37,8 +37,6 @@ import { PreviewQueryParams, TableMetadata, User } from 'interfaces';
 import './styles.scss';
 import BookmarkIcon from "components/common/Bookmark/BookmarkIcon";
 import RequestMetadataForm from './RequestMetadataForm';
-import { ToggleRequestAction } from 'ducks/notification/types';
-import { toggleRequest } from 'ducks/notification/reducer';
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -49,7 +47,6 @@ export interface StateFromProps {
 export interface DispatchFromProps {
   getTableData: (key: string, searchIndex?: string, source?: string, ) => GetTableDataRequest;
   getPreviewData: (queryParams: PreviewQueryParams) => void;
-  toggleRequest: () => ToggleRequestAction;
 }
 
 type TableDetailProps = StateFromProps & DispatchFromProps;
@@ -70,7 +67,6 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
   public static defaultProps: TableDetailProps = {
     getTableData: () => undefined,
     getPreviewData: () => undefined,
-    toggleRequest: () => undefined,
     isLoading: true,
     statusCode: null,
     tableData: {
@@ -398,7 +394,7 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ getPreviewData, getTableData, toggleRequest } , dispatch);
+  return bindActionCreators({ getPreviewData, getTableData } , dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(TableDetail);
