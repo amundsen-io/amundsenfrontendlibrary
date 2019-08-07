@@ -2,18 +2,7 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
-import AbstractFeedbackForm, { FeedbackFormProps } from 'components/Feedback/FeedbackForm';
 import { RequestMetadataForm, mapDispatchToProps, mapStateToProps, RequestMetadataProps } from '../';
-import {
-  TITLE_TEXT,
-  FROM,
-  TO,
-  REQUEST_TYPE,
-  TABLE_DESCRIPTION,
-  COLUMN_DESCRIPTIONS,
-  ADDITIONAL_DETAILS,
-  SEND_BUTTON,
-} from 'components/TableDetail/RequestMetadataForm/constants'
 import globalState from 'fixtures/globalState';
 import { NotificationType } from 'interfaces/';
 
@@ -54,8 +43,7 @@ describe('RequestMetadataForm', () => {
     });
   });
 
-  // TODO
-  describe('submitForm', () => {
+  describe('submitNotification', () => {
     it('calls submitNotification', () => {
       const { props, wrapper } = setup();
       const submitNotificationSpy = jest.spyOn(props, 'submitNotification');
@@ -79,11 +67,23 @@ describe('RequestMetadataForm', () => {
   describe('render', () => {
   });
 
-  // TODO
   describe('mapStateToProps', () => {
     let result;
     beforeAll(() => {
       result = mapStateToProps(globalState);
+    });
+
+    it('sets userEmail on the props', () => {
+      expect(result.userEmail).toEqual(globalState.user.loggedInUser.email);
+    });
+    it('sets tableName on the props', () => {
+      expect(result.tableName).toEqual(globalState.tableMetadata.tableData.schema + '.' + globalState.tableMetadata.tableData.table_name);
+    });
+    it('sets ownerObj on the props', () => {
+      expect(result.tableOwners).toEqual(Object.keys(globalState.tableMetadata.tableOwners.owners));
+    });
+    it('sets requestIsOpen on the props', () => {
+      expect(result.requestIsOpen).toEqual(globalState.notification.requestIsOpen);
     });
   });
 
@@ -104,12 +104,3 @@ describe('RequestMetadataForm', () => {
     });
   });
 });
-
-//   describe('render', () => {
-//     let wrapper;
-//     let form;
-//     beforeAll(() => {
-//       wrapper = setup();
-//     });
-//   });
-// });
