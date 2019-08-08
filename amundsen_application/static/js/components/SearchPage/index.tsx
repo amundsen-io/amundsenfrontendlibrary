@@ -281,7 +281,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
     const { searchTerm } = this.props;
     const innerContent = (
       <div className="search-page">
-        <SearchPanel onTabChange={ this.onTabChange } />
+        <SearchPanel onChange={ this.onTabChange } />
         <div className="search-results">
           { this.renderContent() }
         </div>
