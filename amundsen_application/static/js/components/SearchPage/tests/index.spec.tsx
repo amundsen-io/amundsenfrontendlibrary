@@ -4,7 +4,6 @@ import * as History from 'history';
 
 import { shallow } from 'enzyme';
 
-import AppConfig from 'config/config';
 import { ResourceType } from 'interfaces';
 import { mapDispatchToProps, mapStateToProps, SearchPage, SearchPageProps } from '../';
 import {
