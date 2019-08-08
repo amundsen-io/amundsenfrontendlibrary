@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { ResourceType } from 'interfaces/Resources';
+
 import { TABLE_RESOURCE_TITLE, USER_RESOURCE_TITLE } from 'components/SearchPage/constants';
 import AppConfig from 'config/config';
-import { DashboardSearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
 import { GlobalState } from 'ducks/rootReducer';
+import { DashboardSearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
+import { ResourceType } from 'interfaces/Resources';
 
 
 export interface StateFromProps {
@@ -20,13 +21,11 @@ export interface OwnProps {
 
 export type ResourceSelectorProps = StateFromProps & OwnProps;
 
-
 interface ResourceOptionConfig {
   type: ResourceType;
   label: string;
   count: number;
 }
-
 
 export class ResourceSelector extends React.Component<ResourceSelectorProps > {
   constructor(props) {
@@ -55,7 +54,6 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
     );
   };
 
-
   render = () => {
     const resourceOptions = [{
       type: ResourceType.table,
@@ -82,7 +80,6 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
   }
 }
 
-
 export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
   return {
     selectedTab: state.search.selectedTab,
@@ -94,6 +91,6 @@ export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
 };
 
 
-// TODO - use 'mapDispatchToProps' to map the tab-change action instead of using the onTabChange prop.
+// TODO - use 'mapDispatchToProps' to map the resource-change action instead of using the onChange prop.
 
 export default connect<StateFromProps, null, OwnProps>(mapStateToProps)(ResourceSelector);

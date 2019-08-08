@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 import SearchPanel, { SearchPanelProps } from '../';
-
 import ResourceSelector from 'components/SearchPage/ResourceSelector';
 
 describe('SearchPanel', () => {
@@ -14,7 +13,6 @@ describe('SearchPanel', () => {
     const wrapper = shallow<SearchPanel>(<SearchPanel {...props} />);
     return { props, wrapper };
   };
-
 
   describe('render', () => {
     let props;
