@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { ToggleRequestAction } from 'ducks/notification/types';
 import { toggleRequest } from 'ducks/notification/reducer';
 import { bindActionCreators } from 'redux';
+import { REQUEST_DESCRIPTION } from './constants';
 
 interface StateFromProps {
   requestIsOpen: boolean;
@@ -15,12 +16,12 @@ export interface DispatchFromProps {
   toggleRequest: () => ToggleRequestAction;
 }
 
-export type OpenRequestMetadataProps = StateFromProps & DispatchFromProps;
+export type OpenRequestDescriptionProps = StateFromProps & DispatchFromProps;
 
-interface OpenRequestMetadataState {}
+interface OpenRequestDescriptionState {}
 
-export class OpenRequestMetadata extends React.Component<OpenRequestMetadataProps, OpenRequestMetadataState> {
-  public static defaultProps: Partial<OpenRequestMetadataProps> = {};
+export class OpenRequestDescription extends React.Component<OpenRequestDescriptionProps, OpenRequestDescriptionState> {
+  public static defaultProps: Partial<OpenRequestDescriptionProps> = {};
 
   constructor(props) {
     super(props);
@@ -34,11 +35,11 @@ export class OpenRequestMetadata extends React.Component<OpenRequestMetadataProp
 
   render() {
     return (
-      <a className="open-request"
+      <a className="request-description"
         href="JavaScript:void(0)"
         onClick={ this.openRequest }
       >
-       Request Description
+       { REQUEST_DESCRIPTION }
       </a>
     );
   }
@@ -55,4 +56,4 @@ export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({ toggleRequest } , dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(OpenRequestMetadata);
+export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(OpenRequestDescription);

@@ -1,0 +1,11 @@
+@import 'variables';
+
+.request-description{
+  display: flex;
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.request-description:hover, .request-description:visited, .request-description:active, .request-description:link {
+  text-decoration: none;
+}
