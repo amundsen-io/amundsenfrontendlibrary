@@ -5,7 +5,7 @@ from http import HTTPStatus
 from flask import current_app as app
 from flask import jsonify, make_response, render_template, Response
 from typing import Dict, List
-from upstream.amundsen_application.models.user import dump_user, load_user
+from amundsen_application.models.user import dump_user, load_user
 
 from amundsen_application.api.exceptions import MailClientNotImplemented
 from amundsen_application.api.utils.request_utils import request_metadata
