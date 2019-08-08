@@ -21,12 +21,12 @@ import {
 } from '../constants';
 
 import InfoButton from 'components/common/InfoButton';
-
 import LoadingSpinner from 'components/common/LoadingSpinner';
-
+import SearchPanel from 'components/SearchPage/SearchPanel';
 import ResourceList from 'components/common/ResourceList';
-import globalState from 'fixtures/globalState';
+
 import { searchAll, updateSearchTab } from 'ducks/search/reducer';
+import globalState from 'fixtures/globalState';
 import { getMockRouterProps } from 'fixtures/mockRouter';
 
 describe('SearchPage', () => {
@@ -787,6 +787,11 @@ describe('SearchPage', () => {
       wrapper.setProps(props);
       expect(renderSearchResultsSpy).toHaveBeenCalled();
     });
+  });
+
+  it('renders a search panel', () => {
+    const {props, wrapper} = setup();
+    expect(wrapper.find(SearchPanel).exists()).toBe(true);
   });
 });
 
