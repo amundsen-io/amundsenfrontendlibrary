@@ -36,7 +36,7 @@ ReactDOM.render(
       <BrowserRouter>
         <div id="main">
           <Preloader/>
-          <Route path="/" component={NavBar} />
+          <Route component={NavBar} />
           <Switch>
             <Route path="/table_detail/:cluster/:db/:schema/:table" component={TableDetail} />
             <Route path="/announcements" component={AnnouncementPage} />

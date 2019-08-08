@@ -78,15 +78,34 @@ describe('NavBar', () => {
     });
   });
 
+  describe('renderSearchBar', () => {
+    it('returns small SearchBar when not on home page', () => {
+      const { props, wrapper } = setup(null, { pathname: "/search" });
+      const searchBar = shallow(wrapper.instance().renderSearchBar()).find(SearchBar);
+      expect(searchBar.exists()).toBe(true);
+      expect(searchBar.props()).toMatchObject({
+        size: "small",
+      });
+    });
+
+    it('returns null if conditions to render search bar are not met', () => {
+      const { props, wrapper } = setup(null, { pathname: "/" });
+      expect(wrapper.instance().renderSearchBar()).toBe(null);
+    });
+  });
+
   describe('render', () => {
     let element;
     let props;
     let wrapper;
+    let renderSearchBarSpy;
     const spy = jest.spyOn(NavBar.prototype, 'generateNavLinks');
     beforeAll(() => {
       const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
+      renderSearchBarSpy = jest.spyOn(wrapper.instance(), 'renderSearchBar');
+      wrapper.instance().forceUpdate();
     });
 
     it('renders img with AppConfig.logoPath', () => {
@@ -112,6 +131,10 @@ describe('NavBar', () => {
       expect(spy).toHaveBeenCalledWith(AppConfig.navLinks);
     });
 
+    it('calls renderSearchBar', () => {
+      expect(renderSearchBarSpy).toHaveBeenCalled();
+    });
+
     it('renders Avatar for loggedInUser', () => {
       expect(wrapper.find(Avatar).props()).toMatchObject({
         name: props.loggedInUser.display_name,
@@ -129,23 +152,6 @@ describe('NavBar', () => {
       const { wrapper } = setup();
       expect(wrapper.find('#nav-bar-avatar-link').exists()).toBe(false)
     });
-
-    describe('SearchBar', () => {
-      it('is not rendered when on hompage', () => {
-        const { props, wrapper } = setup(null, { pathname: "/" });
-        expect(wrapper.find(SearchBar).exists()).toBe(false);
-      });
-
-      it('is rendered when on any page but hompage', () => {
-        const { props, wrapper } = setup(null, { pathname: "/search" });
-        const searchBar = wrapper.find(SearchBar);
-        expect(searchBar.exists()).toBe(true);
-        expect(searchBar.props()).toMatchObject({
-          size: "small",
-        });
-      });
-    })
-
   });
 });
 

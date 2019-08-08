@@ -8,16 +8,16 @@
       position: absolute;
       height: 24px;
       width: 24px;
-      top: 28px;
-      left: 24px;
-    }
 
-    .search-button-small {
-      position: absolute;
-      height: 24px;
-      width: 24px;
-      top: 6px;
-      left: 8px;
+      &.small {
+        top: 6px;
+        left: 8px;
+      }
+
+      &.large {
+        top: 28px;
+        left: 24px;
+      }
     }
 
     .clear-button {
@@ -34,12 +34,12 @@
       box-shadow: 0 3px 12px 0 rgba(17, 17, 31, 0.04);
       width: 100%;
 
-      &.h2 {
+      &.large {
         height: 80px;
         padding: 16px 24px 16px 64px;
       }
 
-      &.h3 {
+      &.small {
         height: 36px;
         padding: 6px 6px 6px 36px;
       }

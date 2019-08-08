@@ -38,6 +38,17 @@ export class NavBar extends React.Component<NavBarProps> {
     });
   }
 
+  renderSearchBar = () => {
+    if (this.props.location.pathname !== "/") {
+      return (
+        <div className="search-bar">
+          <SearchBar size="small" />
+        </div>
+      )
+    }
+    return null;
+  };
+
   render() {
     return (
       <div className="container-fluid">
@@ -52,12 +63,7 @@ export class NavBar extends React.Component<NavBarProps> {
                 <span className="title-3">AMUNDSEN</span>
               </Link>
             </div>
-            {
-              this.props.location.pathname !== "/" &&
-              <div className="search-bar">
-                <SearchBar size="small" />
-              </div>
-            }
+            { this.renderSearchBar() }
             <div id="nav-bar-right" className="ml-auto nav-bar-right">
               {this.generateNavLinks(AppConfig.navLinks)}
               {
