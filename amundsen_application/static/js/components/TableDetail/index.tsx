@@ -22,6 +22,7 @@ import TagInput from 'components/Tags/TagInput';
 
 import DataPreviewButton from './DataPreviewButton';
 import DetailList from './DetailList';
+import OpenRequestDescription from './OpenRequestDescription';
 import OwnerEditor from './OwnerEditor';
 import TableDescEditableText from './TableDescEditableText';
 import WatermarkLabel from "./WatermarkLabel";
@@ -360,6 +361,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
                   value={ data.table_description }
                   editable={ data.is_editable }
                 />
+                <OpenRequestDescription/>
               </div>
               <div className="col-xs-12 col-md-5 float-md-right col-lg-4">
                 <EntityCard sections={ this.createEntityCardSections() }/>
