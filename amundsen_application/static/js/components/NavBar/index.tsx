@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Avatar from 'react-avatar';
+import { RouteComponentProps } from 'react-router';
 import { Link, NavLink, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -10,6 +11,8 @@ import { logClick } from 'ducks/utilMethods';
 
 import { LoggedInUser } from 'interfaces';
 
+import SearchBar from 'components/common/SearchBar';
+
 import './styles.scss';
 
 // Props
@@ -17,7 +20,7 @@ interface StateFromProps {
   loggedInUser: LoggedInUser;
 }
 
-export type NavBarProps = StateFromProps;
+export type NavBarProps = StateFromProps & RouteComponentProps<{}>;
 
 export class NavBar extends React.Component<NavBarProps> {
   constructor(props) {
@@ -35,6 +38,17 @@ export class NavBar extends React.Component<NavBarProps> {
     });
   }
 
+  renderSearchBar = () => {
+    if (this.props.location.pathname !== "/") {
+      return (
+        <div className="search-bar">
+          <SearchBar size="small" />
+        </div>
+      )
+    }
+    return null;
+  };
+
   render() {
     return (
       <div className="container-fluid">
@@ -49,7 +63,8 @@ export class NavBar extends React.Component<NavBarProps> {
                 <span className="title-3">AMUNDSEN</span>
               </Link>
             </div>
-            <div id="nav-bar-right" className="nav-bar-right">
+            { this.renderSearchBar() }
+            <div id="nav-bar-right" className="ml-auto nav-bar-right">
               {this.generateNavLinks(AppConfig.navLinks)}
               {
                 this.props.loggedInUser && AppConfig.indexUsers.enabled &&
@@ -79,4 +94,4 @@ export const mapStateToProps = (state: GlobalState) => {
   }
 };
 
-export default withRouter(connect<StateFromProps>(mapStateToProps)(NavBar));
+export default connect<StateFromProps>(mapStateToProps)(withRouter(NavBar));

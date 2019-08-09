@@ -196,7 +196,7 @@ describe('SearchPage', () => {
       });
     });
   });
-  
+
   describe('componentDidUpdate', () => {
     let props;
     let wrapper;
