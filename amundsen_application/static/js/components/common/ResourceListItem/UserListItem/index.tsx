@@ -19,7 +19,7 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
 
   getLink = () => {
     const { user, logging } = this.props;
-    return `/user/${user.user_id}/?index=${logging.index}&source=${logging.source}`;
+    return `/user/${user.user_id}?index=${logging.index}&source=${logging.source}`;
   };
 
   render() {
@@ -29,13 +29,9 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
         <Link className="resource-list-item user-list-item" to={ this.getLink() }>
           <Avatar name={ user.display_name } size={ 24 } round={ true } />
           <div className="content">
-            <div className="col-xs-12">
-              <div className="title-2">
+            <div className="resource-name title-2">
+              <div className="">
                 { user.display_name }
-                {
-                  !user.is_active &&
-                  <Flag text="Alumni" labelStyle='danger' />
-                }
               </div>
               <div className="body-secondary-3">
                 {
@@ -48,8 +44,17 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
                 }
               </div>
             </div>
+            <div className="resource-type hidden-xs col-sm-3 col-md-2">
+              User
+            </div>
+            {
+              !user.is_active &&
+              <div className="resource-badges hidden-xs col-sm-3 col-md-2">
+                <Flag text="Alumni" labelStyle='danger' />
+              </div>
+            }
           </div>
-          <img className="icon icon-right" />
+          <img className="icon icon-right end-icon" />
         </Link>
       </li>
     );

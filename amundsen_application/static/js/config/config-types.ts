@@ -9,6 +9,7 @@ export interface AppConfig {
   google: GoogleAnalyticsConfig;
   logoPath: string | null;
   navLinks: Array<LinkConfig>;
+  resourceConfig: any; // TODO: ttannis
   tableLineage: TableLineageConfig;
   tableProfile: TableProfileConfig;
   indexUsers: indexUsersConfig;

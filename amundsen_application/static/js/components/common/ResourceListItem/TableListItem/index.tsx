@@ -7,6 +7,10 @@ import { TableResource } from 'interfaces';
 
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 
+import { getDatabaseDisplayName, getDatabaseIconClass } from 'config/config-utils';
+
+import './styles.scss';
+
 export interface TableListItemProps {
   table: TableResource;
   logging: LoggingParams;
@@ -36,9 +40,12 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
     return (
       <li className="list-group-item">
         <Link className="resource-list-item table-list-item" to={ this.getLink() }>
-          <img className="icon icon-database icon-color" />
+
+          <img className={`icon start-icon ${getDatabaseIconClass(table.database)}`} />
+
           <div className="content">
-            <div className="col-sm-6 col-md-8">
+
+            <div className="">
               <div className="resource-name title-2">
                 <div className="truncated">
                   { `${table.schema_name}.${table.name}`}
@@ -47,12 +54,15 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
               </div>
               <div className="body-secondary-3 truncated">{ table.description }</div>
             </div>
-            <div className="resource-type hidden-xs col-sm-3 col-md-2 text-center">
-              { table.database }
+
+            <div className="resource-type">
+              { getDatabaseDisplayName(table.database) }
             </div>
             {
+              // TODO: Remove Last Updated when we complete feature parity on the table detail page
+              // hidden-xs
               hasLastUpdated &&
-              <div className="hidden-xs col-sm-3 col-md-2">
+              <div className="">
                 <div className="title-3">Last Updated</div>
                 <div className="body-secondary-3 truncated">
                   { this.getDateLabel() }
@@ -60,7 +70,9 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
               </div>
             }
           </div>
-          <img className="icon icon-right" />
+
+
+          <img className="icon icon-right end-icon" />
         </Link>
       </li>
     );

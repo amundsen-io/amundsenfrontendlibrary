@@ -1,10 +1,14 @@
 import * as React from 'react';
 import * as Avatar from 'react-avatar';
+import * as History from 'history';
 
 import { shallow } from 'enzyme';
 
 import { Link, NavLink } from 'react-router-dom';
 import { NavBar, NavBarProps, mapStateToProps } from '../';
+import { getMockRouterProps } from 'fixtures/mockRouter';
+
+import SearchBar from 'components/common/SearchBar';
 
 import { logClick } from "ducks/utilMethods";
 jest.mock('ducks/utilMethods', () => {
@@ -33,13 +37,14 @@ AppConfig.navLinks = [
 ];
 AppConfig.indexUsers.enabled = true;
 
-
 import globalState from 'fixtures/globalState';
 
 describe('NavBar', () => {
-  const setup = (propOverrides?: Partial<NavBarProps>) => {
+  const setup = (propOverrides?: Partial<NavBarProps>, location?: Partial<History.Location>) => {
+    const routerProps = getMockRouterProps<any>(null, location);
     const props: NavBarProps = {
       loggedInUser: globalState.user.loggedInUser,
+      ...routerProps,
       ...propOverrides
     };
     const wrapper = shallow<NavBar>(<NavBar {...props} />);
@@ -73,15 +78,34 @@ describe('NavBar', () => {
     });
   });
 
+  describe('renderSearchBar', () => {
+    it('returns small SearchBar when not on home page', () => {
+      const { props, wrapper } = setup(null, { pathname: "/search" });
+      const searchBar = shallow(wrapper.instance().renderSearchBar()).find(SearchBar);
+      expect(searchBar.exists()).toBe(true);
+      expect(searchBar.props()).toMatchObject({
+        size: "small",
+      });
+    });
+
+    it('returns null if conditions to render search bar are not met', () => {
+      const { props, wrapper } = setup(null, { pathname: "/" });
+      expect(wrapper.instance().renderSearchBar()).toBe(null);
+    });
+  });
+
   describe('render', () => {
     let element;
     let props;
     let wrapper;
+    let renderSearchBarSpy;
     const spy = jest.spyOn(NavBar.prototype, 'generateNavLinks');
     beforeAll(() => {
       const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
+      renderSearchBarSpy = jest.spyOn(wrapper.instance(), 'renderSearchBar');
+      wrapper.instance().forceUpdate();
     });
 
     it('renders img with AppConfig.logoPath', () => {
@@ -107,6 +131,10 @@ describe('NavBar', () => {
       expect(spy).toHaveBeenCalledWith(AppConfig.navLinks);
     });
 
+    it('calls renderSearchBar', () => {
+      expect(renderSearchBarSpy).toHaveBeenCalled();
+    });
+
     it('renders Avatar for loggedInUser', () => {
       expect(wrapper.find(Avatar).props()).toMatchObject({
         name: props.loggedInUser.display_name,
@@ -117,6 +145,10 @@ describe('NavBar', () => {
 
     it('renders a Link to the user profile if `indexUsers` is enabled', () => {
       expect(wrapper.find('#nav-bar-avatar-link').exists()).toBe(true)
+
+      expect(wrapper.find('#nav-bar-avatar-link').props()).toMatchObject({
+        to: `/user/${props.loggedInUser.user_id}?source=navbar`
+      });
     });
 
     it('does not render a Link to the user profile if `indexUsers` is disabled', () => {

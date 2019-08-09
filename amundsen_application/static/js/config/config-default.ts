@@ -25,6 +25,26 @@ const configDefault: AppConfig = {
       use_router: true,
     }
   ],
+  resourceConfig: {
+    datasets: {
+      'bigquery': {
+        displayName: 'BigQuery',
+        iconClass: 'icon-bigquery',
+      },
+      'hive': {
+        displayName: 'Hive',
+        iconClass: 'icon-hive',
+      },
+      'postgres': {
+        displayName: 'LyftPG',
+        iconClass: 'icon-postgres',
+      },
+      'redshift': {
+        displayName: 'Redshift',
+        iconClass: 'icon-redshift',
+      },
+    },
+  },
   tableLineage: {
     iconPath: 'PATH_TO_ICON',
     isBeta: false,

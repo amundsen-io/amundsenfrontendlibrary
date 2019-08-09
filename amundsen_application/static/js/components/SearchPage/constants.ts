@@ -14,5 +14,5 @@ export const SEARCH_ERROR_MESSAGE_INFIX = ' - did not match any ';
 export const SEARCH_ERROR_MESSAGE_PREFIX = 'Your search - ';
 export const SEARCH_ERROR_MESSAGE_SUFFIX = ' result';
 
-export const TABLE_RESOURCE_TITLE = 'Tables';
-export const USER_RESOURCE_TITLE = 'Users';
+export const TABLE_RESOURCE_TITLE = 'Datasets';
+export const USER_RESOURCE_TITLE = 'People';

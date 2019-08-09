@@ -4,7 +4,6 @@ import * as History from 'history';
 
 import { shallow } from 'enzyme';
 
-import AppConfig from 'config/config';
 import { ResourceType } from 'interfaces';
 import { mapDispatchToProps, mapStateToProps, SearchPage, SearchPageProps } from '../';
 import {
@@ -22,15 +21,12 @@ import {
 } from '../constants';
 
 import InfoButton from 'components/common/InfoButton';
-import TabsComponent from 'components/common/Tabs';
-
-import SearchBar from '../SearchBar';
-
 import LoadingSpinner from 'components/common/LoadingSpinner';
-
+import SearchPanel from 'components/SearchPage/SearchPanel';
 import ResourceList from 'components/common/ResourceList';
-import globalState from 'fixtures/globalState';
+
 import { searchAll, updateSearchTab } from 'ducks/search/reducer';
+import globalState from 'fixtures/globalState';
 import { getMockRouterProps } from 'fixtures/mockRouter';
 
 describe('SearchPage', () => {
@@ -200,7 +196,7 @@ describe('SearchPage', () => {
       });
     });
   });
-  
+
   describe('componentDidUpdate', () => {
     let props;
     let wrapper;
@@ -659,14 +655,16 @@ describe('SearchPage', () => {
 
     describe('if searchTerm but no results', () => {
       it('renders expected search error message', () => {
-        const { props, wrapper } = setup({ searchTerm: 'data' });
+        const searchTerm = 'data';
+        const { props, wrapper } = setup({ searchTerm });
         const testResults = {
           page_index: 0,
           results: [],
           total_results: 0,
         };
         content = shallow(wrapper.instance().getTabContent(testResults, ResourceType.table));
-        expect(content.children().at(0).text()).toEqual(`${SEARCH_ERROR_MESSAGE_PREFIX}data${SEARCH_ERROR_MESSAGE_INFIX}tables${SEARCH_ERROR_MESSAGE_SUFFIX}`);
+        const message = `${SEARCH_ERROR_MESSAGE_PREFIX}${searchTerm}${SEARCH_ERROR_MESSAGE_INFIX}${TABLE_RESOURCE_TITLE.toLowerCase()}${SEARCH_ERROR_MESSAGE_SUFFIX}`;
+        expect(content.children().at(0).text()).toEqual(message);
       });
     });
 
@@ -740,41 +738,31 @@ describe('SearchPage', () => {
   });
 
   describe('renderSearchResults', () => {
-    let props;
-    let wrapper;
-
-    beforeAll(() => {
-      const setupResult = setup();
-      props = setupResult.props;
-      wrapper = setupResult.wrapper;
+    it('renders the correct content for table resources', () => {
+      const { props, wrapper } = setup({
+        selectedTab: ResourceType.table
+      });
+      const getTabContentSpy = jest.spyOn(wrapper.instance(), 'getTabContent');
+      shallow(wrapper.instance().renderSearchResults());
+      expect(getTabContentSpy).toHaveBeenCalledWith(props.tables, ResourceType.table);
     });
 
-    it('renders TabsComponent with correct props', () => {
-      AppConfig.indexUsers.enabled = false;
-      const content = shallow(wrapper.instance().renderSearchResults());
-      const tabProps = content.find(TabsComponent).props();
-      expect(tabProps.activeKey).toEqual(props.selectedTab);
-      expect(tabProps.defaultTab).toEqual(ResourceType.table);
-      expect(tabProps.onSelect).toEqual(wrapper.instance().onTabChange);
-
-      const firstTab = tabProps.tabs[0];
-      expect(firstTab.key).toEqual(ResourceType.table);
-      expect(firstTab.title).toEqual(`${TABLE_RESOURCE_TITLE} (${props.tables.total_results})`);
-      expect(firstTab.content).toEqual(wrapper.instance().getTabContent(props.tables, firstTab.key));
+    it('renders the correct content for user resources', () => {
+      const { props, wrapper } = setup({
+        selectedTab: ResourceType.user
+      });
+      const getTabContentSpy = jest.spyOn(wrapper.instance(), 'getTabContent');
+      shallow(wrapper.instance().renderSearchResults());
+      expect(getTabContentSpy).toHaveBeenCalledWith(props.users, ResourceType.user);
     });
 
-    it('renders only one tab if people is disabled', () => {
-      AppConfig.indexUsers.enabled = false;
-      const content = shallow(wrapper.instance().renderSearchResults());
-      const tabConfig = content.find(TabsComponent).props().tabs;
-      expect(tabConfig.length).toEqual(1)
-    });
-
-    it('renders two tabs if indexUsers is enabled', () => {
-      AppConfig.indexUsers.enabled = true;
-      const content = shallow(wrapper.instance().renderSearchResults());
-      const tabConfig = content.find(TabsComponent).props().tabs;
-      expect(tabConfig.length).toEqual(2)
+    it('renders the correct content for dashboard resources', () => {
+      const { props, wrapper } = setup({
+        selectedTab: ResourceType.dashboard
+      });
+      const getTabContentSpy = jest.spyOn(wrapper.instance(), 'getTabContent');
+      shallow(wrapper.instance().renderSearchResults());
+      expect(getTabContentSpy).toHaveBeenCalledWith(props.dashboards, ResourceType.dashboard);
     });
   });
 
@@ -793,17 +781,17 @@ describe('SearchPage', () => {
       });
     });
 
-    it('renders SearchBar with correct props', () => {
-      const { props, wrapper } = setup();
-      expect(wrapper.find(SearchBar).exists()).toBeTruthy();
-    });
-
     it('calls renderSearchResults if searchTerm is not empty string', () => {
       const { props, wrapper } = setup({ searchTerm: 'test search' });
       const renderSearchResultsSpy = jest.spyOn(wrapper.instance(), 'renderSearchResults');
       wrapper.setProps(props);
       expect(renderSearchResultsSpy).toHaveBeenCalled();
     });
+  });
+
+  it('renders a search panel', () => {
+    const {props, wrapper} = setup();
+    expect(wrapper.find(SearchPanel).exists()).toBe(true);
   });
 });
 

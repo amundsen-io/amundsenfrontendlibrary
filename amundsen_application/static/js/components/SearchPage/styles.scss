@@ -1,6 +1,15 @@
 @import 'variables';
 
 .search-page {
+  display: flex;
+  min-height: calc(100% - #{$nav-bar-height + $footer-height});
+
+
+  .search-results {
+    flex-grow: 1;
+    width: 0; // Temporary hack since list-items use width %
+  }
+
   .tabs-component,
   .search-list-container {
     margin-top: 32px;
