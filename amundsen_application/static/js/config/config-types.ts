@@ -9,7 +9,7 @@ export interface AppConfig {
   google: GoogleAnalyticsConfig;
   logoPath: string | null;
   navLinks: Array<LinkConfig>;
-  resourceConfig: any; // TODO: ttannis
+  resourceConfig: ResourceConfig;
   tableLineage: TableLineageConfig;
   tableProfile: TableProfileConfig;
   indexUsers: indexUsersConfig;
@@ -46,6 +46,27 @@ interface GoogleAnalyticsConfig {
 interface BrowseConfig {
   curatedTags: Array<string>;
   showAllTags: boolean;
+}
+
+/** ResourceConfig - For customizing values related to how various resources
+ *                   are displayed in the UI.
+ *
+ * datasets - A map of each dataset id to an optional display name or icon class
+ */
+interface ResourceConfig {
+  datasets: { [id: string]: DatasetConfig }
+}
+
+/** DatasetConfig - For customizing values related to how each dataset resource
+ *                  is displayed in the UI.
+ *
+ * displayName - An optional display name for this dataset source
+ * iconClass - An option icon class to be used for this dataset source. This
+ *             value should be defined in static/css/_icons.scss
+ */
+interface DatasetConfig {
+  displayName?: string;
+  iconClass?: string;
 }
 
 /**

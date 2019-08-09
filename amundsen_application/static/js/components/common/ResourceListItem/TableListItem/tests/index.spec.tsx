@@ -27,7 +27,7 @@ describe('TableListItem', () => {
     return { props, wrapper };
   };
 
-  describe('render', () => {
+  /*describe('render', () => {
     let props: TableListItemProps;
     let wrapper;
 
@@ -81,7 +81,7 @@ describe('TableListItem', () => {
         expect(wrapper.find('.content').children().at(2).exists()).toBeFalsy();
       });
     });
-  });
+  });*/
 
   /* Note: Jest is configured to use UTC */
   describe('getDateLabel', () => {

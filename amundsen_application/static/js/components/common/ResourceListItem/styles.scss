@@ -12,9 +12,15 @@
   .sb-avatar {
     margin: auto 16px auto 0px;
   }
-
-  img.icon.end-icon {
+  
+  .icon-right {
     margin: auto 0 auto auto;
+    opacity: 0;
+  }
+
+  &:hover .icon-right,
+  &:focus .icon-right {
+    opacity: 1;
   }
 
   .resource-info {

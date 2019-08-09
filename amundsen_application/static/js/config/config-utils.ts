@@ -9,8 +9,9 @@ export const DEFAULT_DATABASE_ICON_CLASS = 'icon-database icon-color';
  */
 export function getDatabaseDisplayName(databaseId: string): string {
   const databaseConfig = AppConfig.resourceConfig.datasets[databaseId];
-  if (!databaseConfig || !databaseConfig.displayName)
+  if (!databaseConfig || !databaseConfig.displayName) {
     return databaseId;
+  }
 
   return databaseConfig.displayName;
 }
@@ -23,8 +24,9 @@ export function getDatabaseDisplayName(databaseId: string): string {
  */
 export function getDatabaseIconClass(databaseId: string): string {
   const databaseConfig = AppConfig.resourceConfig.datasets[databaseId];
-  if (!databaseConfig || !databaseConfig.iconClass)
+  if (!databaseConfig || !databaseConfig.iconClass) {
     return DEFAULT_DATABASE_ICON_CLASS;
+  }
 
   return databaseConfig.iconClass;
 }

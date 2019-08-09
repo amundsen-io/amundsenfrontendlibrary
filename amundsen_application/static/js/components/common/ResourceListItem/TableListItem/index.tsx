@@ -9,8 +9,6 @@ import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 
 import { getDatabaseDisplayName, getDatabaseIconClass } from 'config/config-utils';
 
-import './styles.scss';
-
 export interface TableListItemProps {
   table: TableResource;
   logging: LoggingParams;
@@ -65,7 +63,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
                 </div>
               </div>
             }
-            <img className="icon icon-right end-icon" />
+            <img className="icon icon-right" />
           </div>
         </Link>
       </li>

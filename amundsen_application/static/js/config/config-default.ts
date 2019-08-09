@@ -36,7 +36,7 @@ const configDefault: AppConfig = {
         iconClass: 'icon-hive',
       },
       'postgres': {
-        displayName: 'LyftPG',
+        displayName: 'Postgres',
         iconClass: 'icon-postgres',
       },
       'redshift': {

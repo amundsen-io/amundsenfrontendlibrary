@@ -53,7 +53,7 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
               !user.is_active &&
               <Flag text="Alumni" labelStyle='danger' />
             }
-            <img className="icon icon-right end-icon" />
+            <img className="icon icon-right" />
           </div>
         </Link>
       </li>
