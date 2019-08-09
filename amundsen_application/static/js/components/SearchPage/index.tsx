@@ -6,11 +6,10 @@ import * as qs from 'simple-query-string';
 import { RouteComponentProps } from 'react-router';
 import { Search } from 'history';
 
-import AppConfig from 'config/config';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import InfoButton from 'components/common/InfoButton';
 import ResourceList from 'components/common/ResourceList';
-import TabsComponent from 'components/common/Tabs';
+import SearchPanel from './SearchPanel';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { searchAll, searchResource, updateSearchTab } from 'ducks/search/reducer';
@@ -25,7 +24,6 @@ import {
 } from 'ducks/search/types';
 
 import { Resource, ResourceType } from 'interfaces';
-
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
@@ -42,6 +40,7 @@ import {
   TABLE_RESOURCE_TITLE,
   USER_RESOURCE_TITLE,
 } from './constants';
+
 
 export interface StateFromProps {
   searchTerm: string;
@@ -190,31 +189,15 @@ export class SearchPage extends React.Component<SearchPageProps> {
   };
 
   renderSearchResults = () => {
-    const tabConfig = [
-      {
-        title: `${TABLE_RESOURCE_TITLE} (${ this.props.tables.total_results })`,
-        key: ResourceType.table,
-        content: this.getTabContent(this.props.tables, ResourceType.table),
-      },
-    ];
-    if (AppConfig.indexUsers.enabled) {
-      tabConfig.push({
-        title: `Users (${ this.props.users.total_results })`,
-        key: ResourceType.user,
-        content: this.getTabContent(this.props.users, ResourceType.user),
-      })
+    switch(this.props.selectedTab) {
+      case ResourceType.table:
+        return this.getTabContent(this.props.tables, ResourceType.table);
+      case ResourceType.user:
+        return this.getTabContent(this.props.users, ResourceType.user);
+      case ResourceType.dashboard:
+        return this.getTabContent(this.props.dashboards, ResourceType.dashboard);
     }
-
-    return (
-      <div>
-        <TabsComponent
-          tabs={ tabConfig }
-          defaultTab={ ResourceType.table }
-          activeKey={ this.props.selectedTab }
-          onSelect={ this.onTabChange }
-        />
-      </div>
-    );
+    return null;
   };
 
   generateInfoText = (tab: ResourceType): string => {
@@ -297,11 +280,10 @@ export class SearchPage extends React.Component<SearchPageProps> {
   render() {
     const { searchTerm } = this.props;
     const innerContent = (
-      <div className="container search-page">
-        <div className="row">
-          <div className="col-xs-12 col-md-offset-1 col-md-10">
-            { this.renderContent() }
-          </div>
+      <div className="search-page">
+        <SearchPanel onChange={ this.onTabChange } />
+        <div className="search-results">
+          { this.renderContent() }
         </div>
       </div>
     );

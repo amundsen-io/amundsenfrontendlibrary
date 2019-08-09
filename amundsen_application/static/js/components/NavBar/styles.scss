@@ -1,15 +1,16 @@
 @import 'variables';
 
 .nav-bar {
-  height: 60px; // $nav-bar-height
+  height: $nav-bar-height;
+
+  // TODO - TEMP COLOR
+  background: #2B1B81; // indigo100
   box-shadow: 0 2px 0 -1px $gray-lightest;
   padding: 0px 32px 1px 32px;
   color: white;
   display: flex;
   flex-direction: row;
   align-items: center;
-  // TODO: Update to $nav-bar-bg-or-something
-  background-color: $brand-color-5;
 
   .title-3 {
     color: white;
