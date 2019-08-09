@@ -40,12 +40,9 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
     return (
       <li className="list-group-item">
         <Link className="resource-list-item table-list-item" to={ this.getLink() }>
-
-          <img className={`icon start-icon ${getDatabaseIconClass(table.database)}`} />
-
-          <div className="content">
-
-            <div className="">
+          <div className="resource-info">
+            <img className={`icon start-icon ${getDatabaseIconClass(table.database)}`} />
+            <div className="truncated">
               <div className="resource-name title-2">
                 <div className="truncated">
                   { `${table.schema_name}.${table.name}`}
@@ -54,25 +51,22 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
               </div>
               <div className="body-secondary-3 truncated">{ table.description }</div>
             </div>
-
-            <div className="resource-type">
-              { getDatabaseDisplayName(table.database) }
-            </div>
+          </div>
+          <div className="resource-type">
+            { getDatabaseDisplayName(table.database) }
+          </div>
+          <div className="resource-badges">
             {
-              // TODO: Remove Last Updated when we complete feature parity on the table detail page
-              // hidden-xs
               hasLastUpdated &&
-              <div className="">
+              <div>
                 <div className="title-3">Last Updated</div>
-                <div className="body-secondary-3 truncated">
+                <div className="body-secondary-3">
                   { this.getDateLabel() }
                 </div>
               </div>
             }
+            <img className="icon icon-right end-icon" />
           </div>
-
-
-          <img className="icon icon-right end-icon" />
         </Link>
       </li>
     );

@@ -27,10 +27,10 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
     return (
       <li className="list-group-item">
         <Link className="resource-list-item user-list-item" to={ this.getLink() }>
-          <Avatar name={ user.display_name } size={ 24 } round={ true } />
-          <div className="content">
-            <div className="resource-name title-2">
-              <div className="">
+          <div className="resource-info">
+            <Avatar name={ user.display_name } size={ 24 } round={ true } />
+            <div className="truncated">
+              <div className="resource-name title-2">
                 { user.display_name }
               </div>
               <div className="body-secondary-3">
@@ -44,17 +44,17 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
                 }
               </div>
             </div>
-            <div className="resource-type hidden-xs col-sm-3 col-md-2">
-              User
-            </div>
+          </div>
+          <div className="resource-type">
+            User
+          </div>
+          <div className="resource-badges">
             {
               !user.is_active &&
-              <div className="resource-badges hidden-xs col-sm-3 col-md-2">
-                <Flag text="Alumni" labelStyle='danger' />
-              </div>
+              <Flag text="Alumni" labelStyle='danger' />
             }
+            <img className="icon icon-right end-icon" />
           </div>
-          <img className="icon icon-right end-icon" />
         </Link>
       </li>
     );
