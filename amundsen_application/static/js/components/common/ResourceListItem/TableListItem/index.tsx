@@ -31,6 +31,10 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
       + `?index=${logging.index}&source=${logging.source}`;
   };
 
+  generateStartIconClass = (databaseId: string): string => {
+    return `icon start-icon ${getDatabaseIconClass(databaseId)}`;
+  };
+
   render() {
     const { table } = this.props;
     const hasLastUpdated = !!table.last_updated_epoch;
@@ -39,7 +43,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
       <li className="list-group-item">
         <Link className="resource-list-item table-list-item" to={ this.getLink() }>
           <div className="resource-info">
-            <img className={`icon start-icon ${getDatabaseIconClass(table.database)}`} />
+            <img className={this.generateStartIconClass(table.database)} />
             <div className="truncated">
               <div className="resource-name title-2">
                 <div className="truncated">
