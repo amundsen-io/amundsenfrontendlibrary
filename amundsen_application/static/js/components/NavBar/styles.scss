@@ -1,7 +1,10 @@
 @import 'variables';
 
 .nav-bar {
-  height: 48px;
+  height: $nav-bar-height;
+
+  // TODO - TEMP COLOR
+  background: #2B1B81;
   box-shadow: 0 2px 0 -1px $gray-lightest;
   padding: 8px 32px 8px 32px;
   color: $text-medium;
@@ -16,7 +19,9 @@
 
 .nav-bar a {
   text-decoration: none;
-  color: $text-medium;
+
+  // TODO - TEMP COLOR
+  color: white;
 }
 
 .nav-bar a:hover,
