@@ -15,13 +15,7 @@ on the nginx/server level. Following are the ways to setup the end-to-end authen
 ### Application Config
 Certain features of the React application import variables from an [AppConfig](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/static/js/config/config.ts#L5) object. The configuration can be customized by modifying [config-custom.ts](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/static/js/config/config-custom.ts).
 
-#### Example: Add a custom logo
-
-1. Add your logo to the folder in `amundsen_application/static/images/`
-2. Set the the `logoPath` key on the `AppConfigCustom` object in [config-custom.ts](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/static/js/config/config-custom.ts). For example Lyft uses the value `"/static/images/lyft-logo.svg"`
-3. Rebuild/redeploy. 
-   * `npm run build` to rebuild typescript files to reference the new logo image
-   * `python3 setup.py install` will updated deployed files and make the new image available on the server
+For examples of how to leverage the application configuration for specific features, please see this [extended doc](https://github.com/lyft/amundsenfrontendlibrary/blob/master/docs/application_config.md).
 
 ### Custom Fonts & Styles
 Fonts and css variables can be customized by modifying [fonts-custom.scss](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/static/css/_fonts-custom.scss) and
