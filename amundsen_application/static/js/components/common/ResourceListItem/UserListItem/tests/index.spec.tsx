@@ -36,10 +36,45 @@ describe('UserListItem', () => {
     return { props, wrapper };
   };
 
+  describe('renderUserInfo', () => {
+    let props: UserListItemProps;
+    let wrapper;
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+    });
+    it('returns null if no role_name or team_name exists on', () => {
+      const testUser = {
+        type: ResourceType.user,
+        display_name: 'firstname lastname',
+        email: 'test@test.com',
+        employee_type: 'fulltime',
+        first_name: 'firstname',
+        full_name: 'firstname lastname',
+        github_username: 'githubName',
+        is_active: false,
+        last_name: 'lastname',
+        manager_fullname: 'Test Manager',
+        profile_url: 'www.test.com',
+        role_name: null,
+        slack_id: 'www.slack.com',
+        team_name: '',
+        user_id: 'test0',
+      };
+      expect(wrapper.instance().renderUserInfo(testUser)).toBe(null);
+    });
+
+    it('returns an array of list items for user description', () => {
+      const content = wrapper.instance().renderUserInfo(props.user);
+      expect(shallow(content[0]).find('li').text()).toEqual(props.user.role_name);
+      expect(shallow(content[1]).find('li').text()).toEqual(props.user.team_name);
+    });
+  });
+
   describe('render', () => {
     let props: UserListItemProps;
     let wrapper;
-
     beforeAll(() => {
       const setupResult = setup();
       props = setupResult.props;
@@ -68,8 +103,26 @@ describe('UserListItem', () => {
         expect(resourceInfo.children().at(1).children().at(0).text()).toEqual(props.user.display_name);
       });
 
-      it('renders description', () => {
-        expect(resourceInfo.children().at(1).children().at(1).text()).toEqual(`${props.user.role_name} on ${props.user.team_name}`);
+      it('calls renderUserInfo with correct props', () => {
+        const renderUserInfoSpy = jest.spyOn(wrapper.instance(), 'renderUserInfo');
+        wrapper.instance().forceUpdate();
+        expect(renderUserInfoSpy).toHaveBeenCalledWith(props.user);
+      });
+
+      it('renders ul with list item results of renderUserInfo', () => {
+        const renderUserInfoSpy = jest.spyOn(wrapper.instance(), 'renderUserInfo').mockImplementation(() => {
+          return (<div>Mock Info</div>);
+        });
+        wrapper.instance().forceUpdate();
+        expect(wrapper.find('.resource-info').children().at(1).children().at(1).find('ul').children().html()).toEqual('<div>Mock Info</div>');
+      });
+
+      it('does not render description if renderUserInfo returns null', () => {
+        const renderUserInfoSpy = jest.spyOn(wrapper.instance(), 'renderUserInfo').mockImplementation(() => {
+          return null;
+        });
+        wrapper.instance().forceUpdate();
+        expect(wrapper.find('.resource-info').children().at(1).children().at(1).exists()).toBe(false);
       });
     });
 

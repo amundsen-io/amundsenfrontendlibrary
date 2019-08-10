@@ -44,7 +44,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
         <Link className="resource-list-item table-list-item" to={ this.getLink() }>
           <div className="resource-info">
             <img className={this.generateStartIconClass(table.database)} />
-            <div className="truncated">
+            <div className="resource-info-text">
               <div className="resource-name title-2">
                 <div className="truncated">
                   { `${table.schema_name}.${table.name}`}

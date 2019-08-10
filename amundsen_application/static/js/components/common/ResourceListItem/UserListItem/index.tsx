@@ -22,27 +22,42 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
     return `/user/${user.user_id}?index=${logging.index}&source=${logging.source}`;
   };
 
+  renderUserInfo = (user: UserResource) => {
+    const { role_name, team_name, user_id } = user;
+    if (!role_name && !team_name) {
+      return null;
+    }
+
+    const listItems = [];
+    if (!!role_name) {
+      listItems.push((<li key={`${user_id}:role_name`}>{ role_name }</li>));
+    }
+    if (!!team_name) {
+      listItems.push((<li key={`${user_id}:team_name`}>{ team_name }</li>));
+    }
+    return listItems;
+  };
+
   render() {
     const { user } = this.props;
+    const userInfo = this.renderUserInfo(user);
     return (
       <li className="list-group-item">
         <Link className="resource-list-item user-list-item" to={ this.getLink() }>
           <div className="resource-info">
             <Avatar name={ user.display_name } size={ 24 } round={ true } />
-            <div className="truncated">
+            <div className="resource-info-text">
               <div className="resource-name title-2">
                 { user.display_name }
               </div>
-              <div className="body-secondary-3">
-                {
-                  !user.role_name && user.team_name &&
-                  `${user.team_name}`
-                }
-                {
-                  user.role_name && user.team_name &&
-                  `${user.role_name} on ${user.team_name}`
-                }
-              </div>
+              {
+                userInfo &&
+                <div className="body-secondary-3 truncated">
+                  <ul>
+                    { userInfo}
+                  </ul>
+                </div>
+              }
             </div>
           </div>
           <div className="resource-type">

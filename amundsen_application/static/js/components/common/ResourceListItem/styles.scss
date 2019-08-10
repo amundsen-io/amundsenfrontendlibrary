@@ -12,7 +12,7 @@
   .sb-avatar {
     margin: auto 16px auto 0px;
   }
-  
+
   .icon-right {
     margin: auto 0 auto auto;
     opacity: 0;
@@ -28,8 +28,28 @@
     flex: 7;
     min-width: 0px;
 
+    .resource-info-text {
+      overflow: hidden;
+    }
+
     .resource-name {
       display: flex;
+    }
+
+    ul {
+      display: flex;
+      list-style-type: unset;
+      padding: 0;
+    }
+
+    li {
+      margin-right: 12px;
+      margin-left: 12px;
+
+      &:first-child {
+        list-style-type: none;
+        margin-left: 0;
+      }
     }
   }
 
