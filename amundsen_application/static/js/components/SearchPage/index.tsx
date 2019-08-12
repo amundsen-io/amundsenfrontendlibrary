@@ -7,7 +7,6 @@ import { RouteComponentProps } from 'react-router';
 import { Search } from 'history';
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import InfoButton from 'components/common/InfoButton';
 import ResourceList from 'components/common/ResourceList';
 import SearchPanel from './SearchPanel';
 
@@ -254,10 +253,6 @@ export class SearchPage extends React.Component<SearchPageProps> {
     const infoText = this.generateInfoText(tab);
     return (
       <div className="search-list-container">
-        <div className="search-list-header">
-          <label>{ title }</label>
-          <InfoButton infoText={infoText}/>
-        </div>
         <ResourceList
           slicedItems={ results.results }
           slicedItemsCount={ total_results }

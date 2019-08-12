@@ -6,16 +6,15 @@
   .list-group-item {
     border-left: none;
     border-right: none;
-    cursor: pointer;
     padding: 0;
 
     &:hover {
-      border-color: $gray;
-      background-color: $gray-lightest;
+      box-shadow: 0px 0px 1px 0px rgba(0, 0, 0, 0.12),0px 2px 3px 0px rgba(0, 0, 0, 0.16);
+      cursor: pointer;
     }
 
-    &:hover + li {
-      border-top-color: $gray;
+    &:hover + .list-group-item {
+      box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, 0.16);
     }
   }
 }

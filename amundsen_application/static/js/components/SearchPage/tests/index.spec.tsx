@@ -20,7 +20,6 @@ import {
   USER_RESOURCE_TITLE,
 } from '../constants';
 
-import InfoButton from 'components/common/InfoButton';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import SearchPanel from 'components/SearchPage/SearchPanel';
 import ResourceList from 'components/common/ResourceList';
@@ -692,16 +691,6 @@ describe('SearchPage', () => {
         generateInfoTextMockResults = 'test info text';
         jest.spyOn(wrapper.instance(), 'generateInfoText').mockImplementation(() => generateInfoTextMockResults);
         content = shallow(wrapper.instance().getTabContent(props.tables, ResourceType.table));
-      });
-
-      it('renders correct label for content', () => {
-        expect(content.children().at(0).find('label').text()).toEqual(`1-1 of 1 results`);
-      });
-
-      it('renders InfoButton with correct props', () => {
-        expect(content.children().at(0).find(InfoButton).props()).toMatchObject({
-          infoText: generateInfoTextMockResults,
-        });
       });
 
       it('renders ResourceList with correct props', () => {
