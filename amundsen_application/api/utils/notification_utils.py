@@ -110,13 +110,18 @@ def get_notification_content(*, notification_type: str, sender: str, options: Di
         },
     }
 
-    html = render_template(notification_type_dict.get(notification_type, {}).get('html'), sender=sender, options=options)
+    html = render_template(notification_type_dict.get(
+        notification_type, {}).get('html'),
+        sender=sender,
+        options=options
+    )
 
     return {
         'subject': notification_type_dict[notification_type]['subject'],
         'html': html,
     }
 
+
 def table_key_to_url(*, table_key: str) -> str:
-    split = re.split('/|\.',table_key)
+    split = re.split('/|\.', table_key)
     return '{}/table_detail/{}/{}/{}/{}'.format(app.config['FRONTEND_BASE'], split[2], split[0][:-1], split[3], split[4])
