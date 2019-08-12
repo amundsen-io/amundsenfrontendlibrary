@@ -29,6 +29,8 @@ class LocalConfig(Config):
     # If installing using the Docker bootstrap, this should be modified to the docker host ip.
     LOCAL_HOST = '0.0.0.0'
 
+    FRONTEND_BASE = 'http://localhost:5000/'
+
     SEARCHSERVICE_REQUEST_CLIENT = None
     SEARCHSERVICE_REQUEST_HEADERS = None
     SEARCHSERVICE_BASE = os.environ.get('SEARCHSERVICE_BASE',

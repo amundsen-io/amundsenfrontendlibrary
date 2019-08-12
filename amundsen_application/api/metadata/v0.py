@@ -12,7 +12,7 @@ from amundsen_application.log.action_log import action_logging
 from amundsen_application.models.user import load_user, dump_user
 
 from amundsen_application.api.utils.metadata_utils import marshall_table_partial, marshall_table_full
-from amundsen_application.api.utils.notification_utils import send_notification
+from amundsen_application.api.utils.notification_utils import send_notification, table_key_to_url
 from amundsen_application.api.utils.request_utils import get_query_param, request_metadata
 
 
@@ -158,6 +158,7 @@ def update_table_owner() -> Response:
         user = app.config['AUTH_USER_METHOD'](app)
         args = request.get_json()
         table_key = get_query_param(args, 'key')
+        resource_name = get_query_param(args, 'name')
         owner = get_query_param(args, 'owner')
 
         notification_type = None
@@ -170,7 +171,10 @@ def update_table_owner() -> Response:
 
         send_notification(
             notification_type=notification_type,
-            options={},
+            options={
+                'resource_name': resource_name,
+                'resource_url': table_key_to_url(table_key=table_key)
+            },
             recipients=[owner],
             sender=user.email
         )
