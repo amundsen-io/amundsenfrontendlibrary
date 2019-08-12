@@ -45,6 +45,10 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
     }));
   };
 
+  openDropdown = () => {
+    console.log("FUQ");
+  }
+
   formatDate = (unixEpochSeconds) => {
     return moment(unixEpochSeconds * 1000).format("MMM DD, YYYY");
   };
@@ -89,6 +93,15 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
             editable={metadata.is_editable}
             value={metadata.description}
           />
+          <div className="dropdown">
+            <div className="more-icon">
+              <img className="icon icon-more" onClick={this.openDropdown}/>
+            </div>
+            <div className="dropdown-content">
+              <a href="#">Request Column Description</a>
+              <a href="#">Edit Column Description</a>
+            </div>
+          </div>
         </div>
         {
           this.state.isExpanded &&
