@@ -9,8 +9,7 @@ from amundsen_application.models.user import dump_user, load_user
 
 from amundsen_application.api.exceptions import MailClientNotImplemented
 from amundsen_application.api.utils.request_utils import request_metadata
-
-USER_ENDPOINT = '/user'
+from amundsen_application.api.metadata.v0 import USER_ENDPOINT
 
 def send_notification(*, notification_type: str, options: Dict, recipients: List, sender: str) -> Response:
     """
@@ -31,8 +30,8 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
             sender=sender
         )
 
-        if sender in recipients:
-            recipients.remove(sender)
+        # if sender in recipients:
+        #     recipients.remove(sender)
         if len(recipients) == 0:
             logging.info('No recipients exist for notification')
             return make_response(
@@ -41,7 +40,8 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
                 }),
                 HTTPStatus.OK
             )
-
+        print("FUCK")
+        print(notification_content)
         response = mail_client.send_email(
             recipients=recipients,
             sender=sender,
