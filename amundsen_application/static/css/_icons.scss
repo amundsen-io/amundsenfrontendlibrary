@@ -26,6 +26,11 @@ img.icon {
     mask-image: url('/static/images/icons/Alert-Triangle.svg');
   }
 
+  &.icon-bigquery {
+    content: url('/static/images/icons/logo-bigquery.svg');
+    background-color: transparent;
+  }
+
    &.icon-bookmark {
     -webkit-mask-image: url('/static/images/icons/Favorite.svg');
     mask-image: url('/static/images/icons/Favorite.svg');
@@ -49,6 +54,16 @@ img.icon {
   &.icon-down {
     -webkit-mask-image: url('/static/images/icons/Down.svg');
     mask-image: url('/static/images/icons/Down.svg');
+  }
+
+  &.icon-help {
+   -webkit-mask-image: url('/static/images/icons/Help-Circle.svg');
+   mask-image: url('/static/images/icons/Help-Circle.svg');
+ }
+
+  &.icon-hive {
+    content: url('/static/images/icons/logo-hive.svg');
+    background-color: transparent;
   }
 
   &.icon-github {
@@ -76,9 +91,19 @@ img.icon {
     mask-image: url('/static/images/icons/Plus-Circle.svg');
   }
 
+  &.icon-postgres {
+    content: url('/static/images/icons/logo-postgres.svg');
+    background-color: transparent;
+  }
+
   &.icon-preview {
     -webkit-mask-image: url('/static/images/icons/Preview.svg');
     mask-image: url('/static/images/icons/Preview.svg');
+  }
+
+  &.icon-redshift {
+    content: url('/static/images/icons/logo-redshift.svg');
+    background-color: transparent;
   }
 
   &.icon-refresh {
