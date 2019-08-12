@@ -57,20 +57,20 @@ describe('TableListItem', () => {
     });
   });
 
-  describe('generateStartIconClass', () => {
+  describe('generateResourceIconClass', () => {
     let wrapper;
     beforeAll(() => {
       wrapper = setup().wrapper;
     });
     it('calls getDatabaseIconClass with given database id', () => {
       const testValue = 'noEffectOnTest';
-      const iconClass = wrapper.instance().generateStartIconClass(testValue);
+      const iconClass = wrapper.instance().generateResourceIconClass(testValue);
       expect(getDBIconClassSpy).toHaveBeenCalledWith(testValue);
     });
 
     it('returns the default classes with the correct icon class appended', () => {
-      const iconClass = wrapper.instance().generateStartIconClass('noEffectOnTest');
-      expect(iconClass).toEqual(`icon start-icon test-class`);
+      const iconClass = wrapper.instance().generateResourceIconClass('noEffectOnTest');
+      expect(iconClass).toEqual(`icon resource-icon test-class`);
     });
   });
 
@@ -96,7 +96,7 @@ describe('TableListItem', () => {
       it('renders start correct icon', () => {
         const startIcon = resourceInfo.find('img');
         expect(startIcon.exists()).toBe(true);
-        expect(startIcon.props().className).toEqual(wrapper.instance().generateStartIconClass(props.table.database));
+        expect(startIcon.props().className).toEqual(wrapper.instance().generateResourceIconClass(props.table.database));
       });
 
       it('renders table name', () => {

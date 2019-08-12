@@ -31,8 +31,8 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
       + `?index=${logging.index}&source=${logging.source}`;
   };
 
-  generateStartIconClass = (databaseId: string): string => {
-    return `icon start-icon ${getDatabaseIconClass(databaseId)}`;
+  generateResourceIconClass = (databaseId: string): string => {
+    return `icon resource-icon ${getDatabaseIconClass(databaseId)}`;
   };
 
   render() {
@@ -43,7 +43,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
       <li className="list-group-item">
         <Link className="resource-list-item table-list-item" to={ this.getLink() }>
           <div className="resource-info">
-            <img className={this.generateStartIconClass(table.database)} />
+            <img className={this.generateResourceIconClass(table.database)} />
             <div className="resource-info-text">
               <div className="resource-name title-2">
                 <div className="truncated">
