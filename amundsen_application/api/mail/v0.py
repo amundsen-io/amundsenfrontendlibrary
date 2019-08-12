@@ -86,10 +86,6 @@ def notification() -> Response:
     # TODO: Write unit tests once actual logic is implemented
     try:
         data = request.get_json()
-        _notification(
-            notification_type=data['notificationType'],
-            options=data['options']
-        )
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
@@ -100,11 +96,3 @@ def notification() -> Response:
         recipients=data['recipients'],
         sender=data['sender']
     )
-
-
-@action_logging
-def _notification(*,
-                  notification_type: str,
-                  options: str) -> None:
-    """ Logs the content of notification """
-    pass  # pragma: no cover

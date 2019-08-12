@@ -7,7 +7,7 @@ from flask import jsonify, make_response, render_template, Response
 from typing import Dict, List
 
 from amundsen_application.api.exceptions import MailClientNotImplemented
-
+from amundsen_application.log.action_log import action_logging
 
 def send_notification(*, notification_type: str, options: Dict, recipients: List, sender: str) -> Response:
     """
@@ -38,6 +38,13 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
                 HTTPStatus.OK
             )
 
+        _send_notification(
+            notification_type=notification_type,
+            options=options,
+            recipients=recipients,
+            sender=sender
+        )
+
         response = mail_client.send_email(
             recipients=recipients,
             sender=sender,
@@ -65,6 +72,12 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
         logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
+
+@action_logging
+def _send_notification(*, notification_type: str, options: Dict, recipients: List, sender: str) -> None:
+    """ Logs the content of the feedback form """
+    pass  # pragma: no cover
+    
 
 def get_mail_client():  # type: ignore
     """
