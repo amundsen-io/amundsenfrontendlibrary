@@ -322,7 +322,8 @@ class MetadataTest(unittest.TestCase):
                 '/api/metadata/v0/update_table_owner',
                 json={
                     'key': 'db://cluster.schema/table',
-                    'owner': 'test'
+                    'owner': 'test',
+                    'name': 'schema.table'
                 }
             )
             self.assertEqual(response.status_code, HTTPStatus.OK)
