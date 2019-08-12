@@ -9,6 +9,7 @@ from typing import Dict, List
 from amundsen_application.api.exceptions import MailClientNotImplemented
 from amundsen_application.log.action_log import action_logging
 
+
 def send_notification(*, notification_type: str, options: Dict, recipients: List, sender: str) -> Response:
     """
     Sends a notification via email to a given list of recipients
@@ -77,7 +78,7 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
 def _send_notification(*, notification_type: str, options: Dict, recipients: List, sender: str) -> None:
     """ Logs the content of the feedback form """
     pass  # pragma: no cover
-    
+
 
 def get_mail_client():  # type: ignore
     """
