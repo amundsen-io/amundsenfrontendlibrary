@@ -73,7 +73,7 @@ export default class Feedback extends React.Component<FeedbackProps, FeedbackSta
   render() {
     return (
         <>
-          <button className={`btn btn-flat-icon feedback-icon ${this.state.isOpen ? 'is-open' : ''}`} onClick={this.toggle}>
+          <button className={`btn btn-flat-icon feedback-icon${this.state.isOpen ? ' is-open' : ''}`} onClick={this.toggle}>
             <img className='icon icon-help'/>
           </button>
           {
