@@ -11,6 +11,7 @@ import { logClick } from 'ducks/utilMethods';
 
 import { LoggedInUser } from 'interfaces';
 
+import Feedback from 'components/Feedback';
 import SearchBar from 'components/common/SearchBar';
 
 import './styles.scss';
@@ -66,17 +67,18 @@ export class NavBar extends React.Component<NavBarProps> {
             { this.renderSearchBar() }
             <div id="nav-bar-right" className="ml-auto nav-bar-right">
               {this.generateNavLinks(AppConfig.navLinks)}
+              <Feedback />
               {
                 this.props.loggedInUser && AppConfig.indexUsers.enabled &&
-                <Link id="nav-bar-avatar-link" to={`/user/${this.props.loggedInUser.user_id}?source=navbar`}>
-                  <div id="nav-bar-avatar">
+                <Link id="nav-bar-avatar-link" className="nav-bar-avatar-link" to={`/user/${this.props.loggedInUser.user_id}?source=navbar`}>
+                  <div id="nav-bar-avatar" className="nav-bar-avatar">
                     <Avatar name={this.props.loggedInUser.display_name} size={32} round={true} />
                   </div>
                 </Link>
               }
               {
                 this.props.loggedInUser && !AppConfig.indexUsers.enabled &&
-                <div id="nav-bar-avatar">
+                <div id="nav-bar-avatar" className="nav-bar-avatar">
                   <Avatar name={this.props.loggedInUser.display_name} size={32} round={true} />
                 </div>
               }

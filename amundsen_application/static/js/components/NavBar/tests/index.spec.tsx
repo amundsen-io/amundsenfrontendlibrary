@@ -8,6 +8,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { NavBar, NavBarProps, mapStateToProps } from '../';
 import { getMockRouterProps } from 'fixtures/mockRouter';
 
+import Feedback from 'components/Feedback';
 import SearchBar from 'components/common/SearchBar';
 
 import { logClick } from "ducks/utilMethods";
@@ -133,6 +134,10 @@ describe('NavBar', () => {
 
     it('calls renderSearchBar', () => {
       expect(renderSearchBarSpy).toHaveBeenCalled();
+    });
+
+    it('renders Feedback component', () => {
+      expect(wrapper.find(Feedback).exists()).toBe(true);
     });
 
     it('renders Avatar for loggedInUser', () => {

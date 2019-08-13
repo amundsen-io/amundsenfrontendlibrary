@@ -11,7 +11,6 @@ import DocumentTitle from 'react-document-title';
 
 import AnnouncementPage from './components/AnnouncementPage';
 import BrowsePage from './components/BrowsePage';
-import Feedback from './components/Feedback';
 import Footer from './components/Footer';
 import HomePage from './components/HomePage'
 import NavBar from './components/NavBar';
@@ -46,7 +45,6 @@ ReactDOM.render(
             <Route path="/404" component={NotFoundPage} />
             <Route path="/" component={HomePage} />
           </Switch>
-          <Feedback />
           <Footer />
         </div>
       </BrowserRouter>
