@@ -78,7 +78,7 @@ export default class Feedback extends React.Component<FeedbackProps, FeedbackSta
           </button>
           {
             this.state.isOpen &&
-            <div className="feedback-component expanded">
+            <div className="feedback-component">
               <div className="feedback-header">
                 <div className="title">
                   {this.props.title.toUpperCase()}

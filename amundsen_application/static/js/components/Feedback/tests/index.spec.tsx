@@ -108,7 +108,7 @@ describe('Feedback', () => {
       });
 
       it('renders wrapper with correct className', () => {
-        expect(feedbackComponent.props().className).toEqual('feedback-component expanded');
+        expect(feedbackComponent.props().className).toEqual('feedback-component');
       });
 
       describe('correct feedback-header', () => {
