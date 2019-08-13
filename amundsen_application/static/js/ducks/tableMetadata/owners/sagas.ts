@@ -12,7 +12,7 @@ export function* updateTableOwnerWorker(action: UpdateTableOwnerRequest): SagaIt
   const state = yield select();
   const tableData = state.tableMetadata.tableData;
   try {
-    yield all(metadataUpdateTableOwner(payload.updateArray, tableData.key));
+    yield all(metadataUpdateTableOwner(payload.updateArray, tableData.key, `${tableData.schema}.${tableData.table_name}`));
     const newOwners = yield call(metadataTableOwners, tableData.key);
     yield put(updateTableOwnerSuccess(newOwners));
     if (payload.onSuccess) {

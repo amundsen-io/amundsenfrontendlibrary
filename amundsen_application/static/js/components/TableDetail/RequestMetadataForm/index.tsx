@@ -113,7 +113,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
 
 export const mapStateToProps = (state: GlobalState) => {
   const userEmail = state.user.loggedInUser.email;
-  const tableName = state.tableMetadata.tableData.schema + '.' + state.tableMetadata.tableData.table_name;
+  const tableName = `${state.tableMetadata.tableData.schema}.${state.tableMetadata.tableData.table_name}`;
   const ownerObj = state.tableMetadata.tableOwners.owners;
   const requestIsOpen = state.notification.requestIsOpen;
   return {

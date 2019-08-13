@@ -92,7 +92,7 @@ export function metadataTableOwners(tableKey: string) {
 }
 
 /* TODO: Typing this method generates redux-saga related type errors that need more dedicated debugging */
-export function metadataUpdateTableOwner(updateArray, tableKey: string) {
+export function metadataUpdateTableOwner(updateArray, tableKey: string, resourceName: string) {
   const updatePayloads = updateArray.map((item) => {
     return {
       method: item.method,
@@ -100,6 +100,7 @@ export function metadataUpdateTableOwner(updateArray, tableKey: string) {
       data: {
         key: tableKey,
         owner: item.id,
+        name: resourceName,
       },
     }
   });

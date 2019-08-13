@@ -1,4 +1,5 @@
 import logging
+import re
 
 from http import HTTPStatus
 
@@ -24,6 +25,7 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
 
         notification_content = get_notification_content(
             notification_type=notification_type,
+            sender=sender,
             options=options
         )
 
@@ -80,7 +82,7 @@ def get_mail_client():  # type: ignore
     return mail_client
 
 
-def get_notification_content(*, notification_type: str, options: Dict) -> Dict:
+def get_notification_content(*, notification_type: str, sender: str, options: Dict) -> Dict:
     """
     Returns a subject and a rendered html email template based off
     the input notification_type and data provided
@@ -90,26 +92,46 @@ def get_notification_content(*, notification_type: str, options: Dict) -> Dict:
     """
     notification_type_dict = {
         'added': {
-            'subject': 'You have been added',
+            'subject': 'You are now an owner of {}'.format(options['resource_name']),
             'html': 'notifications/notification_added.html'
         },
         'removed': {
-            'subject': 'You have been removed',
+            'subject': 'You have been removed as an owner of {}'.format(options['resource_name']),
             'html': 'notifications/notification_removed.html'
         },
         'edited': {
-            'subject': 'You have been edited',
+            'subject': 'Your dataset {}\'s metadata has been edited'.format(options['resource_name']),
             'html': 'notifications/notification_edited.html'
         },
         'requested': {
-            'subject': 'You have been requested',
+            'subject': 'Request for metadata on {}'.format(options['resource_name']),
             'html': 'notifications/notification_requested.html'
         },
     }
 
-    html = render_template(notification_type_dict.get(notification_type, {}).get('html'), form_data=options)
+    html = render_template(notification_type_dict.get(
+        notification_type, {}).get('html'),
+        sender=sender,
+        options=options
+    )
 
     return {
         'subject': notification_type_dict[notification_type]['subject'],
         'html': html,
     }
+
+
+def table_key_to_url(*, table_key: str) -> str:
+    """
+    Takes a table key and transforms it to a usable URL
+    :param table_key: table key string
+    :return: table url string
+    """
+    split = re.split('/|\.', table_key)
+    return '{}/table_detail/{}/{}/{}/{}'.format(
+        app.config['FRONTEND_BASE'],
+        split[2],
+        split[0][:-1],
+        split[3],
+        split[4]
+    )

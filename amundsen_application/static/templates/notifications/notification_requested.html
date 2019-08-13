@@ -1,3 +1,16 @@
 <!doctype html>
-
-<p>You have been requested!</p>
+Hello,<br/>
+<br/>
+{% if options.description_requested and options.fields_requested %}
+{{ sender }} is trying to use <a href="{{ options.resource_url }}">{{ options.resource_name }}</a>, better table and column descriptions would be very helpful.
+{% elif options.description_requested %}
+{{ sender }} is trying to use <a href="{{ options.resource_url }}">{{ options.resource_name }}</a>, a better table description would be very helpful.
+{% elif options.fields_requested %}
+{{ sender }} is trying to use <a href="{{ options.resource_url }}">{{ options.resource_name }}</a>, better column descriptions would be very helpful.
+{% endif %}
+<br/><br/>
+{{ sender }} has also included a message with this request for information:<br/>
+{{ options.comment }}<br/>
+<br/>
+Thanks,<br/>
+Amundsen team
