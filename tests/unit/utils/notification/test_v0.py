@@ -15,5 +15,6 @@ class MetadataTest(unittest.TestCase):
         Test successful conversion between key and url
         :return:
         """
-        url = table_key_to_url(table_key=self.mock_table_key)
-        self.assertEqual('{}/table_detail/cluster/db/schema/table'.format(local_app.config['FRONTEND_BASE']), url)
+        with local_app.app_context():
+            url = table_key_to_url(table_key=self.mock_table_key)
+            self.assertEqual('{}/table_detail/cluster/db/schema/table'.format(local_app.config['FRONTEND_BASE']), url)
