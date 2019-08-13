@@ -19,6 +19,11 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
     :param sender: email of notification sender
     :return: Response
     """
+    @action_logging
+    def _log_send_notification(*, notification_type: str, options: Dict, recipients: List, sender: str) -> None:
+        """ Logs the content of a sent notification"""
+        pass  # pragma: no cover
+
     # TODO: write tests
     try:
         mail_client = get_mail_client()
@@ -39,7 +44,7 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
                 HTTPStatus.OK
             )
 
-        _send_notification(
+        _log_send_notification(
             notification_type=notification_type,
             options=options,
             recipients=recipients,
@@ -72,12 +77,6 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
         message = 'Encountered exception: ' + str(e1)
         logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
-
-
-@action_logging
-def _send_notification(*, notification_type: str, options: Dict, recipients: List, sender: str) -> None:
-    """ Logs the content of a sent notification"""
-    pass  # pragma: no cover
 
 
 def get_mail_client():  # type: ignore
