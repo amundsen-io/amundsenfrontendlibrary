@@ -1,26 +1,27 @@
 import * as React from 'react';
 
-import { ResourceType } from 'interfaces/Resources';
-import ResourceSelector from 'components/SearchPage/ResourceSelector';
-
 import './styles.scss';
 
 export interface SearchPanelProps {
-  onChange: (tab: ResourceType) => void;
+  resourceChild: React.ReactNode;
+  // TODO: Required when we have filtering
+  filterChild?: React.ReactNode;
 }
 
-// TODO - Consider converting to React.SFC if logic does not get added
-export default class SearchPanel extends React.Component<SearchPanelProps> {
-
-  constructor(props) {
-    super(props);
-  }
-
-  render = () => {
-    return (
-      <div className="search-control-panel">
-        <ResourceSelector onChange={ this.props.onChange } />
+const SearchPanel: React.SFC<SearchPanelProps> = ({ resourceChild, filterChild }) => {
+  return (
+    <div className="search-control-panel">
+      <div className="section">
+        { resourceChild }
       </div>
-    );
-  }
+      { // TODO: Remove conditional rendering when we have filtering
+        filterChild &&
+        <div className="section">
+          { filterChild }
+        </div>
+      }
+    </div>
+  );
 };
+
+export default SearchPanel;

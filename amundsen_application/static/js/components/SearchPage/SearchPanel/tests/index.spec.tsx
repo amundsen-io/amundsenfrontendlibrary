@@ -2,15 +2,17 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 import SearchPanel, { SearchPanelProps } from '../';
-import ResourceSelector from 'components/SearchPage/ResourceSelector';
 
 describe('SearchPanel', () => {
+  const resourceChild = (<div>I am a resource selector</div>);
+  const filterChild = (<div>I am a a set of filters</div>);
   const setup = (propOverrides?: Partial<SearchPanelProps>) => {
-    const props = {
-      onChange: jest.fn(),
+    const props: SearchPanelProps = {
+      resourceChild,
+      filterChild,
       ...propOverrides
     };
-    const wrapper = shallow<SearchPanel>(<SearchPanel {...props} />);
+    const wrapper = shallow(<SearchPanel {...props} />);
     return { props, wrapper };
   };
 
@@ -24,9 +26,12 @@ describe('SearchPanel', () => {
       wrapper = setupResult.wrapper;
     });
 
-    it('renders a ResourceSelector', () => {
-      expect(wrapper.find(ResourceSelector).exists()).toBe(true)
+    it('renders resource section', () => {
+      expect(wrapper.find('.resource-section').childAt(0)).toBe(resourceChild);
+    });
+
+    it('renders filter section', () => {
+      expect(wrapper.find('.filter-section').childAt(0)).toBe(filterChild);
     });
   });
 });
-
