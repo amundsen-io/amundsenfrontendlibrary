@@ -76,7 +76,7 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
 
 @action_logging
 def _send_notification(*, notification_type: str, options: Dict, recipients: List, sender: str) -> None:
-    """ Logs the content of the feedback form """
+    """ Logs the content of a sent notification"""
     pass  # pragma: no cover
 
 
