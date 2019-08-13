@@ -17,9 +17,6 @@ import {
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
-// TODO: Delete after request component is merged in
-import { sendNotification } from 'ducks/notification/api/v0';
-import { NotificationType } from 'interfaces/Notifications';
 
 export interface FeedbackProps {
   content?: React.SFC<any>,
@@ -56,18 +53,6 @@ export default class Feedback extends React.Component<FeedbackProps, FeedbackSta
 
   toggle = () => {
     this.setState({ isOpen: !this.state.isOpen });
-    // TODO: Delete after request component is merged in
-    sendNotification(
-      ['rlieu@lyft.com'],
-      'rlieu@lyft.com',
-      NotificationType.ADDED,
-      {
-        resource_name: 'redshift.dimension_applicants',
-        resource_url: 'https://amundsen.lyft.net/table_detail/gold/hive/redshift/dimension_applicants',
-        description_requested: false,
-        fields_requested: false,
-      }
-    )
   }
 
   changeType = (type: FeedbackType) => (e) =>  {
