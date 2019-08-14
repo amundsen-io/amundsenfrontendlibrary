@@ -87,19 +87,20 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
             <img className={'icon ' + (this.state.isExpanded ? 'icon-up' : 'icon-down')}/>
           }
         </div>
-        <div className={'body-secondary-3 description ' + (isExpandable && !this.state.isExpanded ? 'truncated' : '')}>
-          <ColumnDescEditableText
-            columnIndex={this.props.index}
-            editable={metadata.is_editable}
-            value={metadata.description}
-          />
+        <div className='desc-container'>
+          <div className={'body-secondary-3 description ' + (isExpandable && !this.state.isExpanded ? 'truncated' : '')}>
+            <ColumnDescEditableText
+              columnIndex={this.props.index}
+              editable={metadata.is_editable}
+              value={metadata.description}
+            />
+          </div>
           <div className="dropdown">
             <div className="more-icon">
               <img className="icon icon-more" onClick={this.openDropdown}/>
             </div>
             <div className="dropdown-content">
               <a href="#">Request Column Description</a>
-              <a href="#">Edit Column Description</a>
             </div>
           </div>
         </div>
