@@ -6,7 +6,7 @@
     display: block;
     width: 100%;
 
-    input {
+    input:not([disabled]) {
       cursor: pointer;
     }
   }

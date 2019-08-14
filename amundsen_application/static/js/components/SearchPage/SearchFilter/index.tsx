@@ -53,34 +53,36 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
     super(props);
   }
 
-  render = () => {
+  createCheckBoxItem = (item: SearchFilterInput, categoryId: string, key: string) => {
     const dummyMethod = () => { console.log('Dispatched') };
-    return this.props.checkBoxSections.map((section, index) => {
-      const { categoryId, inputProperties, title } = section;
-      return (
-        <div key={`section:${index}`} className="search-filter-section">
-          <div className="title-2">{ title }</div>
-          {
-            inputProperties.map((item, index) => {
-              const { checked, count, labelText, value } = item;
-              return (
-                <CheckBoxItem
-                  key={`item:${categoryId}:${index}`}
-                  checked={ checked }
-                  disabled={ count === 0 }
-                  name={ categoryId }
-                  value={ value }
-                  onChange={ dummyMethod }>
-                    <span className="subtitle-2">{ labelText }</span>
-                    <span className="body-secondary-3 pull-right">{ count }</span>
-                </CheckBoxItem>
-              );
-            })
-          }
-        </div>
-      )
-    });
-  }
+    const { checked, count, labelText, value } = item;
+    return (
+      <CheckBoxItem
+        key={key}
+        checked={ checked }
+        disabled={ count === 0 }
+        name={ categoryId }
+        value={ value }
+        onChange={ dummyMethod }>
+          <span className="subtitle-2">{ labelText }</span>
+          <span className="body-secondary-3 pull-right">{ count }</span>
+      </CheckBoxItem>
+    );
+  };
+
+  createCheckBoxSection = (section: SearchFilterSection, key: string) => {
+    const { categoryId, inputProperties, title } = section;
+    return (
+      <div key={key} className="search-filter-section">
+        <div className="title-2">{ title }</div>
+        { inputProperties.map((item, index) => this.createCheckBoxItem(item, categoryId, `item:${categoryId}:${index}`)) }
+      </div>
+    );
+  };
+
+  render = () => {
+    return this.props.checkBoxSections.map((section, index) => this.createCheckBoxSection(section, `section:${index}`));
+  };
 };
 
 /*
@@ -160,7 +162,7 @@ export const mapStateToProps = (state: GlobalState) => {
   TODO: Dispatch a real action
 */
 export const mapDispatchToProps = (dispatch: any) => {
-  //return bindActionCreators({ onFilterChange } , dispatch);
+  // return bindActionCreators({ onFilterChange } , dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps, OwnProps>(mapStateToProps)(SearchFilter);

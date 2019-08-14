@@ -61,14 +61,14 @@ describe('ResourceSelector', () => {
     it('renders the table resource option', () => {
       renderRadioOptionSpy.mockClear();
       wrapper.instance().render();
-      expect(renderRadioOptionSpy).toHaveBeenCalledWith(tableOptionConfig);
+      expect(renderRadioOptionSpy).toHaveBeenCalledWith(tableOptionConfig, 0);
     });
 
     it('renders the user resource option when enabled', () => {
       AppConfig.indexUsers.enabled = true;
       renderRadioOptionSpy.mockClear();
       wrapper.instance().render();
-      expect(renderRadioOptionSpy).toHaveBeenCalledWith(userOptionConfig);
+      expect(renderRadioOptionSpy).toHaveBeenCalledWith(userOptionConfig, 1);
     });
 
     it('does not render user resource option when disabled', () => {
