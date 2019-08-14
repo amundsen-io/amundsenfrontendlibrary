@@ -15,6 +15,11 @@ import {
   UpdateSearchTab,
   UpdateSearchTabRequest,
   UserSearchResults,
+  SubmitSearchRequest,
+  SubmitSearch,
+  SetResourceRequest,
+  SetResource,
+  SetPageIndexRequest, SetPageIndex, LoadPreviousSearchRequest, LoadPreviousSearch, UrlDidUpdateRequest, UrlDidUpdate,
 } from './types';
 
 export interface SearchReducerState {
@@ -64,6 +69,40 @@ export function searchResourceFailure(): SearchResourceResponse {
 export function searchReset(): SearchAllReset {
   return {
     type: SearchAll.RESET,
+  };
+};
+
+export function submitSearch(searchTerm: string): SubmitSearchRequest {
+  return {
+    payload: { searchTerm },
+    type: SubmitSearch.REQUEST,
+  };
+};
+
+export function setResource(resource: ResourceType): SetResourceRequest {
+  return {
+    payload: { resource },
+    type: SetResource.REQUEST,
+  };
+};
+
+export function setPageIndex(pageIndex: number): SetPageIndexRequest {
+  return {
+    payload: { pageIndex },
+    type: SetPageIndex.REQUEST,
+  };
+};
+
+export function loadPreviousSearch(): LoadPreviousSearchRequest{
+  return {
+    type: LoadPreviousSearch.REQUEST,
+  };
+};
+
+export function urlDidUpdate(urlSearch: string): UrlDidUpdateRequest{
+  return {
+    payload: { urlSearch },
+    type: UrlDidUpdate.REQUEST,
   };
 };
 
