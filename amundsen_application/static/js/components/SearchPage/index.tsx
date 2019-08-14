@@ -9,7 +9,6 @@ import { Search } from 'history';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import ResourceList from 'components/common/ResourceList';
 import ResourceSelector from './ResourceSelector';
-import SearchFilter from './SearchFilter'; // TODO: Remove before merge
 import SearchPanel from './SearchPanel';
 
 import { GlobalState } from 'ducks/rootReducer';
@@ -276,14 +275,11 @@ export class SearchPage extends React.Component<SearchPageProps> {
 
   render() {
     const { searchTerm } = this.props;
-    const resourceSelector = <ResourceSelector onChange={ this.onTabChange } />;
-    const filterChild = <SearchFilter />; // TODO: Remove before merge
     const innerContent = (
       <div className="search-page">
-        <SearchPanel
-          filterChild={ filterChild } // TODO: Remove before merge
-          resourceChild={ resourceSelector }
-        />
+        <SearchPanel>
+          <ResourceSelector onChange={ this.onTabChange } />
+        </SearchPanel>
         <div className="search-results">
           { this.renderContent() }
         </div>

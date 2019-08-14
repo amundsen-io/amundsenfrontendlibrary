@@ -53,7 +53,8 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
     super(props);
   }
 
-  render() {
+  render = () => {
+    const dummyMethod = () => { console.log('Dispatched') };
     return this.props.checkBoxSections.map((section, index) => {
       const { categoryId, inputProperties, title } = section;
       return (
@@ -69,7 +70,7 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
                   disabled={ count === 0 }
                   name={ categoryId }
                   value={ value }
-                  onChange={ () => { console.log('Dispatched') } }>
+                  onChange={ dummyMethod }>
                     <span className="subtitle-2">{ labelText }</span>
                     <span className="body-secondary-3 pull-right">{ count }</span>
                 </CheckBoxItem>
@@ -159,8 +160,7 @@ export const mapStateToProps = (state: GlobalState) => {
   TODO: Dispatch a real action
 */
 export const mapDispatchToProps = (dispatch: any) => {
-  const onFilterChange = () => { console.log('Dispatched') };
-  return bindActionCreators({ onFilterChange } , dispatch);
+  //return bindActionCreators({ onFilterChange } , dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps, OwnProps>(mapStateToProps)(SearchFilter);

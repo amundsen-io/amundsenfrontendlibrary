@@ -7,8 +7,6 @@ import { GlobalState } from 'ducks/rootReducer';
 import { DashboardSearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
 import { ResourceType } from 'interfaces/Resources';
 
-import './styles.scss'
-
 export interface StateFromProps {
   selectedTab: ResourceType,
   tables: TableSearchResults;
