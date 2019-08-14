@@ -1,13 +1,7 @@
 @import 'variables';
 
-.desc-container {
-  display: flex;
-  justify-content: space-between;
-}
-
 .editable-container {
   display: flex;
-  flex: 1;
   font-size: 16px;
   color: $text-medium;
 

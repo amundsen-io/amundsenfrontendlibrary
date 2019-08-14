@@ -45,10 +45,6 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
     }));
   };
 
-  openDropdown = () => {
-    console.log("FUQ");
-  }
-
   formatDate = (unixEpochSeconds) => {
     return moment(unixEpochSeconds * 1000).format("MMM DD, YYYY");
   };
@@ -97,7 +93,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
           </div>
           <div className="dropdown">
             <div className="more-icon">
-              <img className="icon icon-more" onClick={this.openDropdown}/>
+              <img className="icon icon-more"/>
             </div>
             <div className="dropdown-content">
               <a href="#">Request Column Description</a>

@@ -13,15 +13,26 @@
 
   &:hover {
     .more-icon {
-      display: block;
+      visibility: visible;
     }
   }
 
   .description {
     max-width: 100%;
     min-width: 0;
+  }
+
+  // TODO - move to common styles	
+  .truncated,	
+  .truncated .editable-text {	
+    white-space: nowrap;	
+    overflow: hidden;	
+    text-overflow: ellipsis;	
+  }
+
+  .desc-container {
     display: flex;
-    flex: 1;
+    justify-content: space-between;
   }
 
   .column-info {
@@ -83,7 +94,7 @@
   }
   
   .more-icon {
-    display: none;
+    visibility: hidden;
     border-radius: 50%;
     height: 22px;
     padding: 4px;
