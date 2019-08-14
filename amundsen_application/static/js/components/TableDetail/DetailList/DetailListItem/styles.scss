@@ -14,7 +14,6 @@
   .description {
     max-width: 100%;
     min-width: 0;
-    padding-right: 32px;
   }
 
   // TODO - move to common styles
@@ -93,6 +92,7 @@
       visibility: visible;
     }
   }
+
   .open {
     .more-icon {
       box-shadow: none;
@@ -105,36 +105,25 @@
     visibility: hidden;
     border-radius: 50%;
     height: 22px;
-    padding: 4px;
-    vertical-align: top;
     width: 22px;
+    padding: 4px;
     margin-right: 5px;
     &:hover,
     &:focus {
       background-color: $gray-lighter;
     }
-
-      .icon {
+    .icon {
       height: 14px;
       -webkit-mask-size: 14px;
       mask-size: 14px;
       width: 14px;
       margin: 0;
-
-        &.icon-more {
-        &,
-        &:hover,
-        &:focus {
-          background-color: $gray-light !important;
-        }
-      }
     }
   }
 
   .dropdown-menu {
     box-shadow: 0 0 24px -2px rgba(0, 0, 0, .2);
     border-radius: 5px;
-    background-color: $white;
     border-style: none;
     padding: 0;
     overflow: hidden;
