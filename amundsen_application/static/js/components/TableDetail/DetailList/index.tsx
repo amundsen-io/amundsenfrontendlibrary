@@ -1,5 +1,5 @@
 import * as React from 'react';
-import DetailListItem  from './DetailListItem';
+import DetailListItem from './DetailListItem';
 
 import { TableColumn } from 'interfaces';
 

@@ -33,7 +33,7 @@ interface DetailListItemState {
   isExpanded: boolean;
 }
 
-export class DetailListItem extends React.Component<DetailListItemProps, DetailListItemState> {
+class DetailListItem extends React.Component<DetailListItemProps, DetailListItemState> {
   public static defaultProps: Partial<DetailListItemProps> = {
     data: {} as TableColumn,
     index: null,
@@ -113,7 +113,7 @@ export class DetailListItem extends React.Component<DetailListItemProps, DetailL
               value={metadata.description}
             />
           </div>
-          <Dropdown pullRight={true} id="dropdown-custom-1">
+          <Dropdown pullRight={true}>
             <Dropdown.Toggle noCaret={true} className="more-icon">
               <img className="icon icon-more"/>
             </Dropdown.Toggle>
