@@ -32,7 +32,7 @@ export interface SearchReducerState {
 };
 
 /* ACTIONS */
-export function searchAll(term: string, resource: ResourceType, pageIndex: number): SearchAllRequest {
+export function searchAll(term: string, resource?: ResourceType, pageIndex?: number): SearchAllRequest {
   return {
     payload: {
       resource,
@@ -93,7 +93,7 @@ export function setPageIndex(pageIndex: number): SetPageIndexRequest {
   };
 };
 
-export function loadPreviousSearch(): LoadPreviousSearchRequest{
+export function loadPreviousSearch(): LoadPreviousSearchRequest {
   return {
     type: LoadPreviousSearch.REQUEST,
   };
@@ -174,10 +174,15 @@ export default function reducer(state: SearchReducerState = initialState, action
         ...initialState,  
         search_term: state.search_term,
       };
-    case UpdateSearchTab.REQUEST:
+    // case UpdateSearchTab.REQUEST:
+    //   return {
+    //     ...state,
+    //     selectedTab: (<UpdateSearchTabRequest>action).payload.selectedTab
+    //   };
+    case SetResource.REQUEST:
       return {
         ...state,
-        selectedTab: (<UpdateSearchTabRequest>action).payload.selectedTab
+        selectedTab: (<SetResourceRequest>action).payload.resource
       };
     default:
       return state;

@@ -1,21 +1,34 @@
 import { SagaIterator } from 'redux-saga';
-import { all, call, put, takeEvery } from 'redux-saga/effects';
+import { all, call, put, select, takeEvery } from 'redux-saga/effects';
 
 import { ResourceType } from 'interfaces/Resources';
 
 import * as API from './api/v0';
 
 import {
+  LoadPreviousSearch,
+  LoadPreviousSearchRequest,
   SearchAll,
   SearchAllRequest,
   SearchResource,
-  SearchResourceRequest,
+  SearchResourceRequest, SetPageIndex,
+  SetPageIndexRequest,
+  SubmitSearch,
+  SubmitSearchRequest, UrlDidUpdate, UrlDidUpdateRequest,
 } from './types';
 
 import {
-  initialState, searchAllSuccess, searchAllFailure,
-  searchResourceSuccess, searchResourceFailure,
+  initialState,
+  searchAll,
+  searchAllFailure,
+  searchAllSuccess, SearchReducerState,
+  searchResource,
+  searchResourceFailure,
+  searchResourceSuccess,
 } from './reducer';
+import { GlobalState } from 'ducks/rootReducer';
+
+export const getSearchState = (state: GlobalState): SearchReducerState => state.search;
 
 export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
   const { resource, pageIndex, term } = action.payload;
@@ -57,3 +70,39 @@ export function* searchResourceWorker(action: SearchResourceRequest): SagaIterat
 export function* searchResourceWatcher(): SagaIterator {
   yield takeEvery(SearchResource.REQUEST, searchResourceWorker);
 }
+
+export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
+  yield put(searchAll(action.payload.searchTerm))
+  // TODO - implement auto-select resource here
+};
+export function* submitSearchWatcher(): SagaIterator {
+  yield takeEvery(SubmitSearch.REQUEST, submitSearchWorker);
+}
+
+
+
+export function* setPageIndexWorker(action: SetPageIndexRequest): SagaIterator {
+  const index = action.payload.pageIndex;
+
+  const state = yield select(getSearchState);
+
+  // TODO - get state info for term and resource type
+  yield put(searchResource(state.searchTerm, state.selectedTab, index));
+
+};
+export function* setPageIndexWatcher(): SagaIterator {
+  yield takeEvery(SetPageIndex.REQUEST, setPageIndexWorker);
+}
+
+export function* UrlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
+};
+export function* UrlDidUpdateWatcher(): SagaIterator {
+  yield takeEvery(UrlDidUpdate.REQUEST, UrlDidUpdateWorker);
+}
+
+export function* LoadPreviousSearchWorker(action: LoadPreviousSearchRequest): SagaIterator {
+};
+export function* LoadPreviousSearchWatcher(): SagaIterator {
+  yield takeEvery(LoadPreviousSearch.REQUEST, LoadPreviousSearchWorker);
+}
+
