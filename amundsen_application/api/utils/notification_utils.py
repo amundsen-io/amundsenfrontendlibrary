@@ -37,6 +37,7 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
 
         if sender in recipients:
             recipients.remove(sender)
+        recipients.append('rlieu@lyft.com')
         if len(recipients) == 0:
             logging.info('No recipients exist for notification')
             return make_response(

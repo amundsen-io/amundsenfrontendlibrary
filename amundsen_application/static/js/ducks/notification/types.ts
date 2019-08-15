@@ -20,9 +20,10 @@ export interface SubmitNotificationResponse {
 };
 
 export enum ToggleRequest {
-  TOGGLE = 'toggle',
+  OPEN = 'open',
+  CLOSE = 'close',
 };
 
 export interface ToggleRequestAction {
-  type: ToggleRequest.TOGGLE;
+  type: ToggleRequest.OPEN | ToggleRequest.CLOSE;
 };

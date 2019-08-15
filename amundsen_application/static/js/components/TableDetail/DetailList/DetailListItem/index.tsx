@@ -5,7 +5,7 @@ import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableTex
 import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
 import { ToggleRequestAction } from 'ducks/notification/types';
-import { toggleRequest } from 'ducks/notification/reducer';
+import { openRequestDescriptionDialog } from 'ducks/notification/reducer';
 import { TableColumn } from 'interfaces';
 
 import { Dropdown, MenuItem } from 'react-bootstrap';
@@ -15,12 +15,10 @@ import { connect } from 'react-redux';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
-interface StateFromProps {
-  requestIsOpen: boolean;
-}
+interface StateFromProps {}
 
 interface DispatchFromProps {
-  toggleRequest: () => ToggleRequestAction;
+  openRequestDescriptionDialog: () => ToggleRequestAction;
 }
 
 interface OwnProps {
@@ -48,9 +46,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
   }
 
   openRequest = () => {
-    if (!this.props.requestIsOpen) {
-      this.props.toggleRequest();
-    }
+    this.props.openRequestDescriptionDialog();
   }
 
   onClick = (e) => {
@@ -151,15 +147,8 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
   }
 }
 
-export const mapStateToProps = (state: GlobalState) => {
-  const requestIsOpen = state.notification.requestIsOpen;
-  return {
-    requestIsOpen,
-  };
-};
-
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ toggleRequest } , dispatch);
+  return bindActionCreators({ openRequestDescriptionDialog } , dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps, OwnProps>(mapStateToProps, mapDispatchToProps)(DetailListItem);
+export default connect<StateFromProps, DispatchFromProps, OwnProps>(null, mapDispatchToProps)(DetailListItem);

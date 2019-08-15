@@ -4,16 +4,14 @@ import './styles.scss';
 import { GlobalState } from 'ducks/rootReducer';
 import { connect } from 'react-redux';
 import { ToggleRequestAction } from 'ducks/notification/types';
-import { toggleRequest } from 'ducks/notification/reducer';
+import { openRequestDescriptionDialog } from 'ducks/notification/reducer';
 import { bindActionCreators } from 'redux';
 import { REQUEST_DESCRIPTION } from './constants';
 
-interface StateFromProps {
-  requestIsOpen: boolean;
-}
+interface StateFromProps {}
 
 export interface DispatchFromProps {
-  toggleRequest: () => ToggleRequestAction;
+  openRequestDescriptionDialog: () => ToggleRequestAction;
 }
 
 export type OpenRequestDescriptionProps = StateFromProps & DispatchFromProps;
@@ -28,9 +26,7 @@ export class OpenRequestDescription extends React.Component<OpenRequestDescripti
   }
 
   openRequest = () => {
-    if (!this.props.requestIsOpen) {
-      this.props.toggleRequest();
-    }
+    this.props.openRequestDescriptionDialog();
   }
 
   render() {
@@ -45,15 +41,8 @@ export class OpenRequestDescription extends React.Component<OpenRequestDescripti
   }
 }
 
-export const mapStateToProps = (state: GlobalState) => {
-  const requestIsOpen = state.notification.requestIsOpen;
-  return {
-    requestIsOpen,
-  };
-};
-
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ toggleRequest } , dispatch);
+  return bindActionCreators({ openRequestDescriptionDialog } , dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(OpenRequestDescription);
+export default connect<StateFromProps, DispatchFromProps>(null, mapDispatchToProps)(OpenRequestDescription);
