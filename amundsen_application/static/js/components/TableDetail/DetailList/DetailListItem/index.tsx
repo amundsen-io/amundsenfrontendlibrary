@@ -2,17 +2,18 @@ import * as React from 'react';
 import moment from 'moment-timezone';
 
 import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableText';
+import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
+import { ToggleRequestAction } from 'ducks/notification/types';
+import { toggleRequest } from 'ducks/notification/reducer';
 import { TableColumn } from 'interfaces';
+
 import { Dropdown, MenuItem } from 'react-bootstrap';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
-import { ToggleRequestAction } from 'ducks/notification/types';
-import { toggleRequest } from 'ducks/notification/reducer';
-import { GlobalState } from 'ducks/rootReducer';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
 interface StateFromProps {
   requestIsOpen: boolean;
