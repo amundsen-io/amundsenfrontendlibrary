@@ -7,6 +7,7 @@ import AppConfig from 'config/config';
 import { LinkConfig } from 'config/config-types';
 import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
+import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import { LoggedInUser } from 'interfaces';
 
@@ -53,11 +54,14 @@ export class NavBar extends React.Component<NavBarProps> {
               {this.generateNavLinks(AppConfig.navLinks)}
               {
                 this.props.loggedInUser && AppConfig.indexUsers.enabled &&
-                <Link id="nav-bar-avatar-link" to={`/user/${this.props.loggedInUser.user_id}`}>
-                  <div id="nav-bar-avatar">
+                <Dropdown pullRight={true}>
+                  <Dropdown.Toggle noCaret={true} className="avatar-dropdown">
                     <Avatar name={this.props.loggedInUser.display_name} size={32} round={true} />
-                  </div>
-                </Link>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <MenuItem href={`/user/${this.props.loggedInUser.user_id}`}>My Profile</MenuItem>
+                  </Dropdown.Menu>
+                </Dropdown>
               }
               {
                 this.props.loggedInUser && !AppConfig.indexUsers.enabled &&
