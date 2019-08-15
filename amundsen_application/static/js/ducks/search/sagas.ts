@@ -1,5 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { all, call, put, select, takeEvery } from 'redux-saga/effects';
+import browserHistory from 'utils/browser-history';
 
 import { ResourceType } from 'interfaces/Resources';
 
@@ -50,6 +51,7 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
       dashboards: dashboardResponse.dashboards || initialState.dashboards,
     };
     yield put(searchAllSuccess(searchAllResponse));
+    browserHistory.push('/search?blablbalbal');
   } catch (e) {
     yield put(searchAllFailure());
   }
@@ -79,30 +81,26 @@ export function* submitSearchWatcher(): SagaIterator {
   yield takeEvery(SubmitSearch.REQUEST, submitSearchWorker);
 }
 
-
-
 export function* setPageIndexWorker(action: SetPageIndexRequest): SagaIterator {
   const index = action.payload.pageIndex;
-
+  // TODO - get better typing data
   const state = yield select(getSearchState);
-
-  // TODO - get state info for term and resource type
-  yield put(searchResource(state.searchTerm, state.selectedTab, index));
-
+  yield put(searchResource(state.search_term, state.selectedTab, index));
 };
 export function* setPageIndexWatcher(): SagaIterator {
   yield takeEvery(SetPageIndex.REQUEST, setPageIndexWorker);
 }
 
-export function* UrlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
+export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
 };
-export function* UrlDidUpdateWatcher(): SagaIterator {
-  yield takeEvery(UrlDidUpdate.REQUEST, UrlDidUpdateWorker);
+export function* urlDidUpdateWatcher(): SagaIterator {
+  yield takeEvery(UrlDidUpdate.REQUEST, urlDidUpdateWorker);
 }
 
-export function* LoadPreviousSearchWorker(action: LoadPreviousSearchRequest): SagaIterator {
+export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): SagaIterator {
 };
-export function* LoadPreviousSearchWatcher(): SagaIterator {
-  yield takeEvery(LoadPreviousSearch.REQUEST, LoadPreviousSearchWorker);
+export function* loadPreviousSearchWatcher(): SagaIterator {
+  yield takeEvery(LoadPreviousSearch.REQUEST, loadPreviousSearchWorker);
 }
 
+// https://github.com/ReactTraining/react-router/issues/3972#issuecomment-264805667

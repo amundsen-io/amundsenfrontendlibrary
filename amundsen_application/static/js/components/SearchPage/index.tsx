@@ -14,14 +14,14 @@ import TabsComponent from 'components/common/Tabs';
 import SearchBar from './SearchBar';
 
 import { GlobalState } from 'ducks/rootReducer';
-import { searchAll, searchResource, updateSearchTab } from 'ducks/search/reducer';
+import { searchAll, searchResource, setPageIndex, setResource } from 'ducks/search/reducer';
 import {
   DashboardSearchResults,
   SearchAllRequest,
   SearchResourceRequest,
-  SearchResults,
+  SearchResults, SetPageIndexRequest,
+  SetResourceRequest,
   TableSearchResults,
-  UpdateSearchTabRequest,
   UserSearchResults,
 } from 'ducks/search/types';
 
@@ -56,7 +56,8 @@ export interface StateFromProps {
 export interface DispatchFromProps {
   searchAll: (term: string, selectedTab: ResourceType, pageIndex: number) => SearchAllRequest;
   searchResource: (term: string, resource: ResourceType, pageIndex: number) => SearchResourceRequest;
-  updateSearchTab: (selectedTab: ResourceType) => UpdateSearchTabRequest;
+  setResource: (resource: ResourceType) => SetResourceRequest;
+  setPageIndex: (pageIndex: number) => SetPageIndexRequest;
 }
 
 export type SearchPageProps = StateFromProps & DispatchFromProps & RouteComponentProps<any>;
@@ -101,7 +102,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
       this.props.searchAll(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index);
 
     } else if (this.shouldUpdateTab(nextUrlParams, prevUrlParams)) {
-      this.props.updateSearchTab(nextUrlParams.tab)
+      // this.props.updateSearchTab(nextUrlParams.tab)
 
     } else if (this.shouldUpdatePageIndex(nextUrlParams, prevUrlParams)) {
       this.props.searchResource(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index);
@@ -172,12 +173,14 @@ export class SearchPage extends React.Component<SearchPageProps> {
   };
 
   onPaginationChange = (index: number): void => {
-    this.updatePageUrl(this.props.searchTerm, this.props.selectedTab, index);
+    // this.updatePageUrl(this.props.searchTerm, this.props.selectedTab, index);
+    this.props.setPageIndex(index);
   };
 
   onTabChange = (tab: ResourceType): void => {
     const newTab = this.getSelectedTabByResourceType(tab);
-    this.updatePageUrl(this.props.searchTerm, newTab, this.getPageIndexByResourceType(newTab));
+    this.props.setResource(newTab);
+    // this.updatePageUrl(this.props.searchTerm, newTab, this.getPageIndexByResourceType(newTab));
   };
 
   updatePageUrl = (searchTerm: string, tab: ResourceType, pageIndex: number, replace: boolean = false): void => {
@@ -330,7 +333,7 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ searchAll, searchResource, updateSearchTab }, dispatch);
+  return bindActionCreators({ searchAll, searchResource, setResource, setPageIndex }, dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(SearchPage);

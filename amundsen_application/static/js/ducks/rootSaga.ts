@@ -12,10 +12,17 @@ import {
 
 // FeedbackForm
 import { submitFeedbackWatcher } from './feedback/sagas';
-
-// SearchPage
+// PopularTables
 import { getPopularTablesWatcher } from './popularTables/sagas';
-import { searchAllWatcher, searchResourceWatcher } from './search/sagas';
+// SearchPage
+import {
+  loadPreviousSearchWatcher,
+  searchAllWatcher,
+  searchResourceWatcher,
+  setPageIndexWatcher,
+  submitSearchWatcher,
+  urlDidUpdateWatcher
+} from './search/sagas';
 
 // TableDetail
 import { updateTableOwnerWatcher } from './tableMetadata/owners/sagas';
@@ -50,6 +57,11 @@ export default function* rootSaga() {
     // SearchPage
     searchAllWatcher(),
     searchResourceWatcher(),
+    submitSearchWatcher(),
+    setPageIndexWatcher(),
+    urlDidUpdateWatcher(),
+    loadPreviousSearchWatcher(),
+    // PopularTables
     getPopularTablesWatcher(),
     // Tags
     getAllTagsWatcher(),

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
 
@@ -14,9 +15,15 @@ import {
   SYNTAX_ERROR_SPACING_SUFFIX,
 } from './constants';
 import { GlobalState } from 'ducks/rootReducer';
+import { submitSearch } from 'ducks/search/reducer';
+import { SubmitSearchRequest } from 'ducks/search/types';
 
 export interface StateFromProps {
   searchTerm: string;
+}
+
+export interface DispatchFromProps {
+  submitSearch: (searchTerm: string) => SubmitSearchRequest;
 }
 
 export interface OwnProps {
@@ -24,7 +31,7 @@ export interface OwnProps {
   subText?: string;
 }
 
-export type SearchBarProps = StateFromProps & OwnProps & RouteComponentProps<any>;
+export type SearchBarProps = StateFromProps & DispatchFromProps & OwnProps & RouteComponentProps<any>;
 
 interface SearchBarState {
   subTextClassName: string;
@@ -61,11 +68,13 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     const searchTerm = this.state.searchTerm.trim();
     event.preventDefault();
     if (this.isFormValid(searchTerm)) {
-      let pathName = '/';
-      if (searchTerm !== '') {
-        pathName = `/search?searchTerm=${searchTerm}`;
-      }
-      this.props.history.push(pathName);    
+      this.props.submitSearch(searchTerm);
+
+      // let pathName = '/';
+      // if (searchTerm !== '') {
+      //   pathName = `/search?searchTerm=${searchTerm}`;
+      // }
+      // this.props.history.push(pathName);
     }
   };
 
@@ -126,4 +135,9 @@ export const mapStateToProps = (state: GlobalState) => {
   };
 };
 
-export default connect<StateFromProps>(mapStateToProps, null)(withRouter(SearchBar));
+export const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators({ submitSearch }, dispatch);
+}
+
+
+export default connect<StateFromProps>(mapStateToProps, mapDispatchToProps)(withRouter(SearchBar));
