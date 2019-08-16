@@ -361,7 +361,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
                   value={ data.table_description }
                   editable={ data.is_editable }
                 />
-                <OpenRequestDescription/>
+                { !data.table_description && <OpenRequestDescription/> }
               </div>
               <div className="col-xs-12 col-md-5 float-md-right col-lg-4">
                 <EntityCard sections={ this.createEntityCardSections() }/>
