@@ -29,7 +29,7 @@ import {
   SearchReducerState,
   searchResource,
   searchResourceFailure,
-  searchResourceSuccess,
+  searchResourceSuccess, setPageIndex, setResource,
 } from './reducer';
 import { GlobalState } from 'ducks/rootReducer';
 import { updateSearchUrl } from 'utils/navigation-utils';
@@ -56,11 +56,10 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
       dashboards: dashboardResponse.dashboards || initialState.dashboards,
       isLoading: false,
     };
-    const pageIndex = getPageIndex(searchAllResponse, resource);
-
-    updateSearchUrl(term, resource, pageIndex);
-
+    const index = getPageIndex(searchAllResponse, resource);
     yield put(searchAllSuccess(searchAllResponse));
+    updateSearchUrl({ term, resource, index, }, true);
+
   } catch (e) {
     yield put(searchAllFailure());
   }
@@ -83,10 +82,12 @@ export function* searchResourceWatcher(): SagaIterator {
 }
 
 export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
-  yield put(searchAll(action.payload.searchTerm, ResourceType.table, 0));
+  const { searchTerm } = action.payload;
+
+  yield put(searchAll(searchTerm, ResourceType.table, 0));
 
   const state = yield select(getSearchState);
-  updateSearchUrl(state.search_term);
+  updateSearchUrl({ term: searchTerm });
 };
 export function* submitSearchWatcher(): SagaIterator {
   yield takeEvery(SubmitSearch.REQUEST, submitSearchWorker);
@@ -95,7 +96,11 @@ export function* submitSearchWatcher(): SagaIterator {
 export function* setResourceWorker(action: SetResourceRequest): SagaIterator {
   const resource = action.payload.resource;
   const state = yield select(getSearchState);
-  updateSearchUrl(state.search_term, resource, getPageIndex(state, resource));
+  updateSearchUrl({
+    resource,
+    term: state.search_term,
+    index: getPageIndex(state, resource),
+  });
 };
 export function* setResourceWatcher(): SagaIterator {
   yield takeEvery(SetResource.REQUEST, setResourceWorker);
@@ -106,6 +111,11 @@ export function* setPageIndexWorker(action: SetPageIndexRequest): SagaIterator {
   const index = action.payload.pageIndex;
   const state = yield select(getSearchState);
   yield put(searchResource(state.search_term, state.selectedTab, index));
+  updateSearchUrl({
+    term: state.search_term,
+    resource: state.selectedTab,
+    index: index,
+  });
 };
 export function* setPageIndexWatcher(): SagaIterator {
   yield takeEvery(SetPageIndex.REQUEST, setPageIndexWorker);
@@ -113,14 +123,17 @@ export function* setPageIndexWatcher(): SagaIterator {
 
 export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
   const { urlSearch } = action.payload;
-  const { searchTerm, resource, pageIndex } = qs.parse(urlSearch);
+  const { term, resource, index} = qs.parse(urlSearch);
 
   const state = yield select(getSearchState);
-  // TODO - fill out other cases
-  if (!!searchTerm && state.search_term !== searchTerm) {
-    yield put(searchAll(searchTerm, resource, pageIndex));
+  if (!!term && state.search_term !== term) {
+    yield put(searchAll(term, resource, index));
+  } else if (!!resource && resource !== state.selectedTab) {
+    // TODO - this is creating an extra history entry
+    yield put(setResource(resource))
+  } else if (!!index && index!= getPageIndex(state, resource)) {
+    yield put(setPageIndex(index));
   }
-
 };
 export function* urlDidUpdateWatcher(): SagaIterator {
   yield takeEvery(UrlDidUpdate.REQUEST, urlDidUpdateWorker);
@@ -128,8 +141,11 @@ export function* urlDidUpdateWatcher(): SagaIterator {
 
 export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): SagaIterator {
   const state = yield select(getSearchState);
-  const pageIndex = getPageIndex(state, state.selectedTab);
-  updateSearchUrl(state.search_term, state.selectedTab, pageIndex);
+  updateSearchUrl({
+    term: state.search_term,
+    resource: state.selectedTab,
+    index: getPageIndex(state, state.selectedTab),
+  });
 };
 export function* loadPreviousSearchWatcher(): SagaIterator {
   yield takeEvery(LoadPreviousSearch.REQUEST, loadPreviousSearchWorker);
