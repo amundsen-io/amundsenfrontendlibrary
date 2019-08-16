@@ -127,6 +127,9 @@ export function* urlDidUpdateWatcher(): SagaIterator {
 }
 
 export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): SagaIterator {
+  const state = yield select(getSearchState);
+  const pageIndex = getPageIndex(state, state.selectedTab);
+  updateSearchUrl(state.search_term, state.selectedTab, pageIndex);
 };
 export function* loadPreviousSearchWatcher(): SagaIterator {
   yield takeEvery(LoadPreviousSearch.REQUEST, loadPreviousSearchWorker);

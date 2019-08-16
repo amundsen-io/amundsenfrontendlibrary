@@ -136,6 +136,9 @@ export const initialState: SearchReducerState = {
   },
 };
 
+
+// TODO - should URL updates happen in saga or reducer?
+// TODO - should auto-select tabs happen in saga or reducer?
 export default function reducer(state: SearchReducerState = initialState, action): SearchReducerState {
   switch (action.type) {
     case SearchAll.RESET:
