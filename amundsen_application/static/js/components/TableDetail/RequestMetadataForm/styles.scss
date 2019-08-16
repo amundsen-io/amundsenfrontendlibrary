@@ -1,5 +1,9 @@
 @import 'variables';
 
+input[type="email"] {
+  color: $text-medium !important;
+}
+
 .request-component {
   box-shadow: 0 0 24px -2px rgba(0, 0, 0, .2);
   bottom: 75px;
@@ -7,7 +11,7 @@
   left: 25px;
   z-index: 6;
   background-color: white;
-  border-radius: 0 0 6px 6px;
+  border-radius: 6px;
   height: auto;
   min-height: 450px;
   padding: 32px;
