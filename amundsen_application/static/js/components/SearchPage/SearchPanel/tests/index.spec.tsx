@@ -1,32 +1,41 @@
 import * as React from 'react';
 
 import { shallow } from 'enzyme';
-import SearchPanel, { SearchPanelProps } from '../';
-import ResourceSelector from 'components/SearchPage/ResourceSelector';
+import SearchPanel from '../';
 
 describe('SearchPanel', () => {
-  const setup = (propOverrides?: Partial<SearchPanelProps>) => {
-    const props = {
-      onChange: jest.fn(),
-      ...propOverrides
-    };
-    const wrapper = shallow<SearchPanel>(<SearchPanel {...props} />);
-    return { props, wrapper };
+  const resourceChild = (<div>I am a resource selector</div>);
+  const filterChild = (<div>I am a a set of filters</div>);
+  const setup = () => {
+    const wrapper = shallow(
+      <SearchPanel>
+        { resourceChild }
+        { filterChild }
+      </SearchPanel>
+    );
+    return { wrapper };
   };
 
   describe('render', () => {
-    let props;
     let wrapper;
 
     beforeAll(() => {
-      const setupResult = setup();
-      props = setupResult.props;
-      wrapper = setupResult.wrapper;
+      wrapper = setup().wrapper;
     });
+    it('renders itself with correct class', () => {
+      expect(wrapper.hasClass('search-control-panel')).toBe(true);
+    })
 
-    it('renders a ResourceSelector', () => {
-      expect(wrapper.find(ResourceSelector).exists()).toBe(true)
+    it('renders its children with correct class', () => {
+      wrapper.children().forEach((child) => {
+        expect(child.props().className).toEqual('section');
+      });
+    })
+
+    it('renders expected children', () => {
+      const children = wrapper.children();
+      expect(children.at(0).contains(resourceChild)).toBe(true);
+      expect(children.at(1).contains(filterChild)).toBe(true);
     });
   });
 });
-

@@ -8,6 +8,7 @@ import { Search } from 'history';
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import ResourceList from 'components/common/ResourceList';
+import ResourceSelector from './ResourceSelector';
 import SearchPanel from './SearchPanel';
 
 import { GlobalState } from 'ducks/rootReducer';
@@ -276,7 +277,9 @@ export class SearchPage extends React.Component<SearchPageProps> {
     const { searchTerm } = this.props;
     const innerContent = (
       <div className="search-page">
-        <SearchPanel onChange={ this.onTabChange } />
+        <SearchPanel>
+          <ResourceSelector onChange={ this.onTabChange } />
+        </SearchPanel>
         <div className="search-results">
           { this.renderContent() }
         </div>

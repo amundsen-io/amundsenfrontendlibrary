@@ -7,7 +7,6 @@ import { GlobalState } from 'ducks/rootReducer';
 import { DashboardSearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
 import { ResourceType } from 'interfaces/Resources';
 
-
 export interface StateFromProps {
   selectedTab: ResourceType,
   tables: TableSearchResults;
@@ -36,9 +35,9 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
     this.props.onChange(event.target.value);
   };
 
-  renderRadioOption = (option: ResourceOptionConfig) => {
+  renderRadioOption = (option: ResourceOptionConfig, index: number) => {
     return (
-      <div className="radio">
+      <div key={`resource-radio-item:${index}`} className="radio">
         <label className="radio-label">
           <input
             type="radio"
@@ -73,7 +72,7 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
       <>
         <div className="title-2">Resource</div>
         {
-          resourceOptions.map((option) => this.renderRadioOption(option))
+          resourceOptions.map((option, index) => this.renderRadioOption(option, index))
         }
       </>
     );

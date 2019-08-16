@@ -3,7 +3,16 @@
 .search-control-panel {
   border-right: 4px solid $gray-light;
   flex: 0 0 270px;
-  padding: 32px 24px 32px 32px;
+  display: flex;
+  flex-direction: column;
+
+  .section {
+    padding: 32px 24px 32px 32px;
+
+    &:not(:first-child) {
+      border-top: 2px solid $gray-light;
+    }
+  }
 
   .radio {
     margin-top: 16px;
