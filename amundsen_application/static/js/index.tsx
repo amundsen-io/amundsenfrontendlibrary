@@ -16,6 +16,7 @@ import Footer from './components/Footer';
 import HomePage from './components/HomePage'
 import NavBar from './components/NavBar';
 import NotFoundPage from './components/NotFoundPage';
+import PreferencesPage from './components/PreferencesPage';
 import Preloader from 'components/common/Preloader';
 import ProfilePage from './components/ProfilePage';
 import SearchPage from './components/SearchPage'; 
@@ -43,6 +44,7 @@ ReactDOM.render(
             <Route path="/browse" component={BrowsePage} />
             <Route path="/search" component={SearchPage} />
             <Route path="/user/:userId" component={ProfilePage} />
+            <Route path="/preferences" component={PreferencesPage} />
             <Route path="/404" component={NotFoundPage} />
             <Route path="/" component={HomePage} />
           </Switch>
