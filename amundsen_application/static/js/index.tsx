@@ -23,7 +23,7 @@ import TableDetail from './components/TableDetail';
 
 import rootReducer from './ducks/rootReducer';
 import rootSaga from './ducks/rootSaga';
-import browserHistory from 'utils/browser-history';
+import { BrowserHistory } from 'utils/navigation-utils';
 
 const sagaMiddleware = createSagaMiddleware();
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise, sagaMiddleware)(createStore);
@@ -34,7 +34,7 @@ sagaMiddleware.run(rootSaga);
 ReactDOM.render(
   <DocumentTitle title="Amundsen - Data Discovery Portal">
     <Provider store={store}>
-      <Router history={browserHistory}>
+      <Router history={BrowserHistory}>
         <div id="main">
           <Preloader/>
           <NavBar />

@@ -19,7 +19,7 @@ import {
   loadPreviousSearchWatcher,
   searchAllWatcher,
   searchResourceWatcher,
-  setPageIndexWatcher,
+  setPageIndexWatcher, setResourceWatcher,
   submitSearchWatcher,
   urlDidUpdateWatcher
 } from './search/sagas';
@@ -55,12 +55,13 @@ export default function* rootSaga() {
     // FeedbackForm
     submitFeedbackWatcher(),
     // SearchPage
+    loadPreviousSearchWatcher(),
     searchAllWatcher(),
     searchResourceWatcher(),
     submitSearchWatcher(),
     setPageIndexWatcher(),
+    setResourceWatcher(),
     urlDidUpdateWatcher(),
-    loadPreviousSearchWatcher(),
     // PopularTables
     getPopularTablesWatcher(),
     // Tags

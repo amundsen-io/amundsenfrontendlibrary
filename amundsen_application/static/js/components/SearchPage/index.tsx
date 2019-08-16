@@ -14,14 +14,14 @@ import TabsComponent from 'components/common/Tabs';
 import SearchBar from './SearchBar';
 
 import { GlobalState } from 'ducks/rootReducer';
-import { searchAll, searchResource, setPageIndex, setResource } from 'ducks/search/reducer';
+import { searchAll, searchResource, setPageIndex, setResource, urlDidUpdate } from 'ducks/search/reducer';
 import {
   DashboardSearchResults,
   SearchAllRequest,
   SearchResourceRequest,
   SearchResults, SetPageIndexRequest,
   SetResourceRequest,
-  TableSearchResults,
+  TableSearchResults, UrlDidUpdateRequest,
   UserSearchResults,
 } from 'ducks/search/types';
 
@@ -58,6 +58,7 @@ export interface DispatchFromProps {
   searchResource: (term: string, resource: ResourceType, pageIndex: number) => SearchResourceRequest;
   setResource: (resource: ResourceType) => SetResourceRequest;
   setPageIndex: (pageIndex: number) => SetPageIndexRequest;
+  urlDidUpdate: (urlSearch: string) => UrlDidUpdateRequest;
 }
 
 export type SearchPageProps = StateFromProps & DispatchFromProps & RouteComponentProps<any>;
@@ -70,64 +71,71 @@ export class SearchPage extends React.Component<SearchPageProps> {
   }
 
   componentDidMount() {
-    const urlSearchParams = this.getUrlParams(this.props.location.search);
-    const globalStateParams = this.getGlobalStateParams();
+    this.props.urlDidUpdate(this.props.location.search);
 
-    if (this.shouldUpdateFromGlobalState(urlSearchParams, globalStateParams)) {
-       this.updatePageUrl(globalStateParams.term, globalStateParams.tab, globalStateParams.index, true);
-
-    } else if (this.shouldUpdateFromUrlParams(urlSearchParams, globalStateParams)) {
-      this.props.searchAll(urlSearchParams.term, urlSearchParams.tab, urlSearchParams.index);
-      this.updatePageUrl(urlSearchParams.term, urlSearchParams.tab, urlSearchParams.index, true);
-    }
+    // const urlSearchParams = this.getUrlParams(this.props.location.search);
+    // const globalStateParams = this.getGlobalStateParams();
+    //
+    // if (this.shouldUpdateFromGlobalState(urlSearchParams, globalStateParams)) {
+    //    this.updatePageUrl(globalStateParams.term, globalStateParams.tab, globalStateParams.index, true);
+    //
+    // } else if (this.shouldUpdateFromUrlParams(urlSearchParams, globalStateParams)) {
+    //   this.props.searchAll(urlSearchParams.term, urlSearchParams.tab, urlSearchParams.index);
+    //   this.updatePageUrl(urlSearchParams.term, urlSearchParams.tab, urlSearchParams.index, true);
+    // }
   }
 
-  shouldUpdateFromGlobalState(urlParams, globalStateParams): boolean {
-    return urlParams.term === '' && globalStateParams.term !== '';
-  }
-
-  shouldUpdateFromUrlParams(urlParams, globalStateParams): boolean {
-    return urlParams.term !== '' && urlParams.term !== globalStateParams.term;
-  }
+  // shouldUpdateFromGlobalState(urlParams, globalStateParams): boolean {
+  //   return urlParams.term === '' && globalStateParams.term !== '';
+  // }
+  //
+  // shouldUpdateFromUrlParams(urlParams, globalStateParams): boolean {
+  //   return urlParams.term !== '' && urlParams.term !== globalStateParams.term;
+  // }
 
   componentDidUpdate(prevProps: SearchPageProps) {
-    const nextUrlParams = this.getUrlParams(this.props.location.search);
-    const prevUrlParams = this.getUrlParams(prevProps.location.search);
-
-    // If urlParams and globalState are synced, no need to update
-    if (this.isUrlStateSynced(nextUrlParams)) return;
-
-    // Capture any updates in URL
-    if (this.shouldUpdateSearchTerm(nextUrlParams, prevUrlParams)) {
-      this.props.searchAll(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index);
-
-    } else if (this.shouldUpdateTab(nextUrlParams, prevUrlParams)) {
-      // this.props.updateSearchTab(nextUrlParams.tab)
-
-    } else if (this.shouldUpdatePageIndex(nextUrlParams, prevUrlParams)) {
-      this.props.searchResource(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index);
+    if (this.props.location.search !== prevProps.location.search) {
+      this.props.urlDidUpdate(this.props.location.search);
     }
+
+
+    // const nextUrlParams = this.getUrlParams(this.props.location.search);
+    // const prevUrlParams = this.getUrlParams(prevProps.location.search);
+    //
+    // // If urlParams and globalState are synced, no need to update
+    // if (this.isUrlStateSynced(nextUrlParams)) return;
+    //
+    // // Capture any updates in URL
+    // if (this.shouldUpdateSearchTerm(nextUrlParams, prevUrlParams)) {
+    //   this.props.searchAll(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index);
+    //
+    // } else if (this.shouldUpdateTab(nextUrlParams, prevUrlParams)) {
+    //   // this.props.updateSearchTab(nextUrlParams.tab)
+    //
+    // } else if (this.shouldUpdatePageIndex(nextUrlParams, prevUrlParams)) {
+    //   this.props.searchResource(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index);
+    // }
   }
 
-  isUrlStateSynced(urlParams): boolean {
-    const globalStateParams = this.getGlobalStateParams();
-
-    return urlParams.term === globalStateParams.term &&
-      urlParams.tab === globalStateParams.tab &&
-      urlParams.index === globalStateParams.index;
-  }
-
-  shouldUpdateSearchTerm(nextUrlParams, prevUrlParams): boolean {
-    return nextUrlParams.term !== prevUrlParams.term;
-  }
-
-  shouldUpdateTab(nextUrlParams, prevUrlParams): boolean {
-    return nextUrlParams.tab !== prevUrlParams.tab;
-  }
-
-  shouldUpdatePageIndex(nextUrlParams, prevUrlParams): boolean {
-    return nextUrlParams.index !== prevUrlParams.index;
-  }
+  // isUrlStateSynced(urlParams): boolean {
+  //   const globalStateParams = this.getGlobalStateParams();
+  //
+  //   return urlParams.term === globalStateParams.term &&
+  //     urlParams.tab === globalStateParams.tab &&
+  //     urlParams.index === globalStateParams.index;
+  // }
+  //
+  // shouldUpdateSearchTerm(nextUrlParams, prevUrlParams): boolean {
+  //   return nextUrlParams.term !== prevUrlParams.term;
+  // }
+  //
+  // shouldUpdateTab(nextUrlParams, prevUrlParams): boolean {
+  //   return nextUrlParams.tab !== prevUrlParams.tab;
+  // }
+  //
+  // shouldUpdatePageIndex(nextUrlParams, prevUrlParams): boolean {
+  //   return nextUrlParams.index !== prevUrlParams.index;
+  // }
 
   getSelectedTabByResourceType = (newTab: ResourceType): ResourceType => {
     switch(newTab) {
@@ -140,24 +148,24 @@ export class SearchPage extends React.Component<SearchPageProps> {
     }
   };
 
-  getUrlParams(search: Search) {
-    const urlParams = qs.parse(search);
-    const { searchTerm, pageIndex, selectedTab } = urlParams;
-    const index = parseInt(pageIndex, 10);
-    return {
-      term: (searchTerm || '').trim(),
-      tab: this.getSelectedTabByResourceType(selectedTab),
-      index: isNaN(index) ? 0 : index,
-    };
-  };
+  // getUrlParams(search: Search) {
+  //   const urlParams = qs.parse(search);
+  //   const { searchTerm, pageIndex, selectedTab } = urlParams;
+  //   const index = parseInt(pageIndex, 10);
+  //   return {
+  //     term: (searchTerm || '').trim(),
+  //     tab: this.getSelectedTabByResourceType(selectedTab),
+  //     index: isNaN(index) ? 0 : index,
+  //   };
+  // };
 
-  getGlobalStateParams() {
-    return {
-      term: this.props.searchTerm,
-      tab: this.props.selectedTab,
-      index: this.getPageIndexByResourceType(this.props.selectedTab),
-    };
-  }
+  // getGlobalStateParams() {
+  //   return {
+  //     term: this.props.searchTerm,
+  //     tab: this.props.selectedTab,
+  //     index: this.getPageIndexByResourceType(this.props.selectedTab),
+  //   };
+  // }
 
 
   getPageIndexByResourceType = (tab: ResourceType): number => {
@@ -333,7 +341,7 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ searchAll, searchResource, setResource, setPageIndex }, dispatch);
+  return bindActionCreators({ searchAll, searchResource, setResource, setPageIndex, urlDidUpdate }, dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(SearchPage);
