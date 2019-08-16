@@ -17,14 +17,14 @@ interface SearchFilterInput {
 interface SearchFilterSection {
   title: string;
   categoryId: string;
-  inputProperties: Array<SearchFilterInput>
+  inputProperties: SearchFilterInput[];
 }
 
 /*
   TODO: Change on what becomes necessary for implementation
 */
 export interface StateFromProps {
-  checkBoxSections: Array<SearchFilterSection>;
+  checkBoxSections: SearchFilterSection[];
 }
 
 /*
