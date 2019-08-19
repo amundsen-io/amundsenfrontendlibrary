@@ -1,5 +1,7 @@
 import { ResourceType } from 'interfaces';
 
+import { Search as UrlSearch } from 'history';
+
 import {
   DashboardSearchResults,
   SearchAll,
@@ -30,7 +32,7 @@ export interface SearchReducerState {
 };
 
 /* ACTIONS */
-export function searchAll(term: string, resource?: ResourceType, pageIndex?: number): SearchAllRequest {
+export function searchAll(term: string, resource: ResourceType, pageIndex: number): SearchAllRequest {
   return {
     payload: {
       resource,
@@ -97,7 +99,7 @@ export function loadPreviousSearch(): LoadPreviousSearchRequest {
   };
 };
 
-export function urlDidUpdate(urlSearch: string): UrlDidUpdateRequest{
+export function urlDidUpdate(urlSearch: UrlSearch): UrlDidUpdateRequest{
   return {
     payload: { urlSearch },
     type: UrlDidUpdate.REQUEST,

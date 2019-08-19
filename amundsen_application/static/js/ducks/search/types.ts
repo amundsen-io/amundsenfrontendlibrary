@@ -1,3 +1,5 @@
+import { Search as UrlSearch } from 'history';
+
 import {
   DashboardResource,
   Resource,
@@ -83,7 +85,7 @@ export interface SubmitSearchRequest {
 
 
 export enum SetResource {
-  REQUEST = 'amundsen/search/SELECT_RESOURCE_REQUEST',
+  REQUEST = 'amundsen/search/SET_RESOURCE_REQUEST',
 };
 export interface SetResourceRequest {
   payload: {
@@ -95,7 +97,7 @@ export interface SetResourceRequest {
 
 
 export enum SetPageIndex {
-  REQUEST = 'amundsen/search/SELECT_INDEX_REQUEST',
+  REQUEST = 'amundsen/search/SET_PAGE_INDEX_REQUEST',
 };
 export interface SetPageIndexRequest {
   payload: {
@@ -115,11 +117,11 @@ export interface LoadPreviousSearchRequest {
 
 
 export enum UrlDidUpdate {
-  REQUEST = 'amundsen/search/LOAD_FROM_URL_REQUEST',
+  REQUEST = 'amundsen/search/URL_DID_UPDATE_REQUEST',
 };
 export interface UrlDidUpdateRequest {
   payload: {
-    urlSearch: string;
+    urlSearch: UrlSearch;
   };
   type: UrlDidUpdate.REQUEST;
 };

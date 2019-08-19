@@ -26,15 +26,12 @@ import {
   searchAll,
   searchAllFailure,
   searchAllSuccess,
-  SearchReducerState,
   searchResource,
   searchResourceFailure,
   searchResourceSuccess, setPageIndex, setResource,
 } from './reducer';
-import { GlobalState } from 'ducks/rootReducer';
+import { getPageIndex, getSearchState } from './utils';
 import { updateSearchUrl } from 'utils/navigation-utils';
-
-export const getSearchState = (state: GlobalState): SearchReducerState => state.search;
 
 export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
   const { resource, pageIndex, term } = action.payload;
@@ -149,17 +146,4 @@ export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): Sa
 };
 export function* loadPreviousSearchWatcher(): SagaIterator {
   yield takeEvery(LoadPreviousSearch.REQUEST, loadPreviousSearchWorker);
-};
-
-const getPageIndex = (state: SearchReducerState, resource?: ResourceType) => {
-  resource = resource || state.selectedTab;
-  switch(resource) {
-    case ResourceType.table:
-      return state.tables.page_index;
-    case ResourceType.user:
-      return state.users.page_index;
-    case ResourceType.dashboard:
-      return state.dashboards.page_index;
-  };
-  return 0;
 };
