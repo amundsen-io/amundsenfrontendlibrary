@@ -49,7 +49,7 @@ export interface SearchAllResponse {
 };
 export interface SearchAllReset {
   type: SearchAll.RESET;
-}
+};
 
 
 export enum SearchResource {
@@ -73,64 +73,53 @@ export interface SearchResourceResponse {
 
 export enum SubmitSearch {
   REQUEST = 'amundsen/search/SUBMIT_SEARCH_REQUEST',
-}
+};
 export interface SubmitSearchRequest {
   payload: {
     searchTerm: string;
-  }
+  };
   type: SubmitSearch.REQUEST;
-}
+};
 
 
 export enum SetResource {
   REQUEST = 'amundsen/search/SELECT_RESOURCE_REQUEST',
-}
+};
 export interface SetResourceRequest {
   payload: {
     resource: ResourceType;
     updateUrl: boolean;
-  }
+  };
   type: SetResource.REQUEST;
-}
+};
 
 
 export enum SetPageIndex {
   REQUEST = 'amundsen/search/SELECT_INDEX_REQUEST',
-}
+};
 export interface SetPageIndexRequest {
   payload: {
     pageIndex: number;
     updateUrl: boolean;
-  }
+  };
   type: SetPageIndex.REQUEST;
-}
+};
 
 
 export enum LoadPreviousSearch {
   REQUEST = 'amundsen/search/LOAD_PREVIOUS_SEARCH_REQUEST',
-}
+};
 export interface LoadPreviousSearchRequest {
   type: LoadPreviousSearch.REQUEST;
-}
+};
 
 
 export enum UrlDidUpdate {
   REQUEST = 'amundsen/search/LOAD_FROM_URL_REQUEST',
-}
+};
 export interface UrlDidUpdateRequest {
   payload: {
     urlSearch: string;
-  },
+  };
   type: UrlDidUpdate.REQUEST;
-}
-
-
-export enum UpdateSearchTab {
-  REQUEST = 'amundsen/search/UPDATE_SEARCH_TAB_REQUEST',
-}
-export interface UpdateSearchTabRequest {
-  type: UpdateSearchTab.REQUEST;
-  payload: {
-    selectedTab: ResourceType;
-  }
-}
+};

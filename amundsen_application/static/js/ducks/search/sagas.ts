@@ -76,22 +76,19 @@ export function* searchResourceWorker(action: SearchResourceRequest): SagaIterat
   } catch (e) {
     yield put(searchResourceFailure());
   }
-}
+};
 export function* searchResourceWatcher(): SagaIterator {
   yield takeEvery(SearchResource.REQUEST, searchResourceWorker);
-}
+};
 
 export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
   const { searchTerm } = action.payload;
-
   yield put(searchAll(searchTerm, ResourceType.table, 0));
-
-  const state = yield select(getSearchState);
   updateSearchUrl({ term: searchTerm });
 };
 export function* submitSearchWatcher(): SagaIterator {
   yield takeEvery(SubmitSearch.REQUEST, submitSearchWorker);
-}
+};
 
 export function* setResourceWorker(action: SetResourceRequest): SagaIterator {
   const { resource, updateUrl } = action.payload;
@@ -106,8 +103,7 @@ export function* setResourceWorker(action: SetResourceRequest): SagaIterator {
 };
 export function* setResourceWatcher(): SagaIterator {
   yield takeEvery(SetResource.REQUEST, setResourceWorker);
-}
-
+};
 
 export function* setPageIndexWorker(action: SetPageIndexRequest): SagaIterator {
   const { pageIndex, updateUrl } = action.payload;
@@ -124,7 +120,7 @@ export function* setPageIndexWorker(action: SetPageIndexRequest): SagaIterator {
 };
 export function* setPageIndexWatcher(): SagaIterator {
   yield takeEvery(SetPageIndex.REQUEST, setPageIndexWorker);
-}
+};
 
 export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
   const { urlSearch } = action.payload;
@@ -134,7 +130,6 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
   if (!!term && state.search_term !== term) {
     yield put(searchAll(term, resource, index));
   } else if (!!resource && resource !== state.selectedTab) {
-    // TODO - this is creating an extra history entry
     yield put(setResource(resource, false))
   } else if (!!index && index!= getPageIndex(state, resource)) {
     yield put(setPageIndex(index, false));
@@ -142,7 +137,7 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
 };
 export function* urlDidUpdateWatcher(): SagaIterator {
   yield takeEvery(UrlDidUpdate.REQUEST, urlDidUpdateWorker);
-}
+};
 
 export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): SagaIterator {
   const state = yield select(getSearchState);
@@ -154,7 +149,7 @@ export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): Sa
 };
 export function* loadPreviousSearchWatcher(): SagaIterator {
   yield takeEvery(LoadPreviousSearch.REQUEST, loadPreviousSearchWorker);
-}
+};
 
 const getPageIndex = (state: SearchReducerState, resource?: ResourceType) => {
   resource = resource || state.selectedTab;

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
@@ -31,7 +30,7 @@ export interface OwnProps {
   subText?: string;
 }
 
-export type SearchBarProps = StateFromProps & DispatchFromProps & OwnProps & RouteComponentProps<any>;
+export type SearchBarProps = StateFromProps & DispatchFromProps & OwnProps;
 
 interface SearchBarState {
   subTextClassName: string;
@@ -69,12 +68,6 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     event.preventDefault();
     if (this.isFormValid(searchTerm)) {
       this.props.submitSearch(searchTerm);
-
-      // let pathName = '/';
-      // if (searchTerm !== '') {
-      //   pathName = `/search?searchTerm=${searchTerm}`;
-      // }
-      // this.props.history.push(pathName);
     }
   };
 
@@ -137,7 +130,6 @@ export const mapStateToProps = (state: GlobalState) => {
 
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({ submitSearch }, dispatch);
-}
+};
 
-
-export default connect<StateFromProps>(mapStateToProps, mapDispatchToProps)(withRouter(SearchBar));
+export default connect<StateFromProps>(mapStateToProps, mapDispatchToProps)(SearchBar);

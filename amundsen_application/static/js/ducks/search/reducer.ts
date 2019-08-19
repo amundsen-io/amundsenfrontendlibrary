@@ -12,8 +12,6 @@ import {
   SearchResourceRequest,
   SearchResourceResponse,
   TableSearchResults,
-  UpdateSearchTab,
-  UpdateSearchTabRequest,
   UserSearchResults,
   SubmitSearchRequest,
   SubmitSearch,
@@ -106,13 +104,6 @@ export function urlDidUpdate(urlSearch: string): UrlDidUpdateRequest{
   };
 };
 
-export function updateSearchTab(selectedTab: ResourceType): UpdateSearchTabRequest {
-  return {
-    payload: { selectedTab },
-    type: UpdateSearchTab.REQUEST,
-  };
-}
-
 
 /* REDUCER */
 export const initialState: SearchReducerState = {
@@ -136,9 +127,6 @@ export const initialState: SearchReducerState = {
   },
 };
 
-
-// TODO - should URL updates happen in saga or reducer?
-// TODO - should auto-select tabs happen in saga or reducer?
 export default function reducer(state: SearchReducerState = initialState, action): SearchReducerState {
   switch (action.type) {
     case SearchAll.RESET:
@@ -177,11 +165,6 @@ export default function reducer(state: SearchReducerState = initialState, action
         ...initialState,  
         search_term: state.search_term,
       };
-    // case UpdateSearchTab.REQUEST:
-    //   return {
-    //     ...state,
-    //     selectedTab: (<UpdateSearchTabRequest>action).payload.selectedTab
-    //   };
     case SetResource.REQUEST:
       return {
         ...state,

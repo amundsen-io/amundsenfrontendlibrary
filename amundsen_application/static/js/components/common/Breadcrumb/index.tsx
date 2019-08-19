@@ -60,4 +60,4 @@ export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({ loadPreviousSearch }, dispatch);
 };
 
-export default connect<StateFromProps>(mapStateToProps, mapDispatchToProps)(Breadcrumb);
+export default connect<StateFromProps, MapDispatchToProps>(mapStateToProps, mapDispatchToProps)(Breadcrumb);

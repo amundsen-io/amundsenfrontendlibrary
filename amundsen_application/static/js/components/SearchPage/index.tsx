@@ -2,9 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as DocumentTitle from 'react-document-title';
-import * as qs from 'simple-query-string';
 import { RouteComponentProps } from 'react-router';
-import { Search } from 'history';
 
 import AppConfig from 'config/config';
 import LoadingSpinner from 'components/common/LoadingSpinner';
@@ -72,70 +70,13 @@ export class SearchPage extends React.Component<SearchPageProps> {
 
   componentDidMount() {
     this.props.urlDidUpdate(this.props.location.search);
-
-    // const urlSearchParams = this.getUrlParams(this.props.location.search);
-    // const globalStateParams = this.getGlobalStateParams();
-    //
-    // if (this.shouldUpdateFromGlobalState(urlSearchParams, globalStateParams)) {
-    //    this.updatePageUrl(globalStateParams.term, globalStateParams.tab, globalStateParams.index, true);
-    //
-    // } else if (this.shouldUpdateFromUrlParams(urlSearchParams, globalStateParams)) {
-    //   this.props.searchAll(urlSearchParams.term, urlSearchParams.tab, urlSearchParams.index);
-    //   this.updatePageUrl(urlSearchParams.term, urlSearchParams.tab, urlSearchParams.index, true);
-    // }
   }
-
-  // shouldUpdateFromGlobalState(urlParams, globalStateParams): boolean {
-  //   return urlParams.term === '' && globalStateParams.term !== '';
-  // }
-  //
-  // shouldUpdateFromUrlParams(urlParams, globalStateParams): boolean {
-  //   return urlParams.term !== '' && urlParams.term !== globalStateParams.term;
-  // }
 
   componentDidUpdate(prevProps: SearchPageProps) {
     if (this.props.location.search !== prevProps.location.search) {
       this.props.urlDidUpdate(this.props.location.search);
     }
-
-
-    // const nextUrlParams = this.getUrlParams(this.props.location.search);
-    // const prevUrlParams = this.getUrlParams(prevProps.location.search);
-    //
-    // // If urlParams and globalState are synced, no need to update
-    // if (this.isUrlStateSynced(nextUrlParams)) return;
-    //
-    // // Capture any updates in URL
-    // if (this.shouldUpdateSearchTerm(nextUrlParams, prevUrlParams)) {
-    //   this.props.searchAll(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index);
-    //
-    // } else if (this.shouldUpdateTab(nextUrlParams, prevUrlParams)) {
-    //   // this.props.updateSearchTab(nextUrlParams.tab)
-    //
-    // } else if (this.shouldUpdatePageIndex(nextUrlParams, prevUrlParams)) {
-    //   this.props.searchResource(nextUrlParams.term, nextUrlParams.tab, nextUrlParams.index);
-    // }
   }
-
-  // isUrlStateSynced(urlParams): boolean {
-  //   const globalStateParams = this.getGlobalStateParams();
-  //
-  //   return urlParams.term === globalStateParams.term &&
-  //     urlParams.tab === globalStateParams.tab &&
-  //     urlParams.index === globalStateParams.index;
-  // }
-  //
-  // shouldUpdateSearchTerm(nextUrlParams, prevUrlParams): boolean {
-  //   return nextUrlParams.term !== prevUrlParams.term;
-  // }
-  //
-  // shouldUpdateTab(nextUrlParams, prevUrlParams): boolean {
-  //   return nextUrlParams.tab !== prevUrlParams.tab;
-  // }
-  //
-  // shouldUpdatePageIndex(nextUrlParams, prevUrlParams): boolean {
-  //   return nextUrlParams.index !== prevUrlParams.index;
-  // }
 
   getSelectedTabByResourceType = (newTab: ResourceType): ResourceType => {
     switch(newTab) {
@@ -147,26 +88,6 @@ export class SearchPage extends React.Component<SearchPageProps> {
         return this.props.selectedTab;
     }
   };
-
-  // getUrlParams(search: Search) {
-  //   const urlParams = qs.parse(search);
-  //   const { searchTerm, pageIndex, selectedTab } = urlParams;
-  //   const index = parseInt(pageIndex, 10);
-  //   return {
-  //     term: (searchTerm || '').trim(),
-  //     tab: this.getSelectedTabByResourceType(selectedTab),
-  //     index: isNaN(index) ? 0 : index,
-  //   };
-  // };
-
-  // getGlobalStateParams() {
-  //   return {
-  //     term: this.props.searchTerm,
-  //     tab: this.props.selectedTab,
-  //     index: this.getPageIndexByResourceType(this.props.selectedTab),
-  //   };
-  // }
-
 
   getPageIndexByResourceType = (tab: ResourceType): number => {
     switch(tab) {
@@ -181,24 +102,12 @@ export class SearchPage extends React.Component<SearchPageProps> {
   };
 
   onPaginationChange = (index: number): void => {
-    // this.updatePageUrl(this.props.searchTerm, this.props.selectedTab, index);
     this.props.setPageIndex(index);
   };
 
   onTabChange = (tab: ResourceType): void => {
     const newTab = this.getSelectedTabByResourceType(tab);
     this.props.setResource(newTab);
-    // this.updatePageUrl(this.props.searchTerm, newTab, this.getPageIndexByResourceType(newTab));
-  };
-
-  updatePageUrl = (searchTerm: string, tab: ResourceType, pageIndex: number, replace: boolean = false): void => {
-    const pathName = `/search?searchTerm=${searchTerm}&selectedTab=${tab}&pageIndex=${pageIndex}`;
-
-    if (replace) {
-      this.props.history.replace(pathName);
-    } else {
-      this.props.history.push(pathName);
-    }
   };
 
   renderSearchResults = () => {
