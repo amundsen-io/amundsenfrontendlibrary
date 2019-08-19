@@ -88,6 +88,7 @@ export enum SetResource {
 export interface SetResourceRequest {
   payload: {
     resource: ResourceType;
+    updateUrl: boolean;
   }
   type: SetResource.REQUEST;
 }
@@ -99,6 +100,7 @@ export enum SetPageIndex {
 export interface SetPageIndexRequest {
   payload: {
     pageIndex: number;
+    updateUrl: boolean;
   }
   type: SetPageIndex.REQUEST;
 }

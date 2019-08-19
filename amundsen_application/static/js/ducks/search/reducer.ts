@@ -79,16 +79,16 @@ export function submitSearch(searchTerm: string): SubmitSearchRequest {
   };
 };
 
-export function setResource(resource: ResourceType): SetResourceRequest {
+export function setResource(resource: ResourceType, updateUrl: boolean = true): SetResourceRequest {
   return {
-    payload: { resource },
+    payload: { resource, updateUrl },
     type: SetResource.REQUEST,
   };
 };
 
-export function setPageIndex(pageIndex: number): SetPageIndexRequest {
+export function setPageIndex(pageIndex: number, updateUrl: boolean = true): SetPageIndexRequest {
   return {
-    payload: { pageIndex },
+    payload: { pageIndex, updateUrl },
     type: SetPageIndex.REQUEST,
   };
 };

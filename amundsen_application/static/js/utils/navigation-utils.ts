@@ -11,7 +11,12 @@ interface SearchParams {
 }
 
 export const updateSearchUrl = (searchParams: SearchParams, replace: boolean = false) => {
-  const urlParams = qs.stringify(searchParams);
+  // Explicitly listing out parameters to ensure consistent URL format
+  const urlParams = qs.stringify({
+    term: searchParams.term,
+    resource: searchParams.resource,
+    index: searchParams.index,
+  });
   if (replace) {
     BrowserHistory.replace(`/search?${urlParams}`);
   } else {

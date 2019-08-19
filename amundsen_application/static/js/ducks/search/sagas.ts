@@ -94,13 +94,15 @@ export function* submitSearchWatcher(): SagaIterator {
 }
 
 export function* setResourceWorker(action: SetResourceRequest): SagaIterator {
-  const resource = action.payload.resource;
+  const { resource, updateUrl } = action.payload;
   const state = yield select(getSearchState);
-  updateSearchUrl({
-    resource,
-    term: state.search_term,
-    index: getPageIndex(state, resource),
-  });
+  if (updateUrl) {
+    updateSearchUrl({
+      resource,
+      term: state.search_term,
+      index: getPageIndex(state, resource),
+    });
+  }
 };
 export function* setResourceWatcher(): SagaIterator {
   yield takeEvery(SetResource.REQUEST, setResourceWorker);
@@ -108,14 +110,17 @@ export function* setResourceWatcher(): SagaIterator {
 
 
 export function* setPageIndexWorker(action: SetPageIndexRequest): SagaIterator {
-  const index = action.payload.pageIndex;
+  const { pageIndex, updateUrl } = action.payload;
   const state = yield select(getSearchState);
-  yield put(searchResource(state.search_term, state.selectedTab, index));
-  updateSearchUrl({
-    term: state.search_term,
-    resource: state.selectedTab,
-    index: index,
-  });
+  yield put(searchResource(state.search_term, state.selectedTab, pageIndex));
+
+  if (updateUrl) {
+    updateSearchUrl({
+      term: state.search_term,
+      resource: state.selectedTab,
+      index: pageIndex,
+    });
+  }
 };
 export function* setPageIndexWatcher(): SagaIterator {
   yield takeEvery(SetPageIndex.REQUEST, setPageIndexWorker);
@@ -130,9 +135,9 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
     yield put(searchAll(term, resource, index));
   } else if (!!resource && resource !== state.selectedTab) {
     // TODO - this is creating an extra history entry
-    yield put(setResource(resource))
+    yield put(setResource(resource, false))
   } else if (!!index && index!= getPageIndex(state, resource)) {
-    yield put(setPageIndex(index));
+    yield put(setPageIndex(index, false));
   }
 };
 export function* urlDidUpdateWatcher(): SagaIterator {
