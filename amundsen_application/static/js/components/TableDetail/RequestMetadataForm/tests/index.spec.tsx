@@ -23,14 +23,14 @@ global.FormData = () => (mockFormData);
 describe('RequestMetadataForm', () => {
   const setup = () => {
     const props: RequestMetadataProps = {
-      userEmail: '',
+      userEmail: 'test0@lyft.com',
       tableName: '',
-      tableOwners: [''],
+      tableOwners: ['test1@lyft.com', 'test2@lyft.com'],
       submitNotification: jest.fn(),
-      requestIsOpen: false,
+      requestIsOpen: true,
       closeRequestDescriptionDialog: jest.fn(),
     };
-    const wrapper = shallow<RequestMetadataForm>(<RequestMetadataForm {...props} />)
+    const wrapper = shallow<RequestMetadataForm>(<RequestMetadataForm {...props} />);
     return {props, wrapper}
   };
 
@@ -65,6 +65,59 @@ describe('RequestMetadataForm', () => {
   
   // TODO
   describe('render', () => {
+    let props;
+    let wrapper;
+    let element;
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+    });
+  
+    it('renders from label', () => {
+      element = wrapper.find('#sender-form-group');
+      expect(element.find('label').text()).toEqual('From');
+    });
+    it('renders from input with current user', () => {
+      element = wrapper.find('#sender-form-group');
+      expect(element.find('input').props().value).toEqual('test0@lyft.com');
+    });
+
+    it('renders to label', () => {
+      element = wrapper.find('#recipients-form-group');
+      expect(element.find('label').text()).toEqual('To');
+    });
+    it('renders to input with correct recipients', () => {
+      element = wrapper.find('#recipients-form-group');
+      expect(element.find('input').props().defaultValue).toEqual('test1@lyft.com,test2@lyft.com');
+    });
+
+    it('renders request type label', () => {
+      element = wrapper.find('#request-type-form-group');
+      expect(element.find('label').at(0).text()).toEqual('Request Type');
+    });
+    it('renders table description checkbox', () => {
+      element = wrapper.find('#request-type-form-group');
+      expect(element.find('label').at(1).text()).toEqual(' Table Description');
+    });
+    it('renders column descriptions checkbox', () => {
+      element = wrapper.find('#request-type-form-group');
+      expect(element.find('label').at(2).text()).toEqual(' Column Descriptions');
+    });
+
+    it('renders additional details label', () => {
+      element = wrapper.find('#additional-comments-form-group');
+      expect(element.find('label').text()).toEqual('Additional Details');
+    });
+    it('renderers empty textarea', () => {
+      element = wrapper.find('#additional-comments-form-group');
+      expect(element.find('textarea').text()).toEqual('');
+    });
+
+    it('renders submit button with correct text', () => {
+      element = wrapper.find('#submit-request-button');
+      expect(element.text()).toEqual('Send Verification Request');
+    });
   });
 
   describe('mapStateToProps', () => {
