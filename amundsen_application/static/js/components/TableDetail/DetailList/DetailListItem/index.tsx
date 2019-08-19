@@ -1,6 +1,10 @@
 import * as React from 'react';
 import moment from 'moment-timezone';
 
+import { Dropdown, MenuItem } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableText';
 import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
@@ -8,14 +12,8 @@ import { ToggleRequestAction } from 'ducks/notification/types';
 import { openRequestDescriptionDialog } from 'ducks/notification/reducer';
 import { TableColumn } from 'interfaces';
 
-import { Dropdown, MenuItem } from 'react-bootstrap';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
-
-interface StateFromProps {}
 
 interface DispatchFromProps {
   openRequestDescriptionDialog: () => ToggleRequestAction;
@@ -26,7 +24,7 @@ interface OwnProps {
   index: number;
 }
 
-export type DetailListItemProps = StateFromProps & DispatchFromProps & OwnProps;
+export type DetailListItemProps = DispatchFromProps & OwnProps;
 
 interface DetailListItemState {
   isExpanded: boolean;
@@ -102,7 +100,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
             <img className={'icon ' + (this.state.isExpanded ? 'icon-up' : 'icon-down')}/>
           }
         </div>
-        <div className='desc-container'>
+        <div className='description-container'>
           <div className={'body-secondary-3 description ' + (isExpandable && !this.state.isExpanded ? 'truncated' : '')}>
             <ColumnDescEditableText
               columnIndex={this.props.index}
@@ -151,4 +149,4 @@ export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({ openRequestDescriptionDialog } , dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps, OwnProps>(null, mapDispatchToProps)(DetailListItem);
+export default connect<{}, DispatchFromProps, OwnProps>(null, mapDispatchToProps)(DetailListItem);

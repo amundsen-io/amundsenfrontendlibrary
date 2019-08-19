@@ -8,13 +8,11 @@ import { openRequestDescriptionDialog } from 'ducks/notification/reducer';
 import { bindActionCreators } from 'redux';
 import { REQUEST_DESCRIPTION } from './constants';
 
-interface StateFromProps {}
-
 export interface DispatchFromProps {
   openRequestDescriptionDialog: () => ToggleRequestAction;
 }
 
-export type OpenRequestDescriptionProps = StateFromProps & DispatchFromProps;
+export type OpenRequestDescriptionProps = DispatchFromProps;
 
 interface OpenRequestDescriptionState {}
 
@@ -45,4 +43,4 @@ export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({ openRequestDescriptionDialog } , dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps>(null, mapDispatchToProps)(OpenRequestDescription);
+export default connect<{}, DispatchFromProps>(null, mapDispatchToProps)(OpenRequestDescription);
