@@ -80,7 +80,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     }
     return (
       <div className={`request-component expanded`}>
-        <div className="form-group request-header">
+        <div id="request-metadata-title" className="form-group request-header">
           <h3 className="title">{TITLE_TEXT}</h3>
           <button type="button" className="btn btn-close" aria-label={"Close"} onClick={this.closeDialog}/>
         </div>
@@ -95,8 +95,8 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
           </div>
           <div id="request-type-form-group" className="form-group">
             <label>{REQUEST_TYPE}</label>
-            <label className="select-label"><input type="checkbox" name="table-description"/> {TABLE_DESCRIPTION}</label>
-            <label className="select-label"><input type="checkbox" name="column-description"/> {COLUMN_DESCRIPTIONS}</label>
+            <label className="select-label"><input type="checkbox" name="table-description"/>{TABLE_DESCRIPTION}</label>
+            <label className="select-label"><input type="checkbox" name="column-description"/>{COLUMN_DESCRIPTIONS}</label>
           </div>
           <div id="additional-comments-form-group" className="form-group">
             <label>{ADDITIONAL_DETAILS}</label>
