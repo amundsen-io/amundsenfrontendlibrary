@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as Avatar from 'react-avatar';
 
 import { shallow } from 'enzyme';
+import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import { Link, NavLink } from 'react-router-dom';
 import { NavBar, NavBarProps, mapStateToProps } from '../';
@@ -107,16 +108,18 @@ describe('NavBar', () => {
       expect(spy).toHaveBeenCalledWith(AppConfig.navLinks);
     });
 
-    it('renders Avatar for loggedInUser', () => {
-      expect(wrapper.find(Avatar).props()).toMatchObject({
+    it('renders Avatar for loggedInUser inside of user dropdown', () => {
+      expect(wrapper.find(Dropdown).find(Dropdown.Toggle).find(Avatar).props()).toMatchObject({
         name: props.loggedInUser.display_name,
         size: 32,
         round: true,
       })
     });
 
-    it('renders a Link to the user profile if `indexUsers` is enabled', () => {
-      expect(wrapper.find('#nav-bar-avatar-link').exists()).toBe(true)
+    it('renders My Profile link correctly inside of user dropdown', () => {
+      element = wrapper.find(Dropdown).find(Dropdown.Menu).find(MenuItem);
+      expect(element.render().text()).toEqual('My Profile');
+      expect(element.props().href).toEqual('/user/test0');
     });
 
     it('does not render a Link to the user profile if `indexUsers` is disabled', () => {

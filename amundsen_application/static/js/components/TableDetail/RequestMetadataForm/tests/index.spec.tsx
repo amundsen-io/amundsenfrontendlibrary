@@ -28,18 +28,18 @@ describe('RequestMetadataForm', () => {
       tableOwners: [''],
       submitNotification: jest.fn(),
       requestIsOpen: false,
-      toggleRequest: jest.fn(),
+      closeRequestDescriptionDialog: jest.fn(),
     };
     const wrapper = shallow<RequestMetadataForm>(<RequestMetadataForm {...props} />)
     return {props, wrapper}
   };
 
-  describe('toggle', () => {
-    it('calls toggleRequest', () => {
+  describe('closeDialog', () => {
+    it('calls closeRequestDescriptionDialog', () => {
       const { props, wrapper } = setup();
-      const toggleRequestSpy = jest.spyOn(props, 'toggleRequest');
-      wrapper.instance().toggle();
-      expect(toggleRequestSpy).toHaveBeenCalled();
+      const closeRequestDescriptionDialogSpy = jest.spyOn(props, 'closeRequestDescriptionDialog');
+      wrapper.instance().closeDialog();
+      expect(closeRequestDescriptionDialogSpy).toHaveBeenCalled();
     });
   });
 
@@ -99,8 +99,8 @@ describe('RequestMetadataForm', () => {
       expect(result.submitNotification).toBeInstanceOf(Function);
     });
   
-    it('sets toggleRequest on the props', () => {
-      expect(result.toggleRequest).toBeInstanceOf(Function);
+    it('sets closeRequestDescriptionDialog on the props', () => {
+      expect(result.closeRequestDescriptionDialog).toBeInstanceOf(Function);
     });
   });
 });

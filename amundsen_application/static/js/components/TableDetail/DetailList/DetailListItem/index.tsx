@@ -1,24 +1,37 @@
 import * as React from 'react';
 import moment from 'moment-timezone';
 
+import { Dropdown, MenuItem } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableText';
+import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
+import { ToggleRequestAction } from 'ducks/notification/types';
+import { openRequestDescriptionDialog } from 'ducks/notification/reducer';
 import { TableColumn } from 'interfaces';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
-interface DetailListItemProps {
+interface DispatchFromProps {
+  openRequestDescriptionDialog: () => ToggleRequestAction;
+}
+
+interface OwnProps {
   data?: TableColumn;
   index: number;
 }
+
+export type DetailListItemProps = DispatchFromProps & OwnProps;
 
 interface DetailListItemState {
   isExpanded: boolean;
 }
 
 class DetailListItem extends React.Component<DetailListItemProps, DetailListItemState> {
-  public static defaultProps: DetailListItemProps = {
+  public static defaultProps: Partial<DetailListItemProps> = {
     data: {} as TableColumn,
     index: null,
   };
@@ -28,6 +41,10 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
     this.state = {
       isExpanded: false
     };
+  }
+
+  openRequest = () => {
+    this.props.openRequestDescriptionDialog();
   }
 
   onClick = (e) => {
@@ -83,12 +100,22 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
             <img className={'icon ' + (this.state.isExpanded ? 'icon-up' : 'icon-down')}/>
           }
         </div>
-        <div className={'body-secondary-3 description ' + (isExpandable && !this.state.isExpanded ? 'truncated' : '')}>
-          <ColumnDescEditableText
-            columnIndex={this.props.index}
-            editable={metadata.is_editable}
-            value={metadata.description}
-          />
+        <div className='description-container'>
+          <div className={'body-secondary-3 description ' + (isExpandable && !this.state.isExpanded ? 'truncated' : '')}>
+            <ColumnDescEditableText
+              columnIndex={this.props.index}
+              editable={metadata.is_editable}
+              value={metadata.description}
+            />
+          </div>
+          <Dropdown pullRight={true}>
+            <Dropdown.Toggle noCaret={true} className="more-icon">
+              <img className="icon icon-more"/>
+            </Dropdown.Toggle>
+            <Dropdown.Menu>
+              <MenuItem onClick={this.openRequest}>Request Column Description</MenuItem>
+            </Dropdown.Menu>
+          </Dropdown>
         </div>
         {
           this.state.isExpanded &&
@@ -118,4 +145,8 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
   }
 }
 
-export default DetailListItem;
+export const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators({ openRequestDescriptionDialog } , dispatch);
+};
+
+export default connect<{}, DispatchFromProps, OwnProps>(null, mapDispatchToProps)(DetailListItem);

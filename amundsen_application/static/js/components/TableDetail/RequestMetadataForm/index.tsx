@@ -15,7 +15,7 @@ import {
   SEND_BUTTON,
 } from './constants'
 import { ToggleRequestAction, SubmitNotificationRequest } from 'ducks/notification/types';
-import { toggleRequest, submitNotification } from 'ducks/notification/reducer';
+import { closeRequestDescriptionDialog, submitNotification } from 'ducks/notification/reducer';
 import { bindActionCreators } from 'redux';
 
 interface StateFromProps {
@@ -32,7 +32,7 @@ export interface DispatchFromProps {
     notificationType: NotificationType,
     options?: SendNotificationOptions
   ) => SubmitNotificationRequest;
-  toggleRequest: () => ToggleRequestAction;
+  closeRequestDescriptionDialog: () => ToggleRequestAction;
 }
 
 export type RequestMetadataProps = StateFromProps & DispatchFromProps;
@@ -46,8 +46,8 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     super(props);
   }
 
-  toggle = () => {
-    this.props.toggleRequest();
+  closeDialog = () => {
+    this.props.closeRequestDescriptionDialog();
   }
 
   submitNotification = (event) => {
@@ -82,7 +82,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
       <div className={`request-component expanded`}>
         <div className="form-group request-header">
           <h3 className="title">{TITLE_TEXT}</h3>
-          <button type="button" className="btn btn-close" aria-label={"Close"} onClick={this.toggle}/>
+          <button type="button" className="btn btn-close" aria-label={"Close"} onClick={this.closeDialog}/>
         </div>
         <form onSubmit={ this.submitNotification } id="RequestForm">
           <div className="form-group">
@@ -125,7 +125,7 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ submitNotification, toggleRequest } , dispatch);
+  return bindActionCreators({ submitNotification, closeRequestDescriptionDialog } , dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(RequestMetadataForm);

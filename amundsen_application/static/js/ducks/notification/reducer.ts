@@ -27,11 +27,17 @@ export function submitNotificationSuccess(): SubmitNotificationResponse {
   };
 };
 
-export function toggleRequest(): ToggleRequestAction {
+export function closeRequestDescriptionDialog(): ToggleRequestAction {
   return {
-    type: ToggleRequest.TOGGLE,
+    type: ToggleRequest.CLOSE,
   };
 };
+
+export function openRequestDescriptionDialog(): ToggleRequestAction {
+  return {
+    type: ToggleRequest.OPEN,
+  }
+}
 
 /* REDUCER */
 export interface NotificationReducerState {
@@ -44,9 +50,13 @@ const initialState: NotificationReducerState = {
 
 export default function reducer(state: NotificationReducerState = initialState, action): NotificationReducerState {
   switch (action.type) {
-    case ToggleRequest.TOGGLE:
+    case ToggleRequest.OPEN:
       return {
-        requestIsOpen: !state.requestIsOpen,
+        requestIsOpen: true,
+      }
+    case ToggleRequest.CLOSE:
+      return {
+        requestIsOpen: false,
       }
     case SubmitNotification.REQUEST:
       return state;
