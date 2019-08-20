@@ -80,29 +80,29 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     }
     return (
       <div className={`request-component expanded`}>
-        <div className="form-group request-header">
+        <div id="request-metadata-title" className="form-group request-header">
           <h3 className="title">{TITLE_TEXT}</h3>
           <button type="button" className="btn btn-close" aria-label={"Close"} onClick={this.closeDialog}/>
         </div>
         <form onSubmit={ this.submitNotification } id="RequestForm">
-          <div className="form-group">
+          <div id="sender-form-group" className="form-group">
             <label>{FROM_LABEL}</label>
-            <input type="email" name="sender" className="form-control" required={true} value={this.props.userEmail}/>
+            <input type="email" name="sender" className="form-control" required={true} value={this.props.userEmail} readOnly={true}/>
           </div>
-          <div className="form-group">
+          <div id="recipients-form-group" className="form-group">
             <label>{TO_LABEL}</label>
             <input type="email" name="recipients" className="form-control" required={true} multiple={true} defaultValue={this.props.tableOwners.join(",")}/>
           </div>
-          <div className="form-group">
+          <div id="request-type-form-group" className="form-group">
             <label>{REQUEST_TYPE}</label>
-            <label className="select-label"><input type="checkbox" name="table-description"/> {TABLE_DESCRIPTION}</label>
-            <label className="select-label"><input type="checkbox" name="column-description"/> {COLUMN_DESCRIPTIONS}</label>
+            <label className="select-label"><input type="checkbox" name="table-description"/>{TABLE_DESCRIPTION}</label>
+            <label className="select-label"><input type="checkbox" name="column-description"/>{COLUMN_DESCRIPTIONS}</label>
           </div>
-          <div className="form-group">
+          <div id="additional-comments-form-group" className="form-group">
             <label>{ADDITIONAL_DETAILS}</label>
             <textarea className="form-control" name="comment" rows={ 8 } maxLength={ 2000 } />
           </div>
-          <button className="btn btn-primary" type="submit">
+          <button id="submit-request-button" className="btn btn-primary" type="submit">
             {SEND_BUTTON}
           </button>
         </form>

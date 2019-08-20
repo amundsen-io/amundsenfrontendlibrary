@@ -1,10 +1,19 @@
 import * as React from 'react';
-
 import { shallow } from 'enzyme';
 
-import { RequestMetadataForm, mapDispatchToProps, mapStateToProps, RequestMetadataProps } from '../';
 import globalState from 'fixtures/globalState';
 import { NotificationType } from 'interfaces/';
+import { RequestMetadataForm, mapDispatchToProps, mapStateToProps, RequestMetadataProps } from '../';
+import {
+  TITLE_TEXT,
+  FROM_LABEL,
+  TO_LABEL,
+  REQUEST_TYPE,
+  TABLE_DESCRIPTION,
+  COLUMN_DESCRIPTIONS,
+  ADDITIONAL_DETAILS,
+  SEND_BUTTON,
+} from '../constants'
 
 const mockFormData = { 
   'recipients': 'test1@test.com,test2@test.com',
@@ -23,14 +32,14 @@ global.FormData = () => (mockFormData);
 describe('RequestMetadataForm', () => {
   const setup = () => {
     const props: RequestMetadataProps = {
-      userEmail: '',
+      userEmail: 'test0@lyft.com',
       tableName: '',
-      tableOwners: [''],
+      tableOwners: ['test1@lyft.com', 'test2@lyft.com'],
       submitNotification: jest.fn(),
-      requestIsOpen: false,
+      requestIsOpen: true,
       closeRequestDescriptionDialog: jest.fn(),
     };
-    const wrapper = shallow<RequestMetadataForm>(<RequestMetadataForm {...props} />)
+    const wrapper = shallow<RequestMetadataForm>(<RequestMetadataForm {...props} />);
     return {props, wrapper}
   };
 
@@ -63,8 +72,74 @@ describe('RequestMetadataForm', () => {
     });
   });
   
-  // TODO
   describe('render', () => {
+    let props;
+    let wrapper;
+    let element;
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+    });
+  
+    it('renders header title', () => {
+      element = wrapper.find('#request-metadata-title');
+      expect(element.find('h3').text()).toEqual(TITLE_TEXT);
+    });
+    it('renders close button', () => {
+      element = wrapper.find('#request-metadata-title');
+      expect(element.find('button').exists()).toEqual(true);
+    });
+
+    it('renders from input with current user', () => {
+      element = wrapper.find('#sender-form-group');
+      expect(element.find('input').props().value).toEqual('test0@lyft.com');
+    });
+
+    it('renders from label', () => {
+      element = wrapper.find('#sender-form-group');
+      expect(element.find('label').text()).toEqual(FROM_LABEL);
+    });
+    it('renders from input with current user', () => {
+      element = wrapper.find('#sender-form-group');
+      expect(element.find('input').props().value).toEqual('test0@lyft.com');
+    });
+
+    it('renders to label', () => {
+      element = wrapper.find('#recipients-form-group');
+      expect(element.find('label').text()).toEqual(TO_LABEL);
+    });
+    it('renders to input with correct recipients', () => {
+      element = wrapper.find('#recipients-form-group');
+      expect(element.find('input').props().defaultValue).toEqual('test1@lyft.com,test2@lyft.com');
+    });
+
+    it('renders request type label', () => {
+      element = wrapper.find('#request-type-form-group');
+      expect(element.find('label').at(0).text()).toEqual(REQUEST_TYPE);
+    });
+    it('renders table description checkbox', () => {
+      element = wrapper.find('#request-type-form-group');
+      expect(element.find('label').at(1).text()).toEqual(TABLE_DESCRIPTION);
+    });
+    it('renders column descriptions checkbox', () => {
+      element = wrapper.find('#request-type-form-group');
+      expect(element.find('label').at(2).text()).toEqual(COLUMN_DESCRIPTIONS);
+    });
+
+    it('renders additional details label', () => {
+      element = wrapper.find('#additional-comments-form-group');
+      expect(element.find('label').text()).toEqual(ADDITIONAL_DETAILS);
+    });
+    it('renders empty textarea', () => {
+      element = wrapper.find('#additional-comments-form-group');
+      expect(element.find('textarea').text()).toEqual('');
+    });
+
+    it('renders submit button with correct text', () => {
+      element = wrapper.find('#submit-request-button');
+      expect(element.text()).toEqual(SEND_BUTTON);
+    });
   });
 
   describe('mapStateToProps', () => {
