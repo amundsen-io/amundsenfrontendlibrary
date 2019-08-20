@@ -87,7 +87,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
         <form onSubmit={ this.submitNotification } id="RequestForm">
           <div id="sender-form-group" className="form-group">
             <label>{FROM_LABEL}</label>
-            <input type="email" name="sender" className="form-control" required={true} value={this.props.userEmail} readOnly/>
+            <input type="email" name="sender" className="form-control" required={true} value={this.props.userEmail} readOnly={true}/>
           </div>
           <div id="recipients-form-group" className="form-group">
             <label>{TO_LABEL}</label>
