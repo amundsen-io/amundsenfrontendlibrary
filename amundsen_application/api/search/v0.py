@@ -1,4 +1,5 @@
 import logging
+import re
 
 from http import HTTPStatus
 
@@ -61,10 +62,6 @@ def _validate_search_term(*, search_term: str, page_index: int) -> Optional[Resp
 def search_table() -> Response:
     search_term = get_query_param(request.args, 'query', 'Endpoint takes a "query" parameter')
     page_index = get_query_param(request.args, 'page_index', 'Endpoint takes a "page_index" parameter')
-
-    error_response = _validate_search_term(search_term=search_term, page_index=int(page_index))
-    if error_response is not None:
-        return error_response
 
     results_dict = _search_table(search_term=search_term, page_index=page_index)
     return make_response(jsonify(results_dict), results_dict.get('status_code', HTTPStatus.INTERNAL_SERVER_ERROR))
@@ -203,13 +200,14 @@ def _search_table(*, search_term: str, page_index: int) -> Dict[str, Any]:
     }
 
     try:
-        if ':' in search_term:
-            url = _create_url_with_field(search_term=search_term,
-                                         page_index=page_index)
-        else:
-            url = '{0}?query_term={1}&page_index={2}'.format(app.config['SEARCHSERVICE_BASE'] + SEARCH_ENDPOINT,
-                                                             search_term,
-                                                             page_index)
+        base = app.config['SEARCHSERVICE_BASE'] + SEARCH_ENDPOINT
+
+        # if there are any special characters in the search term, send to query_string endpoint
+        # flag "re.I" ignores case
+        if re.search('[~?:/^]|or|and|nor', search_term, flags=re.I):
+            base += '/query_string'
+
+        url = f'{base}?query_term={search_term}&page_index={page_index}'
 
         response = request_search(url=url)
         status_code = response.status_code

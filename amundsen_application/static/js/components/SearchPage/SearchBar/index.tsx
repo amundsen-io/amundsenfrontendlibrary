@@ -54,7 +54,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   }
 
   handleValueChange = (event: React.SyntheticEvent<HTMLInputElement>) : void => {
-    this.setState({ searchTerm: (event.target as HTMLInputElement).value.toLowerCase() });
+    this.setState({ searchTerm: (event.target as HTMLInputElement).value });
   };
 
   handleValueSubmit = (event: React.FormEvent<HTMLFormElement>) : void => {
@@ -65,20 +65,11 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
       if (searchTerm !== '') {
         pathName = `/search?searchTerm=${searchTerm}`;
       }
-      this.props.history.push(pathName);    
+      this.props.history.push(pathName);
     }
   };
 
   isFormValid = (searchTerm: string) : boolean => {
-    const hasAtMostOneCategory = searchTerm.split(':').length <= 2;
-    if (!hasAtMostOneCategory) {
-      this.setState({
-        subText: SYNTAX_ERROR_CATEGORY,
-        subTextClassName: ERROR_CLASSNAME,
-      });
-      return false;
-    }
-
     const colonIndex = searchTerm.indexOf(':');
     const hasNoSpaceAroundColon = colonIndex < 0 ||
       (colonIndex >= 1 && searchTerm.charAt(colonIndex+1) !== " " &&  searchTerm.charAt(colonIndex-1) !== " ");

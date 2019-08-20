@@ -63,7 +63,7 @@ describe('SearchBar', () => {
       const { props, wrapper } = setup();
       // @ts-ignore: mocked events throw type errors
       wrapper.instance().handleValueChange(valueChangeMockEvent);
-      expect(setStateSpy).toHaveBeenCalledWith({ searchTerm: valueChangeMockEvent.target.value.toLowerCase() });
+      expect(setStateSpy).toHaveBeenCalledWith({ searchTerm: valueChangeMockEvent.target.value });
     });
   });
 
@@ -99,7 +99,7 @@ describe('SearchBar', () => {
 
     it('does not submit if !isFormValid()', () => {
       historyPushSpy.mockClear();
-      const { props, wrapper } = setup({ searchTerm: 'tag:tag1 tag:tag2' });
+      const { props, wrapper } = setup({ searchTerm: 'tag : tag1 tag:tag2' });
       // @ts-ignore: mocked events throw type errors
       wrapper.instance().handleValueSubmit(submitMockEvent);
       expect(historyPushSpy).not.toHaveBeenCalled();
@@ -114,15 +114,7 @@ describe('SearchBar', () => {
       })
 
       it('returns false', () => {
-        expect(wrapper.instance().isFormValid('tag:tag1 tag:tag2')).toEqual(false);
-      });
-
-      it('sets state.subText correctly', () => {
-        expect(wrapper.state().subText).toEqual(SYNTAX_ERROR_CATEGORY);
-      });
-
-      it('sets state.subTextClassName correctly', () => {
-        expect(wrapper.state().subTextClassName).toEqual(ERROR_CLASSNAME);
+        expect(wrapper.instance().isFormValid('tag:tag1 tag:tag2')).toEqual(true);
       });
     });
 
