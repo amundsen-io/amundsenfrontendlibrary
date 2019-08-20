@@ -5,6 +5,13 @@ import { PreferenceGroup } from './PreferenceGroup';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+import {
+  ALL_NOTIFICATIONS_SUBTITLE,
+  ALL_NOTIFICATIONS_TITLE,
+  MINIMUM_NOTIFICATIONS_SUBTITLE,
+  MINIMUM_NOTIFICATIONS_TITLE,
+  NOTIFICATION_PREFERENCES_TITLE
+} from './constants';
 
 interface PreferencesPageState {
   selectedPreference: string;
@@ -21,7 +28,7 @@ export class PreferencesPage extends React.Component<PreferencesPageProps, Prefe
     this.changePreference = this.changePreference.bind(this);
 
     this.state = {
-      selectedPreference: 'All Notifications',
+      selectedPreference: ALL_NOTIFICATIONS_TITLE,
     }
   }
   changePreference = (newPreference) => {
@@ -36,9 +43,19 @@ export class PreferencesPage extends React.Component<PreferencesPageProps, Prefe
       <div className="container">
         <div className="row">
           <div className="col-xs-12 col-md-offset-1 col-md-10">
-            <h1 className="preferences-title">Notification Preferences</h1>
-            <PreferenceGroup changePreference={ this.changePreference } selected={this.state.selectedPreference === 'All Notifications' ? true : false} title="All Notifications" subtitle="You will get notified via email regarding any activity on tables you own."/>
-            <PreferenceGroup changePreference={ this.changePreference } selected={this.state.selectedPreference === 'Minimum Notifications Only' ? true : false} title="Minimum Notifications Only" subtitle="You will only be notified when you're being added as an owner, removed as an owner, or receive a description request on any table you own."/>
+            <h1 className="preferences-title">{NOTIFICATION_PREFERENCES_TITLE}</h1>
+            <PreferenceGroup
+              changePreference={this.changePreference}
+              selected={this.state.selectedPreference === ALL_NOTIFICATIONS_TITLE ? true : false}
+              title={ALL_NOTIFICATIONS_TITLE}
+              subtitle={ALL_NOTIFICATIONS_SUBTITLE}
+            />
+            <PreferenceGroup 
+              changePreference={this.changePreference}
+              selected={this.state.selectedPreference === MINIMUM_NOTIFICATIONS_TITLE ? true : false}
+              title={MINIMUM_NOTIFICATIONS_TITLE}
+              subtitle={MINIMUM_NOTIFICATIONS_SUBTITLE}
+            />
           </div>
         </div>
       </div>
@@ -47,7 +64,7 @@ export class PreferencesPage extends React.Component<PreferencesPageProps, Prefe
 }
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({} , dispatch);
+  return bindActionCreators({}, dispatch);
 };
 
 export default connect<DispatchFromProps>(null, mapDispatchToProps)(PreferencesPage);
