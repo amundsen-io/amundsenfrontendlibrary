@@ -8,8 +8,10 @@ import './styles.scss';
 import {
   ALL_NOTIFICATIONS_SUBTITLE,
   ALL_NOTIFICATIONS_TITLE,
+  ALL_PREFERENCE,
   MINIMUM_NOTIFICATIONS_SUBTITLE,
   MINIMUM_NOTIFICATIONS_TITLE,
+  MINIMUM_PREFERENCE,
   NOTIFICATION_PREFERENCES_TITLE
 } from './constants';
 
@@ -28,7 +30,7 @@ export class PreferencesPage extends React.Component<PreferencesPageProps, Prefe
     this.changePreference = this.changePreference.bind(this);
 
     this.state = {
-      selectedPreference: ALL_NOTIFICATIONS_TITLE,
+      selectedPreference: ALL_PREFERENCE,
     }
   }
   changePreference = (newPreference) => {
@@ -45,14 +47,16 @@ export class PreferencesPage extends React.Component<PreferencesPageProps, Prefe
           <div className="col-xs-12 col-md-offset-1 col-md-10">
             <h1 className="preferences-title">{NOTIFICATION_PREFERENCES_TITLE}</h1>
             <PreferenceGroup
-              changePreference={this.changePreference}
-              selected={this.state.selectedPreference === ALL_NOTIFICATIONS_TITLE ? true : false}
+              onClick={this.changePreference} 
+              preferenceValue={ALL_PREFERENCE}
+              selected={this.state.selectedPreference === ALL_PREFERENCE ? true : false}
               title={ALL_NOTIFICATIONS_TITLE}
               subtitle={ALL_NOTIFICATIONS_SUBTITLE}
             />
             <PreferenceGroup 
-              changePreference={this.changePreference}
-              selected={this.state.selectedPreference === MINIMUM_NOTIFICATIONS_TITLE ? true : false}
+              onClick={this.changePreference}
+              preferenceValue={MINIMUM_PREFERENCE}
+              selected={this.state.selectedPreference === MINIMUM_PREFERENCE ? true : false}
               title={MINIMUM_NOTIFICATIONS_TITLE}
               subtitle={MINIMUM_NOTIFICATIONS_SUBTITLE}
             />

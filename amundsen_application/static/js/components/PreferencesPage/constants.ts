@@ -6,3 +6,6 @@ export const ALL_NOTIFICATIONS_SUBTITLE = 'You will get notified via email regar
 
 export const MINIMUM_NOTIFICATIONS_TITLE = 'Minimum Notifications Only';
 export const MINIMUM_NOTIFICATIONS_SUBTITLE = "You will only be notified when you're being added as an owner, removed as an owner, or receive a description request on any table you own.";
+
+export const ALL_PREFERENCE = 'all-preference'
+export const MINIMUM_PREFERENCE = 'minimum-preference'

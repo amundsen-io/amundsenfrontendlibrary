@@ -44,6 +44,7 @@ ReactDOM.render(
             <Route path="/browse" component={BrowsePage} />
             <Route path="/search" component={SearchPage} />
             <Route path="/user/:userId" component={ProfilePage} />
+            {/* Remove PreferencesPage before merging to master */}
             <Route path="/preferences" component={PreferencesPage} />
             <Route path="/404" component={NotFoundPage} />
             <Route path="/" component={HomePage} />

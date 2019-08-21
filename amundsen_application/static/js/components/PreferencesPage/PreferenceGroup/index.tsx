@@ -3,7 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 export type PreferenceGroupProps = {
-  changePreference: any;
+  onClick: (value: string) => any;
+  preferenceValue: string;
   selected: boolean;
   title: string;
   subtitle: string;
@@ -20,9 +21,10 @@ export class PreferenceGroup extends React.Component<PreferenceGroupProps> {
     super(props);
   }
 
+  // TODO: Consolidate with future common RadioButton component.
   render() {
     return (
-      <label className="preference-group" onClick={() => this.props.changePreference(this.props.title)}>
+      <label className="preference-group" onClick={() => this.props.onClick(this.props.preferenceValue)}>
         <input defaultChecked={ this.props.selected } type="radio" className="preference-radio" name="notification-preference"/>
         <div className="preference-text">
           <div className="title-2">{ this.props.title }</div>
