@@ -54,7 +54,7 @@ export class NavBar extends React.Component<NavBarProps> {
               {this.generateNavLinks(AppConfig.navLinks)}
               {
                 this.props.loggedInUser && AppConfig.indexUsers.enabled &&
-                <Dropdown pullRight={true}>
+                <Dropdown id='user-dropdown' pullRight={true}>
                   <Dropdown.Toggle noCaret={true} className="avatar-dropdown">
                     <Avatar name={this.props.loggedInUser.display_name} size={32} round={true} />
                   </Dropdown.Toggle>

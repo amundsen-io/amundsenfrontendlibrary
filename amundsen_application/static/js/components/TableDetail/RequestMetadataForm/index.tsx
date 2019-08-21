@@ -46,6 +46,10 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     super(props);
   }
 
+  componentWillUnmount = () => {
+    this.props.closeRequestDescriptionDialog();
+  }
+
   closeDialog = () => {
     this.props.closeRequestDescriptionDialog();
   }

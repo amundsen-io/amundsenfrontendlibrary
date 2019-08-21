@@ -43,6 +43,15 @@ describe('RequestMetadataForm', () => {
     return {props, wrapper}
   };
 
+  describe('componentWillUnmount', () => {
+    it('calls closeRequestDescriptionDialog', () => {
+      const { props, wrapper } = setup();
+      const closeRequestDescriptionDialogSpy = jest.spyOn(props, 'closeRequestDescriptionDialog');
+      wrapper.instance().componentWillUnmount();
+      expect(closeRequestDescriptionDialogSpy).toHaveBeenCalled();
+    });
+  });
+
   describe('closeDialog', () => {
     it('calls closeRequestDescriptionDialog', () => {
       const { props, wrapper } = setup();
