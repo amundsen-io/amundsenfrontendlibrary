@@ -108,7 +108,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
               value={metadata.description}
             />
           </div>
-          <Dropdown id='detail-list-item-dropdown' pullRight={true}>
+          <Dropdown id={`detail-list-item-dropdown:${this.props.index}`} pullRight={true}>
             <Dropdown.Toggle noCaret={true} className="more-icon">
               <img className="icon icon-more"/>
             </Dropdown.Toggle>
