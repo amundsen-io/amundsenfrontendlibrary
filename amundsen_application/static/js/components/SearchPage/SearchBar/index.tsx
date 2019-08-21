@@ -72,6 +72,10 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   };
 
   isFormValid = (searchTerm: string) : boolean => {
+    if (searchTerm.length === 0) {
+      return false;
+    }
+
     const hasAtMostOneCategory = searchTerm.split(':').length <= 2;
     if (!hasAtMostOneCategory) {
       this.setState({

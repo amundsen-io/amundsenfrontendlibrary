@@ -15,6 +15,7 @@ describe('Breadcrumb', () => {
         path: 'testPath',
         text: 'testText',
         searchTerm: '',
+        loadPreviousSearch: jest.fn(),
       };
       subject = shallow(<Breadcrumb {...props} />);
     });
@@ -34,18 +35,19 @@ describe('Breadcrumb', () => {
     beforeEach(() => {
       props = {
         searchTerm: 'testTerm',
+        loadPreviousSearch: jest.fn(),
       };
       subject = shallow(<Breadcrumb {...props} />);
     });
 
     it('renders Link with correct path', () => {
-      expect(subject.find(Link).props()).toMatchObject({
-        to: '/search',
+      expect(subject.find('a').props()).toMatchObject({
+        onClick: props.loadPreviousSearch,
       });
     });
 
     it('renders Link with correct text', () => {
-      expect(subject.find(Link).find('span').text()).toEqual('Search Results');
+      expect(subject.find('a').find('span').text()).toEqual('Search Results');
     });
   });
 
@@ -55,6 +57,7 @@ describe('Breadcrumb', () => {
         path: 'testPath',
         text: 'testText',
         searchTerm: 'testTerm',
+        loadPreviousSearch: jest.fn(),
       };
       subject = shallow(<Breadcrumb {...props} />);
     });
