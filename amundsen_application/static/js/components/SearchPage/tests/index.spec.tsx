@@ -108,60 +108,6 @@ describe('SearchPage', () => {
 
   // TODO - move to utils test
 
-  // describe('getSelectedTabByResourceType', () => {
-  //   let wrapper;
-  //
-  //   beforeAll(() => {
-  //     const setupResult = setup();
-  //     wrapper = setupResult.wrapper;
-  //   });
-  //
-  //   it('returns given tab if equal to ResourceType.table', () => {
-  //     expect(wrapper.instance().getSelectedTabByResourceType(ResourceType.table)).toEqual(ResourceType.table);
-  //   });
-  //
-  //   it('returns given tab if equal to ResourceType.user', () => {
-  //     expect(wrapper.instance().getSelectedTabByResourceType(ResourceType.user)).toEqual(ResourceType.user);
-  //   });
-  //
-  //   it('returns state.selectedTab in default case', () => {
-  //     wrapper.setState({ selectedTab: 'table' })
-  //     // @ts-ignore: cover default case
-  //     expect(wrapper.instance().getSelectedTabByResourceType('not valid')).toEqual('table');
-  //   });
-  // });
-
-  // describe('getPageIndexByResourceType', () => {
-  //   let props;
-  //   let wrapper;
-  //   beforeAll(() => {
-  //     const setupResult = setup({
-  //       dashboards: { ...globalState.search.dashboards, page_index: 1 },
-  //       tables: { ...globalState.search.tables, page_index: 2 },
-  //       users: { ...globalState.search.users, page_index: 3 },
-  //     });
-  //     props = setupResult.props;
-  //     wrapper = setupResult.wrapper;
-  //   });
-  //
-  //   it('given ResourceType.dashboard, returns page_index from props for dashboards', () => {
-  //     expect(wrapper.instance().getPageIndexByResourceType(ResourceType.dashboard)).toEqual(props.dashboards.page_index);
-  //   });
-  //
-  //   it('given ResourceType.table, returns page_index from props for tables', () => {
-  //     expect(wrapper.instance().getPageIndexByResourceType(ResourceType.table)).toEqual(props.tables.page_index);
-  //   });
-  //
-  //   it('given ResourceType.user, returns page_index from props for users', () => {
-  //     expect(wrapper.instance().getPageIndexByResourceType(ResourceType.user)).toEqual(props.users.page_index);
-  //   });
-  //
-  //   it('returns 0 if not given a supported ResourceType', () => {
-  //     // @ts-ignore: cover default case
-  //     expect(wrapper.instance().getPageIndexByResourceType('not valid')).toEqual(0);
-  //   });
-  // });
-  //
   // describe('updatePageUrl', () => {
   //   let props;
   //   let wrapper;
