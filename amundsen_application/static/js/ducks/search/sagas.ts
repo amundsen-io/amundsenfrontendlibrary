@@ -122,14 +122,15 @@ export function* setPageIndexWatcher(): SagaIterator {
 export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
   const { urlSearch } = action.payload;
   const { term, resource, index} = qs.parse(urlSearch);
+  const parsedIndex = parseInt(index, 10);
 
   const state = yield select(getSearchState);
   if (!!term && state.search_term !== term) {
-    yield put(searchAll(term, resource, index));
+    yield put(searchAll(term, resource, parsedIndex));
   } else if (!!resource && resource !== state.selectedTab) {
     yield put(setResource(resource, false))
-  } else if (!!index && index!= getPageIndex(state, resource)) {
-    yield put(setPageIndex(index, false));
+  } else if (!isNaN(parsedIndex) && parsedIndex !== getPageIndex(state, resource)) {
+    yield put(setPageIndex(parsedIndex, false));
   }
 };
 export function* urlDidUpdateWatcher(): SagaIterator {
