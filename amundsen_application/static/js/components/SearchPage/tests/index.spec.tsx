@@ -106,45 +106,6 @@ describe('SearchPage', () => {
     });
   });
 
-  // TODO - move to utils test
-
-  // describe('updatePageUrl', () => {
-  //   let props;
-  //   let wrapper;
-  //   let historyPushSpy;
-  //   let historyReplaceSpy;
-  //   const pageIndex = 2;
-  //   const searchTerm = 'testing';
-  //   const tab = ResourceType.user;
-  //   const expectedPath = `/search?searchTerm=${searchTerm}&selectedTab=${tab}&pageIndex=${pageIndex}`;
-  //
-  //   beforeAll(() => {
-  //     const setupResult = setup();
-  //     props = setupResult.props;
-  //     wrapper = setupResult.wrapper;
-  //     historyPushSpy = jest.spyOn(props.history, 'push');
-  //     historyReplaceSpy = jest.spyOn(props.history, 'replace');
-  //   });
-  //
-  //   it('pushes correct update to the window state', () => {
-  //     historyPushSpy.mockClear();
-  //     historyReplaceSpy.mockClear();
-  //
-  //     wrapper.instance().updatePageUrl(searchTerm, tab, pageIndex);
-  //     expect(historyPushSpy).toHaveBeenCalledWith(expectedPath);
-  //     expect(historyReplaceSpy).not.toHaveBeenCalled();
-  //   });
-  //
-  //   it('calls `history.replace` when replace is set to true', () => {
-  //     historyPushSpy.mockClear();
-  //     historyReplaceSpy.mockClear();
-  //
-  //     wrapper.instance().updatePageUrl(searchTerm, tab, pageIndex, true);
-  //     expect(historyPushSpy).not.toHaveBeenCalled();
-  //     expect(historyReplaceSpy).toHaveBeenCalledWith(expectedPath);
-  //   });
-  // });
-
   describe('generateInfoText', () => {
     let wrapper;
     beforeAll(() => {
