@@ -76,31 +76,6 @@ export class SearchPage extends React.Component<SearchPageProps> {
     }
   }
 
-  // TODO - move to utils file
-
-  // getSelectedTabByResourceType = (newTab: ResourceType): ResourceType => {
-  //   switch(newTab) {
-  //     case ResourceType.table:
-  //     case ResourceType.user:
-  //       return newTab;
-  //     case ResourceType.dashboard:
-  //     default:
-  //       return this.props.selectedTab;
-  //   }
-  // };
-
-  // getPageIndexByResourceType = (tab: ResourceType): number => {
-  //   switch(tab) {
-  //     case ResourceType.table:
-  //       return this.props.tables.page_index;
-  //     case ResourceType.user:
-  //       return this.props.users.page_index;
-  //     case ResourceType.dashboard:
-  //       return this.props.dashboards.page_index;
-  //   }
-  //   return 0;
-  // };
-
   renderSearchResults = () => {
     const tabConfig = [
       {
