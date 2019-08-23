@@ -1,5 +1,5 @@
 import { SagaIterator } from 'redux-saga';
-import { all, call, put, takeEvery } from 'redux-saga/effects';
+import { all, call, put, takeEvery, takeLatest } from 'redux-saga/effects';
 
 import { ResourceType } from 'interfaces/Resources';
 
@@ -42,7 +42,7 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
   }
 };
 export function* searchAllWatcher(): SagaIterator {
-  yield takeEvery(SearchAll.REQUEST, searchAllWorker);
+  yield takeLatest(SearchAll.REQUEST, searchAllWorker);
 };
 
 export function* searchResourceWorker(action: SearchResourceRequest): SagaIterator {

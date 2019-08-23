@@ -30,3 +30,7 @@ export function getDatabaseIconClass(databaseId: string): string {
 
   return databaseConfig.iconClass;
 }
+
+export function indexUsersEnabled(): boolean {
+  return AppConfig.indexUsers.enabled;
+}

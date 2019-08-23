@@ -1,0 +1,98 @@
+@import 'variables';
+
+.search-suggest {
+  background: white;
+  width: 100%;
+  z-index: 10; // T__T
+  position: absolute;
+
+  border-radius: 4px;
+  border: 1px solid $gray-light;
+  box-shadow: 0 3px 12px 0 rgba(17, 17, 31, 0.04);
+
+  .search-suggest-section {
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    &:not(:first-of-type) {
+      border-top: 1px solid $gray-light;
+    }
+
+    .section-title {
+      margin-left: 16px;
+    }
+
+    .section-footer {
+      text-decoration: none;
+      color: $call-to-action-color !important; // TODO: temp color variable
+      margin-left: 16px;
+    }
+
+    .list-group {
+      margin: 0;
+
+      .list-group-item {
+        /* Override some shared list-group-item styles */
+        border: none;
+        &:hover {
+          box-shadow: none !important;
+          background-color: #EBEBFF; // TODO: temp color indigo5
+        }
+        &:hover + .list-group-item {
+          box-shadow: none !important;
+        }
+
+        .result-item-link,
+        .search-item-link {
+          color: $text-dark;
+          display: flex;
+          flex-direction: row;
+          text-decoration: none;
+
+          img.icon.icon-search,
+          img.icon.result-icon,
+          .sb-avatar {
+            margin: auto 8px auto 0px;
+          }
+        }
+
+        /* SEARCH ITEM */
+        .search-item-link {
+          height: 32px;
+          padding: 4px 4px 4px 24px;
+          &:hover {
+            .search-item-info .search-item-text {
+              font-weight: $font-weight-body-bold;
+            }
+          }
+          .search-item-info {
+            display: flex;
+            .search-item-text {
+              font-weight: $font-weight-body-regular;
+            }
+          }
+        }
+
+        /* RESULT ITEM */
+        .result-item-link {
+          height: 56px;
+          padding: 8px 8px 8px 24px;
+          .result-info {
+            display: flex;
+            flex: 1;
+            min-width: 0px;
+            margin-right: 8px;
+          }
+          .resource-type {
+            margin-top: auto;
+          }
+        }
+      }
+    }
+  }
+
+  /*&.small .result-item-link,
+  &.small .search-item-link {
+    padding-left: 10px !important;
+  }*/
+}

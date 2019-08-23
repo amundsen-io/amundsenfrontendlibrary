@@ -207,7 +207,7 @@ describe('search ducks', () => {
     describe('searchAllWatcher', () => {
       it('takes every SearchAll.REQUEST with searchAllWorker', () => {
         testSaga(searchAllWatcher)
-          .next().takeEvery(SearchAll.REQUEST, searchAllWorker)
+          .next().takeLatest(SearchAll.REQUEST, searchAllWorker)
           .next().isDone();
       });
     });
