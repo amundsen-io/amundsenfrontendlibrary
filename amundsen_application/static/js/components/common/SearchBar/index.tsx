@@ -11,10 +11,9 @@ import {
 } from 'ducks/search/types';
 import { GlobalState } from 'ducks/rootReducer';
 
-import { Resource, ResourceType, TableResource, UserResource } from 'interfaces';
+import { ResourceType } from 'interfaces';
 
-import SearchSuggest from './SearchSuggest';
-import { getDatabaseDisplayName, getDatabaseIconClass } from 'config/config-utils';
+import SearchSuggest, { ResultsFromSearch } from './SearchSuggest';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
@@ -55,7 +54,7 @@ interface SearchBarState {
   searchTerm: string;
   subText: string;
 }
-// TODO: Close the typeahead when selecting an option
+
 export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   private refToSelf: React.RefObject<HTMLDivElement>;
 
@@ -156,80 +155,17 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     return true;
   };
 
-  mapResourcesToSuggestedResult = (resourceType: ResourceType, results: Resource[]) => {
-    return results.map((result) => {
-      return {
-        href: this.getSuggestedResultHref(resourceType, result),
-        iconClass: this.getSuggestedResultIconClass(resourceType, result),
-        subtitle: this.getSuggestedResultSubTitle(resourceType, result),
-        title: this.getSuggestedResultTitle(resourceType, result),
-        type: this.getSuggestedResultType(resourceType, result)
+  createResultsFromSearch = () : ResultsFromSearch => {
+    return {
+      [ResourceType.table]: {
+        results: this.props.tables.results.slice(0, 2),
+        totalResults: this.props.tables.total_results,
+      },
+      [ResourceType.user]: {
+        results: this.props.users.results.slice(0, 2),
+        totalResults: this.props.users.total_results,
       }
-    });
-  };
-
-  getSuggestedResultHref = (resourceType: ResourceType, result: Resource): string => {
-    switch (resourceType) {
-      case ResourceType.table:
-        const table = result as TableResource;
-        return `/table_detail/${table.cluster}/${table.database}/${table.schema_name}/${table.name}`;
-      case ResourceType.user:
-        const user = result as UserResource;
-        return `/user/${user.user_id}`;
-      default:
-        return '';
-    }
-  };
-
-  getSuggestedResultIconClass = (resourceType: ResourceType, result: Resource): string => {
-    switch (resourceType) {
-      case ResourceType.table:
-        const table = result as TableResource;
-        return getDatabaseIconClass(table.database);
-      case ResourceType.user:
-        return 'icon-users';
-      default:
-        return '';
-    }
-  };
-
-  getSuggestedResultSubTitle = (resourceType: ResourceType, result: Resource): string => {
-    switch (resourceType) {
-      case ResourceType.table:
-        const table = result as TableResource;
-        return table.description;
-      case ResourceType.user:
-        const user = result as UserResource;
-        // TODO: Display role_name and location when support exists
-        return user.team_name;
-      default:
-        return '';
-    }
-  };
-
-  getSuggestedResultTitle = (resourceType: ResourceType, result: Resource): string => {
-    switch (resourceType) {
-      case ResourceType.table:
-        const table = result as TableResource;
-        return `${table.schema_name}.${table.name}`;
-      case ResourceType.user:
-        const user = result as UserResource;
-        return user.display_name;
-      default:
-        return '';
-    }
-  };
-
-  getSuggestedResultType = (resourceType: ResourceType, result: Resource): string => {
-    switch (resourceType) {
-      case ResourceType.table:
-        const table = result as TableResource;
-        return getDatabaseDisplayName(table.database);
-      case ResourceType.user:
-        return 'User';
-      default:
-        return '';
-    }
+    };
   };
 
   render() {
@@ -237,16 +173,6 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     const searchButtonClass = `btn btn-flat-icon search-button ${this.props.size === SIZE_SMALL ? 'small' : 'large'}`;
     const subTextClass = `subtext body-secondary-3 ${this.state.subTextClassName}`;
 
-    const suggestedResults = {
-      [ResourceType.table]: {
-        results: this.mapResourcesToSuggestedResult(ResourceType.table, this.props.tables.results.slice(0, 2)),
-        totalResults: this.props.tables.total_results,
-      },
-      [ResourceType.user]: {
-        results: this.mapResourcesToSuggestedResult(ResourceType.user, this.props.users.results.slice(0, 2)),
-        totalResults: this.props.users.total_results,
-      }
-    };
     return (
       <div id="search-bar" ref={this.refToSelf}>
         <form className="search-bar-form" onSubmit={ this.handleValueSubmit }>
@@ -273,7 +199,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
           <SearchSuggest
             onItemSelect={this.onTypeAheadSelect}
             searchTerm={this.state.searchTerm}
-            suggestedResults={suggestedResults}
+            resultsFromSearch={this.createResultsFromSearch()}
           />
         }
         {
