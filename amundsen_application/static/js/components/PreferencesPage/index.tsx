@@ -15,6 +15,8 @@ import {
   NOTIFICATION_PREFERENCES_TITLE
 } from './constants';
 
+// TODO: Implement tests before component is exposed
+
 interface PreferencesPageState {
   selectedPreference: string;
 }
