@@ -1,1 +1,1 @@
-//TODO
+// TODO: Complete before component is exposed
