@@ -21,10 +21,14 @@ export class PreferenceGroup extends React.Component<PreferenceGroupProps> {
     super(props);
   }
 
+  onClick = () => {
+    this.props.onClick(this.props.preferenceValue)
+  }
+
   // TODO: Consolidate with future common RadioButton component.
   render() {
     return (
-      <label className="preference-group" onClick={() => this.props.onClick(this.props.preferenceValue)}>
+      <label className="preference-group" onClick={this.onClick}>
         <input defaultChecked={ this.props.selected } type="radio" className="preference-radio" name="notification-preference"/>
         <div className="preference-text">
           <div className="title-2">{ this.props.title }</div>
