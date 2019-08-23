@@ -45,7 +45,7 @@ ReactDOM.render(
             <Route path="/search" component={SearchPage} />
             <Route path="/user/:userId" component={ProfilePage} />
             {/* TODO: Enable preferences once implemented */}
-            <Route path="/preferences" component={PreferencesPage} />
+            {/* <Route path="/preferences" component={PreferencesPage} /> */}
             <Route path="/404" component={NotFoundPage} />
             <Route path="/" component={HomePage} />
           </Switch>
