@@ -416,16 +416,43 @@ describe('search ducks', () => {
     });
 
     describe('urlDidUpdateWorker', () => {
-      // TODO - Implement tests
+      let sagaTest;
+      let term;
+      let resource;
+      let index;
 
-      // it('calls ', () => {
-      //   updateSearchUrlSpy.mockClear();
-      //
-      //   testSaga(urlDidUpdateWorker, urlDidUpdate('string'))
-      //     .next().select(SearchUtils.getSearchState)
-      //     .next().isDone();
-      //   expect(updateSearchUrlSpy).toHaveBeenCalled();
-      // });
+      beforeEach(() => {
+        term = searchState.search_term;
+        resource = searchState.selectedTab;
+        index = SearchUtils.getPageIndex(searchState, resource);
+
+        sagaTest = (action) => {
+          return testSaga(urlDidUpdateWorker, action)
+            .next().select(SearchUtils.getSearchState)
+            .next(searchState);
+        };
+      });
+
+      it('Calls searchAll when search term changes', () => {
+        term = 'new search';
+        sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
+          .put(searchAll(term, resource, index))
+          .next().isDone();
+      });
+
+      it('Calls setResource when the resource has changed', () => {
+        resource = ResourceType.user;
+        sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
+          .put(setResource(resource, false))
+          .next().isDone();
+      });
+
+      it('Calls setPageIndex when the index changes', () => {
+        index = 10;
+        sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
+          .put(setPageIndex(index, false))
+          .next().isDone();
+      });
     });
 
     describe('urlDidUpdateWatcher', () => {
