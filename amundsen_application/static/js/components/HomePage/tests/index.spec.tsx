@@ -4,35 +4,22 @@ import { shallow } from 'enzyme';
 
 import { mapDispatchToProps, HomePage, HomePageProps } from '../';
 
-import SearchBar from 'components/SearchPage/SearchBar';
 import MyBookmarks from 'components/common/Bookmark/MyBookmarks';
 import PopularTables from 'components/common/PopularTables';
+import SearchBar from 'components/SearchPage/SearchBar';
+import TagsList from 'components/common/TagsList';
+
+import { getMockRouterProps } from 'fixtures/mockRouter';
 
 describe('HomePage', () => {
   const setup = (propOverrides?: Partial<HomePageProps>) => {
+    const mockLocation = {
+      search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1',
+    };
+    const routerProps = getMockRouterProps<any>(null, mockLocation);
     const props: HomePageProps = {
       searchReset: jest.fn(),
-      history: {
-        length: 2,
-        action: "POP",
-        location: jest.fn() as any,
-        push: jest.fn(),
-        replace: jest.fn(),
-        go: jest.fn(),
-        goBack: jest.fn(),
-        goForward: jest.fn(),
-        block: jest.fn(),
-        createHref: jest.fn(),
-        listen: jest.fn(),
-      },
-      location: {
-        search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1', 
-        pathname: 'mockstr',
-        state: jest.fn(),
-        hash: 'mockstr',
-      },
-      match: jest.fn() as any,
-      staticContext: jest.fn() as any,
+      ...routerProps,
       ...propOverrides
     };
     const wrapper = shallow<HomePage>(<HomePage {...props} />)
@@ -47,13 +34,24 @@ describe('HomePage', () => {
   });
 
   describe('render', () => {
-    it('contains Searchbar, BookmarkList, and PopularTables', () => {
+    it('contains Searchbar', () => {
       expect(wrapper.contains(<SearchBar />));
+    });
+
+    it('contains TagsList', () => {
+      expect(wrapper.find('#browse-tags-header').text()).toEqual('Browse Tags');	
+      expect(wrapper.contains(<TagsList />));
+    });
+
+    it('contains MyBookmarks', () => {
       expect(wrapper.contains(<MyBookmarks />));
+    });
+    
+    it('contains PopularTables', () => {
       expect(wrapper.contains(<PopularTables />));
     });
   });
-  
+
   describe('componentDidMount', () => {
     it('calls searchReset', () => {
       const searchResetSpy = jest.spyOn(props, 'searchReset');

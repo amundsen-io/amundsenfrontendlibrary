@@ -14,7 +14,7 @@ describe('TableListItem', () => {
       table: {
         type: ResourceType.table,
         cluster: '',
-        database: '',
+        database: 'testdb',
         description: 'I am the description',
         key: '',
         last_updated_epoch: 1553829681,
@@ -52,15 +52,18 @@ describe('TableListItem', () => {
       expect(wrapper.find('.content').children().at(0).children().at(1).text()).toEqual('I am the description');
     });
 
+    it('renders resource type', () => {
+      expect(wrapper.find('.content').children().at(1).text()).toEqual(props.table.database);
+    });
+
     describe('if props.table has last_updated_epoch', () => {
       it('renders Last Update title', () => {
-        expect(wrapper.find('.content').children().at(1).children().at(0).text()).toEqual('Last Updated');
+        expect(wrapper.find('.content').children().at(2).children().at(0).text()).toEqual('Last Updated');
       });
 
-      /*it('renders getDateLabel value', () => {
-        wrapper.update();
-        expect(wrapper.find('.content').children().at(1).children().at(1).text()).toEqual('Mar 29, 2019');
-      });*/
+      it('renders getDateLabel value', () => {
+        expect(wrapper.find('.content').children().at(2).children().at(1).text()).toEqual(wrapper.instance().getDateLabel());
+      });
     });
 
     describe('if props.table does not have last_updated_epoch', () => {
@@ -75,18 +78,18 @@ describe('TableListItem', () => {
           name: 'tableName',
           schema_name: 'tableSchema',
         }});
-        expect(wrapper.find('.content').children().at(1).exists()).toBeFalsy();
+        expect(wrapper.find('.content').children().at(2).exists()).toBeFalsy();
       });
     });
   });
 
-  /* Note: Jest will convert date to UTC, expect to see different strings for an epoch value in the tests vs UI*/
-  /*describe('getDateLabel', () => {
+  /* Note: Jest is configured to use UTC */
+  describe('getDateLabel', () => {
     it('getDateLabel returns correct string', () => {
       const { props, wrapper } = setup();
       expect(wrapper.instance().getDateLabel()).toEqual('Mar 29, 2019');
     });
-  });*/
+  });
 
   describe('getLink', () => {
     it('getLink returns correct string', () => {

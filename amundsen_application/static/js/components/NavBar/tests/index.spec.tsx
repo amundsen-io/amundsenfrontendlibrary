@@ -119,7 +119,7 @@ describe('NavBar', () => {
     it('renders My Profile link correctly inside of user dropdown', () => {
       element = wrapper.find(Dropdown).find(Dropdown.Menu).find(MenuItem);
       expect(element.render().text()).toEqual('My Profile');
-      expect(element.props().href).toEqual('/user/test0');
+      expect(element.props().href).toEqual('/user/test0?source=navbar');
     });
 
     it('does not render a Link to the user profile if `indexUsers` is disabled', () => {
