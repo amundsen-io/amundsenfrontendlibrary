@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as DocumentTitle from 'react-document-title';
 import { RouteComponentProps } from 'react-router';
+import { Search as UrlSearch } from 'history';
 
 import AppConfig from 'config/config';
 import LoadingSpinner from 'components/common/LoadingSpinner';
@@ -54,7 +55,7 @@ export interface StateFromProps {
 export interface DispatchFromProps {
   setResource: (resource: ResourceType) => SetResourceRequest;
   setPageIndex: (pageIndex: number) => SetPageIndexRequest;
-  urlDidUpdate: (urlSearch: string) => UrlDidUpdateRequest;
+  urlDidUpdate: (urlSearch: UrlSearch) => UrlDidUpdateRequest;
 }
 
 export type SearchPageProps = StateFromProps & DispatchFromProps & RouteComponentProps<any>;
