@@ -1,7 +1,7 @@
 @import 'variables';
 
 .btn.tag-button {
-  background-color: $gray-lightest;
+  background-color: $tag-bg;
   border: 0;
   border-radius: 4px;
   color: $text-primary;
@@ -20,7 +20,7 @@
   &:hover,
   &:focus {
     color: $text-primary;
-    background-color: $gray-lighter;
+    background-color: $tag-bg-hover;
   }
 
   .tag-count {

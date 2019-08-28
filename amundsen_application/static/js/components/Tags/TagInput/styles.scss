@@ -17,7 +17,7 @@
     }
 
     .amundsen__multi-value {
-      background-color: $gray-lighter !important;
+      background-color: $tag-bg !important;
       border-radius: 4px;
 
       .amundsen__multi-value__label {
@@ -33,7 +33,7 @@
 
         &:hover,
         &:focus {
-          background-color: $gray-light !important;
+          background-color: $tag-bg-hover !important;
           color: $text-primary;
         }
       }

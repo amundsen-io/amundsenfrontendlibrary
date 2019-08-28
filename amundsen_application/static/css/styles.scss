@@ -54,3 +54,19 @@ input {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+input[type="radio"] {
+  margin: 5px;
+}
+
+input[type="text"] {
+  color: $text-secondary !important;
+}
+
+textarea {
+  width: 100%;
+  color: $text-secondary !important;
+  border: 1px solid $divider;
+  border-radius: 5px;
+  padding: 10px;
+}

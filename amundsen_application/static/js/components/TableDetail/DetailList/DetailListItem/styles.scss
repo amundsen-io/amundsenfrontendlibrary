@@ -6,8 +6,8 @@
   flex-direction: column;
   /* tmp fixes until we refactor/settle on styles */
   cursor: default;
-  border-top-color: $gray-lighter !important;
-  border-bottom-color: $gray-lighter !important;
+  border-top-color: $divider !important;
+  border-bottom-color: $divider !important;
   background-color: transparent !important;
   padding: 10px 4px;
 
@@ -54,8 +54,6 @@
       cursor: pointer;
 
       &:hover {
-        background-image: linear-gradient($gray-lighter, $gray-lighter, white);
-
         .icon {
           background-color: $brand-color-4;
         }

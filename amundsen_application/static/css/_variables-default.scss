@@ -11,8 +11,11 @@ $brand-primary: $brand-color-4 !default;
 
 $gray:          #ACACC0 !default;
 $gray-light:    #CACAD9 !default;
-$gray-lighter:  #E7E7EF !default;
-$gray-lightest: #F4F4FA !default;
+
+//$gray:          $gray30;  // #ACACC0
+//$gray-light:    $gray20;  // #CACAD9
+
+
 
 /* Scaffolding */
 $body-bg:           $white !default;
@@ -20,8 +23,6 @@ $body-bg-secondary: $gray5 !default;
 $body-bg-dark:      $gray100 !default;
 $divider:           $gray15 !default;
 $stroke:            $gray20 !default;
-$link-color:        $purple60;
-$link-hover-color:  $purple80;
 
 
 // Typography
@@ -29,6 +30,9 @@ $text-primary:     $gray100 !default;
 $text-secondary:   $gray60 !default;
 $text-light:       $white !default;
 $text-placeholder: $gray40;
+
+$link-color:        $brand-color-4;
+$link-hover-color:  $brand-color-5;
 
 $font-family-body:           "Open Sans", sans-serif !default;
 $font-weight-body-regular:   400 !default;
@@ -86,6 +90,12 @@ $list-group-border-radius: 0 !default;
 
 // Labels
 $label-primary-bg: $brand-color-3 !default;
+
+// Tags
+$tag-bg: $gray5;
+$tag-bg-hover: $gray10;
+
+
 
 // TODO Temp Colors
 $resource-title-color: #8B37FF; // this is #purple60, end goal is #indigo60
