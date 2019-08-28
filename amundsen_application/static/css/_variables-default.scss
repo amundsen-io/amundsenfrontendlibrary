@@ -9,13 +9,6 @@ $brand-color-5: #09457B !default;
 
 $brand-primary: $brand-color-4 !default;
 
-$gray:          #ACACC0 !default;
-$gray-light:    #CACAD9 !default;
-
-//$gray:          $gray30;  // #ACACC0
-//$gray-light:    $gray20;  // #CACAD9
-
-
 
 /* Scaffolding */
 $body-bg:           $white !default;
@@ -84,7 +77,7 @@ $footer-height: 60px;
 
 
 // List Group
-$list-group-border:        $gray-light !default;
+$list-group-border:        $stroke !default;
 $list-group-border-radius: 0 !default;
 
 

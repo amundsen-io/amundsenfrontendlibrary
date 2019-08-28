@@ -26,7 +26,7 @@
 
   &:hover,
   &:focus {
-    background-color: $body-bg-dark;
+    background-color: $body-bg-secondary;
   }
 
    .icon {
@@ -36,7 +36,7 @@
       &,
       &:hover,
       &:focus {
-        background-color: $gray-light !important;
+        background-color: $stroke !important;
       }
     }
 
