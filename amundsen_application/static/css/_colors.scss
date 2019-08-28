@@ -1,22 +1,25 @@
 /**
-Do not use these color definitions directly in stylesheets.
-E.g.
-body {
-  background-color: $gray100;
-}
 
+Avoid using these color definitions directly.
+Define semantic variables that reference this color palette instead.
+The color palette can be swapped out or modified without
+revisiting each individual color usage.
 
-Instead define variables that use values from this palette of colors.
-E.g.
+---------------
+Do this:
+  $text-primary: $gray100;
 
-$body-bg: $gray100;
+  body {
+    color: $text-primary;
+  }
 
-body {
-  background-color: $body-bg;
-}
+----------------
+Don't do this:
+  body {
+    color: $gray100;
+  }
 
-
- */
+*/
 
 $white: #FFFFFF;
 $black: #000000;
@@ -259,26 +262,3 @@ $gray70: #515167;
 $gray80: #414155;
 $gray90: #333344;
 $gray100: #292936;
-
-/* Text */
-$textPrimary: $gray100;
-$textSecondary: $gray60;
-$textDisabled: $gray30;
-$textPlaceholder: $gray40;
-$textPositive: $mint60;
-$textNegative: $sunset60;
-$textNegativeDisabled: $sunset30;
-$textInteractive: $purple60;
-$textInteractiveDisabled: $purple30;
-
-/* Icon */
-$iconPositive: $mint30;
-$iconWarning: $yellow40;
-$iconNegative: $sunset60;
-$iconNegativeDisabled: $sunset30;
-$iconPrimary: $gray100;
-$iconPrimaryDisabled: $gray20;
-$iconSecondary: $gray30;
-$iconSecondaryDisabled: $gray10;
-$iconInteractive: $purple60;
-$iconInteractiveDisabled: $purple20;

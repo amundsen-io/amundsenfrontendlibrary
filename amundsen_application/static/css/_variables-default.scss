@@ -1,11 +1,12 @@
 @import 'colors';
 
+// TODO - consider replacing brand-color-X
 // Colors
-$brand-color-1: #A9E1FF !default;
-$brand-color-2: #82D2FF !default;
-$brand-color-3: #3A97D3 !default;
-$brand-color-4: #2277B3 !default;
-$brand-color-5: #09457B !default;
+$brand-color-1: $indigo10 !default;
+$brand-color-2: $indigo20 !default;
+$brand-color-3: $indigo40 !default;
+$brand-color-4: $indigo60 !default;
+$brand-color-5: $indigo80 !default;
 
 $brand-primary: $brand-color-4 !default;
 
@@ -72,6 +73,7 @@ $icon-bg-disabled: $gray20 !default;
 
 
 // Header & Footer
+$nav-bar-color: $indigo100;
 $nav-bar-height: 60px;
 $footer-height: 60px;
 
@@ -84,15 +86,15 @@ $list-group-border-radius: 0 !default;
 // Labels
 $label-primary-bg: $brand-color-3 !default;
 
+
 // Tags
 $tag-bg: $gray5;
 $tag-bg-hover: $gray10;
 
 
-
 // TODO Temp Colors
-$resource-title-color: #8B37FF; // this is #purple60, end goal is #indigo60
-$badge-text-color: #292936; // gray100
+$resource-title-color: $indigo60; // this is #purple60, end goal is #indigo60
+$badge-text-color: $text-primary; // gray100
 $badge-danger-color: #FFCCBF; // sunset10
 $badge-primary-color: #D4F0FF; // cyan10
 $badge-success-color: #A6FBDE; // mint10
