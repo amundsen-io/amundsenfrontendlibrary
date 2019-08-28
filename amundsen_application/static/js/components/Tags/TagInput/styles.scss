@@ -22,7 +22,7 @@
 
       .amundsen__multi-value__label {
         border-radius: 4px 0 0 4px;
-        color: $text-dark;
+        color: $text-primary;
         line-height: 14px;
         padding: 8px;
       }
@@ -34,7 +34,7 @@
         &:hover,
         &:focus {
           background-color: $gray-light !important;
-          color: $text-dark;
+          color: $text-primary;
         }
       }
     }

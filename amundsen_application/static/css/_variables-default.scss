@@ -1,19 +1,4 @@
-/**
- The following are used in Amundsen but are not part of Bootstrap.
- These must be defined here:
-
-  $brand-color-1, $brand-color-2, $brand-color-3, $brand-color-4, $brand-color-5
-
-  $font-family-header, $font-weight-header-regular, $font-weight-header-bold
-  $font-family-body, $font-weight-body-regular, $font-weight-body-semi-bold, $font-weight-body-bold
-
-  $text-dark, $text-medium, $text-light
-
-  $btn-primary-bg-hover, $btn-default-border-hover,
-  $btn-primary-border-hover, $btn-default-bg-hover,
-
-  */
-
+@import 'colors';
 
 // Colors
 $brand-color-1: #A9E1FF !default;
@@ -24,25 +9,27 @@ $brand-color-5: #09457B !default;
 
 $brand-primary: $brand-color-4 !default;
 
-$gray-base:     #292936 !default;
-$gray-darker:   #63637B !default;
-$gray-dark:     #9191A8 !default;
 $gray:          #ACACC0 !default;
 $gray-light:    #CACAD9 !default;
 $gray-lighter:  #E7E7EF !default;
 $gray-lightest: #F4F4FA !default;
 
-
-// Scaffolding
-$body-bg:    #fff !default;
-// TODO - consider replacing $text-dark with $text-color
-$text-dark: $gray-base !default;
-$text-color: $gray-base !default;
-$text-medium: $gray-darker !default;
-$text-light: $gray-light !default;
+/* Scaffolding */
+$body-bg:           $white !default;
+$body-bg-secondary: $gray5 !default;
+$body-bg-dark:      $gray100 !default;
+$divider:           $gray15 !default;
+$stroke:            $gray20 !default;
+$link-color:        $purple60;
+$link-hover-color:  $purple80;
 
 
 // Typography
+$text-primary:     $gray100 !default;
+$text-secondary:   $gray60 !default;
+$text-light:       $white !default;
+$text-placeholder: $gray40;
+
 $font-family-body:           "Open Sans", sans-serif !default;
 $font-weight-body-regular:   400 !default;
 $font-weight-body-semi-bold: 600 !default;
@@ -69,14 +56,22 @@ $btn-primary-bg:           $brand-color-4 !default;
 $btn-primary-bg-hover:     $brand-color-5 !default;
 $btn-primary-border:       transparent !default;
 $btn-primary-border-hover: transparent !default;
-$btn-primary-color:        white !default;
-$btn-primary-color-hover:  white !default;
+$btn-primary-color:        $white !default;
+$btn-primary-color-hover:  $white !default;
 
-$btn-default-bg:           white !default;
-$btn-default-bg-hover:     $gray-lightest;
-$btn-default-border:       $gray-light !default;
-$btn-default-border-hover: $gray !default;
-$btn-default-color:        $gray-base !default;
+$btn-default-bg:           $white !default;
+$btn-default-bg-hover:     $gray5 !default;
+$btn-default-border:       $gray20 !default;
+$btn-default-border-hover: $gray30 !default;
+$btn-default-color:        $gray100 !default;
+$btn-default-color-hover:  $gray90;
+
+
+// Icons
+$icon-bg:          $gray20 !default;
+$icon-bg-color:    $brand-color-3 !default;
+$icon-bg-dark:     $gray60 !default;
+$icon-bg-disabled: $gray20 !default;
 
 
 // Header & Footer

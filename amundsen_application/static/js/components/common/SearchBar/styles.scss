@@ -43,19 +43,6 @@
         height: 36px;
         padding: 6px 6px 6px 36px;
       }
-
-      &:focus {
-         // TODO: gray-60?
-        border-color: $gray-dark;
-      }
-    }
-
-    .search-bar-input:focus + .search-button,
-    .search-bar-input:focus + .search-button-small {
-      img.icon {
-        // TODO: gray-60?
-        background-color: $gray-dark;
-      }
     }
 
     @media (max-width: $screen-md-max) {

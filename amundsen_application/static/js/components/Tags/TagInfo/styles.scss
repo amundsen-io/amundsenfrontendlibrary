@@ -4,7 +4,7 @@
   background-color: $gray-lightest;
   border: 0;
   border-radius: 4px;
-  color: $text-dark;
+  color: $text-primary;
   margin: 4px;
   overflow: hidden;
   padding: 8px;
@@ -19,12 +19,12 @@
 
   &:hover,
   &:focus {
-    color: $text-dark;
+    color: $text-primary;
     background-color: $gray-lighter;
   }
 
   .tag-count {
-    color: $text-medium;
+    color: $text-secondary;
     margin-left: 8px;
   }
 }
