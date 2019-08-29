@@ -7,16 +7,12 @@
 
   li {
     &:hover {
-      background-color: $gray-light;
+      background-color: $gray-lightest;
     }
     a {
-      font-size: $font-size-large;
-      padding: 12px 16px;
-      color: $gray-darker;
-
+      padding: 8px;
       &:hover {
         background-color: inherit;
-        color: $gray-darker;
       }
     }
   }

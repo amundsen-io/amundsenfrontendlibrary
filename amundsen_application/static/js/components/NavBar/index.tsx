@@ -58,7 +58,11 @@ export class NavBar extends React.Component<NavBarProps> {
                   <Dropdown.Toggle noCaret={true} className="avatar-dropdown">
                     <Avatar name={this.props.loggedInUser.display_name} size={32} round={true} />
                   </Dropdown.Toggle>
-                  <Dropdown.Menu>
+                  <Dropdown.Menu className='profile-menu'>
+                    <div className='profile-menu-header'>
+                      <div className='title-2'>{this.props.loggedInUser.display_name}</div>
+                      <div>{this.props.loggedInUser.email}</div>
+                    </div>
                     <MenuItem id='nav-bar-avatar-link' href={`/user/${this.props.loggedInUser.user_id}?source=navbar`}>My Profile</MenuItem>
                     {/* TODO: Enable preferences once implemented */}
                     {/* <MenuItem href={`/preferences`}>Preferences</MenuItem> */}
