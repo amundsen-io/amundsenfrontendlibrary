@@ -47,6 +47,14 @@ $line-height-small:  1.5 !default;
 $line-height-large:  1.5 !default;
 
 
+// Badges
+$badge-text-color: $text-primary;
+$badge-danger-color: $sunset10;
+$badge-primary-color: $cyan10;
+$badge-success-color: $mint10;
+$badge-warning-color: $yellow10;
+
+
 // Buttons
 $btn-border-radius-base: 4px;
 
@@ -93,9 +101,4 @@ $tag-bg-hover: $gray10;
 
 
 // TODO Temp Colors
-$resource-title-color: $indigo60; // this is #purple60, end goal is #indigo60
-$badge-text-color: $text-primary; // gray100
-$badge-danger-color: #FFCCBF; // sunset10
-$badge-primary-color: #D4F0FF; // cyan10
-$badge-success-color: #A6FBDE; // mint10
-$badge-warning-color: #FFF3B8; // yellow10
+$resource-title-color: $indigo60;
