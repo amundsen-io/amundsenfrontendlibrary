@@ -16,8 +16,11 @@ mail_blueprint = Blueprint('mail', __name__, url_prefix='/api/mail/v0')
 
 @mail_blueprint.route('/feedback', methods=['POST'])
 def feedback() -> Response:
+    """
+    Uses the configured instance of BaseMailClient client configured on the MAIL_CLIENT
+    config variable to send an email with data from the Feedback component
+    """
     try:
-        """ An instance of BaseMailClient client must be configured on MAIL_CLIENT """
         mail_client = get_mail_client()
         data = request.form.to_dict()
         text_content = '\r\n'.join('{}:\r\n{}\r\n'.format(key, val) for key, val in data.items())
@@ -83,16 +86,19 @@ def _feedback(*,
 
 @mail_blueprint.route('/notification', methods=['POST'])
 def notification() -> Response:
-    # TODO: Write unit tests once actual logic is implemented
+    """
+    Uses the configured instance of BaseMailClient client configured on the MAIL_CLIENT
+    config variable to send a notification based on data passed from the request
+    """
     try:
         data = request.get_json()
+        return send_notification(
+            notification_type=data['notificationType'],
+            options=data['options'],
+            recipients=data['recipients'],
+            sender=data['sender']
+        )
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
-    return send_notification(
-        notification_type=data['notificationType'],
-        options=data['options'],
-        recipients=data['recipients'],
-        sender=data['sender']
-    )

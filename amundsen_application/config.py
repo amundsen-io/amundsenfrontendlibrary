@@ -24,6 +24,7 @@ class LocalConfig(Config):
     TESTING = False
     LOG_LEVEL = 'DEBUG'
 
+    FRONTEND_PORT = '5000'
     # If installing locally directly from the github source
     # modify these ports if necessary to point to you local search and metadata services
     SEARCH_PORT = '5001'
@@ -32,7 +33,11 @@ class LocalConfig(Config):
     # If installing using the Docker bootstrap, this should be modified to the docker host ip.
     LOCAL_HOST = '0.0.0.0'
 
-    FRONTEND_BASE = 'http://localhost:5000/'
+    FRONTEND_BASE = os.environ.get('FRONTEND_BASE',
+                                   'http://{LOCAL_HOST}:{PORT}'.format(
+                                       LOCAL_HOST=LOCAL_HOST,
+                                       PORT=FRONTEND_PORT)
+                                   )
 
     SEARCHSERVICE_REQUEST_CLIENT = None
     SEARCHSERVICE_REQUEST_HEADERS = None
