@@ -12,12 +12,12 @@ export interface DispatchFromProps {
   openRequestDescriptionDialog: () => ToggleRequestAction;
 }
 
-export type OpenRequestDescriptionProps = DispatchFromProps;
+export type RequestDescriptionTextProps = DispatchFromProps;
 
-interface OpenRequestDescriptionState {}
+interface RequestDescriptionTextState {}
 
-export class OpenRequestDescription extends React.Component<OpenRequestDescriptionProps, OpenRequestDescriptionState> {
-  public static defaultProps: Partial<OpenRequestDescriptionProps> = {};
+export class RequestDescriptionText extends React.Component<RequestDescriptionTextProps, RequestDescriptionTextState> {
+  public static defaultProps: Partial<RequestDescriptionTextProps> = {};
 
   constructor(props) {
     super(props);
@@ -43,4 +43,4 @@ export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({ openRequestDescriptionDialog } , dispatch);
 };
 
-export default connect<{}, DispatchFromProps>(null, mapDispatchToProps)(OpenRequestDescription);
+export default connect<{}, DispatchFromProps>(null, mapDispatchToProps)(RequestDescriptionText);

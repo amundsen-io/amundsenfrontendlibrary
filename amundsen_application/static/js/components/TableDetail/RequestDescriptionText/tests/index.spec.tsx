@@ -2,17 +2,17 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
-import { OpenRequestDescription, mapDispatchToProps, OpenRequestDescriptionProps } from '../';
+import { RequestDescriptionText, mapDispatchToProps, RequestDescriptionTextProps } from '../';
 import globalState from 'fixtures/globalState';
 import { REQUEST_DESCRIPTION } from '../constants';
 
-describe('OpenRequestDescription', () => {
-  const setup = (propOverrides?: Partial<OpenRequestDescriptionProps>) => {
-    const props: OpenRequestDescriptionProps = {
+describe('RequestDescriptionText', () => {
+  const setup = (propOverrides?: Partial<RequestDescriptionTextProps>) => {
+    const props: RequestDescriptionTextProps = {
       openRequestDescriptionDialog: jest.fn(),
       ...propOverrides, 
     };
-    const wrapper = shallow<OpenRequestDescription>(<OpenRequestDescription {...props} />)
+    const wrapper = shallow<RequestDescriptionText>(<RequestDescriptionText {...props} />)
     return {props, wrapper}
   };
 

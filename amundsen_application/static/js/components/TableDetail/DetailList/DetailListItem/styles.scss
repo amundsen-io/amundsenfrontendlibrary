@@ -58,7 +58,7 @@
       cursor: pointer;
 
       &:hover {
-        background-image: linear-gradient($gray-lighter, $gray-lighter, white);
+        background-image: linear-gradient($gray-lightest, $gray-lightest, white);
 
         .icon {
           background-color: $brand-color-4;
@@ -110,7 +110,7 @@
     }
     &:hover,
     &:focus {
-      background-color: $gray-lighter;
+      background-color: $gray-lightest;
       .icon {
         background-color: $gray-base;
       }
