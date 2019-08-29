@@ -8,7 +8,6 @@ from flask import jsonify, make_response, render_template, Response
 from typing import Dict, List
 
 from amundsen_application.api.exceptions import MailClientNotImplemented
-from amundsen_application.base.base_mail_client import BaseMailClient
 from amundsen_application.log.action_log import action_logging
 
 
@@ -27,6 +26,17 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
         pass  # pragma: no cover
 
     try:
+        if sender in recipients:
+            recipients.remove(sender)
+        if len(recipients) == 0:
+            logging.info('No recipients exist for notification')
+            return make_response(
+                jsonify({
+                    'msg': 'No valid recipients exist for notification, notification was not sent.'
+                }),
+                HTTPStatus.OK
+            )
+
         mail_client = get_mail_client()
 
         notification_content = get_notification_content(
@@ -34,17 +44,6 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
             sender=sender,
             options=options
         )
-
-        if sender in recipients:
-            recipients.remove(sender)
-        if len(recipients) == 0:
-            logging.info('No recipients exist for notification')
-            return make_response(
-                jsonify({
-                    'msg': 'Sender is excluded from notification recipients, no recipients exist.'
-                }),
-                HTTPStatus.OK
-            )
 
         _log_send_notification(
             notification_type=notification_type,
@@ -81,7 +80,7 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
         return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-def get_mail_client() -> BaseMailClient:
+def get_mail_client():  # type: ignore
     """
     Gets a mail_client object to send emails, raises an exception
     if mail client isn't implemented
