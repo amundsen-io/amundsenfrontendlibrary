@@ -116,8 +116,14 @@ describe('NavBar', () => {
       })
     });
 
+    it('renders user dropdown header', () => {
+      element = wrapper.find(Dropdown).find(Dropdown.Menu).children().at(0);
+      expect(element.children().at(0).text()).toEqual(props.loggedInUser.display_name);
+      expect(element.children().at(1).text()).toEqual(props.loggedInUser.email);
+    });
+
     it('renders My Profile link correctly inside of user dropdown', () => {
-      element = wrapper.find(Dropdown).find(Dropdown.Menu).find(MenuItem);
+      element = wrapper.find(Dropdown).find(Dropdown.Menu).find(MenuItem).at(0);
       expect(element.render().text()).toEqual('My Profile');
       expect(element.props().href).toEqual('/user/test0?source=navbar');
     });
