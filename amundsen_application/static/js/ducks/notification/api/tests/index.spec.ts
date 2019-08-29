@@ -7,25 +7,28 @@ jest.mock('axios');
 
 describe('sendNotification', () => {
   it('calls axios with the correct params', async () => {
-    const mockRequestObject = {
-      recipients: ['user1@test.com'],
-      sender: 'user2@test.com',
-      notificationType: NotificationType.ADDED,
-      options: {
-        resource_name: 'testResource',
-        resource_url: 'https://testResource.com',
-        description_requested: false,
-        fields_requested: false,
-      }
-    }
+    const testRecipients = ['user1@test.com'];
+    const testSender = 'user2@test.com';
+    const testNotificationType = NotificationType.ADDED;
+    const testOptions = {
+      resource_name: 'testResource',
+      resource_url: 'https://testResource.com',
+      description_requested: false,
+      fields_requested: false,
+    };
     API.sendNotification(
-      mockRequestObject.recipients,
-      mockRequestObject.sender,
-      mockRequestObject.notificationType,
-      mockRequestObject.options,
+      testRecipients
+      testSender,
+      testNotificationType,
+      testOptions,
     )
     expect(axios).toHaveBeenCalledWith({
-      data: mockRequestObject,
+      data: {
+        notificationType: testNotificationType,
+        options: testOptions,
+        recipients: testRecipients,
+        sender: testSender,
+      },
       method: 'post',
       url: `/api/mail/v0/notification`,
     });

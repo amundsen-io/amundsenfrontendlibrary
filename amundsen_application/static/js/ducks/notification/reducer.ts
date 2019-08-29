@@ -54,20 +54,12 @@ export default function reducer(state: NotificationReducerState = initialState, 
       return {
         requestIsOpen: true,
       }
+    case SubmitNotification.FAILURE:
+    case SubmitNotification.SUCCESS:
     case ToggleRequest.CLOSE:
       return {
         requestIsOpen: false,
       }
-    case SubmitNotification.REQUEST:
-      return state;
-    case SubmitNotification.SUCCESS:
-      return {
-        requestIsOpen: false,
-      };
-    case SubmitNotification.FAILURE:
-      return {
-        requestIsOpen: false,
-      };
     default:
       return state;
   }
