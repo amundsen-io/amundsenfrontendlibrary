@@ -17,7 +17,7 @@ describe('sendNotification', () => {
       fields_requested: false,
     };
     API.sendNotification(
-      testRecipients
+      testRecipients,
       testSender,
       testNotificationType,
       testOptions,
