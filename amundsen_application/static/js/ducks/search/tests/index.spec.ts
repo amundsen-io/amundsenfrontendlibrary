@@ -522,12 +522,13 @@ describe('search ducks', () => {
         expect(SearchUtils.getPageIndex(mockState, ResourceType.table)).toEqual(mockState.tables.page_index);
       });
 
-      it('given ResourceType.dashboard, returns page_index for dashboards', () => {
-        expect(SearchUtils.getPageIndex(mockState, ResourceType.dashboard)).toEqual(mockState.dashboards.page_index);
+      it('given ResourceType.user, returns page_index for users', () => {
+        expect(SearchUtils.getPageIndex(mockState, ResourceType.user)).toEqual(mockState.users.page_index);
       });
 
       it('given no resource, returns page_index for the selected resource', () => {
-        expect(SearchUtils.getPageIndex(mockState)).toEqual(mockState.dashboards.page_index);
+        const resourceToUse = mockState[mockState.selectedTab + 's'];
+        expect(SearchUtils.getPageIndex(mockState)).toEqual(resourceToUse.page_index);
       });
 
       it('returns 0 if not given a supported ResourceType', () => {
