@@ -25,8 +25,18 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
         """ Logs the content of a sent notification"""
         pass  # pragma: no cover
 
-    # TODO: write tests
     try:
+        if sender in recipients:
+            recipients.remove(sender)
+        if len(recipients) == 0:
+            logging.info('No recipients exist for notification')
+            return make_response(
+                jsonify({
+                    'msg': 'No valid recipients exist for notification, notification was not sent.'
+                }),
+                HTTPStatus.OK
+            )
+
         mail_client = get_mail_client()
 
         notification_content = get_notification_content(
@@ -34,17 +44,6 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
             sender=sender,
             options=options
         )
-
-        if sender in recipients:
-            recipients.remove(sender)
-        if len(recipients) == 0:
-            logging.info('No recipients exist for notification')
-            return make_response(
-                jsonify({
-                    'msg': 'Sender is excluded from notification recipients, no recipients exist.'
-                }),
-                HTTPStatus.OK
-            )
 
         _log_send_notification(
             notification_type=notification_type,
@@ -86,7 +85,6 @@ def get_mail_client():  # type: ignore
     Gets a mail_client object to send emails, raises an exception
     if mail client isn't implemented
     """
-    # TODO: write tests
     mail_client = app.config['MAIL_CLIENT']
 
     if not mail_client:
@@ -101,37 +99,44 @@ def get_notification_content(*, notification_type: str, sender: str, options: Di
     the input notification_type and data provided
     :param notification_type: type of notification
     :param options: data necessary to render email template content
-    :return: subject and html Dict
+    :return: html and subject Dict
     """
-    notification_type_dict = {
-        'added': {
-            'subject': 'You are now an owner of {}'.format(options['resource_name']),
-            'html': 'notifications/notification_added.html'
-        },
-        'removed': {
-            'subject': 'You have been removed as an owner of {}'.format(options['resource_name']),
-            'html': 'notifications/notification_removed.html'
-        },
-        'edited': {
-            'subject': 'Your dataset {}\'s metadata has been edited'.format(options['resource_name']),
-            'html': 'notifications/notification_edited.html'
-        },
-        'requested': {
-            'subject': 'Request for metadata on {}'.format(options['resource_name']),
-            'html': 'notifications/notification_requested.html'
-        },
-    }
-
-    html = render_template(notification_type_dict.get(
-        notification_type, {}).get('html'),
-        sender=sender,
-        options=options
-    )
-
+    template = get_notification_template(notification_type=notification_type)
     return {
-        'subject': notification_type_dict[notification_type]['subject'],
-        'html': html,
+        'html': render_template(template, sender=sender, options=options),
+        'subject': get_notification_subject(notification_type=notification_type, options=options),
     }
+
+
+def get_notification_template(*, notification_type: str) -> str:
+    """
+    Returns the template to use for the given notification_type
+    :param notification_type: type of notification
+    :return: The path to the template
+    """
+    notification_template_dict = {
+        'added': 'notifications/notification_added.html',
+        'removed': 'notifications/notification_removed.html',
+        'edited': 'notifications/notification_edited.html',
+        'requested': 'notifications/notification_requested.html',
+    }
+    return notification_template_dict.get(notification_type, '')
+
+
+def get_notification_subject(*, notification_type: str, options: Dict) -> str:
+    """
+    Returns the subject to use for the given notification_type
+    :param notification_type: type of notification
+    :param options: data necessary to render email template content
+    :return: The subject to be used with the notification
+    """
+    notification_subject_dict = {
+        'added': 'You are now an owner of {}'.format(options['resource_name']),
+        'removed': 'You have been removed as an owner of {}'.format(options['resource_name']),
+        'edited': 'Your dataset {}\'s metadata has been edited'.format(options['resource_name']),
+        'requested': 'Request for metadata on {}'.format(options['resource_name']),
+    }
+    return notification_subject_dict.get(notification_type, '')
 
 
 def table_key_to_url(*, table_key: str) -> str:
