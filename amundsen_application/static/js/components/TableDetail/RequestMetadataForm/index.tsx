@@ -61,8 +61,8 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     const recipientString = formData.get('recipients') as string
     const recipients = recipientString.split(",")
     const sender = formData.get('sender') as string;
-    const descriptionRequested = formData.get('table-description') === "on" ? true : false;
-    const fieldsRequested = formData.get('column-description') === "on" ? true : false;
+    const descriptionRequested = formData.get('table-description') === "on";
+    const fieldsRequested = formData.get('column-description') === "on";
     const comment = formData.get('comment') as string;
     this.props.submitNotification(
       recipients,
