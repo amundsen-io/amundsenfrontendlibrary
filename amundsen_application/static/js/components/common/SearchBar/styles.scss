@@ -43,6 +43,14 @@
         height: 36px;
         padding: 6px 6px 6px 36px;
       }
+
+      &:focus {
+        border-color: $stroke-focus;
+      }
+
+      &:focus + .search-button .icon-search:not(:hover) {
+        background-color: $stroke-focus;
+      }
     }
 
     @media (max-width: $screen-md-max) {

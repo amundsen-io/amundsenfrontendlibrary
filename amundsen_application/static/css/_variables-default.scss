@@ -17,6 +17,7 @@ $body-bg-secondary: $gray5 !default;
 $body-bg-dark:      $gray100 !default;
 $divider:           $gray15 !default;
 $stroke:            $gray20 !default;
+$stroke-focus:      $gray60 !default;
 
 
 // Typography
@@ -70,7 +71,7 @@ $btn-default-bg-hover:     $gray5 !default;
 $btn-default-border:       $gray20 !default;
 $btn-default-border-hover: $gray30 !default;
 $btn-default-color:        $gray100 !default;
-$btn-default-color-hover:  $gray90;
+$btn-default-color-hover:  $gray90 !default;
 
 
 // Icons
