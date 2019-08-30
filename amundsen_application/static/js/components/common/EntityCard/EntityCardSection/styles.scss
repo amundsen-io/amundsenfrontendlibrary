@@ -32,7 +32,7 @@ button.edit-button {
   mask-image: url('/static/images/icons/Edit.svg');
 }
 button.edit-button:hover {
-  background-color: $icon-bg-color;
+  background-color: $icon-bg-brand;
 }
 button.active-edit-button {
   height: 24px;

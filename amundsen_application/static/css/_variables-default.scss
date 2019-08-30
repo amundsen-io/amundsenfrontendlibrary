@@ -1,6 +1,6 @@
 @import 'colors';
 
-// TODO - consider replacing brand-color-X
+// TODO - consider using more descriptive names, or replacing with more specific variables.
 // Colors
 $brand-color-1: $indigo10 !default;
 $brand-color-2: $indigo20 !default;
@@ -75,7 +75,7 @@ $btn-default-color-hover:  $gray90;
 
 // Icons
 $icon-bg:          $gray20 !default;
-$icon-bg-color:    $brand-color-3 !default;
+$icon-bg-brand:    $brand-color-3 !default;
 $icon-bg-dark:     $gray60 !default;
 $icon-bg-disabled: $gray20 !default;
 
