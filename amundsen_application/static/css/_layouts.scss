@@ -1,0 +1,69 @@
+@import 'variables';
+
+// TODO - Remove once variables are merged in from feature branch
+$divider: #CACAD9;
+$header-height: 108px;
+
+
+// TODO - find a better name for this
+// TODO - cleanup temp background colors
+
+.header-layout-1 {
+  background: saddlebrown;
+  display: flex;
+  min-width: 1024px;
+  height: $header-height;
+  border-bottom: 4px solid $divider;
+}
+
+
+// 630 | 414+ layout
+.split-column-layout-1 {
+  min-width: 1024px;
+  background: red;
+  display: flex;
+  min-height: calc(100% - #{$header-height});
+
+  > .left-panel {
+    > .banner {
+      height: 100px;
+      background: pink;
+    }
+
+    background: orange;
+    border-right: 4px solid $divider;
+    flex-basis: 634px; // 630 + 4px border
+    flex-shrink: 0;
+    padding: 0 24px;
+    flex-direction: column;
+  }
+
+  > .right-panel {
+    flex-basis: 414px;
+    flex-grow: 1;
+    flex-shrink: 0;
+    background: blue;
+  }
+}
+
+// 313 | 245 Layout
+.split-column-layout-2 {
+  display: flex;
+  flex-basis: 100%;
+
+  > .left-panel {
+    background: yellow;
+    flex-basis: 313px;
+    margin-right: 24px;
+  }
+
+  > .right-panel {
+    background: green;
+    flex-basis: 245px;
+  }
+}
+
+.left-panel,
+.right-panel {
+  display: flex;
+}

@@ -33,7 +33,7 @@ import { RouteComponentProps } from 'react-router';
 import { PreviewQueryParams, TableMetadata, User } from 'interfaces';
 
 // TODO: Use css-modules instead of 'import'
-import './styles.scss';
+import './styles_old.scss';
 import BookmarkIcon from "components/common/Bookmark/BookmarkIcon";
 
 export interface StateFromProps {
