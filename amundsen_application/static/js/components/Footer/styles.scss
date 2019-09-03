@@ -2,9 +2,9 @@
 
 /* TODO: Not the greatest sticky footer implementation */
 .footer {
-  border-top: 1px solid $gray-lighter;
+  border-top: 1px solid $stroke;
   background-color: white;
-  color: $text-medium;
+  color: $text-secondary;
   font-size: 14px;
   text-align: center;
   padding: 20px;

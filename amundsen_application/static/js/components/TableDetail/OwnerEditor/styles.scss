@@ -23,10 +23,10 @@
 
     &:focus,
     &:hover {
-      background-color: $gray-lightest;
+      background-color: $body-bg-secondary;
 
       .btn.delete-button {
-        background-color: $gray-lightest;
+        background-color: $body-bg-secondary;
         display: block
       }
     }
@@ -71,7 +71,7 @@
     margin-bottom: 16px;
   }
   input {
-    border: 1px solid $gray-lighter;
+    border: 1px solid $stroke;
     border-radius: 4px;
     outline: none;
     padding: 4px;

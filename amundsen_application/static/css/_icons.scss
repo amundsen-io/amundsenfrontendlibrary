@@ -1,7 +1,7 @@
 @import 'variables';
 
 img.icon {
-  background-color: $gray-light;
+  background-color: $icon-bg;
   border: none;
   height: 24px;
   margin: -3px 4px -3px 0px;
@@ -11,11 +11,11 @@ img.icon {
   width: 24px;
 
   &.icon-color {
-    background-color: $brand-color-3;
+    background-color: $icon-bg-brand;
   }
 
   &.icon-dark {
-    background-color: $text-medium;
+    background-color: $icon-bg-dark;
   }
 
   // TODO - Add other icons here
@@ -141,6 +141,6 @@ img.icon {
 :disabled {
   > img.icon,
   > img.icon.icon-color {
-    background-color: $gray-light;
+    background-color: $icon-bg-disabled;
   }
 }

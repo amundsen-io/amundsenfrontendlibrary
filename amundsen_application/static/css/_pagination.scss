@@ -7,12 +7,12 @@
   li {
     > a,
     > span {
-      border: 1px solid $gray-lighter;
+      border: 1px solid $stroke;
       color: $brand-color-4;
 
       &:focus,
       &:hover {
-        background-color: $gray-lighter;
+        background-color: $body-bg-secondary;
         color: $link-hover-color;
         z-index: 0;
       }
