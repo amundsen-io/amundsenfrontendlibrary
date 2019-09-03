@@ -102,8 +102,11 @@ def get_notification_content(*, notification_type: str, sender: str, options: Di
     :return: html and subject Dict
     """
     template = get_notification_template(notification_type=notification_type)
+    logging.info('Got template for NOTIFICATION')
+    html_content = render_template(template, sender=sender, options=options)
+    logging.info('Generated html content for NOTIFICATION')
     return {
-        'html': render_template(template, sender=sender, options=options),
+        'html': html_content,
         'subject': get_notification_subject(notification_type=notification_type, options=options),
     }
 

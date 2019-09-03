@@ -28,7 +28,7 @@ def build_js() -> None:
         logging.warn(str(e))
 
 
-build_js()
+# build_js()
 
 requirements_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'requirements3.txt')
 with open(requirements_path) as requirements_file:
