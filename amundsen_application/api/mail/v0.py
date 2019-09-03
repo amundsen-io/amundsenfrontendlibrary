@@ -26,6 +26,8 @@ def feedback() -> Response:
         text_content = '\r\n'.join('{}:\r\n{}\r\n'.format(key, val) for key, val in data.items())
         logging.info('Generated text content for FEEDBACK')
         logging.info(text_content)
+        if not render_template:
+            logging.info('Did not import render_template')
         html_content = render_template('email.html', form_data=data)
         logging.info('Generated html content for FEEDBACK')
         logging.info(html_content)
