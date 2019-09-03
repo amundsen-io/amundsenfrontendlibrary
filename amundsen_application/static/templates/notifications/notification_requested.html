@@ -7,10 +7,16 @@ Hello,<br/>
 {{ sender }} is trying to use <a href="{{ options.resource_url }}">{{ options.resource_name }}</a>, a better table description would be very helpful.
 {% elif options.fields_requested %}
 {{ sender }} is trying to use <a href="{{ options.resource_url }}">{{ options.resource_name }}</a>, better column descriptions would be very helpful.
+{% else %}
+{{ sender }} is trying to use <a href="{{ options.resource_url }}">{{ options.resource_name }}</a> and is requesting more information about that resource.
+Please visit the provided link and improve descriptions on that resource.
 {% endif %}
+{% if options.comment %}
 <br/><br/>
-{{ sender }} has also included a message with this request for information:<br/>
+{{ sender }} has included the following information with their request:<br/>
 {{ options.comment }}<br/>
+{% endif %}
+
 <br/>
 Thanks,<br/>
-Amundsen team
+Amundsen Team
