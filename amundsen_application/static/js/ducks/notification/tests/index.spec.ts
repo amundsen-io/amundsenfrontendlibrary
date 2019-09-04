@@ -1,6 +1,6 @@
 import { testSaga } from 'redux-saga-test-plan';
 
-import { NotificationType } from 'interfaces';
+import { NotificationType, SendingState } from 'interfaces';
 
 import * as API from '../api/v0';
 import reducer, {
@@ -66,6 +66,7 @@ describe('notifications ducks', () => {
     beforeAll(() => {
       testState = {
         requestIsOpen: true,
+        sendState: SendingState.IDLE,
       };
     });
     it('should return the existing state if action is not handled', () => {
@@ -75,24 +76,36 @@ describe('notifications ducks', () => {
     it('should handle ToggleRequest.OPEN', () => {
       expect(reducer(testState, openRequestDescriptionDialog())).toEqual({
         requestIsOpen: true,
+        sendState: SendingState.IDLE,
       });
     });
 
     it('should handle ToggleRequest.CLOSE', () => {
       expect(reducer(testState, closeRequestDescriptionDialog())).toEqual({
         requestIsOpen: false,
+        sendState: SendingState.IDLE,
       });
     });
 
     it('should handle SubmitNotification.FAILURE', () => {
       expect(reducer(testState, submitNotificationFailure())).toEqual({
+        ...testState,
+        sendState: SendingState.ERROR,
+      });
+    });
+
+    it('should handle SubmitNotification.REQUEST', () => {
+      const action = submitNotification(testRecipients, testSender, testNotificationType, testOptions);
+      expect(reducer(testState, action)).toEqual({
         requestIsOpen: false,
+        sendState: SendingState.WAITING,
       });
     });
 
     it('should handle SubmitNotification.SUCCESS', () => {
       expect(reducer(testState, submitNotificationSuccess())).toEqual({
-        requestIsOpen: false,
+        ...testState,
+        sendState: SendingState.COMPLETE,
       });
     });
   });

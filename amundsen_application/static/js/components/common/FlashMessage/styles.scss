@@ -1,0 +1,22 @@
+@import 'variables';
+
+.flash-message {
+  $spacer-size: 8px;
+
+  background-color: #292936; // $gray100
+  border-radius: 6px;
+  display: flex;
+  color: white;
+  height: 56px;
+  padding: ($spacer-size * 2) $spacer-size;
+
+  .message {
+    margin-right: $spacer-size * 2;
+    line-height: 24px;
+  }
+
+  .icon,
+  .btn-close {
+    margin: auto $spacer-size;
+  }
+}

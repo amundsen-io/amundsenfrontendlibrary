@@ -34,6 +34,7 @@ const globalState: GlobalState = {
   },
   notification: {
     requestIsOpen: false,
+    sendState: SendingState.IDLE,
   },
   popularTables: [
     {

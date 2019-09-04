@@ -1,9 +1,15 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
 import './styles.scss';
 
-import { NotificationType, SendNotificationOptions } from 'interfaces/Notifications';
+import { NotificationType, SendNotificationOptions, SendingState } from 'interfaces';
+
+import FlashMessage from 'components/common/FlashMessage'
+
 import { GlobalState } from 'ducks/rootReducer';
-import { connect } from 'react-redux';
+
 import {
   TITLE_TEXT,
   FROM_LABEL,
@@ -13,16 +19,19 @@ import {
   COLUMN_DESCRIPTIONS,
   ADDITIONAL_DETAILS,
   SEND_BUTTON,
+  SEND_FAILURE_MESSAGE,
+  SEND_INPROGRESS_MESSAGE,
+  SEND_SUCCESS_MESSAGE,
 } from './constants'
 import { ToggleRequestAction, SubmitNotificationRequest } from 'ducks/notification/types';
 import { closeRequestDescriptionDialog, submitNotification } from 'ducks/notification/reducer';
-import { bindActionCreators } from 'redux';
 
 interface StateFromProps {
   userEmail: string;
   tableName: string;
   tableOwners: Array<string>;
   requestIsOpen: boolean;
+  sendState: SendingState;
 }
 
 export interface DispatchFromProps {
@@ -54,6 +63,29 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     this.props.closeRequestDescriptionDialog();
   }
 
+  getFlashMessageString = (): string => {
+    switch(this.props.sendState) {
+      case SendingState.COMPLETE:
+        return SEND_SUCCESS_MESSAGE;
+      case SendingState.ERROR:
+        return SEND_FAILURE_MESSAGE;
+      case SendingState.WAITING:
+        return SEND_INPROGRESS_MESSAGE;
+      default:
+        return '';
+    }
+  };
+
+  renderFlashMessage = () => {
+    return (
+      <FlashMessage
+        iconClass='icon-mail'
+        message={this.getFlashMessageString()}
+        onClose={this.closeDialog}
+      />
+    )
+  }
+
   submitNotification = (event) => {
     event.preventDefault();
     const form = document.getElementById("RequestForm") as HTMLFormElement;
@@ -79,11 +111,18 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
   };
 
   render() {
+    if (this.props.sendState !== SendingState.IDLE) {
+      return (
+        <div className="request-component">
+          {this.renderFlashMessage()}
+        </div>
+      );
+    }
     if (!this.props.requestIsOpen) {
       return (null);
     }
     return (
-      <div className={`request-component expanded`}>
+      <div className="request-component expanded">
         <div id="request-metadata-title" className="form-group request-header">
           <h3 className="title">{TITLE_TEXT}</h3>
           <button type="button" className="btn btn-close" aria-label={"Close"} onClick={this.closeDialog}/>
@@ -119,11 +158,12 @@ export const mapStateToProps = (state: GlobalState) => {
   const userEmail = state.user.loggedInUser.email;
   const tableName = `${state.tableMetadata.tableData.schema}.${state.tableMetadata.tableData.table_name}`;
   const ownerObj = state.tableMetadata.tableOwners.owners;
-  const requestIsOpen = state.notification.requestIsOpen;
+  const { requestIsOpen, sendState } = state.notification;
   return {
     userEmail,
     tableName,
     requestIsOpen,
+    sendState,
     tableOwners: Object.keys(ownerObj),
   };
 };

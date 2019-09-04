@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
+import FlashMessage from 'components/common/FlashMessage';
+
 import globalState from 'fixtures/globalState';
-import { NotificationType } from 'interfaces/';
+import { NotificationType, SendingState } from 'interfaces';
 import { RequestMetadataForm, mapDispatchToProps, mapStateToProps, RequestMetadataProps } from '../';
 import {
   TITLE_TEXT,
@@ -13,6 +15,9 @@ import {
   COLUMN_DESCRIPTIONS,
   ADDITIONAL_DETAILS,
   SEND_BUTTON,
+  SEND_FAILURE_MESSAGE,
+  SEND_INPROGRESS_MESSAGE,
+  SEND_SUCCESS_MESSAGE,
 } from '../constants'
 
 const mockFormData = {
@@ -37,6 +42,7 @@ describe('RequestMetadataForm', () => {
       tableOwners: ['test1@lyft.com', 'test2@lyft.com'],
       submitNotification: jest.fn(),
       requestIsOpen: true,
+      sendState: SendingState.IDLE,
       closeRequestDescriptionDialog: jest.fn(),
       ...propOverrides,
     };
@@ -59,6 +65,45 @@ describe('RequestMetadataForm', () => {
       const closeRequestDescriptionDialogSpy = jest.spyOn(props, 'closeRequestDescriptionDialog');
       wrapper.instance().closeDialog();
       expect(closeRequestDescriptionDialogSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('getFlashMessageString', () => {
+    it('returns SEND_SUCCESS_MESSAGE if SendingState.COMPLETE', () => {
+      const wrapper = setup({ sendState: SendingState.COMPLETE }).wrapper;
+      expect(wrapper.instance().getFlashMessageString()).toEqual(SEND_SUCCESS_MESSAGE);
+    });
+    it('returns SEND_FAILURE_MESSAGE if SendingState.ERROR', () => {
+      const wrapper = setup({ sendState: SendingState.ERROR }).wrapper;
+      expect(wrapper.instance().getFlashMessageString()).toEqual(SEND_FAILURE_MESSAGE);
+    });
+    it('returns SEND_INPROGRESS_MESSAGE if SendingState.WAITING', () => {
+      const wrapper = setup({ sendState: SendingState.WAITING }).wrapper;
+      expect(wrapper.instance().getFlashMessageString()).toEqual(SEND_INPROGRESS_MESSAGE);
+    });
+    it('returns empty striong if sending state not handled', () => {
+      const wrapper = setup({ sendState: SendingState.IDLE }).wrapper;
+      expect(wrapper.instance().getFlashMessageString()).toEqual('');
+    });
+  });
+
+  describe('renderFlashMessage', () => {
+    let wrapper;
+    let mockString;
+    let getFlashMessageStringMock;
+    beforeAll(() => {
+      wrapper = setup().wrapper;
+      mockString = 'I am the message'
+      getFlashMessageStringMock = jest.spyOn(wrapper.instance(), 'getFlashMessageString').mockImplementation(() => {
+        return mockString;
+      });
+    });
+
+    it('renders a FlashMessage with correct props', () => {
+      const element = wrapper.instance().renderFlashMessage();
+      expect(element.props.iconClass).toEqual('icon-mail');
+      expect(element.props.message).toBe(mockString);
+      expect(element.props.onClose).toEqual(wrapper.instance().closeDialog);
     });
   });
 
@@ -164,6 +209,21 @@ describe('RequestMetadataForm', () => {
         expect(wrapper).toEqual({});
       });
     });
+
+    describe('when sendState is not SendingState.IDLE', () => {
+      let wrapper;
+      let renderFlashMessageMock;
+      beforeAll(() => {
+        wrapper = setup({ sendState: SendingState.WAITING, requestIsOpen: false }).wrapper;
+        renderFlashMessageMock = jest.spyOn(wrapper.instance(), 'renderFlashMessage');
+      });
+
+      it('renders results of renderFlashMessage() within component', () => {
+        wrapper.instance().render();
+        expect(wrapper.props().className).toEqual('request-component');
+        expect(renderFlashMessageMock).toHaveBeenCalledTimes(1);
+      });
+    });
   });
 
   describe('mapStateToProps', () => {
@@ -183,6 +243,9 @@ describe('RequestMetadataForm', () => {
     });
     it('sets requestIsOpen on the props', () => {
       expect(result.requestIsOpen).toEqual(globalState.notification.requestIsOpen);
+    });
+    it('sets sendState on the props', () => {
+      expect(result.sendState).toEqual(globalState.notification.sendState);
     });
   });
 
