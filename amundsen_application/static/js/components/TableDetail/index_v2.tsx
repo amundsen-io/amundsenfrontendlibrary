@@ -11,21 +11,18 @@ class TableDetail_v2 extends React.Component {
 
   render() {
     return (
-      <div className="table-detail-2">
-        <div className="header-layout-1"></div>
-        <div className="split-column-layout-1">
-          <div className="left-panel">
-            <div className="banner"></div>
-            <div className="split-column-layout-2">
-              <div className="left-panel"></div>
-              <div className="right-panel"></div>
-            </div>
-          </div>
-          <div className="right-panel">
-            <div className="left-panel"></div>
-            <div className="right-panel"></div>
-          </div>
-        </div>
+      <div className="resource-detail-layout table-detail-2">
+        <header className="resource-header"></header>
+        <main className="column-layout-1">
+          <section className="left-panel">
+            <section className="banner"></section>
+            <section className="column-layout-2">
+              <section className="left-panel"></section>
+              <section className="right-panel"></section>
+            </section>
+          </section>
+          <section className="right-panel"></section>
+        </main>
       </div>
     );
   }
