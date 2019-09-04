@@ -146,8 +146,9 @@ export function getPreviewData(queryParams: PreviewQueryParams) {
   .catch((e: AxiosError<PreviewDataAPI>) => {
     const response = e.response;
     let data = {};
-    if (response && response.data && response.data.previewData)
+    if (response && response.data && response.data.previewData) {
       data = response.data.previewData;
+    }
     const status = response ? response.status : null;
     return Promise.reject({ data, status });
   });
