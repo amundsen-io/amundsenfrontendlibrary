@@ -30,10 +30,10 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
 
     const listItems = [];
     if (!!role_name) {
-      listItems.push((<li key={`${user_id}:role_name`}>{ role_name }</li>));
+      listItems.push((<li key={`${user_id}:role_name`}>{role_name}</li>));
     }
     if (!!team_name) {
-      listItems.push((<li key={`${user_id}:team_name`}>{ team_name }</li>));
+      listItems.push((<li key={`${user_id}:team_name`}>{team_name}</li>));
     }
     return listItems;
   };
