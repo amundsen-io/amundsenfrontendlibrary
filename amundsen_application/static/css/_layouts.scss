@@ -1,46 +1,51 @@
 @import 'variables';
-// TODO - cleanup temp background colors
 // TODO - Remove once merged with variable updates
 $divider: #CACAD9;
+$stroke: #CACAD9;
 $header-height: 108px;
 
 .resource-detail-layout {
   min-width: 1048px;
 
   .resource-header {
-    background: saddlebrown;
     display: flex;
     height: $header-height;
     border-bottom: 4px solid $divider;
     padding: 24px;
+
+    > .header-left {
+      flex-grow: 1;
+    }
+
+    > .header-right {
+    }
   }
 
 
   // 630 | 414+ Flexible layout
   .column-layout-1 {
-    background: red;
     display: flex;
     min-height: calc(100% - #{$header-height});
 
     > .left-panel {
       > .banner {
-        height: 100px;
-        background: pink;
+        border: 1px solid $stroke;
+        height: 40px;
+        margin: 24px;
+        padding: 8px;
       }
 
-      background: orange;
       border-right: 4px solid $divider;
       flex-basis: 634px; // 630 + 4px border
       flex-shrink: 0;
       padding: 0 24px;
-      flex-direction: column;
     }
 
     > .right-panel {
       flex-basis: 414px;
       flex-grow: 1;
       flex-shrink: 0;
-      background: blue;
+      width: 0; // Required for text truncation
     }
   }
 
@@ -50,13 +55,12 @@ $header-height: 108px;
     flex-basis: 100%;
 
     > .left-panel {
-      background: yellow;
       flex-basis: 313px;
       margin-right: 24px;
+      flex-direction: column;
     }
 
     > .right-panel {
-      background: green;
       flex-basis: 245px;
     }
   }
@@ -64,5 +68,6 @@ $header-height: 108px;
   .left-panel,
   .right-panel {
     display: flex;
+    flex-direction: column;
   }
 }
