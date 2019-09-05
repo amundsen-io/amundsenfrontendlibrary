@@ -12,16 +12,16 @@ class TableDetail_v2 extends React.Component {
   render() {
     return (
       <div className="resource-detail-layout table-detail-2">
-        <header className="resource-header"></header>
+        <header className="resource-header">header</header>
         <main className="column-layout-1">
           <section className="left-panel">
-            <section className="banner"></section>
+            <section className="banner">banner</section>
             <section className="column-layout-2">
-              <section className="left-panel"></section>
-              <section className="right-panel"></section>
+              <section className="left-panel">details 1</section>
+              <section className="right-panel">details 2</section>
             </section>
           </section>
-          <section className="right-panel"></section>
+          <section className="right-panel">columns</section>
         </main>
       </div>
     );
