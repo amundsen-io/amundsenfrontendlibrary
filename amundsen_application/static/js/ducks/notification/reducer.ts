@@ -1,7 +1,11 @@
-import { NotificationType, SendNotificationOptions } from 'interfaces'
+import { NotificationType, SendNotificationOptions, SendingState } from 'interfaces'
 
 import {
-  ToggleRequest, ToggleRequestAction, SubmitNotification, SubmitNotificationRequest, SubmitNotificationResponse,
+  SubmitNotification,
+  SubmitNotificationRequest,
+  SubmitNotificationResponse,
+  ToggleRequest,
+  ToggleRequestAction,
 } from './types';
 
 /* ACTIONS */
@@ -42,23 +46,40 @@ export function openRequestDescriptionDialog(): ToggleRequestAction {
 /* REDUCER */
 export interface NotificationReducerState {
   requestIsOpen: boolean,
+  sendState: SendingState,
 };
 
 const initialState: NotificationReducerState = {
   requestIsOpen: false,
+  sendState: SendingState.IDLE,
 };
 
 export default function reducer(state: NotificationReducerState = initialState, action): NotificationReducerState {
   switch (action.type) {
-    case ToggleRequest.OPEN:
-      return {
-        requestIsOpen: true,
-      }
     case SubmitNotification.FAILURE:
+      return {
+        ...state,
+        sendState: SendingState.ERROR,
+      }
     case SubmitNotification.SUCCESS:
+      return {
+        ...state,
+        sendState: SendingState.COMPLETE,
+      }
+    case SubmitNotification.REQUEST:
+      return {
+        requestIsOpen: false,
+        sendState: SendingState.WAITING,
+      }
     case ToggleRequest.CLOSE:
       return {
         requestIsOpen: false,
+        sendState: SendingState.IDLE,
+      }
+    case ToggleRequest.OPEN:
+      return {
+        requestIsOpen: true,
+        sendState: SendingState.IDLE,
       }
     default:
       return state;
