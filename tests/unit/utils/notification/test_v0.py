@@ -25,7 +25,7 @@ class MockMailClient(BaseMailClient):
                    subject: str = None,
                    text: str = None,
                    html: str = None,
-                   options: Dict = {}) -> Response:
+                   optional_data: Dict = {}) -> Response:
         return make_response(jsonify({}), self.status_code)
 
 
@@ -195,7 +195,7 @@ class NotificationUtilsTest(unittest.TestCase):
                 sender=test_sender,
                 subject=mock_content['subject'],
                 html=mock_content['html'],
-                options={'email_type': 'notification'},
+                optional_data={'email_type': 'notification'},
             )
 
     def test_no_recipients_for_notification(self) -> None:
