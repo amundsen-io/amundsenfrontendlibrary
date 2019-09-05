@@ -19,7 +19,8 @@ import NotFoundPage from './components/NotFoundPage';
 import Preloader from 'components/common/Preloader';
 import ProfilePage from './components/ProfilePage';
 import SearchPage from './components/SearchPage'; 
-import TableDetail from './components/TableDetail';
+import TableDetail from 'components/TableDetail/index_old';
+import TableDetail_v2 from 'components/TableDetail/index_v2';
 
 import rootReducer from './ducks/rootReducer';
 import rootSaga from './ducks/rootSaga';
@@ -39,6 +40,7 @@ ReactDOM.render(
           <NavBar />
           <Switch>
             <Route path="/table_detail/:cluster/:db/:schema/:table" component={TableDetail} />
+            <Route path="/table_detail2/:cluster/:db/:schema/:table" component={TableDetail_v2} />
             <Route path="/announcements" component={AnnouncementPage} />
             <Route path="/browse" component={BrowsePage} />
             <Route path="/search" component={SearchPage} />
