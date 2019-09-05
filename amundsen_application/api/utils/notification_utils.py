@@ -57,7 +57,7 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
             sender=sender,
             subject=notification_content['subject'],
             html=notification_content['html'],
-            options={
+            optional_data={
                 'email_type': 'notification'
             },
         )
