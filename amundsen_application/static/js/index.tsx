@@ -9,6 +9,8 @@ import { createStore, applyMiddleware } from 'redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
 
+import { feedbackEnabled } from 'config/config-utils';
+
 import AnnouncementPage from './components/AnnouncementPage';
 import BrowsePage from './components/BrowsePage';
 import Feedback from './components/Feedback';
@@ -46,7 +48,10 @@ ReactDOM.render(
             <Route path="/404" component={NotFoundPage} />
             <Route path="/" component={HomePage} />
           </Switch>
-          <Feedback />
+          {
+            feedbackEnabled() && 
+            <Feedback />
+          }
           <Footer />
         </div>
       </BrowserRouter>

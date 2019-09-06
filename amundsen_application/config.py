@@ -18,6 +18,10 @@ class Config:
     # Request Timeout Configurations in Seconds
     REQUEST_SESSION_TIMEOUT_SEC = 3
 
+    # Mail Client Features
+    MAIL_CLIENT = None
+    NOTIFICATIONS_ENABLED = False
+
 
 class LocalConfig(Config):
     DEBUG = False
@@ -64,8 +68,7 @@ class LocalConfig(Config):
     AUTH_USER_METHOD = None  # type: Optional[function]
     GET_PROFILE_URL = None
 
-    MAIL_CLIENT = None
-
 
 class TestConfig(LocalConfig):
     AUTH_USER_METHOD = get_test_user
+    NOTIFICATIONS_ENABLED = True

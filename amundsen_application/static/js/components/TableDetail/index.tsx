@@ -12,6 +12,7 @@ import { getPreviewData, getTableData } from 'ducks/tableMetadata/reducer';
 import { GetTableDataRequest } from 'ducks/tableMetadata/types';
 
 import AppConfig from 'config/config';
+import { notificationsEnabled } from 'config/config-utils';
 import AvatarLabel from 'components/common/AvatarLabel';
 import Breadcrumb from 'components/common/Breadcrumb';
 import EntityCard from 'components/common/EntityCard';
@@ -343,7 +344,10 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
         innerContent = (
           <div className="container table-detail">
             <Breadcrumb />
-            <RequestMetadataForm />
+            {
+              notificationsEnabled() &&
+              <RequestMetadataForm />
+            }
             <div className="row">
               <div className="detail-header col-xs-12 col-md-7 col-lg-8">
                 <h1 className="detail-header-text">
@@ -361,7 +365,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
                   value={ data.table_description }
                   editable={ data.is_editable }
                 />
-                { !data.table_description && <RequestDescriptionText/> }
+                { !data.table_description && notificationsEnabled() && <RequestDescriptionText/> }
               </div>
               <div className="col-xs-12 col-md-5 float-md-right col-lg-4">
                 <EntityCard sections={ this.createEntityCardSections() }/>
