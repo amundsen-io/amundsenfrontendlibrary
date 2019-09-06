@@ -22,6 +22,7 @@ class Config:
     MAIL_CLIENT = None
     NOTIFICATIONS_ENABLED = False
 
+
 class LocalConfig(Config):
     DEBUG = False
     TESTING = False

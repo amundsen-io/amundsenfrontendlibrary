@@ -161,19 +161,15 @@ def update_table_owner() -> Response:
         else:
             raise Exception('method not handled')
 
-        # TODO: Execute in the JS layer. Why? Redux-Saga is where we handle
-        # any specicial application logic for sucess & failure. We should check
-        # the response of each update call, and only send the notification if it
-        # was successful
-        # send_notification(
-        #     notification_type=notification_type,
-        #     options={
-        #         'resource_name': resource_name,
-        #         'resource_url': table_key_to_url(table_key=table_key)
-        #     },
-        #     recipients=[owner],
-        #     sender=user.email
-        # )
+        send_notification(
+            notification_type=notification_type,
+            options={
+                'resource_name': resource_name,
+                'resource_url': table_key_to_url(table_key=table_key)
+            },
+            recipients=[owner],
+            sender=user.email
+        )
 
         table_endpoint = _get_table_endpoint()
         url = '{0}/{1}/owner/{2}'.format(table_endpoint, table_key, owner)
