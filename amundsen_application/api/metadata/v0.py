@@ -176,9 +176,6 @@ def update_table_owner() -> Response:
         method = request.method
         _log_update_table_owner(table_key=table_key, method=method, owner=owner)
 
-        if owner == 'ttannis':
-            return make_response(jsonify({'msg': 'Test Failure'}), HTTPStatus.INTERNAL_SERVER_ERROR)
-
         response = request_metadata(url=url, method=method)
         status_code = response.status_code
 

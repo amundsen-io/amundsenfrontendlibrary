@@ -130,6 +130,23 @@ class NotificationUtilsTest(unittest.TestCase):
         with local_app.app_context():
             self.assertRaises(MailClientNotImplemented, get_mail_client)
 
+    def test_send_notification_disabled(self) -> None:
+        """
+        Test send_notification fails gracefully if notifications are not enabled
+        :return:
+        """
+        with local_app.app_context():
+            local_app.config['NOTIFICATIONS_ENABLED'] = False
+            response = send_notification(
+                notification_type='added',
+                options={},
+                recipients=['test@test.com'],
+                sender='test2@test.com'
+            )
+            self.assertEqual(response.status_code, HTTPStatus.ACCEPTED)
+            # Reset
+            local_app.config['NOTIFICATIONS_ENABLED'] = True
+
     @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_content')
     @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_mail_client')
     def test_send_notification_success(self, get_mail_client, get_notification_content) -> None:
