@@ -139,21 +139,13 @@ def _get_table_metadata(*, table_key: str, index: int, source: str) -> Dict[str,
         return results_dict
 
 
-@action_logging
-def _update_table_owner(*, table_key: str, method: str, owner: str) -> Dict[str, str]:
-    try:
-        table_endpoint = _get_table_endpoint()
-        url = '{0}/{1}/owner/{2}'.format(table_endpoint, table_key, owner)
-        request_metadata(url=url, method=method)
-
-        # TODO: Figure out a way to get this payload from flask.jsonify which wraps with app's response_class
-        return {'msg': 'Updated owner'}
-    except Exception as e:
-        return {'msg': 'Encountered exception: ' + str(e)}
-
-
 @metadata_blueprint.route('/update_table_owner', methods=['PUT', 'DELETE'])
 def update_table_owner() -> Response:
+
+    @action_logging
+    def _log_update_table_owner(*, table_key: str, method: str, owner: str) -> None:
+        pass  # pragma: no cover
+
     try:
         user = app.config['AUTH_USER_METHOD'](app)
         args = request.get_json()
@@ -169,18 +161,38 @@ def update_table_owner() -> Response:
         else:
             raise Exception('method not handled')
 
-        send_notification(
-            notification_type=notification_type,
-            options={
-                'resource_name': resource_name,
-                'resource_url': table_key_to_url(table_key=table_key)
-            },
-            recipients=[owner],
-            sender=user.email
-        )
+        # TODO: Execute in the JS layer. Why? Redux-Saga is where we handle
+        # any specicial application logic for sucess & failure. We should check
+        # the response of each update call, and only send the notification if it
+        # was successful
+        # send_notification(
+        #     notification_type=notification_type,
+        #     options={
+        #         'resource_name': resource_name,
+        #         'resource_url': table_key_to_url(table_key=table_key)
+        #     },
+        #     recipients=[owner],
+        #     sender=user.email
+        # )
 
-        payload = jsonify(_update_table_owner(table_key=table_key, method=request.method, owner=owner))
-        return make_response(payload, HTTPStatus.OK)
+        table_endpoint = _get_table_endpoint()
+        url = '{0}/{1}/owner/{2}'.format(table_endpoint, table_key, owner)
+        method = request.method
+        _log_update_table_owner(table_key=table_key, method=method, owner=owner)
+
+        if owner == 'ttannis':
+            return make_response(jsonify({'msg': 'Test Failure'}), HTTPStatus.INTERNAL_SERVER_ERROR)
+
+        response = request_metadata(url=url, method=method)
+        status_code = response.status_code
+
+        if status_code == HTTPStatus.OK:
+            message = 'Updated owner'
+        else:
+            message = 'There was a problem updating owner {0}'.format(owner)
+
+        payload = jsonify({'msg': message})
+        return make_response(payload, status_code)
     except Exception as e:
         payload = jsonify({'msg': 'Encountered exception: ' + str(e)})
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)

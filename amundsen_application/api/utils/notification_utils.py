@@ -26,6 +26,10 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
         pass  # pragma: no cover
 
     try:
+        if not app.config['NOTIFICATIONS_ENABLED']:
+            message = 'Notifications are not enabled. Request was accepted but no notification will be sent.'
+            logging.exception(message)
+            return make_response(jsonify({'msg': message}), HTTPStatus.ACCEPTED)
         if sender in recipients:
             recipients.remove(sender)
         if len(recipients) == 0:

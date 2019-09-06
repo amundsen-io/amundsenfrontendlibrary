@@ -5,6 +5,8 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { notificationsEnabled } from 'config/config-utils';
+
 import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableText';
 import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
@@ -108,14 +110,17 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
               value={metadata.description}
             />
           </div>
-          <Dropdown id={`detail-list-item-dropdown:${this.props.index}`} pullRight={true}>
-            <Dropdown.Toggle noCaret={true} className="more-icon">
-              <img className="icon icon-more"/>
-            </Dropdown.Toggle>
-            <Dropdown.Menu>
-              <MenuItem onClick={this.openRequest}>Request Column Description</MenuItem>
-            </Dropdown.Menu>
-          </Dropdown>
+          {
+            notificationsEnabled() &&
+            <Dropdown id={`detail-list-item-dropdown:${this.props.index}`} pullRight={true}>
+              <Dropdown.Toggle noCaret={true} className="more-icon">
+                <img className="icon icon-more"/>
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <MenuItem onClick={this.openRequest}>Request Column Description</MenuItem>
+              </Dropdown.Menu>
+            </Dropdown>
+          }
         </div>
         {
           this.state.isExpanded &&
