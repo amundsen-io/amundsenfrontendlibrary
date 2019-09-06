@@ -331,7 +331,7 @@ describe('search ducks', () => {
         const term = 'test';
         updateSearchUrlSpy.mockClear();
         testSaga(submitSearchWorker, submitSearch(term))
-          .next().put(searchAll(term, ResourceType.table, 0))
+          .next().put(searchAll(term))
           .next().isDone();
           expect(updateSearchUrlSpy).toHaveBeenCalledWith({ term });
 

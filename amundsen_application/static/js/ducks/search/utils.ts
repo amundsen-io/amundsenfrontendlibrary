@@ -21,9 +21,11 @@ export const getPageIndex = (state: SearchReducerState, resource?: ResourceType)
 export const autoSelectResource = (state: SearchReducerState) => {
   if (state.tables && state.tables.total_results > 0) {
     return ResourceType.table;
-  } else if (state.users && state.users.total_results > 0) {
+  }
+  if (state.users && state.users.total_results > 0) {
     return ResourceType.user
-  } if (state.dashboards && state.dashboards.total_results > 0) {
+  }
+  if (state.dashboards && state.dashboards.total_results > 0) {
     return ResourceType.dashboard
   }
   return DEFAULT_RESOURCE_TYPE;
