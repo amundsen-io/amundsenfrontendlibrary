@@ -25,7 +25,7 @@ interface TableColumnStats {
   end_epoch: string;
 }
 
-interface TableReader {
+export interface TableReader {
   read_count: number;
   reader: User;
 }

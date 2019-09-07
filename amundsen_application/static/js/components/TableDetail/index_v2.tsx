@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import * as DocumentTitle from 'react-document-title';
 
 import './styles_v2';
 import { GlobalState } from 'ducks/rootReducer';
@@ -12,6 +13,9 @@ import TableDescEditableText from 'components/TableDetail/TableDescEditableText'
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import TagInput from 'components/Tags/TagInput';
 import DetailList from 'components/TableDetail/DetailList';
+import Breadcrumb from 'components/common/Breadcrumb';
+import OwnerEditor from 'components/TableDetail/OwnerEditor';
+import FrequentUsers from 'components/TableDetail/FrequentUsers';
 
 
 
@@ -39,7 +43,6 @@ class TableDetail_v2 extends React.Component<TableDetailProps> {
   constructor(props) {
     super(props);
 
-
     const { match } = props;
     const params = match.params;
     this.cluster = params ? params.cluster : '';
@@ -63,54 +66,79 @@ class TableDetail_v2 extends React.Component<TableDetailProps> {
 
 
   render() {
-    if (this.props.isLoading) return <LoadingSpinner/>;
-
-    const data = this.props.tableData;
-
-    return (
-      <div className="resource-detail-layout table-detail-2">
-        <header className="resource-header">
-          <div className="header-left">
-            {/* TODO - Add Breadcrumb */}
-            {/* TODO - Add Database Icon */}
-            <h2 className="detail-header-text">
-              { this.displayName }
-              <BookmarkIcon bookmarkKey={ this.props.tableData.key }/>
-            </h2>
-            <div className="body-3">
-              Datasets &bull;
-              {/* TODO - Add Database Label */}
+    let innerContent;
+    if (this.props.isLoading) {
+      innerContent = <LoadingSpinner/>;
+    } else if (this.props.statusCode === 500) {
+      innerContent = (
+        <div className="container error-label">
+          <Breadcrumb />
+          <label className="d-block m-auto">Something went wrong...</label>
+        </div>
+      );
+    } else {
+      const data = this.props.tableData;
+      innerContent = (
+        <div className="resource-detail-layout table-detail-2">
+          <header className="resource-header">
+            <div className="header-left">
+              {/* TODO - Add Breadcrumb */}
+              {/* TODO - Add Database Icon */}
+              <h2 className="detail-header-text">
+                { this.displayName }
+                <BookmarkIcon bookmarkKey={ this.props.tableData.key }/>
+              </h2>
+              <div className="body-3">
+                Datasets &bull;
+                {/* TODO - Add Database Label */}
+              </div>
             </div>
-          </div>
-          <div className="header-right">
-              Buttons go here
-            </div>
-        </header>
-        <main className="column-layout-1">
-          <section className="left-panel">
-            <section className="banner">optional banner</section>
-            <section className="column-layout-2">
-              <section className="left-panel">
-                <div className="title-3">Description</div>
-                <TableDescEditableText
-                  maxLength={ 750 }
-                  value={ data.table_description }
-                  editable={ data.is_editable }
-                />
-              </section>
-              <section className="right-panel">
-                <div className="title-3">Tags</div>
-                <TagInput
-                  readOnly={ data.is_editable } // TODO - Check readOnly value
-                />
+            <div className="header-right">
+                Buttons go here
+              </div>
+          </header>
+          <main className="column-layout-1">
+            <section className="left-panel">
+              <section className="banner">optional banner</section>
+              <section className="column-layout-2">
+                <section className="left-panel">
+                  <div className="section-title title-3">Description</div>
+                  <TableDescEditableText
+                    maxLength={ 750 }
+                    value={ data.table_description }
+                    editable={ data.is_editable }
+                  />
+                  <div className="section-title title-3">Watermark</div>
+
+                </section>
+                <section className="right-panel">
+                  <div className="section-title title-3">Tags</div>
+                  <TagInput
+                    readOnly={ data.is_editable } // TODO - Check readOnly value
+                  />
+
+                  <div className="section-title title-3">Owner</div>
+                  <OwnerEditor
+                    readOnly={false}
+                  />
+
+                  <div className="section-title title-3">Frequent Users</div>
+                  <FrequentUsers readers={ data.table_readers }/>
+                </section>
               </section>
             </section>
-          </section>
-          <section className="right-panel">
-            <DetailList columns={ data.columns }/>
-          </section>
-        </main>
-      </div>
+            <section className="right-panel">
+              <DetailList columns={ data.columns }/>
+            </section>
+          </main>
+        </div>
+      );
+    }
+
+    return (
+      <DocumentTitle title={ `${this.displayName} - Amundsen Table Details` }>
+        { innerContent }
+      </DocumentTitle>
     );
   }
 }

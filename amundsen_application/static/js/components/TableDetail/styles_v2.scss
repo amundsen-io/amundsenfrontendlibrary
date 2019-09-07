@@ -6,4 +6,14 @@ $footer-height: 60px;
   height: calc(100% - #{$navbar-height} - #{$footer-height});
 
 
+
+  .section-title {
+    margin-top: 40px;
+
+    &:first-child {
+     margin-top: 0;
+    }
+  }
+
+
 }
