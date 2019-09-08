@@ -25,7 +25,7 @@ As these are optional features, our `MailClientFeaturesConfig` can be used to hi
 2. Set `MailClientFeaturesConfig.notificationsEnabled` to `true` in order to display the optional UI for users to request more information about resources on the `TableDetail` page.
 
 For information about how to configure a custom mail
-client, please see this [entry](https://github.com/lyft/amundsenfrontendlibrary/blob/master/docs/flask_config.md#mail-client-features) in our flask configuration doc.
+client, please see this [entry](flask_config.md#mail-client-features) in our flask configuration doc.
 
 ## Navigation Links
 
