@@ -21,6 +21,7 @@ const htmlWebpackPluginConfig = templatesList.map(file => {
       template: file,
       config: appConfig,
       inject: false,
+      assetOutputDir: '/static/dist', //when webpack builds files, use this as a prefix in the compiled html.
     });
 });
 
@@ -52,7 +53,7 @@ const config: webpack.Configuration = {
         {
           test: /\.jsx?$/,
           exclude: /node_modules/,
-          use: 'babel-loader',
+          use: 'babel-loader?cacheDirectory=true',
         },
         {
           test: /\.(sa|sc|c)ss$/,

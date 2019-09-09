@@ -1,27 +1,50 @@
 # Developer Guide
 
 ## Environment
-Follow the installation instructions in the section [Install standalone application directly from the source](https://github.com/lyft/amundsenfrontendlibrary#install-standalone-application-directly-from-the-spource).
 
-Install the javascript development requirements:
+
+### Python
+
+The instructions in [Install standalone application directly from the source](https://github.com/lyft/amundsenfrontendlibrary/blob/master/docs/installation.md#install-standalone-application-directly-from-the-source) are for running the application as-is. If you wish instead to develop against the python code, the recommended method of installation is as follows:
+
 ```bash
-# in ~/<your-path-to-cloned-repo>/amundsenfrontendlibrary/amundsen_application
-$ cd static
+# Clone repo
+$ git clone https://github.com/lyft/amundsenfrontendlibrary.git
+
+$ cd amundsenfrontendlibrary
+# Install python resources
+$ python3 -m venv venv
+$ source venv/bin/activate
+(venv) $ pip3 install -r requirements3.txt
+(venv) $ python3 setup.py develop
+
+# Start server
+(venv) $ FLASK_ENV=development python3 amundsen_application/wsgi.py
+# visit http://localhost:5000 to confirm the application is running
+```
+
+The difference is subtle but significant - instead of running `python3 setup.py install`, which copies the files from the application to the relevant locations, we are using `python3 setup.py develop` which will only link the files - meaning you can continue to edit the files python files in `~/<your-path-to-cloned-repo>/amundsenfrontendlibrary/amundsen_application`.
+
+*TODO: Is there a way to cause flask to hot-reload the changes, so a simple refresh will work?*
+
+
+The `FLASK_ENV=development` will enable the wsgi to reload when it detects changes. To test local changes to the python files, simply refresh the page. 
+
+### JavaScript:
+Install the javascript development requirements:
+
+```bash
+# in ~/<your-path-to-cloned-repo>/amundsenfrontendlibrary/amundsen_application/static
 $ npm install --only=dev
 ```
 
-To test local changes to the javascript static files:
-```bash
-# in ~/<your-path-to-cloned-repo>/amundsenfrontendlibrary/amundsen_application
-$ cd static
-$ npm run dev-build # builds the development bundle
-```
+While you can make changes to the javascript and restart `python3 amundsen_application/wsgi.py` for those changes to take effect, the process is time consuming and inefficient. To enable realtime changes to javascript, we will keep the wsgi application running on port 5000 and in addition start a node.js server on port 8080. If you then use your browser on port 8080, you can have realtime hot-reloading of javascript as well as the python/wsgi behavior documented above. To enable this, run these commands in a new terminal:
 
-To test local changes to the python files, re-run the wsgi:
-```bash
-# in ~/<your-path-to-cloned-repo>/amundsenfrontendlibrary/amundsen_application
-$ python3 wsgi.py
-```
+        # in ~/<your-path-to-cloned-repo>/amundsenfrontendlibrary/amundsen_application/static
+        $ npm run start-server # starts a server on http://localhost:8080
+        
+  If you now browse to http://localhost:8080, you will have real-time javascript hot reloading. You can edit (most, excludes the webpack*ts files and a few others) files under `~/<your-path-to-cloned-repo>/amundsenfrontendlibrary/amundsen_application/static/js`
+  This method will serve all files from the node.js servers, and if a request to a python file comes in, node.js will automatically proxy the request to your wsgi server on port 5000 without any configuration.
 
 ## Contributing
 
