@@ -5,8 +5,8 @@ import * as DocumentTitle from 'react-document-title';
 
 import './styles_v2';
 import { GlobalState } from 'ducks/rootReducer';
-import { getPreviewData, getTableData } from 'ducks/tableMetadata/reducer';
-import { PreviewQueryParams, TableMetadata } from 'interfaces/TableMetadata';
+import { getTableData } from 'ducks/tableMetadata/reducer';
+import { TableMetadata } from 'interfaces/TableMetadata';
 import { GetTableDataRequest } from 'ducks/tableMetadata/types';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import TableDescEditableText from 'components/TableDetail/TableDescEditableText';
@@ -16,6 +16,7 @@ import DetailList from 'components/TableDetail/DetailList';
 import Breadcrumb from 'components/common/Breadcrumb';
 import OwnerEditor from 'components/TableDetail/OwnerEditor';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
+import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
 
 
 
@@ -94,8 +95,13 @@ class TableDetail_v2 extends React.Component<TableDetailProps> {
               </div>
             </div>
             <div className="header-right">
-                Buttons go here
-              </div>
+              <DataPreviewButton
+                modalTitle={ this.displayName }
+                database={ this.database }
+                schema={ this.schema }
+                tableName={ this.tableName }
+              />
+            </div>
           </header>
           <main className="column-layout-1">
             <section className="left-panel">
@@ -108,19 +114,17 @@ class TableDetail_v2 extends React.Component<TableDetailProps> {
                     value={ data.table_description }
                     editable={ data.is_editable }
                   />
+
                   <div className="section-title title-3">Watermark</div>
 
                 </section>
                 <section className="right-panel">
                   <div className="section-title title-3">Tags</div>
-                  <TagInput
-                    readOnly={ data.is_editable } // TODO - Check readOnly value
-                  />
+                  {/* TODO - Check readOnly value */}
+                  <TagInput readOnly={ data.is_editable }/>
 
                   <div className="section-title title-3">Owner</div>
-                  <OwnerEditor
-                    readOnly={false}
-                  />
+                  <OwnerEditor readOnly={false} />
 
                   <div className="section-title title-3">Frequent Users</div>
                   <FrequentUsers readers={ data.table_readers }/>

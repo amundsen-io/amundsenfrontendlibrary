@@ -1,16 +1,17 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-
-import { Button, Modal, OverlayTrigger, Popover, Table } from 'react-bootstrap';
+import { bindActionCreators } from 'redux';
+import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 import Linkify from 'react-linkify'
 
 import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
 
-import { PreviewData } from 'interfaces';
+import { PreviewData, PreviewQueryParams } from 'interfaces';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+import { getPreviewData } from 'ducks/tableMetadata/reducer';
 
 enum LoadingStatus {
   ERROR = "error",
@@ -26,11 +27,18 @@ export interface StateFromProps {
   status: LoadingStatus;
 }
 
-export interface ComponentProps {
-  modalTitle: string;
+export interface DispatchFromProps {
+  getPreviewData: (queryParams: PreviewQueryParams) => void;
 }
 
-type DataPreviewButtonProps = StateFromProps & ComponentProps;
+export interface ComponentProps {
+  modalTitle: string;
+  database: string;
+  schema: string;
+  tableName: string;
+}
+
+type DataPreviewButtonProps = StateFromProps & DispatchFromProps & ComponentProps;
 
 interface DataPreviewButtonState {
   status: LoadingStatus;
@@ -74,7 +82,14 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
       status: LoadingStatus.LOADING,
       showModal: false,
       previewData: {},
-    }
+    };
+
+    this.props.getPreviewData({
+      database: this.props.database,
+      schema: this.props.schema,
+      tableName: this.props.tableName,
+    });
+
   }
 
   handleClose = () => {
@@ -250,4 +265,8 @@ export const mapStateToProps = (state: GlobalState) => {
   };
 };
 
-export default connect<StateFromProps, {}, ComponentProps>(mapStateToProps, null)(DataPreviewButton);
+export const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators({ getPreviewData } , dispatch);
+};
+
+export default connect<StateFromProps, {}, ComponentProps>(mapStateToProps, mapDispatchToProps)(DataPreviewButton);
