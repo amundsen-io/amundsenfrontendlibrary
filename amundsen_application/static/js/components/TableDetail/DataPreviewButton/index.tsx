@@ -41,9 +41,7 @@ export interface ComponentProps {
 type DataPreviewButtonProps = StateFromProps & DispatchFromProps & ComponentProps;
 
 interface DataPreviewButtonState {
-  status: LoadingStatus;
   showModal: boolean;
-  previewData: PreviewData;
 }
 
 export function getStatusFromCode(httpErrorCode: number) {
@@ -70,26 +68,20 @@ export function getStatusFromCode(httpErrorCode: number) {
 
 export class DataPreviewButton extends React.Component<DataPreviewButtonProps, DataPreviewButtonState> {
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { previewData, status } = nextProps;
-    return { ...prevState, previewData, status };
-  }
-
   constructor(props) {
     super(props);
 
     this.state = {
-      status: LoadingStatus.LOADING,
       showModal: false,
-      previewData: {},
     };
+  }
 
+  componentDidMount() {
     this.props.getPreviewData({
       database: this.props.database,
       schema: this.props.schema,
       tableName: this.props.tableName,
     });
-
   }
 
   handleClose = () => {
@@ -114,9 +106,9 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
   }
 
   renderModalBody() {
-    const previewData = this.state.previewData;
+    const previewData = this.props.previewData;
 
-    if (this.state.status === LoadingStatus.SUCCESS) {
+    if (this.props.status === LoadingStatus.SUCCESS) {
       if (!previewData.columns || !previewData.data || previewData.columns.length === 0 || previewData.data.length === 0) {
         return (
           <div>
@@ -155,7 +147,7 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
 
     }
 
-    if (this.state.status === LoadingStatus.UNAUTHORIZED) {
+    if (this.props.status === LoadingStatus.UNAUTHORIZED) {
       return (
         <div>
           <Linkify>{previewData.error_text}</Linkify>
@@ -167,7 +159,7 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
   }
 
   renderPreviewButton() {
-    const previewData = this.state.previewData;
+    const previewData = this.props.previewData;
 
     // Based on the state, the preview button will show different things.
     let buttonText = 'Loading...';
@@ -176,7 +168,7 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
     let popoverText = 'The data preview is loading';
 
     // TODO: Setting hardcoded strings that should be customizable/translatable
-    switch (this.state.status) {
+    switch (this.props.status) {
       case LoadingStatus.SUCCESS:
       case LoadingStatus.UNAUTHORIZED:
         buttonText = 'Preview Data';
