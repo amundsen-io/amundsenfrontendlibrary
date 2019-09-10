@@ -282,12 +282,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
       const exploreSqlHref = AppConfig.tableProfile.isExploreEnabled ? this.getExploreSqlUrl() : '';
       return (
         <div>
-          <DataPreviewButton
-            modalTitle={ this.displayName }
-            database={ this.database }
-            schema={ this.schema }
-            tableName={ this.tableName }
-          />
+          <DataPreviewButton modalTitle={ this.displayName } />
           {
             exploreSqlHref &&
               <a

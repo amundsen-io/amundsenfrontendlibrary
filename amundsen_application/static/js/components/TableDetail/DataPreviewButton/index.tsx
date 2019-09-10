@@ -7,7 +7,7 @@ import Linkify from 'react-linkify'
 import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
 
-import { PreviewData, PreviewQueryParams } from 'interfaces';
+import { PreviewData, PreviewQueryParams, TableMetadata } from 'interfaces';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
@@ -25,6 +25,7 @@ enum LoadingStatus {
 export interface StateFromProps {
   previewData: PreviewData;
   status: LoadingStatus;
+  tableData: TableMetadata;
 }
 
 export interface DispatchFromProps {
@@ -33,9 +34,6 @@ export interface DispatchFromProps {
 
 export interface ComponentProps {
   modalTitle: string;
-  database: string;
-  schema: string;
-  tableName: string;
 }
 
 type DataPreviewButtonProps = StateFromProps & DispatchFromProps & ComponentProps;
@@ -77,10 +75,11 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
   }
 
   componentDidMount() {
+    const tableData = this.props.tableData;
     this.props.getPreviewData({
-      database: this.props.database,
-      schema: this.props.schema,
-      tableName: this.props.tableName,
+      database: tableData.database,
+      schema: tableData.schema,
+      tableName: tableData.table_name,
     });
   }
 
@@ -197,12 +196,11 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
     const previewButton = (
       <button
         id="data-preview-button"
-        className="btn btn-default btn-block"
-        disabled={disabled}
-        onClick={this.handleClick}
+        className="btn btn-default btn-lg"
+        disabled={ disabled }
+        onClick={ this.handleClick }
       >
-         <img className={"icon icon-color " + iconClass} />
-         <span>{buttonText}</span>
+        { buttonText }
       </button>
     );
 
@@ -220,11 +218,9 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
       <OverlayTrigger
         trigger={['hover', 'focus']}
         placement='top'
-        delayHide={200}
-        overlay={popoverHover}>
-          <div className="overlay-trigger">
-            {previewButton}
-          </div>
+        delayHide={ 200 }
+        overlay={ popoverHover }>
+          { previewButton }
       </OverlayTrigger>
     )
   }
@@ -232,20 +228,20 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
   render() {
     // else render button that triggers the preview data modal
     return (
-      <div className="preview-data">
+      <>
         {this.renderPreviewButton()}
 
-        <Modal show={this.state.showModal} onHide={this.handleClose}>
-          <Modal.Header className="text-center" closeButton={true}>
+        <Modal show={ this.state.showModal } onHide={ this.handleClose }>
+          <Modal.Header className="text-center" closeButton={ true }>
             <Modal.Title>
-              {this.props.modalTitle}
+              { this.props.modalTitle }
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {this.renderModalBody()}
+            { this.renderModalBody() }
           </Modal.Body>
         </Modal>
-      </div>
+      </>
     )
   }
 }
@@ -254,6 +250,7 @@ export const mapStateToProps = (state: GlobalState) => {
   return {
     previewData: state.tableMetadata.preview.data,
     status: getStatusFromCode(state.tableMetadata.preview.status),
+    tableData: state.tableMetadata.tableData,
   };
 };
 

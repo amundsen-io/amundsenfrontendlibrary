@@ -17,6 +17,7 @@ import Breadcrumb from 'components/common/Breadcrumb';
 import OwnerEditor from 'components/TableDetail/OwnerEditor';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
+import ExploreButton from 'components/TableDetail/ExploreButton';
 
 
 
@@ -95,12 +96,8 @@ class TableDetail_v2 extends React.Component<TableDetailProps> {
               </div>
             </div>
             <div className="header-right">
-              <DataPreviewButton
-                modalTitle={ this.displayName }
-                database={ this.database }
-                schema={ this.schema }
-                tableName={ this.tableName }
-              />
+              <DataPreviewButton modalTitle={ this.displayName }/>
+              <ExploreButton />
             </div>
           </header>
           <main className="column-layout-1">
