@@ -7,7 +7,7 @@ import * as Utils from 'ducks/utilMethods';
 
 import globalState from 'fixtures/globalState';
 
-import { UpdateMethod, UpdateOwnerPayload } from 'interfaces';
+import { NotificationType, UpdateMethod, UpdateOwnerPayload } from 'interfaces';
 
 import * as API from '../v0';
 
@@ -78,7 +78,7 @@ describe('helpers', () => {
       const testMethod = UpdateMethod.PUT;
       const testName = 'schema.tableName';
       expect(Helpers.createOwnerNotificationData({ method: testMethod, id: testId }, testName)).toMatchObject({
-        notificationType: 'added',
+        notificationType: NotificationType.ADDED,
         options: {
           resource_name: testName,
           resource_url: window.location.href,
@@ -92,7 +92,7 @@ describe('helpers', () => {
       const testMethod = UpdateMethod.DELETE;
       const testName = 'schema.tableName';
       expect(Helpers.createOwnerNotificationData({ method: testMethod, id: testId }, testName)).toMatchObject({
-        notificationType: 'removed',
+        notificationType: NotificationType.REMOVED,
         options: {
           resource_name: testName,
           resource_url: window.location.href,

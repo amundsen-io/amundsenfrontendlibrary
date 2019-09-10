@@ -2,7 +2,7 @@ import * as qs from 'simple-query-string';
 
 import { filterFromObj, sortTagsAlphabetical } from 'ducks/utilMethods';
 
-import { OwnerDict, PeopleUser, TableMetadata, Tag, UpdateMethod, UpdateOwnerPayload, User } from 'interfaces';
+import { NotificationType, OwnerDict, PeopleUser, TableMetadata, Tag, UpdateMethod, UpdateOwnerPayload, User } from 'interfaces';
 import * as API from './v0';
 
 /**
@@ -43,7 +43,7 @@ export function getTableTagsFromResponseData(responseData: API.TableDataAPI): Ta
  */
 export function createOwnerNotificationData(payload: UpdateOwnerPayload, resourceName: string) {
   return {
-    notificationType: payload.method === UpdateMethod.PUT ? 'added' : 'removed',
+    notificationType: payload.method === UpdateMethod.PUT ? NotificationType.ADDED : NotificationType.REMOVED,
     options: {
       resource_name: resourceName,
       resource_url: window.location.href,
