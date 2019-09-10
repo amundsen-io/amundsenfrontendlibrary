@@ -1,8 +1,8 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
-import { PreviewData, PreviewQueryParams, TableMetadata, UpdateMethod, User, Tag } from 'interfaces';
+import { PreviewData, PreviewQueryParams, TableMetadata, UpdateOwnerPayload, User, Tag } from 'interfaces';
 
-const API_PATH = '/api/metadata/v0';
+export const API_PATH = '/api/metadata/v0';
 
 // TODO: Consider created shared interfaces for ducks so we can reuse MessageAPI everywhere else
 type MessageAPI = { msg: string };
@@ -19,6 +19,7 @@ export type TableDataAPI= { tableData: TableData; } & MessageAPI;
 /** HELPERS **/
 import {
   getTableQueryParams, getTableDataFromResponseData, getTableOwnersFromResponseData, getTableTagsFromResponseData,
+  createOwnerUpdatePayload, createOwnerNotificationData,
 } from './helpers';
 
 export function getTableTags(tableKey: string) {
@@ -87,39 +88,20 @@ export function getTableOwners(tableKey: string) {
   });
 }
 
-/* TODO: Typing this method generates redux-saga related type errors that need more dedicated debugging */
-export function generateOwnerUpdateRequests(updateArray, tableKey: string, resourceName: string) {
+/* TODO: Typing return type generates redux-saga related type error that need more dedicated debugging */
+export function generateOwnerUpdateRequests(updateArray: UpdateOwnerPayload[], tableKey: string, resourceName: string) {
   let updateRequests = [];
+
   /* Create the request for updating each owner*/
   updateArray.forEach((item) => {
-    /* Request payload that will add or remove an owner*/
-    const updatePayload = {
-      method: item.method,
-      url: `${API_PATH}/update_table_owner`,
-      data: {
-        key: tableKey,
-        owner: item.id,
-      },
-    };
-    /* Request payload that will send a notification on success */
-    const notificationPayload = {
-      data: {
-        notificationType: item.method === UpdateMethod.PUT ? 'added' : 'removed',
-        options: {
-          resource_name: resourceName,
-          resource_url: window.location.href,
-        },
-        recipients: [item.id],
-      },
-      method: 'post',
-      url: '/api/mail/v0/notification',
-    };
-    /* Chain requests */
+    const updatePayload = createOwnerUpdatePayload(item, tableKey);
+    const notificationData = createOwnerNotificationData(item, resourceName);
+
+    /* Chain requests to send notification on success */
     const request = axios(updatePayload).then((response) => {
-      // @ts-ignore: This throws an error but cant see what is wrong
-      return axios(notificationPayload);
+      return axios.post('/api/mail/v0/notification', notificationData);
     });
-    /* Add to the list */
+
     updateRequests.push(request);
   });
 

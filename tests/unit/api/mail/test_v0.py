@@ -97,14 +97,12 @@ class MailTest(unittest.TestCase):
         :return:
         """
         test_recipients = ['test@test.com']
-        test_sender = 'test2@test.com'
         test_notification_type = 'added'
         test_options = {}
 
         with local_app.test_client() as test:
             test.post('/api/mail/v0/notification', json={
                 'recipients': test_recipients,
-                'sender': test_sender,
                 'notificationType': test_notification_type,
                 'options': test_options,
             })
@@ -112,8 +110,28 @@ class MailTest(unittest.TestCase):
                 notification_type=test_notification_type,
                 options=test_options,
                 recipients=test_recipients,
-                sender=test_sender
+                sender=local_app.config['AUTH_USER_METHOD'](local_app).email
             )
+
+    @unittest.mock.patch('amundsen_application.api.mail.v0.send_notification')
+    def test_notification_endpoint_fails_missing_notification_type(self, send_notification_mock) -> None:
+        """
+        Test that the endpoint fails if notificationType is not provided in the
+        request json
+        :return:
+        """
+        test_recipients = ['test@test.com']
+        test_sender = 'test2@test.com'
+        test_options = {}
+
+        with local_app.test_client() as test:
+            response = test.post('/api/mail/v0/notification', json={
+                'recipients': test_recipients,
+                'sender': test_sender,
+                'options': test_options,
+            })
+            self.assertEquals(response.status_code, HTTPStatus.BAD_REQUEST)
+            self.assertFalse(send_notification_mock.called)
 
     @unittest.mock.patch('amundsen_application.api.mail.v0.send_notification')
     def test_notification_endpoint_fails_with_exception(self, send_notification_mock) -> None:
