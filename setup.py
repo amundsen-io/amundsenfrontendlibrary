@@ -27,6 +27,7 @@ def build_js() -> None:
         logging.warn('Installation of npm dependencies failed')
         logging.warn(str(e))
 
+
 build_js()
 
 requirements_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'requirements3.txt')

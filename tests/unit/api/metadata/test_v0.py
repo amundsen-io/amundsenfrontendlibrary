@@ -329,64 +329,6 @@ class MetadataTest(unittest.TestCase):
             self.assertEqual(response.status_code, HTTPStatus.OK)
 
     @responses.activate
-    @unittest.mock.patch('amundsen_application.api.metadata.v0.send_notification')
-    def test_update_table_owner_send_notification_added(self, send_notification_mock) -> None:
-        """
-        Test update_table_owner with PUT calls send_notification
-        using the 'added' notification type
-        :return:
-        """
-        url = local_app.config['METADATASERVICE_BASE'] + TABLE_ENDPOINT + '/db://cluster.schema/table/owner/test'
-        responses.add(responses.PUT, url, json={}, status=HTTPStatus.OK)
-        with local_app.test_client() as test:
-            test.put(
-                '/api/metadata/v0/update_table_owner',
-                json={
-                    'key': 'db://cluster.schema/table',
-                    'owner': 'test',
-                    'name': 'schema.table'
-                }
-            )
-            send_notification_mock.assert_called_with(
-                notification_type='added',
-                options={
-                    'resource_name': 'schema.table',
-                    'resource_url': 'http://0.0.0.0:5000/table_detail/cluster/db/schema/table'
-                },
-                recipients=['test'],
-                sender=local_app.config['AUTH_USER_METHOD'](local_app).email
-            )
-
-    @responses.activate
-    @unittest.mock.patch('amundsen_application.api.metadata.v0.send_notification')
-    def test_update_table_owner_send_notification_deleted(self, send_notification_mock) -> None:
-        """
-        Test update_table_owner with DELETE calls send_notification
-        using the 'removed' notification type
-        :return:
-        """
-        url = local_app.config['METADATASERVICE_BASE'] + TABLE_ENDPOINT + '/db://cluster.schema/table/owner/test'
-        responses.add(responses.DELETE, url, json={}, status=HTTPStatus.OK)
-        with local_app.test_client() as test:
-            test.delete(
-                '/api/metadata/v0/update_table_owner',
-                json={
-                    'key': 'db://cluster.schema/table',
-                    'owner': 'test',
-                    'name': 'schema.table'
-                }
-            )
-            send_notification_mock.assert_called_with(
-                notification_type='removed',
-                options={
-                    'resource_name': 'schema.table',
-                    'resource_url': 'http://0.0.0.0:5000/table_detail/cluster/db/schema/table'
-                },
-                recipients=['test'],
-                sender=local_app.config['AUTH_USER_METHOD'](local_app).email
-            )
-
-    @responses.activate
     def test_get_last_indexed_success(self) -> None:
         """
         Test successful get_last_indexed request

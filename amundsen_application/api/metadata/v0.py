@@ -12,7 +12,6 @@ from amundsen_application.log.action_log import action_logging
 from amundsen_application.models.user import load_user, dump_user
 
 from amundsen_application.api.utils.metadata_utils import marshall_table_partial, marshall_table_full
-from amundsen_application.api.utils.notification_utils import send_notification, table_key_to_url
 from amundsen_application.api.utils.request_utils import get_query_param, request_metadata
 
 
@@ -147,29 +146,9 @@ def update_table_owner() -> Response:
         pass  # pragma: no cover
 
     try:
-        user = app.config['AUTH_USER_METHOD'](app)
         args = request.get_json()
         table_key = get_query_param(args, 'key')
-        resource_name = get_query_param(args, 'name')
         owner = get_query_param(args, 'owner')
-
-        notification_type = None
-        if request.method == 'PUT':
-            notification_type = 'added'
-        elif request.method == 'DELETE':
-            notification_type = 'removed'
-        else:
-            raise Exception('method not handled')
-
-        send_notification(
-            notification_type=notification_type,
-            options={
-                'resource_name': resource_name,
-                'resource_url': table_key_to_url(table_key=table_key)
-            },
-            recipients=[owner],
-            sender=user.email
-        )
 
         table_endpoint = _get_table_endpoint()
         url = '{0}/{1}/owner/{2}'.format(table_endpoint, table_key, owner)
