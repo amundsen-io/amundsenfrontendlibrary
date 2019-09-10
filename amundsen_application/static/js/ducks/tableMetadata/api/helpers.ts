@@ -1,7 +1,7 @@
 import * as qs from 'simple-query-string';
 
 import { filterFromObj, sortTagsAlphabetical } from 'ducks/utilMethods';
-import { globalState } from 'fixtures';
+
 import { OwnerDict, PeopleUser, TableMetadata, Tag, UpdateMethod, UpdateOwnerPayload, User } from 'interfaces';
 import * as API from './v0';
 
