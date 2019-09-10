@@ -1,6 +1,6 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
-import { PreviewData, PreviewQueryParams, TableMetadata, User, Tag } from 'interfaces';
+import { PreviewData, PreviewQueryParams, TableMetadata, UpdateMethod, User, Tag } from 'interfaces';
 
 const API_PATH = '/api/metadata/v0';
 
@@ -88,19 +88,43 @@ export function getTableOwners(tableKey: string) {
 }
 
 /* TODO: Typing this method generates redux-saga related type errors that need more dedicated debugging */
-export function updateTableOwner(updateArray, tableKey: string, resourceName: string) {
-  const updatePayloads = updateArray.map((item) => {
-    return {
+export function generateOwnerUpdateRequests(updateArray, tableKey: string, resourceName: string) {
+  let updateRequests = [];
+  /* Create the request for updating each owner*/
+  updateArray.forEach((item) => {
+    /* Request payload that will add or remove an owner*/
+    const updatePayload = {
       method: item.method,
       url: `${API_PATH}/update_table_owner`,
       data: {
         key: tableKey,
         owner: item.id,
-        name: resourceName,
       },
-    }
+    };
+    /* Request payload that will send a notification on success */
+    const notificationPayload = {
+      data: {
+        notificationType: item.method === UpdateMethod.PUT ? 'added' : 'removed',
+        options: {
+          resource_name: resourceName,
+          resource_url: window.location.href,
+        },
+        recipients: [item.id],
+      },
+      method: 'post',
+      url: '/api/mail/v0/notification',
+    };
+    /* Chain requests */
+    const request = axios(updatePayload).then((response) => {
+      // @ts-ignore: This throws an error but cant see what is wrong
+      return axios(notificationPayload);
+    });
+    /* Add to the list */
+    updateRequests.push(request);
   });
-  return updatePayloads.map(payload => { axios(payload) });
+
+  /* Return the list of requests to be executed */
+  return updateRequests;
 }
 
 export function getColumnDescription(columnIndex: number, tableData: TableMetadata) {

@@ -3,6 +3,7 @@ import logging
 from http import HTTPStatus
 
 from flask import Response, jsonify, make_response, render_template, request
+from flask import current_app as app
 from flask.blueprints import Blueprint
 
 from amundsen_application.api.exceptions import MailClientNotImplemented
@@ -92,11 +93,15 @@ def notification() -> Response:
     """
     try:
         data = request.get_json()
+        sender = data.get('sender')
+        if sender is None:
+            sender = app.config['AUTH_USER_METHOD'](app).email
+
         return send_notification(
             notification_type=data['notificationType'],
             options=data['options'],
             recipients=data['recipients'],
-            sender=data['sender']
+            sender=sender
         )
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
