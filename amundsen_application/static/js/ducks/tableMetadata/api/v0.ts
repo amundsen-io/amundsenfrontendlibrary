@@ -90,7 +90,7 @@ export function getTableOwners(tableKey: string) {
 
 /* TODO: Typing return type generates redux-saga related type error that need more dedicated debugging */
 export function generateOwnerUpdateRequests(updateArray: UpdateOwnerPayload[], tableKey: string, resourceName: string) {
-  let updateRequests = [];
+  const updateRequests = [];
 
   /* Create the request for updating each owner*/
   updateArray.forEach((item) => {
