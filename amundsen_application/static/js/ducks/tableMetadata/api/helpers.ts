@@ -1,8 +1,8 @@
 import * as qs from 'simple-query-string';
 
 import { filterFromObj, sortTagsAlphabetical } from 'ducks/utilMethods';
-
-import { OwnerDict, TableMetadata, Tag, UpdateMethod, UpdateOwnerPayload, User } from 'interfaces';
+import { globalState } from 'fixtures';
+import { OwnerDict, PeopleUser, TableMetadata, Tag, UpdateMethod, UpdateOwnerPayload, User } from 'interfaces';
 import * as API from './v0';
 
 /**
@@ -65,3 +65,10 @@ export function createOwnerUpdatePayload(payload: UpdateOwnerPayload, tableKey: 
     },
   }
 };
+
+/**
+ * Workaround logic for not sending emails to alumni or teams.
+ */
+export function shouldSendNotification(user: PeopleUser): boolean {
+  return user.is_active && !!user.display_name;
+}

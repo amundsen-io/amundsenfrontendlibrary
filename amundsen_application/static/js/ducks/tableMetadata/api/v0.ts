@@ -19,7 +19,7 @@ export type TableDataAPI= { tableData: TableData; } & MessageAPI;
 /** HELPERS **/
 import {
   getTableQueryParams, getTableDataFromResponseData, getTableOwnersFromResponseData, getTableTagsFromResponseData,
-  createOwnerUpdatePayload, createOwnerNotificationData,
+  createOwnerUpdatePayload, createOwnerNotificationData, shouldSendNotification
 } from './helpers';
 
 export function getTableTags(tableKey: string) {
@@ -97,10 +97,17 @@ export function generateOwnerUpdateRequests(updateArray: UpdateOwnerPayload[], t
     const updatePayload = createOwnerUpdatePayload(item, tableKey);
     const notificationData = createOwnerNotificationData(item, resourceName);
 
-    /* Chain requests to send notification on success */
-    const request = axios(updatePayload).then((response) => {
-      return axios.post('/api/mail/v0/notification', notificationData);
-    });
+    /* Chain requests to send notification on success to desired users */
+    const request =
+      axios(updatePayload)
+      .then((response) => {
+        return axios.get(`/api/metadata/v0/user?user_id=${item.id}`)
+      })
+      .then((response) => {
+        if(shouldSendNotification(response.data.user)) {
+          return axios.post('/api/mail/v0/notification', notificationData);
+        }
+      });
 
     updateRequests.push(request);
   });

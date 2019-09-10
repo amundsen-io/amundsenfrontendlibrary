@@ -115,4 +115,27 @@ describe('helpers', () => {
       },
     });
   });
+
+  describe('shouldSendNotification', () => {
+    it('returns false if alumni', () => {
+      const testUser = {
+        ... globalState.user.loggedInUser,
+        is_active: false,
+      }
+      expect(Helpers.shouldSendNotification(testUser)).toBe(false);
+    });
+
+    it('returns false if not a user with display_name', () => {
+      const testUser = {
+        ... globalState.user.loggedInUser,
+        display_name: null,
+      }
+      expect(Helpers.shouldSendNotification(testUser)).toBe(false);
+    });
+
+    it('returns true if user is_active and has a display_name', () => {
+      const testUser = { ... globalState.user.loggedInUser }
+      expect(Helpers.shouldSendNotification(testUser)).toBe(true);
+    });
+  });
 });
