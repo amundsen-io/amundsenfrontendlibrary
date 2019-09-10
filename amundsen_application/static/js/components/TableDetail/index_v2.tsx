@@ -18,6 +18,8 @@ import OwnerEditor from 'components/TableDetail/OwnerEditor';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
 import ExploreButton from 'components/TableDetail/ExploreButton';
+import WatermarkLabel from 'components/TableDetail/WatermarkLabel';
+import Flag from 'components/common/Flag';
 
 
 
@@ -93,6 +95,9 @@ class TableDetail_v2 extends React.Component<TableDetailProps> {
               <div className="body-3">
                 Datasets &bull;
                 {/* TODO - Add Database Label */}
+                {
+                  !data.is_view && <Flag text="Table View" labelStyle="primary" />
+                }
               </div>
             </div>
             <div className="header-right">
@@ -111,8 +116,13 @@ class TableDetail_v2 extends React.Component<TableDetailProps> {
                     value={ data.table_description }
                     editable={ data.is_editable }
                   />
-
-                  <div className="section-title title-3">Watermark</div>
+                  {
+                    !data.is_view &&
+                    <>
+                      <div className="section-title title-3">Date Range</div>
+                      <WatermarkLabel watermarks={ data.watermarks }/>
+                    </>
+                  }
 
                 </section>
                 <section className="right-panel">
