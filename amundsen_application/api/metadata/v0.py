@@ -150,9 +150,6 @@ def update_table_owner() -> Response:
         table_key = get_query_param(args, 'key')
         owner = get_query_param(args, 'owner')
 
-        if owner == 'test_fail':
-            return make_response(jsonify({'msg': 'This is a test failure'}), HTTPStatus.INTERNAL_SERVER_ERROR)
-
         table_endpoint = _get_table_endpoint()
         url = '{0}/{1}/owner/{2}'.format(table_endpoint, table_key, owner)
         method = request.method
