@@ -20,6 +20,9 @@ import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
 import ExploreButton from 'components/TableDetail/ExploreButton';
 import WatermarkLabel from 'components/TableDetail/WatermarkLabel';
 import Flag from 'components/common/Flag';
+import SourceLink from 'components/TableDetail/SourceLink';
+import WriterLink from 'components/TableDetail/WriterLink';
+import LineageLink from 'components/TableDetail/LineageLink';
 
 
 
@@ -96,13 +99,16 @@ class TableDetail_v2 extends React.Component<TableDetailProps> {
                 Datasets &bull;
                 {/* TODO - Add Database Label */}
                 {
-                  !data.is_view && <Flag text="Table View" labelStyle="primary" />
+                  data.is_view && <Flag text="Table View" labelStyle="primary" />
                 }
               </div>
             </div>
             <div className="header-right">
-              <DataPreviewButton modalTitle={ this.displayName }/>
+              <WriterLink tableWriter={ data.table_writer }/>
+              <LineageLink cluster={ this.cluster } database={ this.database } schema={ this.schema } tableName={ this.tableName }/>
+              <SourceLink tableSource={ data.source }/>
               <ExploreButton />
+              <DataPreviewButton modalTitle={ this.displayName }/>
             </div>
           </header>
           <main className="column-layout-1">

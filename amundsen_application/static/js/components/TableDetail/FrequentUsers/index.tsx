@@ -11,44 +11,55 @@ export interface FrequentUsersProps {
   readers: TableReader[];
 }
 
+// TODO - Change SFC to FC when upgrading React
 const FrequentUsers: React.SFC<FrequentUsersProps> = ({ readers }) => {
   if (readers.length === 0) {
-    return (<label className="m-auto">No frequent users exist</label>);
+    return (<label className="body-3">No frequent users exist</label>);
   }
 
+  const renderReader = (reader: TableReader, index: number) => {
+    const user = reader.reader;
+    let link = user.profile_url;
+    let target = '_blank';
+    if (AppConfig.indexUsers.enabled) {
+      link = `/user/${user.user_id}?source=frequent_users`;
+      target = '';
+    }
+
+    return (
+      <OverlayTrigger
+        key={ user.display_name }
+        trigger={['hover', 'focus']}
+        placement="top"
+        overlay={
+          <Popover id="popover-trigger-hover-focus">
+            {user.display_name}
+          </Popover>
+        }
+      >
+        <Link
+          className="avatar-overlap"
+          id="frequent-users"
+          onClick={ logClick }
+          to={ link }
+          target={ target }
+        >
+          <Avatar
+            name={ user.display_name }
+            round={ true }
+            size={ 25 }
+            style={{ zIndex: readers.length - index, position: 'relative' }}
+          />
+        </Link>
+      </OverlayTrigger>
+    );
+  };
+
+
   return (
-    <div>
+    <div className="frequent-users">
       {
-        readers.map((entry, index) => {
-          const user = entry.reader;
-          const popoverHoverFocus = (
-            <Popover id="popover-trigger-hover-focus">
-              {user.display_name}
-            </Popover>
-          );
-
-          let link = user.profile_url;
-          let target = '_blank';
-          if (AppConfig.indexUsers.enabled) {
-            link = `/user/${user.user_id}?source=frequent_users`;
-            target = '';
-          }
-
-          return (
-            <OverlayTrigger key={user.display_name} trigger={['hover', 'focus']} placement="top"
-                            overlay={popoverHoverFocus}>
-              <Link
-                to={link}
-                target={target}
-                className="avatar-overlap"
-                id="frequent-users"
-                onClick={ logClick }
-              >
-                <Avatar name={user.display_name} size={25} round={true} style={{ zIndex: readers.length - index, position: 'relative' }}/>
-              </Link>
-            </OverlayTrigger>
-          );
-        })
+        readers.map(renderReader)
       }
     </div>
   )

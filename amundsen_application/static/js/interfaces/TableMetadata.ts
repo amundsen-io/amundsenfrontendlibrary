@@ -30,12 +30,12 @@ export interface TableReader {
   reader: User;
 }
 
-interface TableSource {
+export interface TableSource {
   source: string | null;
   source_type: string;
 }
 
-interface TableWriter {
+export interface TableWriter {
   application_url: string;
   description: string;
   id: string;

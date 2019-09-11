@@ -5,6 +5,11 @@ $footer-height: 60px;
 .table-detail-2 {
   height: calc(100% - #{$navbar-height} - #{$footer-height});
 
+  .header-link {
+    display: inline-block;
+
+  }
+
 
 
   .section-title {
