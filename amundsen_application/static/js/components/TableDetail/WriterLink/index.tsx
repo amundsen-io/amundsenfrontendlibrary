@@ -1,11 +1,8 @@
 import * as React from 'react';
 
-import { logClick } from 'ducks/utilMethods';
-
-
-import { TableWriter } from 'interfaces';
 import AvatarLabel from 'components/common/AvatarLabel';
-
+import { logClick } from 'ducks/utilMethods';
+import { TableWriter } from 'interfaces';
 
 export interface WriterLinkProps {
   tableWriter: TableWriter;

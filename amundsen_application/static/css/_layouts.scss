@@ -2,7 +2,7 @@
 // TODO - Remove once merged with variable updates
 $divider: #CACAD9;
 $stroke: #CACAD9;
-$header-height: 108px;
+$header-height: 84px;
 
 .resource-detail-layout {
   min-width: 1048px;
@@ -11,7 +11,7 @@ $header-height: 108px;
     display: flex;
     height: $header-height;
     border-bottom: 4px solid $divider;
-    padding: 24px;
+    padding: 16px 24px;
 
     > .header-left {
       flex-grow: 1;
@@ -19,7 +19,7 @@ $header-height: 108px;
 
     > .header-right {
       > :not(:first-child) {
-        margin-left: 8px;
+        margin-left: 30px;
       }
     }
   }

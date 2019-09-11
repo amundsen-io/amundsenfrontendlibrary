@@ -1,11 +1,8 @@
 import * as React from 'react';
 
 import { logClick } from 'ducks/utilMethods';
-
-
-import { TableSource } from 'interfaces';
 import AvatarLabel from 'components/common/AvatarLabel';
-
+import { TableSource } from 'interfaces';
 
 export interface SourceLinkProps {
   tableSource: TableSource;

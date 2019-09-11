@@ -1,9 +1,8 @@
 import * as React from 'react';
 
-import { logClick } from 'ducks/utilMethods';
-
 import AvatarLabel from 'components/common/AvatarLabel';
 import AppConfig from 'config/config';
+import { logClick } from 'ducks/utilMethods';
 
 export interface LineageLinkProps {
   cluster: string;
@@ -19,6 +18,7 @@ const LineageLink: React.SFC<LineageLinkProps> = ({ cluster, database, schema, t
   const label = 'Lineage' + (config.isBeta ? ' (beta)' : '');
   return (
     <a
+      className="header-link"
       href={ href }
       target="_blank"
       id="explore-lineage"
