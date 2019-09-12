@@ -75,7 +75,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
           <div className='title-section'>
             <div className='title-row'>
               <div className='name title-2'>{metadata.name}</div>
-              <div className='column-type'>{metadata.type ? metadata.type.toLowerCase() : 'null'}</div>
+              <div className='column-type truncated'>{metadata.type ? metadata.type.toLowerCase() : 'null'}</div>
             </div>
           </div>
           {
