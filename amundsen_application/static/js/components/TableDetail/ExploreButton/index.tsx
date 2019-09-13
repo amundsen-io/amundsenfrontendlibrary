@@ -24,10 +24,9 @@ export class ExploreButton extends React.Component<ExploreButtonProps> {
     if (partition.is_partitioned) {
       return AppConfig.tableProfile.exploreUrlGenerator(
         tableData.database, tableData.cluster, tableData.schema, tableData.table_name, partition.key, partition.value);
-    } else {
-      return AppConfig.tableProfile.exploreUrlGenerator(
-        tableData.database, tableData.cluster, tableData.schema, tableData.table_name);
     }
+    return AppConfig.tableProfile.exploreUrlGenerator(
+      tableData.database, tableData.cluster, tableData.schema, tableData.table_name);
   }
 
   render() {
