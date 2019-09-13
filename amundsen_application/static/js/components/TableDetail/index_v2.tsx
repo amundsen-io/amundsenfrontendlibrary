@@ -1,30 +1,32 @@
 import * as React from 'react';
+import * as DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as DocumentTitle from 'react-document-title';
+import { RouteComponentProps } from 'react-router';
+import * as qs from 'simple-query-string';
 
-import './styles_v2';
 import { GlobalState } from 'ducks/rootReducer';
 import { getTableData } from 'ducks/tableMetadata/reducer';
-import { TableMetadata } from 'interfaces/TableMetadata';
 import { GetTableDataRequest } from 'ducks/tableMetadata/types';
+
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
-import TableDescEditableText from 'components/TableDetail/TableDescEditableText';
-import LoadingSpinner from 'components/common/LoadingSpinner';
-import TagInput from 'components/Tags/TagInput';
-import DetailList from 'components/TableDetail/DetailList';
 import Breadcrumb from 'components/common/Breadcrumb';
-import OwnerEditor from 'components/TableDetail/OwnerEditor';
+import Flag from 'components/common/Flag';
+import LoadingSpinner from 'components/common/LoadingSpinner';
+import ExploreButton from 'components/TableDetail/ExploreButton';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
-import ExploreButton from 'components/TableDetail/ExploreButton';
-import WatermarkLabel from 'components/TableDetail/WatermarkLabel';
-import Flag from 'components/common/Flag';
-import SourceLink from 'components/TableDetail/SourceLink';
-import WriterLink from 'components/TableDetail/WriterLink';
+import DetailList from 'components/TableDetail/DetailList';
 import LineageLink from 'components/TableDetail/LineageLink';
+import OwnerEditor from 'components/TableDetail/OwnerEditor';
+import SourceLink from 'components/TableDetail/SourceLink';
+import TableDescEditableText from 'components/TableDetail/TableDescEditableText';
+import WatermarkLabel from 'components/TableDetail/WatermarkLabel';
+import WriterLink from 'components/TableDetail/WriterLink';
+import TagInput from 'components/Tags/TagInput';
+import { TableMetadata } from 'interfaces/TableMetadata';
 
-
+import './styles_v2';
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -38,14 +40,13 @@ export interface DispatchFromProps {
 
 type TableDetailProps = StateFromProps & DispatchFromProps;
 
-class TableDetail_v2 extends React.Component<TableDetailProps> {
+class TableDetail_v2 extends React.Component<TableDetailProps & RouteComponentProps<any>> {
   private cluster: string;
   private database: string;
   private displayName: string;
   private key: string;
   private schema: string;
   private tableName: string;
-
 
   constructor(props) {
     super(props);
@@ -68,9 +69,17 @@ class TableDetail_v2 extends React.Component<TableDetailProps> {
   }
 
   componentDidMount() {
-    this.props.getTableData(this.key);
-  }
+    // TODO - Move into utility function
+    const params = qs.parse(this.props.location.search);
+    const searchIndex = params['index'];
+    const source = params['source'];
+    /* update the url stored in the browser history to remove params used for logging purposes */
+    if (searchIndex !== undefined) {
+      window.history.replaceState({}, '', `${window.location.origin}${window.location.pathname}`);
+    }
 
+    this.props.getTableData(this.key, searchIndex, source);
+  }
 
   render() {
     let innerContent;
@@ -159,8 +168,6 @@ class TableDetail_v2 extends React.Component<TableDetailProps> {
     );
   }
 }
-
-
 
 
 export const mapStateToProps = (state: GlobalState) => {

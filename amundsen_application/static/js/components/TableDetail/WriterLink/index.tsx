@@ -9,15 +9,16 @@ export interface WriterLinkProps {
 }
 
 const WriterLink: React.SFC<WriterLinkProps> = ({ tableWriter }) => {
-  if (tableWriter === null || tableWriter.application_url === null) return null;
+  if (tableWriter === null || tableWriter.application_url === null) {
+    return null;
+  }
 
   const image = (tableWriter.name === 'Airflow') ?  '/static/images/airflow.jpeg' : '';
-
   return (
     <a
+      id="explore-writer"
       className="header-link"
       href={ tableWriter.application_url }
-      id="explore-writer"
       onClick={ logClick }
       target='_blank'
     >

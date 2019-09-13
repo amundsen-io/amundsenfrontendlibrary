@@ -22,7 +22,8 @@ const LineageLink: React.SFC<LineageLinkProps> = ({ cluster, database, schema, t
       href={ href }
       target="_blank"
       id="explore-lineage"
-      onClick={ logClick }>
+      onClick={ logClick }
+    >
       <AvatarLabel
         label={ label }
         src={ config.iconPath }

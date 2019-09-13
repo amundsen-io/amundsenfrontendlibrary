@@ -1,17 +1,16 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 import Linkify from 'react-linkify'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import { getPreviewData } from 'ducks/tableMetadata/reducer';
 import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
-
 import { PreviewData, PreviewQueryParams, TableMetadata } from 'interfaces';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
-import { getPreviewData } from 'ducks/tableMetadata/reducer';
 
 enum LoadingStatus {
   ERROR = "error",
@@ -65,7 +64,6 @@ export function getStatusFromCode(httpErrorCode: number) {
 }
 
 export class DataPreviewButton extends React.Component<DataPreviewButtonProps, DataPreviewButtonState> {
-
   constructor(props) {
     super(props);
 
@@ -229,8 +227,7 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
     // else render button that triggers the preview data modal
     return (
       <>
-        {this.renderPreviewButton()}
-
+        { this.renderPreviewButton() }
         <Modal show={ this.state.showModal } onHide={ this.handleClose }>
           <Modal.Header className="text-center" closeButton={ true }>
             <Modal.Title>
@@ -255,7 +252,7 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ getPreviewData } , dispatch);
+  return bindActionCreators({ getPreviewData }, dispatch);
 };
 
 export default connect<StateFromProps, {}, ComponentProps>(mapStateToProps, mapDispatchToProps)(DataPreviewButton);
