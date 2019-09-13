@@ -8,7 +8,7 @@ from flask import jsonify, make_response, Response
 from amundsen_application import create_app
 from amundsen_application.api.exceptions import MailClientNotImplemented
 from amundsen_application.api.utils.notification_utils import get_notification_content, get_mail_client, \
-    get_notification_template, get_notification_subject, send_notification, table_key_to_url
+    get_notification_html, get_notification_subject, send_notification, table_key_to_url
 
 from amundsen_application.base.base_mail_client import BaseMailClient
 
@@ -42,18 +42,16 @@ class NotificationUtilsTest(unittest.TestCase):
             url = table_key_to_url(table_key=self.mock_table_key)
             self.assertEqual('{}/table_detail/cluster/db/schema/table'.format(local_app.config['FRONTEND_BASE']), url)
 
-    @unittest.mock.patch('amundsen_application.api.utils.notification_utils.render_template')
-    @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_template')
+    @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_html')
     @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_subject')
-    def test_get_notification_content(self, get_subject_mock, get_template_mock, render_template_mock) -> None:
+    def test_get_notification_content(self, get_subject_mock, get_html_mock) -> None:
         """
         Test successful executiion of get_notification_content
         :return:
         """
         with local_app.app_context():
             get_subject_mock.return_value = 'Test Subject'
-            get_template_mock.return_value = 'test.html'
-            render_template_mock.return_value = 'testHTML'
+            get_html_mock.return_value = 'testHTML'
 
             test_notification_type = 'test'
             test_sender = 'test@test.com'
@@ -69,17 +67,143 @@ class NotificationUtilsTest(unittest.TestCase):
             }
             self.assertDictEqual(result_dict, expected_dict)
             get_subject_mock.assert_called_with(notification_type=test_notification_type, options=test_options)
-            get_template_mock.assert_called_with(notification_type=test_notification_type)
-            render_template_mock.assert_called_with('test.html', sender=test_sender, options=test_options)
+            get_html_mock.assert_called_with(notification_type=test_notification_type,
+                                             options=test_options,
+                                             sender=test_sender)
 
-    def test_get_notification_template(self) -> None:
-        """
-        Test successful executiion of get_notification_template for supported notification types
-        :return:
-        """
-        for n in ['added', 'removed', 'edited', 'requested']:
-            result = get_notification_template(notification_type=n)
-            self.assertEqual(result, 'notifications/notification_{}.html'.format(n))
+    def test_get_notification_html_no_resource_url(self) -> None:
+        test_notification_type = 'added'
+        test_sender = 'test@test.com'
+        test_options = {'resource_name': 'testtable'}
+
+        self.assertRaises(Exception,
+                          get_notification_html,
+                          notification_type=test_notification_type,
+                          options=test_options,
+                          sender=test_sender)
+
+    def test_get_notification_html_no_resource_name(self) -> None:
+        test_notification_type = 'added'
+        test_sender = 'test@test.com'
+        test_options = {'resource_url': 'testUrl'}
+
+        self.assertRaises(Exception,
+                          get_notification_html,
+                          notification_type=test_notification_type,
+                          options=test_options,
+                          sender=test_sender)
+
+    def test_get_notification_html_unsupported_type(self) -> None:
+        test_notification_type = 'invalid_type'
+        test_sender = 'test@test.com'
+        test_options = {'resource_name': 'testtable', 'resource_url': 'testUrl'}
+
+        self.assertRaises(Exception,
+                          get_notification_html,
+                          notification_type=test_notification_type,
+                          options=test_options,
+                          sender=test_sender)
+
+    def test_get_notification_html_added_success(self) -> None:
+        test_notification_type = 'added'
+        test_sender = 'test@test.com'
+        test_options = {'resource_name': 'testtable', 'resource_url': 'testUrl'}
+
+        html = get_notification_html(notification_type=test_notification_type,
+                                     options=test_options,
+                                     sender=test_sender)
+        expectedHTML = ('Hello,<br/><br/>You have been added to the owners list of the <a href="testUrl">testtable</a>'
+                        ' dataset by test@test.com.<br/><br/>What is expected of you?<br/>As an owner, you take an '
+                        'important part in making sure that the datasets you own can be used as swiftly as possible '
+                        'across the company.<br/>Make sure the metadata is correct and up to date.<br/><br/>If you '
+                        'think you are not the best person to own this dataset and know someone who might be, please '
+                        'contact this person and ask them if they want to replace you. It is important that we keep '
+                        'multiple owners for each dataset to ensure continuity.<br/><br/>Thanks,<br/>Amundsen Team')
+        self.assertEqual(html, expectedHTML)
+
+    def test_get_notification_html_removed_success(self) -> None:
+        test_notification_type = 'removed'
+        test_sender = 'test@test.com'
+        test_options = {'resource_name': 'testtable', 'resource_url': 'testUrl'}
+
+        html = get_notification_html(notification_type=test_notification_type,
+                                     options=test_options,
+                                     sender=test_sender)
+        expectedHTML = ('Hello,<br/><br/>You have been removed from the owners list of the '
+                        '<a href="testUrl">testtable</a> dataset by test@test.com.<br/><br/>If you think you '
+                        'have been incorrectly removed as an owner, add yourself back to the owners list.<br/>'
+                        '<br/>Thanks,<br/>Amundsen Team')
+        self.assertEqual(html, expectedHTML)
+
+    def test_get_notification_html_requested_success_all_fields(self) -> None:
+        test_notification_type = 'requested'
+        test_sender = 'test@test.com'
+        test_options = {
+            'resource_name': 'testtable',
+            'resource_url': 'testUrl',
+            'description_requested': True,
+            'fields_requested': True,
+            'comment': 'Test Comment'
+        }
+
+        html = get_notification_html(notification_type=test_notification_type,
+                                     options=test_options,
+                                     sender=test_sender)
+        expectedHTML = ('Hello,<br/><br/>test@test.com is trying to use <a href="testUrl">testtable</a>, '
+                        'and requests improved table and column descriptions.<br/><br/>test@test.com has included the '
+                        'following information with their request:<br/>Test Comment<br/><br/>Please visit the provided '
+                        'link and improve descriptions on that resource.<br/><br/>Thanks,<br/>Amundsen Team')
+        self.assertEqual(html, expectedHTML)
+
+    def test_get_notification_html_requested_success_table_only(self) -> None:
+        test_notification_type = 'requested'
+        test_sender = 'test@test.com'
+        test_options = {
+            'resource_name': 'testtable',
+            'resource_url': 'testUrl',
+            'description_requested': True,
+        }
+
+        html = get_notification_html(notification_type=test_notification_type,
+                                     options=test_options,
+                                     sender=test_sender)
+        expectedHTML = ('Hello,<br/><br/>test@test.com is trying to use <a href="testUrl">testtable</a>, and requests '
+                        'an improved table description.<br/><br/>Please visit the provided link and improve '
+                        'descriptions on that resource.<br/><br/>Thanks,<br/>Amundsen Team')
+        self.assertEqual(html, expectedHTML)
+
+    def test_get_notification_html_requested_success_columns_only(self) -> None:
+        test_notification_type = 'requested'
+        test_sender = 'test@test.com'
+        test_options = {
+            'resource_name': 'testtable',
+            'resource_url': 'testUrl',
+            'fields_requested': True,
+        }
+
+        html = get_notification_html(notification_type=test_notification_type,
+                                     options=test_options,
+                                     sender=test_sender)
+        expectedHTML = ('Hello,<br/><br/>test@test.com is trying to use <a href="testUrl">testtable</a>, and requests '
+                        'improved column descriptions.<br/><br/>Please visit the provided link and improve '
+                        'descriptions on that resource.<br/><br/>Thanks,<br/>Amundsen Team')
+        self.assertEqual(html, expectedHTML)
+
+    def test_get_notification_html_requested_success_no_optional_options(self) -> None:
+        test_notification_type = 'requested'
+        test_sender = 'test@test.com'
+        test_options = {
+            'resource_name': 'testtable',
+            'resource_url': 'testUrl',
+        }
+
+        html = get_notification_html(notification_type=test_notification_type,
+                                     options=test_options,
+                                     sender=test_sender)
+        expectedHTML = ('Hello,<br/><br/>test@test.com is trying to use <a href="testUrl">testtable</a>, and requests '
+                        'more information about that resource.<br/><br/>Please visit the provided link and improve '
+                        'descriptions on that resource.<br/><br/>Thanks,<br/>Amundsen Team')
+        self.assertEqual(html, expectedHTML)
 
     def test_get_notification_subject_added(self) -> None:
         """
