@@ -64,8 +64,6 @@ export class NavBar extends React.Component<NavBarProps> {
                       <div>{this.props.loggedInUser.email}</div>
                     </div>
                     <MenuItem id='nav-bar-avatar-link' href={`/user/${this.props.loggedInUser.user_id}?source=navbar`}>My Profile</MenuItem>
-                    {/* TODO: Enable preferences once implemented */}
-                    {/* <MenuItem href={`/preferences`}>Preferences</MenuItem> */}
                   </Dropdown.Menu>
                 </Dropdown>
               }

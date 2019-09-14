@@ -1,3 +1,4 @@
+import json
 import unittest
 
 from http import HTTPStatus
@@ -8,11 +9,11 @@ from flask import jsonify, make_response, Response
 from amundsen_application import create_app
 from amundsen_application.api.exceptions import MailClientNotImplemented
 from amundsen_application.api.utils.notification_utils import get_notification_content, get_mail_client, \
-    get_notification_html, get_notification_subject, send_notification, table_key_to_url
-
+    get_notification_html, get_notification_subject, send_notification
 from amundsen_application.base.base_mail_client import BaseMailClient
 
 local_app = create_app('amundsen_application.config.TestConfig', 'tests/templates')
+local_no_notification_app = create_app('amundsen_application.config.TestNotificationsDisabledConfig', 'tests/templates')
 
 
 class MockMailClient(BaseMailClient):
@@ -32,15 +33,6 @@ class MockMailClient(BaseMailClient):
 class NotificationUtilsTest(unittest.TestCase):
     def setUp(self) -> None:
         self.mock_table_key = 'db://cluster.schema/table'
-
-    def test_table_key_to_url(self) -> None:
-        """
-        Test successful conversion between key and url
-        :return:
-        """
-        with local_app.app_context():
-            url = table_key_to_url(table_key=self.mock_table_key)
-            self.assertEqual('{}/table_detail/cluster/db/schema/table'.format(local_app.config['FRONTEND_BASE']), url)
 
     @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_html')
     @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_subject')
@@ -259,8 +251,7 @@ class NotificationUtilsTest(unittest.TestCase):
         Test send_notification fails gracefully if notifications are not enabled
         :return:
         """
-        with local_app.app_context():
-            local_app.config['NOTIFICATIONS_ENABLED'] = False
+        with local_no_notification_app.app_context():
             response = send_notification(
                 notification_type='added',
                 options={},
@@ -268,8 +259,6 @@ class NotificationUtilsTest(unittest.TestCase):
                 sender='test2@test.com'
             )
             self.assertEqual(response.status_code, HTTPStatus.ACCEPTED)
-            # Reset
-            local_app.config['NOTIFICATIONS_ENABLED'] = True
 
     @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_content')
     @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_mail_client')
@@ -351,4 +340,6 @@ class NotificationUtilsTest(unittest.TestCase):
                 recipients=[],
                 sender='test@test.com'
             )
+            data = json.loads(response.data)
             self.assertEqual(response.status_code, HTTPStatus.OK)
+            self.assertEqual(data.get('msg'), 'No valid recipients exist for notification, notification was not sent.')

@@ -72,3 +72,8 @@ class LocalConfig(Config):
 class TestConfig(LocalConfig):
     AUTH_USER_METHOD = get_test_user
     NOTIFICATIONS_ENABLED = True
+
+
+class TestNotificationsDisabledConfig(LocalConfig):
+    AUTH_USER_METHOD = get_test_user
+    NOTIFICATIONS_ENABLED = False

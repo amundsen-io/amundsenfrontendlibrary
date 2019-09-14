@@ -137,6 +137,7 @@ class MailTest(unittest.TestCase):
     def test_notification_endpoint_fails_with_exception(self, send_notification_mock) -> None:
         """
         Test that the endpoint returns 500 exception when error occurs
+        and that send_notification is not called
         :return:
         """
         with local_app.test_client() as test:

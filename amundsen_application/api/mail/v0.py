@@ -18,8 +18,8 @@ mail_blueprint = Blueprint('mail', __name__, url_prefix='/api/mail/v0')
 @mail_blueprint.route('/feedback', methods=['POST'])
 def feedback() -> Response:
     """
-    Uses the configured instance of BaseMailClient client configured on the MAIL_CLIENT
-    config variable to send an email with data from the Feedback component
+    Uses the instance of BaseMailClient client configured on the MAIL_CLIENT
+    config variable to send an email with feedback data
     """
     try:
         mail_client = get_mail_client()
@@ -88,8 +88,8 @@ def _feedback(*,
 @mail_blueprint.route('/notification', methods=['POST'])
 def notification() -> Response:
     """
-    Uses the configured instance of BaseMailClient client configured on the MAIL_CLIENT
-    config variable to send a notification based on data passed from the request
+    Uses the instance of BaseMailClient client configured on the MAIL_CLIENT
+    config variable to send a notification email based on data passed from the request
     """
     try:
         data = request.get_json()
