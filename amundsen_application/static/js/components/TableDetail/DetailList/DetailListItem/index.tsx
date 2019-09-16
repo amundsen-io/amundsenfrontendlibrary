@@ -59,7 +59,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
     let text = fullText;
 
     truncatedTypes.forEach((truncatedType) => {
-      if (type.startsWith(truncatedType)) {
+      if (type.startsWith(truncatedType) && type !== truncatedType) {
         shouldTrucate = true;
         text = `${truncatedType}<...>`;
         return;
@@ -80,7 +80,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
           trigger={['click']}
           placement='right'
           overlay={popoverHover}
-          rootClose>
+          rootClose={true}>
             <a className='column-type'
                href="JavaScript:void(0)"
                onClick={ stopPropagation }
