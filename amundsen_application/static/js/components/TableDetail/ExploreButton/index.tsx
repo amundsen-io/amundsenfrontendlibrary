@@ -1,16 +1,12 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 
 import AppConfig from 'config/config';
 import { logClick } from 'ducks/utilMethods';
-import { GlobalState } from 'ducks/rootReducer';
 import { TableMetadata } from 'interfaces';
 
-export interface StateFromProps {
+export interface ExploreButtonProps {
   tableData: TableMetadata;
 }
-
-export type ExploreButtonProps = StateFromProps;
 
 export class ExploreButton extends React.Component<ExploreButtonProps> {
   constructor(props) {
@@ -49,10 +45,4 @@ export class ExploreButton extends React.Component<ExploreButtonProps> {
   }
 };
 
-export const mapStateToProps = (state: GlobalState) => {
-  return {
-    tableData: state.tableMetadata.tableData,
-  };
-};
-
-export default connect<StateFromProps>(mapStateToProps, null)(ExploreButton);
+export default ExploreButton;

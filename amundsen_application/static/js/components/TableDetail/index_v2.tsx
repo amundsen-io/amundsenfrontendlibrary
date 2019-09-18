@@ -114,9 +114,9 @@ class TableDetail_v2 extends React.Component<TableDetailProps & RouteComponentPr
             </div>
             <div className="header-right">
               <WriterLink tableWriter={ data.table_writer }/>
-              <LineageLink cluster={ this.cluster } database={ this.database } schema={ this.schema } tableName={ this.tableName }/>
+              <LineageLink tableData={ data }/>
               <SourceLink tableSource={ data.source }/>
-              <ExploreButton />
+              <ExploreButton tableData={ data } />
               <DataPreviewButton modalTitle={ this.displayName }/>
             </div>
           </header>

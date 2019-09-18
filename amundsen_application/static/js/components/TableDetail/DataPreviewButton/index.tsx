@@ -218,13 +218,15 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
         placement='top'
         delayHide={ 200 }
         overlay={ popoverHover }>
+        {/* Disabled buttons don't trigger hover/focus events so we need a wrapper */}
+        <div className="overlay-trigger">
           { previewButton }
+        </div>
       </OverlayTrigger>
     )
   }
 
   render() {
-    // else render button that triggers the preview data modal
     return (
       <>
         { this.renderPreviewButton() }

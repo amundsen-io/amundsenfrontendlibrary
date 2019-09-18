@@ -3,6 +3,12 @@
 @import 'variables';
 
 .owner-editor-component {
+  .avatar-label-component {
+    .avatar-label {
+      margin-left: 4px;
+    }
+  }
+
   .btn.add-item-button {
     height: 32px;
     padding: 0px 1px;
