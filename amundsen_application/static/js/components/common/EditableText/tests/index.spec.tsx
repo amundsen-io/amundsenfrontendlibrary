@@ -36,7 +36,7 @@ describe('EditableText', () => {
                 subject.setState({ inEditMode: false });
             });
             it('renders value as first child', () => {
-                expect(subject.find('#editable-text').find(ReactMarkdown).prop('source')).toEqual(props.value);
+                expect(subject.find('#editable-text').children().first().prop('source')).toEqual(props.value);
             });
 
             it('renders edit link to enterEditMode', () => {
