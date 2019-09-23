@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ReactDOM from 'react-dom';
-import ReactMarkdown from 'react-markdown';
+import * as ReactMarkdown from 'react-markdown';
 import { Overlay, Popover, Tooltip } from 'react-bootstrap';
 import autosize from 'autosize';
 

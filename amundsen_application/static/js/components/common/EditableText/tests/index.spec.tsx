@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as ReactMarkdown from 'react-markdown';
 
 import { shallow } from 'enzyme';
 
@@ -27,8 +28,7 @@ describe('EditableText', () => {
             props.editable = false;
              /* Note: Do not copy this pattern, for some reason setProps is not updating the content in this case */
             subject = shallow(<EditableText {...props} />);
-            /* TODO fix it - nested ReactMarkdown tag appears to be UNDEFINED and broke the test */
-            /* expect(subject.find('div#editable-text').text()).toEqual(props.value); */
+            expect(subject.find('div#editable-text').find(ReactMarkdown).prop('source')).toEqual(props.value);
         });
 
         describe('renders correctly if !this.state.inEditMode', () => {
@@ -36,8 +36,7 @@ describe('EditableText', () => {
                 subject.setState({ inEditMode: false });
             });
             it('renders value as first child', () => {
-                /* TODO fix it - nested ReactMarkdown tag appears to be UNDEFINED and broke the test */
-                /* expect(subject.find('#editable-text').props().children[0]).toEqual(props.value); */
+                expect(subject.find('#editable-text').find(ReactMarkdown).prop('source')).toEqual(props.value);
             });
 
             it('renders edit link to enterEditMode', () => {
