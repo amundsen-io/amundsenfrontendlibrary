@@ -8,7 +8,7 @@ import * as DocumentTitle from 'react-document-title';
 import * as qs from 'simple-query-string';
 
 import { GlobalState } from 'ducks/rootReducer';
-import { getPreviewData, getTableData } from 'ducks/tableMetadata/reducer';
+import { getTableData } from 'ducks/tableMetadata/reducer';
 import { GetTableDataRequest } from 'ducks/tableMetadata/types';
 
 import AppConfig from 'config/config';
@@ -44,7 +44,6 @@ export interface StateFromProps {
 
 export interface DispatchFromProps {
   getTableData: (key: string, searchIndex?: string, source?: string, ) => GetTableDataRequest;
-  getPreviewData: (queryParams: PreviewQueryParams) => void;
 }
 
 type TableDetailProps = StateFromProps & DispatchFromProps;
@@ -64,7 +63,6 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
   private tableName: string;
   public static defaultProps: TableDetailProps = {
     getTableData: () => undefined,
-    getPreviewData: () => undefined,
     isLoading: true,
     statusCode: null,
     tableData: {
@@ -125,7 +123,6 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     }
 
     this.props.getTableData(this.key, searchIndex, source);
-    this.props.getPreviewData({ database: this.database, schema: this.schema, tableName: this.tableName });
   }
 
   getAvatarForUser(user: User, zIndex) {
@@ -390,7 +387,7 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ getPreviewData, getTableData } , dispatch);
+  return bindActionCreators({ getTableData } , dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(TableDetail);

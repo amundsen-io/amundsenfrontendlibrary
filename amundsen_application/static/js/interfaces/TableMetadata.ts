@@ -25,17 +25,17 @@ interface TableColumnStats {
   end_epoch: string;
 }
 
-interface TableReader {
+export interface TableReader {
   read_count: number;
   reader: User;
 }
 
-interface TableSource {
+export interface TableSource {
   source: string | null;
   source_type: string;
 }
 
-interface TableWriter {
+export interface TableWriter {
   application_url: string;
   description: string;
   id: string;

@@ -1,3 +1,5 @@
+@import 'variables';
+
 // TODO - Delete when var definitions are merged from other branch
 $navbar-height: 48px;
 $footer-height: 60px;
@@ -5,5 +7,15 @@ $footer-height: 60px;
 .table-detail-2 {
   height: calc(100% - #{$navbar-height} - #{$footer-height});
 
+  .header-link {
+    display: inline-block;
 
+    .avatar-label {
+      font-weight: $font-weight-body-bold;
+    }
+  }
+
+  .section-title {
+    margin-top: 40px;
+  }
 }
