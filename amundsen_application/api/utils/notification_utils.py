@@ -48,20 +48,6 @@ def get_mail_client():  # type: ignore
     return mail_client
 
 
-def get_notification_content(*, notification_type: str, sender: str, options: Dict) -> Dict:
-    """
-    Returns a subject and a rendered html email template based off
-    the input notification_type and data provided
-    :param notification_type: type of notification
-    :param options: data necessary to render email template content
-    :return: html and subject Dict
-    """
-    return {
-        'html': get_notification_html(notification_type=notification_type, options=options, sender=sender),
-        'subject': get_notification_subject(notification_type=notification_type, options=options),
-    }
-
-
 def get_notification_html(*, notification_type: str, options: Dict, sender: str) -> str:
     """
     Returns the formatted html for the notification based on the notification_type
@@ -160,11 +146,8 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
 
         mail_client = get_mail_client()
 
-        notification_content = get_notification_content(
-            notification_type=notification_type,
-            sender=sender,
-            options=options
-        )
+        html = get_notification_html(notification_type=notification_type, options=options, sender=sender)
+        subject = get_notification_subject(notification_type=notification_type, options=options)
 
         _log_send_notification(
             notification_type=notification_type,
@@ -176,8 +159,8 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
         response = mail_client.send_email(
             recipients=recipients,
             sender=sender,
-            subject=notification_content['subject'],
-            html=notification_content['html'],
+            subject=subject,
+            html=html,
             optional_data={
                 'email_type': 'notification'
             },

@@ -113,7 +113,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
           {
             notificationsEnabled() &&
             <Dropdown id={`detail-list-item-dropdown:${this.props.index}`} pullRight={true}>
-              <Dropdown.Toggle noCaret={true} className="more-icon">
+              <Dropdown.Toggle noCaret={true} className="dropdown-icon-more">
                 <img className="icon icon-more"/>
               </Dropdown.Toggle>
               <Dropdown.Menu>

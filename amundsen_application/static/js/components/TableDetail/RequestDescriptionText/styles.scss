@@ -1,13 +1,13 @@
 @import 'variables';
 
-.request-description{
+.request-description {
   font-size: 16px;
   text-decoration: none;
-}
 
-.request-description:hover,
-.request-description:visited,
-.request-description:active,
-.request-description:link {
-  text-decoration: none;
+  &:hover,
+  &:visited,
+  &:active,
+  &:link {
+    text-decoration: none;
+  }
 }

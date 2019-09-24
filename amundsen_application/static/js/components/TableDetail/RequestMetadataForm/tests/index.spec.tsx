@@ -38,7 +38,7 @@ describe('RequestMetadataForm', () => {
   const setup = (propOverrides?: Partial<RequestMetadataProps>) => {
     const props: RequestMetadataProps = {
       userEmail: 'test0@lyft.com',
-      tableName: '',
+      displayName: '',
       tableOwners: ['test1@lyft.com', 'test2@lyft.com'],
       submitNotification: jest.fn(),
       requestIsOpen: true,
@@ -115,10 +115,10 @@ describe('RequestMetadataForm', () => {
       expect(submitNotificationSpy).toHaveBeenCalledWith(
         mockFormData['recipients'].split(','),
         mockFormData['sender'],
-        NotificationType.REQUESTED,
+        NotificationType.METADATA_REQUESTED,
         {
           comment: mockFormData['comment'],
-          resource_name: props.tableName,
+          resource_name: props.displayName,
           resource_url: window.location.href,
           description_requested: true,
           fields_requested: false,
@@ -235,8 +235,8 @@ describe('RequestMetadataForm', () => {
     it('sets userEmail on the props', () => {
       expect(result.userEmail).toEqual(globalState.user.loggedInUser.email);
     });
-    it('sets tableName on the props', () => {
-      expect(result.tableName).toEqual(globalState.tableMetadata.tableData.schema + '.' + globalState.tableMetadata.tableData.table_name);
+    it('sets displayName on the props', () => {
+      expect(result.displayName).toEqual(globalState.tableMetadata.tableData.schema + '.' + globalState.tableMetadata.tableData.table_name);
     });
     it('sets ownerObj on the props', () => {
       expect(result.tableOwners).toEqual(Object.keys(globalState.tableMetadata.tableOwners.owners));

@@ -43,7 +43,7 @@ export function getTableTagsFromResponseData(responseData: API.TableDataAPI): Ta
  */
 export function createOwnerNotificationData(payload: UpdateOwnerPayload, resourceName: string) {
   return {
-    notificationType: payload.method === UpdateMethod.PUT ? NotificationType.ADDED : NotificationType.REMOVED,
+    notificationType: payload.method === UpdateMethod.PUT ? NotificationType.OWNER_ADDED : NotificationType.OWNER_REMOVED,
     options: {
       resource_name: resourceName,
       resource_url: window.location.href,

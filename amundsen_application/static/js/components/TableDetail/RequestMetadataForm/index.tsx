@@ -28,7 +28,7 @@ import { closeRequestDescriptionDialog, submitNotification } from 'ducks/notific
 
 interface StateFromProps {
   userEmail: string;
-  tableName: string;
+  displayName: string;
   tableOwners: Array<string>;
   requestIsOpen: boolean;
   sendState: SendingState;
@@ -99,10 +99,10 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     this.props.submitNotification(
       recipients,
       sender,
-      NotificationType.REQUESTED,
+      NotificationType.METADATA_REQUESTED,
       {
         comment,
-        resource_name: this.props.tableName,
+        resource_name: this.props.displayName,
         resource_url: window.location.href,
         description_requested: descriptionRequested,
         fields_requested: fieldsRequested,
@@ -156,12 +156,12 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
 
 export const mapStateToProps = (state: GlobalState) => {
   const userEmail = state.user.loggedInUser.email;
-  const tableName = `${state.tableMetadata.tableData.schema}.${state.tableMetadata.tableData.table_name}`;
+  const displayName = `${state.tableMetadata.tableData.schema}.${state.tableMetadata.tableData.table_name}`;
   const ownerObj = state.tableMetadata.tableOwners.owners;
   const { requestIsOpen, sendState } = state.notification;
   return {
     userEmail,
-    tableName,
+    displayName,
     requestIsOpen,
     sendState,
     tableOwners: Object.keys(ownerObj),

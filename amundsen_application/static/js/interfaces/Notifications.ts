@@ -1,9 +1,9 @@
 // TODO: Remove notification types that can be triggered in flask layer if necessary
 export enum NotificationType {
-  ADDED = 'added',
-  REMOVED = 'removed',
-  EDITED = 'edited',
-  REQUESTED = 'requested',
+  OWNER_ADDED = 'added',
+  OWNER_REMOVED = 'removed',
+  METADATA_EDITED = 'edited',
+  METADATA_REQUESTED = 'requested',
 }
 
 export interface SendNotificationOptions {

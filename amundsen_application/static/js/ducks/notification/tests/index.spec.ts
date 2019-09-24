@@ -20,7 +20,7 @@ import {
 
 const testRecipients = ['user1@test.com'];
 const testSender = 'user2@test.com';
-const testNotificationType = NotificationType.ADDED;
+const testNotificationType = NotificationType.OWNER_ADDED;
 const testOptions = {
   resource_name: 'testResource',
   resource_url: 'https://testResource.com',

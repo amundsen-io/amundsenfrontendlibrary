@@ -63,7 +63,11 @@ export class NavBar extends React.Component<NavBarProps> {
                       <div className='title-2'>{this.props.loggedInUser.display_name}</div>
                       <div>{this.props.loggedInUser.email}</div>
                     </div>
-                    <MenuItem id='nav-bar-avatar-link' href={`/user/${this.props.loggedInUser.user_id}?source=navbar`}>My Profile</MenuItem>
+                    <li>
+                      <Link id="nav-bar-avatar-link" to={`/user/${this.props.loggedInUser.user_id}?source=navbar`}>
+                        My Profile
+                      </Link>
+                    </li>
                   </Dropdown.Menu>
                 </Dropdown>
               }

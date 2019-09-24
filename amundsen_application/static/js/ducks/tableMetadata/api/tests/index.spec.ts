@@ -78,7 +78,7 @@ describe('helpers', () => {
       const testMethod = UpdateMethod.PUT;
       const testName = 'schema.tableName';
       expect(Helpers.createOwnerNotificationData({ method: testMethod, id: testId }, testName)).toMatchObject({
-        notificationType: NotificationType.ADDED,
+        notificationType: NotificationType.OWNER_ADDED,
         options: {
           resource_name: testName,
           resource_url: window.location.href,
@@ -92,7 +92,7 @@ describe('helpers', () => {
       const testMethod = UpdateMethod.DELETE;
       const testName = 'schema.tableName';
       expect(Helpers.createOwnerNotificationData({ method: testMethod, id: testId }, testName)).toMatchObject({
-        notificationType: NotificationType.REMOVED,
+        notificationType: NotificationType.OWNER_REMOVED,
         options: {
           resource_name: testName,
           resource_url: window.location.href,

@@ -8,7 +8,7 @@ from flask import jsonify, make_response, Response
 
 from amundsen_application import create_app
 from amundsen_application.api.exceptions import MailClientNotImplemented
-from amundsen_application.api.utils.notification_utils import get_notification_content, get_mail_client, \
+from amundsen_application.api.utils.notification_utils import get_mail_client, \
     get_notification_html, get_notification_subject, send_notification
 from amundsen_application.base.base_mail_client import BaseMailClient
 
@@ -33,35 +33,6 @@ class MockMailClient(BaseMailClient):
 class NotificationUtilsTest(unittest.TestCase):
     def setUp(self) -> None:
         self.mock_table_key = 'db://cluster.schema/table'
-
-    @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_html')
-    @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_subject')
-    def test_get_notification_content(self, get_subject_mock, get_html_mock) -> None:
-        """
-        Test successful executiion of get_notification_content
-        :return:
-        """
-        with local_app.app_context():
-            get_subject_mock.return_value = 'Test Subject'
-            get_html_mock.return_value = 'testHTML'
-
-            test_notification_type = 'test'
-            test_sender = 'test@test.com'
-            test_options = {'resource_name': 'testtable'}
-
-            result_dict = get_notification_content(notification_type=test_notification_type,
-                                                   sender=test_sender,
-                                                   options=test_options
-                                                   )
-            expected_dict = {
-                'subject': 'Test Subject',
-                'html': 'testHTML'
-            }
-            self.assertDictEqual(result_dict, expected_dict)
-            get_subject_mock.assert_called_with(notification_type=test_notification_type, options=test_options)
-            get_html_mock.assert_called_with(notification_type=test_notification_type,
-                                             options=test_options,
-                                             sender=test_sender)
 
     def test_get_notification_html_no_resource_url(self) -> None:
         test_notification_type = 'added'
@@ -260,15 +231,18 @@ class NotificationUtilsTest(unittest.TestCase):
             )
             self.assertEqual(response.status_code, HTTPStatus.ACCEPTED)
 
-    @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_content')
+    @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_html')
+    @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_subject')
     @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_mail_client')
-    def test_send_notification_success(self, get_mail_client, get_notification_content) -> None:
+    def test_send_notification_success(self, get_mail_client, get_notif_subject, get_notif_html) -> None:
         """
         Test successful execution of send_notification
         :return:
         """
         with local_app.app_context():
             get_mail_client.return_value = MockMailClient(status_code=HTTPStatus.OK)
+            get_notif_subject.return_value = 'Test Subject'
+            get_notif_html.return_value = '<div>test html</div>'
 
             test_recipients = ['test@test.com']
             test_sender = 'test2@test.com'
@@ -283,16 +257,16 @@ class NotificationUtilsTest(unittest.TestCase):
             )
 
             get_mail_client.assert_called
-            get_notification_content.assert_called_with(
-                notification_type=test_notification_type,
-                sender=test_sender,
-                options=test_options
-            )
+            get_notif_subject.assert_called_with(notification_type=test_notification_type, options=test_options)
+            get_notif_html.assert_called_with(notification_type=test_notification_type,
+                                              options=test_options,
+                                              sender=test_sender)
             self.assertEqual(response.status_code, HTTPStatus.OK)
 
-    @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_content')
+    @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_html')
+    @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_notification_subject')
     @unittest.mock.patch('amundsen_application.api.utils.notification_utils.get_mail_client')
-    def test_remove_sender_from_notification(self, get_mail_client, get_notification_content) -> None:
+    def test_remove_sender_from_notification(self, get_mail_client, get_notif_subject, get_notif_html) -> None:
         """
         Test sender is removed if they exist in recipients
         :return:
@@ -302,11 +276,11 @@ class NotificationUtilsTest(unittest.TestCase):
             mock_client.send_email = unittest.mock.Mock()
             get_mail_client.return_value = mock_client
 
-            mock_content = {
-                'html': 'testHTML',
-                'subject': 'Test Subject'
-            }
-            get_notification_content.return_value = mock_content
+            mock_subject = 'Test Subject'
+            get_notif_subject.return_value = mock_subject
+
+            mock_html = '<div>test html</div>'
+            get_notif_html.return_value = mock_html
 
             test_sender = 'test@test.com'
             test_recipients = [test_sender, 'test2@test.com']
@@ -323,8 +297,8 @@ class NotificationUtilsTest(unittest.TestCase):
             mock_client.send_email.assert_called_with(
                 recipients=expected_recipients,
                 sender=test_sender,
-                subject=mock_content['subject'],
-                html=mock_content['html'],
+                subject=mock_subject,
+                html=mock_html,
                 optional_data={'email_type': 'notification'},
             )
 
