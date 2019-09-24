@@ -14,7 +14,7 @@ describe('EditableText', () => {
     beforeEach(() => {
         props = {
           editable: true,
-          maxLength: 250,
+          maxLength: 4000,
           onSubmitValue: jest.fn(),
           getLatestValue: jest.fn(),
           refreshValue: 'newValue',
