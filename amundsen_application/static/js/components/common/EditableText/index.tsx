@@ -5,7 +5,7 @@ import { Overlay, Popover, Tooltip } from 'react-bootstrap';
 import autosize from 'autosize';
 
 // TODO: Use css-modules instead of 'import'
-// TODO: Outdated approach (lines 148, 168). Replace with React.createRef(). See more at https://reactjs.org/docs/refs-and-the-dom.html
+
 import './styles.scss';
 
 export interface StateFromProps {
@@ -34,6 +34,7 @@ interface EditableTextState {
 }
 
 class EditableText extends React.Component<EditableTextProps, EditableTextState> {
+  // TODO: Outdated approach. Replace with React.createRef(). See more at https://reactjs.org/docs/refs-and-the-dom.html
   private textAreaTarget: HTMLTextAreaElement;
   private editAnchorTarget: HTMLAnchorElement;
 
@@ -118,7 +119,7 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
       return (
         <div id='editable-container' className='editable-container'>
            <div id='editable-text' className='editable-text'>
-              <ReactMarkdown source={this.state.value}/>
+              <ReactMarkdown source={ this.state.value }/>
            </div>
         </div>
       );
@@ -140,8 +141,8 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
               </div>
             </Tooltip>
           </Overlay>
-          <div id='editable-text' className={"editable-text"}>
-            <ReactMarkdown source={this.state.value}/>
+          <div id='editable-text' className="editable-text">
+            <ReactMarkdown source={ this.state.value }/>
             <a className={ "edit-link" + (this.state.value ? "" : " no-value") }
                href="JavaScript:void(0)"
                onClick={ this.enterEditMode }
