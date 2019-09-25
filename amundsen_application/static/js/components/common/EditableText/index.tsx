@@ -1,11 +1,10 @@
+import autosize from 'autosize';
 import * as React from 'react';
+import { Overlay, Tooltip } from 'react-bootstrap';
 import ReactDOM from 'react-dom';
 import * as ReactMarkdown from 'react-markdown';
-import { Overlay, Popover, Tooltip } from 'react-bootstrap';
-import autosize from 'autosize';
 
 // TODO: Use css-modules instead of 'import'
-
 import './styles.scss';
 
 export interface StateFromProps {
