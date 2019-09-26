@@ -9,6 +9,7 @@ import { TableColumn } from 'interfaces';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+import AppConfig from 'config/config';
 
 interface DetailListItemProps {
   data?: TableColumn;
@@ -132,6 +133,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
             columnIndex={this.props.index}
             editable={metadata.is_editable}
             value={metadata.description}
+            maxLength={AppConfig.editableText.columnDescLength}
           />
         </div>
         {

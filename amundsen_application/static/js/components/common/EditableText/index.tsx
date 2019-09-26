@@ -37,7 +37,7 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
 
   public static defaultProps: EditableTextProps = {
     editable: true,
-    maxLength: 4000,
+    maxLength: 250,
     onSubmitValue: null,
     getLatestValue: null,
     value: '',
@@ -64,19 +64,16 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
 
   componentDidUpdate() {
     const { isDisabled, inEditMode, refreshValue, value } = this.state;
-    if (inEditMode) {
-      autosize(this.textAreaRef.current);
-      if (refreshValue && refreshValue !== value && !isDisabled) {
-        // disable the component if a refresh is needed
-        this.setState({ isDisabled: true })
-      }
-      else {
-        // when entering edit mode, place focus in the textarea
-        const textArea = this.textAreaRef.current;
-        if (textArea) {
-          textArea.focus();
-        }
-      }
+    const textArea = this.textAreaRef.current;
+    if (!inEditMode) return;
+
+    autosize(textArea);
+    if (refreshValue && refreshValue !== value && !isDisabled) {
+      // disable the component if a refresh is needed
+      this.setState({ isDisabled: true })
+    } else if (textArea) {
+      // when entering edit mode, place focus in the textarea
+      textArea.focus();
     }
   }
 
