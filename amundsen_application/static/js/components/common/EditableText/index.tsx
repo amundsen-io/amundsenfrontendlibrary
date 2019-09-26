@@ -1,7 +1,6 @@
 import autosize from 'autosize';
 import * as React from 'react';
 import { Overlay, Tooltip } from 'react-bootstrap';
-import ReactDOM from 'react-dom';
 import * as ReactMarkdown from 'react-markdown';
 
 // TODO: Use css-modules instead of 'import'
@@ -33,9 +32,8 @@ interface EditableTextState {
 }
 
 class EditableText extends React.Component<EditableTextProps, EditableTextState> {
-  // TODO: Outdated approach. Replace with React.createRef(). See more at https://reactjs.org/docs/refs-and-the-dom.html
-  private textAreaTarget: HTMLTextAreaElement;
-  private editAnchorTarget: HTMLAnchorElement;
+  private textAreaRef;
+  private editAnchorRef;
 
   public static defaultProps: EditableTextProps = {
     editable: true,
@@ -52,6 +50,9 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
 
   constructor(props) {
     super(props);
+    this.textAreaRef = React.createRef();
+    this.editAnchorRef = React.createRef();
+
     this.state = {
       editable: props.editable,
       inEditMode: false,
@@ -64,14 +65,14 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
   componentDidUpdate() {
     const { isDisabled, inEditMode, refreshValue, value } = this.state;
     if (inEditMode) {
-      autosize(this.textAreaTarget);
+      autosize(this.textAreaRef.current);
       if (refreshValue && refreshValue !== value && !isDisabled) {
         // disable the component if a refresh is needed
         this.setState({ isDisabled: true })
       }
       else {
         // when entering edit mode, place focus in the textarea
-        const textArea = ReactDOM.findDOMNode(this.textAreaTarget);
+        const textArea = this.textAreaRef.current;
         if (textArea) {
           textArea.focus();
         }
@@ -97,21 +98,20 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
   };
 
   updateText = () => {
-    const newValue = ReactDOM.findDOMNode(this.textAreaTarget).value;
+    const newValue = this.textAreaRef.current.value;
     const onSuccessCallback = () => { this.setState({value: newValue, inEditMode: false, refreshValue: undefined }); };
     const onFailureCallback = () => { this.exitEditMode(); };
 
     this.props.onSubmitValue(newValue, onSuccessCallback, onFailureCallback);
   };
 
-  getTarget(type) {
-    if (type === 'editAnchor') {
-      return ReactDOM.findDOMNode(this.editAnchorTarget);
-    }
-    if (type === 'textArea') {
-      return ReactDOM.findDOMNode(this.textAreaTarget)
-    }
-  }
+  getAnchorTarget = () => {
+    return this.editAnchorRef.current;
+  };
+
+  getTextAreaTarget = () => {
+    return this.textAreaRef.current;
+  };
 
   render() {
     if (!this.state.editable) {
@@ -128,13 +128,13 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
         <div id='editable-container' className='editable-container'>
           <Overlay
             placement='top'
-            show={this.state.isDisabled}
-            target={this.getTarget.bind(this,'editAnchor')}
+            show={ this.state.isDisabled }
+            target={ this.getAnchorTarget }
           >
             <Tooltip id='error-tooltip'>
               <div className="error-tooltip">
                 <text>This text is out of date, please refresh the component</text>
-                <button onClick={this.refreshText} className="btn btn-flat-icon">
+                <button onClick={ this.refreshText } className="btn btn-flat-icon">
                   <img className='icon icon-refresh'/>
                 </button>
               </div>
@@ -145,9 +145,7 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
             <a className={ "edit-link" + (this.state.value ? "" : " no-value") }
                href="JavaScript:void(0)"
                onClick={ this.enterEditMode }
-               ref={ anchor => {
-                  this.editAnchorTarget = anchor;
-                }}
+               ref={ this.editAnchorRef }
             >
               {
                 this.state.value ? "edit" : "Add Description"
@@ -163,21 +161,17 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
         <textarea
           id='editable-textarea'
           className='editable-textarea'
-          rows={2}
-          maxLength={this.props.maxLength}
-          ref={textarea => {
-            this.textAreaTarget = textarea;
-          }}
-        >
-          {this.state.value}
-        </textarea>
-
+          rows={ 2 }
+          maxLength={ this.props.maxLength }
+          ref={ this.textAreaRef }
+          defaultValue={ this.state.value }
+        />
         <Overlay
           placement='top'
-          show={true}
-          target={this.getTarget.bind(this,'textArea')}
+          show={ true }
+          target={ this.getTextAreaTarget }
         >
-          <Tooltip>
+          <Tooltip id='save-tooltip'>
             <button id='cancel' onClick={this.exitEditMode}>Cancel</button>
             <button id='save' onClick={this.updateText}>Save</button>
           </Tooltip>
