@@ -169,7 +169,7 @@ describe('RequestMetadataForm', () => {
       });
       it('renders to input with correct recipients', () => {
         element = wrapper.find('#recipients-form-group');
-        expect(element.find('input').props().defaultValue).toEqual('test1@lyft.com,test2@lyft.com');
+        expect(element.find('input').props().defaultValue).toEqual('test1@lyft.com, test2@lyft.com');
       });
 
       it('renders request type label', () => {

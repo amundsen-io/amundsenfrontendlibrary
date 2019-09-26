@@ -52,12 +52,17 @@ describe('notifications ducks', () => {
 
     it('closeRequestDescriptionDialog - returns the action to trigger the request description to close', () => {
       const action = closeRequestDescriptionDialog();
-      expect(action.type).toBe(ToggleRequest.CLOSE);
+      const { payload, type } = action;
+      expect(type).toBe(ToggleRequest.CLOSE);
+      expect(payload.checkedInputs).toEqual([]);
     });
 
     it('openRequestDescriptionDialog - returns the action to trigger the request description to opem', () => {
-      const action = openRequestDescriptionDialog();
-      expect(action.type).toBe(ToggleRequest.OPEN);
+      const testInputs = ['test-name'];
+      const action = openRequestDescriptionDialog(testInputs);
+      const { payload, type } = action;
+      expect(type).toBe(ToggleRequest.OPEN);
+      expect(payload.checkedInputs).toBe(testInputs);
     });
   });
 
@@ -76,6 +81,7 @@ describe('notifications ducks', () => {
 
     it('should handle ToggleRequest.OPEN', () => {
       expect(reducer(testState, openRequestDescriptionDialog())).toEqual({
+        checkedInputs: [],
         requestIsOpen: true,
         sendState: SendingState.IDLE,
       });
@@ -83,6 +89,7 @@ describe('notifications ducks', () => {
 
     it('should handle ToggleRequest.CLOSE', () => {
       expect(reducer(testState, closeRequestDescriptionDialog())).toEqual({
+        checkedInputs: [],
         requestIsOpen: false,
         sendState: SendingState.IDLE,
       });
@@ -98,6 +105,7 @@ describe('notifications ducks', () => {
     it('should handle SubmitNotification.REQUEST', () => {
       const action = submitNotification(testRecipients, testSender, testNotificationType, testOptions);
       expect(reducer(testState, action)).toEqual({
+        ...testState,
         requestIsOpen: false,
         sendState: SendingState.WAITING,
       });
