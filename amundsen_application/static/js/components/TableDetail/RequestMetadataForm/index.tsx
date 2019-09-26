@@ -18,6 +18,7 @@ import {
   TABLE_DESCRIPTION,
   COLUMN_DESCRIPTIONS,
   ADDITIONAL_DETAILS,
+  RECIPIENT_LIST_DELIMETER,
   SEND_BUTTON,
   SEND_FAILURE_MESSAGE,
   SEND_INPROGRESS_MESSAGE,
@@ -27,6 +28,7 @@ import { ToggleRequestAction, SubmitNotificationRequest } from 'ducks/notificati
 import { closeRequestDescriptionDialog, submitNotification } from 'ducks/notification/reducer';
 
 interface StateFromProps {
+  checkedInputs: string[];
   userEmail: string;
   displayName: string;
   tableOwners: Array<string>;
@@ -91,7 +93,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     const form = document.getElementById("RequestForm") as HTMLFormElement;
     const formData = new FormData(form);
     const recipientString = formData.get('recipients') as string
-    const recipients = recipientString.split(",")
+    const recipients = recipientString.split(RECIPIENT_LIST_DELIMETER)
     const sender = formData.get('sender') as string;
     const descriptionRequested = formData.get('table-description') === "on";
     const fieldsRequested = formData.get('column-description') === "on";
@@ -134,12 +136,26 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
           </div>
           <div id="recipients-form-group" className="form-group">
             <label>{TO_LABEL}</label>
-            <input type="email" name="recipients" className="form-control" required={true} multiple={true} defaultValue={this.props.tableOwners.join(",")}/>
+            <input type="text" name="recipients" className="form-control" required={true} multiple={true} defaultValue={this.props.tableOwners.join(RECIPIENT_LIST_DELIMETER)}/>
           </div>
           <div id="request-type-form-group" className="form-group">
             <label>{REQUEST_TYPE}</label>
-            <label className="select-label"><input type="checkbox" name="table-description"/>{TABLE_DESCRIPTION}</label>
-            <label className="select-label"><input type="checkbox" name="column-description"/>{COLUMN_DESCRIPTIONS}</label>
+            <label className="select-label">
+              <input
+                type="checkbox"
+                name="table-description"
+                defaultChecked={this.props.checkedInputs.indexOf('table-description') > -1}
+              />
+              {TABLE_DESCRIPTION}
+            </label>
+            <label className="select-label">
+              <input
+                type="checkbox"
+                name="column-description"
+                defaultChecked={this.props.checkedInputs.indexOf('column-description') > -1}
+              />
+              {COLUMN_DESCRIPTIONS}
+            </label>
           </div>
           <div id="additional-comments-form-group" className="form-group">
             <label>{ADDITIONAL_DETAILS}</label>
@@ -158,8 +174,9 @@ export const mapStateToProps = (state: GlobalState) => {
   const userEmail = state.user.loggedInUser.email;
   const displayName = `${state.tableMetadata.tableData.schema}.${state.tableMetadata.tableData.table_name}`;
   const ownerObj = state.tableMetadata.tableOwners.owners;
-  const { requestIsOpen, sendState } = state.notification;
+  const { checkedInputs, requestIsOpen, sendState } = state.notification;
   return {
+    checkedInputs,
     userEmail,
     displayName,
     requestIsOpen,

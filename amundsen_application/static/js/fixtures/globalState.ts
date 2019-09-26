@@ -33,6 +33,7 @@ const globalState: GlobalState = {
     sendState: SendingState.IDLE,
   },
   notification: {
+    checkedInputs: [],
     requestIsOpen: false,
     sendState: SendingState.IDLE,
   },

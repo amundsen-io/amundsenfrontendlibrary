@@ -12,10 +12,10 @@ import {
 export function submitNotification(recipients: Array<string>, sender: string, notificationType: NotificationType, options?: SendNotificationOptions): SubmitNotificationRequest {
   return {
     payload: {
-        recipients,
-        sender,
-        notificationType,
-        options
+      recipients,
+      sender,
+      notificationType,
+      options
     },
     type: SubmitNotification.REQUEST,
   };
@@ -34,22 +34,31 @@ export function submitNotificationSuccess(): SubmitNotificationResponse {
 export function closeRequestDescriptionDialog(): ToggleRequestAction {
   return {
     type: ToggleRequest.CLOSE,
+    payload: {
+      checkedInputs: [],
+    }
   };
 };
 
-export function openRequestDescriptionDialog(): ToggleRequestAction {
+export function openRequestDescriptionDialog(checkedInputs?: string[]): ToggleRequestAction {
+  checkedInputs = checkedInputs || [];
   return {
     type: ToggleRequest.OPEN,
+    payload: {
+      checkedInputs
+    }
   }
 }
 
 /* REDUCER */
 export interface NotificationReducerState {
+  checkedInputs: string[],
   requestIsOpen: boolean,
   sendState: SendingState,
 };
 
 const initialState: NotificationReducerState = {
+  checkedInputs: [],
   requestIsOpen: false,
   sendState: SendingState.IDLE,
 };
@@ -68,16 +77,19 @@ export default function reducer(state: NotificationReducerState = initialState, 
       }
     case SubmitNotification.REQUEST:
       return {
+        ...state,
         requestIsOpen: false,
         sendState: SendingState.WAITING,
       }
     case ToggleRequest.CLOSE:
       return {
+        checkedInputs: (<ToggleRequestAction>action).payload.checkedInputs,
         requestIsOpen: false,
         sendState: SendingState.IDLE,
       }
     case ToggleRequest.OPEN:
       return {
+        checkedInputs: (<ToggleRequestAction>action).payload.checkedInputs,
         requestIsOpen: true,
         sendState: SendingState.IDLE,
       }

@@ -65,6 +65,7 @@ describe('notifications ducks', () => {
     let testState: NotificationReducerState;
     beforeAll(() => {
       testState = {
+        checkedInputs: [],
         requestIsOpen: true,
         sendState: SendingState.IDLE,
       };

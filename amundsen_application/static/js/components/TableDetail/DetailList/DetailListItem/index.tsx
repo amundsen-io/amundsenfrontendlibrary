@@ -19,7 +19,7 @@ import { TableColumn } from 'interfaces';
 import './styles.scss';
 
 interface DispatchFromProps {
-  openRequestDescriptionDialog: () => ToggleRequestAction;
+  openRequestDescriptionDialog: (checkedInputs: string[]) => ToggleRequestAction;
 }
 
 interface OwnProps {
@@ -47,7 +47,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
   }
 
   openRequest = () => {
-    this.props.openRequestDescriptionDialog();
+    this.props.openRequestDescriptionDialog(['column-description']);
   }
 
   onClick = (e) => {

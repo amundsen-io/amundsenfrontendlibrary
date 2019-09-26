@@ -42,6 +42,7 @@ describe('RequestMetadataForm', () => {
       tableOwners: ['test1@lyft.com', 'test2@lyft.com'],
       submitNotification: jest.fn(),
       requestIsOpen: true,
+      checkedInputs: [],
       sendState: SendingState.IDLE,
       closeRequestDescriptionDialog: jest.fn(),
       ...propOverrides,

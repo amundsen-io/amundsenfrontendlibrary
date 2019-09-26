@@ -9,7 +9,7 @@ export enum SubmitNotification {
 export interface SubmitNotificationRequest {
   type: SubmitNotification.REQUEST;
   payload: {
-    recipients: Array<string>,
+    recipients: string[],
     sender: string,
     notificationType: NotificationType,
     options?: SendNotificationOptions
@@ -26,4 +26,7 @@ export enum ToggleRequest {
 
 export interface ToggleRequestAction {
   type: ToggleRequest.OPEN | ToggleRequest.CLOSE;
+  payload: {
+    checkedInputs: string[],
+  }
 };

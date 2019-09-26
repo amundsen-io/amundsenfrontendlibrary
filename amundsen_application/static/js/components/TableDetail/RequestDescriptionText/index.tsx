@@ -9,7 +9,7 @@ import { bindActionCreators } from 'redux';
 import { REQUEST_DESCRIPTION } from './constants';
 
 export interface DispatchFromProps {
-  openRequestDescriptionDialog: () => ToggleRequestAction;
+  openRequestDescriptionDialog: (checkedInputs: string[]) => ToggleRequestAction;
 }
 
 export type RequestDescriptionTextProps = DispatchFromProps;
@@ -24,7 +24,7 @@ export class RequestDescriptionText extends React.Component<RequestDescriptionTe
   }
 
   openRequest = () => {
-    this.props.openRequestDescriptionDialog();
+    this.props.openRequestDescriptionDialog(['table-description']);
   }
 
   render() {
