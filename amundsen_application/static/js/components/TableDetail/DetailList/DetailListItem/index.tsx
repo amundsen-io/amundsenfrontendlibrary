@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 
 import { notificationsEnabled } from 'config/config-utils';
 
+import AppConfig from 'config/config';
 import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableText';
 import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
@@ -150,6 +151,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
               columnIndex={this.props.index}
               editable={metadata.is_editable}
               value={metadata.description}
+              maxLength={AppConfig.editableText.columnDescLength}
             />
           </div>
           {

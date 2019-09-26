@@ -363,6 +363,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
                 <TableDescEditableText
                   value={ data.table_description }
                   editable={ data.is_editable }
+                  maxLength={ AppConfig.editableText.tableDescLength }
                 />
                 { !data.table_description && notificationsEnabled() && <RequestDescriptionText/> }
               </div>
