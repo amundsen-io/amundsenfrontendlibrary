@@ -1,15 +1,14 @@
 import * as React from 'react';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 import moment from 'moment-timezone';
 
-import { OverlayTrigger, Popover } from 'react-bootstrap';
-
+import AppConfig from 'config/config';
 import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableText';
 import { logClick } from 'ducks/utilMethods';
 import { TableColumn } from 'interfaces';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
-import AppConfig from 'config/config';
 
 interface DetailListItemProps {
   data?: TableColumn;
