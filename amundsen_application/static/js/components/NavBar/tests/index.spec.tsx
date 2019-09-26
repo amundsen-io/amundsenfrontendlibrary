@@ -118,7 +118,7 @@ describe('NavBar', () => {
       });
 
       it('renders user dropdown header', () => {
-        element = wrapper.find(Dropdown).find(Dropdown.Menu).children().at(0);
+        element = wrapper.find(Dropdown).find(Dropdown.Menu).find('.profile-menu-header');
         expect(element.children().at(0).text()).toEqual(props.loggedInUser.display_name);
         expect(element.children().at(1).text()).toEqual(props.loggedInUser.email);
       });
