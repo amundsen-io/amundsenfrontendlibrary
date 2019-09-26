@@ -309,9 +309,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     // "Tags" Section
     const sectionContentRenderer = (readOnly: boolean) => {
       return (
-        <TagInput
-          readOnly={readOnly}
-        />
+        <TagInput />
       );
     };
     entityCardSections.push({'title': 'Tags', 'contentRenderer': sectionContentRenderer, 'isEditable': true});

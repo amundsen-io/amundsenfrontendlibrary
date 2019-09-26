@@ -71,6 +71,11 @@ img.icon {
     mask-image: url('/static/images/icons/mail.svg');
   }
 
+  &.icon-plus {
+    -webkit-mask-image: url('/static/images/icons/plus.svg');
+    mask-image: url('/static/images/icons/plus.svg');
+  }
+
   &.icon-plus-circle {
     -webkit-mask-image: url('/static/images/icons/Plus-Circle.svg');
     mask-image: url('/static/images/icons/Plus-Circle.svg');

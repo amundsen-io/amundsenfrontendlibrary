@@ -142,8 +142,7 @@ class TableDetail_v2 extends React.Component<TableDetailProps & RouteComponentPr
                 </section>
                 <section className="right-panel">
                   <div className="section-title title-3">Tags</div>
-                  {/* TODO - Check readOnly value */}
-                  <TagInput readOnly={ data.is_editable }/>
+                  <TagInput />
 
                   <div className="section-title title-3">Owner</div>
                   <OwnerEditor readOnly={false} />

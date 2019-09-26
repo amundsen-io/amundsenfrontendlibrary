@@ -41,17 +41,17 @@ export interface DispatchFromProps {
 }
 
 export interface ComponentProps {
-  readOnly: boolean;
+  // readOnly: boolean;
 }
 
 type TagInputProps = StateFromProps & DispatchFromProps & ComponentProps;
 
 interface TagInputState {
-  allTags: Tag[];
-  isLoading: boolean;
+  // allTags: Tag[];
+  // isLoading: boolean;
   readOnly: boolean;
   showModal: boolean;
-  tags: Tag[];
+  // tags: Tag[];
 }
 
 class TagInput extends React.Component<TagInputProps, TagInputState> {
@@ -61,24 +61,16 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     allTags: [],
     getAllTags: () => void(0),
     isLoading: false,
-    readOnly: true,
+    // readOnly: true,
     tags: undefined,
     updateTags: () => void(0),
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { allTags, isLoading, readOnly, tags } = nextProps;
-    return { ...prevState, allTags, isLoading, readOnly, tags };
-  }
-
   constructor(props) {
     super(props);
     this.state = {
-      allTags: props.allTags,
-      isLoading: props.isLoading,
-      readOnly: props.readOnly,
+      readOnly: true,
       showModal: false,
-      tags: props.tags,
     };
   }
 
@@ -89,15 +81,15 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
   handleClose = () => {
     this.batchEditSet = {};
     this.setState({ showModal: false });
-  }
+  };
 
   handleShow = () => {
     this.batchEditSet = {};
-    this.state.tags.map((tag) => {
+    this.props.tags.map((tag) => {
       this.batchEditSet[tag.tag_name] = BatchEditState.CURRENT;
     });
     this.setState({ showModal: true });
-  }
+  };
 
   handleSaveModalEdit = () => {
     const tagArray = Object.keys(this.batchEditSet).reduce((previousValue, tag) => {
@@ -167,11 +159,14 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     }
   };
 
-  preventDeleteOnBackSpace(event) {
-    if (event.keyCode === 8 && event.target.value.length === 0){
+  preventDeleteOnBackSpace = (event) => {
+    if (event.key === 8 && event.target.value.length === 0) {
       event.preventDefault();
     }
-  }
+    if (event.key === "Escape") {
+      this.setState({ readOnly: true });
+    }
+  };
 
   toggleTag = (event, tagName) => {
     const element = event.currentTarget;
@@ -217,12 +212,16 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
         <div className=''>
           <p className=''>Click on a tag to add/remove</p>
           <div className='tag-blob'>
-            { this.renderTagBlob(this.state.tags, 'current', 'multi-value-container selected') }
-            { this.renderTagBlob(this.state.allTags.filter(FILTER_COMMON_TAGS(this.state.tags)), 'existing', 'multi-value-container') }
+            { this.renderTagBlob(this.props.tags, 'current', 'multi-value-container selected') }
+            { this.renderTagBlob(this.props.allTags.filter(FILTER_COMMON_TAGS(this.props.tags)), 'existing', 'multi-value-container') }
           </div>
         </div>
     )
   }
+
+  enterEditMode = (event) =>  {
+    this.setState({ readOnly: false });
+  };
 
   render() {
     // https://react-select.com/props#api
@@ -237,7 +236,15 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
 
     let tagBody;
     if (this.state.readOnly) {
-      tagBody = this.state.tags.map((tag, index) => <TagInfo data={tag} key={index}/>)
+      if (this.props.tags.length === 0) {
+        tagBody = (
+          <button className="btn btn-default add-btn" onClick={this.enterEditMode}>
+            <img className="icon icon-plus"/>Add
+          </button>
+        );
+      } else {
+        tagBody = this.props.tags.map((tag, index) => <TagInfo data={tag} key={index}/>);
+      }
     } else {
       tagBody = (
         <CreatableSelect
@@ -246,15 +253,16 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
           classNamePrefix="amundsen"
           components={componentOverides}
           isClearable={false}
-          isDisabled={this.state.isLoading}
-          isLoading={this.state.isLoading}
+          isDisabled={this.props.isLoading}
+          isLoading={this.props.isLoading}
           isMulti={true}
           isValidNewOption={this.isValidNewOption}
           name="tags"
           noOptionsMessage={this.noOptionsMessage}
           onChange={this.onChange}
+          onBlur={console.log('blur')}
           onKeyDown={this.preventDeleteOnBackSpace}
-          options={this.mapOptionsToReactSelectAPI(this.state.allTags)}
+          options={this.mapOptionsToReactSelectAPI(this.props.allTags)}
           placeholder='Add a new tag'
           styles={{
             multiValueLabel: (provided) => ({
@@ -266,7 +274,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
             }),
             option: this.generateCustomOptionStyle
           }}
-          value={this.mapTagsToReactSelectAPI(this.state.tags)}
+          value={this.mapTagsToReactSelectAPI(this.props.tags)}
         />
       );
     }

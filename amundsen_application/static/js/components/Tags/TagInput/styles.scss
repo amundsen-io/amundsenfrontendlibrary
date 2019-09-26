@@ -1,5 +1,22 @@
 @import 'variables';
 
+$temp-color: #63637B;
+
+
+.tag-input {
+  .add-btn {
+    padding: 0 8px;
+    color: $temp-color;
+
+    .icon {
+      background-color: $temp-color;
+      margin-left: 0;
+    }
+  }
+
+}
+
+
 /*
    override default react-select style classes.
    using !important as a temporary workaround in places where a compiled class
@@ -19,6 +36,7 @@
     .amundsen__multi-value {
       background-color: $gray-lighter !important;
       border-radius: 4px;
+      margin: 4px;
 
       .amundsen__multi-value__label {
         border-radius: 4px 0 0 4px;
