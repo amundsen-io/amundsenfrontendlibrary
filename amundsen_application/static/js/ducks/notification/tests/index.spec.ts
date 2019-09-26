@@ -23,7 +23,7 @@ const testSender = 'user2@test.com';
 const testNotificationType = NotificationType.OWNER_ADDED;
 const testOptions = {
   resource_name: 'testResource',
-  resource_url: 'https://testResource.com',
+  resource_path: '/testResource',
   description_requested: false,
   fields_requested: false,
 };

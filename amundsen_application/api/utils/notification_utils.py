@@ -53,9 +53,10 @@ def get_notification_html(*, notification_type: str, options: Dict, sender: str)
     Returns the formatted html for the notification based on the notification_type
     :return: A string representing the html markup to send in the notification
     """
-    resource_url = options.get('resource_url')
-    if resource_url is None:
-        raise Exception('resource_url was not provided in the notification options')
+    resource_path = options.get('resource_path')
+    if resource_path is None:
+        raise Exception('resource_path was not provided in the notification options')
+    resource_url = '{url_base}{resource_path}'.format(resource_path=resource_path, url_base=app.config['FRONTEND_BASE'])
 
     resource_name = options.get('resource_name')
     if resource_name is None:

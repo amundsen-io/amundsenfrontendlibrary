@@ -346,7 +346,8 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
             <Breadcrumb />
             {
               notificationsEnabled() &&
-              <RequestMetadataForm />
+              // @ts-ignore: It complains about properties yet `tableMetadata` is a valid property.
+              <RequestMetadataForm tableMetadata={data} />
             }
             <div className="row">
               <div className="detail-header col-xs-12 col-md-7 col-lg-8">

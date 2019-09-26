@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import './styles.scss';
 
-import { NotificationType, SendNotificationOptions, SendingState } from 'interfaces';
+import { NotificationType, SendNotificationOptions, SendingState, TableMetadata } from 'interfaces';
 
 import FlashMessage from 'components/common/FlashMessage'
 
@@ -17,6 +17,8 @@ import {
   REQUEST_TYPE,
   TABLE_DESCRIPTION,
   COLUMN_DESCRIPTIONS,
+  COMMENT_PLACEHOLDER_COLUMN,
+  COMMENT_PLACEHOLDER_DEFAULT,
   ADDITIONAL_DETAILS,
   RECIPIENT_LIST_DELIMETER,
   SEND_BUTTON,
@@ -46,7 +48,11 @@ export interface DispatchFromProps {
   closeRequestDescriptionDialog: () => ToggleRequestAction;
 }
 
-export type RequestMetadataProps = StateFromProps & DispatchFromProps;
+export interface OwnProps {
+  tableMetadata: TableMetadata;
+}
+
+export type RequestMetadataProps = StateFromProps & DispatchFromProps & OwnProps;
 
 interface RequestMetadataState {}
 
@@ -98,6 +104,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     const descriptionRequested = formData.get('table-description') === "on";
     const fieldsRequested = formData.get('column-description') === "on";
     const comment = formData.get('comment') as string;
+    const { cluster, database, schema, table_name } = this.props.tableMetadata;
     this.props.submitNotification(
       recipients,
       sender,
@@ -105,7 +112,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
       {
         comment,
         resource_name: this.props.displayName,
-        resource_url: window.location.href,
+        resource_path: `/table_detail/${cluster}/${database}/${schema}/${table_name}`,
         description_requested: descriptionRequested,
         fields_requested: fieldsRequested,
       }
@@ -113,6 +120,8 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
   };
 
   render() {
+    const tableDescriptionNeeded = this.props.checkedInputs.indexOf('table-description') > -1;
+    const colDescriptionNeeded = this.props.checkedInputs.indexOf('column-description') > -1;
     if (this.props.sendState !== SendingState.IDLE) {
       return (
         <div className="request-component">
@@ -144,7 +153,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
               <input
                 type="checkbox"
                 name="table-description"
-                defaultChecked={this.props.checkedInputs.indexOf('table-description') > -1}
+                defaultChecked={tableDescriptionNeeded}
               />
               {TABLE_DESCRIPTION}
             </label>
@@ -152,14 +161,21 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
               <input
                 type="checkbox"
                 name="column-description"
-                defaultChecked={this.props.checkedInputs.indexOf('column-description') > -1}
+                defaultChecked={colDescriptionNeeded}
               />
               {COLUMN_DESCRIPTIONS}
             </label>
           </div>
           <div id="additional-comments-form-group" className="form-group">
             <label>{ADDITIONAL_DETAILS}</label>
-            <textarea className="form-control" name="comment" rows={ 8 } maxLength={ 2000 } />
+            <textarea
+              className="form-control"
+              name="comment"
+              placeholder={ colDescriptionNeeded ? COMMENT_PLACEHOLDER_COLUMN : COMMENT_PLACEHOLDER_DEFAULT }
+              required={ colDescriptionNeeded }
+              rows={ 8 }
+              maxLength={ 2000 }
+            />
           </div>
           <button id="submit-request-button" className="btn btn-primary" type="submit">
             {SEND_BUTTON}

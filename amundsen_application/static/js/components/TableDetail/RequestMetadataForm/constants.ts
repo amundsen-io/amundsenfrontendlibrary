@@ -13,3 +13,6 @@ export const SEND_FAILURE_MESSAGE = 'Your request was not successfully sent, ple
 export const SEND_SUCCESS_MESSAGE = 'Your request has been successfully sent';
 
 export const RECIPIENT_LIST_DELIMETER = ', ';
+
+export const COMMENT_PLACEHOLDER_DEFAULT = 'Please enter more information about your request';
+export const COMMENT_PLACEHOLDER_COLUMN = 'Please enter which column(s) need an improved description';

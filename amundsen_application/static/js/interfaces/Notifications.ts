@@ -8,7 +8,7 @@ export enum NotificationType {
 
 export interface SendNotificationOptions {
   resource_name: string,
-  resource_url: string,
+  resource_path: string,
   description_requested: boolean,
   fields_requested: boolean,
   comment?: string,
