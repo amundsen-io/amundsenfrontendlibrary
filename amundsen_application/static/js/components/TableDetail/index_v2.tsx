@@ -27,6 +27,7 @@ import TagInput from 'components/Tags/TagInput';
 import { TableMetadata } from 'interfaces/TableMetadata';
 
 import './styles_v2';
+import { EditableSection } from 'components/TableDetail/EditableSection';
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -141,14 +142,17 @@ class TableDetail_v2 extends React.Component<TableDetailProps & RouteComponentPr
 
                 </section>
                 <section className="right-panel">
-                  <div className="section-title title-3">Tags</div>
-                  <TagInput />
+                  {/*<div className="section-title title-3">Tags</div>*/}
+                  {/*<TagInput />*/}
 
                   <div className="section-title title-3">Owner</div>
                   <OwnerEditor readOnly={false} />
 
                   <div className="section-title title-3">Frequent Users</div>
                   <FrequentUsers readers={ data.table_readers }/>
+                  <EditableSection title="Tags">
+                    <TagInput />
+                  </EditableSection>
                 </section>
               </section>
             </section>

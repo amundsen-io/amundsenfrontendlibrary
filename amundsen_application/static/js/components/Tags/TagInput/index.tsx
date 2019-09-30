@@ -41,17 +41,14 @@ export interface DispatchFromProps {
 }
 
 export interface ComponentProps {
-  // readOnly: boolean;
+  editMode?: boolean;
 }
 
 type TagInputProps = StateFromProps & DispatchFromProps & ComponentProps;
 
 interface TagInputState {
-  // allTags: Tag[];
-  // isLoading: boolean;
-  readOnly: boolean;
+  // readOnly: boolean;
   showModal: boolean;
-  // tags: Tag[];
 }
 
 class TagInput extends React.Component<TagInputProps, TagInputState> {
@@ -61,7 +58,6 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     allTags: [],
     getAllTags: () => void(0),
     isLoading: false,
-    // readOnly: true,
     tags: undefined,
     updateTags: () => void(0),
   };
@@ -69,7 +65,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
   constructor(props) {
     super(props);
     this.state = {
-      readOnly: true,
+      // readOnly: true,
       showModal: false,
     };
   }
@@ -163,9 +159,6 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     if (event.key === 8 && event.target.value.length === 0) {
       event.preventDefault();
     }
-    if (event.key === "Escape") {
-      this.setState({ readOnly: true });
-    }
   };
 
   toggleTag = (event, tagName) => {
@@ -219,13 +212,13 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     )
   }
 
-  enterEditMode = (event) =>  {
-    this.setState({ readOnly: false });
-  };
+  // enterEditMode = (event) =>  {
+  //   this.setState({ readOnly: false });
+  // };
 
   render() {
     // https://react-select.com/props#api
-    const componentOverides = this.state.readOnly ? {
+    const componentOverides = !this.props.editMode ? {
       DropdownIndicator: () => { return null },
       IndicatorSeparator: () => { return null },
       MultiValueRemove: () => { return null },
@@ -235,7 +228,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     };
 
     let tagBody;
-    if (this.state.readOnly) {
+    if (!this.props.editMode) {
       if (this.props.tags.length === 0) {
         tagBody = (
           <button className="btn btn-default add-btn" onClick={this.enterEditMode}>
