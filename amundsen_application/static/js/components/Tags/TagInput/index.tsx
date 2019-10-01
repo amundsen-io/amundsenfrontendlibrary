@@ -42,6 +42,8 @@ export interface DispatchFromProps {
 
 export interface ComponentProps {
   editMode?: boolean;
+  enableEditMode?: () => void;
+  disableEditMode?: () => void;
 }
 
 type TagInputProps = StateFromProps & DispatchFromProps & ComponentProps;
@@ -212,9 +214,9 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     )
   }
 
-  // enterEditMode = (event) =>  {
-  //   this.setState({ readOnly: false });
-  // };
+  enterEditMode = (event) =>  {
+    this.props.enableEditMode && this.props.enableEditMode();
+  };
 
   render() {
     // https://react-select.com/props#api

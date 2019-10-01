@@ -4,7 +4,13 @@ $temp-color: #63637B;
 
 
 .tag-input {
+
+  .tag-button:first-child {
+    margin-left: 0;
+  }
+
   .add-btn {
+    margin-top: 8px;
     padding: 0 8px;
     color: $temp-color;
 
@@ -13,7 +19,6 @@ $temp-color: #63637B;
       margin-left: 0;
     }
   }
-
 }
 
 
@@ -36,7 +41,7 @@ $temp-color: #63637B;
     .amundsen__multi-value {
       background-color: $gray-lighter !important;
       border-radius: 4px;
-      margin: 4px;
+      margin: 8px 8px 0 0;
 
       .amundsen__multi-value__label {
         border-radius: 4px 0 0 4px;
