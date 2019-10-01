@@ -16,7 +16,7 @@ def request_metadata(*,     # type: ignore
                      url: str,
                      method: str = 'GET',
                      timeout_sec: int = 0,
-                     data: str = '{}'):
+                     data=None):
     """
     Helper function to make a request to metadata service.
     Sets the client and header information based on the configuration
@@ -42,7 +42,7 @@ def request_search(*,     # type: ignore
                    url: str,
                    method: str = 'GET',
                    timeout_sec: int = 0,
-                   data: str = '{}'):
+                   data=None):
     """
     Helper function to make a request to search service.
     Sets the client and header information based on the configuration
@@ -65,7 +65,7 @@ def request_search(*,     # type: ignore
 
 
 # TODO: Define an interface for envoy_client
-def request_wrapper(method: str, url: str, client, headers, timeout_sec: int, data: str = '{}'):  # type: ignore
+def request_wrapper(method: str, url: str, client, headers, timeout_sec: int, data=None):  # type: ignore
     """
     Wraps a request to use Envoy client and headers, if available
     :param method: DELETE | GET | POST | PUT
