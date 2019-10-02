@@ -85,9 +85,9 @@ def request_wrapper(method: str, url: str, client, headers, timeout_sec: int, da
         elif method == 'GET':
             return client.get(url, headers=headers, raw_response=True)
         elif method == 'POST':
-            return client.post(url, headers=headers, raw_response=True, data=data)
+            return client.post(url, headers=headers, raw_response=True, raw_request=True, data=data)
         elif method == 'PUT':
-            return client.put(url, headers=headers, raw_response=True, data=data)
+            return client.put(url, headers=headers, raw_response=True, raw_request=True, data=data)
         else:
             raise Exception('Method not allowed: {}'.format(method))
     else:
