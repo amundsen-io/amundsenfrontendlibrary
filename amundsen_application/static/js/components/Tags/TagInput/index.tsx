@@ -157,9 +157,12 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     }
   };
 
-  preventDeleteOnBackSpace = (event) => {
+  onKeyDown = (event) => {
     if (event.key === 8 && event.target.value.length === 0) {
       event.preventDefault();
+    }
+    if (event.key === "Escape") {
+      this.exitEditMode();
     }
   };
 
@@ -218,6 +221,10 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     this.props.enableEditMode && this.props.enableEditMode();
   };
 
+  exitEditMode = () => {
+    this.props.disableEditMode && this.props.disableEditMode();
+  };
+
   render() {
     // https://react-select.com/props#api
     const componentOverides = !this.props.editMode ? {
@@ -233,8 +240,8 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     if (!this.props.editMode) {
       if (this.props.tags.length === 0) {
         tagBody = (
-          <button className="btn btn-default add-btn" onClick={this.enterEditMode}>
-            <img className="icon icon-plus"/>Add
+          <button className="btn btn-default muted add-btn" onClick={this.enterEditMode}>
+            <img className="icon icon-plus"/>New
           </button>
         );
       } else {
@@ -256,7 +263,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
           noOptionsMessage={this.noOptionsMessage}
           onChange={this.onChange}
           onBlur={console.log('blur')}
-          onKeyDown={this.preventDeleteOnBackSpace}
+          onKeyDown={this.onKeyDown}
           options={this.mapOptionsToReactSelectAPI(this.props.allTags)}
           placeholder='Add a new tag'
           styles={{

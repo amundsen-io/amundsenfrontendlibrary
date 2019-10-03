@@ -1,23 +1,16 @@
 @import 'variables';
 
-$temp-color: #63637B;
-
+// TODO - Delete temp colors
+$text-secondary: #63637B;
+$divider: #d8d8e4;
+$backgroundSecondary: #F4F4FA;
 
 .tag-input {
-
   .tag-button:first-child {
     margin-left: 0;
   }
-
   .add-btn {
     margin-top: 8px;
-    padding: 0 8px;
-    color: $temp-color;
-
-    .icon {
-      background-color: $temp-color;
-      margin-left: 0;
-    }
   }
 }
 

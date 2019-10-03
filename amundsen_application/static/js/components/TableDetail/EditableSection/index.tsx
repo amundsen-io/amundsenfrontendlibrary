@@ -50,7 +50,7 @@ export class EditableSection extends React.Component<EditableSectionProps, Edita
       <section className="editable-section">
         <div className="section-title title-3">
           { this.props.title }
-          <button className="btn btn-flat-icon edit-button" onClick={ this.toggleEdit }>
+          <button className={"btn btn-flat-icon edit-button" + (this.state.editMode? " active": "")} onClick={ this.toggleEdit }>
             <img className={"icon icon-small icon-edit" + (this.state.editMode ? " icon-color" : "")} />
           </button>
         </div>

@@ -2,6 +2,20 @@
 
 .editable-section {
   .edit-button {
-    margin-left: 8px;
+    opacity: 0;
+    margin-left: 4px;
+
+    &.active {
+      opacity: 1;
+    }
   }
+
+  &:hover {
+    .edit-button {
+      opacity: 1;
+    }
+
+  }
+
+
 }
