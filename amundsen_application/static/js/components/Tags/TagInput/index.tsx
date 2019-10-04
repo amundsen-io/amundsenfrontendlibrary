@@ -255,7 +255,6 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
           name="tags"
           noOptionsMessage={this.noOptionsMessage}
           onChange={this.onChange}
-          onBlur={console.log('blur')}
           onKeyDown={this.onKeyDown}
           options={this.mapOptionsToReactSelectAPI(this.props.allTags)}
           placeholder='Add a new tag'
