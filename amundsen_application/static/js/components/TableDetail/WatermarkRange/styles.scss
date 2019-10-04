@@ -1,0 +1,13 @@
+@import 'variables';
+
+.watermark-range {
+  margin-top: 12px;
+  display: flex;
+
+  .range {
+    flex-basis: 12px;
+    height: 40px;
+    width: 12px;
+    margin-right: 20px;
+  }
+}

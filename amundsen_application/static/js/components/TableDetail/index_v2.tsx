@@ -21,7 +21,7 @@ import LineageLink from 'components/TableDetail/LineageLink';
 import OwnerEditor from 'components/TableDetail/OwnerEditor';
 import SourceLink from 'components/TableDetail/SourceLink';
 import TableDescEditableText from 'components/TableDetail/TableDescEditableText';
-import WatermarkLabel from 'components/TableDetail/WatermarkLabel';
+import WatermarkRange from 'components/TableDetail/WatermarkRange';
 import WriterLink from 'components/TableDetail/WriterLink';
 import TagInput from 'components/Tags/TagInput';
 import { TableMetadata } from 'interfaces/TableMetadata';
@@ -135,7 +135,7 @@ class TableDetail_v2 extends React.Component<TableDetailProps & RouteComponentPr
                     !data.is_view &&
                     <>
                       <div className="section-title title-3">Date Range</div>
-                      <WatermarkLabel watermarks={ data.watermarks }/>
+                      <WatermarkRange watermarks={ data.watermarks }/>
                     </>
                   }
 

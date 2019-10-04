@@ -26,7 +26,7 @@ import DetailList from './DetailList';
 import RequestDescriptionText from './RequestDescriptionText';
 import OwnerEditor from './OwnerEditor';
 import TableDescEditableText from './TableDescEditableText';
-import WatermarkLabel from "./WatermarkLabel";
+import WatermarkRange from "./WatermarkRange";
 import { logClick } from 'ducks/utilMethods';
 
 import { OverlayTrigger, Popover } from 'react-bootstrap';
@@ -355,7 +355,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
                   data.is_view && <Flag text="Table View" labelStyle="primary" />
                 }
                 {
-                  !data.is_view && <WatermarkLabel watermarks={ data.watermarks }/>
+                  !data.is_view && <WatermarkRange watermarks={ data.watermarks }/>
                 }
                 <TableDescEditableText
                   value={ data.table_description }
