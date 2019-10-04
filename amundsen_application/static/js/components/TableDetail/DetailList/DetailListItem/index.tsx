@@ -11,15 +11,15 @@ import AppConfig from 'config/config';
 import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableText';
 import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
-import { ToggleRequestAction } from 'ducks/notification/types';
+import { OpenRequestAction } from 'ducks/notification/types';
 import { openRequestDescriptionDialog } from 'ducks/notification/reducer';
-import { TableColumn } from 'interfaces';
+import { RequestMetadataType, TableColumn } from 'interfaces';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
 interface DispatchFromProps {
-  openRequestDescriptionDialog: (checkedInputs: string[]) => ToggleRequestAction;
+  openRequestDescriptionDialog: (requestMetadataType: RequestMetadataType, columnIndex: number) => OpenRequestAction;
 }
 
 interface OwnProps {
@@ -47,7 +47,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
   }
 
   openRequest = () => {
-    this.props.openRequestDescriptionDialog(['column-description']);
+    this.props.openRequestDescriptionDialog(RequestMetadataType.COLUMN_DESCRIPTION, this.props.index);
   }
 
   onClick = (e) => {

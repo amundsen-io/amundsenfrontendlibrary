@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import './styles.scss';
 
-import { NotificationType, SendNotificationOptions, SendingState, TableMetadata } from 'interfaces';
+import { NotificationType, RequestMetadataType, SendNotificationOptions, SendingState, TableMetadata } from 'interfaces';
 
 import FlashMessage from 'components/common/FlashMessage'
 
@@ -26,33 +26,30 @@ import {
   SEND_INPROGRESS_MESSAGE,
   SEND_SUCCESS_MESSAGE,
 } from './constants'
-import { ToggleRequestAction, SubmitNotificationRequest } from 'ducks/notification/types';
+import { CloseRequestAction, OpenRequestAction, SubmitNotificationRequest } from 'ducks/notification/types';
 import { closeRequestDescriptionDialog, submitNotification } from 'ducks/notification/reducer';
 
 interface StateFromProps {
-  checkedInputs: string[];
+  columnIndex?: number;
+  requestMetadataType?: RequestMetadataType;
   userEmail: string;
-  displayName: string;
-  tableOwners: Array<string>;
+  tableMetadata: TableMetadata;
+  tableOwners: string[];
   requestIsOpen: boolean;
   sendState: SendingState;
 }
 
 export interface DispatchFromProps {
   submitNotification: (
-    recipients: Array<string>,
+    recipients: string[],
     sender: string,
     notificationType: NotificationType,
     options?: SendNotificationOptions
   ) => SubmitNotificationRequest;
-  closeRequestDescriptionDialog: () => ToggleRequestAction;
+  closeRequestDescriptionDialog: () => CloseRequestAction;
 }
 
-export interface OwnProps {
-  tableMetadata: TableMetadata;
-}
-
-export type RequestMetadataProps = StateFromProps & DispatchFromProps & OwnProps;
+export type RequestMetadataProps = StateFromProps & DispatchFromProps;
 
 interface RequestMetadataState {}
 
@@ -99,7 +96,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     const form = document.getElementById("RequestForm") as HTMLFormElement;
     const formData = new FormData(form);
     const recipientString = formData.get('recipients') as string
-    const recipients = recipientString.split(RECIPIENT_LIST_DELIMETER)
+    const recipients = recipientString.split(RECIPIENT_LIST_DELIMETER.trim())
     const sender = formData.get('sender') as string;
     const descriptionRequested = formData.get('table-description') === "on";
     const fieldsRequested = formData.get('column-description') === "on";
@@ -111,7 +108,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
       NotificationType.METADATA_REQUESTED,
       {
         comment,
-        resource_name: this.props.displayName,
+        resource_name: `${schema}.${table_name}`,
         resource_path: `/table_detail/${cluster}/${database}/${schema}/${table_name}`,
         description_requested: descriptionRequested,
         fields_requested: fieldsRequested,
@@ -120,16 +117,23 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
   };
 
   render() {
-    const tableDescriptionNeeded = this.props.checkedInputs.indexOf('table-description') > -1;
-    const colDescriptionNeeded = this.props.checkedInputs.indexOf('column-description') > -1;
-    if (this.props.sendState !== SendingState.IDLE) {
+    const { columnIndex, requestIsOpen, requestMetadataType, sendState, tableMetadata, tableOwners, userEmail } = this.props;
+    let tableDescriptionNeeded = false;
+    let colDescriptionNeeded = false;
+    if (requestMetadataType) {
+      tableDescriptionNeeded = requestMetadataType === RequestMetadataType.TABLE_DESCRIPTION;
+      colDescriptionNeeded = requestMetadataType === RequestMetadataType.COLUMN_DESCRIPTION;
+    }
+    const defaultComment = columnIndex || columnIndex === 0 ? `Description requested for column: ${tableMetadata.columns[columnIndex].name}`: '';
+
+    if (sendState !== SendingState.IDLE) {
       return (
         <div className="request-component">
           {this.renderFlashMessage()}
         </div>
       );
     }
-    if (!this.props.requestIsOpen) {
+    if (!requestIsOpen) {
       return (null);
     }
     return (
@@ -141,11 +145,11 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
         <form onSubmit={ this.submitNotification } id="RequestForm">
           <div id="sender-form-group" className="form-group">
             <label>{FROM_LABEL}</label>
-            <input type="email" name="sender" className="form-control" required={true} value={this.props.userEmail} readOnly={true}/>
+            <input type="email" name="sender" className="form-control" required={true} value={userEmail} readOnly={true}/>
           </div>
           <div id="recipients-form-group" className="form-group">
             <label>{TO_LABEL}</label>
-            <input type="text" name="recipients" className="form-control" required={true} multiple={true} defaultValue={this.props.tableOwners.join(RECIPIENT_LIST_DELIMETER)}/>
+            <input type="text" name="recipients" className="form-control" required={true} multiple={true} defaultValue={tableOwners.join(RECIPIENT_LIST_DELIMETER)}/>
           </div>
           <div id="request-type-form-group" className="form-group">
             <label>{REQUEST_TYPE}</label>
@@ -175,7 +179,9 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
               required={ colDescriptionNeeded }
               rows={ 8 }
               maxLength={ 2000 }
-            />
+            >
+              { defaultComment }
+            </textarea>
           </div>
           <button id="submit-request-button" className="btn btn-primary" type="submit">
             {SEND_BUTTON}
@@ -188,17 +194,22 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
 
 export const mapStateToProps = (state: GlobalState) => {
   const userEmail = state.user.loggedInUser.email;
-  const displayName = `${state.tableMetadata.tableData.schema}.${state.tableMetadata.tableData.table_name}`;
+  const { columnIndex, requestMetadataType, requestIsOpen, sendState } = state.notification;
   const ownerObj = state.tableMetadata.tableOwners.owners;
-  const { checkedInputs, requestIsOpen, sendState } = state.notification;
-  return {
-    checkedInputs,
+  const mappedProps = {
     userEmail,
-    displayName,
     requestIsOpen,
     sendState,
+    tableMetadata: state.tableMetadata.tableData,
     tableOwners: Object.keys(ownerObj),
   };
+  if (columnIndex || columnIndex === 0) {
+    mappedProps['columnIndex'] = columnIndex;
+  }
+  if (requestMetadataType) {
+    mappedProps['requestMetadataType'] = requestMetadataType;
+  }
+  return mappedProps;
 };
 
 export const mapDispatchToProps = (dispatch: any) => {

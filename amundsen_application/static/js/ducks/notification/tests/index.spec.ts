@@ -1,6 +1,6 @@
 import { testSaga } from 'redux-saga-test-plan';
 
-import { NotificationType, SendingState } from 'interfaces';
+import { NotificationType, RequestMetadataType, SendingState } from 'interfaces';
 
 import * as API from '../api/v0';
 import reducer, {
@@ -52,17 +52,26 @@ describe('notifications ducks', () => {
 
     it('closeRequestDescriptionDialog - returns the action to trigger the request description to close', () => {
       const action = closeRequestDescriptionDialog();
-      const { payload, type } = action;
-      expect(type).toBe(ToggleRequest.CLOSE);
-      expect(payload.checkedInputs).toEqual([]);
+      expect(action.type).toBe(ToggleRequest.CLOSE);
     });
 
-    it('openRequestDescriptionDialog - returns the action to trigger the request description to opem', () => {
-      const testInputs = ['test-name'];
-      const action = openRequestDescriptionDialog(testInputs);
+    it('openRequestDescriptionDialog - returns the action to trigger the request description to open', () => {
+      const testType = RequestMetadataType.TABLE_DESCRIPTION;
+      const action = openRequestDescriptionDialog(testType);
       const { payload, type } = action;
       expect(type).toBe(ToggleRequest.OPEN);
-      expect(payload.checkedInputs).toBe(testInputs);
+      expect(payload.requestMetadataType).toBe(testType);
+      expect(payload.columnIndex).toBe(undefined);
+    });
+
+    it('openRequestDescriptionDialog w/ columnIndex - returns the action to trigger the request description to open', () => {
+      const testType = RequestMetadataType.TABLE_DESCRIPTION;
+      const testIndex = 2;
+      const action = openRequestDescriptionDialog(testType, testIndex);
+      const { payload, type } = action;
+      expect(type).toBe(ToggleRequest.OPEN);
+      expect(payload.requestMetadataType).toBe(testType);
+      expect(payload.columnIndex).toBe(testIndex);
     });
   });
 
@@ -70,7 +79,6 @@ describe('notifications ducks', () => {
     let testState: NotificationReducerState;
     beforeAll(() => {
       testState = {
-        checkedInputs: [],
         requestIsOpen: true,
         sendState: SendingState.IDLE,
       };
@@ -79,9 +87,18 @@ describe('notifications ducks', () => {
       expect(reducer(testState, { type: 'INVALID.ACTION' })).toEqual(testState);
     });
 
-    it('should handle ToggleRequest.OPEN', () => {
-      expect(reducer(testState, openRequestDescriptionDialog())).toEqual({
-        checkedInputs: [],
+    it('should handle ToggleRequest.OPEN without columnIndex', () => {
+      expect(reducer(testState, openRequestDescriptionDialog(RequestMetadataType.TABLE_DESCRIPTION))).toEqual({
+        requestMetadataType: RequestMetadataType.TABLE_DESCRIPTION,
+        requestIsOpen: true,
+        sendState: SendingState.IDLE,
+      });
+    });
+
+    it('should handle ToggleRequest.OPEN with columnIndex', () => {
+      expect(reducer(testState, openRequestDescriptionDialog(RequestMetadataType.TABLE_DESCRIPTION, 5))).toEqual({
+        columnIndex: 5,
+        requestMetadataType: RequestMetadataType.TABLE_DESCRIPTION,
         requestIsOpen: true,
         sendState: SendingState.IDLE,
       });
@@ -89,7 +106,6 @@ describe('notifications ducks', () => {
 
     it('should handle ToggleRequest.CLOSE', () => {
       expect(reducer(testState, closeRequestDescriptionDialog())).toEqual({
-        checkedInputs: [],
         requestIsOpen: false,
         sendState: SendingState.IDLE,
       });

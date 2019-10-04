@@ -4,7 +4,7 @@ from http import HTTPStatus
 
 from flask import current_app as app
 from flask import jsonify, make_response, Response
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from amundsen_application.api.exceptions import MailClientNotImplemented
 from amundsen_application.log.action_log import action_logging
@@ -48,15 +48,29 @@ def get_mail_client():  # type: ignore
     return mail_client
 
 
+def validate_resource_path(*, resource_path: Optional[str]) -> None:
+    """
+    Raises an Exception if the given resource_path does not pass specific requirements
+    """
+    if resource_path is None:
+        raise Exception('resource_path was not provided in the notification options')
+    if not resource_path.startswith('/'):
+        raise Exception('resource_path should have a leading "/"')
+
+
 def get_notification_html(*, notification_type: str, options: Dict, sender: str) -> str:
     """
     Returns the formatted html for the notification based on the notification_type
     :return: A string representing the html markup to send in the notification
     """
+    url_base = app.config['FRONTEND_BASE']
+    if url_base.endswith('/'):
+        raise Exception('app.config["FRONTEND_BASE"] should not have a trailing "/""')
+
     resource_path = options.get('resource_path')
-    if resource_path is None:
-        raise Exception('resource_path was not provided in the notification options')
-    resource_url = '{url_base}{resource_path}'.format(resource_path=resource_path, url_base=app.config['FRONTEND_BASE'])
+    validate_resource_path(resource_path=resource_path)
+
+    resource_url = '{url_base}{resource_path}'.format(resource_path=resource_path, url_base=url_base)
 
     resource_name = options.get('resource_name')
     if resource_name is None:

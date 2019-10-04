@@ -1,5 +1,5 @@
 import { GlobalState } from 'ducks/rootReducer';
-import { ResourceType, SendingState } from 'interfaces';
+import { RequestMetadataType, ResourceType, SendingState } from 'interfaces';
 
 const globalState: GlobalState = {
   announcements: {
@@ -33,7 +33,6 @@ const globalState: GlobalState = {
     sendState: SendingState.IDLE,
   },
   notification: {
-    checkedInputs: [],
     requestIsOpen: false,
     sendState: SendingState.IDLE,
   },

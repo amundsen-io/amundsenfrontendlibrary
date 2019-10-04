@@ -6,6 +6,11 @@ export enum NotificationType {
   METADATA_REQUESTED = 'requested',
 }
 
+export enum RequestMetadataType {
+  COLUMN_DESCRIPTION = 'columnDescriptionRequested',
+  TABLE_DESCRIPTION = 'tableDescriptionRequested',
+}
+
 export interface SendNotificationOptions {
   resource_name: string,
   resource_path: string,

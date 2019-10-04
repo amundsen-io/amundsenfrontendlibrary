@@ -4,7 +4,7 @@ import { shallow } from 'enzyme';
 import FlashMessage from 'components/common/FlashMessage';
 
 import globalState from 'fixtures/globalState';
-import { NotificationType, SendingState } from 'interfaces';
+import { NotificationType, RequestMetadataType, SendingState } from 'interfaces';
 import { RequestMetadataForm, mapDispatchToProps, mapStateToProps, RequestMetadataProps } from '../';
 import {
   TITLE_TEXT,
@@ -38,12 +38,10 @@ describe('RequestMetadataForm', () => {
   const setup = (propOverrides?: Partial<RequestMetadataProps>) => {
     const props: RequestMetadataProps = {
       userEmail: 'test0@lyft.com',
-      displayName: '',
       tableOwners: ['test1@lyft.com', 'test2@lyft.com'],
       tableMetadata: globalState.tableMetadata.tableData,
       submitNotification: jest.fn(),
       requestIsOpen: true,
-      checkedInputs: [],
       sendState: SendingState.IDLE,
       closeRequestDescriptionDialog: jest.fn(),
       ...propOverrides,
@@ -236,9 +234,6 @@ describe('RequestMetadataForm', () => {
 
     it('sets userEmail on the props', () => {
       expect(result.userEmail).toEqual(globalState.user.loggedInUser.email);
-    });
-    it('sets displayName on the props', () => {
-      expect(result.displayName).toEqual(globalState.tableMetadata.tableData.schema + '.' + globalState.tableMetadata.tableData.table_name);
     });
     it('sets ownerObj on the props', () => {
       expect(result.tableOwners).toEqual(Object.keys(globalState.tableMetadata.tableOwners.owners));

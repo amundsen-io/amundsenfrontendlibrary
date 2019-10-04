@@ -1,11 +1,12 @@
-import { NotificationType, SendNotificationOptions, SendingState } from 'interfaces'
+import { NotificationType, RequestMetadataType, SendNotificationOptions, SendingState } from 'interfaces'
 
 import {
   SubmitNotification,
   SubmitNotificationRequest,
   SubmitNotificationResponse,
   ToggleRequest,
-  ToggleRequestAction,
+  CloseRequestAction,
+  OpenRequestAction,
 } from './types';
 
 /* ACTIONS */
@@ -31,34 +32,39 @@ export function submitNotificationSuccess(): SubmitNotificationResponse {
   };
 };
 
-export function closeRequestDescriptionDialog(): ToggleRequestAction {
+export function closeRequestDescriptionDialog(): CloseRequestAction {
   return {
-    type: ToggleRequest.CLOSE,
-    payload: {
-      checkedInputs: [],
-    }
+    type: ToggleRequest.CLOSE
   };
 };
 
-export function openRequestDescriptionDialog(checkedInputs?: string[]): ToggleRequestAction {
-  checkedInputs = checkedInputs || [];
+export function openRequestDescriptionDialog(requestMetadataType: RequestMetadataType, columnIndex?: number): OpenRequestAction {
+  if (columnIndex || columnIndex === 0) {
+    return {
+      type: ToggleRequest.OPEN,
+      payload: {
+        columnIndex,
+        requestMetadataType
+      }
+    }
+  }
   return {
     type: ToggleRequest.OPEN,
     payload: {
-      checkedInputs
+      requestMetadataType
     }
   }
 }
 
 /* REDUCER */
 export interface NotificationReducerState {
-  checkedInputs: string[],
+  columnIndex?: number,
+  requestMetadataType?: RequestMetadataType,
   requestIsOpen: boolean,
   sendState: SendingState,
 };
 
 const initialState: NotificationReducerState = {
-  checkedInputs: [],
   requestIsOpen: false,
   sendState: SendingState.IDLE,
 };
@@ -83,16 +89,20 @@ export default function reducer(state: NotificationReducerState = initialState, 
       }
     case ToggleRequest.CLOSE:
       return {
-        checkedInputs: (<ToggleRequestAction>action).payload.checkedInputs,
         requestIsOpen: false,
         sendState: SendingState.IDLE,
       }
     case ToggleRequest.OPEN:
-      return {
-        checkedInputs: (<ToggleRequestAction>action).payload.checkedInputs,
+      const newState = {
+        requestMetadataType: (<OpenRequestAction>action).payload.requestMetadataType,
         requestIsOpen: true,
         sendState: SendingState.IDLE,
       }
+      const columnIndex = (<OpenRequestAction>action).payload.columnIndex;
+      if (columnIndex || columnIndex === 0) {
+        newState['columnIndex'] = columnIndex;
+      }
+      return newState;
     default:
       return state;
   }
