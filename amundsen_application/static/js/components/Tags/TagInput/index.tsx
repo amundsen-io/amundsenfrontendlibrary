@@ -12,6 +12,7 @@ import { updateTags } from 'ducks/tableMetadata/tags/reducer';
 import { UpdateTagsRequest } from 'ducks/tableMetadata/types';
 
 import TagInfo from "../TagInfo";
+import { EditableSectionChildProps } from 'components/TableDetail/EditableSection';
 import { Tag, UpdateMethod, UpdateTagData } from 'interfaces';
 
 // TODO: Use css-modules instead of 'import'
@@ -40,16 +41,9 @@ export interface DispatchFromProps {
   getAllTags: () => GetAllTagsRequest;
 }
 
-export interface ComponentProps {
-  editMode?: boolean;
-  enableEditMode?: () => void;
-  disableEditMode?: () => void;
-}
-
-type TagInputProps = StateFromProps & DispatchFromProps & ComponentProps;
+type TagInputProps = StateFromProps & DispatchFromProps & EditableSectionChildProps;
 
 interface TagInputState {
-  // readOnly: boolean;
   showModal: boolean;
 }
 
@@ -67,7 +61,6 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
   constructor(props) {
     super(props);
     this.state = {
-      // readOnly: true,
       showModal: false,
     };
   }
@@ -162,7 +155,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
       event.preventDefault();
     }
     if (event.key === "Escape") {
-      this.exitEditMode();
+      this.stopEditing();
     }
   };
 
@@ -217,17 +210,17 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     )
   }
 
-  enterEditMode = (event) =>  {
-    this.props.enableEditMode && this.props.enableEditMode();
+  startEditing = () =>  {
+    this.props.startEditing && this.props.startEditing();
   };
 
-  exitEditMode = () => {
-    this.props.disableEditMode && this.props.disableEditMode();
+  stopEditing = () => {
+    this.props.stopEditing && this.props.stopEditing();
   };
 
   render() {
     // https://react-select.com/props#api
-    const componentOverides = !this.props.editMode ? {
+    const componentOverides = !this.props.isEditing ? {
       DropdownIndicator: () => { return null },
       IndicatorSeparator: () => { return null },
       MultiValueRemove: () => { return null },
@@ -237,10 +230,10 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     };
 
     let tagBody;
-    if (!this.props.editMode) {
+    if (!this.props.isEditing) {
       if (this.props.tags.length === 0) {
         tagBody = (
-          <button className="btn btn-default muted add-btn" onClick={this.enterEditMode}>
+          <button className="btn btn-default muted add-btn" onClick={ this.startEditing }>
             <img className="icon icon-plus"/>New
           </button>
         );
@@ -313,4 +306,4 @@ export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({ getAllTags, updateTags } , dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps, ComponentProps>(mapStateToProps, mapDispatchToProps)(TagInput);
+export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(TagInput);

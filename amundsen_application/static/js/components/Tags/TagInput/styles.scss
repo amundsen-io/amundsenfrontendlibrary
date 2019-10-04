@@ -1,10 +1,5 @@
 @import 'variables';
 
-// TODO - Delete temp colors
-$text-secondary: #63637B;
-$divider: #d8d8e4;
-$backgroundSecondary: #F4F4FA;
-
 .tag-input {
   .tag-button:first-child {
     margin-left: 0;
@@ -13,7 +8,6 @@ $backgroundSecondary: #F4F4FA;
     margin-top: 8px;
   }
 }
-
 
 /*
    override default react-select style classes.
