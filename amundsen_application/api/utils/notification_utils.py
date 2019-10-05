@@ -4,7 +4,7 @@ from http import HTTPStatus
 
 from flask import current_app as app
 from flask import jsonify, make_response, Response
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 from amundsen_application.api.exceptions import MailClientNotImplemented
 from amundsen_application.log.action_log import action_logging
@@ -48,14 +48,14 @@ def get_mail_client():  # type: ignore
     return mail_client
 
 
-def validate_resource_path(*, resource_path: Optional[str]) -> None:
+def validate_options(*, options: Dict) -> None:
     """
-    Raises an Exception if the given resource_path does not pass specific requirements
+    Raises an Exception if the options do not contain resource_path or resource_name
     """
-    if resource_path is None:
+    if options.get('resource_path') is None:
         raise Exception('resource_path was not provided in the notification options')
-    if not resource_path.startswith('/'):
-        raise Exception('resource_path should have a leading "/"')
+    if options.get('resource_name')is None:
+        raise Exception('resource_name was not provided in the notification options')
 
 
 def get_notification_html(*, notification_type: str, options: Dict, sender: str) -> str:
@@ -63,18 +63,14 @@ def get_notification_html(*, notification_type: str, options: Dict, sender: str)
     Returns the formatted html for the notification based on the notification_type
     :return: A string representing the html markup to send in the notification
     """
+    validate_options(options=options)
+
     url_base = app.config['FRONTEND_BASE']
-    if url_base.endswith('/'):
-        raise Exception('app.config["FRONTEND_BASE"] should not have a trailing "/""')
-
-    resource_path = options.get('resource_path')
-    validate_resource_path(resource_path=resource_path)
-
-    resource_url = '{url_base}{resource_path}'.format(resource_path=resource_path, url_base=url_base)
-
-    resource_name = options.get('resource_name')
-    if resource_name is None:
-        raise Exception('resource_name was not provided in the notification options')
+    resource_url = '{url_base}{resource_path}'.format(resource_path=options.get('resource_path'),
+                                                      url_base=url_base)
+    joined_chars = resource_url[len(url_base) - 1:len(url_base) + 1]
+    if joined_chars.count('/') != 1:
+        raise Exception('Configured "FRONTEND_BASE" and "resource_path" do not form a valid url')
 
     notification_strings = NOTIFICATION_STRINGS.get(notification_type)
     if notification_strings is None:
@@ -82,7 +78,7 @@ def get_notification_html(*, notification_type: str, options: Dict, sender: str)
 
     greeting = 'Hello,<br/>'
     notification = notification_strings.get('notification', '').format(resource_url=resource_url,
-                                                                       resource_name=resource_name,
+                                                                       resource_name=options.get('resource_name'),
                                                                        sender=sender)
     comment = notification_strings.get('comment', '')
     end_note = notification_strings.get('end_note', '')
@@ -120,11 +116,12 @@ def get_notification_subject(*, notification_type: str, options: Dict) -> str:
     :param options: data necessary to render email template content
     :return: The subject to be used with the notification
     """
+    resource_name = options.get('resource_name')
     notification_subject_dict = {
-        'added': 'You are now an owner of {}'.format(options['resource_name']),
-        'removed': 'You have been removed as an owner of {}'.format(options['resource_name']),
-        'edited': 'Your dataset {}\'s metadata has been edited'.format(options['resource_name']),
-        'requested': 'Request for metadata on {}'.format(options['resource_name']),
+        'added': 'You are now an owner of {}'.format(resource_name),
+        'removed': 'You have been removed as an owner of {}'.format(resource_name),
+        'edited': 'Your dataset {}\'s metadata has been edited'.format(resource_name),
+        'requested': 'Request for metadata on {}'.format(resource_name),
     }
     return notification_subject_dict.get(notification_type, '')
 

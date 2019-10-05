@@ -35,6 +35,10 @@ class NotificationUtilsTest(unittest.TestCase):
         self.mock_table_key = 'db://cluster.schema/table'
 
     def test_validate_resource_path_none(self) -> None:
+        """
+        Test Exception is raised if resource_path is None
+        :return:
+        """
         test_notification_type = 'removed'
         test_sender = 'test@test.com'
         test_options = {'resource_name': 'testtable'}
@@ -47,6 +51,10 @@ class NotificationUtilsTest(unittest.TestCase):
                               sender=test_sender)
 
     def test_validate_resource_path_bad_syntax(self) -> None:
+        """
+        Test Exception is raised if resource_path violates leading '/' syntax
+        :return:
+        """
         test_notification_type = 'removed'
         test_sender = 'test@test.com'
         test_options = {'resource_name': 'testtable', 'resource_path': 'testpath'}
@@ -59,6 +67,10 @@ class NotificationUtilsTest(unittest.TestCase):
                               sender=test_sender)
 
     def test_get_notification_html_bad_base_url(self) -> None:
+        """
+        Test Exception is raised if configured FRONTEND_BASE violates no trailing '/' syntax
+        :return:
+        """
         test_notification_type = 'added'
         test_sender = 'test@test.com'
         test_options = {'resource_name': 'testtable', 'resource_path': '/testpath'}
@@ -74,6 +86,10 @@ class NotificationUtilsTest(unittest.TestCase):
             local_app.config['FRONTEND_BASE'] = temp
 
     def test_get_notification_html_no_resource_name(self) -> None:
+        """
+        Test Exception is raised if resource_name is not provided
+        :return:
+        """
         test_notification_type = 'added'
         test_sender = 'test@test.com'
         test_options = {'resource_path': '/testpath'}
@@ -86,6 +102,10 @@ class NotificationUtilsTest(unittest.TestCase):
                               sender=test_sender)
 
     def test_get_notification_html_unsupported_type(self) -> None:
+        """
+        Test Exception is raised if notification_type is not supported
+        :return:
+        """
         test_notification_type = 'invalid_type'
         test_sender = 'test@test.com'
         test_options = {'resource_name': 'testtable', 'resource_path': '/testpath'}
@@ -98,6 +118,10 @@ class NotificationUtilsTest(unittest.TestCase):
                               sender=test_sender)
 
     def test_get_notification_html_added_success(self) -> None:
+        """
+        Test successful generation of html for 'added' notification email
+        :return:
+        """
         test_notification_type = 'added'
         test_sender = 'test@test.com'
         test_options = {'resource_name': 'testtable', 'resource_path': '/testpath'}
@@ -117,6 +141,10 @@ class NotificationUtilsTest(unittest.TestCase):
         self.assertEqual(html, expectedHTML)
 
     def test_get_notification_html_removed_success(self) -> None:
+        """
+        Test successful generation of html for 'removed' notification email
+        :return:
+        """
         test_notification_type = 'removed'
         test_sender = 'test@test.com'
         test_options = {'resource_name': 'testtable', 'resource_path': '/testpath'}
@@ -132,6 +160,11 @@ class NotificationUtilsTest(unittest.TestCase):
         self.assertEqual(html, expectedHTML)
 
     def test_get_notification_html_requested_success_all_fields(self) -> None:
+        """
+        Test successful generation of html for 'requested' notification email using
+        all required and optional fields
+        :return:
+        """
         test_notification_type = 'requested'
         test_sender = 'test@test.com'
         test_options = {
@@ -153,6 +186,11 @@ class NotificationUtilsTest(unittest.TestCase):
         self.assertEqual(html, expectedHTML)
 
     def test_get_notification_html_requested_success_table_only(self) -> None:
+        """
+        Test successful generation of html for 'requested' notification email using
+        all required fields and 'description_requested' optional field
+        :return:
+        """
         test_notification_type = 'requested'
         test_sender = 'test@test.com'
         test_options = {
@@ -172,6 +210,11 @@ class NotificationUtilsTest(unittest.TestCase):
         self.assertEqual(html, expectedHTML)
 
     def test_get_notification_html_requested_success_columns_only(self) -> None:
+        """
+        Test successful generation of html for 'requested' notification email using
+        all required fields and 'fields_requested' optional field
+        :return:
+        """
         test_notification_type = 'requested'
         test_sender = 'test@test.com'
         test_options = {
@@ -191,6 +234,11 @@ class NotificationUtilsTest(unittest.TestCase):
         self.assertEqual(html, expectedHTML)
 
     def test_get_notification_html_requested_success_no_optional_options(self) -> None:
+        """
+        Test successful generation of html for 'requested' notification email using
+        all required fields and no optional fields
+        :return:
+        """
         test_notification_type = 'requested'
         test_sender = 'test@test.com'
         test_options = {
