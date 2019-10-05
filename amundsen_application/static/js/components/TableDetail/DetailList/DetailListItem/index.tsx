@@ -19,7 +19,7 @@ import { RequestMetadataType, TableColumn } from 'interfaces';
 import './styles.scss';
 
 interface DispatchFromProps {
-  openRequestDescriptionDialog: (requestMetadataType: RequestMetadataType, columnIndex: number) => OpenRequestAction;
+  openRequestDescriptionDialog: (requestMetadataType: RequestMetadataType, columnName: string) => OpenRequestAction;
 }
 
 interface OwnProps {
@@ -47,7 +47,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
   }
 
   openRequest = () => {
-    this.props.openRequestDescriptionDialog(RequestMetadataType.COLUMN_DESCRIPTION, this.props.index);
+    this.props.openRequestDescriptionDialog(RequestMetadataType.COLUMN_DESCRIPTION, this.props.data.name);
   }
 
   onClick = (e) => {
@@ -156,7 +156,7 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
           </div>
           {
             notificationsEnabled() &&
-            <Dropdown id={`detail-list-item-dropdown:${this.props.index}`} pullRight={true}>
+            <Dropdown id={`detail-list-item-dropdown:${this.props.index}`} pullRight={true} className="column-dropdown">
               <Dropdown.Toggle noCaret={true} className="dropdown-icon-more">
                 <img className="icon icon-more"/>
               </Dropdown.Toggle>

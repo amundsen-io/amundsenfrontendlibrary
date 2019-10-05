@@ -38,12 +38,12 @@ export function closeRequestDescriptionDialog(): CloseRequestAction {
   };
 };
 
-export function openRequestDescriptionDialog(requestMetadataType: RequestMetadataType, columnIndex?: number): OpenRequestAction {
-  if (columnIndex || columnIndex === 0) {
+export function openRequestDescriptionDialog(requestMetadataType: RequestMetadataType, columnName?: string): OpenRequestAction {
+  if (columnName) {
     return {
       type: ToggleRequest.OPEN,
       payload: {
-        columnIndex,
+        columnName,
         requestMetadataType
       }
     }
@@ -58,7 +58,7 @@ export function openRequestDescriptionDialog(requestMetadataType: RequestMetadat
 
 /* REDUCER */
 export interface NotificationReducerState {
-  columnIndex?: number,
+  columnName?: string,
   requestMetadataType?: RequestMetadataType,
   requestIsOpen: boolean,
   sendState: SendingState,
@@ -98,9 +98,9 @@ export default function reducer(state: NotificationReducerState = initialState, 
         requestIsOpen: true,
         sendState: SendingState.IDLE,
       }
-      const columnIndex = (<OpenRequestAction>action).payload.columnIndex;
-      if (columnIndex || columnIndex === 0) {
-        newState['columnIndex'] = columnIndex;
+      const columnName = (<OpenRequestAction>action).payload.columnName;
+      if (columnName) {
+        newState['columnName'] = columnName;
       }
       return newState;
     default:

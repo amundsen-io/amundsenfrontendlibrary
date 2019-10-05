@@ -30,7 +30,7 @@ import { CloseRequestAction, OpenRequestAction, SubmitNotificationRequest } from
 import { closeRequestDescriptionDialog, submitNotification } from 'ducks/notification/reducer';
 
 interface StateFromProps {
-  columnIndex?: number;
+  columnName?: string;
   requestMetadataType?: RequestMetadataType;
   userEmail: string;
   tableMetadata: TableMetadata;
@@ -117,14 +117,10 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
   };
 
   render() {
-    const { columnIndex, requestIsOpen, requestMetadataType, sendState, tableMetadata, tableOwners, userEmail } = this.props;
-    let tableDescriptionNeeded = false;
-    let colDescriptionNeeded = false;
-    if (requestMetadataType) {
-      tableDescriptionNeeded = requestMetadataType === RequestMetadataType.TABLE_DESCRIPTION;
-      colDescriptionNeeded = requestMetadataType === RequestMetadataType.COLUMN_DESCRIPTION;
-    }
-    const defaultComment = columnIndex || columnIndex === 0 ? `Description requested for column: ${tableMetadata.columns[columnIndex].name}`: '';
+    const { columnName, requestIsOpen, requestMetadataType, sendState, tableMetadata, tableOwners, userEmail } = this.props;
+    const tableDescriptionNeeded = requestMetadataType === RequestMetadataType.TABLE_DESCRIPTION;
+    const colDescriptionNeeded = requestMetadataType === RequestMetadataType.COLUMN_DESCRIPTION;
+    const defaultComment = columnName ? `Description requested for column: ${columnName}`: '';
 
     if (sendState !== SendingState.IDLE) {
       return (
@@ -194,7 +190,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
 
 export const mapStateToProps = (state: GlobalState) => {
   const userEmail = state.user.loggedInUser.email;
-  const { columnIndex, requestMetadataType, requestIsOpen, sendState } = state.notification;
+  const { columnName, requestMetadataType, requestIsOpen, sendState } = state.notification;
   const ownerObj = state.tableMetadata.tableOwners.owners;
   const mappedProps = {
     userEmail,
@@ -203,8 +199,8 @@ export const mapStateToProps = (state: GlobalState) => {
     tableMetadata: state.tableMetadata.tableData,
     tableOwners: Object.keys(ownerObj),
   };
-  if (columnIndex || columnIndex === 0) {
-    mappedProps['columnIndex'] = columnIndex;
+  if (columnName) {
+    mappedProps['columnName'] = columnName;
   }
   if (requestMetadataType) {
     mappedProps['requestMetadataType'] = requestMetadataType;

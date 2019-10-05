@@ -27,7 +27,7 @@ export enum ToggleRequest {
 export interface OpenRequestAction {
   type: ToggleRequest.OPEN,
   payload: {
-    columnIndex?: number,
+    columnName?: string,
     requestMetadataType: RequestMetadataType,
   }
 };
