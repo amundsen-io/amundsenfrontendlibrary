@@ -17,6 +17,7 @@ import {
   REQUEST_TYPE,
   TABLE_DESCRIPTION,
   COLUMN_DESCRIPTIONS,
+  COLUMN_REQUESTED_COMMENT_PREFIX,
   COMMENT_PLACEHOLDER_COLUMN,
   COMMENT_PLACEHOLDER_DEFAULT,
   ADDITIONAL_DETAILS,
@@ -120,7 +121,7 @@ export class RequestMetadataForm extends React.Component<RequestMetadataProps, R
     const { columnName, requestIsOpen, requestMetadataType, sendState, tableMetadata, tableOwners, userEmail } = this.props;
     const tableDescriptionNeeded = requestMetadataType === RequestMetadataType.TABLE_DESCRIPTION;
     const colDescriptionNeeded = requestMetadataType === RequestMetadataType.COLUMN_DESCRIPTION;
-    const defaultComment = columnName ? `Description requested for column: ${columnName}`: '';
+    const defaultComment = columnName ? `${COLUMN_REQUESTED_COMMENT_PREFIX}${columnName}`: '';
 
     if (sendState !== SendingState.IDLE) {
       return (

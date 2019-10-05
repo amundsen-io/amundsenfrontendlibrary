@@ -16,3 +16,5 @@ export const RECIPIENT_LIST_DELIMETER = ', ';
 
 export const COMMENT_PLACEHOLDER_DEFAULT = 'Please enter more information about your request';
 export const COMMENT_PLACEHOLDER_COLUMN = 'Please enter which column(s) need an improved description';
+
+export const COLUMN_REQUESTED_COMMENT_PREFIX = 'Description requested for column: ';
