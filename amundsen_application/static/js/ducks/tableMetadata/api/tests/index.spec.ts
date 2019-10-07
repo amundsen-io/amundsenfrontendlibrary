@@ -72,7 +72,7 @@ describe('helpers', () => {
     ]);
   });
 
-  describe('createOwnerNotificationData', () => {\
+  describe('createOwnerNotificationData', () => {
     let testData;
     let testId;
     let expectedName;

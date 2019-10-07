@@ -239,7 +239,7 @@ describe('RequestMetadataForm', () => {
         it('renders textarea for column request', () => {
           element = wrapper.find('#additional-comments-form-group');
           const textArea = element.find('textarea');
-          expect(textArea.text()).toEqual(`${COLUMN_REQUESTED_COMMENT_PREFIX}Test`;
+          expect(textArea.text()).toEqual(`${COLUMN_REQUESTED_COMMENT_PREFIX}Test`);
           expect(textArea.props().required).toBe(true);
           expect(textArea.props().placeholder).toBe(COMMENT_PLACEHOLDER_COLUMN);
         });
