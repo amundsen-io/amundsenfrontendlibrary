@@ -211,11 +211,11 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
   }
 
   startEditing = () =>  {
-    this.props.startEditing && this.props.startEditing();
+    this.props.setEditMode && this.props.setEditMode(true);
   };
 
   stopEditing = () => {
-    this.props.stopEditing && this.props.stopEditing();
+    this.props.setEditMode && this.props.setEditMode(false);
   };
 
   render() {

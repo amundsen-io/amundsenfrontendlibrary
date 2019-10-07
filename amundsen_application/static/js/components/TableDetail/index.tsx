@@ -26,7 +26,7 @@ import WriterLink from 'components/TableDetail/WriterLink';
 import TagInput from 'components/Tags/TagInput';
 import { TableMetadata } from 'interfaces/TableMetadata';
 
-import './styles_v2';
+import './styles';
 import { EditableSection } from 'components/TableDetail/EditableSection';
 
 export interface StateFromProps {
@@ -41,7 +41,7 @@ export interface DispatchFromProps {
 
 type TableDetailProps = StateFromProps & DispatchFromProps;
 
-class TableDetail_v2 extends React.Component<TableDetailProps & RouteComponentProps<any>> {
+class TableDetail extends React.Component<TableDetailProps & RouteComponentProps<any>> {
   private cluster: string;
   private database: string;
   private displayName: string;
@@ -183,4 +183,4 @@ export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({ getTableData } , dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(TableDetail_v2);
+export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(TableDetail);

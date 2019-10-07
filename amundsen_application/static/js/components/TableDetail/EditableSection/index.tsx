@@ -12,8 +12,7 @@ interface EditableSectionState {
 
 export interface EditableSectionChildProps {
   isEditing?: boolean;
-  startEditing?: () => void;
-  stopEditing?: () => void;
+  setEditMode?: (boolean) => void;
 }
 
 export class EditableSection extends React.Component<EditableSectionProps, EditableSectionState> {
@@ -25,12 +24,8 @@ export class EditableSection extends React.Component<EditableSectionProps, Edita
     }
   }
 
-  startEditing = () => {
-    this.setState({ isEditing: true });
-  };
-
-  stopEditing = () => {
-    this.setState({ isEditing: false });
+  setEditMode = (isEditing: boolean) => {
+    this.setState({ isEditing });
   };
 
   toggleEdit = () => {
@@ -42,8 +37,7 @@ export class EditableSection extends React.Component<EditableSectionProps, Edita
       if (React.isValidElement(child)) {
         return React.cloneElement(child, {
           isEditing: this.state.isEditing,
-          startEditing: this.startEditing,
-          stopEditing: this.stopEditing,
+          setEditMode: this.setEditMode,
         });
       }
       return child;
