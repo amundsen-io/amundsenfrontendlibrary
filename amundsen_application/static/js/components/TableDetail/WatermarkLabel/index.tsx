@@ -10,14 +10,13 @@ interface WatermarkLabelProps {
 }
 
 class WatermarkLabel extends React.Component<WatermarkLabelProps> {
-
   constructor(props) {
     super(props);
   }
 
   render() {
     return (
-      <div className="watermark-range body-2">
+      <div className="watermark-label">
         <img className="range-icon" src="/static/images/watermark-range.png"/>
         { this.getWatermarkText() }
       </div>
@@ -38,11 +37,11 @@ class WatermarkLabel extends React.Component<WatermarkLabelProps> {
 
     return (
       <>
-        <div className="range-labels">
+        <div className="range-labels body-2">
           From: <br/>
           To:
         </div>
-        <div className="range-dates">
+        <div className="range-dates body-2">
           { low && moment(low.partition_value, "YYYY-MM-DD").format("MMM DD, YYYY") }
           <br/>
           { high && moment(high.partition_value, "YYYY-MM-DD").format("MMM DD, YYYY") }

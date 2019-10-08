@@ -1,6 +1,6 @@
 @import 'variables';
 
-.watermark-range {
+.watermark-label {
   display: flex;
 
   .range-icon {
@@ -9,8 +9,8 @@
     width: 12px;
     margin-right: 16px;
   }
+
   .range-labels {
     flex-basis: 50px;
   }
-
 }
