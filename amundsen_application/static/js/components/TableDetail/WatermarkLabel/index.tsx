@@ -5,11 +5,11 @@ import './styles.scss';
 
 import { Watermark } from 'interfaces';
 
-interface WatermarkRangeProps {
+interface WatermarkLabelProps {
   watermarks: Watermark[];
 }
 
-class WatermarkRange extends React.Component<WatermarkRangeProps> {
+class WatermarkLabel extends React.Component<WatermarkLabelProps> {
 
   constructor(props) {
     super(props);
@@ -19,19 +19,19 @@ class WatermarkRange extends React.Component<WatermarkRangeProps> {
     return (
       <div className="watermark-range body-2">
         <img className="range-icon" src="/static/images/watermark-range.png"/>
-        { this.getWatermarksLabel() }
+        { this.getWatermarkText() }
       </div>
     );
   }
 
-  getWatermarksLabel = () => {
+  getWatermarkText = () => {
     const low = this.props.watermarks.find((wtm) => wtm.watermark_type === "low_watermark");
     const high = this.props.watermarks.find((wtm) => wtm.watermark_type === "high_watermark");
     if (low === undefined && high === undefined) {
       return (
         <>
-          Non Partitioned Table.<br/>
-          Data available for all dates.
+          Non-Partitioned Table <br/>
+          Data available for all dates
         </>
       );
     }
@@ -39,18 +39,17 @@ class WatermarkRange extends React.Component<WatermarkRangeProps> {
     return (
       <>
         <div className="range-labels">
-          From:
-          <br/>
+          From: <br/>
           To:
         </div>
         <div className="range-dates">
-          { moment(low.partition_value, "YYYY-MM-DD").format("MMM DD, YYYY") }
+          { low && moment(low.partition_value, "YYYY-MM-DD").format("MMM DD, YYYY") }
           <br/>
-          { moment(high.partition_value, "YYYY-MM-DD").format("MMM DD, YYYY") }
+          { high && moment(high.partition_value, "YYYY-MM-DD").format("MMM DD, YYYY") }
         </div>
       </>
     );
   }
 }
 
-export default WatermarkRange;
+export default WatermarkLabel;
