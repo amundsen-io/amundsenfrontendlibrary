@@ -12,7 +12,7 @@ interface EditableSectionState {
 
 export interface EditableSectionChildProps {
   isEditing?: boolean;
-  setEditMode?: (boolean) => void;
+  setEditMode?: (isEditing: boolean) => void;
 }
 
 export class EditableSection extends React.Component<EditableSectionProps, EditableSectionState> {
