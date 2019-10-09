@@ -16,7 +16,7 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import ExploreButton from 'components/TableDetail/ExploreButton';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
-import DetailList from 'components/TableDetail/DetailList';
+import DetailList from 'components/TableDetail/ColumnList';
 import LineageLink from 'components/TableDetail/LineageLink';
 import OwnerEditor from 'components/TableDetail/OwnerEditor';
 import SourceLink from 'components/TableDetail/SourceLink';

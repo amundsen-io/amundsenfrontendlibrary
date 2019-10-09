@@ -1,7 +1,10 @@
 import * as React from 'react';
-import DetailListItem from './DetailListItem';
+import DetailListItem from '../ColumnListItem';
 
 import { TableColumn } from 'interfaces';
+
+import "./styles.scss";
+
 
 interface DetailListProps {
   columns?: TableColumn[];
@@ -21,7 +24,7 @@ const DetailList: React.SFC<DetailListProps> = ({ columns }) => {
     />);
 
   return (
-    <ul className="list-group">
+    <ul className="column-list list-group">
       { columnList }
     </ul>
   );

@@ -21,7 +21,7 @@ import ScrollTracker from "components/common/ScrollTracker";
 import TagInput from 'components/Tags/TagInput';
 
 import DataPreviewButton from './DataPreviewButton';
-import DetailList from './DetailList';
+import DetailList from './ColumnList';
 import OwnerEditor from './OwnerEditor';
 import TableDescEditableText from './TableDescEditableText';
 import WatermarkLabel from "./WatermarkLabel";
