@@ -3,7 +3,7 @@ import moment from 'moment-timezone';
 
 import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableText';
 import { logClick } from 'ducks/utilMethods';
-import { TableColumn } from 'interfaces/index';
+import { TableColumn, TableColumnStats } from 'interfaces/index';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
@@ -42,14 +42,17 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
     this.setState({ isExpanded: !this.state.isExpanded });
   };
 
+  stopPropagation = (e) => {
+    e.stopPropagation();
+  };
+
   formatDate = (unixEpochSeconds) => {
     return moment(unixEpochSeconds * 1000).format("MMM DD, YYYY");
   };
 
-  render() {
+  getStatsInfoText = () => {
     const metadata = this.props.data;
     const isExpandable = metadata.stats && metadata.stats.length > 0;
-
     const startEpoch = Math.min(...metadata.stats.map(s => parseInt(s.start_epoch, 10)));
     const endEpoch = Math.max(...metadata.stats.map(s => parseInt(s.end_epoch, 10)));
     const startDate = isExpandable ? this.formatDate(startEpoch) : null;
@@ -65,82 +68,93 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
     } else {
       infoText = `${infoText} over a recent period of time.`;
     }
+    return infoText;
+  };
 
+  renderColumnStat = (entry: TableColumnStats) => {
+    return (
+      <div className="column-stat" key={entry.stat_type}>
+        <div className="stat-name body-3">
+          {entry.stat_type.toUpperCase()}
+        </div>
+        <div className="stat-value">
+          {entry.stat_val}
+        </div>
+      </div>
+    )
+  };
+
+
+  render() {
+    const metadata = this.props.data;
+    const infoText = this.getStatsInfoText();
     return (
       <li className="list-group-item" onClick={ this.toggleExpand }>
         <div className="column-list-item">
-          <div className="column-details truncated">
-            <div className="column-name">
-              { metadata.name }
-            </div>
-            {
-              !this.state.isExpanded &&
-              <div className="body-secondary-3 truncated">
-                { metadata.description }
+          <section className="column-header">
+            <div className="column-details truncated">
+              <div className="column-name">
+                { metadata.name }
               </div>
-            }
-          </div>
-          <div className="resource-type">
-            { metadata.type ? metadata.type.toLowerCase() : 'null' }
-          </div>
-          <div className="badges">
+              {
+                !this.state.isExpanded &&
+                <div className="body-secondary-3 truncated">
+                  { metadata.description }
+                </div>
+              }
+            </div>
+            <div className="resource-type">
+              { metadata.type ? metadata.type.toLowerCase() : 'null' }
+            </div>
+            <div className="badges">
 
-          </div>
-          <div className="actions">
+            </div>
+            <div className="actions">
 
-          </div>
+            </div>
+          </section>
+          {
+            this.state.isExpanded &&
+            <section className="expanded-content">
+              {/* TODO replace with <EditableSection> when merged with that commit */}
+              <div className="title-3">Description</div>
+              <span onClick={ this.stopPropagation }>
+                <ColumnDescEditableText
+                  columnIndex={ this.props.index }
+                  editable={ metadata.is_editable }
+                  value={ metadata.description }
+                />
+              </span>
+              {
+                metadata.stats.length > 0 &&
+                <div className="stat-collection-info">
+                  <span className="title-3">Column Statistics </span>
+                  { infoText }
+               </div>
+              }
+              <div className="column-stats">
+                <div className="column-stats-column">
+                  {
+                    metadata.stats.map((stat, index) => {
+                      if (index % 2 === 0)
+                        return this.renderColumnStat(stat);
+                    })
+                  }
+                </div>
+                <div className="column-stats-column">
+                  {
+                    metadata.stats.map((stat, index) => {
+                      if (index % 2 === 1)
+                        return this.renderColumnStat(stat);
+                    })
+                  }
+                </div>
+              </div>
+            </section>
+          }
         </div>
       </li>
     );
-
-
-
-    // return (
-    //   <li className='list-group-item column-list-item'>
-    //     <div className={'column-info ' + (isExpandable ? 'expandable' : '')} onClick={ isExpandable? this.onClick : null }>
-    //       <div className='title-section'>
-    //         <div className='title-row'>
-    //           <div className='name title-2'>{metadata.name}</div>
-    //           <div className='column-type'>{metadata.type ? metadata.type.toLowerCase() : 'null'}</div>
-    //         </div>
-    //       </div>
-    //       {
-    //         isExpandable &&
-    //         <img className={'icon ' + (this.state.isExpanded ? 'icon-up' : 'icon-down')}/>
-    //       }
-    //     </div>
-    //     <div className={'body-secondary-3 description ' + (isExpandable && !this.state.isExpanded ? 'truncated' : '')}>
-    //       <ColumnDescEditableText
-    //         columnIndex={this.props.index}
-    //         editable={metadata.is_editable}
-    //         value={metadata.description}
-    //       />
-    //     </div>
-    //     {
-    //       this.state.isExpanded &&
-    //       <div className='column-stats'>
-    //         {
-    //           metadata.stats.map(entry =>
-    //             <div className='column-stat' key={entry.stat_type}>
-    //               <div className='caption'>
-    //                 {entry.stat_type.toUpperCase()}
-    //               </div>
-    //               <div className='body-link'>
-    //                 {entry.stat_val}
-    //               </div>
-    //             </div>
-    //           )
-    //         }
-    //         {
-    //          metadata.stats.length > 0 &&
-    //          <div className="stat-collection-info">
-    //           { infoText }
-    //         </div>
-    //         }
-    //       </div>
-    //     }
-    //   </li>
-    // );
   }
 }
 

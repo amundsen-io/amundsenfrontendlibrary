@@ -1,107 +1,72 @@
 @import 'variables';
 
+// TODO - delete once merged in with colors
+$background-secondary: #F4F4FA;
+$divider: #E7E7EF;
+
+
 .list-group-item .column-list-item {
-  display: flex;
   padding: 16px 24px;
 
-
-  .column-details {
-    flex-basis: 50%;
-    padding-right: 16px;
-  }
-  .resource-type {
-
-  }
-  .badges {
-
-  }
-  .actions {
-
+  &:hover {
+    background: white;
   }
 
+  .column-header {
+    display: flex;
+
+    .column-details {
+      flex-basis: 50%;
+      flex-grow: 1;
+      padding-right: 16px;
+    }
+    .resource-type {
+      flex-basis: 100px;
+    }
+    .badges {
+
+    }
+    .actions {
+
+    }
+  }
 
 
-
-
-  //text-decoration: none;
-  //display: flex;
-  //flex-direction: column;
-  ///* tmp fixes until we refactor/settle on styles */
-  //cursor: default;
-  //border-top-color: $gray-lighter !important;
-  //border-bottom-color: $gray-lighter !important;
-  //background-color: transparent !important;
-  //padding: 10px 4px;
-  //
-  //.description {
-  //  max-width: 100%;
-  //  min-width: 0;
-  //  padding-right: 32px;
-  //}
-  //
-  //// TODO - move to common styles
-  //.truncated,
-  //.truncated .editable-text {
-  //  white-space: nowrap;
-  //  overflow: hidden;
-  //  text-overflow: ellipsis;
-  //}
-  //
-  //.column-info {
-  //  display: flex;
-  //  flex-direction: row;
-  //  margin: -10px -4px 0;
-  //  padding: 10px 4px 0;
-  //
-  //  .title-section {
-  //    width: 100%;
-  //    overflow-wrap: break-word;
-  //
-  //    .title-row {
-  //      display: flex;
-  //      flex-direction: row;
-  //
-  //      .name {
-  //        margin-right: 8px;
-  //        max-width: 85%;
-  //      }
-  //      .column-type {
-  //        margin-top: 4px;
-  //        max-width: 15%;
-  //      }
-  //    }
-  //  }
-  //
-  //  &.expandable {
-  //    cursor: pointer;
-  //
-  //    &:hover {
-  //      background-image: linear-gradient($gray-lighter, $gray-lighter, white);
-  //
-  //      .icon {
-  //        background-color: $brand-color-4;
-  //      }
-  //    }
-  //  }
-  //}
+  .stat-collection-info {
+    color: $text-medium;
+    font-style: italic;
+    margin: 8px 0;
+  }
 
   .column-stats {
-    display: block;
-    margin-top: 8px;
-    width: 100%;
+    display: flex;
 
-    .column-stat {
-      display: inline-block;
-      margin-top: 8px;
-      max-width: 150px;
-      min-width: 120px;
-      width: 20%;
-    }
+    .column-stats-column {
+      flex-basis: 50%;
+      flex-grow: 1;
 
-    .stat-collection-info {
-      color: $text-medium;
-      font-style: italic;
-      margin-top: 4px;
+      &:first-child {
+        margin-right: 16px;
+      }
+
+      .column-stat {
+        display: flex;
+        border-top: 1px solid $divider;
+        border-bottom: 1px solid $divider;
+        line-height: 32px;
+
+        &:nth-child(odd) {
+          background-color: $background-secondary;
+        }
+
+        .stat-name {
+          flex-basis: 50%;
+        }
+        .stat-value {
+          flex-basis: 50%;
+          flex-grow: 1;
+        }
+      }
     }
   }
 }
