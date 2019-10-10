@@ -6,8 +6,10 @@ import createSagaMiddleware from 'redux-saga';
 
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
+
+import { feedbackEnabled } from 'config/config-utils';
 
 import AnnouncementPage from './components/AnnouncementPage';
 import BrowsePage from './components/BrowsePage';
@@ -18,12 +20,13 @@ import NavBar from './components/NavBar';
 import NotFoundPage from './components/NotFoundPage';
 import Preloader from 'components/common/Preloader';
 import ProfilePage from './components/ProfilePage';
-import SearchPage from './components/SearchPage'; 
+import SearchPage from './components/SearchPage';
 import TableDetail from 'components/TableDetail/index_old';
 import TableDetail_v2 from 'components/TableDetail/index_v2';
 
 import rootReducer from './ducks/rootReducer';
 import rootSaga from './ducks/rootSaga';
+import { BrowserHistory } from 'utils/navigation-utils';
 
 const sagaMiddleware = createSagaMiddleware();
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise, sagaMiddleware)(createStore);
@@ -34,7 +37,7 @@ sagaMiddleware.run(rootSaga);
 ReactDOM.render(
   <DocumentTitle title="Amundsen - Data Discovery Portal">
     <Provider store={store}>
-      <BrowserRouter>
+      <Router history={BrowserHistory}>
         <div id="main">
           <Preloader/>
           <NavBar />
@@ -48,10 +51,13 @@ ReactDOM.render(
             <Route path="/404" component={NotFoundPage} />
             <Route path="/" component={HomePage} />
           </Switch>
-          <Feedback />
+          {
+            feedbackEnabled() && 
+            <Feedback />
+          }
           <Footer />
         </div>
-      </BrowserRouter>
+      </Router>
     </Provider>
   </DocumentTitle>
   , document.getElementById('content') || document.createElement('div'),

@@ -2,6 +2,7 @@
 
 @import 'avatars';
 @import 'buttons';
+@import 'dropdowns';
 @import 'fonts';
 @import 'icons';
 @import 'layouts';
@@ -47,6 +48,22 @@ input {
   &::placeholder {
     color: $gray-dark !important;
   }
+}
+
+input[type="radio"] {
+  margin: 5px;
+}
+
+input[type="text"] {
+  color: $text-medium !important;
+}
+
+textarea {
+  width: 100%;
+  color: $text-medium !important;
+  border: 1px solid $gray-lighter;
+  border-radius: 5px;
+  padding: 10px;
 }
 
 .truncated {
