@@ -4,6 +4,12 @@ import moment from 'moment-timezone';
 import './styles.scss';
 
 import { Watermark } from 'interfaces';
+import {
+  NO_WATERMARK_LINE_1, NO_WATERMARK_LINE_2,
+  WATERMARK_DISPLAY_FORMAT,
+  WATERMARK_INPUT_FORMAT,
+  WatermarkType
+} from './constants';
 
 interface WatermarkLabelProps {
   watermarks: Watermark[];
@@ -14,24 +20,25 @@ class WatermarkLabel extends React.Component<WatermarkLabelProps> {
     super(props);
   }
 
-  render() {
-    return (
-      <div className="watermark-label">
-        <img className="range-icon" src="/static/images/watermark-range.png"/>
-        { this.getWatermarkText() }
-      </div>
-    );
-  }
+  formatWatermarkDate = (dateString: string) => {
+    return moment(dateString, WATERMARK_INPUT_FORMAT).format(WATERMARK_DISPLAY_FORMAT);
+  };
 
-  getWatermarkText = () => {
-    const low = this.props.watermarks.find((wtm) => wtm.watermark_type === "low_watermark");
-    const high = this.props.watermarks.find((wtm) => wtm.watermark_type === "high_watermark");
+  getWatermarkValue = (type: WatermarkType) => {
+    let watermark = this.props.watermarks.find((watermark: Watermark) => watermark.watermark_type === type);
+    return watermark && watermark.partition_value;
+  };
+
+  renderWatermarkInfo = () => {
+    const low = this.getWatermarkValue(WatermarkType.LOW);
+    const high = this.getWatermarkValue(WatermarkType.HIGH);
     if (low === undefined && high === undefined) {
       return (
-        <>
-          Non-Partitioned Table <br/>
-          Data available for all dates
-        </>
+        <div className="body-2">
+          { NO_WATERMARK_LINE_1 }
+          <br/>
+          { NO_WATERMARK_LINE_2 }
+        </div>
       );
     }
 
@@ -42,11 +49,20 @@ class WatermarkLabel extends React.Component<WatermarkLabelProps> {
           To:
         </div>
         <div className="range-dates body-2">
-          { low && moment(low.partition_value, "YYYY-MM-DD").format("MMM DD, YYYY") }
+          { low && this.formatWatermarkDate(low) }
           <br/>
-          { high && moment(high.partition_value, "YYYY-MM-DD").format("MMM DD, YYYY") }
+          { high && this.formatWatermarkDate(high) }
         </div>
       </>
+    );
+  };
+
+  render() {
+    return (
+      <div className="watermark-label">
+        <img className="range-icon" src="/static/images/watermark-range.png"/>
+        { this.renderWatermarkInfo() }
+      </div>
     );
   }
 }
