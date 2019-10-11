@@ -4,13 +4,8 @@
 $background-secondary: #F4F4FA;
 $divider: #E7E7EF;
 
-
 .list-group-item .column-list-item {
   padding: 16px 24px;
-
-  &:hover {
-    background: white;
-  }
 
   .column-header {
     display: flex;
