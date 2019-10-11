@@ -21,7 +21,7 @@ import ScrollTracker from "components/common/ScrollTracker";
 import TagInput from 'components/Tags/TagInput';
 
 import DataPreviewButton from './DataPreviewButton';
-import DetailList from './ColumnList';
+import ColumnList from './ColumnList';
 import OwnerEditor from './OwnerEditor';
 import TableDescEditableText from './TableDescEditableText';
 import WatermarkLabel from "./WatermarkLabel";
@@ -361,7 +361,7 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
               </div>
               <div className="col-xs-12 col-md-7 col-lg-8">
                 <div className="detail-list-header title-1">Columns</div>
-                <DetailList
+                <ColumnList
                   columns={ data.columns }
                 />
               </div>

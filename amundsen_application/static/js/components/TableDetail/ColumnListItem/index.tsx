@@ -8,17 +8,17 @@ import { TableColumn, TableColumnStats } from 'interfaces/index';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
-interface DetailListItemProps {
+interface ColumnListItemProps {
   data?: TableColumn;
   index: number;
 }
 
-interface DetailListItemState {
+interface ColumnListItemState {
   isExpanded: boolean;
 }
 
-class DetailListItem extends React.Component<DetailListItemProps, DetailListItemState> {
-  public static defaultProps: DetailListItemProps = {
+class ColumnListItem extends React.Component<ColumnListItemProps, ColumnListItemState> {
+  public static defaultProps: ColumnListItemProps = {
     data: {} as TableColumn,
     index: null,
   };
@@ -158,4 +158,4 @@ class DetailListItem extends React.Component<DetailListItemProps, DetailListItem
   }
 }
 
-export default DetailListItem;
+export default ColumnListItem;

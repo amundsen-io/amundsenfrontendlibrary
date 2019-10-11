@@ -1,23 +1,23 @@
 import * as React from 'react';
-import DetailListItem from '../ColumnListItem';
+import ColumnListItem from '../ColumnListItem';
 
 import { TableColumn } from 'interfaces';
 
 import "./styles.scss";
 
 
-interface DetailListProps {
+interface ColumnListProps {
   columns?: TableColumn[];
 }
 
-const DetailList: React.SFC<DetailListProps> = ({ columns }) => {
+const ColumnList: React.SFC<ColumnListProps> = ({ columns }) => {
   if (columns.length < 1) {
     return (<div />);
     // ToDo: return No Results Message
   }
 
   const columnList = columns.map((entry, index) =>
-    <DetailListItem
+    <ColumnListItem
       key={`column:${index}`}
       data={ entry }
       index={ index }
@@ -30,8 +30,8 @@ const DetailList: React.SFC<DetailListProps> = ({ columns }) => {
   );
 };
 
-DetailList.defaultProps = {
+ColumnList.defaultProps = {
   columns: [] as TableColumn[],
 };
 
-export default DetailList;
+export default ColumnList;

@@ -26,13 +26,13 @@ $divider: #E7E7EF;
     }
   }
 
-
   .stat-collection-info {
     color: $text-medium;
     font-style: italic;
     margin: 8px 0;
   }
 
+  // TODO - find less confusing names for column-stats and children...
   .column-stats {
     display: flex;
 

@@ -16,7 +16,7 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import ExploreButton from 'components/TableDetail/ExploreButton';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
-import DetailList from 'components/TableDetail/ColumnList';
+import ColumnList from 'components/TableDetail/ColumnList';
 import LineageLink from 'components/TableDetail/LineageLink';
 import OwnerEditor from 'components/TableDetail/OwnerEditor';
 import SourceLink from 'components/TableDetail/SourceLink';
@@ -154,7 +154,7 @@ class TableDetail_v2 extends React.Component<TableDetailProps & RouteComponentPr
               </section>
             </section>
             <section className="right-panel">
-              <DetailList columns={ data.columns }/>
+              <ColumnList columns={ data.columns }/>
             </section>
           </main>
         </div>
