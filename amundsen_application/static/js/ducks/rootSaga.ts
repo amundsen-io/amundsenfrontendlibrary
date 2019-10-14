@@ -10,12 +10,23 @@ import {
   removeBookmarkWatcher
 } from "ducks/bookmark/sagas";
 
+// Notifications
+import { submitNotificationWatcher } from './notification/sagas';
+
 // FeedbackForm
 import { submitFeedbackWatcher } from './feedback/sagas';
-
-// SearchPage
+// PopularTables
 import { getPopularTablesWatcher } from './popularTables/sagas';
-import { searchAllWatcher, searchResourceWatcher } from './search/sagas';
+// SearchPage
+import {
+  loadPreviousSearchWatcher,
+  searchAllWatcher,
+  searchResourceWatcher,
+  setPageIndexWatcher,
+  setResourceWatcher,
+  submitSearchWatcher,
+  urlDidUpdateWatcher
+} from './search/sagas';
 
 // TableDetail
 import { updateTableOwnerWatcher } from './tableMetadata/owners/sagas';
@@ -45,11 +56,19 @@ export default function* rootSaga() {
     getBookmarksForUserWatcher(),
     getBookmarksWatcher(),
     removeBookmarkWatcher(),
+    // Notification
+    submitNotificationWatcher(),
     // FeedbackForm
     submitFeedbackWatcher(),
     // SearchPage
+    loadPreviousSearchWatcher(),
     searchAllWatcher(),
     searchResourceWatcher(),
+    setPageIndexWatcher(),
+    setResourceWatcher(),
+    submitSearchWatcher(),
+    urlDidUpdateWatcher(),
+    // PopularTables
     getPopularTablesWatcher(),
     // Tags
     getAllTagsWatcher(),

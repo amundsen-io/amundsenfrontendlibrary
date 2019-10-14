@@ -1,5 +1,5 @@
 import { GlobalState } from 'ducks/rootReducer';
-import { ResourceType, SendingState } from 'interfaces';
+import { RequestMetadataType, ResourceType, SendingState } from 'interfaces';
 
 const globalState: GlobalState = {
   announcements: {
@@ -30,7 +30,11 @@ const globalState: GlobalState = {
     bookmarksForUser: [],
   },
   feedback: {
-      sendState: SendingState.IDLE,
+    sendState: SendingState.IDLE,
+  },
+  notification: {
+    requestIsOpen: false,
+    sendState: SendingState.IDLE,
   },
   popularTables: [
     {
