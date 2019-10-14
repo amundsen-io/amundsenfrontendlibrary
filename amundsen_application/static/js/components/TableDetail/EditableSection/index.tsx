@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import './styles.scss';
 
-interface EditableSectionProps {
+export interface EditableSectionProps {
   title: string;
 }
 
@@ -34,13 +34,13 @@ export class EditableSection extends React.Component<EditableSectionProps, Edita
 
   render() {
     const childrenWithProps = React.Children.map(this.props.children, child => {
-      if (React.isValidElement(child)) {
-        return React.cloneElement(child, {
-          isEditing: this.state.isEditing,
-          setEditMode: this.setEditMode,
-        });
+      if (!React.isValidElement(child)) {
+        return child;
       }
-      return child;
+      return React.cloneElement(child, {
+        isEditing: this.state.isEditing,
+        setEditMode: this.setEditMode,
+      });
     });
 
     return (
