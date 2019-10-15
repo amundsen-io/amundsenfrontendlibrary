@@ -1,5 +1,5 @@
 import * as React from 'react';
-import moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 
 import './styles.scss';
 
@@ -11,7 +11,7 @@ import {
   WatermarkType
 } from './constants';
 
-interface WatermarkLabelProps {
+export interface WatermarkLabelProps {
   watermarks: Watermark[];
 }
 
@@ -25,14 +25,12 @@ class WatermarkLabel extends React.Component<WatermarkLabelProps> {
   };
 
   getWatermarkValue = (type: WatermarkType) => {
-    let watermark = this.props.watermarks.find((watermark: Watermark) => watermark.watermark_type === type);
-    return watermark && watermark.partition_value;
+    const watermark = this.props.watermarks.find((watermark: Watermark) => watermark.watermark_type === type);
+    return watermark && watermark.partition_value || null;
   };
 
-  renderWatermarkInfo = () => {
-    const low = this.getWatermarkValue(WatermarkType.LOW);
-    const high = this.getWatermarkValue(WatermarkType.HIGH);
-    if (low === undefined && high === undefined) {
+  renderWatermarkInfo = (low: string, high: string) => {
+    if (low === null && high === null) {
       return (
         <div className="body-2">
           { NO_WATERMARK_LINE_1 }
@@ -58,10 +56,13 @@ class WatermarkLabel extends React.Component<WatermarkLabelProps> {
   };
 
   render() {
+    const low = this.getWatermarkValue(WatermarkType.LOW);
+    const high = this.getWatermarkValue(WatermarkType.HIGH);
+
     return (
       <div className="watermark-label">
         <img className="range-icon" src="/static/images/watermark-range.png"/>
-        { this.renderWatermarkInfo() }
+        { this.renderWatermarkInfo(low, high) }
       </div>
     );
   }
