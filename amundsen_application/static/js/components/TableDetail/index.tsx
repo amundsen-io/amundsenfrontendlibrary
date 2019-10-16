@@ -26,7 +26,8 @@ import WriterLink from 'components/TableDetail/WriterLink';
 import TagInput from 'components/Tags/TagInput';
 import { TableMetadata } from 'interfaces/TableMetadata';
 
-import './styles_v2';
+import './styles';
+import { EditableSection } from 'components/TableDetail/EditableSection';
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -40,7 +41,7 @@ export interface DispatchFromProps {
 
 type TableDetailProps = StateFromProps & DispatchFromProps;
 
-class TableDetail_v2 extends React.Component<TableDetailProps & RouteComponentProps<any>> {
+class TableDetail extends React.Component<TableDetailProps & RouteComponentProps<any>> {
   private cluster: string;
   private database: string;
   private displayName: string;
@@ -108,7 +109,7 @@ class TableDetail_v2 extends React.Component<TableDetailProps & RouteComponentPr
                 Datasets &bull;
                 {/* TODO - Add Database Label */}
                 {
-                  data.is_view && <Flag text="Table View" labelStyle="primary" />
+                  data.is_view && <Flag text="Table View" labelStyle="primary"/>
                 }
               </div>
             </div>
@@ -116,7 +117,7 @@ class TableDetail_v2 extends React.Component<TableDetailProps & RouteComponentPr
               <WriterLink tableWriter={ data.table_writer }/>
               <LineageLink tableData={ data }/>
               <SourceLink tableSource={ data.source }/>
-              <ExploreButton tableData={ data } />
+              <ExploreButton tableData={ data }/>
               <DataPreviewButton modalTitle={ this.displayName }/>
             </div>
           </header>
@@ -141,12 +142,12 @@ class TableDetail_v2 extends React.Component<TableDetailProps & RouteComponentPr
 
                 </section>
                 <section className="right-panel">
-                  <div className="section-title title-3">Tags</div>
-                  {/* TODO - Check readOnly value */}
-                  <TagInput readOnly={ data.is_editable }/>
+                  <EditableSection title="Tags">
+                    <TagInput/>
+                  </EditableSection>
 
                   <div className="section-title title-3">Owner</div>
-                  <OwnerEditor readOnly={false} />
+                  <OwnerEditor readOnly={false}/>
 
                   <div className="section-title title-3">Frequent Users</div>
                   <FrequentUsers readers={ data.table_readers }/>
@@ -182,4 +183,4 @@ export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({ getTableData } , dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(TableDetail_v2);
+export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(TableDetail);
