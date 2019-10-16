@@ -178,7 +178,7 @@ describe('SearchBar', () => {
         expect(wrapper.find('form').find('input').props()).toMatchObject({
           'aria-label': SearchBar.defaultProps.placeholder,
           autoFocus: true,
-          className: 'h2 search-bar-input form-control',
+          className: 'h2 large search-bar-input form-control',
           id: 'search-input',
           onChange: wrapper.instance().handleValueChange,
           placeholder: SearchBar.defaultProps.placeholder,
@@ -191,7 +191,7 @@ describe('SearchBar', () => {
         expect(wrapper.find('form').find('input').props()).toMatchObject({
           'aria-label': props.placeholder,
           autoFocus: true,
-          className: 'h2 search-bar-input form-control',
+          className: 'h2 large search-bar-input form-control',
           id: 'search-input',
           onChange: wrapper.instance().handleValueChange,
           placeholder: props.placeholder,
@@ -202,7 +202,7 @@ describe('SearchBar', () => {
       describe('submit button', () => {
         it('renders button with correct props', () => {
           expect(wrapper.find('form').find('button').props()).toMatchObject({
-            className: 'btn btn-flat-icon search-bar-button',
+            className: 'btn btn-flat-icon search-button large',
             type: 'submit',
           });
         });
