@@ -3,6 +3,7 @@ import * as Avatar from 'react-avatar';
 import * as History from 'history';
 
 import { shallow } from 'enzyme';
+import { Dropdown } from 'react-bootstrap';
 
 import { Link, NavLink } from 'react-router-dom';
 import { NavBar, NavBarProps, mapStateToProps } from '../';
@@ -37,6 +38,7 @@ AppConfig.navLinks = [
   }
 ];
 AppConfig.indexUsers.enabled = true;
+AppConfig.mailClientFeatures.feedbackEnabled = true;
 
 import globalState from 'fixtures/globalState';
 
@@ -156,11 +158,35 @@ describe('NavBar', () => {
       });
     });
 
-    it('does not render a Link to the user profile if `indexUsers` is disabled', () => {
-      AppConfig.indexUsers.enabled = false;
-      const { wrapper } = setup();
-      expect(wrapper.find('#nav-bar-avatar-link').exists()).toBe(false)
+    describe('if indexUsers is enabled', () => {
+      it('renders Avatar for loggedInUser inside of user dropdown', () => {
+        expect(wrapper.find(Dropdown).find(Dropdown.Toggle).find(Avatar).props()).toMatchObject({
+          name: props.loggedInUser.display_name,
+          size: 32,
+          round: true,
+        })
+      });
+
+      it('renders user dropdown header', () => {
+        element = wrapper.find(Dropdown).find(Dropdown.Menu).find('.profile-menu-header');
+        expect(element.children().at(0).text()).toEqual(props.loggedInUser.display_name);
+        expect(element.children().at(1).text()).toEqual(props.loggedInUser.email);
+      });
+
+      it('renders My Profile link correctly inside of user dropdown', () => {
+        element = wrapper.find(Dropdown).find(Dropdown.Menu).find(Link).at(0);
+        expect(element.children().text()).toEqual('My Profile');
+        expect(element.props().to).toEqual('/user/test0?source=navbar');
+      });
     });
+
+    describe('if indexUsers is disabled', () => {
+      it('does not render a Link to the user profile', () => {
+        AppConfig.indexUsers.enabled = false;
+        const { wrapper } = setup();
+        expect(wrapper.find('#nav-bar-avatar-link').exists()).toBe(false)
+      });
+    })
   });
 });
 

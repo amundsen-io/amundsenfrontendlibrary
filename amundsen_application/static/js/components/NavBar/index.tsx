@@ -8,8 +8,11 @@ import AppConfig from 'config/config';
 import { LinkConfig } from 'config/config-types';
 import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
+import { Dropdown } from 'react-bootstrap';
 
 import { LoggedInUser } from 'interfaces';
+
+import { feedbackEnabled } from 'config/config-utils';
 
 import Feedback from 'components/Feedback';
 import SearchBar from 'components/common/SearchBar';
@@ -67,14 +70,28 @@ export class NavBar extends React.Component<NavBarProps> {
             { this.renderSearchBar() }
             <div id="nav-bar-right" className="ml-auto nav-bar-right">
               {this.generateNavLinks(AppConfig.navLinks)}
-              <Feedback />
+              {
+                feedbackEnabled() &&
+                <Feedback />
+              }
               {
                 this.props.loggedInUser && AppConfig.indexUsers.enabled &&
-                <Link id="nav-bar-avatar-link" className="nav-bar-avatar-link" to={`/user/${this.props.loggedInUser.user_id}?source=navbar`}>
-                  <div id="nav-bar-avatar" className="nav-bar-avatar">
+                <Dropdown id='user-dropdown' pullRight={true}>
+                  <Dropdown.Toggle noCaret={true} className="avatar-dropdown">
                     <Avatar name={this.props.loggedInUser.display_name} size={32} round={true} />
-                  </div>
-                </Link>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu className='profile-menu'>
+                    <div className='profile-menu-header'>
+                      <div className='title-2'>{this.props.loggedInUser.display_name}</div>
+                      <div>{this.props.loggedInUser.email}</div>
+                    </div>
+                    <li>
+                      <Link id="nav-bar-avatar-link" to={`/user/${this.props.loggedInUser.user_id}?source=navbar`}>
+                        My Profile
+                      </Link>
+                    </li>
+                  </Dropdown.Menu>
+                </Dropdown>
               }
               {
                 this.props.loggedInUser && !AppConfig.indexUsers.enabled &&

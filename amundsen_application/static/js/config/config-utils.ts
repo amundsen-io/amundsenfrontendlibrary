@@ -30,3 +30,17 @@ export function getDatabaseIconClass(databaseId: string): string {
 
   return databaseConfig.iconClass;
 }
+
+/**
+ * Returns whether or not feedback features should be enabled
+ */
+export function feedbackEnabled(): boolean {
+  return AppConfig.mailClientFeatures.feedbackEnabled;
+}
+
+/**
+ * Returns whether or not notification features should be enabled
+ */
+export function notificationsEnabled(): boolean {
+  return AppConfig.mailClientFeatures.notificationsEnabled;
+}

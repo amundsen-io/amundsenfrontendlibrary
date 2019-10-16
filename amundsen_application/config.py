@@ -1,5 +1,8 @@
 import os
-from typing import Dict, Optional, Set  # noqa: F401
+from typing import Callable, Dict, Optional, Set  # noqa: F401
+
+from flask import Flask  # noqa: F401
+
 from amundsen_application.tests.test_utils import get_test_user
 
 
@@ -18,12 +21,20 @@ class Config:
     # Request Timeout Configurations in Seconds
     REQUEST_SESSION_TIMEOUT_SEC = 3
 
+    # Mail Client Features
+    MAIL_CLIENT = None
+    NOTIFICATIONS_ENABLED = False
+
+    # Initialize custom routes
+    INIT_CUSTOM_ROUTES = None  # type: Callable[[Flask], None]
+
 
 class LocalConfig(Config):
     DEBUG = False
     TESTING = False
     LOG_LEVEL = 'DEBUG'
 
+    FRONTEND_PORT = '5000'
     # If installing locally directly from the github source
     # modify these ports if necessary to point to you local search and metadata services
     SEARCH_PORT = '5001'
@@ -31,6 +42,12 @@ class LocalConfig(Config):
 
     # If installing using the Docker bootstrap, this should be modified to the docker host ip.
     LOCAL_HOST = '0.0.0.0'
+
+    FRONTEND_BASE = os.environ.get('FRONTEND_BASE',
+                                   'http://{LOCAL_HOST}:{PORT}'.format(
+                                       LOCAL_HOST=LOCAL_HOST,
+                                       PORT=FRONTEND_PORT)
+                                   )
 
     SEARCHSERVICE_REQUEST_CLIENT = None
     SEARCHSERVICE_REQUEST_HEADERS = None
@@ -57,8 +74,12 @@ class LocalConfig(Config):
     AUTH_USER_METHOD = None  # type: Optional[function]
     GET_PROFILE_URL = None
 
-    MAIL_CLIENT = None
-
 
 class TestConfig(LocalConfig):
     AUTH_USER_METHOD = get_test_user
+    NOTIFICATIONS_ENABLED = True
+
+
+class TestNotificationsDisabledConfig(LocalConfig):
+    AUTH_USER_METHOD = get_test_user
+    NOTIFICATIONS_ENABLED = False
