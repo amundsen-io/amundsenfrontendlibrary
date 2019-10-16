@@ -12,6 +12,8 @@ import { Dropdown } from 'react-bootstrap';
 
 import { LoggedInUser } from 'interfaces';
 
+import { feedbackEnabled } from 'config/config-utils';
+
 import Feedback from 'components/Feedback';
 import SearchBar from 'components/common/SearchBar';
 
@@ -68,7 +70,10 @@ export class NavBar extends React.Component<NavBarProps> {
             { this.renderSearchBar() }
             <div id="nav-bar-right" className="ml-auto nav-bar-right">
               {this.generateNavLinks(AppConfig.navLinks)}
-              <Feedback />
+              {
+                feedbackEnabled() &&
+                <Feedback />
+              }
               {
                 this.props.loggedInUser && AppConfig.indexUsers.enabled &&
                 <Dropdown id='user-dropdown' pullRight={true}>

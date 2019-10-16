@@ -147,11 +147,7 @@ export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): Sa
   updateSearchUrl({
     term: state.search_term,
     resource: state.selectedTab,
-<<<<<<< HEAD
-    index: getPageIndex(state, state.selectedTab),
-=======
     index: getPageIndex(state),
->>>>>>> origin
   });
 };
 export function* loadPreviousSearchWatcher(): SagaIterator {

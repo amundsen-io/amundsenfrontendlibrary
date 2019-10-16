@@ -38,6 +38,7 @@ AppConfig.navLinks = [
   }
 ];
 AppConfig.indexUsers.enabled = true;
+AppConfig.mailClientFeatures.feedbackEnabled = true;
 
 import globalState from 'fixtures/globalState';
 
