@@ -23,7 +23,7 @@ export interface AppConfigCustom {
   google?: GoogleAnalyticsConfig
   indexUsers?: IndexUsersConfig;
   logoPath?: string;
-  mailClientFeatures: MailClientFeaturesConfig;
+  mailClientFeatures?: MailClientFeaturesConfig;
   navLinks?: Array<LinkConfig>;
   tableLineage?: TableLineageConfig;
   tableProfile?: TableProfileConfig;
