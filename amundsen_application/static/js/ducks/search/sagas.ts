@@ -85,11 +85,7 @@ export function* searchResourceWatcher(): SagaIterator {
 
 export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
   const { searchTerm } = action.payload;
-<<<<<<< HEAD
-  yield put(searchAll(searchTerm, ResourceType.table, 0));
-=======
   yield put(searchAll(searchTerm));
->>>>>>> origin
   updateSearchUrl({ term: searchTerm });
 };
 export function* submitSearchWatcher(): SagaIterator {
