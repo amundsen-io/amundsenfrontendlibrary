@@ -9,6 +9,16 @@ img.icon {
   mask-repeat: no-repeat;
   min-width: 24px;
   width: 24px;
+  -webkit-mask-size: 24px 24px;
+  mask-size: 24px 24px;
+
+  &.icon-small {
+    height: 16px;
+    width: 16px;
+    min-width: 16px;
+    -webkit-mask-size: 16px 16px;
+    mask-size: 16px 16px;
+  }
 
   &.icon-color {
     background-color: $brand-color-3;
@@ -51,6 +61,11 @@ img.icon {
     mask-image: url('/static/images/icons/Down.svg');
   }
 
+  &.icon-edit {
+    -webkit-mask-image: url('/static/images/icons/Edit.svg');
+    mask-image: url('/static/images/icons/Edit.svg');
+  }
+
   &.icon-github {
     -webkit-mask-image: url('/static/images/icons/github.svg');
     mask-image: url('/static/images/icons/github.svg');
@@ -69,6 +84,11 @@ img.icon {
   &.icon-mail {
     -webkit-mask-image: url('/static/images/icons/mail.svg');
     mask-image: url('/static/images/icons/mail.svg');
+  }
+
+  &.icon-plus {
+    -webkit-mask-image: url('/static/images/icons/plus.svg');
+    mask-image: url('/static/images/icons/plus.svg');
   }
 
   &.icon-plus-circle {
