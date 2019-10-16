@@ -1,7 +1,7 @@
 # Developer Guide
 
 ## Environment
-Follow the installation instructions in the section [Install standalone application directly from the source](https://github.com/lyft/amundsenfrontendlibrary#install-standalone-application-directly-from-the-spource).
+Follow the installation instructions in the section [Install standalone application directly from the source](https://github.com/lyft/amundsenfrontendlibrary/blob/master/docs/installation.md#install-standalone-application-directly-from-the-source).
 
 Install the javascript development requirements:
 ```bash
@@ -50,4 +50,4 @@ Fix all errors before submitting a PR.
 
 To run specific tests, run `npm run test-nocov -t <regex>`, where `<regex>` is any pattern that matches the names of the test blocks that you want to run.
 
-See our recommendations for writing unit tests [here](https://github.com/lyft/amundsenfrontendlibrary/blob/master/docs/recommended-practices.md).
+See our recommendations for writing unit tests [here](https://github.com/lyft/amundsenfrontendlibrary/blob/master/docs/recommended_practices.md).

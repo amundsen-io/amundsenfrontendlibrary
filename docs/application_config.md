@@ -17,6 +17,16 @@ _TODO: Please add doc_
 
 _TODO: Please add doc_
 
+## Mail Client Features
+Amundsen has two features that leverage the custom mail client -- the feedback tool and notifications.
+
+As these are optional features, our `MailClientFeaturesConfig` can be used to hide/display any UI related to these features:
+1. Set `MailClientFeaturesConfig.feedbackEnabled` to `true` in order to display the `Feedback` component in the UI.
+2. Set `MailClientFeaturesConfig.notificationsEnabled` to `true` in order to display the optional UI for users to request more information about resources on the `TableDetail` page.
+
+For information about how to configure a custom mail
+client, please see this [entry](flask_config.md#mail-client-features) in our flask configuration doc.
+
 ## Navigation Links
 
 _TODO: Please add doc_

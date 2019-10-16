@@ -6,23 +6,27 @@
 
 export interface AppConfig {
   browse: BrowseConfig;
+  editableText: EditableTextConfig;
   google: GoogleAnalyticsConfig;
+  indexUsers: IndexUsersConfig;
   logoPath: string | null;
+  mailClientFeatures: MailClientFeaturesConfig;
   navLinks: Array<LinkConfig>;
   resourceConfig: ResourceConfig;
   tableLineage: TableLineageConfig;
   tableProfile: TableProfileConfig;
-  indexUsers: indexUsersConfig;
 }
 
 export interface AppConfigCustom {
   browse?: BrowseConfig;
+  editableText?: EditableTextConfig;
   google?: GoogleAnalyticsConfig
+  indexUsers?: IndexUsersConfig;
   logoPath?: string;
+  mailClientFeatures: MailClientFeaturesConfig;
   navLinks?: Array<LinkConfig>;
   tableLineage?: TableLineageConfig;
   tableProfile?: TableProfileConfig;
-  indexUsers?: indexUsersConfig;
 }
 
 /**
@@ -70,6 +74,18 @@ interface DatasetConfig {
 }
 
 /**
+ * MailClientFeaturesConfig - Enable/disable UI features with a dependency on
+ *                            configuring a custom mail client.
+ *
+ * feedbackEnabled - Enables the feedback feature UI
+ * notificationsEnabled - Enables any UI related to sending notifications to users
+ */
+interface MailClientFeaturesConfig {
+  feedbackEnabled: boolean;
+  notificationsEnabled: boolean;
+}
+
+/**
  * TableProfileConfig - Customize the "Table Profile" section of the "Table Details" page.
  *
  * isBeta - Adds a "beta" tag to the "Table Profile" section header.
@@ -105,6 +121,23 @@ export interface LinkConfig {
   use_router: boolean;
 }
 
-interface indexUsersConfig {
+/**
+ * IndexUsersConfig - When enabled, the IndexUsers feature will index users as searchable resources. This requires
+ * user objects are ingested via Databuilder
+ *
+ * enabled - Enables/disables this feature in the frontend only
+ */
+interface IndexUsersConfig {
   enabled: boolean;
+}
+
+/**
+ * EditableTextConfig - Configure max length limits for editable fields
+ *
+ * tableDescLength - maxlength for table descriptions
+ * columnDescLength - maxlength for column descriptions
+ */
+interface EditableTextConfig {
+  tableDescLength: number;
+  columnDescLength: number;
 }

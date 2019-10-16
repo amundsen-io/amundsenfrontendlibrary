@@ -30,11 +30,12 @@ import {
   searchResourceFailure,
   searchResourceSuccess, setPageIndex, setResource,
 } from './reducer';
-import { getPageIndex, getSearchState } from './utils';
+import { autoSelectResource, getPageIndex, getSearchState } from './utils';
 import { updateSearchUrl } from 'utils/navigation-utils';
 
 export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
-  const { resource, pageIndex, term } = action.payload;
+  let { resource } = action.payload;
+  const { pageIndex, term } = action.payload;
   const tableIndex = resource === ResourceType.table ? pageIndex : 0;
   const userIndex = resource === ResourceType.user ? pageIndex : 0;
   const dashboardIndex = resource === ResourceType.dashboard ? pageIndex : 0;
@@ -53,7 +54,11 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
       dashboards: dashboardResponse.dashboards || initialState.dashboards,
       isLoading: false,
     };
-    const index = getPageIndex(searchAllResponse, resource);
+    if (resource === undefined) {
+      resource = autoSelectResource(searchAllResponse);
+      searchAllResponse.selectedTab = resource;
+    }
+    const index = getPageIndex(searchAllResponse);
     yield put(searchAllSuccess(searchAllResponse));
     updateSearchUrl({ term, resource, index, }, true);
 
@@ -80,7 +85,11 @@ export function* searchResourceWatcher(): SagaIterator {
 
 export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
   const { searchTerm } = action.payload;
+<<<<<<< HEAD
   yield put(searchAll(searchTerm, ResourceType.table, 0));
+=======
+  yield put(searchAll(searchTerm));
+>>>>>>> origin
   updateSearchUrl({ term: searchTerm });
 };
 export function* submitSearchWatcher(): SagaIterator {
@@ -142,7 +151,11 @@ export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): Sa
   updateSearchUrl({
     term: state.search_term,
     resource: state.selectedTab,
+<<<<<<< HEAD
     index: getPageIndex(state, state.selectedTab),
+=======
+    index: getPageIndex(state),
+>>>>>>> origin
   });
 };
 export function* loadPreviousSearchWatcher(): SagaIterator {

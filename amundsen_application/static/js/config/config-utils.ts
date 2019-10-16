@@ -1,5 +1,6 @@
 import AppConfig from 'config/config';
 
+<<<<<<< HEAD
 export const DEFAULT_DATABASE_ICON_CLASS = 'icon-database icon-color';
 
 /**
@@ -29,4 +30,12 @@ export function getDatabaseIconClass(databaseId: string): string {
   }
 
   return databaseConfig.iconClass;
+=======
+export function feedbackEnabled(): boolean {
+  return AppConfig.mailClientFeatures.feedbackEnabled;
+}
+
+export function notificationsEnabled(): boolean {
+  return AppConfig.mailClientFeatures.notificationsEnabled;
+>>>>>>> origin
 }
