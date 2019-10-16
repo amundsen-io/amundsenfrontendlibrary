@@ -109,7 +109,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 Datasets &bull;
                 {/* TODO - Add Database Label */}
                 {
-                  data.is_view && <Flag text="Table View" labelStyle="primary" />
+                  data.is_view && <Flag text="Table View" labelStyle="primary"/>
                 }
               </div>
             </div>
@@ -117,7 +117,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               <WriterLink tableWriter={ data.table_writer }/>
               <LineageLink tableData={ data }/>
               <SourceLink tableSource={ data.source }/>
-              <ExploreButton tableData={ data } />
+              <ExploreButton tableData={ data }/>
               <DataPreviewButton modalTitle={ this.displayName }/>
             </div>
           </header>
@@ -143,11 +143,11 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 </section>
                 <section className="right-panel">
                   <EditableSection title="Tags">
-                    <TagInput />
+                    <TagInput/>
                   </EditableSection>
 
                   <div className="section-title title-3">Owner</div>
-                  <OwnerEditor readOnly={false} />
+                  <OwnerEditor readOnly={false}/>
 
                   <div className="section-title title-3">Frequent Users</div>
                   <FrequentUsers readers={ data.table_readers }/>

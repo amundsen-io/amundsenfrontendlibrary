@@ -60,5 +60,10 @@ describe("EditableSection", () => {
       });
     });
 
+    it("renders children as-is for non-react elements", () => {
+      const child = "non-react-child";
+      const { wrapper } = setup(null, child);
+      expect(wrapper.childAt(1).text()).toBe(child);
+    });
   });
 });
