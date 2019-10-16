@@ -5,7 +5,8 @@ import './styles.scss';
 
 import { Watermark } from 'interfaces';
 import {
-  NO_WATERMARK_LINE_1, NO_WATERMARK_LINE_2,
+  HIGH_WATERMARK_LABEL,
+  NO_WATERMARK_LINE_1, NO_WATERMARK_LINE_2, LOW_WATERMARK_LABEL,
   WATERMARK_DISPLAY_FORMAT,
   WATERMARK_INPUT_FORMAT,
   WatermarkType
@@ -43,8 +44,9 @@ class WatermarkLabel extends React.Component<WatermarkLabelProps> {
     return (
       <>
         <div className="range-labels body-2">
-          From: <br/>
-          To:
+          { LOW_WATERMARK_LABEL }
+          <br/>
+          { HIGH_WATERMARK_LABEL }
         </div>
         <div className="range-dates body-2">
           { low && this.formatWatermarkDate(low) }

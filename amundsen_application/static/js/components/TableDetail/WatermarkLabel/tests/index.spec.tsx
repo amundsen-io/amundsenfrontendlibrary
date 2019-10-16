@@ -96,6 +96,10 @@ describe('WatermarkLabel', () => {
       const low = props.watermarks[0].partition_value;
       const high = props.watermarks[1].partition_value;
       expect(renderWatermarkInfoSpy).toHaveBeenCalledWith(low, high);
-    })
+    });
+
+    it('renders the watermark-range image', () => {
+      expect(wrapper.find('img.range-icon').exists()).toBe(true);
+    });
   });
 });
