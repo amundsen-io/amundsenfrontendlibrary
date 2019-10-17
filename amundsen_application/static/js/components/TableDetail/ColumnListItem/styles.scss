@@ -19,10 +19,10 @@ $divider: #E7E7EF;
       flex-basis: 100px;
     }
     .badges {
-
+      // Placeholder
     }
     .actions {
-
+      // Placeholder
     }
   }
 
@@ -47,19 +47,26 @@ $divider: #E7E7EF;
       .column-stat {
         display: flex;
         border-top: 1px solid $divider;
-        border-bottom: 1px solid $divider;
         line-height: 32px;
 
         &:nth-child(odd) {
-          background-color: $background-secondary;
+          //background-color: $background-secondary;
+          // TODO - #FCFCFF is used in mocks but is not part of our color palette. Follow up with design about random colors
+          background-color: #FCFCFF;
+        }
+        &:last-child {
+          border-bottom: 1px solid $divider;
         }
 
+
         .stat-name {
-          flex-basis: 50%;
+          flex: 100px 1 0;
+          padding-left: 4px;
+          text-transform: lowercase;
         }
         .stat-value {
-          flex-basis: 50%;
-          flex-grow: 1;
+          flex: 100px 1 1;
+          padding-right: 4px;
         }
       }
     }
