@@ -1,12 +1,12 @@
 import * as React from 'react';
-import moment from 'moment-timezone';
 
 import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableText';
 import { logClick } from 'ducks/utilMethods';
-import { TableColumn, TableColumnStats } from 'interfaces/index';
+import { TableColumn } from 'interfaces/index';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+import ColumnStats from 'components/TableDetail/ColumnStats';
 
 interface ColumnListItemProps {
   data?: TableColumn;
@@ -46,48 +46,9 @@ class ColumnListItem extends React.Component<ColumnListItemProps, ColumnListItem
     e.stopPropagation();
   };
 
-  formatDate = (unixEpochSeconds) => {
-    return moment(unixEpochSeconds * 1000).format("MMM DD, YYYY");
-  };
-
-  getStatsInfoText = () => {
-    const metadata = this.props.data;
-    const isExpandable = metadata.stats && metadata.stats.length > 0;
-    const startEpoch = Math.min(...metadata.stats.map(s => parseInt(s.start_epoch, 10)));
-    const endEpoch = Math.max(...metadata.stats.map(s => parseInt(s.end_epoch, 10)));
-    const startDate = isExpandable ? this.formatDate(startEpoch) : null;
-    const endDate = isExpandable ? this.formatDate(endEpoch) : null;
-
-    let infoText = 'Stats reflect data collected';
-    if (startDate && endDate) {
-      if (startDate === endDate) {
-        infoText = `${infoText} on ${startDate} only. (daily partition)`;
-      } else {
-        infoText = `${infoText} between ${startDate} and ${endDate}.`;
-      }
-    } else {
-      infoText = `${infoText} over a recent period of time.`;
-    }
-    return infoText;
-  };
-
-  renderColumnStat = (entry: TableColumnStats) => {
-    return (
-      <div className="column-stat" key={entry.stat_type}>
-        <div className="stat-name body-3">
-          {entry.stat_type.toUpperCase()}
-        </div>
-        <div className="stat-value">
-          {entry.stat_val}
-        </div>
-      </div>
-    )
-  };
-
 
   render() {
     const metadata = this.props.data;
-    const infoText = this.getStatsInfoText();
     return (
       <li className="list-group-item" onClick={ this.toggleExpand }>
         <div className="column-list-item">
@@ -107,10 +68,10 @@ class ColumnListItem extends React.Component<ColumnListItemProps, ColumnListItem
               { metadata.type ? metadata.type.toLowerCase() : 'null' }
             </div>
             <div className="badges">
-
+              {/* Placeholder */}
             </div>
             <div className="actions">
-
+              {/* Placeholder */}
             </div>
           </section>
           {
@@ -125,31 +86,7 @@ class ColumnListItem extends React.Component<ColumnListItemProps, ColumnListItem
                   value={ metadata.description }
                 />
               </span>
-              {
-                metadata.stats.length > 0 &&
-                <div className="stat-collection-info">
-                  <span className="title-3">Column Statistics </span>
-                  { infoText }
-               </div>
-              }
-              <div className="column-stats">
-                <div className="column-stats-column">
-                  {
-                    metadata.stats.map((stat, index) => {
-                      if (index % 2 === 0)
-                        return this.renderColumnStat(stat);
-                    })
-                  }
-                </div>
-                <div className="column-stats-column">
-                  {
-                    metadata.stats.map((stat, index) => {
-                      if (index % 2 === 1)
-                        return this.renderColumnStat(stat);
-                    })
-                  }
-                </div>
-              </div>
+              <ColumnStats stats={ metadata.stats } />
             </section>
           }
         </div>
