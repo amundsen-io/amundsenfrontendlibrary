@@ -55,6 +55,17 @@ describe('SearchBar', () => {
     });
   });
 
+  describe('clearSearchTerm', () => {
+    it('sets the searchTerm to an empty string', () => {
+      setStateSpy.mockClear();
+      const initialSearchTerm = 'non empty search term';
+      const { wrapper } = setup({ searchTerm: initialSearchTerm});
+      expect(wrapper.state().searchTerm).toBe(initialSearchTerm);
+      wrapper.instance().clearSearchTerm();
+      expect(setStateSpy).toHaveBeenCalledWith({ searchTerm: '' });
+    });
+  });
+
   describe('handleValueChange', () => {
     it('calls setState on searchTerm with event.target.value.toLowerCase()', () => {
       const { props, wrapper } = setup();
@@ -224,6 +235,22 @@ describe('SearchBar', () => {
 
       it('renders correct text', () => {
         expect(wrapper.children().at(1).text()).toEqual(wrapper.state().subText);
+      });
+    });
+
+    describe('render with small mode', () => {
+      const { wrapper, props } = setup({ size: "small" });
+
+      it('does not render a subtext', () => {
+        const subtext = wrapper.find('subtext');
+        expect(subtext.exists()).toBe(false);
+      });
+
+      it('renders a close button', () => {
+        const closeButton = wrapper.find('button.clear-button');
+        expect(closeButton.exists()).toBe(true);
+        const buttonProps = closeButton.props();
+        expect(buttonProps.onClick).toEqual(wrapper.instance().clearSearchTerm);
       });
     });
   });

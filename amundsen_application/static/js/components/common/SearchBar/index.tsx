@@ -63,7 +63,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     return { searchTerm };
   }
 
-  clearSearchTerm = (event: React.SyntheticEvent<HTMLButtonElement>) : void => {
+  clearSearchTerm = () : void => {
     this.setState({ searchTerm: '' });
   };
 
