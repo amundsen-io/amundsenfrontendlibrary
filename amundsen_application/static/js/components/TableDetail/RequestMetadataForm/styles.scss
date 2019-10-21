@@ -10,7 +10,7 @@
   z-index: 6;
 
   &.expanded {
-    background-color: white;
+    background-color: $white;
     height: auto;
     min-height: 450px;
     padding: 32px;

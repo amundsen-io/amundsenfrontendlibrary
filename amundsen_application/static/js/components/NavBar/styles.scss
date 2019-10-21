@@ -5,13 +5,13 @@
 
   background: $nav-bar-color;
   padding: 0px 32px 1px 32px;
-  color: white;
+  color: $white;
   display: flex;
   flex-direction: row;
   align-items: center;
 
   .title-3 {
-    color: white;
+    color: $white;
   }
 
   a {
@@ -19,13 +19,13 @@
     height: 100%;
     line-height: 32px;
     text-decoration: none;
-    color: white;
+    color: $white;
     padding-left: 8px;
     padding-right: 8px;
 
     &:hover:not(.nav-bar-avatar-link),
     &.active {
-      border-bottom: 4px solid white;
+      border-bottom: 4px solid $white;
     }
 
     &.nav-bar-avatar-link {
@@ -42,7 +42,7 @@
           /* override border-bottom style */
           border-bottom: none;
           /* circular background */
-          background-color: white;
+          background-color: $white;
           border-radius: 50%;
         }
       }

@@ -27,7 +27,7 @@
         &:focus {
           background-color: $brand-color-4;
           border-color: $brand-color-4;
-          color: white;
+          color: $white;
           z-index: 0;
         }
       }

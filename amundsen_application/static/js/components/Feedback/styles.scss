@@ -6,14 +6,14 @@
 
   img {
     margin: 4px;
-    background-color: white;
+    background-color: $white;
   }
 
   &:hover,
   &:focus,
   &.is-open {
     border-radius: 50%;
-    border: 6px solid white;
+    border: 6px solid $white;
 
     img {
       margin: -2px 0 0 -2px;
@@ -31,7 +31,7 @@
   right: 76px;
   z-index: 2;
 
-  background-color: white;
+  background-color: $white;
   border-radius: 6px;
   height: auto;
   min-height: 450px;
