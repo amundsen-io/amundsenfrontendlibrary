@@ -1,11 +1,18 @@
 import * as React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { TABLE_RESOURCE_TITLE, USER_RESOURCE_TITLE } from 'components/SearchPage/constants';
 import AppConfig from 'config/config';
 import { GlobalState } from 'ducks/rootReducer';
-import { DashboardSearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
+import {
+  DashboardSearchResults,
+  SetResourceRequest,
+  TableSearchResults,
+  UserSearchResults
+} from 'ducks/search/types';
 import { ResourceType } from 'interfaces/Resources';
+import { setResource } from 'ducks/search/reducer';
 
 export interface StateFromProps {
   selectedTab: ResourceType,
@@ -14,11 +21,11 @@ export interface StateFromProps {
   users: UserSearchResults;
 }
 
-export interface OwnProps {
-  onChange: (resource: ResourceType) => void;
+export interface DispatchFromProps {
+  setResource: (resource: ResourceType) => SetResourceRequest;
 }
 
-export type ResourceSelectorProps = StateFromProps & OwnProps;
+export type ResourceSelectorProps = StateFromProps & DispatchFromProps;
 
 interface ResourceOptionConfig {
   type: ResourceType;
@@ -32,7 +39,7 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
   }
 
   onChange = (event) => {
-    this.props.onChange(event.target.value);
+    this.props.setResource(event.target.value);
   };
 
   renderRadioOption = (option: ResourceOptionConfig, index: number) => {
@@ -79,17 +86,17 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
   }
 }
 
-export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
+export const mapStateToProps = (state: GlobalState) => {
   return {
     selectedTab: state.search.selectedTab,
     tables: state.search.tables,
     users: state.search.users,
     dashboards: state.search.dashboards,
-    onChange: ownProps.onChange
   };
 };
 
+export const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators({ setResource }, dispatch);
+};
 
-// TODO - use 'mapDispatchToProps' to map the resource-change action instead of using the onChange prop.
-
-export default connect<StateFromProps, null, OwnProps>(mapStateToProps)(ResourceSelector);
+export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(ResourceSelector);

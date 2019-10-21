@@ -33,8 +33,6 @@ import {
   SEARCH_ERROR_MESSAGE_INFIX,
   SEARCH_ERROR_MESSAGE_PREFIX,
   SEARCH_ERROR_MESSAGE_SUFFIX,
-  SEARCH_INFO_TEXT_BASE,
-  SEARCH_INFO_TEXT_TABLE_SUFFIX,
   SEARCH_SOURCE_NAME,
   TABLE_RESOURCE_TITLE,
   USER_RESOURCE_TITLE,
@@ -87,15 +85,6 @@ export class SearchPage extends React.Component<SearchPageProps> {
     return null;
   };
 
-  generateInfoText = (tab: ResourceType): string => {
-    switch (tab) {
-      case ResourceType.table:
-        return `${SEARCH_INFO_TEXT_BASE}${SEARCH_INFO_TEXT_TABLE_SUFFIX}`;
-      default:
-        return SEARCH_INFO_TEXT_BASE;
-    }
-  };
-
   generateTabLabel = (tab: ResourceType): string => {
     switch (tab) {
       case ResourceType.table:
@@ -111,7 +100,6 @@ export class SearchPage extends React.Component<SearchPageProps> {
     const { searchTerm } = this.props;
     const { page_index, total_results } = results;
     const startIndex = (RESULTS_PER_PAGE * page_index) + 1;
-    const endIndex = RESULTS_PER_PAGE * (page_index + 1);
     const tabLabel = this.generateTabLabel(tab);
 
     // TODO - Move error messages into Tab Component
@@ -137,8 +125,6 @@ export class SearchPage extends React.Component<SearchPageProps> {
       )
     }
 
-    const title =`${startIndex}-${Math.min(endIndex, total_results)} of ${total_results} results`;
-    const infoText = this.generateInfoText(tab);
     return (
       <div className="search-list-container">
         <ResourceList
@@ -150,7 +136,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
           onPagination={ this.props.setPageIndex }
         />
       </div>
-      );
+    );
   };
 
   renderContent = () => {
@@ -165,7 +151,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
     const innerContent = (
       <div className="search-page">
         <SearchPanel>
-          <ResourceSelector onChange={ this.props.setResource } />
+          <ResourceSelector/>
         </SearchPanel>
         <div className="search-results">
           { this.renderContent() }

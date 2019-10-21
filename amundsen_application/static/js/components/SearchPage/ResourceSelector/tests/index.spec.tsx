@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { mapStateToProps, ResourceSelector, ResourceSelectorProps} from '../';
+import {
+  mapDispatchToProps,
+  mapStateToProps,
+  ResourceSelector,
+  ResourceSelectorProps } from '../';
 import { TABLE_RESOURCE_TITLE, USER_RESOURCE_TITLE } from 'components/SearchPage/constants';
 
 import AppConfig from 'config/config';
@@ -16,19 +20,35 @@ describe('ResourceSelector', () => {
       tables: globalState.search.tables,
       users: globalState.search.users,
       dashboards: globalState.search.dashboards,
-      onChange: jest.fn(),
+      setResource: jest.fn(),
       ...propOverrides
     };
     const wrapper = shallow<ResourceSelector>(<ResourceSelector {...props} />);
     return { props, wrapper };
   };
 
-  describe('onChange', () => {
-    // TODO - placeholder as I expect the `onChange` to disappear once we use redux for search state actions
-  });
-
   describe('renderRadioOption', () => {
-    // TODO - placeholder as I expect the radio buttons logic to change
+    const { wrapper, props } = setup();
+    const instance = wrapper.instance();
+    const radioConfig = {
+      type: ResourceType.table,
+      label: TABLE_RESOURCE_TITLE,
+      count: 10,
+    };
+    const content = shallow(instance.renderRadioOption(radioConfig, 0));
+
+    it('renders an input with correct properties', () => {
+      const inputProps = content.find('input').props();
+      expect(inputProps.type).toEqual("radio");
+      expect(inputProps.name).toEqual("resource");
+      expect(inputProps.value).toEqual(radioConfig.type);
+      expect(inputProps.checked).toEqual(props.selectedTab === radioConfig.type);
+      expect(inputProps.onChange).toEqual(instance.onChange);
+    });
+
+    it('renders with the correct labels', () => {
+      expect(content.text()).toEqual(`${radioConfig.label}${radioConfig.count}`)
+    });
   });
 
   describe('render', () => {
@@ -82,11 +102,9 @@ describe('ResourceSelector', () => {
 
 describe('mapStateToProps', () => {
   let result;
-  let ownProps;
 
   beforeAll(() => {
-    ownProps = { onChange: jest.fn() };
-    result = mapStateToProps(globalState, ownProps);
+    result = mapStateToProps(globalState);
   });
 
   it('sets selectedTab on the props', () => {
@@ -104,8 +122,17 @@ describe('mapStateToProps', () => {
   it('sets dashboards on the props', () => {
     expect(result.dashboards).toEqual(globalState.search.dashboards);
   });
+});
 
-  it('sets onChange on the props', () => {
-    expect(result.onChange).toEqual(ownProps.onChange);
+describe('mapDispatchToProps', () => {
+  let result;
+  let dispatch;
+  beforeAll(() => {
+    dispatch = jest.fn(() => Promise.resolve());
+    result = mapDispatchToProps(dispatch);
+  });
+
+  it('sets setResource on the props', () => {
+    expect(result.setResource).toBeInstanceOf(Function);
   });
 });

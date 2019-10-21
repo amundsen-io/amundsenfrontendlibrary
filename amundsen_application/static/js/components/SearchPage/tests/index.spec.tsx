@@ -13,8 +13,6 @@ import {
   SEARCH_ERROR_MESSAGE_INFIX,
   SEARCH_ERROR_MESSAGE_PREFIX,
   SEARCH_ERROR_MESSAGE_SUFFIX,
-  SEARCH_INFO_TEXT_BASE,
-  SEARCH_INFO_TEXT_TABLE_SUFFIX,
   SEARCH_SOURCE_NAME,
   TABLE_RESOURCE_TITLE,
   USER_RESOURCE_TITLE,
@@ -101,24 +99,6 @@ describe('SearchPage', () => {
     });
   });
 
-  describe('generateInfoText', () => {
-    let wrapper;
-    beforeAll(() => {
-      wrapper = setup().wrapper;
-    });
-
-    it('returns correct text for ResourceType.table', () => {
-      const text = wrapper.instance().generateInfoText(ResourceType.table);
-      const expectedText = `${SEARCH_INFO_TEXT_BASE}${SEARCH_INFO_TEXT_TABLE_SUFFIX}`;
-      expect(text).toEqual(expectedText);
-    });
-
-    it('returns correct text for the default case', () => {
-      const text = wrapper.instance().generateInfoText(ResourceType.user);
-      expect(text).toEqual(SEARCH_INFO_TEXT_BASE);
-    });
-  });
-
   describe('generateTabLabel', () => {
     let wrapper;
     beforeAll(() => {
@@ -181,7 +161,6 @@ describe('SearchPage', () => {
         props = setupResult.props;
         wrapper = setupResult.wrapper;
         generateInfoTextMockResults = 'test info text';
-        jest.spyOn(wrapper.instance(), 'generateInfoText').mockImplementation(() => generateInfoTextMockResults);
         content = shallow(wrapper.instance().getTabContent(props.tables, ResourceType.table));
       });
 
@@ -245,6 +224,15 @@ describe('SearchPage', () => {
       shallow(wrapper.instance().renderSearchResults());
       expect(getTabContentSpy).toHaveBeenCalledWith(props.dashboards, ResourceType.dashboard);
     });
+
+    it('renders null for an invalid selectedTab', () => {
+      const { props, wrapper } = setup({
+        selectedTab: null
+      });
+      const renderedSearchResults = wrapper.instance().renderSearchResults();
+      expect(renderedSearchResults).toBe(null);
+    });
+
   });
 
   describe('render', () => {
