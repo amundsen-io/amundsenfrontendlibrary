@@ -50,6 +50,20 @@ describe('ResourceSelector', () => {
       expect(content.text()).toEqual(`${radioConfig.label}${radioConfig.count}`)
     });
   });
+  
+  describe('onChange', () => {
+    it('calls setResource with the appropriate resource type', () => {
+      const mockEvent = {
+        target: {
+          value: ResourceType.table,
+        }
+      };
+      const { wrapper, props } = setup();
+      const setResourceSpy = jest.spyOn(props, "setResource")
+      wrapper.instance().onChange(mockEvent);
+      expect(setResourceSpy).toHaveBeenCalledWith(mockEvent.target.value)
+    });
+  });
 
   describe('render', () => {
     let props;
