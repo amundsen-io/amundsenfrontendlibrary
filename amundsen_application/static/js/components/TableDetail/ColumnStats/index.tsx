@@ -68,16 +68,18 @@ class ColumnStats extends React.Component<ColumnStatsProps> {
           <div className="column-stats-column">
             {
               stats.map((stat, index) => {
-              if (index % 2 === 0)
-                return this.renderColumnStat(stat);
+                if (index % 2 === 0) {
+                  return this.renderColumnStat(stat);
+                }
               })
             }
           </div>
           <div className="column-stats-column">
             {
               this.props.stats.map((stat, index) => {
-                if (index % 2 === 1)
+                if (index % 2 === 1) {
                   return this.renderColumnStat(stat);
+                }
               })
             }
           </div>
