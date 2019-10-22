@@ -13,6 +13,7 @@
    override default react-select style classes.
    using !important as a temporary workaround in places where a compiled class
    is taking precendence,
+<<<<<<< HEAD
   */
   .basic-multi-select {
     .amundsen__control {
@@ -23,6 +24,29 @@
       .amundsen__control--is-focused:hover {
         border: none !important;
         box-shadow: none !important;
+=======
+*/
+.tag-input .basic-multi-select {
+  .amundsen__control {
+    min-height: 32px;
+
+    &,
+    .amundsen__control--is-focused,
+    .amundsen__control--is-focused:hover  {
+       border: none !important;
+       box-shadow: none !important;
+    }
+
+    .amundsen__multi-value {
+      background-color: $tag-bg !important;
+      border-radius: 4px;
+
+      .amundsen__multi-value__label {
+        border-radius: 4px 0 0 4px;
+        color: $text-primary;
+        line-height: 14px;
+        padding: 8px;
+>>>>>>> master
       }
 
       .amundsen__multi-value {
@@ -30,6 +54,7 @@
         border-radius: 4px;
         margin: 8px 8px 0 0;
 
+<<<<<<< HEAD
         .amundsen__multi-value__label {
           border-radius: 4px 0 0 4px;
           color: $text-dark;
@@ -46,6 +71,12 @@
             background-color: $gray-light !important;
             color: $text-dark;
           }
+=======
+        &:hover,
+        &:focus {
+          background-color: $tag-bg-hover !important;
+          color: $text-primary;
+>>>>>>> master
         }
       }
     }

@@ -18,6 +18,10 @@ const configDefault: AppConfig = {
     enabled: false,
   },
   logoPath: null,
+  mailClientFeatures: {
+    feedbackEnabled: false,
+    notificationsEnabled: false,
+  },
   navLinks: [
     {
       label: "Announcements",
@@ -32,9 +36,31 @@ const configDefault: AppConfig = {
       use_router: true,
     }
   ],
+<<<<<<< HEAD
   mailClientFeatures: {
     feedbackEnabled: false,
     notificationsEnabled: false,
+=======
+  resourceConfig: {
+    datasets: {
+      'bigquery': {
+        displayName: 'BigQuery',
+        iconClass: 'icon-bigquery',
+      },
+      'hive': {
+        displayName: 'Hive',
+        iconClass: 'icon-hive',
+      },
+      'postgres': {
+        displayName: 'Postgres',
+        iconClass: 'icon-postgres',
+      },
+      'redshift': {
+        displayName: 'Redshift',
+        iconClass: 'icon-redshift',
+      },
+    },
+>>>>>>> master
   },
   tableLineage: {
     iconPath: 'PATH_TO_ICON',

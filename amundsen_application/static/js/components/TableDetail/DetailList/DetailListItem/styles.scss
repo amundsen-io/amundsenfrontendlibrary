@@ -6,8 +6,8 @@
   flex-direction: column;
   /* tmp fixes until we refactor/settle on styles */
   cursor: default;
-  border-top-color: $gray-lighter !important;
-  border-bottom-color: $gray-lighter !important;
+  border-top-color: $stroke !important;
+  border-bottom-color: $stroke !important;
   background-color: transparent !important;
   padding: 10px 4px;
 
@@ -61,8 +61,11 @@
       cursor: pointer;
 
       &:hover {
+<<<<<<< HEAD
         background-image: linear-gradient($gray-lightest, $gray-lightest, white);
 
+=======
+>>>>>>> master
         .icon {
           background-color: $brand-color-4;
         }
@@ -84,7 +87,7 @@
     }
 
     .stat-collection-info {
-      color: $text-medium;
+      color: $text-secondary;
       font-style: italic;
       margin-top: 4px;
     }
@@ -107,7 +110,11 @@
       padding: 4px;
       margin-right: 5px;
       .icon {
+<<<<<<< HEAD
         background-color: $gray-light;
+=======
+        background-color: $stroke;
+>>>>>>> master
         height: 14px;
         -webkit-mask-size: 14px;
         mask-size: 14px;
@@ -116,9 +123,15 @@
       }
       &:hover,
       &:focus {
+<<<<<<< HEAD
         background-color: $gray-lightest;
         .icon {
           background-color: $gray-base;
+=======
+        background-color: $body-bg-secondary;
+        .icon {
+          background-color: $body-bg-dark;
+>>>>>>> master
         }
       }
     }

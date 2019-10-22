@@ -1,5 +1,8 @@
 import os
-from typing import Dict, Optional, Set  # noqa: F401
+from typing import Callable, Dict, Optional, Set  # noqa: F401
+
+from flask import Flask  # noqa: F401
+
 from amundsen_application.tests.test_utils import get_test_user
 
 
@@ -22,6 +25,12 @@ class Config:
     MAIL_CLIENT = None
     NOTIFICATIONS_ENABLED = False
 
+<<<<<<< HEAD
+=======
+    # Initialize custom routes
+    INIT_CUSTOM_ROUTES = None  # type: Callable[[Flask], None]
+
+>>>>>>> master
 
 class LocalConfig(Config):
     DEBUG = False

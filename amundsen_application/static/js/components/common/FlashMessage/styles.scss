@@ -1,10 +1,17 @@
 @import 'variables';
 
 .flash-message {
+<<<<<<< HEAD
   background-color: #292936; // $gray100
   border-radius: 6px;
   display: flex;
   color: white;
+=======
+  background-color: $body-bg-dark;
+  border-radius: 6px;
+  display: flex;
+  color: $white;
+>>>>>>> master
   height: 56px;
   padding: $spacer-2 $spacer-1;
 

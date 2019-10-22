@@ -5,7 +5,12 @@
 @import 'dropdowns';
 @import 'fonts';
 @import 'icons';
+<<<<<<< HEAD
 @import 'layouts';
+=======
+@import 'inputs';
+@import 'labels';
+>>>>>>> master
 @import 'list-group';
 @import 'pagination';
 @import 'popovers';
@@ -40,6 +45,7 @@ form {
   margin-bottom: 0;
 }
 
+<<<<<<< HEAD
 input {
   &::-webkit-input-placeholder,
   &::-moz-placeholder,
@@ -66,6 +72,8 @@ textarea {
   padding: 10px;
 }
 
+=======
+>>>>>>> master
 .truncated {
   white-space: nowrap;
   overflow: hidden;

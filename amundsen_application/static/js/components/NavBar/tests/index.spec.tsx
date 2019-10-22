@@ -1,11 +1,16 @@
 import * as React from 'react';
 import * as Avatar from 'react-avatar';
+import * as History from 'history';
 
 import { shallow } from 'enzyme';
 import { Dropdown } from 'react-bootstrap';
 
 import { Link, NavLink } from 'react-router-dom';
 import { NavBar, NavBarProps, mapStateToProps } from '../';
+import { getMockRouterProps } from 'fixtures/mockRouter';
+
+import Feedback from 'components/Feedback';
+import SearchBar from 'components/common/SearchBar';
 
 import { logClick } from "ducks/utilMethods";
 jest.mock('ducks/utilMethods', () => {
@@ -33,14 +38,16 @@ AppConfig.navLinks = [
   }
 ];
 AppConfig.indexUsers.enabled = true;
-
+AppConfig.mailClientFeatures.feedbackEnabled = true;
 
 import globalState from 'fixtures/globalState';
 
 describe('NavBar', () => {
-  const setup = (propOverrides?: Partial<NavBarProps>) => {
+  const setup = (propOverrides?: Partial<NavBarProps>, location?: Partial<History.Location>) => {
+    const routerProps = getMockRouterProps<any>(null, location);
     const props: NavBarProps = {
       loggedInUser: globalState.user.loggedInUser,
+      ...routerProps,
       ...propOverrides
     };
     const wrapper = shallow<NavBar>(<NavBar {...props} />);
@@ -74,15 +81,34 @@ describe('NavBar', () => {
     });
   });
 
+  describe('renderSearchBar', () => {
+    it('returns small SearchBar when not on home page', () => {
+      const { props, wrapper } = setup(null, { pathname: "/search" });
+      const searchBar = shallow(wrapper.instance().renderSearchBar()).find(SearchBar);
+      expect(searchBar.exists()).toBe(true);
+      expect(searchBar.props()).toMatchObject({
+        size: "small",
+      });
+    });
+
+    it('returns null if conditions to render search bar are not met', () => {
+      const { props, wrapper } = setup(null, { pathname: "/" });
+      expect(wrapper.instance().renderSearchBar()).toBe(null);
+    });
+  });
+
   describe('render', () => {
     let element;
     let props;
     let wrapper;
+    let renderSearchBarSpy;
     const spy = jest.spyOn(NavBar.prototype, 'generateNavLinks');
     beforeAll(() => {
       const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
+      renderSearchBarSpy = jest.spyOn(wrapper.instance(), 'renderSearchBar');
+      wrapper.instance().forceUpdate();
     });
 
     it('renders img with AppConfig.logoPath', () => {
@@ -108,6 +134,48 @@ describe('NavBar', () => {
       expect(spy).toHaveBeenCalledWith(AppConfig.navLinks);
     });
 
+<<<<<<< HEAD
+    describe('if indexUsers is enabled', () => {
+      it('renders Avatar for loggedInUser inside of user dropdown', () => {
+        expect(wrapper.find(Dropdown).find(Dropdown.Toggle).find(Avatar).props()).toMatchObject({
+          name: props.loggedInUser.display_name,
+          size: 32,
+          round: true,
+        })
+      });
+=======
+    it('calls renderSearchBar', () => {
+      expect(renderSearchBarSpy).toHaveBeenCalled();
+    });
+
+    it('renders Feedback component', () => {
+      expect(wrapper.find(Feedback).exists()).toBe(true);
+    });
+
+    it('renders Avatar for loggedInUser', () => {
+      expect(wrapper.find(Avatar).props()).toMatchObject({
+        name: props.loggedInUser.display_name,
+        size: 32,
+        round: true,
+      })
+    });
+>>>>>>> master
+
+      it('renders user dropdown header', () => {
+        element = wrapper.find(Dropdown).find(Dropdown.Menu).find('.profile-menu-header');
+        expect(element.children().at(0).text()).toEqual(props.loggedInUser.display_name);
+        expect(element.children().at(1).text()).toEqual(props.loggedInUser.email);
+      });
+
+      it('renders My Profile link correctly inside of user dropdown', () => {
+        element = wrapper.find(Dropdown).find(Dropdown.Menu).find(Link).at(0);
+        expect(element.children().text()).toEqual('My Profile');
+        expect(element.props().to).toEqual('/user/test0?source=navbar');
+      });
+    });
+
+<<<<<<< HEAD
+=======
     describe('if indexUsers is enabled', () => {
       it('renders Avatar for loggedInUser inside of user dropdown', () => {
         expect(wrapper.find(Dropdown).find(Dropdown.Toggle).find(Avatar).props()).toMatchObject({
@@ -130,6 +198,7 @@ describe('NavBar', () => {
       });
     });
 
+>>>>>>> master
     describe('if indexUsers is disabled', () => {
       it('does not render a Link to the user profile', () => {
         AppConfig.indexUsers.enabled = false;
