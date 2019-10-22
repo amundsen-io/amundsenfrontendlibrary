@@ -28,6 +28,7 @@ class Config:
     # Initialize custom routes
     INIT_CUSTOM_ROUTES = None  # type: Callable[[Flask], None]
 
+
 class LocalConfig(Config):
     DEBUG = False
     TESTING = False
