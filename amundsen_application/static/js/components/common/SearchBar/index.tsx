@@ -154,8 +154,4 @@ export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({ submitSearch }, dispatch);
 };
 
-<<<<<<< HEAD:amundsen_application/static/js/components/SearchPage/SearchBar/index.tsx
-export default connect<StateFromProps>(mapStateToProps, mapDispatchToProps)(SearchBar);
-=======
 export default connect<StateFromProps, DispatchFromProps, OwnProps>(mapStateToProps, mapDispatchToProps)(SearchBar);
->>>>>>> master:amundsen_application/static/js/components/common/SearchBar/index.tsx

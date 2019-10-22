@@ -17,10 +17,6 @@ export const getPageIndex = (state: SearchReducerState, resource?: ResourceType)
   return 0;
 };
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
 export const autoSelectResource = (state: SearchReducerState) => {
   if (state.tables && state.tables.total_results > 0) {
     return ResourceType.table;

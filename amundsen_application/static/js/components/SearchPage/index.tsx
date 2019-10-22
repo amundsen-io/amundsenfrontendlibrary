@@ -74,41 +74,6 @@ export class SearchPage extends React.Component<SearchPageProps> {
   }
 
   renderSearchResults = () => {
-<<<<<<< HEAD
-    const tabConfig = [
-      {
-        title: `${TABLE_RESOURCE_TITLE} (${ this.props.tables.total_results })`,
-        key: ResourceType.table,
-        content: this.getTabContent(this.props.tables, ResourceType.table),
-      },
-    ];
-    if (AppConfig.indexUsers.enabled) {
-      tabConfig.push({
-        title: `Users (${ this.props.users.total_results })`,
-        key: ResourceType.user,
-        content: this.getTabContent(this.props.users, ResourceType.user),
-      })
-    }
-
-    return (
-      <div>
-        <TabsComponent
-          tabs={ tabConfig }
-          defaultTab={ ResourceType.table }
-          activeKey={ this.props.selectedTab }
-          onSelect={ this.props.setResource }
-        />
-      </div>
-    );
-  };
-
-  generateInfoText = (tab: ResourceType): string => {
-    switch (tab) {
-      case ResourceType.table:
-        return `${SEARCH_INFO_TEXT_BASE}${SEARCH_INFO_TEXT_TABLE_SUFFIX}`;
-      default:
-        return SEARCH_INFO_TEXT_BASE;
-=======
     switch(this.props.selectedTab) {
       case ResourceType.table:
         return this.getTabContent(this.props.tables, ResourceType.table);
@@ -116,7 +81,6 @@ export class SearchPage extends React.Component<SearchPageProps> {
         return this.getTabContent(this.props.users, ResourceType.user);
       case ResourceType.dashboard:
         return this.getTabContent(this.props.dashboards, ResourceType.dashboard);
->>>>>>> master
     }
     return null;
   };

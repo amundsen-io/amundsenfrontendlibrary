@@ -90,22 +90,6 @@ describe('SearchPage', () => {
       props.urlDidUpdate.mockClear();
       wrapper.instance().componentDidUpdate(mockPrevProps);
       expect(props.urlDidUpdate).toHaveBeenCalledWith(props.location.search);
-<<<<<<< HEAD
-    });
-
-    it('does not call urldidUpdate when location.search is the same', () => {
-      props.urlDidUpdate.mockClear();
-      wrapper.instance().componentDidUpdate(props);
-      expect(props.urlDidUpdate).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('generateInfoText', () => {
-    let wrapper;
-    beforeAll(() => {
-      wrapper = setup().wrapper;
-=======
->>>>>>> master
     });
 
     it('does not call urldidUpdate when location.search is the same', () => {
@@ -223,20 +207,6 @@ describe('SearchPage', () => {
       expect(getTabContentSpy).toHaveBeenCalledWith(props.tables, ResourceType.table);
     });
 
-<<<<<<< HEAD
-    it('renders TabsComponent with correct props', () => {
-      AppConfig.indexUsers.enabled = false;
-      const content = shallow(wrapper.instance().renderSearchResults());
-      const tabProps = content.find(TabsComponent).props();
-      expect(tabProps.activeKey).toEqual(props.selectedTab);
-      expect(tabProps.defaultTab).toEqual(ResourceType.table);
-      expect(tabProps.onSelect).toEqual(props.setResource);
-
-      const firstTab = tabProps.tabs[0];
-      expect(firstTab.key).toEqual(ResourceType.table);
-      expect(firstTab.title).toEqual(`${TABLE_RESOURCE_TITLE} (${props.tables.total_results})`);
-      expect(firstTab.content).toEqual(wrapper.instance().getTabContent(props.tables, firstTab.key));
-=======
     it('renders the correct content for user resources', () => {
       const { props, wrapper } = setup({
         selectedTab: ResourceType.user
@@ -244,7 +214,6 @@ describe('SearchPage', () => {
       const getTabContentSpy = jest.spyOn(wrapper.instance(), 'getTabContent');
       shallow(wrapper.instance().renderSearchResults());
       expect(getTabContentSpy).toHaveBeenCalledWith(props.users, ResourceType.user);
->>>>>>> master
     });
 
     it('renders the correct content for dashboard resources', () => {
@@ -305,21 +274,12 @@ describe('mapDispatchToProps', () => {
 
   it('sets setResource on the props', () => {
     expect(result.setResource).toBeInstanceOf(Function);
-<<<<<<< HEAD
   });
 
   it('sets setPageIndex on the props', () => {
     expect(result.setPageIndex).toBeInstanceOf(Function);
   });
 
-=======
-  });
-
-  it('sets setPageIndex on the props', () => {
-    expect(result.setPageIndex).toBeInstanceOf(Function);
-  });
-
->>>>>>> master
   it('sets urlDidUpdate on the props', () => {
     expect(result.urlDidUpdate).toBeInstanceOf(Function);
   });

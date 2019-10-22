@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-
-import AppConfig from 'config/config';
-import * as ConfigUtils from 'config/config-utils';
-
-=======
 import AppConfig from 'config/config';
 import * as ConfigUtils from 'config/config-utils';
 
@@ -33,7 +27,6 @@ describe('getDatabaseIconClass', () => {
   })
 });
 
->>>>>>> master
 describe('feedbackEnabled', () => {
   it('returns whether or not the feaadback feature is enabled', () => {
     expect(ConfigUtils.feedbackEnabled()).toBe(AppConfig.mailClientFeatures.feedbackEnabled);

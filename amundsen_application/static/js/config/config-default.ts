@@ -36,11 +36,6 @@ const configDefault: AppConfig = {
       use_router: true,
     }
   ],
-<<<<<<< HEAD
-  mailClientFeatures: {
-    feedbackEnabled: false,
-    notificationsEnabled: false,
-=======
   resourceConfig: {
     datasets: {
       'bigquery': {
@@ -60,7 +55,6 @@ const configDefault: AppConfig = {
         iconClass: 'icon-redshift',
       },
     },
->>>>>>> master
   },
   tableLineage: {
     iconPath: 'PATH_TO_ICON',

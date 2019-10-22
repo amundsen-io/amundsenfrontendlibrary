@@ -9,20 +9,15 @@ import { GlobalState } from 'ducks/rootReducer';
 import { getTableData } from 'ducks/tableMetadata/reducer';
 import { GetTableDataRequest } from 'ducks/tableMetadata/types';
 
-<<<<<<< HEAD
-import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
-=======
 import AppConfig from 'config/config';
-import { notificationsEnabled } from 'config/config-utils';
-import AvatarLabel from 'components/common/AvatarLabel';
->>>>>>> master
+import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import Breadcrumb from 'components/common/Breadcrumb';
-import Flag from 'components/common/Flag';
-import LoadingSpinner from 'components/common/LoadingSpinner';
-import ExploreButton from 'components/TableDetail/ExploreButton';
-import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
 import DetailList from 'components/TableDetail/DetailList';
+import ExploreButton from 'components/TableDetail/ExploreButton';
+import Flag from 'components/common/Flag';
+import FrequentUsers from 'components/TableDetail/FrequentUsers';
+import LoadingSpinner from 'components/common/LoadingSpinner';
 import LineageLink from 'components/TableDetail/LineageLink';
 import OwnerEditor from 'components/TableDetail/OwnerEditor';
 import SourceLink from 'components/TableDetail/SourceLink';
@@ -32,28 +27,13 @@ import WriterLink from 'components/TableDetail/WriterLink';
 import TagInput from 'components/Tags/TagInput';
 import { TableMetadata } from 'interfaces/TableMetadata';
 
-<<<<<<< HEAD
-import './styles';
 import { EditableSection } from 'components/TableDetail/EditableSection';
-=======
-import DataPreviewButton from './DataPreviewButton';
-import DetailList from './DetailList';
 import RequestDescriptionText from './RequestDescriptionText';
-import OwnerEditor from './OwnerEditor';
-import TableDescEditableText from './TableDescEditableText';
-import WatermarkLabel from "./WatermarkLabel";
-import { logClick } from 'ducks/utilMethods';
+import { notificationsEnabled } from 'config/config-utils';
 
-import { OverlayTrigger, Popover } from 'react-bootstrap';
-import { RouteComponentProps } from 'react-router';
+import './styles';
 
-import { PreviewQueryParams, TableMetadata, User } from 'interfaces';
-
-// TODO: Use css-modules instead of 'import'
-import './styles.scss';
-import BookmarkIcon from "components/common/Bookmark/BookmarkIcon";
 import RequestMetadataForm from './RequestMetadataForm';
->>>>>>> master
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -120,7 +100,6 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
         </div>
       );
     } else {
-<<<<<<< HEAD
       const data = this.props.tableData;
       innerContent = (
         <div className="resource-detail-layout table-detail-2">
@@ -135,45 +114,13 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               <div className="body-3">
                 Datasets &bull;
                 {/* TODO - Add Database Label */}
-=======
-        innerContent = (
-          <div className="container table-detail">
-            <Breadcrumb />
-            {
-              notificationsEnabled() &&
-              <RequestMetadataForm />
-            }
-            <div className="row">
-              <div className="detail-header col-xs-12 col-md-7 col-lg-8">
-                <h1 className="detail-header-text">
-                  { `${data.schema}.${data.table_name}` }
-                  <BookmarkIcon bookmarkKey={ this.props.tableData.key } large={ true }/>
-                </h1>
+
                 {
-                  data.is_view && <Flag text="Table View" labelStyle="primary" />
+                  notificationsEnabled() && <RequestMetadataForm />
                 }
->>>>>>> master
                 {
                   data.is_view && <Flag text="Table View" labelStyle="primary"/>
                 }
-<<<<<<< HEAD
-=======
-                <TableDescEditableText
-                  value={ data.table_description }
-                  editable={ data.is_editable }
-                  maxLength={ AppConfig.editableText.tableDescLength }
-                />
-                { !data.table_description && notificationsEnabled() && <RequestDescriptionText/> }
-              </div>
-              <div className="col-xs-12 col-md-5 float-md-right col-lg-4">
-                <EntityCard sections={ this.createEntityCardSections() }/>
-              </div>
-              <div className="col-xs-12 col-md-7 col-lg-8">
-                <div className="detail-list-header title-1">Columns</div>
-                <DetailList
-                  columns={ data.columns }
-                />
->>>>>>> master
               </div>
             </div>
             <div className="header-right">
@@ -191,10 +138,11 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 <section className="left-panel">
                   <div className="section-title title-3">Description</div>
                   <TableDescEditableText
-                    maxLength={ 750 }
+                    maxLength={ AppConfig.editableText.tableDescLength }
                     value={ data.table_description }
                     editable={ data.is_editable }
                   />
+                  { !data.table_description && notificationsEnabled() && <RequestDescriptionText/> }
                   {
                     !data.is_view &&
                     <>

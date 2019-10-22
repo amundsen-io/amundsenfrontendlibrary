@@ -99,19 +99,13 @@
     text-align: center;
     position: absolute;
     font-size: 20px;
-<<<<<<< HEAD
-    color: $text-medium;
-=======
     color: $text-secondary;
->>>>>>> master
     /* for centering when parent has automatic height */
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
   }
-<<<<<<< HEAD
-=======
 
   input[type="radio"] {
     margin: 5px;
@@ -128,5 +122,4 @@
     border-radius: 5px;
     padding: 10px;
   }
->>>>>>> master
 }

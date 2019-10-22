@@ -13,6 +13,7 @@ import { feedbackEnabled } from 'config/config-utils';
 
 import AnnouncementPage from './components/AnnouncementPage';
 import BrowsePage from './components/BrowsePage';
+import Feedback from './components/Feedback';
 import Footer from './components/Footer';
 import HomePage from './components/HomePage'
 import NavBar from './components/NavBar';
@@ -20,11 +21,7 @@ import NotFoundPage from './components/NotFoundPage';
 import Preloader from 'components/common/Preloader';
 import ProfilePage from './components/ProfilePage';
 import SearchPage from './components/SearchPage';
-<<<<<<< HEAD
-import TableDetail from 'components/TableDetail';
-=======
 import TableDetail from './components/TableDetail';
->>>>>>> master
 
 import rootReducer from './ducks/rootReducer';
 import rootSaga from './ducks/rootSaga';
@@ -52,13 +49,10 @@ ReactDOM.render(
             <Route path="/404" component={NotFoundPage} />
             <Route path="/" component={HomePage} />
           </Switch>
-<<<<<<< HEAD
           {
             feedbackEnabled() && 
             <Feedback />
           }
-=======
->>>>>>> master
           <Footer />
         </div>
       </Router>

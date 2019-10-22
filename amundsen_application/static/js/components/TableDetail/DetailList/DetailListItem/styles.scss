@@ -61,11 +61,6 @@
       cursor: pointer;
 
       &:hover {
-<<<<<<< HEAD
-        background-image: linear-gradient($gray-lightest, $gray-lightest, white);
-
-=======
->>>>>>> master
         .icon {
           background-color: $brand-color-4;
         }
@@ -110,11 +105,7 @@
       padding: 4px;
       margin-right: 5px;
       .icon {
-<<<<<<< HEAD
-        background-color: $gray-light;
-=======
         background-color: $stroke;
->>>>>>> master
         height: 14px;
         -webkit-mask-size: 14px;
         mask-size: 14px;
@@ -123,15 +114,9 @@
       }
       &:hover,
       &:focus {
-<<<<<<< HEAD
-        background-color: $gray-lightest;
-        .icon {
-          background-color: $gray-base;
-=======
         background-color: $body-bg-secondary;
         .icon {
           background-color: $body-bg-dark;
->>>>>>> master
         }
       }
     }

@@ -18,11 +18,7 @@ _TODO: Please add doc_
 _TODO: Please add doc_
 
 ## Mail Client Features
-<<<<<<< HEAD
-Amundsen has two features that leverage the custom mail client -- the feedback tool and notifications. 
-=======
 Amundsen has two features that leverage the custom mail client -- the feedback tool and notifications.
->>>>>>> master
 
 As these are optional features, our `MailClientFeaturesConfig` can be used to hide/display any UI related to these features:
 1. Set `MailClientFeaturesConfig.feedbackEnabled` to `true` in order to display the `Feedback` component in the UI.
@@ -35,8 +31,6 @@ client, please see this [entry](flask_config.md#mail-client-features) in our fla
 
 _TODO: Please add doc_
 
-<<<<<<< HEAD
-=======
 ## Resource Configurations
 
 ### Datasets
@@ -51,7 +45,6 @@ We provide a `datasets` option on our `ResourceConfig`. This can be used for the
 
 _TODO: Please add doc_
 
->>>>>>> master
 ## Table Lineage
 
 _TODO: Please add doc_

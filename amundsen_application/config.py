@@ -25,12 +25,8 @@ class Config:
     MAIL_CLIENT = None
     NOTIFICATIONS_ENABLED = False
 
-<<<<<<< HEAD
-=======
     # Initialize custom routes
     INIT_CUSTOM_ROUTES = None  # type: Callable[[Flask], None]
-
->>>>>>> master
 
 class LocalConfig(Config):
     DEBUG = False

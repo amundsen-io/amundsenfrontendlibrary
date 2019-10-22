@@ -22,17 +22,6 @@
   }
 
 
-<<<<<<< HEAD
-  button.edit-button {
-    height: 24px;
-    width: 24px;
-    border: none;
-    border-radius: 5px;
-    background-color: $gray-light;
-    -webkit-mask-image: url('/static/images/icons/Edit.svg');
-    mask-image: url('/static/images/icons/Edit.svg');
-  }
-=======
 button.edit-button {
   height: 24px;
   width: 24px;
@@ -61,8 +50,6 @@ button.active-edit-button:focus {
   outline: none;
   box-shadow: 0 0 1pt 1pt $brand-color-4
 }
->>>>>>> master
-
   button.edit-button:hover {
     background-color: $brand-color-4;
   }

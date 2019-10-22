@@ -1,10 +1,7 @@
 import logging
 
 from http import HTTPStatus
-<<<<<<< HEAD
-=======
 from enum import Enum
->>>>>>> master
 
 from flask import current_app as app
 from flask import jsonify, make_response, Response
@@ -13,10 +10,6 @@ from typing import Dict, List
 from amundsen_application.api.exceptions import MailClientNotImplemented
 from amundsen_application.log.action_log import action_logging
 
-<<<<<<< HEAD
-NOTIFICATION_STRINGS = {
-    'added': {
-=======
 
 class NotificationType(str, Enum):
     """
@@ -38,7 +31,6 @@ class NotificationType(str, Enum):
 
 NOTIFICATION_STRINGS = {
     NotificationType.OWNER_ADDED.value: {
->>>>>>> master
         'comment': ('<br/>What is expected of you?<br/>As an owner, you take an important part in making '
                     'sure that the datasets you own can be used as swiftly as possible across the company.<br/>'
                     'Make sure the metadata is correct and up to date.<br/>'),
@@ -48,22 +40,14 @@ NOTIFICATION_STRINGS = {
         'notification': ('<br/>You have been added to the owners list of the <a href="{resource_url}">'
                          '{resource_name}</a> dataset by {sender}.<br/>'),
     },
-<<<<<<< HEAD
-    'removed': {
-=======
     NotificationType.OWNER_REMOVED.value: {
->>>>>>> master
         'comment': '',
         'end_note': ('<br/>If you think you have been incorrectly removed as an owner, '
                      'add yourself back to the owners list.<br/>'),
         'notification': ('<br/>You have been removed from the owners list of the <a href="{resource_url}">'
                          '{resource_name}</a> dataset by {sender}.<br/>'),
     },
-<<<<<<< HEAD
-    'requested': {
-=======
     NotificationType.METADATA_REQUESTED.value: {
->>>>>>> master
         'comment': '',
         'end_note': '<br/>Please visit the provided link and improve descriptions on that resource.<br/>',
         'notification': '<br/>{sender} is trying to use <a href="{resource_url}">{resource_name}</a>, ',
@@ -102,13 +86,8 @@ def get_notification_html(*, notification_type: str, options: Dict, sender: str)
     validate_options(options=options)
 
     url_base = app.config['FRONTEND_BASE']
-<<<<<<< HEAD
-    resource_url = '{url_base}{resource_path}'.format(resource_path=options.get('resource_path'),
-                                                      url_base=url_base)
-=======
     resource_url = '{url_base}{resource_path}?source=notification'.format(resource_path=options.get('resource_path'),
                                                                           url_base=url_base)
->>>>>>> master
     joined_chars = resource_url[len(url_base) - 1:len(url_base) + 1]
     if joined_chars.count('/') != 1:
         raise Exception('Configured "FRONTEND_BASE" and "resource_path" do not form a valid url')
@@ -125,11 +104,7 @@ def get_notification_html(*, notification_type: str, options: Dict, sender: str)
     end_note = notification_strings.get('end_note', '')
     salutation = '<br/>Thanks,<br/>Amundsen Team'
 
-<<<<<<< HEAD
-    if notification_type == 'requested':
-=======
     if notification_type == NotificationType.METADATA_REQUESTED:
->>>>>>> master
         options_comment = options.get('comment')
         need_resource_description = options.get('description_requested')
         need_fields_descriptions = options.get('fields_requested')
@@ -163,14 +138,6 @@ def get_notification_subject(*, notification_type: str, options: Dict) -> str:
     """
     resource_name = options.get('resource_name')
     notification_subject_dict = {
-<<<<<<< HEAD
-        'added': 'You are now an owner of {}'.format(resource_name),
-        'removed': 'You have been removed as an owner of {}'.format(resource_name),
-        'edited': 'Your dataset {}\'s metadata has been edited'.format(resource_name),
-        'requested': 'Request for metadata on {}'.format(resource_name),
-    }
-    return notification_subject_dict.get(notification_type, '')
-=======
         NotificationType.OWNER_ADDED.value: 'You are now an owner of {}'.format(resource_name),
         NotificationType.OWNER_REMOVED.value: 'You have been removed as an owner of {}'.format(resource_name),
         NotificationType.METADATA_EDITED.value: 'Your dataset {}\'s metadata has been edited'.format(resource_name),
@@ -180,7 +147,6 @@ def get_notification_subject(*, notification_type: str, options: Dict) -> str:
     if subject is None:
         raise Exception('Unsupported notification_type')
     return subject
->>>>>>> master
 
 
 def send_notification(*, notification_type: str, options: Dict, recipients: List, sender: str) -> Response:
@@ -231,11 +197,7 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
             subject=subject,
             html=html,
             optional_data={
-<<<<<<< HEAD
-                'email_type': 'notification'
-=======
                 'email_type': notification_type,
->>>>>>> master
             },
         )
         status_code = response.status_code
