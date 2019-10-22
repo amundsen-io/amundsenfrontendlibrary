@@ -103,6 +103,9 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
       const data = this.props.tableData;
       innerContent = (
         <div className="resource-detail-layout table-detail-2">
+          {
+            notificationsEnabled() && <RequestMetadataForm />
+          }
           <header className="resource-header">
             <div className="header-left">
               {/* TODO - Add Breadcrumb */}
@@ -112,12 +115,9 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 <BookmarkIcon bookmarkKey={ this.props.tableData.key }/>
               </h2>
               <div className="body-3">
-                Datasets &bull;
-                {/* TODO - Add Database Label */}
+                Datasets &bull;&nbsp;
+                { data.database }
 
-                {
-                  notificationsEnabled() && <RequestMetadataForm />
-                }
                 {
                   data.is_view && <Flag text="Table View" labelStyle="primary"/>
                 }
