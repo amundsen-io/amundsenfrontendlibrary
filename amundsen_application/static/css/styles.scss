@@ -5,6 +5,8 @@
 @import 'dropdowns';
 @import 'fonts';
 @import 'icons';
+@import 'inputs';
+@import 'labels';
 @import 'layouts';
 @import 'list-group';
 @import 'pagination';
@@ -55,13 +57,13 @@ input[type="radio"] {
 }
 
 input[type="text"] {
-  color: $text-medium !important;
+  color: $text-secondary !important;
 }
 
 textarea {
   width: 100%;
-  color: $text-medium !important;
-  border: 1px solid $gray-lighter;
+  color: $text-secondary !important;
+  border: 1px solid $stroke;
   border-radius: 5px;
   padding: 10px;
 }

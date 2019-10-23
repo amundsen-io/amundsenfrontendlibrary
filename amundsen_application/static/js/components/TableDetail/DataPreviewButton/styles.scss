@@ -28,7 +28,7 @@
         flex-grow: 1;
       }
       .grid-header.grid-cell {
-        background-color: $gray-lighter;
+        background-color: $body-bg-secondary;
         height: 40px;
       }
       .grid-cell {
@@ -42,7 +42,7 @@
         height: 32px;
         text-align: center;
         white-space: nowrap;
-        border-bottom: 1px solid $gray-light;
+        border-bottom: 1px solid $stroke;
       }
     }
   }
