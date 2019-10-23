@@ -1,10 +1,8 @@
 @import 'variables';
 
-$divider: #E7E7EF;
-
 .column-stats {
   .stat-collection-info {
-    color: $text-medium;
+    color: $text-secondary;
     font-style: italic;
     margin: 8px 0;
   }

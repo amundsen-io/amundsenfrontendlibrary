@@ -9,14 +9,15 @@ import { GlobalState } from 'ducks/rootReducer';
 import { getTableData } from 'ducks/tableMetadata/reducer';
 import { GetTableDataRequest } from 'ducks/tableMetadata/types';
 
+import AppConfig from 'config/config';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import Breadcrumb from 'components/common/Breadcrumb';
-import Flag from 'components/common/Flag';
-import LoadingSpinner from 'components/common/LoadingSpinner';
-import ExploreButton from 'components/TableDetail/ExploreButton';
-import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
 import ColumnList from 'components/TableDetail/ColumnList';
+import ExploreButton from 'components/TableDetail/ExploreButton';
+import Flag from 'components/common/Flag';
+import FrequentUsers from 'components/TableDetail/FrequentUsers';
+import LoadingSpinner from 'components/common/LoadingSpinner';
 import LineageLink from 'components/TableDetail/LineageLink';
 import OwnerEditor from 'components/TableDetail/OwnerEditor';
 import SourceLink from 'components/TableDetail/SourceLink';
@@ -26,8 +27,13 @@ import WriterLink from 'components/TableDetail/WriterLink';
 import TagInput from 'components/Tags/TagInput';
 import { TableMetadata } from 'interfaces/TableMetadata';
 
-import './styles';
 import { EditableSection } from 'components/TableDetail/EditableSection';
+import RequestDescriptionText from './RequestDescriptionText';
+import { notificationsEnabled } from 'config/config-utils';
+
+import './styles';
+
+import RequestMetadataForm from './RequestMetadataForm';
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -75,7 +81,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
     const searchIndex = params['index'];
     const source = params['source'];
     /* update the url stored in the browser history to remove params used for logging purposes */
-    if (searchIndex !== undefined) {
+    if (searchIndex !== undefined || source !== undefined) {
       window.history.replaceState({}, '', `${window.location.origin}${window.location.pathname}`);
     }
 
@@ -97,6 +103,9 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
       const data = this.props.tableData;
       innerContent = (
         <div className="resource-detail-layout table-detail-2">
+          {
+            notificationsEnabled() && <RequestMetadataForm />
+          }
           <header className="resource-header">
             <div className="header-left">
               {/* TODO - Add Breadcrumb */}
@@ -106,8 +115,9 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 <BookmarkIcon bookmarkKey={ this.props.tableData.key }/>
               </h2>
               <div className="body-3">
-                Datasets &bull;
-                {/* TODO - Add Database Label */}
+                Datasets &bull;&nbsp;
+                { data.database }
+
                 {
                   data.is_view && <Flag text="Table View" labelStyle="primary"/>
                 }
@@ -128,10 +138,11 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 <section className="left-panel">
                   <div className="section-title title-3">Description</div>
                   <TableDescEditableText
-                    maxLength={ 750 }
+                    maxLength={ AppConfig.editableText.tableDescLength }
                     value={ data.table_description }
                     editable={ data.is_editable }
                   />
+                  { !data.table_description && notificationsEnabled() && <RequestDescriptionText/> }
                   {
                     !data.is_view &&
                     <>
@@ -139,7 +150,6 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                       <WatermarkLabel watermarks={ data.watermarks }/>
                     </>
                   }
-
                 </section>
                 <section className="right-panel">
                   <EditableSection title="Tags">
