@@ -86,7 +86,7 @@ export class NavBar extends React.Component<NavBarProps> {
                       <div>{this.props.loggedInUser.email}</div>
                     </div>
                     <li>
-                      <Link id="nav-bar-avatar-link" to={`/user/${this.props.loggedInUser.user_id}?source=navbar`}>
+                      <Link id="nav-bar-avatar-link" className="no-border-on-hover" to={`/user/${this.props.loggedInUser.user_id}?source=navbar`}>
                         My Profile
                       </Link>
                     </li>
