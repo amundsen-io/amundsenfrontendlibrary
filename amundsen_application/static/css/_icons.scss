@@ -126,6 +126,11 @@ img.icon {
     mask-image: url('/static/images/icons/Search.svg');
   }
 
+  &.icon-send {
+    -webkit-mask-image: url('/static/images/icons/Send.svg');
+    mask-image: url('/static/images/icons/Send.svg');
+  }
+
   &.icon-slack {
     -webkit-mask-image: url('/static/images/icons/slack.svg');
     mask-image: url('/static/images/icons/slack.svg');
