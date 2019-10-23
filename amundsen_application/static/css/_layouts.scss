@@ -10,7 +10,7 @@ $header-height: 84px;
   .resource-header {
     display: flex;
     height: $header-height;
-    border-bottom: 4px solid $divider;
+    border-bottom: 2px solid $divider;
     padding: 16px 24px;
 
     > .header-left {

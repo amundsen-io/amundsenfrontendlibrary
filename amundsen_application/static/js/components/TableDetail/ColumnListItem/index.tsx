@@ -86,13 +86,15 @@ class ColumnListItem extends React.Component<ColumnListItemProps, ColumnListItem
                 notificationsEnabled() &&
                 <Dropdown id={`detail-list-item-dropdown:${this.props.index}`}
                           onClick={ this.stopPropagation }
-                          pullRight={true}
+                          pullRight={ true }
                           className="column-dropdown">
-                  <Dropdown.Toggle noCaret={true} className="dropdown-icon-more">
+                  <Dropdown.Toggle noCaret={ true }>
                     <img className="icon icon-more"/>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <MenuItem onClick={this.openRequest}>Request Column Description</MenuItem>
+                    <MenuItem onClick={ this.openRequest }>
+                      Request Column Description
+                    </MenuItem>
                   </Dropdown.Menu>
                 </Dropdown>
               }
