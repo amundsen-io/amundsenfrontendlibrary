@@ -28,6 +28,13 @@
       border-bottom: 4px solid $white;
     }
 
+    &.no-border-on-hover {
+      &:hover {
+        /* override border-bottom style */
+        border-bottom: none;
+      }
+    }
+
     &.nav-bar-avatar-link {
       margin-top: -4px;
       padding-left: 4px;
