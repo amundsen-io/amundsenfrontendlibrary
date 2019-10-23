@@ -1,15 +1,26 @@
 import * as React from 'react';
+import { Dropdown, MenuItem } from 'react-bootstrap';
+import { notificationsEnabled } from 'config/config-utils';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableText';
 import { logClick } from 'ducks/utilMethods';
-import { TableColumn } from 'interfaces/index';
+import { OpenRequestAction } from 'ducks/notification/types';
+import { openRequestDescriptionDialog } from 'ducks/notification/reducer';
+import { RequestMetadataType, TableColumn } from 'interfaces';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 import ColumnStats from 'components/TableDetail/ColumnStats';
 
-interface ColumnListItemProps {
-  data?: TableColumn;
+
+interface DispatchFromProps {
+  openRequestDescriptionDialog: (requestMetadataType: RequestMetadataType, columnName: string) => OpenRequestAction;
+}
+
+interface OwnProps {
+  data: TableColumn;
   index: number;
 }
 
@@ -17,12 +28,9 @@ interface ColumnListItemState {
   isExpanded: boolean;
 }
 
-class ColumnListItem extends React.Component<ColumnListItemProps, ColumnListItemState> {
-  public static defaultProps: ColumnListItemProps = {
-    data: {} as TableColumn,
-    index: null,
-  };
+type ColumnListItemProps = DispatchFromProps & OwnProps;
 
+class ColumnListItem extends React.Component<ColumnListItemProps, ColumnListItemState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -42,10 +50,13 @@ class ColumnListItem extends React.Component<ColumnListItemProps, ColumnListItem
     this.setState({ isExpanded: !this.state.isExpanded });
   };
 
+  openRequest = () => {
+    this.props.openRequestDescriptionDialog(RequestMetadataType.COLUMN_DESCRIPTION, this.props.data.name);
+  };
+
   stopPropagation = (e) => {
     e.stopPropagation();
   };
-
 
   render() {
     const metadata = this.props.data;
@@ -71,7 +82,20 @@ class ColumnListItem extends React.Component<ColumnListItemProps, ColumnListItem
               {/* Placeholder */}
             </div>
             <div className="actions">
-              {/* Placeholder */}
+              {
+                notificationsEnabled() &&
+                <Dropdown id={`detail-list-item-dropdown:${this.props.index}`}
+                          onClick={ this.stopPropagation }
+                          pullRight={true}
+                          className="column-dropdown">
+                  <Dropdown.Toggle noCaret={true} className="dropdown-icon-more">
+                    <img className="icon icon-more"/>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <MenuItem onClick={this.openRequest}>Request Column Description</MenuItem>
+                  </Dropdown.Menu>
+                </Dropdown>
+              }
             </div>
           </section>
           {
@@ -95,4 +119,8 @@ class ColumnListItem extends React.Component<ColumnListItemProps, ColumnListItem
   }
 }
 
-export default ColumnListItem;
+export const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators({ openRequestDescriptionDialog }, dispatch);
+};
+
+export default connect<{}, DispatchFromProps, OwnProps>(null, mapDispatchToProps)(ColumnListItem);

@@ -22,7 +22,37 @@ $divider: #E7E7EF;
       // Placeholder
     }
     .actions {
-      // Placeholder
+
+      .column-dropdown {
+        height: fit-content;
+
+        .dropdown-icon-more {
+          border-style: none;
+          border-radius: 4px;
+          height: 22px;
+          width: 22px;
+          padding: 4px;
+          margin-right: 5px;
+
+          .icon {
+            background-color: $stroke;
+            height: 14px;
+            -webkit-mask-size: 14px;
+            mask-size: 14px;
+            width: 14px;
+            margin: 0;
+          }
+
+          &:hover,
+          &:focus {
+            background-color: $body-bg-secondary;
+
+            .icon {
+              background-color: $body-bg-dark;
+            }
+          }
+        }
+      }
     }
   }
 }
