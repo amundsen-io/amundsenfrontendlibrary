@@ -1,9 +1,11 @@
 @import 'variables';
 
-.editable-container {
-  display: flex;
+.editable-text {
   font-size: 16px;
-  color: $text-secondary;
+
+  :first-child {
+    margin-top: 0;
+  }
 
   &:hover {
    .edit-link {
@@ -20,8 +22,7 @@
     }
   }
 
-  .editable-text {
-    flex-grow: 0.1;
+  .text-wrapper {
     word-break: break-word;
 
     // React-Markdown wraps editable text with a paragraph
@@ -31,15 +32,21 @@
   }
 
   .editable-textarea {
-    padding: 0;
+    background: $body-bg-secondary;
+    border-radius: 4px;
+    border-color: $stroke;
+    caret-color: $brand-primary;
+    min-width: 300px;
     outline: none;
-    border: 0;
-    background: $brand-color-1;
-    caret-color: $brand-color-4;
+    padding: 8px;
+    resize: none;
   }
 
-  .editable-textarea:focus-within {
-    outline: none;
-    background: $white;
+  .editable-textarea-controls {
+    margin-top: 16px;
+
+    .btn {
+      margin-right: 8px;
+    }
   }
 }

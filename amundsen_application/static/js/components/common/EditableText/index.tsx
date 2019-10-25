@@ -1,6 +1,5 @@
 import autosize from 'autosize';
 import * as React from 'react';
-import { Overlay, Tooltip } from 'react-bootstrap';
 import * as ReactMarkdown from 'react-markdown';
 
 // TODO: Use css-modules instead of 'import'
@@ -32,8 +31,7 @@ interface EditableTextState {
 }
 
 class EditableText extends React.Component<EditableTextProps, EditableTextState> {
-  private textAreaRef;
-  private editAnchorRef;
+  readonly textAreaRef;
 
   public static defaultProps: EditableTextProps = {
     editable: true,
@@ -43,7 +41,7 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
     value: '',
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps) {
     const { refreshValue } = nextProps;
     return { refreshValue };
   }
@@ -51,7 +49,6 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
   constructor(props) {
     super(props);
     this.textAreaRef = React.createRef();
-    this.editAnchorRef = React.createRef();
 
     this.state = {
       editable: props.editable,
@@ -96,84 +93,68 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
 
   updateText = () => {
     const newValue = this.textAreaRef.current.value;
-    const onSuccessCallback = () => { this.setState({value: newValue, inEditMode: false, refreshValue: undefined }); };
+    const onSuccessCallback = () => { this.setState({ value: newValue, inEditMode: false, refreshValue: undefined }); };
     const onFailureCallback = () => { this.exitEditMode(); };
 
     this.props.onSubmitValue(newValue, onSuccessCallback, onFailureCallback);
   };
 
-  getAnchorTarget = () => {
-    return this.editAnchorRef.current;
-  };
-
-  getTextAreaTarget = () => {
-    return this.textAreaRef.current;
-  };
-
   render() {
-    if (!this.state.editable) {
-      return (
-        <div id='editable-container' className='editable-container'>
-           <div id='editable-text' className='editable-text'>
-              <ReactMarkdown source={ this.state.value }/>
-           </div>
-        </div>
-      );
-    }
-    if (!this.state.inEditMode || (this.state.inEditMode && this.state.isDisabled)) {
-      return (
-        <div id='editable-container' className='editable-container'>
-          <Overlay
-            placement='top'
-            show={ this.state.isDisabled }
-            target={ this.getAnchorTarget }
-          >
-            <Tooltip id='error-tooltip'>
-              <div className="error-tooltip">
-                <text>This text is out of date, please refresh the component</text>
-                <button onClick={ this.refreshText } className="btn btn-flat-icon">
-                  <img className='icon icon-refresh'/>
-                </button>
-              </div>
-            </Tooltip>
-          </Overlay>
-          <div id='editable-text' className="editable-text">
-            <ReactMarkdown source={ this.state.value }/>
-            <a className={ "edit-link" + (this.state.value ? "" : " no-value") }
-               href="JavaScript:void(0)"
-               onClick={ this.enterEditMode }
-               ref={ this.editAnchorRef }
-            >
-              {
-                this.state.value ? "edit" : "Add Description"
-              }
-            </a>
-          </div>
-        </div>
-      );
-    }
-
     return (
-      <div id='editable-container' className='editable-container'>
-        <textarea
-          id='editable-textarea'
-          className='editable-textarea'
-          rows={ 2 }
-          maxLength={ this.props.maxLength }
-          ref={ this.textAreaRef }
-          defaultValue={ this.state.value }
-        />
-        <Overlay
-          placement='top'
-          show={ true }
-          target={ this.getTextAreaTarget }
-        >
-          <Tooltip id='save-tooltip'>
-            <button id='cancel' onClick={this.exitEditMode}>Cancel</button>
-            <button id='save' onClick={this.updateText}>Save</button>
-          </Tooltip>
-        </Overlay>
-      </div>
+      <div className='editable-text'>
+        {
+          !this.state.inEditMode &&
+          <>
+            <div className="text-wrapper">
+              <ReactMarkdown source={ this.state.value }/>
+             </div>
+             {
+               this.state.editable &&
+               <a className={"edit-link" + (this.state.value ? "" : " no-value")}
+                  href="JavaScript:void(0)"
+                  onClick={this.enterEditMode}
+               >
+                 {
+                   this.state.value ? "edit" : "Add Description"
+                 }
+               </a>
+             }
+           </>
+        }
+        {
+          this.state.inEditMode &&
+          <>
+            <textarea
+              className='editable-textarea'
+              rows={ 2 }
+              maxLength={ this.props.maxLength }
+              ref={ this.textAreaRef }
+              defaultValue={ this.state.value }
+            />
+            <div className="editable-textarea-controls">
+              {
+                this.state.isDisabled &&
+                 <>
+                   <p>This text is out of date, please refresh the component</p>
+                   <button onClick={this.refreshText} className="btn btn-primary">
+                     <img className="icon icon-refresh"/>
+                     Refresh
+                   </button>
+                 </>
+             }
+             {
+               !this.state.isDisabled &&
+               <button id="update"
+                       className="btn btn-primary"
+                       onClick={ this.updateText }>Update</button>
+             }
+             <button id="cancel"
+                     className="btn btn-default"
+                     onClick={ this.exitEditMode }>Cancel</button>
+            </div>
+           </>
+         }
+       </div>
     );
   }
 }
