@@ -1,19 +1,17 @@
 import * as React from 'react';
 import { Dropdown, MenuItem } from 'react-bootstrap';
-import { notificationsEnabled } from 'config/config-utils';
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
 import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableText';
-import { logClick } from 'ducks/utilMethods';
-import { OpenRequestAction } from 'ducks/notification/types';
+import ColumnStats from 'components/TableDetail/ColumnStats';
+import { notificationsEnabled } from 'config/config-utils';
 import { openRequestDescriptionDialog } from 'ducks/notification/reducer';
+import { OpenRequestAction } from 'ducks/notification/types';
+import { logClick } from 'ducks/utilMethods';
 import { RequestMetadataType, TableColumn } from 'interfaces';
 
-// TODO: Use css-modules instead of 'import'
 import './styles.scss';
-import ColumnStats from 'components/TableDetail/ColumnStats';
-
 
 interface DispatchFromProps {
   openRequestDescriptionDialog: (requestMetadataType: RequestMetadataType, columnName: string) => OpenRequestAction;
@@ -28,9 +26,9 @@ interface ColumnListItemState {
   isExpanded: boolean;
 }
 
-type ColumnListItemProps = DispatchFromProps & OwnProps;
+export type ColumnListItemProps = DispatchFromProps & OwnProps;
 
-class ColumnListItem extends React.Component<ColumnListItemProps, ColumnListItemState> {
+export class ColumnListItem extends React.Component<ColumnListItemProps, ColumnListItemState> {
   constructor(props) {
     super(props);
     this.state = {

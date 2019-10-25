@@ -1,15 +1,15 @@
 import * as React from 'react';
-import moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 
 import { TableColumnStats } from 'interfaces/index';
 
 import './styles.scss';
 
-interface ColumnStatsProps {
+export interface ColumnStatsProps {
   stats: TableColumnStats[];
 }
 
-class ColumnStats extends React.Component<ColumnStatsProps> {
+export class ColumnStats extends React.Component<ColumnStatsProps> {
   constructor(props) {
     super(props);
   }
@@ -18,13 +18,9 @@ class ColumnStats extends React.Component<ColumnStatsProps> {
     return moment(unixEpochSeconds * 1000).format("MMM DD, YYYY");
   };
 
-  getStatsInfoText = () => {
-    const { stats } = this.props;
-    const isExpandable = stats && stats.length > 0;
-    const startEpoch = Math.min(...stats.map(s => parseInt(s.start_epoch, 10)));
-    const endEpoch = Math.max(...stats.map(s => parseInt(s.end_epoch, 10)));
-    const startDate = isExpandable ? this.formatDate(startEpoch) : null;
-    const endDate = isExpandable ? this.formatDate(endEpoch) : null;
+  getStatsInfoText = (startEpoch: number, endEpoch: number) => {
+    const startDate = startEpoch ? this.formatDate(startEpoch) : null;
+    const endDate = endEpoch ? this.formatDate(endEpoch) : null;
 
     let infoText = 'Stats reflect data collected';
     if (startDate && endDate) {
@@ -43,10 +39,10 @@ class ColumnStats extends React.Component<ColumnStatsProps> {
     return (
       <div className="column-stat-row" key={entry.stat_type}>
         <div className="stat-name body-3">
-          {entry.stat_type.toUpperCase()}
+          { entry.stat_type.toUpperCase() }
         </div>
         <div className="stat-value">
-          {entry.stat_val}
+          { entry.stat_val }
         </div>
       </div>
     )
@@ -57,12 +53,14 @@ class ColumnStats extends React.Component<ColumnStatsProps> {
     if (stats.length === 0) {
       return null;
     }
+    const startEpoch = Math.min(...stats.map(s => s.start_epoch));
+    const endEpoch = Math.max(...stats.map(s => s.end_epoch));
 
     return (
       <section className="column-stats">
         <div className="stat-collection-info">
-          <span className="title-3">Column Statistics </span>
-          { this.getStatsInfoText() }
+          <span className="title-3">Column Statistics&nbsp;</span>
+          { this.getStatsInfoText(startEpoch, endEpoch) }
         </div>
         <div className="column-stats-table">
           <div className="column-stats-column">
