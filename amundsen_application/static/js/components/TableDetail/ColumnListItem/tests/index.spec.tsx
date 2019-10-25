@@ -55,7 +55,7 @@ describe('ColumnListItem', () => {
       instance.toggleExpand(null);
       expect(setStateSpy).toHaveBeenCalledWith({ isExpanded: !isExpanded });
       instance.toggleExpand(null);
-      expect(setStateSpy).toHaveBeenCalledWith({ isExpanded: isExpanded });
+      expect(setStateSpy).toHaveBeenCalledWith({ isExpanded });
     });
   });
 
