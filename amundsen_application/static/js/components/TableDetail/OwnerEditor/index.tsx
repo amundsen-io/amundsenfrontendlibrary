@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux';
 import ReactDOM from 'react-dom';
 import serialize from 'form-serialize';
 
+import AppConfig from 'config/config';
 import AvatarLabel, { AvatarLabelProps } from 'components/common/AvatarLabel';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import { Modal } from 'react-bootstrap';
@@ -240,7 +241,13 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
 export const mapStateToProps = (state: GlobalState) => {
   const ownerObj = state.tableMetadata.tableOwners.owners;
   const items = Object.keys(ownerObj).reduce((obj, ownerId) => {
-    obj[ownerId] = { label: ownerObj[ownerId].display_name }
+    let link = ownerObj[ownerId].profile_url;
+    let target = '_blank';
+    if (AppConfig.indexUsers.enabled) {
+      link = `/user/${ownerObj[ownerId].user_id}?source=owners`;
+      target = '';
+    }
+    obj[ownerId] = { label: ownerObj[ownerId].display_name, link: link, target: target }
     return obj;
   }, {});
 
