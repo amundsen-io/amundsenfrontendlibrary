@@ -241,13 +241,13 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
 export const mapStateToProps = (state: GlobalState) => {
   const ownerObj = state.tableMetadata.tableOwners.owners;
   const items = Object.keys(ownerObj).reduce((obj, ownerId) => {
-    let link = ownerObj[ownerId].profile_url;
-    let target = '_blank';
+    let profileLink = ownerObj[ownerId].profile_url;
+    let docTarget = '_blank';
     if (AppConfig.indexUsers.enabled) {
-      link = `/user/${ownerObj[ownerId].user_id}?source=owners`;
-      target = '';
+      profileLink = `/user/${ownerObj[ownerId].user_id}?source=owned_by`;
+      docTarget = '';
     }
-    obj[ownerId] = { label: ownerObj[ownerId].display_name, link: link, target: target }
+    obj[ownerId] = { label: ownerObj[ownerId].display_name, link: profileLink, target: docTarget }
     return obj;
   }, {});
 
