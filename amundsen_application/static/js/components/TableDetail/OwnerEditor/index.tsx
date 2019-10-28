@@ -18,6 +18,7 @@ const DEFAULT_ERROR_TEXT = 'There was a problem with the request, please reload 
 
 import { GlobalState } from 'ducks/rootReducer';
 import { updateTableOwner } from 'ducks/tableMetadata/owners/reducer';
+import { logClick } from 'ducks/utilMethods';
 
 export interface DispatchFromProps {
   onUpdateList: (updateArray: UpdateOwnerPayload[], onSuccess?: () => any, onFailure?: () => any) => void;
@@ -199,11 +200,13 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
         <ul className='component-list'>
           {
             Object.keys(this.state.itemProps).map((key) => {
+              const ownerItem = this.state.tempItemProps[key]
               return (
                 <li key={`list-item:${key}`}>
-                  { React.createElement(AvatarLabel, this.state.itemProps[key]) }
-                </li>
-              );
+                  <a href={ownerItem.link} target={ownerItem.target} id="table-owners" onClick={logClick}>
+                    { <AvatarLabel label={ownerItem.label} src=''/> }
+                  </a>
+                </li> );
             })
           }
         </ul>
