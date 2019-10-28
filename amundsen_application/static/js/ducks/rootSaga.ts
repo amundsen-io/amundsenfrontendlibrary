@@ -17,8 +17,9 @@ import { submitNotificationWatcher } from './notification/sagas';
 import { submitFeedbackWatcher } from './feedback/sagas';
 // PopularTables
 import { getPopularTablesWatcher } from './popularTables/sagas';
-// SearchPage
+// Search
 import {
+  inlineSearchWatcher,
   loadPreviousSearchWatcher,
   searchAllWatcher,
   searchResourceWatcher,
@@ -60,7 +61,8 @@ export default function* rootSaga() {
     submitNotificationWatcher(),
     // FeedbackForm
     submitFeedbackWatcher(),
-    // SearchPage
+    // Search
+    inlineSearchWatcher(),
     loadPreviousSearchWatcher(),
     searchAllWatcher(),
     searchResourceWatcher(),

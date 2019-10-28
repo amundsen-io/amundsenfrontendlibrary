@@ -223,8 +223,12 @@ describe('search ducks', () => {
     it('should handle SearchAll.SUCCESS', () => {
       expect(reducer(testState, searchAllSuccess(expectedSearchAllResults))).toEqual({
         ...initialState,
-        ...expectedSearchResults,
-        isLoading: false,
+        ...expectedSearchAllResults,
+        inlineResults: {
+          tables: expectedSearchAllResults.tables,
+          users: expectedSearchAllResults.users,
+          isLoading: false,
+        },
       });
     });
 

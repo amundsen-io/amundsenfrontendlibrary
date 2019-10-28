@@ -1,5 +1,5 @@
 import { SagaIterator } from 'redux-saga';
-import { all, call, put, select, takeEvery } from 'redux-saga/effects';
+import { all, call, debounce, put, select, takeEvery } from 'redux-saga/effects';
 import * as qs from 'simple-query-string';
 
 import { ResourceType } from 'interfaces/Resources';
@@ -13,6 +13,8 @@ import {
   SearchAllRequest,
   SearchResource,
   SearchResourceRequest,
+  InlineSearch,
+  InlineSearchRequest,
   SetPageIndex,
   SetPageIndexRequest, SetResource, SetResourceRequest,
   SubmitSearch,
@@ -23,15 +25,40 @@ import {
 
 import {
   initialState,
+  initialInlineResultsState,
   searchAll,
   searchAllFailure,
   searchAllSuccess,
   searchResource,
   searchResourceFailure,
-  searchResourceSuccess, setPageIndex, setResource,
+  searchResourceSuccess,
+  getInlineResults,
+  getInlineResultsSuccess,
+  getInlineResultsFailure,
+  setPageIndex, setResource,
 } from './reducer';
 import { autoSelectResource, getPageIndex, getSearchState } from './utils';
 import { updateSearchUrl } from 'utils/navigation-utils';
+
+export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
+  const { term } = action.payload;
+  try {
+    const [tableResponse, userResponse] = yield all([
+      call(API.searchResource, 0, ResourceType.table, term),
+      call(API.searchResource, 0, ResourceType.user, term),
+    ]);
+    const inlineSearchResponse = {
+      tables: tableResponse.tables || initialInlineResultsState.tables,
+      users: userResponse.users || initialInlineResultsState.users,
+    };
+    yield put(getInlineResultsSuccess(inlineSearchResponse));
+  } catch (e) {
+    yield put(getInlineResultsFailure());
+  }
+};
+export function* inlineSearchWatcher(): SagaIterator {
+  yield debounce(250, InlineSearch.REQUEST, inlineSearchWorker)
+}
 
 export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
   let { resource } = action.payload;

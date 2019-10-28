@@ -4,7 +4,14 @@ import { DEFAULT_RESOURCE_TYPE, ResourceType } from 'interfaces/Resources';
 
 export const getSearchState = (state: GlobalState): SearchReducerState => state.search;
 
-export const getPageIndex = (state: SearchReducerState, resource?: ResourceType) => {
+/*
+TODO: Coupling the shape of the search state and search response requires the use of
+Partial to resolve errors, removing type safty of these methods. We should
+restructure any logic that uses the shape of a search response interchangeably with the
+search reducer state. It will allow our code to scale better with new features
+*/
+
+export const getPageIndex = (state: Partial<SearchReducerState>, resource?: ResourceType) => {
   resource = resource || state.selectedTab;
   switch(resource) {
     case ResourceType.table:
@@ -17,7 +24,7 @@ export const getPageIndex = (state: SearchReducerState, resource?: ResourceType)
   return 0;
 };
 
-export const autoSelectResource = (state: SearchReducerState) => {
+export const autoSelectResource = (state: Partial<SearchReducerState>) => {
   if (state.tables && state.tables.total_results > 0) {
     return ResourceType.table;
   }

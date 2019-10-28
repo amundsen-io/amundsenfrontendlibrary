@@ -29,6 +29,11 @@ export interface SearchAllResponsePayload extends SearchResponsePayload {
   tables: TableSearchResults;
   users: UserSearchResults;
 };
+export interface InlineSearchResponsePayload {
+  tables: TableSearchResults;
+  users: UserSearchResults;
+};
+
 
 
 export enum SearchAll {
@@ -72,6 +77,30 @@ export interface SearchResourceResponse {
   payload?: SearchResponsePayload;
 };
 
+
+export enum InlineSearch {
+  REQUEST = 'amundsen/search/INLINE_SEARCH_REQUEST',
+  SELECT = 'amundsen/search/INLINE_SEARCH_SELECT',
+  SUCCESS = 'amundsen/search/INLINE_SEARCH_SUCCESS',
+  FAILURE = 'amundsen/search/INLINE_SEARCH_FAILURE',
+};
+export interface InlineSearchRequest {
+  payload: {
+    term: string;
+  };
+  type: InlineSearch.REQUEST;
+};
+export interface InlineSearchResponse {
+  type: InlineSearch.SUCCESS | InlineSearch.FAILURE;
+  payload?: InlineSearchResponsePayload;
+};
+export interface InlineSearchSelect {
+  payload: {
+    resourceType: ResourceType;
+    searchTerm: string;
+  };
+  type: InlineSearch.SELECT;
+};
 
 export enum SubmitSearch {
   REQUEST = 'amundsen/search/SUBMIT_SEARCH_REQUEST',
