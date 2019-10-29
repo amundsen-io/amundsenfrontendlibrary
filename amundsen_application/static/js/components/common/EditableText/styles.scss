@@ -40,6 +40,10 @@
     outline: none;
     padding: 8px;
     resize: none;
+
+    &:disabled {
+      background: $body-bg-disabled;
+    }
   }
 
   .editable-textarea-controls {
@@ -47,6 +51,11 @@
 
     .btn {
       margin-right: 8px;
+    }
+
+    .label.label-danger {
+      display: block;
+      margin-bottom: 16px;
     }
   }
 }

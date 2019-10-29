@@ -88,7 +88,7 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
   };
 
   refreshText = () => {
-    this.setState({value: this.state.refreshValue, isDisabled: false, inEditMode: false, refreshValue: undefined });
+    this.setState({ value: this.state.refreshValue, isDisabled: false, inEditMode: true, refreshValue: undefined });
   };
 
   updateText = () => {
@@ -112,7 +112,7 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
                this.state.editable &&
                <a className={"edit-link" + (this.state.value ? "" : " no-value")}
                   href="JavaScript:void(0)"
-                  onClick={this.enterEditMode}
+                  onClick={ this.enterEditMode }
                >
                  {
                    this.state.value ? "edit" : "Add Description"
@@ -130,13 +130,14 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
               maxLength={ this.props.maxLength }
               ref={ this.textAreaRef }
               defaultValue={ this.state.value }
+              disabled={ this.state.isDisabled }
             />
             <div className="editable-textarea-controls">
               {
                 this.state.isDisabled &&
                  <>
-                   <p>This text is out of date, please refresh the component</p>
-                   <button onClick={this.refreshText} className="btn btn-primary">
+                   <h2 className="label label-danger">This text is out of date, please refresh the component</h2>
+                   <button onClick={ this.refreshText } className="btn btn-primary">
                      <img className="icon icon-refresh"/>
                      Refresh
                    </button>

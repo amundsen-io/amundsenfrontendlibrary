@@ -14,7 +14,8 @@ $brand-primary: $brand-color-4 !default;
 
 /* Scaffolding */
 $body-bg:           $white !default;
-$body-bg-secondary: #fcfcff !default;
+$body-bg-secondary: $gray0 !default;
+$body-bg-disabled:  $gray5 !default;
 $body-bg-dark:      $gray100 !default;
 $divider:           $gray15 !default;
 $stroke:            $gray20 !default;
