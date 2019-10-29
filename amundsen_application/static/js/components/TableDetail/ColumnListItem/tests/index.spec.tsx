@@ -43,28 +43,25 @@ describe('ColumnListItem', () => {
     });
 
     it('does not calls the logClick when isExpanded is true', () => {
-      instance.setState({ isExpanded: true })
+      instance.setState({ isExpanded: true });
       logClickSpy.mockClear();
       instance.toggleExpand(null);
       expect(logClickSpy).not.toHaveBeenCalled();
     });
 
-    it('sets turns expanded state to the opposite state', () => {
+    it('turns expanded state to the opposite state', () => {
       setStateSpy.mockClear();
       const isExpanded = instance.state.isExpanded;
       instance.toggleExpand(null);
       expect(setStateSpy).toHaveBeenCalledWith({ isExpanded: !isExpanded });
-      instance.toggleExpand(null);
-      expect(setStateSpy).toHaveBeenCalledWith({ isExpanded });
     });
   });
 
-
   describe('openRequest', () => {
     it('calls openRequestDescriptionDialog', () => {
-      expect(props.openRequestDescriptionDialog).not.toHaveBeenCalled();
+      const openRequestDescriptionDialogSpy = jest.spyOn(props, 'openRequestDescriptionDialog');
       instance.openRequest();
-      expect(props.openRequestDescriptionDialog).toHaveBeenCalledWith(RequestMetadataType.COLUMN_DESCRIPTION, props.data.name);
+      expect(openRequestDescriptionDialogSpy).toHaveBeenCalledWith(RequestMetadataType.COLUMN_DESCRIPTION, props.data.name);
     });
   });
 

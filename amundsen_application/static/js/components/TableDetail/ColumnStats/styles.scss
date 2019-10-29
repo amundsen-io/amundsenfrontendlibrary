@@ -25,8 +25,7 @@
         line-height: 32px;
 
         &:nth-child(odd) {
-          // TODO - #FCFCFF is used in mocks but is not part of our color palette. Follow up with design about random colors
-          background-color: #FCFCFF;
+          background-color: $body-bg-secondary;
         }
 
         &:last-child {

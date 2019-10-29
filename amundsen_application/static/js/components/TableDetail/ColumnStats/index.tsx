@@ -53,6 +53,8 @@ export class ColumnStats extends React.Component<ColumnStatsProps> {
     if (stats.length === 0) {
       return null;
     }
+
+    // TODO - Move map statements to separate functions for better testing
     const startEpoch = Math.min(...stats.map(s => s.start_epoch));
     const endEpoch = Math.max(...stats.map(s => s.end_epoch));
 

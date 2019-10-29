@@ -3,7 +3,6 @@ import { shallow } from 'enzyme';
 import { ColumnStats, ColumnStatsProps } from '../';
 
 
-
 describe('ColumnStats', () => {
   const setup = (propOverrides?: Partial<ColumnStatsProps>) => {
     const props = {
@@ -32,12 +31,6 @@ describe('ColumnStats', () => {
       const expectedDateString = "Oct 21, 2019";
       expect(instance.formatDate(epochTime)).toBe(expectedDateString);
     });
-
-    it('formats a date in the correct format', () => {
-      const epochTime = 1568160000;
-      const expectedDateString = "Sep 11, 2019";
-      expect(instance.formatDate(epochTime)).toBe(expectedDateString);
-    });
   });
 
   describe('getStatsInfoText', () => {
@@ -59,7 +52,6 @@ describe('ColumnStats', () => {
       const expectedInfoText = `Stats reflect data collected over a recent period of time.`;
       expect(instance.getStatsInfoText(null, null)).toBe(expectedInfoText);
     });
-
   });
 
   describe('renderColumnStat', () => {
@@ -76,11 +68,17 @@ describe('ColumnStats', () => {
   describe('render', () => {
     it('calls the appropriate functions', () => {
       const getStatsInfoTextSpy = jest.spyOn(instance, 'getStatsInfoText');
-      const renderColumnStatSpy = jest.spyOn(instance, 'renderColumnStat');
       instance.render();
 
       expect(getStatsInfoTextSpy).toHaveBeenCalledWith(1571616000, 1571616000);
-      expect(renderColumnStatSpy).toHaveBeenCalledTimes(props.stats.length);
+    });
+
+    it('calls renderColumnStat with all of the stats', () => {
+      const renderColumnStatSpy = jest.spyOn(instance, 'renderColumnStat');
+      instance.render();
+      props.stats.forEach((stat) => {
+        expect(renderColumnStatSpy).toHaveBeenCalledWith(stat);
+      });
     });
   });
 });

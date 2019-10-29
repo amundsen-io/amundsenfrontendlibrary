@@ -81,6 +81,7 @@ export class ColumnListItem extends React.Component<ColumnListItemProps, ColumnL
             </div>
             <div className="actions">
               {
+                // TODO - Make this dropdown into a separate component
                 notificationsEnabled() &&
                 <Dropdown id={`detail-list-item-dropdown:${this.props.index}`}
                           onClick={ this.stopPropagation }
