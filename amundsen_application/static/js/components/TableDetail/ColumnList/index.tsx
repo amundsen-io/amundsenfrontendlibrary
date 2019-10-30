@@ -10,6 +10,7 @@ interface ColumnListProps {
   columns?: TableColumn[];
 }
 
+// TODO - convert into a component for easier testing
 const ColumnList: React.SFC<ColumnListProps> = ({ columns }) => {
   if (columns.length < 1) {
     return (<div />);

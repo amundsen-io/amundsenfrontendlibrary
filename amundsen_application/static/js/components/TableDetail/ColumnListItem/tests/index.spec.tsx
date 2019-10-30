@@ -73,6 +73,21 @@ describe('ColumnListItem', () => {
       });
     });
 
+    it('renders the column name correctly', () => {
+      const columnName = wrapper.find('.column-name');
+      expect(columnName.text()).toBe(props.data.name)
+    });
+
+    it('renders the column description correctly', () => {
+      const columnDesc = wrapper.find('.column-desc');
+      expect(columnDesc.text()).toBe(props.data.description);
+    });
+
+    it('renders the correct resource type', () => {
+      const resourceType = wrapper.find('.resource-type');
+      expect(resourceType.text()).toBe(props.data.type.toLowerCase());
+    });
+
     it('renders the dropdown when notifications is enabled', () => {
       AppConfig.mailClientFeatures.notificationsEnabled = true;
       const { wrapper, props } = setup();
