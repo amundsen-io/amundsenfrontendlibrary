@@ -16,13 +16,13 @@ interface PreviewDataItem {
   id: string;
 }
 
-interface TableColumnStats {
+export interface TableColumnStats {
   stat_type: string;
   stat_val: string;
   /** The start date of the stat aggregation period, in unix epoch time */
-  start_epoch: string;
+  start_epoch: number;
   /** The end date of the stat aggregation period, in unix epoch time */
-  end_epoch: string;
+  end_epoch: number;
 }
 
 export interface TableReader {

@@ -13,7 +13,7 @@ import AppConfig from 'config/config';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import Breadcrumb from 'components/common/Breadcrumb';
 import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
-import DetailList from 'components/TableDetail/DetailList';
+import ColumnList from 'components/TableDetail/ColumnList';
 import ExploreButton from 'components/TableDetail/ExploreButton';
 import Flag from 'components/common/Flag';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
@@ -150,7 +150,6 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                       <WatermarkLabel watermarks={ data.watermarks }/>
                     </>
                   }
-
                 </section>
                 <section className="right-panel">
                   <EditableSection title="Tags">
@@ -166,7 +165,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               </section>
             </section>
             <section className="right-panel">
-              <DetailList columns={ data.columns }/>
+              <ColumnList columns={ data.columns }/>
             </section>
           </main>
         </div>
