@@ -78,7 +78,8 @@ describe('ColumnListItem', () => {
       expect(columnName.text()).toBe(props.data.name)
     });
 
-    it('renders the column description correctly', () => {
+    it('renders the column description when not expanded', () => {
+      instance.setState({ isExpanded: false });
       const columnDesc = wrapper.find('.column-desc');
       expect(columnDesc.text()).toBe(props.data.description);
     });
