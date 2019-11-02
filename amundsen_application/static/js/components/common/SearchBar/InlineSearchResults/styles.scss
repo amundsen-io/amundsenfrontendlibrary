@@ -1,6 +1,6 @@
 @import 'variables';
 
-.search-suggest {
+.inline-results {
   background: white;
   width: 100%;
   z-index: 10; // T__T
@@ -25,7 +25,7 @@
     }
   }
 
-  .search-suggest-section {
+  .inline-results-section {
     padding-top: 8px;
     padding-bottom: 8px;
 
@@ -41,6 +41,9 @@
     a.section-footer {
       color: $brand-color-4 !important;
       display: block;
+      &:hover {
+        cursor: pointer;
+      }
     }
 
     .list-group {
@@ -51,7 +54,7 @@
         border: none;
         &:hover {
           box-shadow: none !important;
-          background-color: #EBEBFF; // TODO: temp color indigo5
+          background-color: $indigo5;
         }
         &:hover + .list-group-item {
           box-shadow: none !important;
@@ -78,7 +81,7 @@
           line-height: inherit;
           &:hover {
             .search-item-info .search-item-text {
-              font-weight: $font-weight-body-bold;
+              text-shadow: 0 0 .6px $text-primary, 0 0 .6px $text-primary;
             }
           }
           .search-item-info {
@@ -91,8 +94,8 @@
 
         /* RESULT ITEM */
         .result-item-link {
-          //height: 56px;
-          padding: 8px 8px 8px 24px;
+          height: 56px;
+          padding: 8px 8px 8px 32px;
           .result-info {
             display: flex;
             flex: 1;
@@ -100,7 +103,7 @@
             margin-right: 8px;
           }
           .resource-type {
-            margin-top: auto;
+            margin: auto;
           }
         }
       }

@@ -69,14 +69,13 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     };
   }
 
+  static getDerivedStateFromProps(props, state) {
+    const { searchTerm } = props;
+    return { searchTerm };
+  }
+
   componentWillMount = () => {
     document.addEventListener('mousedown', this.updateTypeAhead, false);
-    /* Workaround: When returning to the HomePage, searchReset() clears the searchTerm in the
-       app state, but the change is not getting propagated. This workaround ensures the
-       searchTerm is cleared on SearchBar's state when we navigate to the HomePage */
-    if (this.props.location.pathname === "/") {
-       this.setState({ searchTerm: '' });
-    }
   }
 
   componentWillUnmount = () => {

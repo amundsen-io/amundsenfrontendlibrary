@@ -176,21 +176,21 @@ class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> 
   render() {
     if (this.props.isLoading) {
       return (
-        <div id="search-suggest" className='search-suggest'>
+        <div id="inline-results" className='inline-results'>
           <LoadingSpinner/>
         </div>
       );
     }
     const { className = '', onItemSelect, searchTerm } = this.props;
     return (
-      <div id="search-suggest" className={`search-suggest ${className}`}>
-        <div className="search-suggest-section">
+      <div id="inline-results" className={`inline-results ${className}`}>
+        <div className="inline-results-section">
           <SearchItemList
             onItemSelect={this.onSearchItemSelect}
             searchTerm={searchTerm}
           />
         </div>
-        <div className="search-suggest-section">
+        <div className="inline-results-section">
           <ResultItemList
             onFooterSelect={this.onSearchItemSelect}
             onItemSelect={onItemSelect}
@@ -203,7 +203,7 @@ class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> 
         </div>
         {
           indexUsersEnabled() &&
-          <div className="search-suggest-section">
+          <div className="inline-results-section">
             <ResultItemList
               onFooterSelect={this.onSearchItemSelect}
               onItemSelect={onItemSelect}
