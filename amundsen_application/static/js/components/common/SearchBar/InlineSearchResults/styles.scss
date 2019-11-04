@@ -29,8 +29,8 @@
     padding-top: 8px;
     padding-bottom: 8px;
 
-    &:not(:first-of-type) {
-      border-top: 1px solid $stroke;
+    &:not(:last-of-type) {
+      border-bottom: 1px solid $stroke;
     }
 
     .section-title,

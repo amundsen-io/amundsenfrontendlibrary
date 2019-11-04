@@ -85,8 +85,8 @@ class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> 
     }
   };
 
-  // TODO: not typesafe
-  getResultsForResource = (resourceType: ResourceType): any => {
+  // TODO: Typing for specifying any valid SearchResults type needs improvement
+  getResultsForResource = (resourceType: ResourceType): any[] => {
     switch (resourceType) {
       case ResourceType.table:
         return this.props.tables.results.slice(0, 2);
@@ -173,15 +173,43 @@ class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> 
     }
   };
 
-  render() {
+  renderResultsByResource = (resourceType: ResourceType) => {
+    return (
+      <div className="inline-results-section">
+        <ResultItemList
+          viewAllResults={this.onSearchItemSelect}
+          onItemSelect={this.props.onItemSelect}
+          resourceType={resourceType}
+          searchTerm={this.props.searchTerm}
+          suggestedResults={this.getSuggestedResultsForResource(resourceType)}
+          totalResults={this.getTotalResultsForResource(resourceType)}
+          title={this.getTitleForResource(resourceType)}
+        />
+      </div>
+    )
+  };
+
+  renderResults = () => {
     if (this.props.isLoading) {
       return (
-        <div id="inline-results" className='inline-results'>
+        <div className="inline-results-section">
           <LoadingSpinner/>
         </div>
       );
     }
-    const { className = '', onItemSelect, searchTerm } = this.props;
+    return (
+      <>
+        { this.renderResultsByResource(ResourceType.table) }
+        {
+          indexUsersEnabled() &&
+          this.renderResultsByResource(ResourceType.user)
+        }
+      </>
+    );
+  }
+
+  render() {
+    const { className = '', searchTerm } = this.props;
     return (
       <div id="inline-results" className={`inline-results ${className}`}>
         <div className="inline-results-section">
@@ -190,31 +218,7 @@ class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> 
             searchTerm={searchTerm}
           />
         </div>
-        <div className="inline-results-section">
-          <ResultItemList
-            onFooterSelect={this.onSearchItemSelect}
-            onItemSelect={onItemSelect}
-            resourceType={ResourceType.table}
-            searchTerm={searchTerm}
-            suggestedResults={this.getSuggestedResultsForResource(ResourceType.table)}
-            totalResults={this.getTotalResultsForResource(ResourceType.table)}
-            title={this.getTitleForResource(ResourceType.table)}
-          />
-        </div>
-        {
-          indexUsersEnabled() &&
-          <div className="inline-results-section">
-            <ResultItemList
-              onFooterSelect={this.onSearchItemSelect}
-              onItemSelect={onItemSelect}
-              resourceType={ResourceType.user}
-              searchTerm={searchTerm}
-              suggestedResults={this.getSuggestedResultsForResource(ResourceType.user)}
-              totalResults={this.getTotalResultsForResource(ResourceType.user)}
-              title={this.getTitleForResource(ResourceType.user)}
-            />
-          </div>
-        }
+        { this.renderResults() }
       </div>
     );
   }

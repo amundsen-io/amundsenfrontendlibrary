@@ -6,7 +6,7 @@ import { SuggestedResult } from '../../InlineSearchResults'
 import ResultItem from './ResultItem';
 
 export interface ResultItemListProps {
-  onFooterSelect: (resourceType: ResourceType) => void;
+  viewAllResults: (resourceType: ResourceType) => void;
   onItemSelect: () => void;
   resourceType: ResourceType;
   searchTerm: string;
@@ -38,7 +38,7 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
   }
 
   onClick = () => {
-    this.props.onFooterSelect(this.props.resourceType);
+    this.props.viewAllResults(this.props.resourceType);
   };
 
   render = () => {
