@@ -10,6 +10,7 @@ import {
   REFRESH_MESSAGE,
   UPDATE_BUTTON_TEXT
 } from './constants';
+import { EditableSectionChildProps } from 'components/TableDetail/EditableSection';
 
 export interface StateFromProps {
   refreshValue?: string;
@@ -26,10 +27,9 @@ export interface ComponentProps {
   value?: string;
 }
 
-export type EditableTextProps = ComponentProps & DispatchFromProps & StateFromProps;
+export type EditableTextProps = ComponentProps & DispatchFromProps & StateFromProps & EditableSectionChildProps;
 
 interface EditableTextState {
-  inEditMode: boolean;
   value?: string;
   refreshValue?: string;
   isDisabled: boolean;
@@ -56,7 +56,6 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
     this.textAreaRef = React.createRef();
 
     this.state = {
-      inEditMode: false,
       isDisabled: false,
       value: props.value,
       refreshValue: props.value,
@@ -64,9 +63,9 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
   }
 
   componentDidUpdate() {
-    const { isDisabled, inEditMode, refreshValue, value } = this.state;
+    const { isDisabled, refreshValue, value } = this.state;
     const textArea = this.textAreaRef.current;
-    if (!inEditMode) return;
+    if (!this.props.isEditing) return;
 
     autosize(textArea);
     if (refreshValue && refreshValue !== value && !isDisabled) {
@@ -79,52 +78,52 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
   }
 
   exitEditMode = () => {
-    this.setState({ isDisabled: false, inEditMode: false, refreshValue: '' });
+    this.setState({ isDisabled: false, refreshValue: '' });
+    this.props.setEditMode(false);
   };
 
   enterEditMode = () => {
     if (this.props.getLatestValue) {
-      const onSuccessCallback = () => { this.setState({ inEditMode: true }); };
+      const onSuccessCallback = () => { this.props.setEditMode(true); };
       this.props.getLatestValue(onSuccessCallback, null);
     } else {
-      this.setState({ inEditMode: true });
+      this.props.setEditMode(true);
     }
   };
 
   refreshText = () => {
-    this.setState({ value: this.state.refreshValue, isDisabled: false, inEditMode: true, refreshValue: undefined });
+    this.setState({value: this.state.refreshValue, isDisabled: false, refreshValue: undefined });
   };
 
   updateText = () => {
     const newValue = this.textAreaRef.current.value;
-    const onSuccessCallback = () => { this.setState({ value: newValue, inEditMode: false, refreshValue: undefined }); };
+    const onSuccessCallback = () => {
+      this.setState({value: newValue, refreshValue: undefined });
+      this.props.setEditMode(false);
+    };
     const onFailureCallback = () => { this.exitEditMode(); };
 
     this.props.onSubmitValue(newValue, onSuccessCallback, onFailureCallback);
   };
 
   render() {
-    if (!this.state.inEditMode) {
+    if (!this.props.isEditing) {
       return (
         <div className="editable-text">
           <div className="text-wrapper">
             <ReactMarkdown source={ this.state.value }/>
           </div>
           {
-            this.props.editable &&
-            <a className={"edit-link" + (this.state.value ? "" : " no-value")}
+            this.props.editable && !this.state.value &&
+            <a className="edit-link"
                href="JavaScript:void(0)"
                onClick={ this.enterEditMode }
-            >
-              {
-                this.state.value ? "Edit" : "Add Description"
-              }
-            </a>
+            >Add Description</a>
           }
-        </div>
+          </div>
       );
     }
-
+    
     return (
       <div className="editable-text">
         <textarea
