@@ -1,9 +1,15 @@
-import autosize from 'autosize';
+import * as autosize from 'autosize';
 import * as React from 'react';
 import * as ReactMarkdown from 'react-markdown';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+import {
+  CANCEL_BUTTON,
+  REFRESH_BUTTON,
+  REFRESH_MESSAGE,
+  UPDATE_BUTTON
+} from 'components/common/EditableText/constants';
 
 export interface StateFromProps {
   refreshValue?: string;
@@ -23,7 +29,6 @@ export interface ComponentProps {
 export type EditableTextProps = ComponentProps & DispatchFromProps & StateFromProps;
 
 interface EditableTextState {
-  editable: boolean;
   inEditMode: boolean;
   value?: string;
   refreshValue?: string;
@@ -51,7 +56,6 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
     this.textAreaRef = React.createRef();
 
     this.state = {
-      editable: props.editable,
       inEditMode: false,
       isDisabled: false,
       value: props.value,
@@ -100,62 +104,61 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
   };
 
   render() {
-    return (
-      <div className='editable-text'>
-        {
-          !this.state.inEditMode &&
-          <>
-            <div className="text-wrapper">
-              <ReactMarkdown source={ this.state.value }/>
-             </div>
-             {
-               this.state.editable &&
-               <a className={"edit-link" + (this.state.value ? "" : " no-value")}
-                  href="JavaScript:void(0)"
-                  onClick={ this.enterEditMode }
-               >
-                 {
-                   this.state.value ? "edit" : "Add Description"
-                 }
-               </a>
-             }
-           </>
-        }
-        {
-          this.state.inEditMode &&
-          <>
-            <textarea
-              className='editable-textarea'
-              rows={ 2 }
-              maxLength={ this.props.maxLength }
-              ref={ this.textAreaRef }
-              defaultValue={ this.state.value }
-              disabled={ this.state.isDisabled }
-            />
-            <div className="editable-textarea-controls">
+    if (!this.state.inEditMode) {
+      return (
+        <div className="editable-text">
+          <div className="text-wrapper">
+            <ReactMarkdown source={ this.state.value }/>
+          </div>
+          {
+            this.props.editable &&
+            <a className={"edit-link" + (this.state.value ? "" : " no-value")}
+               href="JavaScript:void(0)"
+               onClick={ this.enterEditMode }
+            >
               {
-                this.state.isDisabled &&
-                 <>
-                   <h2 className="label label-danger">This text is out of date, please refresh the component</h2>
-                   <button onClick={ this.refreshText } className="btn btn-primary">
-                     <img className="icon icon-refresh"/>
-                     Refresh
-                   </button>
-                 </>
-             }
-             {
-               !this.state.isDisabled &&
-               <button id="update"
-                       className="btn btn-primary"
-                       onClick={ this.updateText }>Update</button>
-             }
-             <button id="cancel"
-                     className="btn btn-default"
-                     onClick={ this.exitEditMode }>Cancel</button>
-            </div>
-           </>
-         }
-       </div>
+                this.state.value ? "Edit" : "Add Description"
+              }
+            </a>
+          }
+        </div>
+      );
+    }
+
+    return (
+      <div className="editable-text">
+        <textarea
+          className="editable-textarea"
+          rows={ 2 }
+          maxLength={ this.props.maxLength }
+          ref={ this.textAreaRef }
+          defaultValue={ this.state.value }
+          disabled={ this.state.isDisabled }
+        />
+        <div className="editable-textarea-controls">
+          {
+            this.state.isDisabled &&
+             <>
+               <h2 className="label label-danger refresh-message">
+                 { REFRESH_MESSAGE }
+               </h2>
+               <button className="btn btn-primary refresh-button" onClick={ this.refreshText } >
+                 <img className="icon icon-refresh"/>
+                 { REFRESH_BUTTON }
+               </button>
+             </>
+          }
+          {
+            !this.state.isDisabled &&
+            <button className="btn btn-primary update-button" onClick={ this.updateText }>
+              { UPDATE_BUTTON }
+            </button>
+          }
+          <button className="btn btn-default cancel-button" onClick={ this.exitEditMode }>
+            { CANCEL_BUTTON }
+          </button>
+        </div>
+      </div>
     );
   }
 }
