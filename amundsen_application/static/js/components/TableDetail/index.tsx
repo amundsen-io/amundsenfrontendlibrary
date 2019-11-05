@@ -156,8 +156,9 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                     <TagInput/>
                   </EditableSection>
 
-                  <div className="section-title title-3">Owner</div>
-                  <OwnerEditor readOnly={false}/>
+                  <EditableSection title="Owners">
+                    <OwnerEditor readOnly={false}/>
+                  </EditableSection>
 
                   <div className="section-title title-3">Frequent Users</div>
                   <FrequentUsers readers={ data.table_readers }/>
