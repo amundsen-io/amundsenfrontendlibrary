@@ -35,6 +35,7 @@ import {
   getInlineResults,
   getInlineResultsSuccess,
   getInlineResultsFailure,
+  updateFromInlineResult,
   setPageIndex, setResource,
 } from './reducer';
 import { autoSelectResource, getPageIndex, getSearchState } from './utils';
@@ -57,8 +58,33 @@ export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
   }
 };
 export function* inlineSearchWatcher(): SagaIterator {
-  yield debounce(250, InlineSearch.REQUEST, inlineSearchWorker)
+  yield debounce(350, InlineSearch.REQUEST, inlineSearchWorker)
 }
+
+export function* selectInlineResultWorker(action): SagaIterator {
+  const state = yield select();
+  const { searchTerm, resourceType, updateUrl } = action.payload;
+  if (state.search.inlineResults.isLoading) {
+    yield put(searchAll(searchTerm, resourceType, 0))
+    updateSearchUrl({ term: searchTerm });
+  }
+  else {
+    if (updateUrl) {
+      updateSearchUrl({ resource: resourceType, term: searchTerm, index: 0 });
+    }
+    const data = {
+      searchTerm,
+      selectedTab: resourceType,
+      tables: state.search.inlineResults.tables,
+      users: state.search.inlineResults.users,
+    };
+    yield put(updateFromInlineResult(data));
+  }
+};
+export function* selectInlineResultsWatcher(): SagaIterator {
+  yield takeEvery(InlineSearch.SELECT, selectInlineResultWorker);
+};
+
 
 export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
   let { resource } = action.payload;

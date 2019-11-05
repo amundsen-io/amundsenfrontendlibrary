@@ -17,13 +17,12 @@ describe('SearchBar', () => {
   const valueChangeMockEvent = { target: { value: 'Data Resources' } };
   const submitMockEvent = { preventDefault: jest.fn() };
   const setStateSpy = jest.spyOn(SearchBar.prototype, 'setState');
-  const routerProps = getMockRouterProps<any>(null, null)
   const setup = (propOverrides?: Partial<SearchBarProps>) => {
     const props: SearchBarProps = {
       onInputChange: jest.fn(),
+      onSelectInlineResult: jest.fn(),
       searchTerm: '',
       submitSearch: jest.fn(),
-      ...routerProps,
       ...propOverrides
     };
     const wrapper = shallow<SearchBar>(<SearchBar {...props} />)

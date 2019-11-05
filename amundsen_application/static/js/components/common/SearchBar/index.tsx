@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router';
 
 import { GlobalState } from 'ducks/rootReducer';
-import { submitSearch, getInlineResults } from 'ducks/search/reducer';
-import { SubmitSearchRequest, InlineSearchRequest } from 'ducks/search/types';
+import { submitSearch, getInlineResults, selectInlineResult } from 'ducks/search/reducer';
+import { SubmitSearchRequest, InlineSearchRequest, InlineSearchSelect } from 'ducks/search/types';
 
 import { ResourceType } from 'interfaces';
 
@@ -31,6 +30,7 @@ export interface StateFromProps {
 export interface DispatchFromProps {
   submitSearch: (searchTerm: string) => SubmitSearchRequest;
   onInputChange: (term: string) => InlineSearchRequest;
+  onSelectInlineResult: (resourceType: ResourceType, searchTerm: string, updateUrl: boolean) => InlineSearchSelect;
 }
 
 export interface OwnProps {
@@ -39,7 +39,7 @@ export interface OwnProps {
   size?: string;
 }
 
-export type SearchBarProps = StateFromProps & DispatchFromProps & OwnProps & RouteComponentProps<any>;
+export type SearchBarProps = StateFromProps & DispatchFromProps & OwnProps;
 
 interface SearchBarState {
   showTypeAhead: boolean;
@@ -74,34 +74,16 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     return { searchTerm };
   }
 
-  componentWillMount = () => {
+  clearSearchTerm = () : void => {
+    this.setState({ showTypeAhead: false, searchTerm: '' });
+  };
+
+  componentDidMount = () => {
     document.addEventListener('mousedown', this.updateTypeAhead, false);
   }
 
   componentWillUnmount = () => {
     document.removeEventListener('mousedown', this.updateTypeAhead, false);
-  }
-
-  updateTypeAhead = (event: Event): void => {
-    /* This logic will hide/show the inline results component when the user clicks
-      outside/inside of the search bar */
-    if (this.refToSelf.current.contains(event.target as Node)) {
-      this.setState({ showTypeAhead: this.shouldShowTypeAhead(this.state.searchTerm) });
-    } else {
-      this.hideTypeAhead();
-    }
-  };
-
-  shouldShowTypeAhead = (searchTerm: string) : boolean => {
-    return searchTerm.length > 0;
-  }
-
-  clearSearchTerm = () : void => {
-    this.setState({ showTypeAhead: false, searchTerm: '' });
-  };
-
-  hideTypeAhead = () : void => {
-    this.setState({ showTypeAhead: false });
   }
 
   handleValueChange = (event: React.SyntheticEvent<HTMLInputElement>) : void => {
@@ -119,8 +101,13 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     event.preventDefault();
     if (this.isFormValid(searchTerm)) {
       this.props.submitSearch(searchTerm);
+      this.hideTypeAhead();
     }
   };
+
+  hideTypeAhead = () : void => {
+    this.setState({ showTypeAhead: false });
+  }
 
   isFormValid = (searchTerm: string) : boolean => {
     if (searchTerm.length === 0) {
@@ -149,6 +136,25 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
     this.setState({ subText: SUBTEXT_DEFAULT, subTextClassName: "" });
     return true;
+  };
+
+  onSelectInlineResult = (resourceType: ResourceType, updateUrl: boolean = false) : void => {
+    this.hideTypeAhead();
+    this.props.onSelectInlineResult(resourceType, this.state.searchTerm, updateUrl);
+  }
+
+  shouldShowTypeAhead = (searchTerm: string) : boolean => {
+    return searchTerm.length > 0;
+  }
+
+  updateTypeAhead = (event: Event): void => {
+    /* This logic will hide/show the inline results component when the user clicks
+      outside/inside of the search bar */
+    if (this.refToSelf.current.contains(event.target as Node)) {
+      this.setState({ showTypeAhead: this.shouldShowTypeAhead(this.state.searchTerm) });
+    } else {
+      this.hideTypeAhead();
+    }
   };
 
   render() {
@@ -182,7 +188,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
           // @ts-ignore: Investigate proper configuration for 'className' to be valid by default on custom components
           <InlineSearchResults
             className={this.props.size === SIZE_SMALL ? 'small' : ''}
-            onItemSelect={this.hideTypeAhead}
+            onItemSelect={this.onSelectInlineResult}
             searchTerm={this.state.searchTerm}
           />
         }
@@ -204,7 +210,7 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ submitSearch, onInputChange: getInlineResults }, dispatch);
+  return bindActionCreators({ submitSearch, onInputChange: getInlineResults, onSelectInlineResult: selectInlineResult }, dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps, OwnProps>(mapStateToProps,  mapDispatchToProps)(withRouter(SearchBar));
+export default connect<StateFromProps, DispatchFromProps, OwnProps>(mapStateToProps,  mapDispatchToProps)(SearchBar);

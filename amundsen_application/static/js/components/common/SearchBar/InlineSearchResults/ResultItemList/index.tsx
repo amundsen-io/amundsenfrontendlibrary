@@ -6,8 +6,7 @@ import { SuggestedResult } from '../../InlineSearchResults'
 import ResultItem from './ResultItem';
 
 export interface ResultItemListProps {
-  viewAllResults: (resourceType: ResourceType) => void;
-  onItemSelect: () => void;
+  onItemSelect: (resourceType: ResourceType, updateUrl?: boolean) => void;
   resourceType: ResourceType;
   searchTerm: string;
   suggestedResults: SuggestedResult[];
@@ -21,13 +20,15 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
   }
 
   renderResultItems = (results: SuggestedResult[]) => {
+    const onResultItemSelect = () => this.props.onItemSelect(this.props.resourceType);
+
     return results.map((item, index) => {
       const { href, iconClass, subtitle, title, type } = item;
       return (
         <ResultItem
           key={`${this.props.resourceType}:${index}`}
           href={href}
-          onItemSelect={this.props.onItemSelect}
+          onItemSelect={onResultItemSelect}
           iconClass={`icon icon-dark ${iconClass}`}
           subtitle={subtitle}
           title={title}
@@ -37,12 +38,12 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
     });
   }
 
-  onClick = () => {
-    this.props.viewAllResults(this.props.resourceType);
+  onViewAllResults = () => {
+    this.props.onItemSelect(this.props.resourceType, true);
   };
 
   render = () => {
-    const { onItemSelect, resourceType, searchTerm, suggestedResults, totalResults, title } = this.props;
+    const { suggestedResults, totalResults, title } = this.props;
     return (
       <>
         <div className="section-title title-3">{title}</div>
@@ -51,7 +52,7 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
         </ul>
         <a
           className="section-footer title-3"
-          onClick={this.onClick}
+          onClick={this.onViewAllResults}
           target='_blank'
         >
           {`See all ${totalResults} ${title} results`}

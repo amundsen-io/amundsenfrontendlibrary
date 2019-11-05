@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export interface ResultItemProps {
   href: string
   iconClass: string;
-  onItemSelect: (event: Event) => void;
+  onItemSelect: () => void;
   subtitle: string;
   title: string;
   type: string;

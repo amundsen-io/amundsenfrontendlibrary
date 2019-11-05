@@ -4,7 +4,7 @@ import { ResourceType } from 'interfaces';
 
 export interface SearchItemProps {
   listItemText: string;
-  onItemSelect: (resourceType: ResourceType) => void;
+  onItemSelect: (resourceType: ResourceType, updateUrl: boolean) => void;
   searchTerm: string;
   resourceType: ResourceType;
 }
@@ -14,22 +14,23 @@ class SearchItem extends React.Component<SearchItemProps, {}> {
     super(props);
   }
 
-  onClick = () => {
-    this.props.onItemSelect(this.props.resourceType);
+  onViewAllResults = () => {
+    this.props.onItemSelect(this.props.resourceType, true);
   }
 
   render = () => {
+    const { searchTerm, listItemText } = this.props;
     return (
       <li className="list-group-item">
         <a
           className="search-item-link"
-          onClick={this.onClick}
+          onClick={this.onViewAllResults}
           target='_blank'
         >
           <img className="icon icon-search" />
           <div className="title-2 search-item-info">
-            <div className="search-term">{`${this.props.searchTerm}\u00a0`}</div>
-            <div className="search-item-text">{this.props.listItemText}</div>
+            <div className="search-term">{`${searchTerm}\u00a0`}</div>
+            <div className="search-item-text">{listItemText}</div>
           </div>
         </a>
       </li>

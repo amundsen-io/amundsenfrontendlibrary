@@ -25,6 +25,7 @@ import {
   searchResourceWatcher,
   setPageIndexWatcher,
   setResourceWatcher,
+  selectInlineResultsWatcher,
   submitSearchWatcher,
   urlDidUpdateWatcher
 } from './search/sagas';
@@ -66,6 +67,7 @@ export default function* rootSaga() {
     loadPreviousSearchWatcher(),
     searchAllWatcher(),
     searchResourceWatcher(),
+    selectInlineResultsWatcher(),
     setPageIndexWatcher(),
     setResourceWatcher(),
     submitSearchWatcher(),

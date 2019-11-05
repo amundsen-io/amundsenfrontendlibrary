@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
@@ -8,13 +7,10 @@ import ResultItemList from './ResultItemList';
 
 import { getDatabaseDisplayName, getDatabaseIconClass, indexUsersEnabled } from 'config/config-utils';
 
-import { Resource, ResourceType, TableResource, UserResource } from 'interfaces';
-
 import { GlobalState } from 'ducks/rootReducer'
-import { selectInlineResult } from 'ducks/search/reducer';
-import { InlineSearchSelect, SearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
+import { SearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
 
-import { updateSearchUrl } from 'utils/navigation-utils';
+import { Resource, ResourceType, TableResource, UserResource } from 'interfaces';
 
 import './styles.scss';
 
@@ -26,17 +22,13 @@ export interface StateFromProps {
   users: UserSearchResults;
 }
 
-export interface DispatchFromProps {
-  onSearchItemSelect: (resourceType: ResourceType, searchTerm: string) => InlineSearchSelect;
-}
-
 export interface OwnProps {
-  className: string;
-  onItemSelect: () => void;
+  className?: string;
+  onItemSelect: (resourceType: ResourceType, updateUrl?: boolean) => void;
   searchTerm: string;
 }
 
-export type InlineSearchResultsProps = StateFromProps & DispatchFromProps & OwnProps;
+export type InlineSearchResultsProps = StateFromProps & OwnProps;
 
 export interface SuggestedResult {
   href: string;
@@ -51,19 +43,7 @@ class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> 
     super(props);
   }
 
-  onSearchItemSelect = (resourceType: ResourceType) => {
-    this.props.onItemSelect();
-    this.props.onSearchItemSelect(resourceType, this.props.searchTerm);
-    updateSearchUrl({
-      term: this.props.searchTerm,
-      resource: resourceType,
-      index: 0,
-    })
-  }
-
   getTitleForResource = (resourceType: ResourceType): string => {
-    // TODO: Consolidate fter implementing filtering. The final resourceConfig can include
-    // displayNames to avoid re-defining constants 'Dataset' & 'People' across components
     switch (resourceType) {
       case ResourceType.table:
         return CONSTANTS.DATASETS;
@@ -85,8 +65,7 @@ class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> 
     }
   };
 
-  // TODO: Typing for specifying any valid SearchResults type needs improvement
-  getResultsForResource = (resourceType: ResourceType): any[] => {
+  getResultsForResource = (resourceType: ResourceType): Resource[] => {
     switch (resourceType) {
       case ResourceType.table:
         return this.props.tables.results.slice(0, 2);
@@ -129,7 +108,7 @@ class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> 
         const table = result as TableResource;
         return getDatabaseIconClass(table.database);
       case ResourceType.user:
-        return 'icon-users';
+        return CONSTANTS.USER_ICON_CLASS;
       default:
         return '';
     }
@@ -167,7 +146,7 @@ class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> 
         const table = result as TableResource;
         return getDatabaseDisplayName(table.database);
       case ResourceType.user:
-        return 'User';
+        return CONSTANTS.PEOPLE_USER_TYPE;
       default:
         return '';
     }
@@ -177,7 +156,6 @@ class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> 
     return (
       <div className="inline-results-section">
         <ResultItemList
-          viewAllResults={this.onSearchItemSelect}
           onItemSelect={this.props.onItemSelect}
           resourceType={resourceType}
           searchTerm={this.props.searchTerm}
@@ -214,7 +192,7 @@ class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> 
       <div id="inline-results" className={`inline-results ${className}`}>
         <div className="inline-results-section">
           <SearchItemList
-            onItemSelect={this.onSearchItemSelect}
+            onItemSelect={this.props.onItemSelect}
             searchTerm={searchTerm}
           />
         </div>
@@ -225,15 +203,12 @@ class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> 
 }
 
 export const mapStateToProps = (state: GlobalState) => {
+  const { isLoading, tables, users } = state.search.inlineResults;
   return {
-    isLoading: state.search.inlineResults.isLoading,
-    tables: state.search.inlineResults.tables,
-    users: state.search.inlineResults.users,
+    isLoading,
+    tables,
+    users,
   };
 };
 
-export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ onSearchItemSelect: selectInlineResult }, dispatch);
-};
-
-export default connect<StateFromProps, DispatchFromProps, OwnProps>(mapStateToProps, mapDispatchToProps)(InlineSearchResults);
+export default connect<StateFromProps, OwnProps>(mapStateToProps)(InlineSearchResults);

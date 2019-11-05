@@ -3,7 +3,7 @@
 .inline-results {
   background: white;
   width: 100%;
-  z-index: 10; // T__T
+  z-index: 10; // TODO: Establish levels for cases where we can't avoid z-index. This is a topmost element.
   position: absolute;
 
   border-radius: 4px;

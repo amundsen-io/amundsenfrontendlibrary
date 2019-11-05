@@ -17,7 +17,9 @@ import {
   InlineSearchRequest,
   InlineSearchResponse,
   InlineSearchResponsePayload,
+  InlineSearchUpdatePayload,
   InlineSearchSelect,
+  InlineSearchUpdate,
   TableSearchResults,
   UserSearchResults,
   SubmitSearchRequest,
@@ -84,20 +86,27 @@ export function getInlineResults(term: string): InlineSearchRequest {
     type: InlineSearch.REQUEST,
   };
 };
-export function selectInlineResult(resourceType: ResourceType, searchTerm: string): InlineSearchSelect {
-  return {
-    payload: {
-      resourceType,
-      searchTerm
-    },
-    type: InlineSearch.SELECT
-  };
-};
 export function getInlineResultsSuccess(inlineResults: InlineSearchResponsePayload): InlineSearchResponse {
   return { type: InlineSearch.SUCCESS, payload: inlineResults };
 };
 export function getInlineResultsFailure(): InlineSearchResponse {
   return { type: InlineSearch.FAILURE };
+};
+export function selectInlineResult(resourceType: ResourceType, searchTerm: string, updateUrl: boolean = false): InlineSearchSelect {
+  return {
+    payload: {
+      resourceType,
+      searchTerm,
+      updateUrl,
+    },
+    type: InlineSearch.SELECT
+  };
+};
+export function updateFromInlineResult(data: InlineSearchUpdatePayload): InlineSearchUpdate {
+  return {
+    payload: data,
+    type: InlineSearch.UPDATE
+  };
 };
 
 export function searchReset(): SearchAllReset {
@@ -185,6 +194,9 @@ export default function reducer(state: SearchReducerState = initialState, action
       // updates search term to reflect action
       return {
         ...state,
+        inlineResults: {
+          ...initialInlineResultsState,
+        },
         search_term: (<SearchAllRequest>action).payload.term,
         isLoading: true,
       };
@@ -224,14 +236,14 @@ export default function reducer(state: SearchReducerState = initialState, action
         ...state,
         selectedTab: (<SetResourceRequest>action).payload.resource
       };
-    case InlineSearch.SELECT:
-      const { searchTerm, resourceType } = (<InlineSearchSelect>action).payload;
+    case InlineSearch.UPDATE:
+      const { searchTerm, selectedTab, tables, users } = (<InlineSearchUpdate>action).payload;
       return {
         ...state,
+        selectedTab,
+        tables,
+        users,
         search_term: searchTerm,
-        selectedTab: resourceType,
-        tables: state.inlineResults.tables,
-        users: state.inlineResults.users,
       };
     case InlineSearch.SUCCESS:
       const inlineResults = (<InlineSearchResponse>action).payload;

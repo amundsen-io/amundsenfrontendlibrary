@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { indexUsersEnabled } from 'config/config-utils';
+
 import { ResourceType } from 'interfaces';
 
 import SearchItem from './SearchItem';
@@ -8,7 +9,7 @@ import SearchItem from './SearchItem';
 import * as CONSTANTS from '../constants';
 
 export interface SearchItemListProps {
-  onItemSelect: (resourceType: ResourceType) => void;
+  onItemSelect: (resourceType: ResourceType, updateUrl: boolean) => void;
   searchTerm: string;
 }
 
@@ -29,20 +30,21 @@ class SearchItemList extends React.Component<SearchItemListProps, {}> {
   }
 
   render = () => {
+    const { onItemSelect, searchTerm } = this.props;
     return (
       <ul className="list-group">
         <SearchItem
           listItemText={this.getListItemText(ResourceType.table)}
-          onItemSelect={this.props.onItemSelect}
-          searchTerm={this.props.searchTerm}
+          onItemSelect={onItemSelect}
+          searchTerm={searchTerm}
           resourceType={ResourceType.table}
         />
         {
           indexUsersEnabled() &&
           <SearchItem
             listItemText={this.getListItemText(ResourceType.user)}
-            onItemSelect={this.props.onItemSelect}
-            searchTerm={this.props.searchTerm}
+            onItemSelect={onItemSelect}
+            searchTerm={searchTerm}
             resourceType={ResourceType.user}
           />
         }

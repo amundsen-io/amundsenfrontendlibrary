@@ -33,7 +33,12 @@ export interface InlineSearchResponsePayload {
   tables: TableSearchResults;
   users: UserSearchResults;
 };
-
+export interface InlineSearchUpdatePayload {
+  searchTerm: string;
+  selectedTab: ResourceType;
+  tables: TableSearchResults;
+  users: UserSearchResults;
+};
 
 
 export enum SearchAll {
@@ -83,6 +88,7 @@ export enum InlineSearch {
   SELECT = 'amundsen/search/INLINE_SEARCH_SELECT',
   SUCCESS = 'amundsen/search/INLINE_SEARCH_SUCCESS',
   FAILURE = 'amundsen/search/INLINE_SEARCH_FAILURE',
+  UPDATE = 'amundsen/search/INLINE_SEARCH_UPDATE',
 };
 export interface InlineSearchRequest {
   payload: {
@@ -98,8 +104,13 @@ export interface InlineSearchSelect {
   payload: {
     resourceType: ResourceType;
     searchTerm: string;
+    updateUrl: boolean;
   };
   type: InlineSearch.SELECT;
+};
+export interface InlineSearchUpdate {
+  payload: InlineSearchUpdatePayload,
+  type: InlineSearch.UPDATE;
 };
 
 export enum SubmitSearch {
