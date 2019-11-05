@@ -7,8 +7,6 @@ import './styles.scss';
 export interface AvatarLabelProps {
   label?: string;
   src?: string;
-  link?: string;
-  target?: string;
 }
 
 const AvatarLabel: React.SFC<AvatarLabelProps> = ({ label, src }) => {
@@ -24,9 +22,7 @@ const AvatarLabel: React.SFC<AvatarLabelProps> = ({ label, src }) => {
 
 AvatarLabel.defaultProps = {
   label: '',
-  src: '',
-  link: '',
-  target: ''
+  src: ''
 };
 
 export default AvatarLabel;
