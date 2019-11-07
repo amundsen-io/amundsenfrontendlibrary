@@ -49,7 +49,37 @@ You can configure a specific display name to be used throughout the UI when repr
 
 ## Table Lineage
 
-_TODO: Please add doc_
+The current implementation is *very* rudimentary, actually just a mashup with navigation back and forth between Amundsen and `kedro-viz` running separately on another localhost port. It has primarily been put out there as a UX proof-of-concept for gathering feedback and as a potential starting point for gradual improvements towards a real useable implementation.
+
+It currently relies on that you have followed these 1-2-3 steps:
+
+1. [This patched up branch](https://github.com/jornh/kedro-viz/tree/redirect-on-enter) of `kedro-viz`. The patched up version is set up to redirect back to Amundsen from a selected node when you press the ENTER key. 
+    ``` bash
+    git clone https://github.com/jornh/kedro-viz && cd kedro-viz
+    git checkout redirect-on-enter
+    cp nodes.json public/api  # just because ...
+    npm start
+    ```
+
+1. That you configure frontend (Via the `AppConfigCustom` object in [config-custom.ts](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/static/js/config/config-custom.ts)) `tableLineage`, build and run it:
+
+    ``` typescript
+      tableLineage: {
+        iconPath: '/static/images/favicon.png',
+        isBeta: true,
+        isEnabled: true,
+        urlGenerator: (database: string, cluster: string, schema: string, table: string) => {
+          return `http://localhost:4141?schema=${schema}&cluster=${cluster}&db=${database}&table=${table}`;
+        },
+      },
+    ```
+1. Finally load a bit of additional `Table` sample data using Databuilder [`sample_col.csv`](https://github.com/lyft/amundsendatabuilder/blob/master/example/sample_data/sample_col.csv). You can just append CSV data below to the file then rerun `sample_data_loader.py`:
+    ``` csv
+    col1,,string,1,hive,gold,test_schema,example_test_x,
+    col1,,string,1,hive,gold,test_schema,example_test_y,
+    col1,,string,1,hive,gold,test_schema,example_train_x,
+    col1,,string,1,hive,gold,test_schema,example_train_y,
+    ```
 
 ## Table Profile
 
