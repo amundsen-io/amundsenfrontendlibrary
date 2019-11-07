@@ -5,10 +5,10 @@ import * as autosize from 'autosize';
 import { shallow } from 'enzyme';
 import EditableText, { EditableTextProps } from '../';
 import {
-  CANCEL_BUTTON,
-  REFRESH_BUTTON,
+  CANCEL_BUTTON_TEXT,
+  REFRESH_BUTTON_TEXT,
   REFRESH_MESSAGE,
-  UPDATE_BUTTON
+  UPDATE_BUTTON_TEXT
 } from 'components/common/EditableText/constants';
 
 
@@ -159,7 +159,7 @@ describe('EditableText', () => {
         expect(refreshMessage.text()).toBe(REFRESH_MESSAGE);
 
         const refreshButton = wrapper.find('.refresh-button');
-        expect(refreshButton.text()).toMatch(REFRESH_BUTTON);
+        expect(refreshButton.text()).toMatch(REFRESH_BUTTON_TEXT);
         expect(refreshButton.props()).toMatchObject({
           onClick: instance.refreshText,
         });
@@ -168,7 +168,7 @@ describe('EditableText', () => {
       it('when not disabled, renders the update text button', () => {
         wrapper.setState({ isDisabled: false });
         const updateButton = wrapper.find('.update-button');
-        expect(updateButton.text()).toMatch(UPDATE_BUTTON);
+        expect(updateButton.text()).toMatch(UPDATE_BUTTON_TEXT);
         expect(updateButton.props()).toMatchObject({
           onClick: instance.updateText,
         })
@@ -176,7 +176,7 @@ describe('EditableText', () => {
 
       it('renders the cancel button', () => {
         const cancelButton = wrapper.find('.cancel-button');
-        expect(cancelButton.text()).toMatch(CANCEL_BUTTON);
+        expect(cancelButton.text()).toMatch(CANCEL_BUTTON_TEXT);
         expect(cancelButton.props()).toMatchObject({
           onClick: instance.exitEditMode,
         })

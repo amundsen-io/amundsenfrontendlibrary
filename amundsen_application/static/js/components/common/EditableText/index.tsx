@@ -5,11 +5,11 @@ import * as ReactMarkdown from 'react-markdown';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 import {
-  CANCEL_BUTTON,
-  REFRESH_BUTTON,
+  CANCEL_BUTTON_TEXT,
+  REFRESH_BUTTON_TEXT,
   REFRESH_MESSAGE,
-  UPDATE_BUTTON
-} from 'components/common/EditableText/constants';
+  UPDATE_BUTTON_TEXT
+} from './constants';
 
 export interface StateFromProps {
   refreshValue?: string;
@@ -144,18 +144,18 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
                </h2>
                <button className="btn btn-primary refresh-button" onClick={ this.refreshText } >
                  <img className="icon icon-refresh"/>
-                 { REFRESH_BUTTON }
+                 { REFRESH_BUTTON_TEXT }
                </button>
              </>
           }
           {
             !this.state.isDisabled &&
             <button className="btn btn-primary update-button" onClick={ this.updateText }>
-              { UPDATE_BUTTON }
+              { UPDATE_BUTTON_TEXT }
             </button>
           }
           <button className="btn btn-default cancel-button" onClick={ this.exitEditMode }>
-            { CANCEL_BUTTON }
+            { CANCEL_BUTTON_TEXT }
           </button>
         </div>
       </div>
