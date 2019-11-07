@@ -1,7 +1,4 @@
 @import 'variables';
-// TODO - Remove once merged with variable updates
-$divider: #CACAD9;
-$stroke: #CACAD9;
 $header-height: 84px;
 
 .resource-detail-layout {
@@ -13,14 +10,32 @@ $header-height: 84px;
     border-bottom: 2px solid $divider;
     padding: 16px 24px;
 
-    > .header-left {
-      flex-grow: 1;
+
+    .icon-header {
+      height: 32px;
+      width: 32px;
+      margin: 10px;
     }
 
-    > .header-right {
-      > :not(:first-child) {
-        margin-left: 30px;
+    .header-section {
+      &.header-title {
+        flex-grow: 1;
       }
+      &.header-links {
+        > * {
+          margin-right: 16px;
+
+        }
+      }
+      &.header-buttons {
+        > * {
+          margin-right: 8px;
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+
     }
   }
 

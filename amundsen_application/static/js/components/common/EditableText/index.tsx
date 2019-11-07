@@ -82,6 +82,8 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
     this.props.setEditMode(false);
   };
 
+  // TODO - The getLatestValue callback doesn't get called when entering edit mode
+  // from the EditableSection component.
   enterEditMode = () => {
     if (this.props.getLatestValue) {
       const onSuccessCallback = () => { this.props.setEditMode(true); };

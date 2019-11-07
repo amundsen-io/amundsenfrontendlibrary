@@ -168,22 +168,22 @@ export class DataPreviewButton extends React.Component<DataPreviewButtonProps, D
     switch (this.props.status) {
       case LoadingStatus.SUCCESS:
       case LoadingStatus.UNAUTHORIZED:
-        buttonText = 'Preview Data';
+        buttonText = 'Preview';
         iconClass = 'icon-preview';
         disabled = false;
         break;
       case LoadingStatus.FORBIDDEN:
-        buttonText = 'Preview Forbidden';
+        buttonText = 'Preview';
         iconClass = 'icon-preview';
         popoverText = previewData.error_text || 'User is forbidden to preview this data';
         break;
       case LoadingStatus.UNAVAILABLE:
-        buttonText = 'Preview Unavailable';
+        buttonText = 'Preview';
         iconClass = 'icon-preview';
         popoverText = 'This feature has not been configured by your service';
         break;
       case LoadingStatus.ERROR:
-        buttonText = 'Preview Unavailable';
+        buttonText = 'Preview';
         iconClass = 'icon-preview';
         popoverText = previewData.error_text || 'An internal server error has occurred, please contact service admin';
         break;
