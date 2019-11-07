@@ -1,10 +1,15 @@
-import autosize from 'autosize';
+import * as autosize from 'autosize';
 import * as React from 'react';
-import { Overlay, Tooltip } from 'react-bootstrap';
 import * as ReactMarkdown from 'react-markdown';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+import {
+  CANCEL_BUTTON_TEXT,
+  REFRESH_BUTTON_TEXT,
+  REFRESH_MESSAGE,
+  UPDATE_BUTTON_TEXT
+} from './constants';
 
 export interface StateFromProps {
   refreshValue?: string;
@@ -24,7 +29,6 @@ export interface ComponentProps {
 export type EditableTextProps = ComponentProps & DispatchFromProps & StateFromProps;
 
 interface EditableTextState {
-  editable: boolean;
   inEditMode: boolean;
   value?: string;
   refreshValue?: string;
@@ -32,8 +36,7 @@ interface EditableTextState {
 }
 
 class EditableText extends React.Component<EditableTextProps, EditableTextState> {
-  private textAreaRef;
-  private editAnchorRef;
+  readonly textAreaRef;
 
   public static defaultProps: EditableTextProps = {
     editable: true,
@@ -43,7 +46,7 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
     value: '',
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps) {
     const { refreshValue } = nextProps;
     return { refreshValue };
   }
@@ -51,10 +54,8 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
   constructor(props) {
     super(props);
     this.textAreaRef = React.createRef();
-    this.editAnchorRef = React.createRef();
 
     this.state = {
-      editable: props.editable,
       inEditMode: false,
       isDisabled: false,
       value: props.value,
@@ -91,88 +92,72 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
   };
 
   refreshText = () => {
-    this.setState({value: this.state.refreshValue, isDisabled: false, inEditMode: false, refreshValue: undefined });
+    this.setState({ value: this.state.refreshValue, isDisabled: false, inEditMode: true, refreshValue: undefined });
   };
 
   updateText = () => {
     const newValue = this.textAreaRef.current.value;
-    const onSuccessCallback = () => { this.setState({value: newValue, inEditMode: false, refreshValue: undefined }); };
+    const onSuccessCallback = () => { this.setState({ value: newValue, inEditMode: false, refreshValue: undefined }); };
     const onFailureCallback = () => { this.exitEditMode(); };
 
     this.props.onSubmitValue(newValue, onSuccessCallback, onFailureCallback);
   };
 
-  getAnchorTarget = () => {
-    return this.editAnchorRef.current;
-  };
-
-  getTextAreaTarget = () => {
-    return this.textAreaRef.current;
-  };
-
   render() {
-    if (!this.state.editable) {
+    if (!this.state.inEditMode) {
       return (
-        <div id='editable-container' className='editable-container'>
-           <div id='editable-text' className='editable-text'>
-              <ReactMarkdown source={ this.state.value }/>
-           </div>
-        </div>
-      );
-    }
-    if (!this.state.inEditMode || (this.state.inEditMode && this.state.isDisabled)) {
-      return (
-        <div id='editable-container' className='editable-container'>
-          <Overlay
-            placement='top'
-            show={ this.state.isDisabled }
-            target={ this.getAnchorTarget }
-          >
-            <Tooltip id='error-tooltip'>
-              <div className="error-tooltip">
-                <text>This text is out of date, please refresh the component</text>
-                <button onClick={ this.refreshText } className="btn btn-flat-icon">
-                  <img className='icon icon-refresh'/>
-                </button>
-              </div>
-            </Tooltip>
-          </Overlay>
-          <div id='editable-text' className="editable-text">
+        <div className="editable-text">
+          <div className="text-wrapper">
             <ReactMarkdown source={ this.state.value }/>
-            <a className={ "edit-link" + (this.state.value ? "" : " no-value") }
+          </div>
+          {
+            this.props.editable &&
+            <a className={"edit-link" + (this.state.value ? "" : " no-value")}
                href="JavaScript:void(0)"
                onClick={ this.enterEditMode }
-               ref={ this.editAnchorRef }
             >
               {
-                this.state.value ? "edit" : "Add Description"
+                this.state.value ? "Edit" : "Add Description"
               }
             </a>
-          </div>
+          }
         </div>
       );
     }
 
     return (
-      <div id='editable-container' className='editable-container'>
+      <div className="editable-text">
         <textarea
-          id='editable-textarea'
-          className='editable-textarea'
+          className="editable-textarea"
           rows={ 2 }
           maxLength={ this.props.maxLength }
           ref={ this.textAreaRef }
           defaultValue={ this.state.value }
+          disabled={ this.state.isDisabled }
         />
-        <Overlay
-          placement='top'
-          show={ true }
-          target={ this.getTextAreaTarget }
-        >
-          <Tooltip id='save-tooltip'>
-            <button id='cancel' onClick={this.exitEditMode}>Cancel</button>
-            <button id='save' onClick={this.updateText}>Save</button>
-          </Tooltip>
-        </Overlay>
+        <div className="editable-textarea-controls">
+          {
+            this.state.isDisabled &&
+             <>
+               <h2 className="label label-danger refresh-message">
+                 { REFRESH_MESSAGE }
+               </h2>
+               <button className="btn btn-primary refresh-button" onClick={ this.refreshText } >
+                 <img className="icon icon-refresh"/>
+                 { REFRESH_BUTTON_TEXT }
+               </button>
+             </>
+          }
+          {
+            !this.state.isDisabled &&
+            <button className="btn btn-primary update-button" onClick={ this.updateText }>
+              { UPDATE_BUTTON_TEXT }
+            </button>
+          }
+          <button className="btn btn-default cancel-button" onClick={ this.exitEditMode }>
+            { CANCEL_BUTTON_TEXT }
+          </button>
+        </div>
       </div>
     );
   }
