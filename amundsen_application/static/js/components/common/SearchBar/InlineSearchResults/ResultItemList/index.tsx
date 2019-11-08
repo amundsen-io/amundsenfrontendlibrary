@@ -5,6 +5,8 @@ import { ResourceType } from 'interfaces';
 import { SuggestedResult } from '../../InlineSearchResults'
 import ResultItem from './ResultItem';
 
+import { RESULT_LIST_FOOTER_PREFIX, RESULT_LIST_FOOTER_SUFFIX } from '../constants';
+
 export interface ResultItemListProps {
   onItemSelect: (resourceType: ResourceType, updateUrl?: boolean) => void;
   resourceType: ResourceType;
@@ -18,6 +20,15 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
   constructor(props) {
     super(props);
   }
+
+  generateFooterLinkText = () => {
+    const { totalResults, title } = this.props;
+    return `${RESULT_LIST_FOOTER_PREFIX}${totalResults} ${title}${RESULT_LIST_FOOTER_SUFFIX}`;
+  }
+
+  onViewAllResults = () => {
+    this.props.onItemSelect(this.props.resourceType, true);
+  };
 
   renderResultItems = (results: SuggestedResult[]) => {
     const onResultItemSelect = () => this.props.onItemSelect(this.props.resourceType);
@@ -37,13 +48,9 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
       )
     });
   }
-
-  onViewAllResults = () => {
-    this.props.onItemSelect(this.props.resourceType, true);
-  };
-
+  
   render = () => {
-    const { suggestedResults, totalResults, title } = this.props;
+    const { suggestedResults, title } = this.props;
     return (
       <>
         <div className="section-title title-3">{title}</div>
@@ -55,7 +62,7 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
           onClick={this.onViewAllResults}
           target='_blank'
         >
-          {`See all ${totalResults} ${title} results`}
+          { this.generateFooterLinkText() }
         </a>
       </>
     );

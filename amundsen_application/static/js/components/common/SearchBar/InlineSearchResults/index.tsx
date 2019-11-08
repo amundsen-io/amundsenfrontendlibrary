@@ -38,7 +38,7 @@ export interface SuggestedResult {
   type: string;
 }
 
-class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> {
+export class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> {
   constructor(props) {
     super(props);
   }
@@ -187,12 +187,12 @@ class InlineSearchResults extends React.Component<InlineSearchResultsProps, {}> 
   }
 
   render() {
-    const { className = '', searchTerm } = this.props;
+    const { className = '', onItemSelect, searchTerm } = this.props;
     return (
       <div id="inline-results" className={`inline-results ${className}`}>
         <div className="inline-results-section">
           <SearchItemList
-            onItemSelect={this.props.onItemSelect}
+            onItemSelect={onItemSelect}
             searchTerm={searchTerm}
           />
         </div>
