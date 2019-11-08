@@ -112,14 +112,13 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               <img className={"icon icon-header " + getDatabaseIconClass(data.database)} />
             </div>
             <div className="header-section header-title">
-              <h3 className="detail-header-text">
-                { this.displayName }
-                <BookmarkIcon bookmarkKey={ this.props.tableData.key }/>
+              <h3 className="header-title-text truncated">
+                  { this.displayName }
               </h3>
+              <BookmarkIcon bookmarkKey={ this.props.tableData.key }/>
               <div className="body-3">
                 Datasets &bull;&nbsp;
                 { getDatabaseDisplayName(data.database) }
-
                 {
                   data.is_view && <Flag text="Table View" labelStyle="primary"/>
                 }
@@ -137,7 +136,11 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
           </header>
           <main className="column-layout-1">
             <section className="left-panel">
-              <section className="banner">optional banner</section>
+              {/*
+                TODO - Add a banner here if necessary
+                <section className="banner">optional banner</section>
+                TODO - Consider moving table description here
+              */}
               <section className="column-layout-2">
                 <section className="left-panel">
                   <EditableSection title="Description">
