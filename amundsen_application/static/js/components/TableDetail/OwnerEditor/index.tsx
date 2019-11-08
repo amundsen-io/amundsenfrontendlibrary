@@ -216,7 +216,7 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
            className='btn btn-flat-icon add-item-button'
            onClick={ this.handleShow }>
              <img className='icon icon-plus-circle'/>
-             <span>Add</span>
+             <span>Add Owner</span>
           </button>
         }
 

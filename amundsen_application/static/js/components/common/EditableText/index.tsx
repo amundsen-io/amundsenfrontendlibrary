@@ -123,7 +123,7 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
           </div>
       );
     }
-    
+
     return (
       <div className="editable-text">
         <textarea
