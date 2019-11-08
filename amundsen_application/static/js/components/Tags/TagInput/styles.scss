@@ -1,13 +1,6 @@
 @import 'variables';
 
 .tag-input {
-  .tag-button:first-child {
-    margin-left: 0;
-  }
-
-  .add-btn {
-    margin-top: 8px;
-  }
 
   /*
    override default react-select style classes.

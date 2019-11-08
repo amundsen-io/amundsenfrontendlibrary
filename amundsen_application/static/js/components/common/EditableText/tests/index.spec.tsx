@@ -16,10 +16,12 @@ describe('EditableText', () => {
   const setup = (propOverrides?: Partial<EditableTextProps>) => {
     const props = {
       editable: true,
+      isEditing: true,
       maxLength: 4000,
       onSubmitValue: jest.fn(),
       getLatestValue: jest.fn(),
       refreshValue: '',
+      setEditMode: jest.fn(),
       value: 'currentValue',
       ...propOverrides,
     };
@@ -28,6 +30,7 @@ describe('EditableText', () => {
   };
   const { props, wrapper } = setup();
   const instance = wrapper.instance();
+  const setEditModeSpy = jest.spyOn(props, "setEditMode");
 
 
   describe('componentDidUpdate', () => {
@@ -39,11 +42,11 @@ describe('EditableText', () => {
 
     it('sets isDisabled:true when refresh value does not equal value', () => {
       const { wrapper } = setup({
+        isEditing: true,
         refreshValue: 'new value',
         value: 'different value',
       });
-      const instance = wrapper.instance();
-      instance.setState({ inEditMode: true });
+      wrapper.instance().componentDidUpdate()
       const state = wrapper.state();
       expect(state.isDisabled).toBe(true);
     });
@@ -51,7 +54,7 @@ describe('EditableText', () => {
     it('calls focus on the text area', () => {
       // TODO - figure out how to use refs in jest
       // const textareaFocusSpy = jest.spyOn(instance.textAreaRef.current, 'focus');
-      wrapper.setState({ inEditMode: true });
+      // wrapper.setState({ inEditMode: true });
       // expect(textareaFocusSpy).toHaveBeenCalled();
     });
   });
@@ -59,11 +62,11 @@ describe('EditableText', () => {
 
   describe('exitEditMode', () => {
     it('updates the state', () => {
-      instance.setState({ inEditMode: true, refreshValue: 'hello' });
+      setEditModeSpy.mockClear();
       instance.exitEditMode();
+      expect(setEditModeSpy).toHaveBeenCalledWith(false);
       expect(wrapper.state()).toMatchObject({
         isDisabled: false,
-        inEditMode: false,
         refreshValue: '',
       });
     })
@@ -80,11 +83,11 @@ describe('EditableText', () => {
     });
 
     it('directly updates state if getLatestValue does not exist', () => {
-      const { wrapper } = setup({ getLatestValue: null })
+      const { props, wrapper } = setup({ getLatestValue: null });
       const instance = wrapper.instance();
-      const setStateSpy = jest.spyOn(instance, 'setState');
+      const setEditModeSpy = jest.spyOn(props, 'setEditMode');
       instance.enterEditMode();
-      expect(setStateSpy).toHaveBeenCalled();
+      expect(setEditModeSpy).toHaveBeenCalledWith(true);
     });
   });
 
@@ -95,7 +98,6 @@ describe('EditableText', () => {
       expect(setStateSpy).toHaveBeenCalledWith({
         value: wrapper.state().refreshValue,
         isDisabled: false,
-        inEditMode: true,
         refreshValue: undefined
       });
     })
@@ -113,9 +115,12 @@ describe('EditableText', () => {
 
   describe('render', () => {
     describe('not in edit mode', () => {
-      beforeAll(() => {
-        wrapper.setState({ inEditMode: false });
+      const { props, wrapper } = setup({
+        isEditing: false,
+        value: '',
       });
+      const instance = wrapper.instance();
+
 
       it('renders a ReactMarkdown component', () => {
         const markdown = wrapper.find(ReactMarkdown);
@@ -123,7 +128,7 @@ describe('EditableText', () => {
         expect(markdown.props()).toMatchObject({ source: wrapper.state().value });
       });
 
-      it('renders an edit link if it is editable', () => {
+      it('renders an edit link if it is editable and the text is empty', () => {
         const editLink = wrapper.find('.edit-link');
         expect(editLink.exists()).toBe(true);
         expect(editLink.props()).toMatchObject({
@@ -139,9 +144,6 @@ describe('EditableText', () => {
     });
 
     describe('in edit mode', () => {
-      beforeAll(() => {
-        wrapper.setState({ inEditMode: true });
-      });
 
       it('renders a textarea ', () => {
         const textarea = wrapper.find('textarea');

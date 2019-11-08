@@ -1,6 +1,10 @@
 @import 'variables';
 
 .editable-section {
+  .section-title {
+    margin-bottom: 8px;
+  }
+
   .edit-button {
     opacity: 0;
     margin-left: 4px;

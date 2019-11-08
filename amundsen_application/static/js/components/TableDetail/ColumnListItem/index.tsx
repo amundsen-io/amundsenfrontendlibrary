@@ -12,6 +12,7 @@ import { logClick } from 'ducks/utilMethods';
 import { RequestMetadataType, TableColumn } from 'interfaces';
 
 import './styles.scss';
+import { EditableSection } from 'components/TableDetail/EditableSection';
 
 interface DispatchFromProps {
   openRequestDescriptionDialog: (requestMetadataType: RequestMetadataType, columnName: string) => OpenRequestAction;
@@ -102,14 +103,14 @@ export class ColumnListItem extends React.Component<ColumnListItemProps, ColumnL
           {
             this.state.isExpanded &&
             <section className="expanded-content">
-              {/* TODO replace with <EditableSection> when merged with that commit */}
-              <div className="title-3">Description</div>
               <span onClick={ this.stopPropagation }>
-                <ColumnDescEditableText
-                  columnIndex={ this.props.index }
-                  editable={ metadata.is_editable }
-                  value={ metadata.description }
-                />
+                <EditableSection title="Description">
+                  <ColumnDescEditableText
+                    columnIndex={ this.props.index }
+                    editable={ metadata.is_editable }
+                    value={ metadata.description }
+                  />
+                </EditableSection>
               </span>
               <ColumnStats stats={ metadata.stats } />
             </section>

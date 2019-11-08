@@ -7,14 +7,7 @@
     margin-top: 0;
   }
 
-  &:hover {
-   .edit-link {
-     opacity: 1;
-   }
-  }
-
   .edit-link {
-    opacity: 0;
     text-decoration: none;
 
     &.no-value {
@@ -48,7 +41,7 @@
   }
 
   .editable-textarea-controls {
-    margin-top: 16px;
+    margin: 16px 0 8px;
 
     .btn {
       margin-right: 8px;

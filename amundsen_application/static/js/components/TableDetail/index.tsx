@@ -136,12 +136,13 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               <section className="banner">optional banner</section>
               <section className="column-layout-2">
                 <section className="left-panel">
-                  <div className="section-title title-3">Description</div>
-                  <TableDescEditableText
-                    maxLength={ AppConfig.editableText.tableDescLength }
-                    value={ data.table_description }
-                    editable={ data.is_editable }
-                  />
+                  <EditableSection title="Description">
+                    <TableDescEditableText
+                      maxLength={ AppConfig.editableText.tableDescLength }
+                      value={ data.table_description }
+                      editable={ data.is_editable }
+                    />
+                  </EditableSection>
                   { !data.table_description && notificationsEnabled() && <RequestDescriptionText/> }
                   {
                     !data.is_view &&
@@ -156,8 +157,9 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                     <TagInput/>
                   </EditableSection>
 
-                  <div className="section-title title-3">Owner</div>
-                  <OwnerEditor readOnly={false}/>
+                  <EditableSection title="Owners">
+                    <OwnerEditor readOnly={false}/>
+                  </EditableSection>
 
                   <div className="section-title title-3">Frequent Users</div>
                   <FrequentUsers readers={ data.table_readers }/>
