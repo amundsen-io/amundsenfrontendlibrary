@@ -15,7 +15,7 @@ const LineageLink: React.SFC<LineageLinkProps> = ({ tableData }) => {
 
   const { database, cluster, schema, table_name } = tableData;
   const href = config.urlGenerator(database, cluster, schema, table_name);
-  const label = 'Lineage' + (config.isBeta ? ' (beta)' : '');
+  const label = 'Lineage';
 
   return (
     <a

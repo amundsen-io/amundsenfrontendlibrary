@@ -39,7 +39,7 @@ export class ExploreButton extends React.Component<ExploreButtonProps> {
         id="explore-sql"
         onClick={ logClick }
       >
-        Explore with SQL
+        Explore
       </a>
     );
   }

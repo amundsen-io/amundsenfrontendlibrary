@@ -29,7 +29,7 @@ import { TableMetadata } from 'interfaces/TableMetadata';
 
 import { EditableSection } from 'components/TableDetail/EditableSection';
 import RequestDescriptionText from './RequestDescriptionText';
-import { notificationsEnabled } from 'config/config-utils';
+import { getDatabaseDisplayName, getDatabaseIconClass, notificationsEnabled } from 'config/config-utils';
 
 import './styles';
 
@@ -107,33 +107,40 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
             notificationsEnabled() && <RequestMetadataForm />
           }
           <header className="resource-header">
-            <div className="header-left">
-              {/* TODO - Add Breadcrumb */}
-              {/* TODO - Add Database Icon */}
-              <h2 className="detail-header-text">
-                { this.displayName }
-                <BookmarkIcon bookmarkKey={ this.props.tableData.key }/>
-              </h2>
+            <div className="header-section">
+              {/* TODO - add Breadcrumb here */}
+              <img className={"icon icon-header " + getDatabaseIconClass(data.database)} />
+            </div>
+            <div className="header-section header-title">
+              <h3 className="header-title-text truncated">
+                  { this.displayName }
+              </h3>
+              <BookmarkIcon bookmarkKey={ this.props.tableData.key }/>
               <div className="body-3">
                 Datasets &bull;&nbsp;
-                { data.database }
-
+                { getDatabaseDisplayName(data.database) }
                 {
                   data.is_view && <Flag text="Table View" labelStyle="primary"/>
                 }
               </div>
             </div>
-            <div className="header-right">
+            <div className="header-section header-links">
               <WriterLink tableWriter={ data.table_writer }/>
               <LineageLink tableData={ data }/>
               <SourceLink tableSource={ data.source }/>
+            </div>
+            <div className="header-section header-buttons">
               <ExploreButton tableData={ data }/>
               <DataPreviewButton modalTitle={ this.displayName }/>
             </div>
           </header>
           <main className="column-layout-1">
             <section className="left-panel">
-              <section className="banner">optional banner</section>
+              {/*
+                TODO - Add a banner here if necessary
+                <section className="banner">optional banner</section>
+                TODO - Consider moving table description here
+              */}
               <section className="column-layout-2">
                 <section className="left-panel">
                   <EditableSection title="Description">
