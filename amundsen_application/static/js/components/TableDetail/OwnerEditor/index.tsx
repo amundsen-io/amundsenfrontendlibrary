@@ -219,7 +219,7 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
                   </a>
               } else {
                 listItem =
-                  <Link to={owner.link} target="_blank" id={`table-owners:${key}`} onClick={logClick}>
+                  <Link to={owner.link} id={`table-owners:${key}`} onClick={logClick}>
                     { avatarLabel }
                   </Link>
               }
@@ -268,16 +268,11 @@ export const mapStateToProps = (state: GlobalState) => {
   const ownerObj = state.tableMetadata.tableOwners.owners;
   const items = Object.keys(ownerObj).reduce((obj, ownerId) => {
     const { profile_url, user_id, display_name } = ownerObj[ownerId];
-    let profileLink;
-    let isExternalLink;
+    let profileLink = profile_url;
+    let isExternalLink = true;
     if (AppConfig.indexUsers.enabled) {
-      if (profile_url) {
-        isExternalLink = true;
-        profileLink = profile_url;
-      } else {
-        isExternalLink = false;
-        profileLink = `/user/${user_id}?source=owned_by`;
-      }
+      isExternalLink = false;
+      profileLink = `/user/${user_id}?source=owned_by`;
     }
     obj[ownerId] = { label: display_name, link: profileLink, isExternal: isExternalLink }
     return obj;
