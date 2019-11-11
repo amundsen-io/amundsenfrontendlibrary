@@ -54,9 +54,6 @@ const configDefault: AppConfig = {
         displayName: 'Postgres',
         iconClass: 'icon-postgres',
       },
-      'presto': {
-        displayName: 'Presto',
-      },
       'redshift': {
         displayName: 'Redshift',
         iconClass: 'icon-redshift',
