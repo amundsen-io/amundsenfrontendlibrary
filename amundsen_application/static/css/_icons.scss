@@ -116,6 +116,11 @@ img.icon {
     background-color: transparent;
   }
 
+  &.icon-presto {
+    content: url('/static/images/icons/logo-presto.svg');
+    background-color: transparent;
+  }
+
   &.icon-preview {
     -webkit-mask-image: url('/static/images/icons/Preview.svg');
     mask-image: url('/static/images/icons/Preview.svg');
@@ -139,6 +144,11 @@ img.icon {
   &.icon-search {
     -webkit-mask-image: url('/static/images/icons/Search.svg');
     mask-image: url('/static/images/icons/Search.svg');
+  }
+
+  &.icon-send {
+    -webkit-mask-image: url('/static/images/icons/Send.svg');
+    mask-image: url('/static/images/icons/Send.svg');
   }
 
   &.icon-slack {

@@ -116,7 +116,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                   { this.displayName }
               </h3>
               <BookmarkIcon bookmarkKey={ this.props.tableData.key }/>
-              <div className="body-3">
+              <div className="body-2">
                 Datasets &bull;&nbsp;
                 { getDatabaseDisplayName(data.database) }
                 {
@@ -139,17 +139,16 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               {/*
                 TODO - Add a banner here if necessary
                 <section className="banner">optional banner</section>
-                TODO - Consider moving table description here
               */}
+              <EditableSection title="Description">
+                <TableDescEditableText
+                  maxLength={ AppConfig.editableText.tableDescLength }
+                  value={ data.table_description }
+                  editable={ data.is_editable }
+                />
+              </EditableSection>
               <section className="column-layout-2">
                 <section className="left-panel">
-                  <EditableSection title="Description">
-                    <TableDescEditableText
-                      maxLength={ AppConfig.editableText.tableDescLength }
-                      value={ data.table_description }
-                      editable={ data.is_editable }
-                    />
-                  </EditableSection>
                   { !data.table_description && notificationsEnabled() && <RequestDescriptionText/> }
                   {
                     !data.is_view &&
@@ -158,6 +157,8 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                       <WatermarkLabel watermarks={ data.watermarks }/>
                     </>
                   }
+                  <div className="section-title title-3">Frequent Users</div>
+                  <FrequentUsers readers={ data.table_readers }/>
                 </section>
                 <section className="right-panel">
                   <EditableSection title="Tags">
@@ -168,8 +169,6 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                     <OwnerEditor readOnly={false}/>
                   </EditableSection>
 
-                  <div className="section-title title-3">Frequent Users</div>
-                  <FrequentUsers readers={ data.table_readers }/>
                 </section>
               </section>
             </section>

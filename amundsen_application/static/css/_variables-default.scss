@@ -14,7 +14,7 @@ $brand-primary: $brand-color-4 !default;
 /* Scaffolding */
 $body-bg:           $white !default;
 $body-bg-secondary: $gray0 !default;
-$body-bg-disabled:  $gray5 !default;
+$body-bg-tertiary:  $gray5 !default;
 $body-bg-dark:      $gray100 !default;
 $divider:           $gray15 !default;
 $stroke:            $gray20 !default;
@@ -27,6 +27,7 @@ $text-secondary:   $gray60 !default;
 $text-light:       $white !default;
 $text-placeholder: $gray40;
 
+$column-name-color: $indigo70;
 $link-color:        $brand-color-4;
 $link-hover-color:  $brand-color-5;
 

@@ -33,10 +33,10 @@
 
     &:focus,
     &:hover {
-      background-color: $body-bg-secondary;
+      background-color: $body-bg-tertiary;
 
       .btn.delete-button {
-        background-color: $body-bg-secondary;
+        background-color: $body-bg-tertiary;
         display: block
       }
     }

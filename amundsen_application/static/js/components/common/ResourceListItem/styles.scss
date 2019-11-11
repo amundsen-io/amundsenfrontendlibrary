@@ -23,13 +23,18 @@
     opacity: 1;
   }
 
+  .bookmark-icon {
+    margin: -6px 0 -4px 4px;
+  }
+
   .resource-info {
     display: flex;
     flex: 7;
     min-width: 0px;
+    margin-right: 24px;
 
     .resource-info-text {
-      overflow: hidden;
+      max-width: calc(100% - 32px);
     }
 
     .resource-name {
@@ -64,6 +69,7 @@
     flex-wrap: wrap;
     margin-top: auto;
     margin-bottom: auto;
+    margin-left: 24px;
 
     .flag {
       margin: 4px;
