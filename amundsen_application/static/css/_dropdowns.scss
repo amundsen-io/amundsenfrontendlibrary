@@ -5,17 +5,16 @@
     box-shadow: none;
   }
 
-
   .dropdown-menu {
-    box-shadow: 0 0 24px -2px rgba(0, 0, 0, .2);
-    border-radius: 5px;
-    border: none;
+    box-shadow: 0 4px 12px -3px rgba(17, 17, 31, 0.12);
+    border-radius: 4px;
+    border: 1px solid $stroke;
     padding: 0;
     overflow: hidden;
 
     li {
       &:hover {
-        background-color: $body-bg-secondary;
+        background-color: $body-bg-tertiary;
       }
       a {
         padding: 8px;

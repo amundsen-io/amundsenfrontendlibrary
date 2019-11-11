@@ -30,7 +30,7 @@
 
       .column-dropdown {
         &.open {
-          background-color: $body-bg-secondary;
+          background-color: $body-bg-tertiary;
 
           .icon {
             background-color: $icon-bg-dark;
@@ -67,6 +67,6 @@
   }
 
   .expanded-content {
-    margin-top: -20px;
+    margin-top: -16px;
   }
 }
