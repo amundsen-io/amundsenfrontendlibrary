@@ -16,6 +16,7 @@
 }
 .popover-content {
   padding: 2px 5px;
+  word-break: break-word;
 }
 .popover.right .arrow:after {
   border-right-color: $body-bg-dark;
