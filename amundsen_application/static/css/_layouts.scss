@@ -51,7 +51,7 @@ $header-height: 84px;
   // 630 | 414+ Flexible layout
   .column-layout-1 {
     display: flex;
-    max-height: calc(100% - #{$header-height});
+    height: calc(100% - #{$header-height});
 
     > .left-panel {
       > .banner {
