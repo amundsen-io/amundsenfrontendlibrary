@@ -88,6 +88,11 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
     this.props.getTableData(this.key, searchIndex, source);
   }
 
+  getDateLabel = (timestamp: number) => {
+    const dateTokens = new Date(timestamp * 1000).toDateString().split(' ');
+    return `${dateTokens[1]} ${dateTokens[2]}, ${dateTokens[3]}`;
+  };
+
   render() {
     let innerContent;
     if (this.props.isLoading) {
@@ -159,6 +164,15 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                   }
                   <div className="section-title title-3">Frequent Users</div>
                   <FrequentUsers readers={ data.table_readers }/>
+
+                  {
+                    data.last_updated_timestamp &&
+                    <>
+                      <div className="section-title title-3">Last Updated</div>
+                      <div className="body-2">{ this.getDateLabel(data.last_updated_timestamp) }</div>
+                    </>
+                  }
+
                 </section>
                 <section className="right-panel">
                   <EditableSection title="Tags">

@@ -41,6 +41,7 @@ def marshall_table_full(table: Dict) -> Dict:
         'database',
         'is_view',
         'key',
+        'last_updated_timestamp',
         'owners',
         'schema',
         'source',
@@ -50,8 +51,6 @@ def marshall_table_full(table: Dict) -> Dict:
         'table_writer',
         'tags',
         'watermarks',
-        # 'last_updated_timestamp' Exists on the response from metadata but is not used.
-        # This should also be consolidated with 'last_updated_epoch' to have the same name and format.
     ]
 
     results = {field: table.get(field, None) for field in fields}

@@ -74,6 +74,7 @@ export interface TableMetadata {
   is_editable: boolean;
   is_view: boolean;
   key: string;
+  last_updated_timestamp: number;
   schema: string;
   table_name: string;
   table_description: string;

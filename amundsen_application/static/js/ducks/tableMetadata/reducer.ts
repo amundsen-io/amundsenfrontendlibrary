@@ -185,6 +185,7 @@ export const initialTableDataState: TableMetadata = {
   is_editable: false,
   is_view: false,
   key: '',
+  last_updated_timestamp: 0,
   schema: '',
   table_name: '',
   table_description: '',

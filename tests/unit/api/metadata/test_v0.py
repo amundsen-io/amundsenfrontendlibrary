@@ -57,6 +57,7 @@ class MetadataTest(unittest.TestCase):
             'database': 'test_db',
             'is_view': False,
             'key': 'test_db://test_cluster.test_schema/test_table',
+            'last_updated_timestamp': 1563872712,
             'owners': [],
             'schema': 'test_schema',
             'table_name': 'test_table',
@@ -96,6 +97,7 @@ class MetadataTest(unittest.TestCase):
                     'read_count': 100
                 }
             ],
+            'last_updated_timestamp': 1563872712,
             'partition': {
                 'is_partitioned': True,
                 'key': 'ds',
