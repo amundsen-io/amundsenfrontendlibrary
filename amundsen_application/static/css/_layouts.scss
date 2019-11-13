@@ -51,7 +51,7 @@ $header-height: 84px;
   // 630 | 414+ Flexible layout
   .column-layout-1 {
     display: flex;
-    max-height: calc(100% - #{$header-height});
+    height: calc(100% - #{$header-height});
 
     > .left-panel {
       > .banner {
@@ -64,6 +64,7 @@ $header-height: 84px;
       border-right: 4px solid $divider;
       flex-basis: 634px; // 630 + 4px border
       flex-shrink: 0;
+      overflow-y: scroll;
       padding: 0 24px;
     }
 
@@ -71,6 +72,7 @@ $header-height: 84px;
       flex-basis: 414px;
       flex-grow: 1;
       flex-shrink: 0;
+      overflow-y: scroll;
       width: 0; // Required for text truncation
     }
   }
@@ -95,6 +97,5 @@ $header-height: 84px;
   .right-panel {
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
   }
 }

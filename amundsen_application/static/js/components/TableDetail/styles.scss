@@ -1,7 +1,7 @@
 @import 'variables';
 
 .table-detail-2 {
-  height: calc(100% - #{$navbar-height} - #{$footer-height});
+  height: calc(100% - #{$nav-bar-height} - #{$footer-height});
 
   .header-link {
     display: inline-block;
@@ -14,6 +14,7 @@
 
   .column-layout-1 .left-panel {
     .section-title {
+      color: $text-tertiary;
       margin: 40px 0 8px;
     }
   }

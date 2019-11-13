@@ -147,9 +147,9 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                   editable={ data.is_editable }
                 />
               </EditableSection>
+              { !data.table_description && notificationsEnabled() && <RequestDescriptionText/> }
               <section className="column-layout-2">
                 <section className="left-panel">
-                  { !data.table_description && notificationsEnabled() && <RequestDescriptionText/> }
                   {
                     !data.is_view &&
                     <>
