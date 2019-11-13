@@ -103,7 +103,7 @@ export class ColumnListItem extends React.Component<ColumnListItemProps, ColumnL
           {
             this.state.isExpanded &&
             <section className="expanded-content">
-              <span onClick={ this.stopPropagation }>
+              <div className="stop-propagation" onClick={ this.stopPropagation }>
                 <EditableSection title="Description">
                   <ColumnDescEditableText
                     columnIndex={ this.props.index }
@@ -111,7 +111,7 @@ export class ColumnListItem extends React.Component<ColumnListItemProps, ColumnL
                     value={ metadata.description }
                   />
                 </EditableSection>
-              </span>
+              </div>
               <ColumnStats stats={ metadata.stats } />
             </section>
           }

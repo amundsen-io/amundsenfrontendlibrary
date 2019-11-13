@@ -69,4 +69,8 @@
   .expanded-content {
     margin-top: -16px;
   }
+
+  .stop-propagation {
+    cursor: default;
+  }
 }
