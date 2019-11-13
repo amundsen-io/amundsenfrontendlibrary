@@ -42,12 +42,12 @@ describe('TableListItem', () => {
   };
 
   /* Note: Jest is configured to use UTC */
-  describe('getDateLabel', () => {
-    it('getDateLabel returns correct string', () => {
-      const { props, wrapper } = setup();
-      expect(wrapper.instance().getDateLabel()).toEqual('Mar 29, 2019');
-    });
-  });
+  // describe('getDateLabel', () => {
+  //   it('getDateLabel returns correct string', () => {
+  //     const { props, wrapper } = setup();
+  //     expect(wrapper.instance().getDateLabel()).toEqual('Mar 29, 2019');
+  //   });
+  // });
 
   describe('getLink', () => {
     it('getLink returns correct string', () => {

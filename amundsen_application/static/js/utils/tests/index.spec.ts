@@ -1,4 +1,4 @@
-import * as NavigationUtils from 'utils/navigation-utils';
+import * as NavigationUtils from 'utils/navigationUtils';
 import * as qs from 'simple-query-string';
 import { ResourceType } from 'interfaces/Resources';
 

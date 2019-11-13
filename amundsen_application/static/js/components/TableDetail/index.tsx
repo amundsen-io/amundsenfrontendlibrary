@@ -31,6 +31,8 @@ import { EditableSection } from 'components/TableDetail/EditableSection';
 import RequestDescriptionText from './RequestDescriptionText';
 import { getDatabaseDisplayName, getDatabaseIconClass, notificationsEnabled } from 'config/config-utils';
 
+import { formatEpochTime } from 'utils/dateUtils';
+
 import './styles';
 
 import RequestMetadataForm from './RequestMetadataForm';
@@ -87,11 +89,6 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
 
     this.props.getTableData(this.key, searchIndex, source);
   }
-
-  getDateLabel = (timestamp: number) => {
-    const dateTokens = new Date(timestamp * 1000).toDateString().split(' ');
-    return `${dateTokens[1]} ${dateTokens[2]}, ${dateTokens[3]}`;
-  };
 
   render() {
     let innerContent;
@@ -162,16 +159,15 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                       <WatermarkLabel watermarks={ data.watermarks }/>
                     </>
                   }
-                  <div className="section-title title-3">Frequent Users</div>
-                  <FrequentUsers readers={ data.table_readers }/>
-
                   {
                     data.last_updated_timestamp &&
                     <>
                       <div className="section-title title-3">Last Updated</div>
-                      <div className="body-2">{ this.getDateLabel(data.last_updated_timestamp) }</div>
+                      <div className="body-2">{ formatEpochTime(data.last_updated_timestamp) }</div>
                     </>
                   }
+                  <div className="section-title title-3">Frequent Users</div>
+                  <FrequentUsers readers={ data.table_readers }/>
 
                 </section>
                 <section className="right-panel">

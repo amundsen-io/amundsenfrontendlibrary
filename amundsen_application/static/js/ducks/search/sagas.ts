@@ -31,7 +31,7 @@ import {
   searchResourceSuccess, setPageIndex, setResource,
 } from './reducer';
 import { autoSelectResource, getPageIndex, getSearchState } from './utils';
-import { updateSearchUrl } from 'utils/navigation-utils';
+import { updateSearchUrl } from 'utils/navigationUtils';
 
 export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
   let { resource } = action.payload;

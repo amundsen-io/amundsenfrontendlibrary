@@ -47,7 +47,7 @@ import {
   SubmitSearch,
   UrlDidUpdate,
 } from '../types';
-import * as NavigationUtils from '../../../utils/navigation-utils';
+import * as NavigationUtils from '../../../utils/navigationUtils';
 import * as SearchUtils from 'ducks/search/utils';
 
 import globalState from '../../../fixtures/globalState';

@@ -8,6 +8,7 @@ import { TableResource } from 'interfaces';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 
 import { getDatabaseDisplayName, getDatabaseIconClass } from 'config/config-utils';
+import { formatEpochTime } from 'utils/dateUtils';
 
 export interface TableListItemProps {
   table: TableResource;
@@ -19,11 +20,11 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
     super(props);
   }
 
-  getDateLabel = () => {
-    const { table } = this.props;
-    const dateTokens = new Date(table.last_updated_epoch * 1000).toDateString().split(' ');
-    return `${dateTokens[1]} ${dateTokens[2]}, ${dateTokens[3]}`;
-  };
+  // getDateLabel = () => {
+  //   const { table } = this.props;
+  //   const dateTokens = new Date(table.last_updated_epoch * 1000).toDateString().split(' ');
+  //   return `${dateTokens[1]} ${dateTokens[2]}, ${dateTokens[3]}`;
+  // };
 
   getLink = () => {
     const { table, logging } = this.props;
@@ -63,7 +64,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
               <div>
                 <div className="title-3">Last Updated</div>
                 <div className="body-secondary-3">
-                  { this.getDateLabel() }
+                  { formatEpochTime(this.props.table.last_updated_epoch) }
                 </div>
               </div>
             }
