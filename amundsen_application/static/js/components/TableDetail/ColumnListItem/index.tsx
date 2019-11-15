@@ -69,7 +69,7 @@ export class ColumnListItem extends React.Component<ColumnListItemProps, ColumnL
               </div>
               {
                 !this.state.isExpanded &&
-                <div className="column-desc body-secondary-3 truncated">
+                <div className="column-desc body-3 truncated">
                   { metadata.description }
                 </div>
               }

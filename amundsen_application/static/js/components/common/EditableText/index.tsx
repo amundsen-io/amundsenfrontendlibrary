@@ -31,7 +31,6 @@ export type EditableTextProps = ComponentProps & DispatchFromProps & StateFromPr
 
 interface EditableTextState {
   value?: string;
-  refreshValue?: string;
   isDisabled: boolean;
 }
 
@@ -46,11 +45,6 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
     value: '',
   };
 
-  static getDerivedStateFromProps(nextProps) {
-    const { refreshValue } = nextProps;
-    return { refreshValue };
-  }
-
   constructor(props) {
     super(props);
     this.textAreaRef = React.createRef();
@@ -58,50 +52,49 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
     this.state = {
       isDisabled: false,
       value: props.value,
-      refreshValue: props.value,
     };
   }
 
-  componentDidUpdate() {
-    const { isDisabled, refreshValue, value } = this.state;
-    const textArea = this.textAreaRef.current;
+  componentDidUpdate(prevProps) {
     if (!this.props.isEditing) return;
+    if (!prevProps.isEditing) {
+      const textArea = this.textAreaRef.current;
+      if (textArea) {
+        autosize(textArea);
+        textArea.focus();
+      }
 
-    autosize(textArea);
-    if (refreshValue && refreshValue !== value && !isDisabled) {
+      if (this.props.getLatestValue) {
+        this.props.getLatestValue();
+      }
+    } else if (this.props.refreshValue !== this.state.value && !this.state.isDisabled) {
       // disable the component if a refresh is needed
       this.setState({ isDisabled: true })
-    } else if (textArea) {
-      // when entering edit mode, place focus in the textarea
-      textArea.focus();
     }
   }
 
   exitEditMode = () => {
-    this.setState({ isDisabled: false, refreshValue: '' });
     this.props.setEditMode(false);
   };
 
-  // TODO - The getLatestValue callback doesn't get called when entering edit mode
-  // from the EditableSection component.
   enterEditMode = () => {
-    if (this.props.getLatestValue) {
-      const onSuccessCallback = () => { this.props.setEditMode(true); };
-      this.props.getLatestValue(onSuccessCallback, null);
-    } else {
-      this.props.setEditMode(true);
-    }
+    this.props.setEditMode(true);
   };
 
   refreshText = () => {
-    this.setState({value: this.state.refreshValue, isDisabled: false, refreshValue: undefined });
+    this.setState({ value: this.props.refreshValue, isDisabled: false });
+    const textArea = this.textAreaRef.current;
+    if (textArea) {
+      textArea.value = this.props.refreshValue;
+      autosize.update(textArea);
+    }
   };
 
   updateText = () => {
     const newValue = this.textAreaRef.current.value;
     const onSuccessCallback = () => {
-      this.setState({value: newValue, refreshValue: undefined });
       this.props.setEditMode(false);
+      this.setState({ value: newValue });
     };
     const onFailureCallback = () => { this.exitEditMode(); };
 
@@ -112,7 +105,7 @@ class EditableText extends React.Component<EditableTextProps, EditableTextState>
     if (!this.props.isEditing) {
       return (
         <div className="editable-text">
-          <div className="text-wrapper">
+          <div className="markdown-wrapper">
             <ReactMarkdown source={ this.state.value }/>
           </div>
           {

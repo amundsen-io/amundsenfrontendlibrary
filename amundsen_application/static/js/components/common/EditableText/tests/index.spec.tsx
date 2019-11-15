@@ -40,22 +40,24 @@ describe('EditableText', () => {
     //   const autosizeSpy = jest.spyOn(autosize, 'default');
     // });
 
+    // TODO - test getLatestValue call
+
+    // TODO - figure out how to use refs in jest
+    // it('calls focus on the text area', () => {
+    //   const textareaFocusSpy = jest.spyOn(instance.textAreaRef.current, 'focus');
+    //   wrapper.setState({ inEditMode: true });
+    //   expect(textareaFocusSpy).toHaveBeenCalled();
+    // });
+
     it('sets isDisabled:true when refresh value does not equal value', () => {
-      const { wrapper } = setup({
+      const { wrapper, props } = setup({
         isEditing: true,
         refreshValue: 'new value',
         value: 'different value',
       });
-      wrapper.instance().componentDidUpdate()
+      wrapper.instance().componentDidUpdate(props)
       const state = wrapper.state();
       expect(state.isDisabled).toBe(true);
-    });
-
-    it('calls focus on the text area', () => {
-      // TODO - figure out how to use refs in jest
-      // const textareaFocusSpy = jest.spyOn(instance.textAreaRef.current, 'focus');
-      // wrapper.setState({ inEditMode: true });
-      // expect(textareaFocusSpy).toHaveBeenCalled();
     });
   });
 
@@ -67,23 +69,16 @@ describe('EditableText', () => {
       expect(setEditModeSpy).toHaveBeenCalledWith(false);
       expect(wrapper.state()).toMatchObject({
         isDisabled: false,
-        refreshValue: '',
       });
     })
   });
 
 
   describe('enterEditMode', () => {
-    it('calls getLatestValue if it exists', () => {
-      const { props, wrapper } = setup();
-      const instance = wrapper.instance();
-      const getLatestValueSpy = jest.spyOn(props, 'getLatestValue');
-      instance.enterEditMode();
-      expect(getLatestValueSpy).toHaveBeenCalled();
-    });
 
-    it('directly updates state if getLatestValue does not exist', () => {
-      const { props, wrapper } = setup({ getLatestValue: null });
+
+    it('it calls setEditMode with a value of true', () => {
+      const { props, wrapper } = setup();
       const instance = wrapper.instance();
       const setEditModeSpy = jest.spyOn(props, 'setEditMode');
       instance.enterEditMode();
@@ -96,7 +91,7 @@ describe('EditableText', () => {
       const setStateSpy = jest.spyOn(instance, 'setState');
       instance.refreshText();
       expect(setStateSpy).toHaveBeenCalledWith({
-        value: wrapper.state().refreshValue,
+        value: props.refreshValue,
         isDisabled: false,
         refreshValue: undefined
       });
