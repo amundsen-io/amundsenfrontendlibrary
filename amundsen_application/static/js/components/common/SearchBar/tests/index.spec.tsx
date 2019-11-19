@@ -55,6 +55,7 @@ describe('SearchBar', () => {
       const { props, wrapper } = setup();
       const prevState = wrapper.state();
       props.searchTerm = 'newTerm';
+      // @ts-ignore: Why does this work in other tests but complain here
       wrapper.setProps(props);
       expect(wrapper.state()).toMatchObject({
         ...prevState,

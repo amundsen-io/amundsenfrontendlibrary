@@ -49,6 +49,8 @@ import {
 import {
   LoadPreviousSearch,
   InlineSearch,
+  InlineSearchResponsePayload,
+  InlineSearchUpdatePayload,
   SearchAll,
   SearchAllResponsePayload,
   SearchResource,
@@ -118,8 +120,6 @@ describe('search ducks', () => {
   };
 
   const expectedInlineResults: InlineSearchResponsePayload = {
-    search_term: 'testName',
-    selectedTab: ResourceType.table,
     tables: {
       page_index: 0,
       results: [],
@@ -133,7 +133,7 @@ describe('search ducks', () => {
   };
 
   const inlineUpdatePayload: InlineSearchUpdatePayload = {
-    search_term: 'testName',
+    searchTerm: 'testName',
     selectedTab: ResourceType.table,
     tables: {
       page_index: 0,
@@ -390,6 +390,7 @@ describe('search ducks', () => {
           tables: initialInlineResultsState.tables,
           users: initialInlineResultsState.users,
           isLoading: true,
+        },
       });
     });
   });
