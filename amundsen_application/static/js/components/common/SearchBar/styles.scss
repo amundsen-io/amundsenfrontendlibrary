@@ -42,6 +42,7 @@
       }
 
       &.small {
+        border: none;
         height: 36px;
         padding: 6px 6px 6px 36px;
       }
@@ -56,7 +57,7 @@
     }
 
     @media (max-width: $screen-md-max) {
-      .search-button {
+      .search-button.large {
         left: 16px;
         top: 18px;
       }

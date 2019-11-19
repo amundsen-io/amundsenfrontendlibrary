@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { Link } from 'react-router-dom';
 
-import ReactDOM from 'react-dom';
-import serialize from 'form-serialize';
-
+import AppConfig from 'config/config';
 import AvatarLabel, { AvatarLabelProps } from 'components/common/AvatarLabel';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import { Modal } from 'react-bootstrap';
@@ -17,6 +16,8 @@ const DEFAULT_ERROR_TEXT = 'There was a problem with the request, please reload 
 
 import { GlobalState } from 'ducks/rootReducer';
 import { updateTableOwner } from 'ducks/tableMetadata/owners/reducer';
+import { EditableSectionChildProps } from 'components/TableDetail/EditableSection';
+import { logClick } from 'ducks/utilMethods';
 
 export interface DispatchFromProps {
   onUpdateList: (updateArray: UpdateOwnerPayload[], onSuccess?: () => any, onFailure?: () => any) => void;
@@ -27,19 +28,23 @@ export interface ComponentProps {
   readOnly: boolean;
 }
 
-export interface StateFromProps {
-  isLoading: boolean;
-  itemProps: { [id: string]: AvatarLabelProps };
+interface OwnerAvatarLabelProps extends AvatarLabelProps {
+  link?: string;
+  isExternal?: boolean;
 }
 
-type OwnerEditorProps = ComponentProps & DispatchFromProps & StateFromProps;
+export interface StateFromProps {
+  isLoading: boolean;
+  itemProps: { [id: string]: OwnerAvatarLabelProps };
+}
+
+type OwnerEditorProps = ComponentProps & DispatchFromProps & StateFromProps & EditableSectionChildProps;
 
 interface OwnerEditorState {
   errorText: string | null;
   isLoading: boolean;
-  itemProps: { [id: string]: AvatarLabelProps };
+  itemProps: { [id: string]: OwnerAvatarLabelProps };
   readOnly: boolean;
-  showModal: boolean;
   tempItemProps: { [id: string]: AvatarLabelProps };
 }
 
@@ -54,7 +59,7 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
     readOnly: true,
   };
 
-  static getDerivedStateFromProps(nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps) {
     const { isLoading, itemProps, readOnly } = nextProps;
     return { isLoading, itemProps, readOnly, tempItemProps: itemProps };
   }
@@ -67,7 +72,6 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
       isLoading: props.isLoading,
       itemProps: props.itemProps,
       readOnly: props.readOnly,
-      showModal: false,
       tempItemProps: props.itemProps,
     };
 
@@ -75,12 +79,13 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
   }
 
   handleShow = () => {
-    this.setState({ showModal: true });
-  }
+    this.props.setEditMode(true)
+  };
 
   cancelEdit = () => {
-    this.setState({ tempItemProps: this.state.itemProps, showModal: false });
-  }
+    this.setState({ tempItemProps: this.state.itemProps });
+    this.props.setEditMode(false);
+  };
 
   saveEdit = () => {
     const updateArray = [];
@@ -96,13 +101,14 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
     });
 
     const onSuccessCallback = () => {
-      this.setState({ showModal: false });
-    }
+      this.props.setEditMode(false);
+    };
     const onFailureCallback = () => {
-      this.setState({ errorText: DEFAULT_ERROR_TEXT, readOnly: true, showModal: false });
-    }
+      this.setState({ errorText: DEFAULT_ERROR_TEXT, readOnly: true });
+      this.props.setEditMode(false);
+    };
     this.props.onUpdateList(updateArray, onSuccessCallback, onFailureCallback);
-  }
+  };
 
   recordAddItem = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -112,10 +118,10 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
       const newTempItemProps = {
         ...this.state.tempItemProps,
         [value]: { label: value },
-      }
+      };
       this.setState({ tempItemProps: newTempItemProps });
     }
-  }
+  };
 
   recordDeleteItem = (deletedKey: string) => {
     const newTempItemProps = Object.keys(this.state.tempItemProps)
@@ -127,10 +133,10 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
       return obj;
     }, {});
     this.setState({ tempItemProps: newTempItemProps });
-  }
+  };
 
   renderModalBody = () => {
-    if (!this.state.showModal) {
+    if (!this.props.isEditing) {
       return null;
     }
 
@@ -177,7 +183,7 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
         </ul>
       </Modal.Body>
     );
-  }
+  };
 
   render() {
     let content;
@@ -198,11 +204,30 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
         <ul className='component-list'>
           {
             Object.keys(this.state.itemProps).map((key) => {
+              const owner = this.state.itemProps[key]
+              const avatarLabel = React.createElement(AvatarLabel, owner)
+
+              let listItem;
+              if (owner.link === undefined) {
+                listItem = avatarLabel
+              } else if (owner.isExternal) {
+                listItem =
+                  <a href={owner.link} target="_blank" id={`table-owners:${key}`} onClick={logClick}>
+                    { avatarLabel }
+                  </a>
+              } else {
+                listItem =
+                  <Link to={owner.link} id={`table-owners:${key}`} onClick={logClick}>
+                    { avatarLabel }
+                  </Link>
+              }
+
               return (
                 <li key={`list-item:${key}`}>
-                  { React.createElement(AvatarLabel, this.state.itemProps[key]) }
+                  { listItem }
                 </li>
               );
+
             })
           }
         </ul>
@@ -213,23 +238,23 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
       <div className='owner-editor-component'>
         { content }
         {
-          !this.state.readOnly &&
+          !this.state.readOnly && Object.keys(this.state.itemProps).length === 0 &&
           <button
            className='btn btn-flat-icon add-item-button'
-           onClick={this.handleShow}>
+           onClick={ this.handleShow }>
              <img className='icon icon-plus-circle'/>
-             <span>Add</span>
+             <span>Add Owner</span>
           </button>
         }
 
-        <Modal className='owner-editor-modal' show={this.state.showModal} onHide={this.cancelEdit}>
+        <Modal className='owner-editor-modal' show={ this.props.isEditing } onHide={ this.cancelEdit }>
           <Modal.Header className="text-center" closeButton={false}>
             <Modal.Title>Owned By</Modal.Title>
           </Modal.Header>
           { this.renderModalBody() }
           <Modal.Footer>
-            <button type="button" className="btn btn-default" onClick={this.cancelEdit}>Cancel</button>
-            <button type="button" className="btn btn-primary" onClick={this.saveEdit}>Save</button>
+            <button type="button" className="btn btn-default" onClick={ this.cancelEdit }>Cancel</button>
+            <button type="button" className="btn btn-primary" onClick={ this.saveEdit }>Save</button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -240,7 +265,14 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
 export const mapStateToProps = (state: GlobalState) => {
   const ownerObj = state.tableMetadata.tableOwners.owners;
   const items = Object.keys(ownerObj).reduce((obj, ownerId) => {
-    obj[ownerId] = { label: ownerObj[ownerId].display_name }
+    const { profile_url, user_id, display_name } = ownerObj[ownerId];
+    let profileLink = profile_url;
+    let isExternalLink = true;
+    if (AppConfig.indexUsers.enabled) {
+      isExternalLink = false;
+      profileLink = `/user/${user_id}?source=owned_by`;
+    }
+    obj[ownerId] = { label: display_name, link: profileLink, isExternal: isExternalLink }
     return obj;
   }, {});
 
