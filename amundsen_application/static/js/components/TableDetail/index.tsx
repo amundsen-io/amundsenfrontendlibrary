@@ -54,6 +54,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
   private key: string;
   private schema: string;
   private tableName: string;
+  private didInitialLoad: boolean = false;
 
   constructor(props) {
     super(props);
@@ -86,11 +87,12 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
     }
 
     this.props.getTableData(this.key, searchIndex, source);
+    this.didInitialLoad = true;
   }
 
   render() {
     let innerContent;
-    if (this.props.isLoading) {
+    if (this.props.isLoading || !this.didInitialLoad) {
       innerContent = <LoadingSpinner/>;
     } else if (this.props.statusCode === 500) {
       innerContent = (
