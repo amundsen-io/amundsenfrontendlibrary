@@ -1,7 +1,7 @@
 import logging
 
 from http import HTTPStatus
-
+import json
 from flask import Response, jsonify, make_response, request
 from pkg_resources import iter_entry_points
 from flask.blueprints import Blueprint
@@ -15,7 +15,7 @@ jira_blueprint = Blueprint('jira', __name__, url_prefix='/api/jira/v0')
 JIRA_INTEGRATION_CLASS = None
 JIRA_INTEGRATION_INSTANCE = None
 
-# get the preview_client_class from the python entry point
+# get the jira_integration_class from the python entry point
 for entry_point in iter_entry_points(group='jira_integration', name='jira_integration_class'):
     jira_integration_class = entry_point.load()
     if jira_integration_class is not None:
