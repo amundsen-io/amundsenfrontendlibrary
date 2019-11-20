@@ -67,7 +67,7 @@ export class ColumnListItem extends React.Component<ColumnListItemProps, ColumnL
     truncatedTypes.forEach((truncatedType) => {
       if (type.startsWith(truncatedType) && type !== truncatedType) {
         shouldTrucate = true;
-        let lastChar = type.charAt(type.length - 1);
+        const lastChar = type.charAt(type.length - 1);
         if (lastChar === '>'){
           text = `${truncatedType}<...>`;
         } else if (lastChar === ')') {
