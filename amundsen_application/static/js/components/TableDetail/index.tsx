@@ -54,7 +54,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
   private key: string;
   private schema: string;
   private tableName: string;
-  private didInitialLoad: boolean = false;
+  private didComponentMount: boolean = false;
 
   constructor(props) {
     super(props);
@@ -87,12 +87,13 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
     }
 
     this.props.getTableData(this.key, searchIndex, source);
-    this.didInitialLoad = true;
+    this.didComponentMount = true;
   }
 
   render() {
     let innerContent;
-    if (this.props.isLoading || !this.didInitialLoad) {
+    // We want to avoid rendering the previous table's metadata before new data is fetched in componentDidMount
+    if (this.props.isLoading || !this.didComponentMount) {
       innerContent = <LoadingSpinner/>;
     } else if (this.props.statusCode === 500) {
       innerContent = (
