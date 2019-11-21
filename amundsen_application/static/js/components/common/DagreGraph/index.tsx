@@ -1,3 +1,7 @@
+/*
+	Code take from https://github.com/arxenix/react-dagre-d3
+	and modified as needed to explore cpabalities and how it suits our needs
+*/
 import React, { Component, createRef } from 'react'
 import dagreD3 from 'dagre-d3'
 import * as d3 from 'd3'
