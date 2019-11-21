@@ -11,6 +11,7 @@ describe('ResultItem', () => {
 
   beforeAll(() => {
     props = {
+      id: 'foo',
       href: '/test',
       iconClass: 'test-icon',
       onItemSelect: jest.fn(),

@@ -2,18 +2,19 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 export interface ResultItemProps {
-  href: string
+  id: string;
+  href: string;
   iconClass: string;
-  onItemSelect: () => void;
+  onItemSelect: (event: MouseEvent) => void;
   subtitle: string;
   title: string;
   type: string;
 }
 
-const ResultItem: React.SFC<ResultItemProps> = ({ href, iconClass, onItemSelect, subtitle, title, type }) => {
+const ResultItem: React.SFC<ResultItemProps> = ({ href, iconClass, id, onItemSelect, subtitle, title, type }) => {
   return (
     <li className="list-group-item">
-      <Link className="result-item-link" onClick={onItemSelect} to={ href }>
+      <Link id={id} className="result-item-link" onClick={onItemSelect} to={ href }>
         <img className={`result-icon ${iconClass}`} />
 
         <div className="result-info">

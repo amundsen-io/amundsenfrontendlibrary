@@ -50,7 +50,7 @@ describe('ResultItemList', () => {
     it('calls props.onItemSelect with the correct parameters', () => {
       const { props, wrapper } = setup();
       const onItemSelectSpy = jest.spyOn(props, 'onItemSelect');
-      wrapper.instance().onViewAllResults();
+      wrapper.instance().onViewAllResults({});
       expect(onItemSelectSpy).toHaveBeenCalledWith(props.resourceType, true);
     })
   });

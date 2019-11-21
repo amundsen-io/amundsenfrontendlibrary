@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { logClick } from 'ducks/utilMethods';
 import { ResourceType } from 'interfaces';
 
 export interface SearchItemProps {
@@ -14,15 +15,17 @@ class SearchItem extends React.Component<SearchItemProps, {}> {
     super(props);
   }
 
-  onViewAllResults = () => {
+  onViewAllResults = (e) => {
+    logClick(e);
     this.props.onItemSelect(this.props.resourceType, true);
   }
 
   render = () => {
-    const { searchTerm, listItemText } = this.props;
+    const { searchTerm, listItemText, resourceType } = this.props;
     return (
       <li className="list-group-item">
         <a
+          id={`inline-searchitem-viewall:${resourceType}`}
           className="search-item-link"
           onClick={this.onViewAllResults}
           target='_blank'
