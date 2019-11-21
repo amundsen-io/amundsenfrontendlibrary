@@ -53,9 +53,9 @@ def create_jira_issue() -> Response:
                                'msg': 'A client for the jira integration feature must be configured'})
             return make_response(payload, HTTPStatus.NOT_IMPLEMENTED)
 
-        description = request.args.get('description')
-        key = request.args.get('key')
-        title = request.args.get('title')
+        description = request.form.get('description')
+        key = request.form.get('key')
+        title = request.form.get('title')
         response = JIRA_INTEGRATION_INSTANCE.create_issue(description=description, key=key, title=title)
         return make_response(jsonify({'issue_id': response}), HTTPStatus.OK)
 
