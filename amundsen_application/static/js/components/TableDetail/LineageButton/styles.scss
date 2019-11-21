@@ -1,0 +1,112 @@
+@import 'variables';
+//// REACT-SELECT
+/*
+ override default react-select style classes.
+ using !important as a temporary workaround in places where a compiled class
+ is taking precendence,
+*/
+.basic-single {
+  .amundsen__control {
+    min-height: 32px;
+
+    &,
+    .amundsen__control--is-focused,
+    .amundsen__control--is-focused:hover {
+      border: 1px solid $stroke !important;
+      box-shadow: none !important;
+    }
+
+    .amundsen__option {
+      background-color: red !important;
+    }
+  }
+}
+//// STYLING THE THING
+.lineage-select {
+  width: 175px;
+  margin-right: 24px;
+}
+.lineage-graph {
+  border: 1px solid $stroke;
+  border-radius: 8px;
+}
+.lineage-nodes {
+  stroke: $stroke;
+  fill: #fff;
+  stroke-width: 1.5px;
+  // width:auto;
+  color: $text-primary;
+
+  div {
+   color: $text-primary;
+   width: auto;
+  }
+}
+.nodes {
+  // fill: none;
+  // width: auto;
+}
+.edgePaths path {
+	stroke: $stroke;
+	fill: $stroke;
+	stroke-width: 1.5px;
+}
+
+
+//// COPIED
+.overlay-trigger {
+  display: inline-block;
+}
+
+.modal-dialog {
+  width: 70%;
+
+  .modal-content {
+    min-height: 90%;
+
+    .modal-header {
+      padding: 8px 16px;
+      .close {
+        margin: auto;
+        padding-top: 8px;
+      }
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-family: $font-family-header;
+      font-weight: $font-weight-header-bold;
+    }
+    .modal-body {
+      display: flex; // new
+      margin: 15px;
+      overflow-y: scroll;
+      padding: 0;
+      text-align: center;
+
+      .grid {
+        display: flex;
+      }
+      .grid-column {
+        flex-grow: 1;
+      }
+      .grid-header.grid-cell {
+        background-color: $body-bg-secondary;
+        height: 40px;
+      }
+      .grid-cell {
+        display: flex;
+        padding: 8px;
+        flex-grow: 1;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+        min-width: 0px;
+        height: 32px;
+        text-align: center;
+        white-space: nowrap;
+        border-bottom: 1px solid $stroke;
+      }
+    }
+  }
+}

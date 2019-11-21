@@ -18,7 +18,8 @@ import ExploreButton from 'components/TableDetail/ExploreButton';
 import Flag from 'components/common/Flag';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import LineageLink from 'components/TableDetail/LineageLink';
+import LineageButton from 'components/TableDetail/LineageButton';
+// import LineageLink from 'components/TableDetail/LineageLink';
 import OwnerEditor from 'components/TableDetail/OwnerEditor';
 import SourceLink from 'components/TableDetail/SourceLink';
 import TableDescEditableText from 'components/TableDetail/TableDescEditableText';
@@ -128,10 +129,10 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
             </div>
             <div className="header-section header-links">
               <WriterLink tableWriter={ data.table_writer }/>
-              <LineageLink tableData={ data }/>
               <SourceLink tableSource={ data.source }/>
             </div>
             <div className="header-section header-buttons">
+              <LineageButton modalTitle={ this.displayName }/>
               <ExploreButton tableData={ data }/>
               <DataPreviewButton modalTitle={ this.displayName }/>
             </div>
