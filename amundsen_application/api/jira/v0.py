@@ -35,7 +35,7 @@ def get_jira_issues() -> Response:
 
         table_key = request.args.get('table_key')
         response = JIRA_INTEGRATION_INSTANCE.search(table_key)
-        return make_response(jsonify({'jiraIssues': response}), HTTPStatus.OK)
+        return make_response(jsonify({'jiraIssues': json.dumps(response)}), HTTPStatus.OK)
 
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
