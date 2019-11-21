@@ -85,6 +85,7 @@ export interface SearchResourceResponse {
 
 export enum InlineSearch {
   REQUEST = 'amundsen/search/INLINE_SEARCH_REQUEST',
+  REQUEST_DEBOUNCE = 'amundsen/search/INLINE_SEARCH_REQUEST_DEBOUNCE',
   SELECT = 'amundsen/search/INLINE_SEARCH_SELECT',
   SUCCESS = 'amundsen/search/INLINE_SEARCH_SUCCESS',
   FAILURE = 'amundsen/search/INLINE_SEARCH_FAILURE',
@@ -94,7 +95,7 @@ export interface InlineSearchRequest {
   payload: {
     term: string;
   };
-  type: InlineSearch.REQUEST;
+  type: InlineSearch.REQUEST | InlineSearch.REQUEST_DEBOUNCE;
 };
 export interface InlineSearchResponse {
   type: InlineSearch.SUCCESS | InlineSearch.FAILURE;

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 
 import { GlobalState } from 'ducks/rootReducer';
-import { submitSearch, getInlineResults, selectInlineResult } from 'ducks/search/reducer';
+import { submitSearch, getInlineResultsDebounce, selectInlineResult } from 'ducks/search/reducer';
 import { SubmitSearchRequest, InlineSearchRequest, InlineSearchSelect } from 'ducks/search/types';
 
 import { ResourceType } from 'interfaces';
@@ -210,7 +210,7 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ submitSearch, onInputChange: getInlineResults, onSelectInlineResult: selectInlineResult }, dispatch);
+  return bindActionCreators({ submitSearch, onInputChange: getInlineResultsDebounce, onSelectInlineResult: selectInlineResult }, dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps, OwnProps>(mapStateToProps,  mapDispatchToProps)(SearchBar);
