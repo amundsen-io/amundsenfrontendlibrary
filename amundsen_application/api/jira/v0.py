@@ -21,7 +21,7 @@ for entry_point in iter_entry_points(group='jira_integration', name='jira_integr
         JIRA_INTEGRATION_CLASS = jira_integration_class
 
 
-@jira_blueprint.route('/search', methods=['GET'])
+@jira_blueprint.route('/getTableIssues', methods=['GET'])
 def get_jira_issues() -> Response:
     global JIRA_INTEGRATION_INSTANCE
     try:
@@ -32,9 +32,32 @@ def get_jira_issues() -> Response:
                                'msg': 'A client for the jira integration feature must be configured'})
             return make_response(payload, HTTPStatus.NOT_IMPLEMENTED)
 
-        table_key = request.args.get('table_key')
+        table_key = request.args.get('key')
         response = JIRA_INTEGRATION_INSTANCE.search(table_key)
         return make_response(jsonify({'jiraIssues': response}), HTTPStatus.OK)
+
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
+@jira_blueprint.route('/issue', methods=["POST"])
+def create_jira_issue() -> Response:
+    global JIRA_INTEGRATION_INSTANCE
+    try:
+        if JIRA_INTEGRATION_INSTANCE is None and JIRA_INTEGRATION_CLASS is not None:
+            JIRA_INTEGRATION_INSTANCE = JIRA_INTEGRATION_CLASS()
+        if JIRA_INTEGRATION_INSTANCE is None:
+            payload = jsonify({'jiraIssues': {},
+                               'msg': 'A client for the jira integration feature must be configured'})
+            return make_response(payload, HTTPStatus.NOT_IMPLEMENTED)
+
+        description = request.args.get('description')
+        key = request.args.get('key')
+        title = request.args.get('title')
+        response = JIRA_INTEGRATION_INSTANCE.create_issue(description=description, key=key, title=title)
+        return make_response(jsonify({'issue_id': response}), HTTPStatus.OK)
 
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
