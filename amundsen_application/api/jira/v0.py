@@ -1,7 +1,6 @@
 import logging
 
 from http import HTTPStatus
-import json
 from flask import Response, jsonify, make_response, request
 from pkg_resources import iter_entry_points
 from flask.blueprints import Blueprint
@@ -35,7 +34,7 @@ def get_jira_issues() -> Response:
 
         table_key = request.args.get('table_key')
         response = JIRA_INTEGRATION_INSTANCE.search(table_key)
-        return make_response(jsonify({'jiraIssues': json.dumps(response)}), HTTPStatus.OK)
+        return make_response(jsonify({'jiraIssues': response}), HTTPStatus.OK)
 
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
