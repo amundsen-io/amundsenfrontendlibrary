@@ -28,7 +28,7 @@ export default class TableIssues extends React.Component<TableIssueProps, TableI
   }
 
   fetchIssues = () => {
-    axios.get(`/api/jira/issue?key=${this.props.tableKey}`)
+    axios.get(`/api/jira/v0/getTableIssues?key=${this.props.tableKey}`)
       .then((response: AxiosResponse<JiraIssue[]>) => {
         console.log(response);
         // this.setState({ issues: response.data });

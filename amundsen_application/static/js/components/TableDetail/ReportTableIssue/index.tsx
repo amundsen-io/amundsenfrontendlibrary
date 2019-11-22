@@ -30,7 +30,7 @@ export default class ReportTableIssue extends React.Component<ReportTableIssuePr
 
     return axios({
       data: formData,
-      url: '/api/jira/issue',
+      url: '/api/jira/v0/issue',
       method: 'post',
       headers: {'Content-Type': 'multipart/form-data' }
     });
