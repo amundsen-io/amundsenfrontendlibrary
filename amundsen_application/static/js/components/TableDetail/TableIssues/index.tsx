@@ -12,8 +12,16 @@ interface TableIssueState {
   issues: JiraIssue[];
 }
 
-interface JiraIssue {
+interface Response {
+  jiraIssues: JiraIssue[];
+}
 
+interface JiraIssue {
+  create_date: string;
+  issue_key: string;
+  last_updated: string;
+  title: string;
+  url: string;
 }
 
 export default class TableIssues extends React.Component<TableIssueProps, TableIssueState> {
@@ -29,9 +37,9 @@ export default class TableIssues extends React.Component<TableIssueProps, TableI
 
   fetchIssues = () => {
     axios.get(`/api/jira/v0/getTableIssues?key=${this.props.tableKey}`)
-      .then((response: AxiosResponse<JiraIssue[]>) => {
+      .then((response: AxiosResponse<Response>) => {
         console.log(response);
-        // this.setState({ issues: response.data });
+         this.setState({ issues: response.data.jiraIssues });
       });
   };
 
@@ -40,7 +48,7 @@ export default class TableIssues extends React.Component<TableIssueProps, TableI
     return (
       <div id={`jira-issue-${index}`}>
         JIRA ISSUE
-        { issue }
+        { issue.url }
       </div>
     )
   };
