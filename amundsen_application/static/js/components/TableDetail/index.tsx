@@ -124,8 +124,8 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 {
                   data.is_view && <Flag text="Table View" labelStyle="primary"/>
                 }
-                &nbsp;
-                <ReportTableIssue tableKey={ this.key } title={ this.tableName } />
+                &nbsp;&bull;&nbsp;
+                <ReportTableIssue tableKey={ this.key } tableName={ this.tableName } />
               </div>
             </div>
             <div className="header-section header-links">
