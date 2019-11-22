@@ -34,6 +34,8 @@ import { getDatabaseDisplayName, getDatabaseIconClass, notificationsEnabled } fr
 import './styles';
 
 import RequestMetadataForm from './RequestMetadataForm';
+import ReportTableIssue from 'components/TableDetail/ReportTableIssue';
+import TableIssues from 'components/TableDetail/TableIssues';
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -122,6 +124,8 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 {
                   data.is_view && <Flag text="Table View" labelStyle="primary"/>
                 }
+                &nbsp;
+                <ReportTableIssue tableKey={ this.key } title={ this.tableName } />
               </div>
             </div>
             <div className="header-section header-links">
@@ -140,6 +144,8 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 TODO - Add a banner here if necessary
                 <section className="banner">optional banner</section>
               */}
+              <TableIssues tableKey={ this.key }/>
+
               <EditableSection title="Description">
                 <TableDescEditableText
                   maxLength={ AppConfig.editableText.tableDescLength }
