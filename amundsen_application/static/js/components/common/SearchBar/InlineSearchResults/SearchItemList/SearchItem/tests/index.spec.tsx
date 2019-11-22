@@ -6,6 +6,13 @@ import SearchItem, { SearchItemProps } from '../';
 
 import { ResourceType } from 'interfaces';
 
+import { logClick } from 'ducks/utilMethods';
+jest.mock('ducks/utilMethods', () => (
+  {
+    logClick: jest.fn(() => {});
+  }
+));
+
 describe('SearchItem', () => {
   const setup = (propOverrides?: Partial<SearchItemProps>) => {
     const props: SearchItemProps = {

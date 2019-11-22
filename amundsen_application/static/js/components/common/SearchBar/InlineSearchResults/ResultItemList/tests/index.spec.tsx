@@ -8,6 +8,13 @@ import { ResourceType } from 'interfaces';
 
 import { RESULT_LIST_FOOTER_PREFIX, RESULT_LIST_FOOTER_SUFFIX } from '../../constants';
 
+import { logClick } from 'ducks/utilMethods';
+jest.mock('ducks/utilMethods', () => (
+  {
+    logClick: jest.fn(() => {});
+  }
+));
+
 describe('ResultItemList', () => {
   const setup = (propOverrides?: Partial<ResultItemListProps>) => {
     const props: ResultItemListProps = {
