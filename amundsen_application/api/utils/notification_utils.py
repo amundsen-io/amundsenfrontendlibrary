@@ -20,6 +20,7 @@ class NotificationType(str, Enum):
     OWNER_REMOVED = 'owner_removed'
     METADATA_EDITED = 'metadata_edited'
     METADATA_REQUESTED = 'metadata_requested'
+    LINEAGE = 'lineage'
 
     @classmethod
     def has_value(cls, value: str) -> bool:
@@ -83,6 +84,9 @@ def get_notification_html(*, notification_type: str, options: Dict, sender: str)
     Returns the formatted html for the notification based on the notification_type
     :return: A string representing the html markup to send in the notification
     """
+    if notification_type == NotificationType.LINEAGE:
+        return options.get('comment')
+
     validate_options(options=options)
 
     url_base = app.config['FRONTEND_BASE']
@@ -136,6 +140,9 @@ def get_notification_subject(*, notification_type: str, options: Dict) -> str:
     :param options: data necessary to render email template content
     :return: The subject to be used with the notification
     """
+    if notification_type == NotificationType.LINEAGE:
+        return '[INFORM] ' + options.get('subject')
+
     resource_name = options.get('resource_name')
     notification_subject_dict = {
         NotificationType.OWNER_ADDED.value: 'You are now an owner of {}'.format(resource_name),
@@ -168,8 +175,8 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
             message = 'Notifications are not enabled. Request was accepted but no notification will be sent.'
             logging.exception(message)
             return make_response(jsonify({'msg': message}), HTTPStatus.ACCEPTED)
-        if sender in recipients:
-            recipients.remove(sender)
+        # if sender in recipients:
+            # recipients.remove(sender)
         if len(recipients) == 0:
             logging.info('No recipients exist for notification')
             return make_response(

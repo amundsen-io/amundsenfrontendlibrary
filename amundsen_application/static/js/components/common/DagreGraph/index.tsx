@@ -1,5 +1,5 @@
 /*
-	Code take from https://github.com/arxenix/react-dagre-d3
+	Code take from https://github.com/justin-coberly/dagre-d3-react
 	and modified as needed to explore cpabalities and how it suits our needs
 */
 import React, { Component, createRef } from 'react'
@@ -48,6 +48,7 @@ type Relationship = {
 class DagreGraph extends Component<GraphProps> {
 	svg = createRef<SVGSVGElement>()
 	innerG = createRef<SVGSVGElement>()
+	renderER = new dagreD3.render();
 
 	static defaultProps = {
 		rankdir: 'TB',
@@ -58,8 +59,11 @@ class DagreGraph extends Component<GraphProps> {
 	componentDidMount() {
 		this._drawChart()
 	}
-	componentDidUpdate() {
+
+	componentDidUpdate(prevProps) {
+		//if (prevProps.nodes.length != this.props.nodes.length) {
 		this._drawChart()
+		//}
 	}
 
 	_getNodeData(id: any) {
@@ -92,20 +96,16 @@ class DagreGraph extends Component<GraphProps> {
 		g.nodes().forEach(function (v) {
 		    var node = g.node(v);
 		    node.rx = node.ry = 5;
-				//node.width = 300;
 		});
-		/*if (shape) {
-			g.nodes().forEach(v => (g.node(v).shape = shape))
-		}*/
 
 		links.forEach(link => g.setEdge(link.source, link.target, { label: link.label || '', class: link.class || '' }))
 
-		let render = new dagreD3.render()
 		let svg: any = d3.select(this.svg.current)
 		let inner: any = d3.select(this.innerG.current)
 
+		this.renderER(inner, g)
+		
 		let zoom = d3.zoom().on('zoom', () => inner.attr('transform', d3.event.transform))
-
 		if (zoomable) {
 			svg.call(zoom)
 		}
@@ -114,8 +114,6 @@ class DagreGraph extends Component<GraphProps> {
 				return selection.transition().duration(animate || 1000)
 			}
 		}
-
-		render(inner, g)
 
 		if (fitBoundaries) {
 			var bounds = inner.node().getBBox();

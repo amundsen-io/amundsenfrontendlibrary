@@ -34,12 +34,13 @@
   stroke: $stroke;
   fill: #fff;
   stroke-width: 1.5px;
-  // width:auto;
   color: $text-primary;
+  cursor: pointer;
 
   div {
    color: $text-primary;
    width: auto;
+   height: auto;
   }
 }
 .nodes {

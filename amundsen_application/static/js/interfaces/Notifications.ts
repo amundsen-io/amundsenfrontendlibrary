@@ -3,6 +3,7 @@ export enum NotificationType {
   OWNER_REMOVED = 'owner_removed',
   METADATA_EDITED = 'metadata_edited',
   METADATA_REQUESTED = 'metadata_requested',
+  LINEAGE = 'lineage',
 }
 
 export enum RequestMetadataType {

@@ -1,0 +1,48 @@
+@import 'variables';
+
+.request-component-lineage {
+  text-align:left;
+  box-shadow: 0 0 24px -2px rgba(0, 0, 0, .2);
+  border-radius: 6px;
+  bottom: 24px;
+  display: block;
+  left: 24px;
+  position: fixed;
+  z-index: 6;
+
+  &.expanded {
+    background-color: $white;
+    height: auto;
+    min-height: 450px;
+    padding: 32px;
+    width: 400px;
+
+    .title {
+      flex-grow: 1;
+    }
+
+    .request-header {
+      display: flex;
+    }
+
+    .select-label {
+      display: block;
+      font-weight: $font-weight-body-regular;
+    }
+
+    .submit-request-button {
+      img.icon {
+        margin: 0 12px 0 0;
+        transform: rotate(45deg);
+      }
+    }
+
+    input,
+    textarea {
+      color: $text-secondary;
+    }
+    input[type="checkbox"] {
+      margin-right: 8px;
+    }
+  }
+}

@@ -1,11 +1,16 @@
+import axios from 'axios';
+
 import * as React from 'react';
 import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 // import { Graph } from 'components/common/flytegraph';
 import DagreGraph from 'components/common/DagreGraph';
 import Select from 'react-select';
 
+const NODE_LIMIT = 9;
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+
+import NotifyLineageForm from './NotifyLineageForm';
 
 /*export interface StateFromProps {
   previewData: PreviewData;
@@ -21,11 +26,16 @@ export interface ComponentProps {
   modalTitle: string;
 }
 
-type LineageButtonProps = ComponentProps; // StateFromProps & DispatchFromProps;
+type LineageButtonProps = ComponentProps;
 
 interface LineageButtonState {
   showModal: boolean;
+  showForm: boolean;
+  managedSchemas: string[];
+  notificationDisabled: boolean;
   selectedOption: string;
+  lineageJSON: any;
+  currentTables: any;
 }
 
 export class LineageButton extends React.Component<LineageButtonProps, LineageButtonState> {
@@ -34,91 +44,142 @@ export class LineageButton extends React.Component<LineageButtonProps, LineageBu
 
     this.state = {
       showModal: false,
+      showForm: false,
       selectedOption: 'all',
+      notificationDisabled: true,
+      managedSchemas: [],
+      lineageJSON: {
+        name: '',
+        targetTables: {},
+        readPipelines: [],
+        writePipelines: [],
+      },
+      currentTables: {}
     };
   }
 
-  componentDidMount() {
+  componentDidMount = () => {
+    axios.post('/lineage', {
+      table_name: this.props.modalTitle,
+    }).then((response) => {
+      const lineageJSON = response.data;
+      lineageJSON.name =
+      this.setState({
+        lineageJSON: {
+          name: this.sanitizeId(lineageJSON.name),
+          targetTables: lineageJSON.targetTables || {},
+          writePipelines: lineageJSON.writePipelines || [],
+          readPipelines: lineageJSON.readPipelines || [],
+        },
+        currentTables: lineageJSON.targetTables
+      });
+    });
+
+    axios.get('/managedSchemas').then((response) => {
+      this.setState({ managedSchemas: response.data });
+    });
+  }
+
+  sanitizeId = (id) => {
+    return id.replace("warehouse.", "");
   }
 
   handleClose = () => {
-   this.setState({ showModal: false });
+   this.setState({ showModal: false, showForm: false, selectedOption: 'all', notificationDisabled: true, currentTables: this.state.lineageJSON.targetTables });
   };
 
   handleClick = (e) => {
-    // logClick(e);
     this.setState({ showModal: true });
   };
 
+  generateParentNodeLabel = (parentNodeId) => {
+    let parentNodeLabel = `<div><h4>${parentNodeId}</h4>`;
+    this.state.lineageJSON.writePipelines.forEach((task) => {
+      parentNodeLabel += `<div>Written by: ${task}</div>`;
+    });
+    parentNodeLabel += `</div>`;
+    return parentNodeLabel;
+  }
+
+  generateChildNodeLabel = (id) => {
+    const pieces = id.split('.');
+    let childNodeLabel = `<div><h4>${pieces[1]}.${pieces[2]}</h4>`;
+    const task = `${pieces[1]}/${pieces[2]}.config`;
+    if (this.state.lineageJSON.readPipelines.indexOf(task) > -1) {
+      childNodeLabel += `<div>Written by: ${task}</div>`;
+    }
+    childNodeLabel += `</div>`;
+    return childNodeLabel;
+  }
+
+  appendChildNodes = (nodes) => {
+    const children = Object.keys(this.state.currentTables);
+
+    for (var i = 0; i < Math.min(children.length, NODE_LIMIT); i++) {
+      const tableId = children[i];
+      if (tableId != this.state.lineageJSON.name) {
+        const newNode = {
+          id: tableId,
+          label: this.generateChildNodeLabel(tableId),
+          labelType: 'html',
+          class: 'lineage-nodes',
+        }
+        nodes.push(newNode);
+      }
+      else {
+        i--;
+      }
+    };
+    if (children.length > NODE_LIMIT) {
+      const extraNode = {
+        id: 'extra',
+        label: `<div><h4>+${children.length - NODE_LIMIT} tables...</h4></div>`,
+        labelType: 'html',
+        class: 'lineage-nodes',
+      }
+      nodes.push(extraNode);
+    }
+    return nodes;
+  }
+
+  generateLinks = (parentNodeId) => {
+    let links = [];
+    const children = Object.keys(this.state.currentTables);
+
+    for (var i = 0; i < Math.min(children.length, NODE_LIMIT); i++) {
+      const tableId = children[i];
+      if (tableId != this.state.lineageJSON.name) {
+        const newLink = { source: parentNodeId, target: tableId, label: '' };
+        links.push(newLink);
+      }
+      else {
+        i--;
+      }
+    };
+    if (children.length > NODE_LIMIT) {
+      links.push({ source: parentNodeId, target: 'extra', label: '' })
+    }
+    return links;
+  }
 
   renderModalBody = () => {
+    const parentNodeId = this.state.lineageJSON.name;
+    const nodeData = [
+      {
+        id: parentNodeId,
+        label: this.generateParentNodeLabel(parentNodeId),
+        labelType: 'html',
+        class: 'lineage-nodes',
+      }
+    ];
+
     // @ts-ignore
     const dummyData = {
-      nodes: [
-        {
-          id: 'schema.main_table',
-          label: '<div><h4>schema.main_table</h4></div>',
-          labelType: 'html',
-          class: 'lineage-nodes',
-        },
-        {
-          id: 'schema.table1',
-          label: '<div><h4>schema.table1</h4><div>Written by: Task1</div></div>',
-          labelType: 'html',
-          class: 'lineage-nodes',
-        },
-        {
-          id: 'schema.table2',
-          label: '<div><h4>schema.table2</h4><div>Written by: Task2</div></div>',
-          labelType: 'html',
-          class: 'lineage-nodes',
-        },
-        {
-          id: 'schema.table3',
-          label: '<div><h4>schema.table3</h4></div>',
-          labelType: 'html',
-          class: 'lineage-nodes',
-        },
-        {
-          id: 'schema.table4',
-          label: '<div><h4>schema.table4</h4><div>Written by: Task3</div></div>',
-          labelType: 'html',
-          class: 'lineage-nodes',
-        },
-        {
-          id: 'schema.table5',
-          label: '<div><h4>schema.table5</h4></div>',
-          labelType: 'html',
-          class: 'lineage-nodes',
-        },
-        {
-          id: 'schema.table6',
-          label: '<div><h4>schema.table6</h4></div>',
-          labelType: 'html',
-          class: 'lineage-nodes',
-        },
-        {
-          id: 'schema.table7',
-          label: '<div><h4>schema.table7</h4></div>',
-          labelType: 'html',
-          class: 'lineage-nodes',
-        },
-      ],
-      links: [
-        { source: 'schema.main_table', target: 'schema.table1', label: '' },
-        { source: 'schema.main_table', target: 'schema.table2', label: '' },
-        { source: 'schema.main_table', target: 'schema.table3', label: '' },
-        { source: 'schema.main_table', target: 'schema.table4', label: '' },
-        { source: 'schema.main_table', target: 'schema.table5', label: '' },
-        { source: 'schema.main_table', target: 'schema.table6', label: '' },
-        { source: 'schema.main_table', target: 'schema.table7', label: '' },
-      ]
+      nodes: this.appendChildNodes(nodeData),
+      links: this.generateLinks(parentNodeId)
     };
 
     return (
-      /*<Graph
-        data={customNodeData}
-      />*/
       // @ts-ignore
       <DagreGraph
         className='lineage-graph'
@@ -128,7 +189,7 @@ export class LineageButton extends React.Component<LineageButtonProps, LineageBu
         width='900'
         height='600'
         animate={250}
-        fitBoundaries={true}
+        fitBoundaries={false}
         zoomable={true}
         onNodeClick={e => console.log(e)}
         onRelationshipClick={e => console.log(e)}
@@ -147,15 +208,43 @@ export class LineageButton extends React.Component<LineageButtonProps, LineageBu
     );
   }
 
+  managedFilter = (tables) => {
+    return Object.keys(tables).filter(table => {
+      const schema = table.split('.')[1];
+      return this.state.managedSchemas.indexOf(schema) > -1;
+    }).reduce((obj, key) => {
+      obj[key] = {};
+      return obj;
+    }, {});
+  }
+
+  /*goToTableDetail = (id: string) => {
+    this.closeForm();
+    if (id !== "extra") {
+      const pieces = id.split('.');
+      this.props.history.push(`/table_detail/gold/hive/${pieces[1]}/${pieces[2]}`)
+    }
+  }*/
+
   handleSelectChange = (data) => {
-    this.setState({ selectedOption: data.value })
+    const value = data.value;
+    const currentTables = value === 'all' ? this.state.lineageJSON.targetTables : this.managedFilter(this.state.lineageJSON.targetTables);
+    this.setState({ currentTables,  notificationDisabled: value != 'all_managed' })
+  }
+
+  closeForm = () => {
+    this.setState({ showForm: false})
+  }
+
+  showForm = () => {
+    this.setState({ showForm: true })
   }
 
   render() {
     const selectOptions = [
       { value: 'all', label: 'All' },
-      { value: 'managed', label: 'Managed Schemas' },
-      { value: 'popular', label: 'Popular' },
+      { value: 'all_managed', label: 'Managed Schemas' },
+      { value: 'popular', label: 'Popular', disabled: true },
     ];
     const styles = {
       option: (styles, state) => ({
@@ -173,10 +262,11 @@ export class LineageButton extends React.Component<LineageButtonProps, LineageBu
               <h4 style={{ margin: 'auto auto auto 0' }}>{ this.props.modalTitle }</h4>
               <button
                 style={{ marginRight: '24px'}}
+                disabled={this.state.notificationDisabled}
                 className="btn btn-default"
-                onClick={ () => { console.log('click')} }
+                onClick={this.showForm}
               >
-                Notify Owners
+                Notify DownStream Owners
               </button>
             </div>
           </Modal.Header>
@@ -190,10 +280,18 @@ export class LineageButton extends React.Component<LineageButtonProps, LineageBu
                 isSearchable={false}
                 onChange={this.handleSelectChange}
                 options={selectOptions}
+                isOptionDisabled={(option) => option.disabled === true}
                 styles={styles}
               />
             </div>
             { this.renderModalBody() }
+            {
+              this.state.showForm &&
+              // @ts-ignore
+              <NotifyLineageForm
+                onClose={this.closeForm}
+              />
+            }
           </Modal.Body>
         </Modal>
       </>
