@@ -11,7 +11,7 @@ import { RESULT_LIST_FOOTER_PREFIX, RESULT_LIST_FOOTER_SUFFIX } from '../../cons
 import { logClick } from 'ducks/utilMethods';
 jest.mock('ducks/utilMethods', () => (
   {
-    logClick: jest.fn(() => {});
+    logClick: jest.fn(() => {}),
   }
 ));
 

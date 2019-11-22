@@ -9,7 +9,7 @@ import { ResourceType } from 'interfaces';
 import { logClick } from 'ducks/utilMethods';
 jest.mock('ducks/utilMethods', () => (
   {
-    logClick: jest.fn(() => {});
+    logClick: jest.fn(() => {}),
   }
 ));
 
