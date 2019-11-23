@@ -49,7 +49,7 @@ describe('ResultItemList', () => {
     it('returns the expected text', () => {
       const { props, wrapper } = setup();
       const output = wrapper.instance().generateFooterLinkText();
-      expect(output).toEqual(`${RESULT_LIST_FOOTER_PREFIX}${props.totalResults} ${props.title}${RESULT_LIST_FOOTER_SUFFIX}`);
+      expect(output).toEqual(`${RESULT_LIST_FOOTER_PREFIX} ${props.totalResults} ${props.title} ${RESULT_LIST_FOOTER_SUFFIX}`);
     })
   });
 
