@@ -78,6 +78,14 @@ export function searchResourceFailure(): SearchResourceResponse {
   return { type: SearchResource.FAILURE };
 };
 
+export function getInlineResultsDebounce(term: string): InlineSearchRequest {
+  return {
+    payload: {
+      term,
+    },
+    type: InlineSearch.REQUEST_DEBOUNCE,
+  };
+};
 export function getInlineResults(term: string): InlineSearchRequest {
   return {
     payload: {
@@ -263,6 +271,7 @@ export default function reducer(state: SearchReducerState = initialState, action
         },
       };
     case InlineSearch.REQUEST:
+    case InlineSearch.REQUEST_DEBOUNCE:
       return {
         ...state,
         inlineResults: {

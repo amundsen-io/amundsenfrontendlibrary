@@ -6,6 +6,13 @@ import SearchItem, { SearchItemProps } from '../';
 
 import { ResourceType } from 'interfaces';
 
+import { logClick } from 'ducks/utilMethods';
+jest.mock('ducks/utilMethods', () => (
+  {
+    logClick: jest.fn(() => {}),
+  }
+));
+
 describe('SearchItem', () => {
   const setup = (propOverrides?: Partial<SearchItemProps>) => {
     const props: SearchItemProps = {
@@ -23,7 +30,7 @@ describe('SearchItem', () => {
     it('calls props.onItemSelect with the correct parameters', () => {
       const { props, wrapper } = setup();
       const onItemSelectSpy = jest.spyOn(props, 'onItemSelect');
-      wrapper.instance().onViewAllResults();
+      wrapper.instance().onViewAllResults({});
       expect(onItemSelectSpy).toHaveBeenCalledWith(props.resourceType, true);
     })
   });

@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import { logClick } from 'ducks/utilMethods';
 import { ResourceType } from 'interfaces';
 
 import { SuggestedResult } from '../../InlineSearchResults'
@@ -26,18 +26,24 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
     return `${RESULT_LIST_FOOTER_PREFIX}${totalResults} ${title}${RESULT_LIST_FOOTER_SUFFIX}`;
   }
 
-  onViewAllResults = () => {
+  onViewAllResults = (e) => {
+    logClick(e);
     this.props.onItemSelect(this.props.resourceType, true);
   };
 
   renderResultItems = (results: SuggestedResult[]) => {
-    const onResultItemSelect = () => this.props.onItemSelect(this.props.resourceType);
+    const onResultItemSelect = (e) => {
+      logClick(e);
+      this.props.onItemSelect(this.props.resourceType);
+    }
 
     return results.map((item, index) => {
       const { href, iconClass, subtitle, title, type } = item;
+      const id = `inline-resultitem-${this.props.resourceType}:${index}`;
       return (
         <ResultItem
-          key={`${this.props.resourceType}:${index}`}
+          key={id}
+          id={id}
           href={href}
           onItemSelect={onResultItemSelect}
           iconClass={`icon icon-dark ${iconClass}`}
@@ -48,9 +54,9 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
       )
     });
   }
-  
+
   render = () => {
-    const { suggestedResults, title } = this.props;
+    const { resourceType, suggestedResults, title } = this.props;
     return (
       <>
         <div className="section-title title-3">{title}</div>
@@ -58,6 +64,7 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
           { this.renderResultItems(suggestedResults) }
         </ul>
         <a
+          id={`inline-resultitem-viewall:${resourceType}`}
           className="section-footer title-3"
           onClick={this.onViewAllResults}
           target='_blank'

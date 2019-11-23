@@ -1,5 +1,5 @@
 import { SagaIterator } from 'redux-saga';
-import { all, call, debounce, put, select, takeEvery } from 'redux-saga/effects';
+import { all, call, debounce, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import * as qs from 'simple-query-string';
 
 import { ResourceType } from 'interfaces/Resources';
@@ -33,6 +33,7 @@ import {
   searchResourceFailure,
   searchResourceSuccess,
   getInlineResults,
+  getInlineResultsDebounce,
   getInlineResultsSuccess,
   getInlineResultsFailure,
   updateFromInlineResult,
@@ -58,7 +59,13 @@ export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
   }
 };
 export function* inlineSearchWatcher(): SagaIterator {
-  yield debounce(350, InlineSearch.REQUEST, inlineSearchWorker)
+  yield takeLatest(InlineSearch.REQUEST, inlineSearchWorker);
+}
+export function* debounceWorker(action): SagaIterator {
+  yield put(getInlineResults(action.payload.term));
+}
+export function* inlineSearchWatcherDebounce(): SagaIterator {
+  yield debounce(350, InlineSearch.REQUEST_DEBOUNCE, debounceWorker);
 }
 
 export function* selectInlineResultWorker(action): SagaIterator {
