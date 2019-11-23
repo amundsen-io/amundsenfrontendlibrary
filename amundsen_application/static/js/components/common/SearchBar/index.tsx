@@ -150,7 +150,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   updateTypeAhead = (event: Event): void => {
     /* This logic will hide/show the inline results component when the user clicks
       outside/inside of the search bar */
-    if (this.refToSelf.current.contains(event.target as Node)) {
+    if (this.refToSelf.current && this.refToSelf.current.contains(event.target as Node)) {
       this.setState({ showTypeAhead: this.shouldShowTypeAhead(this.state.searchTerm) });
     } else {
       this.hideTypeAhead();

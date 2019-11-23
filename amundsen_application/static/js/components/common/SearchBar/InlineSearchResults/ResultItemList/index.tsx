@@ -23,7 +23,7 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
 
   generateFooterLinkText = () => {
     const { totalResults, title } = this.props;
-    return `${RESULT_LIST_FOOTER_PREFIX}${totalResults} ${title}${RESULT_LIST_FOOTER_SUFFIX}`;
+    return `${RESULT_LIST_FOOTER_PREFIX} ${totalResults} ${title} ${RESULT_LIST_FOOTER_SUFFIX}`;
   }
 
   onViewAllResults = (e) => {
