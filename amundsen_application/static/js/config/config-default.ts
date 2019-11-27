@@ -1,5 +1,7 @@
 import { AppConfig } from './config-types';
 
+import { ResourceType } from '../interfaces';
+
 const configDefault: AppConfig = {
   browse: {
     curatedTags: [],
@@ -36,28 +38,49 @@ const configDefault: AppConfig = {
       use_router: true,
     }
   ],
+  // TODO (ttannis): Replace constants defined in some components with displayName
   resourceConfig: {
-    datasets: {
-      'bigquery': {
-        displayName: 'BigQuery',
-        iconClass: 'icon-bigquery',
+    [ResourceType.table]: {
+      displayName: 'Datasets',
+      supportedDatabases: {
+        'bigquery': {
+          displayName: 'BigQuery',
+          iconClass: 'icon-bigquery',
+        },
+        'hive': {
+          displayName: 'Hive',
+          iconClass: 'icon-hive',
+        },
+        'presto': {
+          displayName: 'Presto',
+          iconClass: 'icon-presto',
+        },
+        'postgres': {
+          displayName: 'Postgres',
+          iconClass: 'icon-postgres',
+        },
+        'redshift': {
+          displayName: 'Redshift',
+          iconClass: 'icon-redshift',
+        },
       },
-      'hive': {
-        displayName: 'Hive',
-        iconClass: 'icon-hive',
-      },
-      'presto': {
-        displayName: 'Presto',
-        iconClass: 'icon-presto',
-      },
-      'postgres': {
-        displayName: 'Postgres',
-        iconClass: 'icon-postgres',
-      },
-      'redshift': {
-        displayName: 'Redshift',
-        iconClass: 'icon-redshift',
-      },
+      filterCategories: [
+        {
+          value: 'database',
+          displayName: 'Type',
+          options: [
+            { value: 'bigquery', displayName: 'BigQuery' },
+            { value: 'hive', displayName: 'Hive' },
+            { value: 'postgres', displayName: 'Postgres' },
+            { value: 'presto', displayName: 'Presto' },
+            { value: 'redshift', displayName: 'Redshift' },
+          ],
+        },
+      ]
+    },
+    [ResourceType.user]: {
+      displayName: 'People',
+      filterCategories: []
     },
   },
   tableLineage: {

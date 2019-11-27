@@ -14,10 +14,12 @@
     }
   }
 
+  .checkbox,
   .radio {
-    margin-top: 16px;
-    margin-bottom: 16px;
+    margin-top: $spacer-1;
+    margin-bottom: $spacer-1;
 
+    .checkbox-label,
     .radio-label {
       display: block;
     }

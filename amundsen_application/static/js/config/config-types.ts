@@ -12,7 +12,7 @@ export interface AppConfig {
   logoPath: string | null;
   mailClientFeatures: MailClientFeaturesConfig;
   navLinks: Array<LinkConfig>;
-  resourceConfig: ResourceConfig;
+  resourceConfig: any; // TODO (ttannis): Define new ResourceConfig type
   tableLineage: TableLineageConfig;
   tableProfile: TableProfileConfig;
 }
@@ -25,6 +25,7 @@ export interface AppConfigCustom {
   logoPath?: string;
   mailClientFeatures?: MailClientFeaturesConfig;
   navLinks?: Array<LinkConfig>;
+  resourceConfig?: any; // TODO (ttannis): Define new ResourceConfig type
   tableLineage?: TableLineageConfig;
   tableProfile?: TableProfileConfig;
 }
