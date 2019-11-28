@@ -66,6 +66,7 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
 
   render = () => {
     return this.props.checkBoxSections.map((section, index) => this.createCheckBoxSection(section, `section:${index}`));
+    // TODO (ttannis): Let's deprecate adv. search syntax and add an input box for other categories -- tag, schema, table, column. 
   };
 };
 

@@ -47,7 +47,7 @@ describe('SearchFilter', () => {
     return { props, wrapper };
   };
 
-  describe('createCheckBoxItem', () => {
+  /*describe('createCheckBoxItem', () => {
     let props;
     let wrapper;
 
@@ -63,13 +63,13 @@ describe('SearchFilter', () => {
       categoryId = 'testId'
       content = shallow(wrapper.instance().createCheckBoxItem(itemData, categoryId, 'itemKey'));
     });
-    /*
-    TODO: Enzyme might not allow this kind of check with shallow rendering.
+
+    // TODO (ttannis): Enzyme might not allow this kind of check with shallow rendering.
     Revisit on final implementation
     it('returns CheckBoxItem with correct props', () => {
       expect(content.type()).toEqual(CheckBoxItem);
     });
-    */
+
     it('renders labelText as first CheckBoxItem child', () => {
       const child = content.find('span').at(0);
       expect(child.hasClass('subtitle-2')).toBe(true);
@@ -81,7 +81,7 @@ describe('SearchFilter', () => {
       expect(child.hasClass('body-secondary-3 pull-right')).toBe(true);
       expect(child.text()).toEqual(itemData.count.toString());
     });
-  });
+  });*/
 
   describe('createCheckBoxSection', () => {
     let props;
