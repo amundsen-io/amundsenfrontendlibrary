@@ -27,7 +27,8 @@ export const searchResourceHelper = (response: AxiosResponse<SearchAPI>) => {
   return ret;
 };
 
-export function searchResource(pageIndex: number, resource: ResourceType, term: string) {
+/* TODO (ttannis): Cleanup filter type */
+export function searchResource(pageIndex: number, resource: ResourceType, term: string, filters?: {}) {
   if (resource === ResourceType.dashboard ||
      (resource === ResourceType.user && !AppConfig.indexUsers.enabled)) {
     return Promise.resolve({});

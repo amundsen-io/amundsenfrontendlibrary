@@ -42,7 +42,20 @@ import {
 import { autoSelectResource, getPageIndex, getSearchState } from './utils';
 import { updateSearchUrl } from 'utils/navigation-utils';
 
+import {
+  UpdateSearchFilter
+} from './filters/reducer';
+
+export function* filterWorker(action: any): SagaIterator {
+  const state = yield select();
+  yield put(searchResource(state.search_term, state.selectedTab, state.pageIndex));
+};
+export function* filterWatcher(): SagaIterator {
+  yield debounce(750, [UpdateSearchFilter.ADD, UpdateSearchFilter.REMOVE], filterWorker);
+}
+
 export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
+  /* TODO (ttannis): Must understand if inline search should take filters into accound */
   const { term } = action.payload;
   try {
     const [tableResponse, userResponse] = yield all([
@@ -132,8 +145,9 @@ export function* searchAllWatcher(): SagaIterator {
 
 export function* searchResourceWorker(action: SearchResourceRequest): SagaIterator {
   const { pageIndex, resource, term } = action.payload;
+  const state = yield select();
   try {
-    const searchResults = yield call(API.searchResource, pageIndex, resource, term);
+    const searchResults = yield call(API.searchResource, pageIndex, resource, term, state.search.filters[resource]);
     yield put(searchResourceSuccess(searchResults));
   } catch (e) {
     yield put(searchResourceFailure());

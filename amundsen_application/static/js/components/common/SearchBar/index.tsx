@@ -131,8 +131,9 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         <form id="search-bar-form" className="search-bar-form" onSubmit={ this.handleValueSubmit }>
             <input
               id="search-input"
-              pattern="[a-z0-9_\s\*]+"
-              title="Valid characters include a-z, 0-9, spaces, '_', and '*'"
+              pattern="[a-z0-9_\s\*\.]+"
+              // TODO (ttannis): Need to have conversation about valid search syntax w/o adv. search
+              title="Valid characters include a-z, 0-9, spaces, '.', '_', and '*'"
               required={ true }
               className={ inputClass }
               value={ this.state.searchTerm }

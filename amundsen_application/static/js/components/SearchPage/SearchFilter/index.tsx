@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+
 import { GlobalState } from 'ducks/rootReducer';
+import { addFilter, removeFromFilter, FilterReducerState } from 'ducks/search/filters/reducer';
 
 import CheckBoxItem from 'components/common/Inputs/CheckBoxItem';
 
@@ -29,7 +30,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  onFilterChange: () => any;
+  onFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export type SearchFilterProps = StateFromProps & DispatchFromProps;
@@ -40,7 +41,6 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
   }
 
   createCheckBoxItem = (item: SearchFilterInput, categoryId: string, key: string) => {
-    const dummyMethod = () => { console.log('Dispatched') };
     const { checked, labelText, value } = item;
     return (
       <CheckBoxItem
@@ -48,7 +48,7 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
         checked={ checked }
         name={ categoryId }
         value={ value }
-        onChange={ dummyMethod }>
+        onChange={ this.props.onFilterChange }>
           <span className="subtitle-2">{ labelText }</span>
       </CheckBoxItem>
     );
@@ -66,12 +66,11 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
 
   render = () => {
     return this.props.checkBoxSections.map((section, index) => this.createCheckBoxSection(section, `section:${index}`));
-    // TODO (ttannis): Let's deprecate adv. search syntax and add an input box for other categories -- tag, schema, table, column. 
+    // TODO (ttannis): Let's deprecate adv. search syntax and add an input box for other categories -- tag, schema, table, column.
   };
 };
 
-// TODO (ttannis): Improve this and put this in utils
-function createFilterCheckBoxSection(resourceType: ResourceType) {
+function createFilterCheckBoxSection(filterState: FilterReducerState, resourceType: ResourceType): SearchFilterSection[] {
   const filterCategories = AppConfig.resourceConfig[resourceType].filterCategories;
   if (!filterCategories) {
     return [];
@@ -79,22 +78,21 @@ function createFilterCheckBoxSection(resourceType: ResourceType) {
   const checkBoxSections = [];
   filterCategories.forEach((categoryConfig) => {
     checkBoxSections.push({
-      title: categoryConfig.displayName,
-      categoryId: categoryConfig.value,
-      inputProperties: generateDatasetOptions(categoryConfig),
+      title: categoryConfig.displayName, // e.g. 'Type'
+      categoryId: categoryConfig.value,  // e.g. 'database'
+      inputProperties: generateDatasetOptions(categoryConfig, filterState),
     });
   });
   return checkBoxSections;
 };
 
-// TODO (ttannis): Improve this and put in utils
-function generateDatasetOptions(categoryConfig): SearchFilterInput[] {
+function generateDatasetOptions(categoryConfig, filterState: FilterReducerState): SearchFilterInput[] {
   const dataSetInputs = [];
   categoryConfig.options.forEach((option) => {
     dataSetInputs.push({
       value: option.value,
       labelText: option.displayName,
-      checked: false,
+      checked: !!filterState[ResourceType.table].database[option.value],
     });
   })
   return dataSetInputs;
@@ -102,15 +100,23 @@ function generateDatasetOptions(categoryConfig): SearchFilterInput[] {
 
 export const mapStateToProps = (state: GlobalState) => {
   return {
-    checkBoxSections: createFilterCheckBoxSection(state.search.selectedTab)
+    checkBoxSections: createFilterCheckBoxSection(state.search.filters, state.search.selectedTab)
   };
 };
 
-/*
-  TODO: Dispatch a real action
-*/
 export const mapDispatchToProps = (dispatch: any) => {
-  // return bindActionCreators({ onFilterChange } , dispatch);
+  return {
+    onFilterChange: ((e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value;
+      const category = e.target.name;
+      if (e.target.checked) {
+        dispatch(addFilter({ category, value }));
+      }
+      else {
+        dispatch(removeFromFilter({ category, value }))
+      }
+    }),
+  };
 };
 
-export default connect<StateFromProps, DispatchFromProps>(mapStateToProps)(SearchFilter);
+export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(SearchFilter);
