@@ -135,6 +135,8 @@ const globalState: GlobalState = {
   },
   allTags: {
     allTags: [],
+    curatedTags: [],
+    otherTags: [],
     isLoading: false,
   },
   user:  {

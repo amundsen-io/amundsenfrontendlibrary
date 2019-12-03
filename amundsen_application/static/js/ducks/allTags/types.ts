@@ -11,6 +11,8 @@ export interface GetAllTagsRequest {
 export interface GetAllTagsResponse {
   type: GetAllTags.SUCCESS | GetAllTags.FAILURE;
   payload: {
-    tags: Tag[];
+    allTags: Tag[];
+    curatedTags: Tag[];
+    otherTags: Tag[];
   };
 }

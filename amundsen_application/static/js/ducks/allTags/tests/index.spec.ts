@@ -21,7 +21,7 @@ describe('allTags ducks', () => {
       const action = getAllTagsFailure();
       const { payload } = action;
       expect(action.type).toBe(GetAllTags.FAILURE);
-      expect(payload.tags).toEqual([]);
+      expect(payload.allTags).toEqual([]);
     });
 
     it('getAllTagsSuccess - returns the action to process success', () => {
@@ -29,7 +29,7 @@ describe('allTags ducks', () => {
       const action = getAllTagsSuccess(expectedTags);
       const { payload } = action;
       expect(action.type).toBe(GetAllTags.SUCCESS);
-      expect(payload.tags).toBe(expectedTags);
+      expect(payload.allTags).toBe(expectedTags);
     });
   });
 
@@ -38,6 +38,8 @@ describe('allTags ducks', () => {
     beforeAll(() => {
       testState = {
         allTags: [],
+        curatedTags: [],
+        otherTags: [],
         isLoading: true,
       };
     });
@@ -48,6 +50,8 @@ describe('allTags ducks', () => {
     it('should handle GetAllTags.REQUEST', () => {
       expect(reducer(testState, getAllTags())).toEqual({
         allTags: [],
+        curatedTags: [],
+        otherTags: [],
         isLoading: true,
       });
     });
@@ -56,6 +60,8 @@ describe('allTags ducks', () => {
       const expectedTags = [{tag_count: 2, tag_name: 'test'}, {tag_count: 1, tag_name: 'test2'}];
       expect(reducer(testState, getAllTagsSuccess(expectedTags))).toEqual({
         allTags: expectedTags,
+        curatedTags: [],
+        otherTags: [],
         isLoading: false,
       });
     });

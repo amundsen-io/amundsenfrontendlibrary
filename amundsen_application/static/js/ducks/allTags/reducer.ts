@@ -7,20 +7,24 @@ export function getAllTags(): GetAllTagsRequest {
   return { type: GetAllTags.REQUEST };
 };
 export function getAllTagsFailure(): GetAllTagsResponse {
-  return { type: GetAllTags.FAILURE, payload: { tags: [] } };
+  return { type: GetAllTags.FAILURE, payload: { allTags: [], curatedTags: [], otherTags: [] } };
 };
-export function getAllTagsSuccess(tags: Tag[]): GetAllTagsResponse {
-  return { type: GetAllTags.SUCCESS, payload: { tags } };
+export function getAllTagsSuccess(allTags: Tag[], curatedTags: Tag[] = [], otherTags: Tag[] = []): GetAllTagsResponse {
+  return { type: GetAllTags.SUCCESS, payload: { allTags, curatedTags, otherTags } };
 };
 
 /* REDUCER */
 export interface AllTagsReducerState {
   allTags: Tag[];
+  curatedTags: Tag[];
+  otherTags: Tag[];
   isLoading: boolean;
 };
 
 export const initialState: AllTagsReducerState = {
   allTags: [],
+  curatedTags: [],
+  otherTags: [],
   isLoading: false,
 };
 
@@ -31,7 +35,11 @@ export default function reducer(state: AllTagsReducerState = initialState, actio
     case GetAllTags.FAILURE:
       return initialState;
     case GetAllTags.SUCCESS:
-      return { ...state, allTags: (<GetAllTagsResponse>action).payload.tags, isLoading: false };
+      return {
+        ...state,
+        ...(<GetAllTagsResponse>action).payload,
+        isLoading: false,
+      };
     default:
       return state;
   }

@@ -15,6 +15,8 @@ import { GetAllTagsRequest } from 'ducks/allTags/types';
 
 export interface StateFromProps {
   allTags: Tag[];
+  curatedTags: Tag[];
+  otherTags: Tag[];
   isLoading: boolean;
 }
 
@@ -22,40 +24,11 @@ export interface DispatchFromProps {
   getAllTags: () => GetAllTagsRequest;
 }
 
-interface TagsListState {
-  curatedTags: Tag[];
-  otherTags: Tag[];
-}
-
 export type TagsListProps = StateFromProps & DispatchFromProps;
 
-export class TagsList extends React.Component<TagsListProps, TagsListState> {
+export class TagsList extends React.Component<TagsListProps> {
   constructor(props) {
     super(props);
-
-    this.state = {
-      curatedTags: [],
-      otherTags: [],
-    };
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    const { allTags, isLoading } = nextProps;
-    if (isLoading) {
-      return {
-        ...prevState,
-        isLoading,
-      };
-    }
-
-    const curatedTagsList = AppConfig.browse.curatedTags;
-    const curatedTags = allTags.filter((tag) => curatedTagsList.indexOf(tag.tag_name) !== -1);
-
-    let otherTags = [];
-    if (AppConfig.browse.showAllTags) {
-      otherTags = allTags.filter((tag) => curatedTagsList.indexOf(tag.tag_name) === -1);
-    }
-    return { curatedTags, otherTags, isLoading };
   }
 
   componentDidMount() {
@@ -68,28 +41,36 @@ export class TagsList extends React.Component<TagsListProps, TagsListState> {
   }
 
   render() {
-    let innerContent;
     if (this.props.isLoading) {
-      innerContent = <LoadingSpinner/>;
-    } else {
-      innerContent = (
-        <div id="browse-body" className="browse-body">
-          {this.generateTagInfo(this.state.curatedTags)}
-          {
-            this.state.curatedTags.length > 0 && this.state.otherTags.length > 0 &&
-              <hr />
-          }
-          {this.generateTagInfo(this.state.otherTags)}
+      return <LoadingSpinner/>;
+    }
+    if (AppConfig.browse.curatedTags.length === 0) {
+      return (
+        <div id="tags-list" className="tags-list">
+          { this.generateTagInfo(this.props.allTags) }
         </div>
       );
     }
-    return (innerContent);
+    return (
+      <div id="tags-list" className="tags-list">
+        { this.generateTagInfo(this.props.curatedTags) }
+        {
+          AppConfig.browse.showAllTags && this.props.curatedTags.length > 0 && this.props.otherTags.length > 0 &&
+            <>
+              <hr />
+              { this.generateTagInfo(this.props.otherTags) }
+            </>
+        }
+      </div>
+    );
   }
 }
 
 export const mapStateToProps = (state: GlobalState) => {
   return {
     allTags: state.allTags.allTags,
+    curatedTags: state.allTags.curatedTags,
+    otherTags: state.allTags.otherTags,
     isLoading: state.allTags.isLoading,
   };
 };

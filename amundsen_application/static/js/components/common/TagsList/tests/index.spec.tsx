@@ -26,49 +26,28 @@ describe('TagsList', () => {
           tag_name: 'test2',
         },
       ],
+      curatedTags: [
+        {
+          tag_count: 2,
+          tag_name: 'test1',
+        },
+      ],
+      otherTags: [
+        {
+          tag_count: 1,
+          tag_name: 'test2',
+        },
+      ],
       isLoading: false,
       getAllTags: jest.fn(),
     };
     subject = shallow(<TagsList {...props} />);
   });
 
-  describe('getDerivedStateFromProps', () => {
-    it('returns correct state if props.isLoading', () => {
-      const prevState = subject.state();
-      props.isLoading = true;
-      subject.setProps(props);
-      expect(subject.state()).toMatchObject({
-        ...prevState,
-        isLoading: true,
-      });
-    });
-
-    it('returns correct state if !props.isLoading', () => {
-      props.isLoading = false;
-      subject.setProps(props);
-      expect(subject.state()).toMatchObject({
-        curatedTags: [{ tag_count: 2, tag_name: 'test1'}],
-        otherTags: [{ tag_count: 1, tag_name: 'test2'}],
-        isLoading: false,
-      });
-    });
-
-    it('returns correct state if !props.isLoading and !AppConfig.browse.showAllTags', () => {
-      AppConfig.browse.showAllTags = false;
-      subject = shallow(<TagsList {...props} />);
-      expect(subject.state()).toMatchObject({
-        curatedTags: [{tag_count: 2, tag_name: 'test1'}],
-        otherTags: [],
-        isLoading: false,
-      });
-      AppConfig.browse.showAllTags = true; // reset so other tests aren't affected
-    });
-  });
-
   describe('componentDidMount', () => {
-      it('calls props.getAllTags', () => {
-          expect(props.getAllTags).toHaveBeenCalled();
-      });
+    it('calls props.getAllTags', () => {
+        expect(props.getAllTags).toHaveBeenCalled();
+    });
   });
 
   describe('render', () => {
@@ -76,21 +55,20 @@ describe('TagsList', () => {
     beforeEach(() => {
       spy = jest.spyOn(TagsList.prototype, 'generateTagInfo');
     });
-    it('renders LoadingSpinner if state.isLoading', () => {
-      /* Note: For some reason setState is not updating the component in this case */
+    it('renders LoadingSpinner if props.isLoading is true', () => {
       props.isLoading = true;
       subject.setProps(props);
       expect(subject.find(LoadingSpinner).exists()).toBeTruthy();
     });
 
     it('renders <hr> in if curatedTags.length > 0 & otherTags.length > 0 ', () => {
-      expect(subject.find('#browse-body').find('hr').exists()).toBeTruthy();
+      expect(subject.find('hr').exists()).toBeTruthy();
     });
 
     it('does not render <hr> if !(curatedTags.length > 0 & otherTags.length > 0) ', () => {
       AppConfig.browse.curatedTags = ['test1', 'test2'];
       subject = shallow(<TagsList {...props} />);
-      expect(subject.find('#browse-body').find('hr').exists()).toBeFalsy();
+      expect(subject.find('#tags-list').find('hr').exists()).toBeFalsy();
       AppConfig.browse.curatedTags = ['test1']; // reset so other tests aren't affected
     });
 
