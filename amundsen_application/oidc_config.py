@@ -1,4 +1,4 @@
-from typing import Dict, Any, Optional
+from typing import Dict, Optional
 from flask import Flask
 from amundsen_application.config import LocalConfig
 from amundsen_application.models.user import load_user, User
