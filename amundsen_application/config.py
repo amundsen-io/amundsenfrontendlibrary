@@ -1,7 +1,9 @@
 import os
 from typing import Callable, Dict, Optional, Set  # noqa: F401
+from amundsen_application.models.user import User
 
 from flask import Flask  # noqa: F401
+from flask import current_app as app
 
 from amundsen_application.tests.test_utils import get_test_user
 
@@ -69,9 +71,9 @@ class LocalConfig(Config):
     # Please note that if specified, this will ignore following config properties:
     # 1. METADATASERVICE_REQUEST_HEADERS
     # 2. SEARCHSERVICE_REQUEST_HEADERS
-    REQUEST_HEADERS_METHOD = None
+    REQUEST_HEADERS_METHOD: Optional[Callable[[app], Optional[Dict]]] = None
 
-    AUTH_USER_METHOD = None  # type: Optional[function]
+    AUTH_USER_METHOD: Optional[Callable[[app], User]] = None
     GET_PROFILE_URL = None
 
 

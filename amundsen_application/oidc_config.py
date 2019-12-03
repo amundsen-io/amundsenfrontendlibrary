@@ -1,9 +1,10 @@
-from typing import Dict, Any
-from flask import Flask
+from typing import Dict, Any, Optional
+from flask import current_app as app
 from amundsen_application.config import LocalConfig
+from amundsen_application.models.user import load_user, User
 
 
-def get_access_headers(app: Flask) -> Dict:
+def get_access_headers(app: app) -> Optional[Dict]:
     """
     Function to retrieve and format the Authorization Headers
     that can be passed to various microservices who are expecting that.
@@ -18,7 +19,7 @@ def get_access_headers(app: Flask) -> Dict:
         return None
 
 
-def get_auth_user(app: Flask) -> Any:
+def get_auth_user(app: app) -> User:
     """
     Retrieves the user information from oidc token, and then makes
     a dictionary 'UserInfo' from the token information dictionary.
@@ -28,10 +29,7 @@ def get_auth_user(app: Flask) -> Any:
     :return: A class UserInfo (Note, there isn't a UserInfo class, so we use Any)
     """
     from flask import g
-    app.logger.info(g.oidc_id_token)
-    user_info = type('UserInfo', (object,), g.oidc_id_token)
-    # noinspection PyUnresolvedReferences
-    user_info.user_id = user_info.preferred_username
+    user_info = load_user(g.oidc_id_token)
     return user_info
 
 
