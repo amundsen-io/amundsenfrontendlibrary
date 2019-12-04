@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
-import SearchItem, { SearchItemProps } from '../';
+import { SearchItem, SearchItemProps } from '../';
 
 import { ResourceType } from 'interfaces';
 
@@ -20,6 +20,8 @@ describe('SearchItem', () => {
       onItemSelect: jest.fn(),
       searchTerm: 'test search',
       resourceType: ResourceType.table,
+      isLoading: false,
+      hasResults: true,
       ...propOverrides
     };
     const wrapper = shallow<SearchItem>(<SearchItem {...props} />);

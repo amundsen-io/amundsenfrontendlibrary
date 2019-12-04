@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux'
 
-import LoadingSpinner from 'components/common/LoadingSpinner';
 import SearchItemList from './SearchItemList';
 import ResultItemList from './ResultItemList';
 
@@ -153,44 +152,42 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
   };
 
   renderResultsByResource = (resourceType: ResourceType) => {
-    return (
-      <div className="inline-results-section">
-        <ResultItemList
-          onItemSelect={this.props.onItemSelect}
-          resourceType={resourceType}
-          searchTerm={this.props.searchTerm}
-          suggestedResults={this.getSuggestedResultsForResource(resourceType)}
-          totalResults={this.getTotalResultsForResource(resourceType)}
-          title={this.getTitleForResource(resourceType)}
-        />
-      </div>
-    )
+    const suggestedResults = this.getSuggestedResultsForResource(resourceType);
+    if (suggestedResults.length > 0) {
+      return (
+        <div className="inline-results-section">
+          <ResultItemList
+            onItemSelect={this.props.onItemSelect}
+            resourceType={resourceType}
+            searchTerm={this.props.searchTerm}
+            suggestedResults={this.getSuggestedResultsForResource(resourceType)}
+            totalResults={this.getTotalResultsForResource(resourceType)}
+            title={this.getTitleForResource(resourceType)}
+          />
+        </div>
+      )
+    }
   };
 
   renderResults = () => {
-    if (this.props.isLoading) {
+    if (!this.props.isLoading) {
       return (
-        <div className="inline-results-section">
-          <LoadingSpinner/>
-        </div>
+        <>
+          { this.renderResultsByResource(ResourceType.table) }
+          {
+            indexUsersEnabled() &&
+            this.renderResultsByResource(ResourceType.user)
+          }
+        </>
       );
     }
-    return (
-      <>
-        { this.renderResultsByResource(ResourceType.table) }
-        {
-          indexUsersEnabled() &&
-          this.renderResultsByResource(ResourceType.user)
-        }
-      </>
-    );
   }
 
   render() {
     const { className = '', onItemSelect, searchTerm } = this.props;
     return (
       <div id="inline-results" className={`inline-results ${className}`}>
-        <div className="inline-results-section">
+        <div className="inline-results-section search-item-section">
           <SearchItemList
             onItemSelect={onItemSelect}
             searchTerm={searchTerm}
