@@ -153,34 +153,36 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
 
   renderResultsByResource = (resourceType: ResourceType) => {
     const suggestedResults = this.getSuggestedResultsForResource(resourceType);
-    if (suggestedResults.length > 0) {
-      return (
-        <div className="inline-results-section">
-          <ResultItemList
-            onItemSelect={this.props.onItemSelect}
-            resourceType={resourceType}
-            searchTerm={this.props.searchTerm}
-            suggestedResults={this.getSuggestedResultsForResource(resourceType)}
-            totalResults={this.getTotalResultsForResource(resourceType)}
-            title={this.getTitleForResource(resourceType)}
-          />
-        </div>
-      )
+    if (suggestedResults.length === 0) {
+      return null;
     }
+    return (
+      <div className="inline-results-section">
+        <ResultItemList
+          onItemSelect={this.props.onItemSelect}
+          resourceType={resourceType}
+          searchTerm={this.props.searchTerm}
+          suggestedResults={suggestedResults}
+          totalResults={this.getTotalResultsForResource(resourceType)}
+          title={this.getTitleForResource(resourceType)}
+        />
+      </div>
+    )
   };
 
   renderResults = () => {
-    if (!this.props.isLoading) {
-      return (
-        <>
-          { this.renderResultsByResource(ResourceType.table) }
-          {
-            indexUsersEnabled() &&
-            this.renderResultsByResource(ResourceType.user)
-          }
-        </>
-      );
+    if (this.props.isLoading) {
+      return null;
     }
+    return (
+      <>
+        { this.renderResultsByResource(ResourceType.table) }
+        {
+          indexUsersEnabled() &&
+          this.renderResultsByResource(ResourceType.user)
+        }
+      </>
+    );
   }
 
   render() {
