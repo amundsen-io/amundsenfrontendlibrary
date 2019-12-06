@@ -11,6 +11,7 @@ import {
 
 import { ResourceType } from 'interfaces';
 
+import { GlobalState } from 'ducks/rootReducer'
 import globalState from 'fixtures/globalState';
 import { allResourcesExample, isLoadingExample, noResultsExample } from 'fixtures/search/inlineResults';
 
@@ -117,33 +118,28 @@ describe('SearchItem', () => {
   describe('mapStateToProps', () => {
     let result;
     let ownProps;
-    let mockLoadingState;
-    let mockAllResultsState;
-    let mockNoResultsState;
-
-    beforeAll(() => {
-      mockLoadingState = {
-        ...globalState,
-        search: {
-          ...globalState.search,
-          inlineResults: isLoadingExample,
-        }
-      };
-      mockAllResultsState = {
-        ...globalState,
-        search: {
-          ...globalState.search,
-          inlineResults: allResourcesExample,
-        }
-      };
-      mockNoResultsState = {
-        ...globalState,
-        search: {
-          ...globalState.search,
-          inlineResults: noResultsExample,
-        }
-      };
-    })
+    const mockLoadingState: GlobalState = {
+      ...globalState,
+      search: {
+        ...globalState.search,
+        inlineResults: isLoadingExample,
+      }
+    };
+    const mockAllResultsState: GlobalState = {
+      ...globalState,
+      search: {
+        ...globalState.search,
+        // @ts-ignore: https://github.com/microsoft/TypeScript/issues/10570
+        inlineResults: allResourcesExample,
+      }
+    };
+    const mockNoResultsState: GlobalState = {
+      ...globalState,
+      search: {
+        ...globalState.search,
+        inlineResults: noResultsExample,
+      }
+    };
 
     it('sets isLoading on the props', () => {
       ownProps = setup().props;

@@ -17,6 +17,7 @@
 
     .result-item-link {
       padding-left: 20px !important;
+      padding-right: 20px !important;
     }
 
     .section-footer.title-3,
@@ -37,7 +38,7 @@
 
     .section-title,
     .section-footer {
-      margin: $spacer-1 0 $spacer-1 $spacer-3;
+      margin: $spacer-1 $spacer-3;
     }
 
     a.section-footer {
@@ -111,7 +112,7 @@
         /* RESULT ITEM */
         .result-item-link {
           height: 56px;
-          padding: 8px 8px 8px 32px;
+          padding: 8px 32px;
           .result-info {
             display: flex;
             flex: 1;
