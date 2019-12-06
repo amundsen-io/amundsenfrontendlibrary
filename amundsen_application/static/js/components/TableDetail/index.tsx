@@ -34,6 +34,7 @@ import { getDatabaseDisplayName, getDatabaseIconClass, notificationsEnabled } fr
 import './styles';
 
 import RequestMetadataForm from './RequestMetadataForm';
+import BadgeList from 'components/common/BadgeList';
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -79,7 +80,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
   componentDidMount() {
     // TODO - Move into utility function
     const params = qs.parse(this.props.location.search);
-    const searchIndex = params['index'];
+    const searchIndex = params['amundsen_application.static.js.components.common.BadgesList.index'];
     const source = params['source'];
     /* update the url stored in the browser history to remove params used for logging purposes */
     if (searchIndex !== undefined || source !== undefined) {
@@ -125,7 +126,11 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 &nbsp;&bull;&nbsp;
                 { data.cluster }
                 {
-                  data.is_view && <Flag text="Table View" labelStyle="primary"/>
+                  data.is_view &&
+                  <>
+                    &nbsp;&bull;&nbsp;
+                    <Flag text="Table View" labelStyle="primary"/>
+                  </>
                 }
               </div>
             </div>
@@ -166,6 +171,13 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                   <FrequentUsers readers={ data.table_readers }/>
                 </section>
                 <section className="right-panel">
+                  {
+                    data.badges.length > 0 &&
+                    <>
+                      <div className="section-title title-3">Badges</div>
+                      <BadgeList badges={ data.badges } />
+                    </>
+                  }
                   <EditableSection title="Tags">
                     <TagInput/>
                   </EditableSection>

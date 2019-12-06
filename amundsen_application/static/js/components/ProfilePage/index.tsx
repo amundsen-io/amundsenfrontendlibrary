@@ -85,7 +85,7 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
 
   getLoggingParams = (search: string) => {
     const params = qs.parse(search);
-    const index = params['index'];
+    const index = params['amundsen_application.static.js.components.common.BadgesList.index'];
     const source = params['source'];
     // Remove logging params from URL
     if (source !== undefined || index !== undefined) {

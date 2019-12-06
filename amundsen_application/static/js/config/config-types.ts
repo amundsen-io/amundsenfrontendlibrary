@@ -5,6 +5,7 @@
  */
 
 export interface AppConfig {
+  badges: BadgeConfig;
   browse: BrowseConfig;
   editableText: EditableTextConfig;
   google: GoogleAnalyticsConfig;
@@ -18,6 +19,7 @@ export interface AppConfig {
 }
 
 export interface AppConfigCustom {
+  badges?: BadgeConfig;
   browse?: BrowseConfig;
   editableText?: EditableTextConfig;
   google?: GoogleAnalyticsConfig
@@ -51,6 +53,26 @@ interface BrowseConfig {
   curatedTags: Array<string>;
   showAllTags: boolean;
 }
+
+export enum BadgeStyle {
+  DANGER = "danger",
+  DEFAULT = "default",
+  INFO = "info",
+  PRIMARY = "primary",
+  SUCCESS = "success",
+  WARNING = "warning",
+}
+
+/**
+ * BadgeConfig - Configure badge colors
+ *
+ * styleMap - An object that maps badge names to BadgeStyle
+ */
+interface BadgeConfig {
+  styleMap: { [badge: string]: BadgeStyle };
+}
+
+
 
 /** ResourceConfig - For customizing values related to how various resources
  *                   are displayed in the UI.

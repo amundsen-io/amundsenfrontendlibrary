@@ -1,6 +1,9 @@
 import { AppConfig } from './config-types';
 
 const configDefault: AppConfig = {
+  badges: {
+    styleMap: {},
+  },
   browse: {
     curatedTags: [],
     showAllTags: true,
