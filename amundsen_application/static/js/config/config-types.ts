@@ -1,3 +1,5 @@
+import { FilterType, ResourceType } from '../interfaces';
+
 /**
  * AppConfig and AppConfigCustom should share the same definition, except each field in AppConfigCustom
  * is optional. If you choose to override one of the configs, you must provide the full type definition
@@ -12,7 +14,7 @@ export interface AppConfig {
   logoPath: string | null;
   mailClientFeatures: MailClientFeaturesConfig;
   navLinks: Array<LinkConfig>;
-  resourceConfig: any; // TODO (ttannis): Define new ResourceConfig type
+  resourceConfig: ResourceConfig;
   tableLineage: TableLineageConfig;
   tableProfile: TableProfileConfig;
 }
@@ -25,7 +27,7 @@ export interface AppConfigCustom {
   logoPath?: string;
   mailClientFeatures?: MailClientFeaturesConfig;
   navLinks?: Array<LinkConfig>;
-  resourceConfig?: any; // TODO (ttannis): Define new ResourceConfig type
+  resourceConfig?: ResourceConfig;
   tableLineage?: TableLineageConfig;
   tableProfile?: TableProfileConfig;
 }
@@ -53,13 +55,47 @@ interface BrowseConfig {
   showAllTags: boolean;
 }
 
+/* TODO (ttannis): Document new interfaces when finalized */
+interface MultiSelectFilterOptions {
+  displayName?: string;
+  value: string;
+}
+
+interface BaseFilterCategory {
+  value: string;
+  displayName: string;
+  type: FilterType;
+}
+
+interface MultiSelectFilterCategory extends BaseFilterCategory {
+  type: FilterType.MULTI_SELECT_VALUE;
+  options: MultiSelectFilterOptions[];
+}
+
+interface SingleFilterCategory extends BaseFilterCategory {
+  type: FilterType.SINGLE_VALUE;
+}
+
+export type FilterConfig = (MultiSelectFilterCategory|SingleFilterCategory)[];
+
+interface BaseResourceConfig {
+  displayName: string;
+  filterCategories?: FilterConfig;
+}
+
+interface DatasetResourceConfig extends BaseResourceConfig {
+  supportedDatabases: {
+    [id: string]: DatasetConfig
+  };
+}
 /** ResourceConfig - For customizing values related to how various resources
  *                   are displayed in the UI.
  *
  * datasets - A map of each dataset id to an optional display name or icon class
  */
 interface ResourceConfig {
-  datasets: { [id: string]: DatasetConfig }
+  [ResourceType.table]: DatasetResourceConfig;
+  [ResourceType.user]: BaseResourceConfig;
 }
 
 /** DatasetConfig - For customizing values related to how each dataset resource

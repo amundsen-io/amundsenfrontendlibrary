@@ -1,4 +1,5 @@
 import logging
+import json
 
 from http import HTTPStatus
 
@@ -35,6 +36,17 @@ def _create_error_response(*, message: str, payload: Dict, status_code: int) -> 
     payload['msg'] = message
     return make_response(jsonify(payload), status_code)
 
+def _map_table_result(result: Dict) -> Dict:
+    return {
+        'type': 'table',
+        'key': result.get('key', None),
+        'name': result.get('name', None),
+        'cluster': result.get('cluster', None),
+        'description': result.get('description', None),
+        'database': result.get('database', None),
+        'schema_name': result.get('schema_name', None),
+        'last_updated_epoch': result.get('last_updated_epoch', None),
+    }
 
 def _validate_search_term(*, search_term: str, page_index: int) -> Optional[Response]:
     # TODO: If we place these checks in the Reduc layer when actions are created/dispatched,
@@ -55,6 +67,64 @@ def _validate_search_term(*, search_term: str, page_index: int) -> Optional[Resp
             message = 'Encountered error: Search field is invalid'
             return _create_error_response(message=message, payload=error_payload, status_code=HTTPStatus.BAD_REQUEST)
     return None
+
+@search_blueprint.route('/table_qs', methods=['POST'])
+def search_table_qs() -> Response:
+    request_json = request.get_json()
+
+    search_term = get_query_param(request_json, 'term', '"term" parameter expected in request data')
+    page_index = get_query_param(request_json, 'pageIndex', '"pageIndex" parameter expected in request data')
+    filter_json = request_json.get('filters', {})
+
+    query_json = {
+      'page_index': int(page_index),
+      'search_request': {
+        'type': 'AND',
+        'filters': {
+            'database': list(filter_json.get('database', {}).keys()),
+            'schema': [filter_json.get('schema')],
+            'table': [filter_json.get('table')],
+            'column': [filter_json.get('column')],
+            'tag': [filter_json.get('tag')]
+        }
+      },
+      'query_term': search_term
+    }
+
+    tables = {
+        'page_index': int(page_index),
+        'results': [],
+        'total_results': 0,
+    }
+
+    results_dict = {
+        'search_term': search_term,
+        'msg': '',
+        'tables': tables,
+    }
+
+    try:
+        url = app.config['SEARCHSERVICE_BASE'] + '/search/query_filter'
+        logging.info(query_json)
+        response = request_search(url=url, method='POST', data=query_json)
+        status_code = response.status_code
+        if status_code == HTTPStatus.OK:
+            results_dict['msg'] = 'Success'
+            results = response.json().get('results')
+            tables['results'] = [_map_table_result(result) for result in results]
+            tables['total_results'] = response.json().get('total_results')
+        else:
+            message = 'Encountered error: Search request failed'
+            results_dict['msg'] = message
+            logging.error(message)
+
+        results_dict['status_code'] = status_code
+        return make_response(jsonify(results_dict), status_code)
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        results_dict['msg'] = message
+        logging.exception(message)
+        return make_response(jsonify(results_dict), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 @search_blueprint.route('/table', methods=['GET'])
@@ -178,18 +248,6 @@ def _search_table(*, search_term: str, page_index: int) -> Dict[str, Any]:
 
     TODO: Define an interface for envoy_client
     """
-    def _map_table_result(result: Dict) -> Dict:
-        return {
-            'type': 'table',
-            'key': result.get('key', None),
-            'name': result.get('name', None),
-            'cluster': result.get('cluster', None),
-            'description': result.get('description', None),
-            'database': result.get('database', None),
-            'schema_name': result.get('schema_name', None),
-            'last_updated_epoch': result.get('last_updated_epoch', None),
-        }
-
     tables = {
         'page_index': int(page_index),
         'results': [],

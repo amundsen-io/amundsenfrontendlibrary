@@ -2,35 +2,45 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { GlobalState } from 'ducks/rootReducer';
-import { addFilter, removeFromFilter, FilterReducerState } from 'ducks/search/filters/reducer';
+import { addMultiSelectOption, removeMultiSelectOption, FilterReducerState } from 'ducks/search/filters/reducer';
 
 import CheckBoxItem from 'components/common/Inputs/CheckBoxItem';
+import InputFilter from './InputFilter';
 
-import AppConfig from 'config/config';
-import { AppConfig as AppConfigType } from 'config/config-types';
+import { getFilterConfigByResource } from 'config/config-utils';
 
-import { ResourceType } from 'interfaces';
+import { FilterType, ResourceType } from 'interfaces';
 
 import './styles.scss'
 
-interface SearchFilterInput {
+interface CheckboxFilterProperties {
   value: string;
   labelText: string;
   checked: boolean;
 }
 
-interface SearchFilterSection {
+interface CheckboxFilterSection {
   title: string;
   categoryId: string;
-  inputProperties: SearchFilterInput[];
+  properties: CheckboxFilterProperties[];
+}
+
+interface InputFilterProperties {
+  title: string;
+  value: string;
+}
+
+interface InputFilterSections {
+  [categoryId: string]: InputFilterProperties;
 }
 
 export interface StateFromProps {
-  checkBoxSections: SearchFilterSection[];
+  checkBoxSections: CheckboxFilterSection[];
+  inputSections: InputFilterSections;
 }
 
 export interface DispatchFromProps {
-  onFilterChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export type SearchFilterProps = StateFromProps & DispatchFromProps;
@@ -40,7 +50,7 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
     super(props);
   }
 
-  createCheckBoxItem = (item: SearchFilterInput, categoryId: string, key: string) => {
+  createCheckBoxItem = (categoryId: string, key: string, item: CheckboxFilterProperties) => {
     const { checked, labelText, value } = item;
     return (
       <CheckBoxItem
@@ -48,72 +58,114 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
         checked={ checked }
         name={ categoryId }
         value={ value }
-        onChange={ this.props.onFilterChange }>
+        onChange={ this.props.onCheckboxChange }>
           <span className="subtitle-2">{ labelText }</span>
       </CheckBoxItem>
     );
   };
 
-  createCheckBoxSection = (section: SearchFilterSection, key: string) => {
-    const { categoryId, inputProperties, title } = section;
+  createCheckBoxSection = (key: string, section: CheckboxFilterSection) => {
+    const { categoryId, properties, title } = section;
     return (
       <div key={key} className="search-filter-section">
         <div className="title-2">{ title }</div>
-        { inputProperties.map((item, index) => this.createCheckBoxItem(item, categoryId, `item:${categoryId}:${index}`)) }
+        { properties.map((item, index) => this.createCheckBoxItem(categoryId, `item:${categoryId}:${index}`, item)) }
       </div>
     );
   };
 
+  createInputSectionByCategoryId = (categoryId: string, key: string) => {
+    const { value, title } = this.props.inputSections[categoryId];
+    return (
+      <div key={key} className="search-filter-section">
+        <div className="title-2">{ title }</div>
+        <div className="input-section-content">
+          <InputFilter
+            categoryId={ categoryId }
+            value={ value }
+          />
+        </div>
+      </div>
+    )
+  };
+
+  renderCheckBoxFilters = () => {
+    return this.props.checkBoxSections.map((section) => this.createCheckBoxSection(`section:${section.categoryId}`, section));
+  };
+
+  renderInputFilters = () => {
+    return Object.keys(this.props.inputSections).map((categoryId, index) => {
+      return this.createInputSectionByCategoryId(categoryId, `item:${categoryId}:${index}`);
+    })
+  };
+
   render = () => {
-    return this.props.checkBoxSections.map((section, index) => this.createCheckBoxSection(section, `section:${index}`));
-    // TODO (ttannis): Let's deprecate adv. search syntax and add an input box for other categories -- tag, schema, table, column.
+    return (
+      <>
+        { this.renderCheckBoxFilters() }
+        { this.renderInputFilters() }
+      </>
+    )
   };
 };
 
-function createFilterCheckBoxSection(filterState: FilterReducerState, resourceType: ResourceType): SearchFilterSection[] {
-  const filterCategories = AppConfig.resourceConfig[resourceType].filterCategories;
-  if (!filterCategories) {
-    return [];
-  }
-  const checkBoxSections = [];
-  filterCategories.forEach((categoryConfig) => {
-    checkBoxSections.push({
-      title: categoryConfig.displayName, // e.g. 'Type'
-      categoryId: categoryConfig.value,  // e.g. 'database'
-      inputProperties: generateDatasetOptions(categoryConfig, filterState),
-    });
-  });
-  return checkBoxSections;
-};
-
-function generateDatasetOptions(categoryConfig, filterState: FilterReducerState): SearchFilterInput[] {
-  const dataSetInputs = [];
-  categoryConfig.options.forEach((option) => {
-    dataSetInputs.push({
-      value: option.value,
-      labelText: option.displayName,
-      checked: !!filterState[ResourceType.table].database[option.value],
-    });
-  })
-  return dataSetInputs;
-};
-
+/*
+  TODO (ttannis): Reminder don't write test tied to the implementation of the transformations.
+  Create test fixtures for input, and test output is the expected output in the correct data shape.
+*/
 export const mapStateToProps = (state: GlobalState) => {
+  const resourceType = state.search.selectedTab;
+  const filterCategories = getFilterConfigByResource(resourceType);
+  const filterState = state.search.filters;
+
+  const checkBoxSections = [];
+  const inputSections = {};
+
+  if (filterCategories) {
+    /* checkbox sections */
+    filterCategories.forEach((categoryConfig) => {
+      if (categoryConfig.type === FilterType.MULTI_SELECT_VALUE) {
+        checkBoxSections.push({
+          title: categoryConfig.displayName,
+          categoryId: categoryConfig.value,
+          properties: categoryConfig.options.map((option) => {
+            return {
+              value: option.value,
+              labelText: option.displayName,
+              checked: !!filterState[ResourceType.table].database[option.value],
+            };
+          })
+        });
+      }
+    });
+
+    /* input sections */
+    filterCategories.forEach((categoryConfig) => {
+      if (categoryConfig.type === FilterType.SINGLE_VALUE) {
+        inputSections[categoryConfig.value] = {
+          title: categoryConfig.displayName,
+          value: filterState[resourceType][categoryConfig.value],
+        }
+      }
+    });
+  }
+
   return {
-    checkBoxSections: createFilterCheckBoxSection(state.search.filters, state.search.selectedTab)
+    checkBoxSections,
+    inputSections,
   };
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
   return {
-    onFilterChange: ((e: React.ChangeEvent<HTMLInputElement>) => {
+    onCheckboxChange: ((e: React.ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       const category = e.target.name;
       if (e.target.checked) {
-        dispatch(addFilter({ category, value }));
+        dispatch(addMultiSelectOption({ category, value }));
       }
       else {
-        dispatch(removeFromFilter({ category, value }))
+        dispatch(removeMultiSelectOption({ category, value }))
       }
     }),
   };

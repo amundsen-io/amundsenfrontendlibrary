@@ -1,38 +1,44 @@
-import { ResourceType } from 'interfaces';
-
-interface FilterInput {
-  category: string;
-  value: string;
-}
+import { FilterInput, ResourceType } from 'interfaces';
 
 export enum UpdateSearchFilter {
-  ADD = 'amundsen/search/filter/ADD',
-  REMOVE = 'amundsen/search/filter/REMOVE',
+  ADD_MULTI_SELECT = 'amundsen/search/filter/ADD_MULTI_SELECT',
+  REMOVE_MULTI_SELECT = 'amundsen/search/filter/REMOVE_MULTI_SELECT',
+  UPDATE_SINGLE =  'amundsen/search/filter/UPDATE_SINGLE',
 }
 export interface UpdateSearchFilterAction {
   payload: FilterInput;
-  type: UpdateSearchFilter.ADD | UpdateSearchFilter.REMOVE;
+  type: UpdateSearchFilter;
 };
 
 /* ACTIONS */
-export function addFilter(input: FilterInput) {
+export function updateSingleOption(input: FilterInput) {
   const { category, value } = input;
   return {
     payload: {
       category,
       value
     },
-    type: UpdateSearchFilter.ADD,
+    type: UpdateSearchFilter.UPDATE_SINGLE,
   };
 };
-export function removeFromFilter(input: FilterInput) {
+export function addMultiSelectOption(input: FilterInput) {
   const { category, value } = input;
   return {
     payload: {
       category,
       value
     },
-    type: UpdateSearchFilter.REMOVE,
+    type: UpdateSearchFilter.ADD_MULTI_SELECT,
+  };
+};
+export function removeMultiSelectOption(input: FilterInput) {
+  const { category, value } = input;
+  return {
+    payload: {
+      category,
+      value
+    },
+    type: UpdateSearchFilter.REMOVE_MULTI_SELECT,
   };
 };
 
@@ -42,19 +48,19 @@ export interface FilterReducerState {
   [ResourceType.table]: TableFilterReducerState;
 };
 export interface TableFilterReducerState {
-  column: FilterCategories;
+  column: string;
   database: FilterCategories;
-  schema: FilterCategories;
-  table: FilterCategories;
-  tag: FilterCategories;
+  schema: string;
+  table: string;
+  tag: string;
 };
 
 export const initialTableFilterState = {
-  column: {},
+  column: '',
   database: {},
-  schema: {},
-  table: {},
-  tag: {},
+  schema: '',
+  table: '',
+  tag: '',
 };
 
 export const initialFilterState: FilterReducerState = {
@@ -63,35 +69,51 @@ export const initialFilterState: FilterReducerState = {
 
 export default function reducer(state: FilterReducerState = initialFilterState, action, resourceType: ResourceType): FilterReducerState {
   const { category, value  } = action.payload;
-  const previousResourceFilters = state[resourceType];
-  const previousCategoryValues = previousResourceFilters && previousResourceFilters[category];
-  if (previousCategoryValues) {
-    if (action.type === UpdateSearchFilter.ADD) {
+  const resourceFilters = state[resourceType];
+  if (resourceFilters) {
+    const categoryValues = resourceFilters[category];
+
+    /* Input text filter update */
+    if (action.type === UpdateSearchFilter.UPDATE_SINGLE) {
       return {
         ...state,
         [resourceType]: {
-          ...previousResourceFilters,
-          [category]: {
-            ...previousCategoryValues,
-            [value]: value,
+          ...resourceFilters,
+          [category]: value
+        }
+      }
+    }
+
+    /* Checkbox filter update */
+    if (categoryValues && typeof categoryValues === 'object') {
+      if (action.type === UpdateSearchFilter.ADD_MULTI_SELECT) {
+        return {
+          ...state,
+          [resourceType]: {
+            ...resourceFilters,
+            [category]: {
+              ...categoryValues,
+              [value]: value,
+            }
           }
         }
       }
-    };
-    if (action.type === UpdateSearchFilter.REMOVE) {
-      return {
-        ...state,
-        [resourceType]: {
-          ...previousResourceFilters,
-          [category]: Object.keys(previousCategoryValues).reduce((object, key) => {
-            if (key !== value) {
-              object[key] = previousCategoryValues[key]
-            }
-            return object
-          }, {}),
+      if (action.type === UpdateSearchFilter.REMOVE_MULTI_SELECT) {
+        return {
+          ...state,
+          [resourceType]: {
+            ...resourceFilters,
+            [category]: Object.keys(categoryValues).reduce((object, key) => {
+              if (key !== value) {
+                object[key] = categoryValues[key]
+              }
+              return object
+            }, {}),
+          }
         }
       }
     }
   }
+
   return state;
 };

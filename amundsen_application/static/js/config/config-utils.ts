@@ -1,5 +1,7 @@
 import AppConfig from 'config/config';
 
+import { FilterConfig } from './config-types';
+
 import { ResourceType } from '../interfaces';
 
 export const DEFAULT_DATABASE_ICON_CLASS = 'icon-database icon-color';
@@ -35,6 +37,13 @@ export function getDatabaseIconClass(databaseId: string): string {
 
   return databaseConfig.iconClass;
 }
+
+/**
+ * Returns the filterCategories for the given resourceType
+ */
+export function getFilterConfigByResource(resourceType: ResourceType): FilterConfig {
+  return AppConfig.resourceConfig[resourceType].filterCategories;
+};
 
 /**
  * Returns whether or not feedback features should be enabled

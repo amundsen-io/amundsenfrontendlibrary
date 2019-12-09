@@ -48,14 +48,16 @@ import {
 
 export function* filterWorker(action: any): SagaIterator {
   const state = yield select();
-  yield put(searchResource(state.search_term, state.selectedTab, state.pageIndex));
+  yield put(searchResource(state.search.search_term, state.search.selectedTab, getPageIndex(state.search)));
 };
-export function* filterWatcher(): SagaIterator {
-  yield debounce(750, [UpdateSearchFilter.ADD, UpdateSearchFilter.REMOVE], filterWorker);
+export function* multiSelectFilterWatcher(): SagaIterator {
+  yield debounce(750, [UpdateSearchFilter.ADD_MULTI_SELECT, UpdateSearchFilter.REMOVE_MULTI_SELECT], filterWorker);
+}
+export function* singleInputFilterWatcher(): SagaIterator {
+  yield takeLatest(UpdateSearchFilter.UPDATE_SINGLE, filterWorker);
 }
 
 export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
-  /* TODO (ttannis): Must understand if inline search should take filters into accound */
   const { term } = action.payload;
   try {
     const [tableResponse, userResponse] = yield all([

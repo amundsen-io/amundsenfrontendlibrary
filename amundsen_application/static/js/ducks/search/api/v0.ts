@@ -27,11 +27,17 @@ export const searchResourceHelper = (response: AxiosResponse<SearchAPI>) => {
   return ret;
 };
 
-/* TODO (ttannis): Cleanup filter type */
 export function searchResource(pageIndex: number, resource: ResourceType, term: string, filters?: {}) {
   if (resource === ResourceType.dashboard ||
      (resource === ResourceType.user && !AppConfig.indexUsers.enabled)) {
     return Promise.resolve({});
+  }
+  if (filters) {
+    return axios.post(`${BASE_URL}/${resource}_qs`, {
+      filters,
+      term,
+      pageIndex
+    }).then(searchResourceHelper);
   }
   return axios.get(`${BASE_URL}/${resource}?query=${term}&page_index=${pageIndex}`)
     .then(searchResourceHelper);

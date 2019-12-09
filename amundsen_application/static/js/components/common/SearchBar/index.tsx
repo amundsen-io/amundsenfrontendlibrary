@@ -15,7 +15,9 @@ import './styles.scss';
 import {
   BUTTON_CLOSE_TEXT,
   PLACEHOLDER_DEFAULT,
-  SIZE_SMALL
+  SIZE_SMALL,
+  TERM_INVALID_MSG,
+  TERM_REGEX_PATTERN
 } from './constants';
 
 export interface StateFromProps {
@@ -131,9 +133,8 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         <form id="search-bar-form" className="search-bar-form" onSubmit={ this.handleValueSubmit }>
             <input
               id="search-input"
-              pattern="[a-z0-9_\s\*\.]+"
-              // TODO (ttannis): Need to have conversation about valid search syntax w/o adv. search
-              title="Valid characters include a-z, 0-9, spaces, '.', '_', and '*'"
+              pattern={ TERM_REGEX_PATTERN }
+              title={ TERM_INVALID_MSG }
               required={ true }
               className={ inputClass }
               value={ this.state.searchTerm }
@@ -152,8 +153,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
           }
         </form>
         {
-          // TODO (ttannis): Reconcile concept of inline search results when filters are on
-          false &&
+          this.state.showTypeAhead &&
           // @ts-ignore: Investigate proper configuration for 'className' to be valid by default on custom components
           <InlineSearchResults
             className={this.props.size === SIZE_SMALL ? 'small' : ''}
