@@ -1,5 +1,4 @@
 import logging
-import json
 
 from http import HTTPStatus
 
@@ -36,6 +35,7 @@ def _create_error_response(*, message: str, payload: Dict, status_code: int) -> 
     payload['msg'] = message
     return make_response(jsonify(payload), status_code)
 
+
 def _map_table_result(result: Dict) -> Dict:
     return {
         'type': 'table',
@@ -47,6 +47,7 @@ def _map_table_result(result: Dict) -> Dict:
         'schema_name': result.get('schema_name', None),
         'last_updated_epoch': result.get('last_updated_epoch', None),
     }
+
 
 def _validate_search_term(*, search_term: str, page_index: int) -> Optional[Response]:
     # TODO: If we place these checks in the Reduc layer when actions are created/dispatched,
@@ -68,6 +69,7 @@ def _validate_search_term(*, search_term: str, page_index: int) -> Optional[Resp
             return _create_error_response(message=message, payload=error_payload, status_code=HTTPStatus.BAD_REQUEST)
     return None
 
+
 @search_blueprint.route('/table_qs', methods=['POST'])
 def search_table_qs() -> Response:
     request_json = request.get_json()
@@ -77,18 +79,18 @@ def search_table_qs() -> Response:
     filter_json = request_json.get('filters', {})
 
     query_json = {
-      'page_index': int(page_index),
-      'search_request': {
-        'type': 'AND',
-        'filters': {
-            'database': list(filter_json.get('database', {}).keys()),
-            'schema': [filter_json.get('schema')],
-            'table': [filter_json.get('table')],
-            'column': [filter_json.get('column')],
-            'tag': [filter_json.get('tag')]
-        }
-      },
-      'query_term': search_term
+        'page_index': int(page_index),
+        'search_request': {
+            'type': 'AND',
+            'filters': {
+                'database': list(filter_json.get('database', {}).keys()),
+                'schema': [filter_json.get('schema')],
+                'table': [filter_json.get('table')],
+                'column': [filter_json.get('column')],
+                'tag': [filter_json.get('tag')]
+            }
+        },
+        'query_term': search_term
     }
 
     tables = {
