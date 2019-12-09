@@ -17,7 +17,6 @@ def marshall_table_partial(table: Dict) -> Dict:
     cluster = table.get('cluster', '')
     db = table.get('database', '')
     return {
-        'badges': table.get('badges', []),
         'cluster': cluster,
         'database': db,
         'description': table.get('table_description', ''),
@@ -62,11 +61,11 @@ def marshall_table_full(table: Dict) -> Dict:
     if not results['badges']:
         results['badges'] = [
             {
-                'tag_name': 'pii',
+                'tag_name': 'ga',
                 'tag_type': 'badge',
             },
             {
-                'tag_name': 'realtime',
+                'tag_name': '5_min_lag',
                 'tag_type': 'badge',
             },
         ]

@@ -80,7 +80,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
   componentDidMount() {
     // TODO - Move into utility function
     const params = qs.parse(this.props.location.search);
-    const searchIndex = params['amundsen_application.static.js.components.common.BadgesList.index'];
+    const searchIndex = params['index'];
     const source = params['source'];
     /* update the url stored in the browser history to remove params used for logging purposes */
     if (searchIndex !== undefined || source !== undefined) {
@@ -128,7 +128,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 {
                   data.is_view &&
                   <>
-                    &nbsp;&bull;&nbsp;
+                    &nbsp;
                     <Flag text="Table View" labelStyle="primary"/>
                   </>
                 }
@@ -161,6 +161,13 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               <section className="column-layout-2">
                 <section className="left-panel">
                   {
+                    data.badges.length > 0 &&
+                    <>
+                      <div className="section-title title-3">Badges</div>
+                      <BadgeList badges={ data.badges } />
+                    </>
+                  }
+                  {
                     !data.is_view &&
                     <>
                       <div className="section-title title-3">Date Range</div>
@@ -171,13 +178,6 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                   <FrequentUsers readers={ data.table_readers }/>
                 </section>
                 <section className="right-panel">
-                  {
-                    data.badges.length > 0 &&
-                    <>
-                      <div className="section-title title-3">Badges</div>
-                      <BadgeList badges={ data.badges } />
-                    </>
-                  }
                   <EditableSection title="Tags">
                     <TagInput/>
                   </EditableSection>
