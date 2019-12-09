@@ -5,7 +5,7 @@ export interface UpdateTagData {
   tagName: string;
 }
 
-enum TagType {
+export enum TagType {
   TAG = 'default',
   BADGE = 'badge',
 }
