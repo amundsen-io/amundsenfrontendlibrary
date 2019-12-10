@@ -65,19 +65,24 @@ describe('TagsList', () => {
       expect(subject.find('hr').exists()).toBeTruthy();
     });
 
-    it('does not render <hr> if !(curatedTags.length > 0 & otherTags.length > 0) ', () => {
-      AppConfig.browse.curatedTags = ['test1', 'test2'];
+    it('does not render <hr> if showAllTags is false', () => {
+      AppConfig.browse.showAllTags = false;
       subject = shallow(<TagsList {...props} />);
-      expect(subject.find('#tags-list').find('hr').exists()).toBeFalsy();
-      AppConfig.browse.curatedTags = ['test1']; // reset so other tests aren't affected
+      expect(subject.find('#tags-list').find('hr').exists()).toBe(false);
+    });
+
+    it('renders an <hr> if showAllTags is true', () => {
+      AppConfig.browse.showAllTags = true;
+      subject = shallow(<TagsList {...props} />);
+      expect(subject.find('#tags-list').find('hr').exists()).toBe(true);
     });
 
     it('calls generateTagInfo with curatedTags', () => {
-      expect(spy).toHaveBeenCalledWith(subject.state().curatedTags);
+      expect(spy).toHaveBeenCalledWith(props.curatedTags);
     });
 
     it('call generateTagInfo with otherTags', () => {
-      expect(spy).toHaveBeenCalledWith(subject.state().otherTags);
+      expect(spy).toHaveBeenCalledWith(props.otherTags);
     });
   });
 });
