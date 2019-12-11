@@ -1,7 +1,8 @@
 import * as React from 'react';
-import { Badge } from 'interfaces/Tags';
+
 import Flag from 'components/common/Flag';
 import { getBadgeConfig } from 'config/config-utils';
+import { Badge } from 'interfaces/Tags';
 
 export interface BadgeListProps {
   badges: Badge[];

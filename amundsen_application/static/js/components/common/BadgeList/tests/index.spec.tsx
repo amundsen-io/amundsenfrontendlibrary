@@ -2,11 +2,10 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import BadgeList from '../'
+import Flag from 'components/common/Flag';
 import { BadgeStyle } from 'config/config-types';
 import * as ConfigUtils from 'config/config-utils';
-import Flag from 'components/common/Flag';
 import { Badge, TagType } from 'interfaces/Tags';
-
 
 describe('BadgeList', () => {
   const expectedDisplayName = 'display name';

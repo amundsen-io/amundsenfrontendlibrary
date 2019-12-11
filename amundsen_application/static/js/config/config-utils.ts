@@ -35,7 +35,7 @@ export function getDatabaseIconClass(databaseId: string): string {
 /**
  * Given a badge name, this will return a badge style and a display name.
  * If these are not specified by config, it will default to some simple rules:
- * use BadgeStyle.DEFAULT and replace '-' and '_' with spaces.
+ * use BadgeStyle.DEFAULT and replace '-' and '_' with spaces for display name.
  */
 export function getBadgeConfig(badgeName: string): BadgeConfig {
   const config = AppConfig.badges[badgeName] || {};
