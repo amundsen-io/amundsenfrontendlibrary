@@ -3,9 +3,10 @@ import { shallow } from 'enzyme';
 
 import AppConfig from 'config/config';
 import { BadgeStyle } from 'config/config-types';
-import BadgeList, { getBadgeConfig } from '../'
+import BadgeList from '../'
 import { Badge, TagType } from 'interfaces/Tags';
 import Flag from 'components/common/Flag';
+import { getBadgeConfig } from 'config/config-utils';
 
 describe('BadgeList', () => {
   AppConfig.badges = {

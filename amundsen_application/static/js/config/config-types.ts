@@ -65,7 +65,7 @@ export enum BadgeStyle {
 
 export interface BadgeConfig {
   style: BadgeStyle;
-  displayName: string;
+  displayName?: string;
 }
 
 /**

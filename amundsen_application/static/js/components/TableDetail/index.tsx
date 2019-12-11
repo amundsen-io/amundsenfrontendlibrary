@@ -125,12 +125,14 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 { getDatabaseDisplayName(data.database) }
                 &nbsp;&bull;&nbsp;
                 { data.cluster }
+                &nbsp;
+                {
+                  data.badges.length > 0 &&
+                  <BadgeList badges={ data.badges } />
+                }
                 {
                   data.is_view &&
-                  <>
-                    &nbsp;
-                    <Flag text="Table View" labelStyle="primary"/>
-                  </>
+                  <Flag text="table view" labelStyle="warning"/>
                 }
               </div>
             </div>
@@ -160,13 +162,6 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               { !data.table_description && notificationsEnabled() && <RequestDescriptionText/> }
               <section className="column-layout-2">
                 <section className="left-panel">
-                  {
-                    data.badges.length > 0 &&
-                    <>
-                      <div className="section-title title-3">Badges</div>
-                      <BadgeList badges={ data.badges } />
-                    </>
-                  }
                   {
                     !data.is_view &&
                     <>
