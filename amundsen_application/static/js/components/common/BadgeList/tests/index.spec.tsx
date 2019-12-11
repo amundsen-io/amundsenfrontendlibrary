@@ -1,38 +1,22 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import AppConfig from 'config/config';
-import { BadgeStyle } from 'config/config-types';
 import BadgeList from '../'
-import { Badge, TagType } from 'interfaces/Tags';
+import { BadgeStyle } from 'config/config-types';
+import * as ConfigUtils from 'config/config-utils';
 import Flag from 'components/common/Flag';
-import { getBadgeConfig } from 'config/config-utils';
+import { Badge, TagType } from 'interfaces/Tags';
+
 
 describe('BadgeList', () => {
-  AppConfig.badges = {
-    'test_1': {
-      style: BadgeStyle.DANGER,
-      displayName: 'Test 1',
-    },
-    'test_2': {
-      style: BadgeStyle.DANGER,
-      displayName: 'Test 2',
-    }
-  };
-
-  describe('getBadgeConfig', () => {
-    it('Returns the badge config for a given badge', () => {
-      const badgeConfig = getBadgeConfig('test_1');
-      expect(badgeConfig.style).toEqual(BadgeStyle.DANGER);
-      expect(badgeConfig.displayName).toEqual('Test 1');
-    });
-
-    it('Returns default badge config for unspecified badges', () => {
-      const badgeName = 'test_3';
-      const badgeConfig = getBadgeConfig(badgeName);
-      expect(badgeConfig.style).toEqual(BadgeStyle.DEFAULT);
-      expect(badgeConfig.displayName).toEqual(badgeName);
-    });
+  const expectedDisplayName = 'display name';
+  const expectedBadgeStyle = BadgeStyle.PRIMARY;
+  const getBadgeConfigSpy = jest.spyOn(ConfigUtils, 'getBadgeConfig');
+  getBadgeConfigSpy.mockImplementation(() => {
+    return {
+      displayName: expectedDisplayName,
+      style: expectedBadgeStyle,
+    };
   });
 
   describe('BadgeList function component', () => {
@@ -61,8 +45,8 @@ describe('BadgeList', () => {
     it('passes the correct props to the flag', () => {
       const flag = badgeList.childAt(0);
       const flagProps = flag.props();
-      expect(flagProps.text).toEqual('Test 1');
-      expect(flagProps.labelStyle).toEqual(BadgeStyle.DANGER);
+      expect(flagProps.text).toEqual(expectedDisplayName);
+      expect(flagProps.labelStyle).toEqual(expectedBadgeStyle);
     });
   });
 });
