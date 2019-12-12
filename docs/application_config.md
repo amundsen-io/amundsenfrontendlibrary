@@ -7,7 +7,7 @@ This document describes how to leverage the frontend service's application confi
 ## Badge Config
 Badges are a special type of tag that cannot be edited through the UI. 
 
-The text and color of badges can be customized with the `badges` config. This config defines a mapping of badge name to a badge style and optional display name. Badges that are not defined will default to use the `BadgeStyle.default` style and the display will replace any `_` or `-` characters with a space.   
+`BadgeConfig` can be used to customize the text and color of badges. This config defines a mapping of badge name to a `BadgeStyle` and optional `displayName`. Badges that are not defined will default to use the `BadgeStyle.default` style and `displayName` use the badge name with any `_` or `-` characters replaced with a space.   
 
 ## Browse Tags Feature
 

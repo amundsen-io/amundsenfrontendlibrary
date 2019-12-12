@@ -35,7 +35,6 @@ import './styles';
 import RequestDescriptionText from './RequestDescriptionText';
 import RequestMetadataForm from './RequestMetadataForm';
 
-
 export interface StateFromProps {
   isLoading: boolean;
   statusCode?: number;

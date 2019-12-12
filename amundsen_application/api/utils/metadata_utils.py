@@ -57,9 +57,6 @@ def marshall_table_full(table: Dict) -> Dict:
 
     results = {field: table.get(field, None) for field in fields}
 
-    if not results["badges"]:
-        results["badges"] = []
-
     is_editable = results['schema'] not in app.config['UNEDITABLE_SCHEMAS']
     results['is_editable'] = is_editable
 

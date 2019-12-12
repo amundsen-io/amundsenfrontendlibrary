@@ -8,13 +8,11 @@ import * as ConfigUtils from 'config/config-utils';
 import { Badge, TagType } from 'interfaces/Tags';
 
 describe('BadgeList', () => {
-  const expectedDisplayName = 'display name';
-  const expectedBadgeStyle = BadgeStyle.PRIMARY;
   const getBadgeConfigSpy = jest.spyOn(ConfigUtils, 'getBadgeConfig');
-  getBadgeConfigSpy.mockImplementation(() => {
+  getBadgeConfigSpy.mockImplementation((badgeName: string) => {
     return {
-      displayName: expectedDisplayName,
-      style: expectedBadgeStyle,
+      displayName: badgeName + " test name",
+      style: badgeName + " test style",
     };
   });
 
@@ -42,10 +40,13 @@ describe('BadgeList', () => {
     });
 
     it('passes the correct props to the flag', () => {
-      const flag = badgeList.childAt(0);
-      const flagProps = flag.props();
-      expect(flagProps.text).toEqual(expectedDisplayName);
-      expect(flagProps.labelStyle).toEqual(expectedBadgeStyle);
+      badges.forEach((badge, index) => {
+        const flag = badgeList.childAt(index);
+        const flagProps = flag.props();
+        const badgeConfig = ConfigUtils.getBadgeConfig(badge.tag_name);
+        expect(flagProps.text).toEqual(badgeConfig.displayName);
+        expect(flagProps.labelStyle).toEqual(badgeConfig.style);
+      });
     });
   });
 });

@@ -1,5 +1,5 @@
 import AppConfig from 'config/config';
-import { BadgeConfig, BadgeStyle } from 'config/config-types';
+import { BadgeStyleConfig, BadgeStyle } from 'config/config-types';
 
 export const DEFAULT_DATABASE_ICON_CLASS = 'icon-database icon-color';
 
@@ -37,7 +37,7 @@ export function getDatabaseIconClass(databaseId: string): string {
  * If these are not specified by config, it will default to some simple rules:
  * use BadgeStyle.DEFAULT and replace '-' and '_' with spaces for display name.
  */
-export function getBadgeConfig(badgeName: string): BadgeConfig {
+export function getBadgeConfig(badgeName: string): BadgeStyleConfig {
   const config = AppConfig.badges[badgeName] || {};
 
   return {
