@@ -12,7 +12,7 @@ describe('BadgeList', () => {
   getBadgeConfigSpy.mockImplementation((badgeName: string) => {
     return {
       displayName: badgeName + " test name",
-      style: badgeName + " test style",
+      style: BadgeStyle.PRIMARY,
     };
   });
 
