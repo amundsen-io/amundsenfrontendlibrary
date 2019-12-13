@@ -85,7 +85,7 @@ def search_table_qs() -> Response:
     for category in valid_categories:
         values = filters.get(category)
         if type(values) == str and len(values) > 0:
-            filter_payload[category] = [values,]
+            filter_payload[category] = [values, ]
         if type(values) == dict:
             value_list = list(values.keys())
             if len(value_list) > 0:
@@ -114,7 +114,10 @@ def search_table_qs() -> Response:
 
     try:
         url = app.config['SEARCHSERVICE_BASE'] + '/search/query_filter_test'
-        response = request_search(url=url, headers={'Content-Type': 'application/json'}, method='POST', data=json.dumps(query_json))
+        response = request_search(url=url,
+                                  headers={'Content-Type': 'application/json'},
+                                  method='POST',
+                                  data=json.dumps(query_json))
         status_code = response.status_code
         if status_code == HTTPStatus.OK:
             results_dict['msg'] = 'Success'
