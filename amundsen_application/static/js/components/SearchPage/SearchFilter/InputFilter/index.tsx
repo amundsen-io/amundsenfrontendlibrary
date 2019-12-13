@@ -44,7 +44,7 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
   render = () => {
     const { categoryId, disabled = false } = this.props;
     return (
-      <>
+      <div className="input-section-content">
         <input
           type="text"
           disabled={ disabled }
@@ -60,7 +60,7 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
         >
           { APPLY_BTN_TEXT }
         </button>
-      </>
+      </div>
     );
   }
 };

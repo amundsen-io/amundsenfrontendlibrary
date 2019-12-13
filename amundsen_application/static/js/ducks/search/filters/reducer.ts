@@ -1,5 +1,7 @@
 import { FilterInput, ResourceType } from 'interfaces';
 
+import { filterFromObj } from 'ducks/utilMethods';
+
 export enum UpdateSearchFilter {
   ADD_MULTI_SELECT = 'amundsen/search/filter/ADD_MULTI_SELECT',
   REMOVE_MULTI_SELECT = 'amundsen/search/filter/REMOVE_MULTI_SELECT',
@@ -43,24 +45,23 @@ export function removeMultiSelectOption(input: FilterInput) {
 };
 
 /* REDUCER */
-export type FilterCategories = { [id:string]: string };
+type FilterOptions = { [id:string]: boolean };
+
 export interface FilterReducerState {
   [ResourceType.table]: TableFilterReducerState;
 };
+
 export interface TableFilterReducerState {
-  column: string;
-  database: FilterCategories;
-  schema: string;
-  table: string;
-  tag: string;
+  /* TODO: Future improvements allowing multiple values for all categories will simplify this */
+  [category: string]: string | FilterOptions;
 };
 
 export const initialTableFilterState = {
-  column: '',
-  database: {},
-  schema: '',
-  table: '',
-  tag: '',
+  'column': '',
+  'database': {},
+  'schema': '',
+  'table': '',
+  'tag': '',
 };
 
 export const initialFilterState: FilterReducerState = {
@@ -70,47 +71,37 @@ export const initialFilterState: FilterReducerState = {
 export default function reducer(state: FilterReducerState = initialFilterState, action, resourceType: ResourceType): FilterReducerState {
   const { category, value  } = action.payload;
   const resourceFilters = state[resourceType];
-  if (resourceFilters) {
-    const categoryValues = resourceFilters[category];
+  const categoryValues = resourceFilters ? resourceFilters[category] : {};
 
-    /* Input text filter update */
-    if (action.type === UpdateSearchFilter.UPDATE_SINGLE) {
-      return {
-        ...state,
-        [resourceType]: {
-          ...resourceFilters,
-          [category]: value
+  if (action.type === UpdateSearchFilter.UPDATE_SINGLE) {
+    return {
+      ...state,
+      [resourceType]: {
+        ...resourceFilters,
+        [category]: value
+      }
+    }
+  }
+
+  if (action.type === UpdateSearchFilter.ADD_MULTI_SELECT) {
+    return {
+      ...state,
+      [resourceType]: {
+        ...resourceFilters,
+        [category]: {
+          ...categoryValues,
+          [value]: true,
         }
       }
     }
+  }
 
-    /* Checkbox filter update */
-    if (categoryValues && typeof categoryValues === 'object') {
-      if (action.type === UpdateSearchFilter.ADD_MULTI_SELECT) {
-        return {
-          ...state,
-          [resourceType]: {
-            ...resourceFilters,
-            [category]: {
-              ...categoryValues,
-              [value]: value,
-            }
-          }
-        }
-      }
-      if (action.type === UpdateSearchFilter.REMOVE_MULTI_SELECT) {
-        return {
-          ...state,
-          [resourceType]: {
-            ...resourceFilters,
-            [category]: Object.keys(categoryValues).reduce((object, key) => {
-              if (key !== value) {
-                object[key] = categoryValues[key]
-              }
-              return object
-            }, {}),
-          }
-        }
+  if (action.type === UpdateSearchFilter.REMOVE_MULTI_SELECT) {
+    return {
+      ...state,
+      [resourceType]: {
+        ...resourceFilters,
+        [category]: filterFromObj(categoryValues, [value])
       }
     }
   }

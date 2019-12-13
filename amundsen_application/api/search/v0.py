@@ -1,4 +1,5 @@
 import logging
+import json
 
 from http import HTTPStatus
 
@@ -72,23 +73,29 @@ def _validate_search_term(*, search_term: str, page_index: int) -> Optional[Resp
 
 @search_blueprint.route('/table_qs', methods=['POST'])
 def search_table_qs() -> Response:
+    # TODO (ttannis): This method is in development and will be cleaned up in a future PR
     request_json = request.get_json()
 
     search_term = get_query_param(request_json, 'term', '"term" parameter expected in request data')
     page_index = get_query_param(request_json, 'pageIndex', '"pageIndex" parameter expected in request data')
-    filter_json = request_json.get('filters', {})
+    filters = request_json.get('filters', {})
+
+    filter_payload = {}
+    valid_categories = ['column', 'database', 'schema', 'table', 'tag']
+    for category in valid_categories:
+        values = filters.get(category)
+        if type(values) == str and len(values) > 0:
+            filter_payload[category] = [values,]
+        if type(values) == dict:
+            value_list = list(values.keys())
+            if len(value_list) > 0:
+                filter_payload[category] = value_list
 
     query_json = {
         'page_index': int(page_index),
         'search_request': {
             'type': 'AND',
-            'filters': {
-                'database': list(filter_json.get('database', {}).keys()),
-                'schema': [filter_json.get('schema')],
-                'table': [filter_json.get('table')],
-                'column': [filter_json.get('column')],
-                'tag': [filter_json.get('tag')]
-            }
+            'filters': filter_payload
         },
         'query_term': search_term
     }
@@ -106,9 +113,8 @@ def search_table_qs() -> Response:
     }
 
     try:
-        url = app.config['SEARCHSERVICE_BASE'] + '/search/query_filter'
-        logging.info(query_json)
-        response = request_search(url=url, method='POST', data=query_json)
+        url = app.config['SEARCHSERVICE_BASE'] + '/search/query_filter_test'
+        response = request_search(url=url, headers={'Content-Type': 'application/json'}, method='POST', data=json.dumps(query_json))
         status_code = response.status_code
         if status_code == HTTPStatus.OK:
             results_dict['msg'] = 'Success'

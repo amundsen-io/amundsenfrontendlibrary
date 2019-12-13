@@ -15,6 +15,7 @@ def get_query_param(args: Dict, param: str, error_msg: str = None) -> str:
 def request_metadata(*,     # type: ignore
                      url: str,
                      method: str = 'GET',
+                     headers: Dict = {},
                      timeout_sec: int = 0,
                      data=None):
     """
@@ -27,9 +28,9 @@ def request_metadata(*,     # type: ignore
     :return:
     """
     if app.config['REQUEST_HEADERS_METHOD']:
-        headers = app.config['REQUEST_HEADERS_METHOD'](app)
+        headers.update(app.config['REQUEST_HEADERS_METHOD'](app))
     else:
-        headers = app.config['METADATASERVICE_REQUEST_HEADERS']
+        headers.update(app.config['METADATASERVICE_REQUEST_HEADERS'])
     return request_wrapper(method=method,
                            url=url,
                            client=app.config['METADATASERVICE_REQUEST_CLIENT'],
@@ -41,6 +42,7 @@ def request_metadata(*,     # type: ignore
 def request_search(*,     # type: ignore
                    url: str,
                    method: str = 'GET',
+                   headers: Dict = {},
                    timeout_sec: int = 0,
                    data=None):
     """
@@ -53,9 +55,9 @@ def request_search(*,     # type: ignore
     :return:
     """
     if app.config['REQUEST_HEADERS_METHOD']:
-        headers = app.config['REQUEST_HEADERS_METHOD'](app)
+        headers.update(app.config['REQUEST_HEADERS_METHOD'](app))
     else:
-        headers = app.config['SEARCHSERVICE_REQUEST_HEADERS']
+        headers.update(app.config['SEARCHSERVICE_REQUEST_HEADERS'])
     return request_wrapper(method=method,
                            url=url,
                            client=app.config['SEARCHSERVICE_REQUEST_CLIENT'],

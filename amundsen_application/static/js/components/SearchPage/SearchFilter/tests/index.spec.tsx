@@ -26,24 +26,28 @@ describe('SearchFilter', () => {
           ]
         }
       ],
-      inputSections: {
-        'column': {
+      inputSections: [
+        {
+          categoryId: 'column',
           title: 'Column',
           value: 'test'
         },
-        'schema': {
+        {
+          categoryId: 'schema',
           title: 'Schema',
           value: 'test'
         },
-        'table': {
+        {
+          categoryId: 'tablr',
           title: 'Table',
           value: 'test'
         },
-        'tag': {
+        {
+          categoryId: 'tag',
           title: 'Tag',
           value: 'test'
         }
-      },
+      ],
       onCheckboxChange: jest.fn(),
       onInputChange: jest.fn(),
       ...propOverrides

@@ -83,9 +83,9 @@ interface BaseResourceConfig {
   filterCategories?: FilterConfig;
 }
 
-interface DatasetResourceConfig extends BaseResourceConfig {
+interface TableResourceConfig extends BaseResourceConfig {
   supportedDatabases: {
-    [id: string]: DatasetConfig
+    [id: string]: DatabaseConfig
   };
 }
 /** ResourceConfig - For customizing values related to how various resources
@@ -94,7 +94,7 @@ interface DatasetResourceConfig extends BaseResourceConfig {
  * datasets - A map of each dataset id to an optional display name or icon class
  */
 interface ResourceConfig {
-  [ResourceType.table]: DatasetResourceConfig;
+  [ResourceType.table]: TableResourceConfig;
   [ResourceType.user]: BaseResourceConfig;
 }
 
@@ -105,7 +105,7 @@ interface ResourceConfig {
  * iconClass - An option icon class to be used for this dataset source. This
  *             value should be defined in static/css/_icons.scss
  */
-interface DatasetConfig {
+interface DatabaseConfig {
   displayName?: string;
   iconClass?: string;
 }

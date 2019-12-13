@@ -14,29 +14,26 @@ import { FilterType, ResourceType } from 'interfaces';
 import './styles.scss'
 
 interface CheckboxFilterProperties {
-  value: string;
-  labelText: string;
   checked: boolean;
+  labelText: string;
+  value: string;
 }
 
 interface CheckboxFilterSection {
-  title: string;
   categoryId: string;
   properties: CheckboxFilterProperties[];
+  title: string;
 }
 
-interface InputFilterProperties {
+interface InputFilterSection {
+  categoryId: string;
   title: string;
   value: string;
-}
-
-interface InputFilterSections {
-  [categoryId: string]: InputFilterProperties;
 }
 
 export interface StateFromProps {
   checkBoxSections: CheckboxFilterSection[];
-  inputSections: InputFilterSections;
+  inputSections: InputFilterSection[];
 }
 
 export interface DispatchFromProps {
@@ -74,17 +71,15 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
     );
   };
 
-  createInputSectionByCategoryId = (categoryId: string, key: string) => {
-    const { value, title } = this.props.inputSections[categoryId];
+  createInputSection = (key: string, section: InputFilterSection) => {
+    const { categoryId, title, value } = section;
     return (
       <div key={key} className="search-filter-section">
         <div className="title-2">{ title }</div>
-        <div className="input-section-content">
-          <InputFilter
-            categoryId={ categoryId }
-            value={ value }
-          />
-        </div>
+        <InputFilter
+          categoryId={ categoryId }
+          value={ value }
+        />
       </div>
     )
   };
@@ -94,9 +89,7 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
   };
 
   renderInputFilters = () => {
-    return Object.keys(this.props.inputSections).map((categoryId, index) => {
-      return this.createInputSectionByCategoryId(categoryId, `item:${categoryId}:${index}`);
-    })
+    return this.props.inputSections.map((section, index) => this.createInputSection(`section:${section.categoryId}`, section));
   };
 
   render = () => {
@@ -119,7 +112,7 @@ export const mapStateToProps = (state: GlobalState) => {
   const filterState = state.search.filters;
 
   const checkBoxSections = [];
-  const inputSections = {};
+  const inputSections = [];
 
   if (filterCategories) {
     /* checkbox sections */
@@ -132,7 +125,7 @@ export const mapStateToProps = (state: GlobalState) => {
             return {
               value: option.value,
               labelText: option.displayName,
-              checked: !!filterState[ResourceType.table].database[option.value],
+              checked: !!filterState[ResourceType.table][categoryConfig.value][option.value],
             };
           })
         });
@@ -142,10 +135,11 @@ export const mapStateToProps = (state: GlobalState) => {
     /* input sections */
     filterCategories.forEach((categoryConfig) => {
       if (categoryConfig.type === FilterType.SINGLE_VALUE) {
-        inputSections[categoryConfig.value] = {
+        inputSections.push({
+          categoryId: categoryConfig.value,
           title: categoryConfig.displayName,
           value: filterState[resourceType][categoryConfig.value],
-        }
+        });
       }
     });
   }

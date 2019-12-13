@@ -15,9 +15,7 @@ import './styles.scss';
 import {
   BUTTON_CLOSE_TEXT,
   PLACEHOLDER_DEFAULT,
-  SIZE_SMALL,
-  TERM_INVALID_MSG,
-  TERM_REGEX_PATTERN
+  SIZE_SMALL
 } from './constants';
 
 export interface StateFromProps {
@@ -100,6 +98,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     this.setState({ showTypeAhead: false });
   }
 
+  /* TODO (ttannis): Remove if final implementation makes no checks whatsoever on search term */
   isFormValid = () : boolean => {
     const form = document.getElementById("search-bar-form") as HTMLFormElement;
     return form.checkValidity();
@@ -133,8 +132,6 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         <form id="search-bar-form" className="search-bar-form" onSubmit={ this.handleValueSubmit }>
             <input
               id="search-input"
-              pattern={ TERM_REGEX_PATTERN }
-              title={ TERM_INVALID_MSG }
               required={ true }
               className={ inputClass }
               value={ this.state.searchTerm }
