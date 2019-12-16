@@ -7,6 +7,7 @@ import { FilterType, ResourceType } from '../interfaces';
  */
 
 export interface AppConfig {
+  badges: BadgeConfig;
   browse: BrowseConfig;
   editableText: EditableTextConfig;
   google: GoogleAnalyticsConfig;
@@ -20,6 +21,7 @@ export interface AppConfig {
 }
 
 export interface AppConfigCustom {
+  badges?: BadgeConfig;
   browse?: BrowseConfig;
   editableText?: EditableTextConfig;
   google?: GoogleAnalyticsConfig
@@ -88,6 +90,30 @@ interface TableResourceConfig extends BaseResourceConfig {
     [id: string]: DatabaseConfig
   };
 }
+
+export enum BadgeStyle {
+  DANGER = "danger",
+  DEFAULT = "default",
+  INFO = "info",
+  PRIMARY = "primary",
+  SUCCESS = "success",
+  WARNING = "warning",
+}
+
+export interface BadgeStyleConfig {
+  style: BadgeStyle;
+  displayName?: string;
+}
+
+/**
+ * BadgeConfig - Configure badge colors
+ *
+ * An object that maps badges to BadgeStyleConfigs
+ */
+interface BadgeConfig {
+  [badge: string]: BadgeStyleConfig;
+}
+
 /** ResourceConfig - For customizing values related to how various resources
  *                   are displayed in the UI.
  *

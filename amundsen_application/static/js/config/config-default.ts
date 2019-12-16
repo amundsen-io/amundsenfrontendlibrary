@@ -3,6 +3,7 @@ import { AppConfig } from './config-types';
 import { FilterType, ResourceType } from '../interfaces';
 
 const configDefault: AppConfig = {
+  badges: {},
   browse: {
     curatedTags: [],
     showAllTags: true,
