@@ -48,7 +48,10 @@ import {
 
 export function* filterWorker(action: any): SagaIterator {
   const state = yield select();
-  yield put(searchResource(state.search.search_term, state.search.selectedTab, getPageIndex(state.search)));
+  const { search_term, selectedTab, filters } = state.search;
+  const pageIndex = getPageIndex(state.search)
+  yield put(searchResource(search_term, selectedTab, pageIndex));
+  updateSearchUrl({ resource: selectedTab, term: search_term, index: pageIndex, filters: filters }, true);
 };
 export function* multiSelectFilterWatcher(): SagaIterator {
   yield debounce(750, [UpdateSearchFilter.ADD_MULTI_SELECT, UpdateSearchFilter.REMOVE_MULTI_SELECT], filterWorker);
@@ -88,11 +91,11 @@ export function* selectInlineResultWorker(action): SagaIterator {
   const { searchTerm, resourceType, updateUrl } = action.payload;
   if (state.search.inlineResults.isLoading) {
     yield put(searchAll(searchTerm, resourceType, 0))
-    updateSearchUrl({ term: searchTerm });
+    updateSearchUrl({ term: searchTerm, filters: state.search.filters });
   }
   else {
     if (updateUrl) {
-      updateSearchUrl({ resource: resourceType, term: searchTerm, index: 0 });
+      updateSearchUrl({ resource: resourceType, term: searchTerm, index: 0, filters: state.search.filters });
     }
     const data = {
       searchTerm,
@@ -109,6 +112,7 @@ export function* selectInlineResultsWatcher(): SagaIterator {
 
 
 export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
+  const state = yield select();
   let { resource } = action.payload;
   const { pageIndex, term } = action.payload;
   const tableIndex = resource === ResourceType.table ? pageIndex : 0;
@@ -135,7 +139,7 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
     }
     const index = getPageIndex(searchAllResponse);
     yield put(searchAllSuccess(searchAllResponse));
-    updateSearchUrl({ term, resource, index, }, true);
+    updateSearchUrl({ term, resource, index, filters: state.search.filters }, true);
 
   } catch (e) {
     yield put(searchAllFailure());
@@ -160,9 +164,10 @@ export function* searchResourceWatcher(): SagaIterator {
 };
 
 export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
+  const state = yield select();
   const { searchTerm } = action.payload;
   yield put(searchAll(searchTerm));
-  updateSearchUrl({ term: searchTerm });
+  updateSearchUrl({ term: searchTerm, filters: state.search.filters });
 };
 export function* submitSearchWatcher(): SagaIterator {
   yield takeEvery(SubmitSearch.REQUEST, submitSearchWorker);
@@ -176,6 +181,7 @@ export function* setResourceWorker(action: SetResourceRequest): SagaIterator {
       resource,
       term: state.search_term,
       index: getPageIndex(state, resource),
+      filters: state.filters,
     });
   }
 };
@@ -193,6 +199,7 @@ export function* setPageIndexWorker(action: SetPageIndexRequest): SagaIterator {
       term: state.search_term,
       resource: state.selectedTab,
       index: pageIndex,
+      filters: state.filters,
     });
   }
 };
@@ -224,6 +231,7 @@ export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): Sa
     term: state.search_term,
     resource: state.selectedTab,
     index: getPageIndex(state),
+    filters: state.search.filters,
   });
 };
 export function* loadPreviousSearchWatcher(): SagaIterator {

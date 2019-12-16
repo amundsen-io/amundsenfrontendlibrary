@@ -31,7 +31,6 @@ import {
   DOCUMENT_TITLE_SUFFIX,
   PAGE_INDEX_ERROR_MESSAGE,
   RESULTS_PER_PAGE,
-  SEARCH_ERROR_MESSAGE_INFIX,
   SEARCH_ERROR_MESSAGE_PREFIX,
   SEARCH_ERROR_MESSAGE_SUFFIX,
   SEARCH_SOURCE_NAME,
@@ -109,7 +108,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
       return (
         <div className="search-list-container">
           <div className="search-error body-placeholder">
-            {SEARCH_ERROR_MESSAGE_PREFIX}<i>{ searchTerm }</i>{SEARCH_ERROR_MESSAGE_INFIX}{tabLabel.toLowerCase()}{SEARCH_ERROR_MESSAGE_SUFFIX}
+            {SEARCH_ERROR_MESSAGE_PREFIX}{tabLabel.toLowerCase()}{SEARCH_ERROR_MESSAGE_SUFFIX}
           </div>
         </div>
       )

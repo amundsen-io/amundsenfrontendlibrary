@@ -268,6 +268,7 @@ export default function reducer(state: SearchReducerState = initialState, action
         tables,
         users,
         search_term: searchTerm,
+        filters: initialFilterState,
       };
     case InlineSearch.SUCCESS:
       const inlineResults = (<InlineSearchResponse>action).payload;
