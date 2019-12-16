@@ -1,4 +1,5 @@
 import AppConfig from 'config/config';
+import { BadgeStyleConfig, BadgeStyle } from 'config/config-types';
 
 import { FilterConfig } from './config-types';
 
@@ -44,6 +45,21 @@ export function getDatabaseIconClass(databaseId: string): string {
 export function getFilterConfigByResource(resourceType: ResourceType): FilterConfig {
   return AppConfig.resourceConfig[resourceType].filterCategories;
 };
+
+/*
+ * Given a badge name, this will return a badge style and a display name.
+ * If these are not specified by config, it will default to some simple rules:
+ * use BadgeStyle.DEFAULT and replace '-' and '_' with spaces for display name.
+ */
+export function getBadgeConfig(badgeName: string): BadgeStyleConfig {
+  const config = AppConfig.badges[badgeName] || {};
+
+  return {
+    style: BadgeStyle.DEFAULT,
+    displayName: badgeName.replace(/[-_]/g, ' '),
+    ...config,
+  };
+}
 
 /**
  * Returns whether or not feedback features should be enabled
