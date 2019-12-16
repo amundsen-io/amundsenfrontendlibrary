@@ -39,6 +39,9 @@ import {
   updateFromInlineResult,
   setPageIndex, setResource,
 } from './reducer';
+import {
+  setFilterByResource
+} from './filters/reducer';
 import { autoSelectResource, getPageIndex, getSearchState } from './utils';
 import { updateSearchUrl } from 'utils/navigation-utils';
 
@@ -209,12 +212,23 @@ export function* setPageIndexWatcher(): SagaIterator {
 
 export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
   const { urlSearch } = action.payload;
-  const { term, resource, index} = qs.parse(urlSearch);
+  const { term, resource, index, filters } = qs.parse(urlSearch);
   const parsedIndex = parseInt(index, 10);
+  const parsedFilters = filters ? JSON.parse(filters) : null;
 
   const state = yield select(getSearchState);
-  if (!!term && state.search_term !== term) {
+  if (!!term && state.search_term !== term && !parsedFilters) {
     yield put(searchAll(term, resource, parsedIndex));
+  } else if (parsedFilters) {
+    /* Update filter state + search each resource */
+    yield put(setFilterByResource(resource, parsedFilters));
+    yield put(searchResource(term, resource, parsedIndex));
+    if (resource !== ResourceType.table) {
+      yield put(searchResource(term, ResourceType.table, 0));
+    }
+    if (resource !== ResourceType.user) {
+      yield put(searchResource(term, ResourceType.user, 0));
+    }
   } else if (!!resource && resource !== state.selectedTab) {
     yield put(setResource(resource, false))
   } else if (!isNaN(parsedIndex) && parsedIndex !== getPageIndex(state, resource)) {

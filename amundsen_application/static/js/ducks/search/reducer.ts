@@ -203,6 +203,7 @@ export default function reducer(state: SearchReducerState = initialState, action
     case UpdateSearchFilter.ADD_MULTI_SELECT:
     case UpdateSearchFilter.CLEAR_CATEGORY:
     case UpdateSearchFilter.REMOVE_MULTI_SELECT:
+    case UpdateSearchFilter.SET_BY_RESOURCE:
     case UpdateSearchFilter.UPDATE_SINGLE:
       return {
         ...state,

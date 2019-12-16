@@ -4,8 +4,9 @@ import { filterFromObj } from 'ducks/utilMethods';
 
 export enum UpdateSearchFilter {
   ADD_MULTI_SELECT = 'amundsen/search/filter/ADD_MULTI_SELECT',
-  CLEAR_CATEGORY= 'amundsen/search/filter/CLEAR_CATEGORY',
+  CLEAR_CATEGORY = 'amundsen/search/filter/CLEAR_CATEGORY',
   REMOVE_MULTI_SELECT = 'amundsen/search/filter/REMOVE_MULTI_SELECT',
+  SET_BY_RESOURCE = 'amundsen/search/filter/SET_BY_RESOURCE',
   UPDATE_SINGLE =  'amundsen/search/filter/UPDATE_SINGLE',
 }
 export interface UpdateSearchFilterAction {
@@ -14,6 +15,16 @@ export interface UpdateSearchFilterAction {
 };
 
 /* ACTIONS */
+export function setFilterByResource(resourceType: ResourceType, filters: ResourceFilterReducerState) {
+  return {
+    payload: {
+      resourceType,
+      filters
+    },
+    type: UpdateSearchFilter.SET_BY_RESOURCE,
+  };
+};
+
 export function clearFilterByCategory(category: string) {
   return {
     payload: {
@@ -73,11 +84,18 @@ export const initialFilterState: FilterReducerState = {
 };
 
 export default function reducer(state: FilterReducerState = initialFilterState, action, resourceType: ResourceType): FilterReducerState {
-  const { category, value  } = action.payload;
+  const { category, value } = action.payload;
   const resourceFilters = state[resourceType];
   const categoryValues = resourceFilters ? resourceFilters[category] : {};
 
   let shouldClearCategory = false;
+
+  if (action.type === UpdateSearchFilter.SET_BY_RESOURCE) {
+    return {
+      ...state,
+      [action.payload.resourceType]: action.payload.filters
+    }
+  }
 
   if (action.type === UpdateSearchFilter.UPDATE_SINGLE) {
     if (value) {
