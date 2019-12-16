@@ -49,7 +49,7 @@ describe('SearchFilter', () => {
         }
       ],
       onCheckboxChange: jest.fn(),
-      onInputChange: jest.fn(),
+      onClearFilter: jest.fn(),
       ...propOverrides
     };
     const wrapper = shallow<SearchFilter>(<SearchFilter {...props} />);

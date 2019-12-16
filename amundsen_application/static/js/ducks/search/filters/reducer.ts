@@ -4,6 +4,7 @@ import { filterFromObj } from 'ducks/utilMethods';
 
 export enum UpdateSearchFilter {
   ADD_MULTI_SELECT = 'amundsen/search/filter/ADD_MULTI_SELECT',
+  CLEAR_CATEGORY= 'amundsen/search/filter/CLEAR_CATEGORY',
   REMOVE_MULTI_SELECT = 'amundsen/search/filter/REMOVE_MULTI_SELECT',
   UPDATE_SINGLE =  'amundsen/search/filter/UPDATE_SINGLE',
 }
@@ -13,6 +14,15 @@ export interface UpdateSearchFilterAction {
 };
 
 /* ACTIONS */
+export function clearFilterByCategory(category: string) {
+  return {
+    payload: {
+      category,
+    },
+    type: UpdateSearchFilter.CLEAR_CATEGORY,
+  };
+};
+
 export function updateSingleOption(input: FilterInput) {
   const { category, value } = input;
   return {
@@ -48,21 +58,15 @@ export function removeMultiSelectOption(input: FilterInput) {
 type FilterOptions = { [id:string]: boolean };
 
 export interface FilterReducerState {
-  [ResourceType.table]: TableFilterReducerState;
+  [ResourceType.table]: ResourceFilterReducerState;
 };
 
-export interface TableFilterReducerState {
+export interface ResourceFilterReducerState {
   /* TODO: Future improvements allowing multiple values for all categories will simplify this */
   [category: string]: string | FilterOptions;
 };
 
-export const initialTableFilterState = {
-  'column': '',
-  'database': {},
-  'schema': '',
-  'table': '',
-  'tag': '',
-};
+export const initialTableFilterState = {};
 
 export const initialFilterState: FilterReducerState = {
   [ResourceType.table]: initialTableFilterState,
@@ -73,13 +77,20 @@ export default function reducer(state: FilterReducerState = initialFilterState, 
   const resourceFilters = state[resourceType];
   const categoryValues = resourceFilters ? resourceFilters[category] : {};
 
+  let shouldClearCategory = false;
+
   if (action.type === UpdateSearchFilter.UPDATE_SINGLE) {
-    return {
-      ...state,
-      [resourceType]: {
-        ...resourceFilters,
-        [category]: value
+    if (value) {
+      return {
+        ...state,
+        [resourceType]: {
+          ...resourceFilters,
+          [category]: value
+        }
       }
+    }
+    else {
+      shouldClearCategory = true;
     }
   }
 
@@ -97,12 +108,25 @@ export default function reducer(state: FilterReducerState = initialFilterState, 
   }
 
   if (action.type === UpdateSearchFilter.REMOVE_MULTI_SELECT) {
+    const newCategoryDict = filterFromObj(categoryValues, [value]);
+    if (Object.keys(newCategoryDict).length > 0) {
+      return {
+        ...state,
+        [resourceType]: {
+          ...resourceFilters,
+          [category]: newCategoryDict
+        }
+      }
+    }
+    else {
+      shouldClearCategory = true;
+    }
+  }
+
+  if (action.type == UpdateSearchFilter.CLEAR_CATEGORY || shouldClearCategory) {
     return {
       ...state,
-      [resourceType]: {
-        ...resourceFilters,
-        [category]: filterFromObj(categoryValues, [value])
-      }
+      [resourceType]: filterFromObj(resourceFilters, [category])
     }
   }
 

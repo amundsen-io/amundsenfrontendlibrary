@@ -33,6 +33,13 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
     };
   }
 
+  componentDidUpdate = (prevProps: StateFromProps) => {
+    const newValue = this.props.value;
+    if (prevProps.value !== newValue) {
+      this.setState({ value: newValue || '' });
+    }
+  };
+
   onApplyChanges = () => {
     this.props.onApplyChanges({ category: this.props.categoryId, value: this.state.value });
   };

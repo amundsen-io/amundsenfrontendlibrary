@@ -84,12 +84,13 @@ def search_table_qs() -> Response:
     valid_categories = ['column', 'database', 'schema', 'table', 'tag']
     for category in valid_categories:
         values = filters.get(category)
-        if type(values) == str and len(values) > 0:
-            filter_payload[category] = [values, ]
-        if type(values) == dict:
-            value_list = list(values.keys())
-            if len(value_list) > 0:
-                filter_payload[category] = value_list
+        if values is not None:
+            if type(values) == str:
+                filter_payload[category] = [values, ]
+            if type(values) == dict:
+                value_list = list(values.keys())
+                if len(value_list) > 0:
+                    filter_payload[category] = value_list
 
     query_json = {
         'page_index': int(page_index),

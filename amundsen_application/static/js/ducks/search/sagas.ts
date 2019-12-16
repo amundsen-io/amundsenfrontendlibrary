@@ -54,7 +54,7 @@ export function* multiSelectFilterWatcher(): SagaIterator {
   yield debounce(750, [UpdateSearchFilter.ADD_MULTI_SELECT, UpdateSearchFilter.REMOVE_MULTI_SELECT], filterWorker);
 }
 export function* singleInputFilterWatcher(): SagaIterator {
-  yield takeLatest(UpdateSearchFilter.UPDATE_SINGLE, filterWorker);
+  yield takeLatest([UpdateSearchFilter.CLEAR_CATEGORY, UpdateSearchFilter.UPDATE_SINGLE], filterWorker);
 }
 
 export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
