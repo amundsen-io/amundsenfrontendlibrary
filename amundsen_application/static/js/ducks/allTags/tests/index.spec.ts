@@ -38,8 +38,6 @@ describe('allTags ducks', () => {
     beforeAll(() => {
       testState = {
         allTags: [],
-        curatedTags: [],
-        otherTags: [],
         isLoading: true,
       };
     });
@@ -50,8 +48,6 @@ describe('allTags ducks', () => {
     it('should handle GetAllTags.REQUEST', () => {
       expect(reducer(testState, getAllTags())).toEqual({
         allTags: [],
-        curatedTags: [],
-        otherTags: [],
         isLoading: true,
       });
     });
@@ -60,8 +56,6 @@ describe('allTags ducks', () => {
       const expectedTags = [{tag_count: 2, tag_name: 'test'}, {tag_count: 1, tag_name: 'test2'}];
       expect(reducer(testState, getAllTagsSuccess(expectedTags))).toEqual({
         allTags: expectedTags,
-        curatedTags: [],
-        otherTags: [],
         isLoading: false,
       });
     });
@@ -83,13 +77,11 @@ describe('allTags ducks', () => {
     describe('getAllTagsWorker', () => {
       it('gets allTags', () => {
         const mockTags = [{tag_count: 2, tag_name: 'test'}, {tag_count: 1, tag_name: 'test2'}];
-        const curatedTags = [];
-        const otherTags = [{tag_count: 2, tag_name: 'test'}, {tag_count: 1, tag_name: 'test2'}];
         return expectSaga(getAllTagsWorker)
           .provide([
             [matchers.call.fn(API.getAllTags), mockTags],
           ])
-          .put(getAllTagsSuccess(mockTags, curatedTags, otherTags))
+          .put(getAllTagsSuccess(mockTags))
           .run();
       });
 

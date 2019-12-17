@@ -70,6 +70,7 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
   }
 
   componentDidUpdate(prevProps) {
+    // TODO - itemProps is a new object and this check needs to be fixed
     if (prevProps.itemProps !== this.props.itemProps) {
       this.setState({ itemProps: this.props.itemProps, tempItemProps: this.props.itemProps });
     }

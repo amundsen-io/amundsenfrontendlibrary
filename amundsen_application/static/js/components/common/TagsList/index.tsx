@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 
 import './styles.scss';
 
-import AppConfig from 'config/config';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import TagInfo from 'components/Tags/TagInfo';
 import { Tag } from 'interfaces';
@@ -12,9 +11,9 @@ import { Tag } from 'interfaces';
 import { GlobalState } from 'ducks/rootReducer';
 import { getAllTags } from 'ducks/allTags/reducer';
 import { GetAllTagsRequest } from 'ducks/allTags/types';
+import { getCuratedTags, showAllTags } from 'config/config-utils';
 
 export interface StateFromProps {
-  allTags: Tag[];
   curatedTags: Tag[];
   otherTags: Tag[];
   isLoading: boolean;
@@ -44,22 +43,16 @@ export class TagsList extends React.Component<TagsListProps> {
     if (this.props.isLoading) {
       return <LoadingSpinner/>;
     }
-    if (AppConfig.browse.curatedTags.length === 0) {
-      return (
-        <div id="tags-list" className="tags-list">
-          { this.generateTagInfo(this.props.allTags) }
-        </div>
-      );
-    }
     return (
       <div id="tags-list" className="tags-list">
         { this.generateTagInfo(this.props.curatedTags) }
         {
-          AppConfig.browse.showAllTags && this.props.curatedTags.length > 0 && this.props.otherTags.length > 0 &&
-            <>
-              <hr />
-              { this.generateTagInfo(this.props.otherTags) }
-            </>
+          showAllTags() && this.props.curatedTags.length > 0 && this.props.otherTags.length > 0 &&
+            <hr />
+        }
+        {
+          showAllTags() && this.props.otherTags.length > 0 &&
+            this.generateTagInfo(this.props.otherTags)
         }
       </div>
     );
@@ -67,10 +60,14 @@ export class TagsList extends React.Component<TagsListProps> {
 }
 
 export const mapStateToProps = (state: GlobalState) => {
+  const curatedTagsList = getCuratedTags();
+  const allTags = state.allTags.allTags;
+  const curatedTags = allTags.filter((tag) => curatedTagsList.indexOf(tag.tag_name) !== -1);
+  const otherTags = allTags.filter((tag) => curatedTagsList.indexOf(tag.tag_name) === -1);
+
   return {
-    allTags: state.allTags.allTags,
-    curatedTags: state.allTags.curatedTags,
-    otherTags: state.allTags.otherTags,
+    curatedTags,
+    otherTags,
     isLoading: state.allTags.isLoading,
   };
 };
