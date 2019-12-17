@@ -40,8 +40,11 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
     }
   };
 
-  onApplyChanges = () => {
-    this.props.onApplyChanges({ category: this.props.categoryId, value: this.state.value });
+  onApplyChanges = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!this.props.disabled) {
+      this.props.onApplyChanges({ category: this.props.categoryId, value: this.state.value });
+    }
   };
 
   onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,6 +54,25 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
   render = () => {
     const { categoryId, disabled = false } = this.props;
     return (
+      <form className="input-section-content" onSubmit={ this.onApplyChanges }>
+        <input
+          type="text"
+          disabled={ disabled }
+          name={ categoryId }
+          onChange={ this.onInputChange }
+          value={ this.state.value }
+        />
+        <button
+          name={ categoryId }
+          className="btn btn-default"
+          disabled={ disabled }
+          type="submit"
+        >
+          { APPLY_BTN_TEXT }
+        </button>
+      </form>
+    );
+    /*return (
       <div className="input-section-content">
         <input
           type="text"
@@ -68,7 +90,7 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
           { APPLY_BTN_TEXT }
         </button>
       </div>
-    );
+    );*/
   }
 };
 
