@@ -13,10 +13,11 @@ AppConfig.browse.curatedTags = ['test1'];
 jest.mock('config/config-utils', () => (
   {
     showAllTags: jest.fn(),
+    getCuratedTags: () => { return ['curated_tag_1']; },
   }
 ));
 
-import { showAllTags } from 'config/config-utils';
+import { getCuratedTags, showAllTags } from 'config/config-utils';
 
 
 describe('TagsList', () => {
@@ -109,12 +110,22 @@ describe('mapDispatchToProps', () => {
 
 describe('mapStateToProps', () => {
   let result;
+  let expectedCuratedTags;
+  let expectedOtherTags;
   beforeEach(() => {
     result = mapStateToProps(globalState);
+    const allTags = globalState.allTags.allTags;
+    const curatedTagsList = getCuratedTags();
+    expectedCuratedTags = allTags.filter((tag) => curatedTagsList.indexOf(tag.tag_name) !== -1);
+    expectedOtherTags = allTags.filter((tag) => curatedTagsList.indexOf(tag.tag_name) === -1);
   });
 
-  it('sets allTags on the props', () => {
-    expect(result.allTags).toEqual(globalState.allTags.allTags);
+  it('sets curatedTags on the props', () => {
+    expect(result.curatedTags).toEqual(expectedCuratedTags);
+  });
+
+  it('sets otherTags on the props', () => {
+    expect(result.otherTags).toEqual(expectedOtherTags);
   });
 
   it('sets isLoading on the props', () => {

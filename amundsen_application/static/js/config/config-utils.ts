@@ -59,6 +59,9 @@ export function showAllTags(): boolean {
   return AppConfig.browse.showAllTags;
 }
 
+/**
+ * Returns a list of curated tag names
+ */
 export function getCuratedTags(): string[] {
   return AppConfig.browse.curatedTags;
 }
