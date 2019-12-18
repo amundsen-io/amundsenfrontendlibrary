@@ -33,7 +33,7 @@ export default function reducer(state: AllTagsReducerState = initialState, actio
     case GetAllTags.SUCCESS:
       return {
         ...state,
-        ...(<GetAllTagsResponse>action).payload,
+        allTags: (<GetAllTagsResponse>action).payload.allTags,
         isLoading: false,
       };
     default:

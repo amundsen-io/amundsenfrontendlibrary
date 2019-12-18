@@ -53,3 +53,10 @@ describe('showAllTags', () => {
     expect(ConfigUtils.showAllTags()).toBe(AppConfig.browse.showAllTags);
   });
 });
+
+describe('getCuratedTags', () => {
+  it('returns a list of curated tags', () => {
+    AppConfig.browse.curatedTags = ['one', 'two', 'three'];
+    expect(ConfigUtils.getCuratedTags()).toBe(AppConfig.browse.curatedTags);
+  });
+});
