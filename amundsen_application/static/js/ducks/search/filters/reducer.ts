@@ -1,18 +1,14 @@
-import { FilterInput, ResourceType } from 'interfaces';
+import { ResourceType } from 'interfaces';
 
 import { filterFromObj } from 'ducks/utilMethods';
 
 export enum UpdateSearchFilter {
-  ADD_MULTI_SELECT = 'amundsen/search/filter/ADD_MULTI_SELECT',
   CLEAR_CATEGORY = 'amundsen/search/filter/CLEAR_CATEGORY',
-  REMOVE_MULTI_SELECT = 'amundsen/search/filter/REMOVE_MULTI_SELECT',
   SET_BY_RESOURCE = 'amundsen/search/filter/SET_BY_RESOURCE',
-  UPDATE_SINGLE =  'amundsen/search/filter/UPDATE_SINGLE',
+  UPDATE_CATEGORY = 'amundsen/search/filter/UPDATE_CATEGORY',
 }
-export interface UpdateSearchFilterAction {
-  payload: FilterInput;
-  type: UpdateSearchFilter;
-};
+
+/* TODO (ttannis): Add types for actions */
 
 /* ACTIONS */
 export function setFilterByResource(resourceType: ResourceType, filters: ResourceFilterReducerState) {
@@ -34,34 +30,13 @@ export function clearFilterByCategory(category: string) {
   };
 };
 
-export function updateSingleOption(input: FilterInput) {
-  const { category, value } = input;
+export function updateFilterByCategory(category: string, value: string | FilterOptions) {
   return {
     payload: {
       category,
       value
     },
-    type: UpdateSearchFilter.UPDATE_SINGLE,
-  };
-};
-export function addMultiSelectOption(input: FilterInput) {
-  const { category, value } = input;
-  return {
-    payload: {
-      category,
-      value
-    },
-    type: UpdateSearchFilter.ADD_MULTI_SELECT,
-  };
-};
-export function removeMultiSelectOption(input: FilterInput) {
-  const { category, value } = input;
-  return {
-    payload: {
-      category,
-      value
-    },
-    type: UpdateSearchFilter.REMOVE_MULTI_SELECT,
+    type: UpdateSearchFilter.UPDATE_CATEGORY,
   };
 };
 
@@ -84,69 +59,29 @@ export const initialFilterState: FilterReducerState = {
 };
 
 export default function reducer(state: FilterReducerState = initialFilterState, action, resourceType: ResourceType): FilterReducerState {
-  const { category, value } = action.payload;
   const resourceFilters = state[resourceType];
-  const categoryValues = resourceFilters ? resourceFilters[category] : {};
+  const { payload, type } = action;
 
-  let shouldClearCategory = false;
-
-  if (action.type === UpdateSearchFilter.SET_BY_RESOURCE) {
-    return {
-      ...state,
-      [action.payload.resourceType]: action.payload.filters
-    }
-  }
-
-  if (action.type === UpdateSearchFilter.UPDATE_SINGLE) {
-    if (value) {
+  switch (type) {
+    case UpdateSearchFilter.CLEAR_CATEGORY:
+      return {
+        ...state,
+        [resourceType]: filterFromObj(resourceFilters, [payload.category])
+      };
+    case UpdateSearchFilter.SET_BY_RESOURCE:
+      return {
+        ...state,
+        [payload.resourceType]: payload.filters
+      };
+    case UpdateSearchFilter.UPDATE_CATEGORY:
       return {
         ...state,
         [resourceType]: {
           ...resourceFilters,
-          [category]: value
+          [payload.category]: payload.value
         }
-      }
-    }
-    else {
-      shouldClearCategory = true;
-    }
-  }
-
-  if (action.type === UpdateSearchFilter.ADD_MULTI_SELECT) {
-    return {
-      ...state,
-      [resourceType]: {
-        ...resourceFilters,
-        [category]: {
-          ...categoryValues,
-          [value]: true,
-        }
-      }
-    }
-  }
-
-  if (action.type === UpdateSearchFilter.REMOVE_MULTI_SELECT) {
-    const newCategoryDict = filterFromObj(categoryValues, [value]);
-    if (Object.keys(newCategoryDict).length > 0) {
-      return {
-        ...state,
-        [resourceType]: {
-          ...resourceFilters,
-          [category]: newCategoryDict
-        }
-      }
-    }
-    else {
-      shouldClearCategory = true;
-    }
-  }
-
-  if (action.type == UpdateSearchFilter.CLEAR_CATEGORY || shouldClearCategory) {
-    return {
-      ...state,
-      [resourceType]: filterFromObj(resourceFilters, [category])
-    }
-  }
-
-  return state;
+      };
+    default:
+      return state;
+  };
 };

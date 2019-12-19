@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import { FilterInput } from 'interfaces';
-
-import { updateSingleOption } from 'ducks/search/filters/reducer';
+import { clearFilterByCategory, updateFilterByCategory } from 'ducks/search/filters/reducer';
 
 import { APPLY_BTN_TEXT } from '../constants';
 
@@ -15,7 +12,7 @@ interface StateFromProps {
 }
 
 interface DispatchFromProps {
-  onApplyChanges: (input: FilterInput) => void;
+  onApplyChanges: (category: string, value: string) => void;
 }
 
 export type InputFilterProps = StateFromProps & DispatchFromProps;
@@ -43,7 +40,7 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
   onApplyChanges = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!this.props.disabled) {
-      this.props.onApplyChanges({ category: this.props.categoryId, value: this.state.value });
+      this.props.onApplyChanges(this.props.categoryId, this.state.value);
     }
   };
 
@@ -72,30 +69,20 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
         </button>
       </form>
     );
-    /*return (
-      <div className="input-section-content">
-        <input
-          type="text"
-          disabled={ disabled }
-          name={ categoryId }
-          onChange={ this.onInputChange }
-          value={ this.state.value }
-        />
-        <button
-          name={ categoryId }
-          className="btn btn-default"
-          disabled={ disabled }
-          onClick={ this.onApplyChanges }
-        >
-          { APPLY_BTN_TEXT }
-        </button>
-      </div>
-    );*/
   }
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ onApplyChanges: updateSingleOption }, dispatch);
+  return {
+    onApplyChanges: (category, value) => {
+      if (!!value) {
+        dispatch(updateFilterByCategory(category, value));
+      }
+      else {
+        dispatch(clearFilterByCategory(category));
+      }
+    },
+  };
 };
 
 export default connect<{}, DispatchFromProps, StateFromProps>(null, mapDispatchToProps)(InputFilter);

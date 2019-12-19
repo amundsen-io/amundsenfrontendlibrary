@@ -40,28 +40,22 @@ import {
   setPageIndex, setResource,
 } from './reducer';
 import {
-  setFilterByResource
+  setFilterByResource,
+  UpdateSearchFilter
 } from './filters/reducer';
 import { autoSelectResource, getPageIndex, getSearchState } from './utils';
 import { updateSearchUrl } from 'utils/navigation-utils';
-
-import {
-  UpdateSearchFilter
-} from './filters/reducer';
 
 export function* filterWorker(action: any): SagaIterator {
   const state = yield select();
   const { search_term, selectedTab, filters } = state.search;
   const pageIndex = getPageIndex(state.search)
   yield put(searchResource(search_term, selectedTab, pageIndex));
-  updateSearchUrl({ resource: selectedTab, term: search_term, index: pageIndex, filters: filters }, true);
+  updateSearchUrl({ filters, resource: selectedTab, term: search_term, index: pageIndex }, true);
 };
-export function* multiSelectFilterWatcher(): SagaIterator {
-  yield debounce(750, [UpdateSearchFilter.ADD_MULTI_SELECT, UpdateSearchFilter.REMOVE_MULTI_SELECT], filterWorker);
-}
-export function* singleInputFilterWatcher(): SagaIterator {
-  yield takeLatest([UpdateSearchFilter.CLEAR_CATEGORY, UpdateSearchFilter.UPDATE_SINGLE], filterWorker);
-}
+export function* filterWatcher(): SagaIterator {
+  yield debounce(750, [UpdateSearchFilter.CLEAR_CATEGORY, UpdateSearchFilter.UPDATE_CATEGORY], filterWorker);
+};
 
 export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
   const { term } = action.payload;

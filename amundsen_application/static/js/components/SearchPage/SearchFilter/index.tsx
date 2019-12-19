@@ -31,11 +31,7 @@ export interface StateFromProps {
   inputSections: InputFilterSection[];
 }
 
-export interface DispatchFromProps {
-  onClearFilter: (categoryId: string) => void;
-}
-
-export type SearchFilterProps = StateFromProps & DispatchFromProps;
+export type SearchFilterProps = StateFromProps;
 
 export class SearchFilter extends React.Component<SearchFilterProps> {
   constructor(props) {
@@ -52,9 +48,10 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
     });
     return (
       <FilterSection
-        title={ title }
+        key={key}
+        categoryId={ categoryId }
         hasValue={ hasChecked }
-        onClearFilter={ () => this.props.onClearFilter(categoryId) }
+        title={ title }
       >
         <CheckBoxFilter
           categoryId={categoryId}
@@ -68,9 +65,10 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
     const { categoryId, title, value } = section;
     return (
       <FilterSection
-        title={ title }
+        key={key}
+        categoryId={ categoryId }
         hasValue={ value && value.length > 0 }
-        onClearFilter={ () => this.props.onClearFilter(categoryId) }
+        title={ title }
       >
         <InputFilter
           categoryId={ categoryId }
@@ -150,12 +148,4 @@ export const mapStateToProps = (state: GlobalState) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch: any) => {
-  return {
-    onClearFilter: ((category: string) => {
-      dispatch(clearFilterByCategory(category));
-    }),
-  };
-};
-
-export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(SearchFilter);
+export default connect<StateFromProps>(mapStateToProps, null)(SearchFilter);

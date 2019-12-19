@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { addMultiSelectOption, removeMultiSelectOption } from 'ducks/search/filters/reducer';
+import { clearFilterByCategory, updateFilterByCategory } from 'ducks/search/filters/reducer';
 
 import CheckBoxItem from 'components/common/Inputs/CheckBoxItem';
 
@@ -11,7 +11,7 @@ export interface CheckboxFilterProperties {
   value: string;
 }
 
-interface StateFromProps {
+interface OwnProps {
   categoryId: string;
   properties: CheckboxFilterProperties[];
 }
@@ -20,7 +20,7 @@ interface DispatchFromProps {
   onCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export type CheckBoxFilterProps = StateFromProps & DispatchFromProps;
+export type CheckBoxFilterProps = OwnProps & DispatchFromProps;
 
 export class CheckBoxFilter extends React.Component<CheckBoxFilterProps> {
   constructor(props) {
@@ -51,19 +51,29 @@ export class CheckBoxFilter extends React.Component<CheckBoxFilterProps> {
   }
 };
 
-export const mapDispatchToProps = (dispatch: any) => {
+export const mapDispatchToProps = (dispatch: any, ownProps: OwnProps) => {
   return {
-    onCheckboxChange: ((e: React.ChangeEvent<HTMLInputElement>) => {
+    onCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+      const checkedValues = {};
       const value = e.target.value;
       const category = e.target.name;
-      if (e.target.checked) {
-        dispatch(addMultiSelectOption({ category, value }));
+      let shouldClearFilter = true;
+
+      ownProps.properties.forEach((property) => {
+        if ((property.value === value && e.target.checked) || (property.value !== value && property.checked)) {
+          checkedValues[property.value] = true;
+          shouldClearFilter = false;
+        }
+      });
+
+      if (shouldClearFilter) {
+        dispatch(clearFilterByCategory(category));
       }
       else {
-        dispatch(removeMultiSelectOption({ category, value }))
+        dispatch(updateFilterByCategory(category, checkedValues));
       }
-    }),
+    },
   }
 };
 
-export default connect<{}, DispatchFromProps, StateFromProps>(null, mapDispatchToProps)(CheckBoxFilter);
+export default connect<{}, DispatchFromProps, OwnProps>(null, mapDispatchToProps)(CheckBoxFilter);

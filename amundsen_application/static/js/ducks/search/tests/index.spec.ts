@@ -395,340 +395,340 @@ describe('search ducks', () => {
     });
   });
 
-  describe('sagas', () => {
-    describe('searchAllWatcher', () => {
-      it('takes every SearchAll.REQUEST with searchAllWorker', () => {
-        testSaga(searchAllWatcher)
-          .next().takeEvery(SearchAll.REQUEST, searchAllWorker)
-          .next().isDone();
-      });
-    });
-
-    describe('searchAllWorker', () => {
-      /* TODO - Improve this test
-      it('executes flow for returning search results', () => {
-        const term = 'testSearch';
-        const options = {};
-        testSaga(searchAllWorker, searchAll(term, options))
-          .next()
-          .call(srchAll, options, term)
-          .next(expectedSearchResults)
-          .put(searchAllSuccess(expectedSearchResults))
-          .next()
-          .isDone();
-      });*/
-
-      it('handles request error', () => {
-        testSaga(searchAllWorker, searchAll('test', ResourceType.table, 0))
-          .next().throw(new Error()).put(searchAllFailure())
-          .next().isDone();
-      });
-    });
-
-    describe('searchResourceWatcher', () => {
-      it('takes every SearchResource.REQUEST with searchResourceWorker', () => {
-        testSaga(searchResourceWatcher)
-          .next().takeEvery(SearchResource.REQUEST, searchResourceWorker)
-          .next().isDone();
-      });
-    });
-
-    /*describe('searchResourceWorker', () => {
-      it('executes flow for returning search results', () => {
-        const pageIndex = 0;
-        const resource = ResourceType.table;
-        const term = 'test';
-        testSaga(searchResourceWorker, searchResource(term, resource, pageIndex))
-          .next().call(API.searchResource, pageIndex, resource, term)
-          .next(expectedSearchResults).put(searchResourceSuccess(expectedSearchResults))
-          .next().isDone();
-      });
-
-      it('handles request error', () => {
-        testSaga(searchResourceWorker, searchResource('test', ResourceType.table, 0))
-          .next().throw(new Error()).put(searchResourceFailure())
-          .next().isDone();
-      });
-    });*/
-
-    describe('submitSearchWorker', () => {
-      it('initiates a searchAll action', () => {
-        const term = 'test';
-        updateSearchUrlSpy.mockClear();
-        testSaga(submitSearchWorker, submitSearch(term))
-          .next().put(searchAll(term))
-          .next().isDone();
-          expect(updateSearchUrlSpy).toHaveBeenCalledWith({ term });
-
-      });
-    });
-
-    describe('submitSearchWatcher', () => {
-      it('takes every SubmitSearch.REQUEST with submitSearchWorker', () => {
-        testSaga(submitSearchWatcher)
-          .next().takeEvery(SubmitSearch.REQUEST, submitSearchWorker)
-          .next().isDone();
-      });
-    });
-
-    describe('setResourceWorker', () => {
-      it('calls updateSearchUrl when updateUrl is true', () => {
-        const resource = ResourceType.table;
-        const updateUrl = true;
-        updateSearchUrlSpy.mockClear();
-        testSaga(setResourceWorker, setResource(resource, updateUrl))
-          .next().select(SearchUtils.getSearchState)
-          .next(globalState.search).isDone();
-        expect(updateSearchUrlSpy).toHaveBeenCalledWith({
-          resource,
-          term: searchState.search_term,
-          index: searchState.tables.page_index,
-        });
-      });
-
-      it('calls updateSearchUrl when updateUrl is true', () => {
-        const resource = ResourceType.table;
-        const updateUrl = false;
-        updateSearchUrlSpy.mockClear();
-
-        testSaga(setResourceWorker, setResource(resource, updateUrl))
-          .next().select(SearchUtils.getSearchState)
-          .next(searchState).isDone();
-        expect(updateSearchUrlSpy).not.toHaveBeenCalled();
-      });
-    });
-
-    describe('setResourceWatcher', () => {
-      it('takes every SetResource.REQUEST with setResourceWorker', () => {
-        testSaga(setResourceWatcher)
-          .next().takeEvery(SetResource.REQUEST, setResourceWorker)
-          .next().isDone();
-      });
-    });
-
-    describe('setPageIndexWorker', () => {
-      it('initiates a searchResource and updates the url search when specified', () => {
-        const index = 1;
-        const updateUrl = true;
-        updateSearchUrlSpy.mockClear();
-
-        testSaga(setPageIndexWorker, setPageIndex(index, updateUrl))
-          .next().select(SearchUtils.getSearchState)
-          .next(searchState).put(searchResource(searchState.search_term, searchState.selectedTab, index))
-          .next().isDone();
-        expect(updateSearchUrlSpy).toHaveBeenCalled();
-      });
-
-      it('initiates a searchResource and does not update url search', () => {
-        const index = 3;
-        const updateUrl = false;
-        updateSearchUrlSpy.mockClear();
-
-        testSaga(setPageIndexWorker, setPageIndex(index, updateUrl))
-          .next().select(SearchUtils.getSearchState)
-          .next(searchState).put(searchResource(searchState.search_term, searchState.selectedTab, index))
-          .next().isDone();
-        expect(updateSearchUrlSpy).not.toHaveBeenCalled();
-      });
-    });
-
-    describe('setPageIndexWatcher', () => {
-      it('takes every SetPageIndex.REQUEST with setPageIndexWorker', () => {
-        testSaga(setPageIndexWatcher)
-          .next().takeEvery(SetPageIndex.REQUEST, setPageIndexWorker)
-          .next().isDone();
-      });
-    });
-
-    describe('urlDidUpdateWorker', () => {
-      let sagaTest;
-      let term;
-      let resource;
-      let index;
-
-      beforeEach(() => {
-        term = searchState.search_term;
-        resource = searchState.selectedTab;
-        index = SearchUtils.getPageIndex(searchState, resource);
-
-        sagaTest = (action) => {
-          return testSaga(urlDidUpdateWorker, action)
-            .next().select(SearchUtils.getSearchState)
-            .next(searchState);
-        };
-      });
-
-      it('Calls searchAll when search term changes', () => {
-        term = 'new search';
-        sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
-          .put(searchAll(term, resource, index))
-          .next().isDone();
-      });
-
-      it('Calls setResource when the resource has changed', () => {
-        resource = ResourceType.user;
-        sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
-          .put(setResource(resource, false))
-          .next().isDone();
-      });
-
-      it('Calls setPageIndex when the index changes', () => {
-        index = 10;
-        sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
-          .put(setPageIndex(index, false))
-          .next().isDone();
-      });
-    });
-
-    describe('urlDidUpdateWatcher', () => {
-      it('takes every UrlDidUpdate.REQUEST with urlDidUpdateWorker', () => {
-        testSaga(urlDidUpdateWatcher)
-          .next().takeEvery(UrlDidUpdate.REQUEST, urlDidUpdateWorker)
-          .next().isDone();
-      });
-    });
-
-    describe('loadPreviousSearchWorker', () => {
-      it('applies the existing search state into the URL', () => {
-        updateSearchUrlSpy.mockClear();
-
-        testSaga(loadPreviousSearchWorker, loadPreviousSearch())
-          .next().select(SearchUtils.getSearchState)
-          .next(searchState).isDone();
-
-        expect(updateSearchUrlSpy).toHaveBeenCalledWith({
-          term: searchState.search_term,
-          resource: searchState.selectedTab,
-          index: SearchUtils.getPageIndex(searchState, searchState.selectedTab),
-        });
-      });
-    });
-
-    describe('loadPreviousSearchWatcher', () => {
-      it('takes every LoadPreviousSearch.REQUEST with loadPreviousSearchWorker', () => {
-        testSaga(loadPreviousSearchWatcher)
-          .next().takeEvery(LoadPreviousSearch.REQUEST, loadPreviousSearchWorker)
-          .next().isDone();
-      });
-    });
-
-    describe('inlineSearchWorker', () => {
-      /* TODO - Considering some cleanup */
-    });
-
-    describe('inlineSearchWatcher', () => {
-      /* TODO - Need to investigate proper test approach
-      it('debounces InlineSearch.REQUEST and calls inlineSearchWorker', () => {
-      });
-      */
-    });
-
-    describe('selectInlineResultWorker', () => {
-      /* TODO - Considering some cleanup */
-    });
-
-    describe('selectInlineResultsWatcher', () => {
-      it('takes every InlineSearch.REQUEST with selectInlineResultWorker', () => {
-        testSaga(selectInlineResultsWatcher)
-          .next().takeEvery(InlineSearch.SELECT, selectInlineResultWorker)
-          .next().isDone();
-      });
-    });
-  });
-
-  describe('utils', () => {
-    describe('getSearchState', () => {
-      it('returns the search state', () => {
-        const result = SearchUtils.getSearchState(globalState);
-        expect(result).toEqual(searchState);
-      });
-    });
-
-    describe('getPageIndex', () => {
-      const mockState = {
-        ...searchState,
-        selectedTab: ResourceType.dashboard,
-        dashboards: {
-          ...searchState.dashboards,
-          page_index: 1,
-        },
-        tables: {
-          ...searchState.tables,
-          page_index: 2,
-        },
-        users: {
-          ...searchState.users,
-          page_index: 3,
-        }
-      };
-
-      it('given ResourceType.dashboard, returns page_index for dashboards', () => {
-        expect(SearchUtils.getPageIndex(mockState, ResourceType.dashboard)).toEqual(mockState.dashboards.page_index);
-      });
-
-      it('given ResourceType.table, returns page_index for table', () => {
-        expect(SearchUtils.getPageIndex(mockState, ResourceType.table)).toEqual(mockState.tables.page_index);
-      });
-
-      it('given ResourceType.user, returns page_index for users', () => {
-        expect(SearchUtils.getPageIndex(mockState, ResourceType.user)).toEqual(mockState.users.page_index);
-      });
-
-      it('given no resource, returns page_index for the selected resource', () => {
-        const resourceToUse = mockState[mockState.selectedTab + 's'];
-        expect(SearchUtils.getPageIndex(mockState)).toEqual(resourceToUse.page_index);
-      });
-
-      it('returns 0 if not given a supported ResourceType', () => {
-        // @ts-ignore: cover default case
-        expect(SearchUtils.getPageIndex(mockState, 'not valid input')).toEqual(0);
-      });
-    });
-
-    describe('autoSelectResource', () => {
-      const emptyMockState = {
-        ...searchState,
-        dashboards: {
-          ...searchState.dashboards,
-          total_results: 0,
-        },
-        tables: {
-          ...searchState.tables,
-          total_results: 0,
-        },
-        users: {
-          ...searchState.users,
-          total_results: 0,
-        }
-      };
-
-      it('returns the DEFAULT_RESOURCE_TYPE when search results are empty', () => {
-        expect(SearchUtils.autoSelectResource(emptyMockState)).toEqual(DEFAULT_RESOURCE_TYPE);
-      });
-
-      it('prefers `table` over `user` and `dashboard`', () => {
-        const mockState = { ...emptyMockState };
-        mockState.tables.total_results = 10;
-        mockState.users.total_results = 10;
-        mockState.dashboards.total_results = 10;
-        expect(SearchUtils.autoSelectResource(mockState)).toEqual(ResourceType.table);
-      });
-
-      it('prefers `user` over `dashboard`', () => {
-        const mockState = { ...emptyMockState };
-        mockState.tables.total_results = 0;
-        mockState.users.total_results = 10;
-        mockState.dashboards.total_results = 10;
-        expect(SearchUtils.autoSelectResource(mockState)).toEqual(ResourceType.user);
-      });
-
-      it('returns `dashboard` if there are dashboards but no other results', () => {
-        const mockState = { ...emptyMockState };
-        mockState.tables.total_results = 0;
-        mockState.users.total_results = 0;
-        mockState.dashboards.total_results = 10;
-        expect(SearchUtils.autoSelectResource(mockState)).toEqual(ResourceType.dashboard);
-      });
-    });
-  });
+  // describe('sagas', () => {
+  //   describe('searchAllWatcher', () => {
+  //     it('takes every SearchAll.REQUEST with searchAllWorker', () => {
+  //       testSaga(searchAllWatcher)
+  //         .next().takeEvery(SearchAll.REQUEST, searchAllWorker)
+  //         .next().isDone();
+  //     });
+  //   });
+  //
+  //   describe('searchAllWorker', () => {
+  //     /* TODO - Improve this test
+  //     it('executes flow for returning search results', () => {
+  //       const term = 'testSearch';
+  //       const options = {};
+  //       testSaga(searchAllWorker, searchAll(term, options))
+  //         .next()
+  //         .call(srchAll, options, term)
+  //         .next(expectedSearchResults)
+  //         .put(searchAllSuccess(expectedSearchResults))
+  //         .next()
+  //         .isDone();
+  //     });*/
+  //
+  //     it('handles request error', () => {
+  //       testSaga(searchAllWorker, searchAll('test', ResourceType.table, 0))
+  //         .next().throw(new Error()).put(searchAllFailure())
+  //         .next().isDone();
+  //     });
+  //   });
+  //
+  //   describe('searchResourceWatcher', () => {
+  //     it('takes every SearchResource.REQUEST with searchResourceWorker', () => {
+  //       testSaga(searchResourceWatcher)
+  //         .next().takeEvery(SearchResource.REQUEST, searchResourceWorker)
+  //         .next().isDone();
+  //     });
+  //   });
+  //
+  //   /*describe('searchResourceWorker', () => {
+  //     it('executes flow for returning search results', () => {
+  //       const pageIndex = 0;
+  //       const resource = ResourceType.table;
+  //       const term = 'test';
+  //       testSaga(searchResourceWorker, searchResource(term, resource, pageIndex))
+  //         .next().call(API.searchResource, pageIndex, resource, term)
+  //         .next(expectedSearchResults).put(searchResourceSuccess(expectedSearchResults))
+  //         .next().isDone();
+  //     });
+  //
+  //     it('handles request error', () => {
+  //       testSaga(searchResourceWorker, searchResource('test', ResourceType.table, 0))
+  //         .next().throw(new Error()).put(searchResourceFailure())
+  //         .next().isDone();
+  //     });
+  //   });*/
+  //
+  //   describe('submitSearchWorker', () => {
+  //     it('initiates a searchAll action', () => {
+  //       const term = 'test';
+  //       updateSearchUrlSpy.mockClear();
+  //       testSaga(submitSearchWorker, submitSearch(term))
+  //         .next().put(searchAll(term))
+  //         .next().isDone();
+  //         expect(updateSearchUrlSpy).toHaveBeenCalledWith({ term });
+  //
+  //     });
+  //   });
+  //
+  //   describe('submitSearchWatcher', () => {
+  //     it('takes every SubmitSearch.REQUEST with submitSearchWorker', () => {
+  //       testSaga(submitSearchWatcher)
+  //         .next().takeEvery(SubmitSearch.REQUEST, submitSearchWorker)
+  //         .next().isDone();
+  //     });
+  //   });
+  //
+  //   describe('setResourceWorker', () => {
+  //     it('calls updateSearchUrl when updateUrl is true', () => {
+  //       const resource = ResourceType.table;
+  //       const updateUrl = true;
+  //       updateSearchUrlSpy.mockClear();
+  //       testSaga(setResourceWorker, setResource(resource, updateUrl))
+  //         .next().select(SearchUtils.getSearchState)
+  //         .next(globalState.search).isDone();
+  //       expect(updateSearchUrlSpy).toHaveBeenCalledWith({
+  //         resource,
+  //         term: searchState.search_term,
+  //         index: searchState.tables.page_index,
+  //       });
+  //     });
+  //
+  //     it('calls updateSearchUrl when updateUrl is true', () => {
+  //       const resource = ResourceType.table;
+  //       const updateUrl = false;
+  //       updateSearchUrlSpy.mockClear();
+  //
+  //       testSaga(setResourceWorker, setResource(resource, updateUrl))
+  //         .next().select(SearchUtils.getSearchState)
+  //         .next(searchState).isDone();
+  //       expect(updateSearchUrlSpy).not.toHaveBeenCalled();
+  //     });
+  //   });
+  //
+  //   describe('setResourceWatcher', () => {
+  //     it('takes every SetResource.REQUEST with setResourceWorker', () => {
+  //       testSaga(setResourceWatcher)
+  //         .next().takeEvery(SetResource.REQUEST, setResourceWorker)
+  //         .next().isDone();
+  //     });
+  //   });
+  //
+  //   describe('setPageIndexWorker', () => {
+  //     it('initiates a searchResource and updates the url search when specified', () => {
+  //       const index = 1;
+  //       const updateUrl = true;
+  //       updateSearchUrlSpy.mockClear();
+  //
+  //       testSaga(setPageIndexWorker, setPageIndex(index, updateUrl))
+  //         .next().select(SearchUtils.getSearchState)
+  //         .next(searchState).put(searchResource(searchState.search_term, searchState.selectedTab, index))
+  //         .next().isDone();
+  //       expect(updateSearchUrlSpy).toHaveBeenCalled();
+  //     });
+  //
+  //     it('initiates a searchResource and does not update url search', () => {
+  //       const index = 3;
+  //       const updateUrl = false;
+  //       updateSearchUrlSpy.mockClear();
+  //
+  //       testSaga(setPageIndexWorker, setPageIndex(index, updateUrl))
+  //         .next().select(SearchUtils.getSearchState)
+  //         .next(searchState).put(searchResource(searchState.search_term, searchState.selectedTab, index))
+  //         .next().isDone();
+  //       expect(updateSearchUrlSpy).not.toHaveBeenCalled();
+  //     });
+  //   });
+  //
+  //   describe('setPageIndexWatcher', () => {
+  //     it('takes every SetPageIndex.REQUEST with setPageIndexWorker', () => {
+  //       testSaga(setPageIndexWatcher)
+  //         .next().takeEvery(SetPageIndex.REQUEST, setPageIndexWorker)
+  //         .next().isDone();
+  //     });
+  //   });
+  //
+  //   describe('urlDidUpdateWorker', () => {
+  //     let sagaTest;
+  //     let term;
+  //     let resource;
+  //     let index;
+  //
+  //     beforeEach(() => {
+  //       term = searchState.search_term;
+  //       resource = searchState.selectedTab;
+  //       index = SearchUtils.getPageIndex(searchState, resource);
+  //
+  //       sagaTest = (action) => {
+  //         return testSaga(urlDidUpdateWorker, action)
+  //           .next().select(SearchUtils.getSearchState)
+  //           .next(searchState);
+  //       };
+  //     });
+  //
+  //     it('Calls searchAll when search term changes', () => {
+  //       term = 'new search';
+  //       sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
+  //         .put(searchAll(term, resource, index))
+  //         .next().isDone();
+  //     });
+  //
+  //     it('Calls setResource when the resource has changed', () => {
+  //       resource = ResourceType.user;
+  //       sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
+  //         .put(setResource(resource, false))
+  //         .next().isDone();
+  //     });
+  //
+  //     it('Calls setPageIndex when the index changes', () => {
+  //       index = 10;
+  //       sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
+  //         .put(setPageIndex(index, false))
+  //         .next().isDone();
+  //     });
+  //   });
+  //
+  //   describe('urlDidUpdateWatcher', () => {
+  //     it('takes every UrlDidUpdate.REQUEST with urlDidUpdateWorker', () => {
+  //       testSaga(urlDidUpdateWatcher)
+  //         .next().takeEvery(UrlDidUpdate.REQUEST, urlDidUpdateWorker)
+  //         .next().isDone();
+  //     });
+  //   });
+  //
+  //   describe('loadPreviousSearchWorker', () => {
+  //     it('applies the existing search state into the URL', () => {
+  //       updateSearchUrlSpy.mockClear();
+  //
+  //       testSaga(loadPreviousSearchWorker, loadPreviousSearch())
+  //         .next().select(SearchUtils.getSearchState)
+  //         .next(searchState).isDone();
+  //
+  //       expect(updateSearchUrlSpy).toHaveBeenCalledWith({
+  //         term: searchState.search_term,
+  //         resource: searchState.selectedTab,
+  //         index: SearchUtils.getPageIndex(searchState, searchState.selectedTab),
+  //       });
+  //     });
+  //   });
+  //
+  //   describe('loadPreviousSearchWatcher', () => {
+  //     it('takes every LoadPreviousSearch.REQUEST with loadPreviousSearchWorker', () => {
+  //       testSaga(loadPreviousSearchWatcher)
+  //         .next().takeEvery(LoadPreviousSearch.REQUEST, loadPreviousSearchWorker)
+  //         .next().isDone();
+  //     });
+  //   });
+  //
+  //   describe('inlineSearchWorker', () => {
+  //     /* TODO - Considering some cleanup */
+  //   });
+  //
+  //   describe('inlineSearchWatcher', () => {
+  //     /* TODO - Need to investigate proper test approach
+  //     it('debounces InlineSearch.REQUEST and calls inlineSearchWorker', () => {
+  //     });
+  //     */
+  //   });
+  //
+  //   describe('selectInlineResultWorker', () => {
+  //     /* TODO - Considering some cleanup */
+  //   });
+  //
+  //   describe('selectInlineResultsWatcher', () => {
+  //     it('takes every InlineSearch.REQUEST with selectInlineResultWorker', () => {
+  //       testSaga(selectInlineResultsWatcher)
+  //         .next().takeEvery(InlineSearch.SELECT, selectInlineResultWorker)
+  //         .next().isDone();
+  //     });
+  //   });
+  // });
+  //
+  // describe('utils', () => {
+  //   describe('getSearchState', () => {
+  //     it('returns the search state', () => {
+  //       const result = SearchUtils.getSearchState(globalState);
+  //       expect(result).toEqual(searchState);
+  //     });
+  //   });
+  //
+  //   describe('getPageIndex', () => {
+  //     const mockState = {
+  //       ...searchState,
+  //       selectedTab: ResourceType.dashboard,
+  //       dashboards: {
+  //         ...searchState.dashboards,
+  //         page_index: 1,
+  //       },
+  //       tables: {
+  //         ...searchState.tables,
+  //         page_index: 2,
+  //       },
+  //       users: {
+  //         ...searchState.users,
+  //         page_index: 3,
+  //       }
+  //     };
+  //
+  //     it('given ResourceType.dashboard, returns page_index for dashboards', () => {
+  //       expect(SearchUtils.getPageIndex(mockState, ResourceType.dashboard)).toEqual(mockState.dashboards.page_index);
+  //     });
+  //
+  //     it('given ResourceType.table, returns page_index for table', () => {
+  //       expect(SearchUtils.getPageIndex(mockState, ResourceType.table)).toEqual(mockState.tables.page_index);
+  //     });
+  //
+  //     it('given ResourceType.user, returns page_index for users', () => {
+  //       expect(SearchUtils.getPageIndex(mockState, ResourceType.user)).toEqual(mockState.users.page_index);
+  //     });
+  //
+  //     it('given no resource, returns page_index for the selected resource', () => {
+  //       const resourceToUse = mockState[mockState.selectedTab + 's'];
+  //       expect(SearchUtils.getPageIndex(mockState)).toEqual(resourceToUse.page_index);
+  //     });
+  //
+  //     it('returns 0 if not given a supported ResourceType', () => {
+  //       // @ts-ignore: cover default case
+  //       expect(SearchUtils.getPageIndex(mockState, 'not valid input')).toEqual(0);
+  //     });
+  //   });
+  //
+  //   describe('autoSelectResource', () => {
+  //     const emptyMockState = {
+  //       ...searchState,
+  //       dashboards: {
+  //         ...searchState.dashboards,
+  //         total_results: 0,
+  //       },
+  //       tables: {
+  //         ...searchState.tables,
+  //         total_results: 0,
+  //       },
+  //       users: {
+  //         ...searchState.users,
+  //         total_results: 0,
+  //       }
+  //     };
+  //
+  //     it('returns the DEFAULT_RESOURCE_TYPE when search results are empty', () => {
+  //       expect(SearchUtils.autoSelectResource(emptyMockState)).toEqual(DEFAULT_RESOURCE_TYPE);
+  //     });
+  //
+  //     it('prefers `table` over `user` and `dashboard`', () => {
+  //       const mockState = { ...emptyMockState };
+  //       mockState.tables.total_results = 10;
+  //       mockState.users.total_results = 10;
+  //       mockState.dashboards.total_results = 10;
+  //       expect(SearchUtils.autoSelectResource(mockState)).toEqual(ResourceType.table);
+  //     });
+  //
+  //     it('prefers `user` over `dashboard`', () => {
+  //       const mockState = { ...emptyMockState };
+  //       mockState.tables.total_results = 0;
+  //       mockState.users.total_results = 10;
+  //       mockState.dashboards.total_results = 10;
+  //       expect(SearchUtils.autoSelectResource(mockState)).toEqual(ResourceType.user);
+  //     });
+  //
+  //     it('returns `dashboard` if there are dashboards but no other results', () => {
+  //       const mockState = { ...emptyMockState };
+  //       mockState.tables.total_results = 0;
+  //       mockState.users.total_results = 0;
+  //       mockState.dashboards.total_results = 10;
+  //       expect(SearchUtils.autoSelectResource(mockState)).toEqual(ResourceType.dashboard);
+  //     });
+  //   });
+  // });
 });

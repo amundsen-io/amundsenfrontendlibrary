@@ -200,11 +200,9 @@ export const initialState: SearchReducerState = {
 
 export default function reducer(state: SearchReducerState = initialState, action): SearchReducerState {
   switch (action.type) {
-    case UpdateSearchFilter.ADD_MULTI_SELECT:
     case UpdateSearchFilter.CLEAR_CATEGORY:
-    case UpdateSearchFilter.REMOVE_MULTI_SELECT:
     case UpdateSearchFilter.SET_BY_RESOURCE:
-    case UpdateSearchFilter.UPDATE_SINGLE:
+    case UpdateSearchFilter.UPDATE_CATEGORY:
       return {
         ...state,
         filters: filterReducer(state.filters, action, state.selectedTab),
