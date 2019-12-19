@@ -23,7 +23,7 @@ CMD [ "python3",  "amundsen_application/wsgi.py" ]
 
 FROM base as oidc-release
 
-RUN pip3 install -r requirements3-oidc.txt
+RUN pip3 install .[oidc]
 ENV FRONTEND_SVC_CONFIG_MODULE_CLASS amundsen_application.oidc_config.OidcConfig
 ENV APP_WRAPPER flaskoidc
 ENV APP_WRAPPER_CLASS FlaskOIDC

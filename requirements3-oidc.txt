@@ -1,4 +1,0 @@
-# A wrapper of Flask with pre-configured OIDC support.
-# License: Apache License 2.0
-# Upstream url: https://github.com/verdan/flaskoidc
-flaskoidc==0.0.2
