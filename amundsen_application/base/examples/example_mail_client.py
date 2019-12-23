@@ -1,4 +1,5 @@
 import logging
+import os
 import smtplib
 
 from email.mime.multipart import MIMEMultipart
@@ -11,24 +12,23 @@ from flask import Response, jsonify, make_response
 from amundsen_application.base.base_mail_client import BaseMailClient
 
 
+#  based on https://stackoverflow.com/a/6270987
 class MailClient(BaseMailClient):
     def __init__(self, recipients: List[str]) -> None:
         self.recipients = recipients
 
     def send_email(self,
-                   subject: str,
-                   text: str,
                    html: str,
-                   sender: str = None,
+                   subject: str,
+                   optional_data: Dict = None,
                    recipients: List[str] = None,
-                   optional_data: Dict = None) -> Response:
+                   sender: str = None) -> Response:
         if not sender:
-            sender = '< amundsen email >'  # change me
+            sender = os.environ.get('AMUNDSEN_EMAIL') or ''  # set me
         if not recipients:
             recipients = self.recipients
 
-        # TODO refactor that, it's insecure!
-        sender_pass = '< amundsen email password >'  # change me
+        sender_pass = os.environ.get('AMUNDSEN_EMAIL_PASSWORD') or ''  # set me
 
         # Create message container - the correct MIME type
         # to combine text and html is multipart/alternative.
@@ -37,15 +37,9 @@ class MailClient(BaseMailClient):
         msg['From'] = sender
         msg['To'] = ', '.join(recipients)
 
-        # Record the MIME types of both parts - text/plain and text/html.
-        part1 = MIMEText(text, 'plain')
-        part2 = MIMEText(html, 'html')
-
-        # Attach parts into message container.
-        # According to RFC 2046, the last part of a multipart message,
-        # in this case the HTML message, is the best option and preferred.
-        msg.attach(part1)
-        msg.attach(part2)
+        # Record the MIME type of text/html
+        # and attach parts to message container.
+        msg.attach(MIMEText(html, 'html'))
 
         s = smtplib.SMTP('smtp.gmail.com')
         try:
@@ -59,8 +53,8 @@ class MailClient(BaseMailClient):
             s.quit()
             return make_response(payload, HTTPStatus.OK)
         except Exception as e:
-            message = 'Encountered exception: ' + str(e)
-            logging.exception(message)
-            payload = jsonify({'msg': message})
+            err_message = 'Encountered exception: ' + str(e)
+            logging.exception(err_message)
+            payload = jsonify({'msg': err_message})
             s.quit()
             return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
