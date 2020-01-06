@@ -31,7 +31,15 @@ $header-height: 84px;
         flex-shrink: 0;
         > * {
           margin-right: 16px;
+        }
 
+        .header-link {
+          display: inline-block;
+          margin: 13px 16px 0 0;
+
+          .avatar-label {
+            font-weight: $font-weight-body-bold;
+          }
         }
       }
       &.header-buttons {
