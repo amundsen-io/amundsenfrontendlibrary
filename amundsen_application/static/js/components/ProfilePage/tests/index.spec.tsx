@@ -228,14 +228,14 @@ describe('ProfilePage', () => {
       expect(wrapper.find(DocumentTitle).props().title).toEqual(`${props.user.display_name} - Amundsen Profile`);
     });
 
-    it('renders Breadcrumb', () => {
-      expect(wrapper.find(Breadcrumb).exists()).toBe(true)
-    });
+    // it('renders Breadcrumb', () => {
+    //   expect(wrapper.find(Breadcrumb).exists()).toBe(true)
+    // });
 
     it('renders Avatar for user.display_name', () => {
       expect(wrapper.find(Avatar).props()).toMatchObject({
         name: props.user.display_name,
-        size: 74,
+        size: 40,
         round: true,
       });
     });
@@ -253,7 +253,7 @@ describe('ProfilePage', () => {
     });
 
     it('renders header with display_name', () => {
-      expect(wrapper.find('#profile-title').find('h1').text()).toEqual(props.user.display_name);
+      expect(wrapper.find('.header-title-text').text()).toContain(props.user.display_name);
     });
 
     it('renders Flag with correct props if user not active', () => {
@@ -264,7 +264,7 @@ describe('ProfilePage', () => {
       const wrapper = setup({
         user: userCopy,
       }).wrapper;
-      expect(wrapper.find('#profile-title').find(Flag).props()).toMatchObject({
+      expect(wrapper.find('.header-title-text').find(Flag).props()).toMatchObject({
         caseType: 'sentenceCase',
         labelStyle: 'danger',
         text: 'Alumni',
@@ -272,11 +272,11 @@ describe('ProfilePage', () => {
     });
 
     it('renders user role', () => {
-      expect(wrapper.find('#user-role').text()).toEqual('Tester on QA');
+      expect(wrapper.find('#user-role').text()).toEqual('Tester');
     });
 
-    it('renders user manager', () => {
-      expect(wrapper.find('#user-manager').text()).toEqual('Manager: Test Manager');
+    it('renders user team name', () => {
+      expect(wrapper.find('#team-name').text()).toEqual('QA');
     });
 
     it('renders user manager', () => {
@@ -292,7 +292,7 @@ describe('ProfilePage', () => {
     });
 
     it('renders Tabs w/ correct props', () => {
-      expect(wrapper.find('#profile-tabs').find(Tabs).props()).toMatchObject({
+      expect(wrapper.find('.profile-tabs').find(Tabs).props()).toMatchObject({
         tabs: wrapper.instance().generateTabInfo(),
         defaultTab: BOOKMARKED_TAB_KEY,
       });

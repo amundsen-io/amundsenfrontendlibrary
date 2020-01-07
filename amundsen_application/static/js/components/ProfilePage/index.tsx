@@ -157,17 +157,24 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
               <h3 className="header-title-text truncated">
                 { user.display_name }
                 {
-                  (user.is_active) &&
+                  (!user.is_active) &&
                   <Flag caseType="sentenceCase" labelStyle="danger" text="Alumni"/>
                 }
               </h3>
-              <div className="body-3">
+              <ul className="body-3 header-bullets">
                 {
-                  [user.role_name, user.team_name,`Manager: ${user.manager_fullname}`]
-                  .filter((text) => text != null)
-                  .join(' • ')
+                  user.role_name &&
+                  <li id="user-role">{ user.role_name }</li>
                 }
-              </div>
+                {
+                  user.team_name &&
+                  <li id="team-name">{ user.team_name }</li>
+                }
+                {
+                  user.manager_fullname &&
+                  <li id="user-manager">{ `Manager: ${user.manager_fullname}` }</li>
+                }
+              </ul>
             </div>
             <div className="header-section header-links">
               {/*{*/}
