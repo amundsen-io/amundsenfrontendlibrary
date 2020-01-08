@@ -19,7 +19,7 @@ export interface MapDispatchToProps {
 export type BreadcrumbProps = OwnProps & MapDispatchToProps;
 
 export const Breadcrumb: React.SFC<BreadcrumbProps> = (props) => {
-  let { path, text } = props;
+  const { path, text } = props;
   if (path !== undefined && text !== undefined) {
     return (
       <div className="amundsen-breadcrumb">

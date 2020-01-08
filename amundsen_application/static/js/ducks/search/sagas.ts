@@ -204,7 +204,7 @@ export function* urlDidUpdateWatcher(): SagaIterator {
 
 export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): SagaIterator {
   const state = yield select(getSearchState);
-  if (state.search_term == "") {
+  if (state.search_term === "") {
     BrowserHistory.goBack();
     return;
   }
