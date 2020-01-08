@@ -145,6 +145,7 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
         <div className="resource-detail-layout profile-page">
           <header className="resource-header">
             <div className="header-section">
+              <Breadcrumb />
               <div id="profile-avatar" className="profile-avatar">
                 {
                   user.display_name && user.display_name.length > 0 &&
