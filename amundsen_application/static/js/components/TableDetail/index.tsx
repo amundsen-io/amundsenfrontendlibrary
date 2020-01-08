@@ -120,11 +120,11 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               </h3>
               <BookmarkIcon bookmarkKey={ this.props.tableData.key }/>
               <div className="body-2">
-                Datasets &bull;&nbsp;
-                { getDatabaseDisplayName(data.database) }
-                &nbsp;&bull;&nbsp;
-                { data.cluster }
-                &nbsp;
+                <ul className="header-bullets">
+                  <li>Datasets</li>
+                  <li>{ getDatabaseDisplayName(data.database) }</li>
+                  <li>{ data.cluster }</li>
+                </ul>
                 {
                   data.badges.length > 0 &&
                   <BadgeList badges={ data.badges } />

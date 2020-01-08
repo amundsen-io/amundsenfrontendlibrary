@@ -299,7 +299,7 @@ describe('ProfilePage', () => {
     });
 
     describe('if user.is_active', () => {
-      // TODO - Uncomment when slack integration is fixed
+      // TODO - Uncomment when slack integration is built
       // it('renders slack link with correct href', () => {
       //   expect(wrapper.find('#slack-link').props().href).toEqual('www.slack.com');
       // });

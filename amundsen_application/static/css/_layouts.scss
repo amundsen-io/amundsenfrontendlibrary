@@ -1,12 +1,10 @@
 @import 'variables';
-$header-height: 84px;
+$resource-header-height: 84px;
 
 .resource-detail-layout {
-  min-width: 1048px;
-
   .resource-header {
     display: flex;
-    height: $header-height;
+    height: $resource-header-height;
     border-bottom: 2px solid $divider;
     padding: 16px 24px 0;
 
@@ -29,6 +27,7 @@ $header-height: 84px;
       }
 
       .header-bullets {
+        display: inline;
         margin: 0;
         padding: 0;
 
@@ -72,7 +71,7 @@ $header-height: 84px;
   // 630 | 414+ Flexible layout
   .column-layout-1 {
     display: flex;
-    height: calc(100% - #{$header-height});
+    height: calc(100% - #{$resource-header-height});
 
     > .left-panel {
       > .banner {

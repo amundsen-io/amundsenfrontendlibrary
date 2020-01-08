@@ -161,20 +161,22 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
                   <Flag caseType="sentenceCase" labelStyle="danger" text="Alumni"/>
                 }
               </h3>
-              <ul className="body-3 header-bullets">
-                {
-                  user.role_name &&
-                  <li id="user-role">{ user.role_name }</li>
-                }
-                {
-                  user.team_name &&
-                  <li id="team-name">{ user.team_name }</li>
-                }
-                {
-                  user.manager_fullname &&
-                  <li id="user-manager">{ `Manager: ${user.manager_fullname}` }</li>
-                }
-              </ul>
+              <div className="body-3">
+                <ul className="header-bullets">
+                  {
+                    user.role_name &&
+                    <li id="user-role">{ user.role_name }</li>
+                  }
+                  {
+                    user.team_name &&
+                    <li id="team-name">{ user.team_name }</li>
+                  }
+                  {
+                    user.manager_fullname &&
+                    <li id="user-manager">{ `Manager: ${user.manager_fullname}` }</li>
+                  }
+                </ul>
+              </div>
             </div>
             <div className="header-section header-links">
               {/*{*/}
