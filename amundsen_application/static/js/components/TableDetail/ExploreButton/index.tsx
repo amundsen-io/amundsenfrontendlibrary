@@ -26,14 +26,15 @@ export class ExploreButton extends React.Component<ExploreButtonProps> {
   }
 
   render() {
-    if (!AppConfig.tableProfile.isExploreEnabled) {
+    const url = this.generateUrl();
+    if (!url || !AppConfig.tableProfile.isExploreEnabled) {
       return null;
     }
 
     return (
       <a
         className="btn btn-default btn-lg"
-        href={ this.generateUrl() }
+        href={ url }
         role="button"
         target="_blank"
         id="explore-sql"
