@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { mapStateToProps, mapDispatchToProps, SearchFilter, SearchFilterProps} from '../';
+import { mapStateToProps, SearchFilter, SearchFilterProps} from '../';
 
 import CheckBoxItem from 'components/common/Inputs/CheckBoxItem';
 
@@ -49,7 +49,7 @@ describe('SearchFilter', () => {
         }
       ],
       onCheckboxChange: jest.fn(),
-      onInputChange: jest.fn(),
+      onClearFilter: jest.fn(),
       ...propOverrides
     };
     const wrapper = shallow<SearchFilter>(<SearchFilter {...props} />);
@@ -156,9 +156,5 @@ describe('SearchFilter', () => {
 });
 
 describe('mapStateToProps', () => {
-  // TODO
-});
-
-describe('mapDispatchToProps', () => {
   // TODO
 });

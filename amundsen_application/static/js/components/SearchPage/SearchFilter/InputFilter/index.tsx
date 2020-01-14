@@ -1,10 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import { FilterInput } from 'interfaces';
-
-import { updateSingleOption } from 'ducks/search/filters/reducer';
+import { clearFilterByCategory, updateFilterByCategory } from 'ducks/search/filters/reducer';
 
 import { APPLY_BTN_TEXT } from '../constants';
 
@@ -15,7 +12,7 @@ interface StateFromProps {
 }
 
 interface DispatchFromProps {
-  onApplyChanges: (input: FilterInput) => void;
+  onApplyChanges: (category: string, value: string) => void;
 }
 
 export type InputFilterProps = StateFromProps & DispatchFromProps;
@@ -33,8 +30,18 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
     };
   }
 
-  onApplyChanges = () => {
-    this.props.onApplyChanges({ category: this.props.categoryId, value: this.state.value });
+  componentDidUpdate = (prevProps: StateFromProps) => {
+    const newValue = this.props.value;
+    if (prevProps.value !== newValue) {
+      this.setState({ value: newValue || '' });
+    }
+  };
+
+  onApplyChanges = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!this.props.disabled) {
+      this.props.onApplyChanges(this.props.categoryId, this.state.value);
+    }
   };
 
   onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +51,7 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
   render = () => {
     const { categoryId, disabled = false } = this.props;
     return (
-      <div className="input-section-content">
+      <form className="input-section-content" onSubmit={ this.onApplyChanges }>
         <input
           type="text"
           disabled={ disabled }
@@ -56,17 +63,26 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
           name={ categoryId }
           className="btn btn-default"
           disabled={ disabled }
-          onClick={ this.onApplyChanges }
+          type="submit"
         >
           { APPLY_BTN_TEXT }
         </button>
-      </div>
+      </form>
     );
   }
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ onApplyChanges: updateSingleOption }, dispatch);
+  return {
+    onApplyChanges: (category, value) => {
+      if (!!value) {
+        dispatch(updateFilterByCategory(category, value));
+      }
+      else {
+        dispatch(clearFilterByCategory(category));
+      }
+    },
+  };
 };
 
 export default connect<{}, DispatchFromProps, StateFromProps>(null, mapDispatchToProps)(InputFilter);

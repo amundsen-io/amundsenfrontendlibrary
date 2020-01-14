@@ -1,46 +1,42 @@
-import { FilterInput, ResourceType } from 'interfaces';
+import { ResourceType } from 'interfaces';
 
 import { filterFromObj } from 'ducks/utilMethods';
 
 export enum UpdateSearchFilter {
-  ADD_MULTI_SELECT = 'amundsen/search/filter/ADD_MULTI_SELECT',
-  REMOVE_MULTI_SELECT = 'amundsen/search/filter/REMOVE_MULTI_SELECT',
-  UPDATE_SINGLE =  'amundsen/search/filter/UPDATE_SINGLE',
+  CLEAR_CATEGORY = 'amundsen/search/filter/CLEAR_CATEGORY',
+  SET_BY_RESOURCE = 'amundsen/search/filter/SET_BY_RESOURCE',
+  UPDATE_CATEGORY = 'amundsen/search/filter/UPDATE_CATEGORY',
 }
-export interface UpdateSearchFilterAction {
-  payload: FilterInput;
-  type: UpdateSearchFilter;
-};
+
+/* TODO (ttannis): Add types for actions */
 
 /* ACTIONS */
-export function updateSingleOption(input: FilterInput) {
-  const { category, value } = input;
+export function setFilterByResource(resourceType: ResourceType, filters: ResourceFilterReducerState) {
   return {
     payload: {
-      category,
-      value
+      resourceType,
+      filters
     },
-    type: UpdateSearchFilter.UPDATE_SINGLE,
+    type: UpdateSearchFilter.SET_BY_RESOURCE,
   };
 };
-export function addMultiSelectOption(input: FilterInput) {
-  const { category, value } = input;
+
+export function clearFilterByCategory(category: string) {
   return {
     payload: {
       category,
-      value
     },
-    type: UpdateSearchFilter.ADD_MULTI_SELECT,
+    type: UpdateSearchFilter.CLEAR_CATEGORY,
   };
 };
-export function removeMultiSelectOption(input: FilterInput) {
-  const { category, value } = input;
+
+export function updateFilterByCategory(category: string, value: string | FilterOptions) {
   return {
     payload: {
       category,
       value
     },
-    type: UpdateSearchFilter.REMOVE_MULTI_SELECT,
+    type: UpdateSearchFilter.UPDATE_CATEGORY,
   };
 };
 
@@ -48,63 +44,44 @@ export function removeMultiSelectOption(input: FilterInput) {
 type FilterOptions = { [id:string]: boolean };
 
 export interface FilterReducerState {
-  [ResourceType.table]: TableFilterReducerState;
+  [ResourceType.table]: ResourceFilterReducerState;
 };
 
-export interface TableFilterReducerState {
+export interface ResourceFilterReducerState {
   /* TODO: Future improvements allowing multiple values for all categories will simplify this */
   [category: string]: string | FilterOptions;
 };
 
-export const initialTableFilterState = {
-  'column': '',
-  'database': {},
-  'schema': '',
-  'table': '',
-  'tag': '',
-};
+export const initialTableFilterState = {};
 
 export const initialFilterState: FilterReducerState = {
   [ResourceType.table]: initialTableFilterState,
 };
 
 export default function reducer(state: FilterReducerState = initialFilterState, action, resourceType: ResourceType): FilterReducerState {
-  const { category, value  } = action.payload;
   const resourceFilters = state[resourceType];
-  const categoryValues = resourceFilters ? resourceFilters[category] : {};
+  const { payload, type } = action;
 
-  if (action.type === UpdateSearchFilter.UPDATE_SINGLE) {
-    return {
-      ...state,
-      [resourceType]: {
-        ...resourceFilters,
-        [category]: value
-      }
-    }
-  }
-
-  if (action.type === UpdateSearchFilter.ADD_MULTI_SELECT) {
-    return {
-      ...state,
-      [resourceType]: {
-        ...resourceFilters,
-        [category]: {
-          ...categoryValues,
-          [value]: true,
+  switch (type) {
+    case UpdateSearchFilter.CLEAR_CATEGORY:
+      return {
+        ...state,
+        [resourceType]: filterFromObj(resourceFilters, [payload.category])
+      };
+    case UpdateSearchFilter.SET_BY_RESOURCE:
+      return {
+        ...state,
+        [payload.resourceType]: payload.filters
+      };
+    case UpdateSearchFilter.UPDATE_CATEGORY:
+      return {
+        ...state,
+        [resourceType]: {
+          ...resourceFilters,
+          [payload.category]: payload.value
         }
-      }
-    }
-  }
-
-  if (action.type === UpdateSearchFilter.REMOVE_MULTI_SELECT) {
-    return {
-      ...state,
-      [resourceType]: {
-        ...resourceFilters,
-        [category]: filterFromObj(categoryValues, [value])
-      }
-    }
-  }
-
-  return state;
+      };
+    default:
+      return state;
+  };
 };

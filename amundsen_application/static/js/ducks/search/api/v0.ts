@@ -5,6 +5,8 @@ import { ResourceType } from 'interfaces';
 
 import { DashboardSearchResults, TableSearchResults, UserSearchResults } from '../types';
 
+import { ResourceFilterReducerState } from '../filters/reducer';
+
 export const BASE_URL = '/api/search/v0';
 
 export interface SearchAPI {
@@ -27,12 +29,12 @@ export const searchResourceHelper = (response: AxiosResponse<SearchAPI>) => {
   return ret;
 };
 
-export function searchResource(pageIndex: number, resource: ResourceType, term: string, filters?: {}) {
+export function searchResource(pageIndex: number, resource: ResourceType, term: string, filters: ResourceFilterReducerState = {}) {
   if (resource === ResourceType.dashboard ||
      (resource === ResourceType.user && !AppConfig.indexUsers.enabled)) {
     return Promise.resolve({});
   }
-  if (filters) {
+  if (Object.keys(filters).length > 0) {
     return axios.post(`${BASE_URL}/${resource}_qs`, {
       filters,
       term,

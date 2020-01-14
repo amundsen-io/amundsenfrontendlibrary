@@ -10,7 +10,6 @@ import {
   DOCUMENT_TITLE_SUFFIX,
   PAGE_INDEX_ERROR_MESSAGE,
   RESULTS_PER_PAGE,
-  SEARCH_ERROR_MESSAGE_INFIX,
   SEARCH_ERROR_MESSAGE_PREFIX,
   SEARCH_ERROR_MESSAGE_SUFFIX,
   SEARCH_SOURCE_NAME,
@@ -134,7 +133,7 @@ describe('SearchPage', () => {
           total_results: 0,
         };
         content = shallow(wrapper.instance().getTabContent(testResults, ResourceType.table));
-        const message = `${SEARCH_ERROR_MESSAGE_PREFIX}${searchTerm}${SEARCH_ERROR_MESSAGE_INFIX}${TABLE_RESOURCE_TITLE.toLowerCase()}${SEARCH_ERROR_MESSAGE_SUFFIX}`;
+        const message = `${SEARCH_ERROR_MESSAGE_PREFIX}${TABLE_RESOURCE_TITLE.toLowerCase()}${SEARCH_ERROR_MESSAGE_SUFFIX}`;
         expect(content.children().at(0).text()).toEqual(message);
       });
     });

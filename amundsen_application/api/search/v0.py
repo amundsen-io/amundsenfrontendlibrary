@@ -3,7 +3,7 @@ import json
 
 from http import HTTPStatus
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional  # noqa: F401
 
 from flask import Response, jsonify, make_response, request
 from flask import current_app as app
@@ -84,12 +84,14 @@ def search_table_qs() -> Response:
     valid_categories = ['column', 'database', 'schema', 'table', 'tag']
     for category in valid_categories:
         values = filters.get(category)
-        if type(values) == str and len(values) > 0:
-            filter_payload[category] = [values, ]
-        if type(values) == dict:
-            value_list = list(values.keys())
-            if len(value_list) > 0:
-                filter_payload[category] = value_list
+        value_list = []  # type: List
+        if values is not None:
+            if type(values) == str:
+                value_list = [values, ]
+            elif type(values) == dict:
+                value_list = [key for key in values.keys() if values[key] is True]
+        if len(value_list) > 0:
+            filter_payload[category] = value_list
 
     query_json = {
         'page_index': int(page_index),
