@@ -3,7 +3,7 @@ import json
 
 from http import HTTPStatus
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Optional
 
 from flask import Response, jsonify, make_response, request
 from flask import current_app as app
@@ -84,7 +84,7 @@ def search_table_qs() -> Response:
     valid_categories = ['column', 'database', 'schema', 'table', 'tag']
     for category in valid_categories:
         values = filters.get(category)
-        value_list = [] # type: List
+        value_list = []  # type: List
         if values is not None:
             if type(values) == str:
                 value_list = [values, ]
