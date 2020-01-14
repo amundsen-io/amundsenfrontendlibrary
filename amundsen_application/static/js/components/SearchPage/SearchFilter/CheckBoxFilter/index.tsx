@@ -13,7 +13,7 @@ export interface CheckboxFilterProperties {
 
 interface OwnProps {
   categoryId: string;
-  properties: CheckboxFilterProperties[];
+  checkboxProperties: CheckboxFilterProperties[];
 }
 
 interface DispatchFromProps {
@@ -42,10 +42,10 @@ export class CheckBoxFilter extends React.Component<CheckBoxFilterProps> {
   };
 
   render = () => {
-    const { categoryId, properties } = this.props;
+    const { categoryId, checkboxProperties } = this.props;
     return (
       <div className="checkbox-section-content">
-        { properties.map((item, index) => this.createCheckBoxItem(categoryId, `item:${categoryId}:${index}`, item)) }
+        { checkboxProperties.map((item, index) => this.createCheckBoxItem(categoryId, `item:${categoryId}:${index}`, item)) }
       </div>
     )
   }
@@ -59,7 +59,7 @@ export const mapDispatchToProps = (dispatch: any, ownProps: OwnProps) => {
       const category = e.target.name;
       let shouldClearFilter = true;
 
-      ownProps.properties.forEach((property) => {
+      ownProps.checkboxProperties.forEach((property) => {
         if ((property.value === value && e.target.checked) || (property.value !== value && property.checked)) {
           checkedValues[property.value] = true;
           shouldClearFilter = false;

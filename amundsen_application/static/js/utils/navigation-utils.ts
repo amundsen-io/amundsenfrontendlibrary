@@ -15,6 +15,8 @@ interface SearchParams {
 
 export const updateSearchUrl = (searchParams: SearchParams, replace: boolean = false) => {
   const filtersForResource = searchParams.filters && searchParams.filters[searchParams.resource] || {};
+
+  // Explicitly listing out parameters to ensure consistent URL format
   const queryStringValues = {
     term: searchParams.term,
     resource: searchParams.resource,
@@ -25,7 +27,6 @@ export const updateSearchUrl = (searchParams: SearchParams, replace: boolean = f
     queryStringValues['filters'] = filtersForResource;
   }
 
-  // Explicitly listing out parameters to ensure consistent URL format
   const urlParams = qs.stringify(queryStringValues);
   if (replace) {
     BrowserHistory.replace(`/search?${urlParams}`);
