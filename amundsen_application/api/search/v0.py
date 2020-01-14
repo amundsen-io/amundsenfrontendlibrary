@@ -3,7 +3,7 @@ import json
 
 from http import HTTPStatus
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional  # noqa: F401
 
 from flask import Response, jsonify, make_response, request
 from flask import current_app as app
