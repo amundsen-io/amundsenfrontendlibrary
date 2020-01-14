@@ -55,7 +55,7 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
       >
         <CheckBoxFilter
           categoryId={categoryId}
-          properties={properties}
+          checkboxProperties={properties}
         />
       </FilterSection>
     );
