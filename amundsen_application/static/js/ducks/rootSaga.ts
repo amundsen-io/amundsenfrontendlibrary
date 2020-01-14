@@ -19,6 +19,7 @@ import { submitFeedbackWatcher } from './feedback/sagas';
 import { getPopularTablesWatcher } from './popularTables/sagas';
 // Search
 import {
+  filterWatcher,
   inlineSearchWatcher,
   inlineSearchWatcherDebounce,
   loadPreviousSearchWatcher,
@@ -64,6 +65,7 @@ export default function* rootSaga() {
     // FeedbackForm
     submitFeedbackWatcher(),
     // Search
+    filterWatcher(),
     inlineSearchWatcher(),
     inlineSearchWatcherDebounce(),
     loadPreviousSearchWatcher(),

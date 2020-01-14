@@ -1,5 +1,7 @@
 import { AppConfig } from './config-types';
 
+import { FilterType, ResourceType } from '../interfaces';
+
 const configDefault: AppConfig = {
   badges: {},
   browse: {
@@ -37,28 +39,69 @@ const configDefault: AppConfig = {
       use_router: true,
     }
   ],
+  // TODO (ttannis): Replace constants defined in some components with displayName
   resourceConfig: {
-    datasets: {
-      'bigquery': {
-        displayName: 'BigQuery',
-        iconClass: 'icon-bigquery',
+    [ResourceType.table]: {
+      displayName: 'Datasets',
+      supportedDatabases: {
+        'bigquery': {
+          displayName: 'BigQuery',
+          iconClass: 'icon-bigquery',
+        },
+        'hive': {
+          displayName: 'Hive',
+          iconClass: 'icon-hive',
+        },
+        'presto': {
+          displayName: 'Presto',
+          iconClass: 'icon-presto',
+        },
+        'postgres': {
+          displayName: 'Postgres',
+          iconClass: 'icon-postgres',
+        },
+        'redshift': {
+          displayName: 'Redshift',
+          iconClass: 'icon-redshift',
+        },
       },
-      'hive': {
-        displayName: 'Hive',
-        iconClass: 'icon-hive',
-      },
-      'presto': {
-        displayName: 'Presto',
-        iconClass: 'icon-presto',
-      },
-      'postgres': {
-        displayName: 'Postgres',
-        iconClass: 'icon-postgres',
-      },
-      'redshift': {
-        displayName: 'Redshift',
-        iconClass: 'icon-redshift',
-      },
+      filterCategories: [
+        {
+          value: 'database',
+          displayName: 'Type',
+          type: FilterType.MULTI_SELECT_VALUE,
+          options: [
+            { value: 'bigquery', displayName: 'BigQuery' },
+            { value: 'hive', displayName: 'Hive' },
+            { value: 'postgres', displayName: 'Postgres' },
+            { value: 'presto', displayName: 'Presto' },
+            { value: 'redshift', displayName: 'Redshift' },
+          ],
+        },
+        {
+          value: 'column',
+          displayName: 'Column',
+          type: FilterType.SINGLE_VALUE,
+        },
+        {
+          value: 'schema',
+          displayName: 'Schema',
+          type: FilterType.SINGLE_VALUE,
+        },
+        {
+          value: 'table',
+          displayName: 'Table',
+          type: FilterType.SINGLE_VALUE,
+        },
+        {
+          value: 'tag',
+          displayName: 'Tag',
+          type: FilterType.SINGLE_VALUE,
+        },
+      ]
+    },
+    [ResourceType.user]: {
+      displayName: 'People'
     },
   },
   tableLineage: {

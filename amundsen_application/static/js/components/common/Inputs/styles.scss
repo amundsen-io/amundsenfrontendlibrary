@@ -1,8 +1,10 @@
-.checkbox {
+.checkbox,
+.radio {
   margin-top: 16px;
   margin-bottom: 16px;
 
-  .checkbox-label {
+  .checkbox-label,
+  .radio-label {
     display: block;
     width: 100%;
 

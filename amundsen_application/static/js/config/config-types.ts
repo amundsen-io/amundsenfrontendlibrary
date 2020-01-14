@@ -1,3 +1,5 @@
+import { FilterType, ResourceType } from '../interfaces';
+
 /**
  * AppConfig and AppConfigCustom should share the same definition, except each field in AppConfigCustom
  * is optional. If you choose to override one of the configs, you must provide the full type definition
@@ -27,6 +29,7 @@ export interface AppConfigCustom {
   logoPath?: string;
   mailClientFeatures?: MailClientFeaturesConfig;
   navLinks?: Array<LinkConfig>;
+  resourceConfig?: ResourceConfig;
   tableLineage?: TableLineageConfig;
   tableProfile?: TableProfileConfig;
 }
@@ -52,6 +55,40 @@ interface GoogleAnalyticsConfig {
 interface BrowseConfig {
   curatedTags: Array<string>;
   showAllTags: boolean;
+}
+
+/* TODO (ttannis): Document new interfaces when finalized */
+interface MultiSelectFilterOptions {
+  displayName?: string;
+  value: string;
+}
+
+interface BaseFilterCategory {
+  value: string;
+  displayName: string;
+  type: FilterType;
+}
+
+interface MultiSelectFilterCategory extends BaseFilterCategory {
+  type: FilterType.MULTI_SELECT_VALUE;
+  options: MultiSelectFilterOptions[];
+}
+
+interface SingleFilterCategory extends BaseFilterCategory {
+  type: FilterType.SINGLE_VALUE;
+}
+
+export type FilterConfig = (MultiSelectFilterCategory|SingleFilterCategory)[];
+
+interface BaseResourceConfig {
+  displayName: string;
+  filterCategories?: FilterConfig;
+}
+
+interface TableResourceConfig extends BaseResourceConfig {
+  supportedDatabases: {
+    [id: string]: DatabaseConfig
+  };
 }
 
 export enum BadgeStyle {
@@ -83,7 +120,8 @@ interface BadgeConfig {
  * datasets - A map of each dataset id to an optional display name or icon class
  */
 interface ResourceConfig {
-  datasets: { [id: string]: DatasetConfig }
+  [ResourceType.table]: TableResourceConfig;
+  [ResourceType.user]: BaseResourceConfig;
 }
 
 /** DatasetConfig - For customizing values related to how each dataset resource
@@ -93,7 +131,7 @@ interface ResourceConfig {
  * iconClass - An option icon class to be used for this dataset source. This
  *             value should be defined in static/css/_icons.scss
  */
-interface DatasetConfig {
+interface DatabaseConfig {
   displayName?: string;
   iconClass?: string;
 }
