@@ -105,7 +105,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
     } else {
       const data = this.props.tableData;
       innerContent = (
-        <div className="resource-detail-layout table-detail-2">
+        <div className="resource-detail-layout table-detail">
           {
             notificationsEnabled() && <RequestMetadataForm />
           }

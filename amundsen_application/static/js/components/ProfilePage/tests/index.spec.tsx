@@ -14,6 +14,7 @@ import { getMockRouterProps } from 'fixtures/mockRouter';
 import { ResourceType } from 'interfaces/Resources';
 
 import {
+  AVATAR_SIZE,
   BOOKMARKED_LABEL,
   BOOKMARKED_SOURCE,
   BOOKMARKED_TAB_KEY,
@@ -228,14 +229,14 @@ describe('ProfilePage', () => {
       expect(wrapper.find(DocumentTitle).props().title).toEqual(`${props.user.display_name} - Amundsen Profile`);
     });
 
-    // it('renders Breadcrumb', () => {
-    //   expect(wrapper.find(Breadcrumb).exists()).toBe(true)
-    // });
+    it('renders Breadcrumb', () => {
+      expect(wrapper.find(Breadcrumb).exists()).toBe(true)
+    });
 
     it('renders Avatar for user.display_name', () => {
       expect(wrapper.find(Avatar).props()).toMatchObject({
         name: props.user.display_name,
-        size: 40,
+        size: AVATAR_SIZE,
         round: true,
       });
     });

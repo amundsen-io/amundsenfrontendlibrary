@@ -21,6 +21,7 @@ import { GetBookmarksForUserRequest } from 'ducks/bookmark/types';
 import { getBookmarksForUser } from 'ducks/bookmark/reducer';
 
 import {
+  AVATAR_SIZE,
   BOOKMARKED_LABEL,
   BOOKMARKED_SOURCE,
   BOOKMARKED_TAB_KEY,
@@ -149,7 +150,7 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
               <div id="profile-avatar" className="profile-avatar">
                 {
                   user.display_name && user.display_name.length > 0 &&
-                  <Avatar name={user.display_name} size={40} round={true} />
+                  <Avatar name={user.display_name} size={AVATAR_SIZE} round={true} />
                 }
               </div>
             </div>
