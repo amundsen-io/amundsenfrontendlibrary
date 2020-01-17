@@ -16,7 +16,7 @@ For information about Amundsen and our other services, visit the [main repositor
 
 ## Requirements
 - Python >= 3.5
-- Node = v8.x.x or v10.x.x (v11.x.x has compatibility issues)
+- Node = v10 or v12 
 - npm >= 6.x.x
 
 ## User Interface
@@ -27,6 +27,10 @@ Please note that the mock images only served as demonstration purpose.
 
     ![](docs/img/landing_page.png)
 
+- **Search Preview**: See inline search results as you type
+
+    ![](docs/img/search_preview.png)
+    
 - **Table Detail Page**: Visualization of a Hive / Redshift table
 
     ![](docs/img/table_detail_page.png)

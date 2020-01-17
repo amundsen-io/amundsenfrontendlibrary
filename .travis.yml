@@ -6,7 +6,7 @@ matrix:
     env:
     - IS_DEPLOYABLE=true
     install:
-    - pip3 install -r requirements3.txt
+    - pip3 install -r requirements.txt
     - pip3 install codecov
     script:
     - make test
@@ -14,7 +14,7 @@ matrix:
     - codecov
   - language: node_js
     node_js:
-    - '8'
+    - '12'
     env:
     - IS_DEPLOYABLE=false
     before_install:

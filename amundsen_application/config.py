@@ -1,5 +1,6 @@
 import os
 from typing import Callable, Dict, Optional, Set  # noqa: F401
+from amundsen_application.models.user import User
 
 from flask import Flask  # noqa: F401
 
@@ -11,6 +12,12 @@ class Config:
                  + '%(threadName)s) - %(message)s'
     LOG_DATE_FORMAT = '%Y-%m-%dT%H:%M:%S%z'
     LOG_LEVEL = 'INFO'
+
+    # Path to the logging configuration file to be used by `fileConfig()` method
+    # https://docs.python.org/3.7/library/logging.config.html#logging.config.fileConfig
+    # LOG_CONFIG_FILE = 'amundsen_application/logging.conf'
+    LOG_CONFIG_FILE = None
+
     COLUMN_STAT_ORDER = None  # type: Dict[str, int]
 
     UNEDITABLE_SCHEMAS = set()  # type: Set[str]
@@ -69,9 +76,9 @@ class LocalConfig(Config):
     # Please note that if specified, this will ignore following config properties:
     # 1. METADATASERVICE_REQUEST_HEADERS
     # 2. SEARCHSERVICE_REQUEST_HEADERS
-    REQUEST_HEADERS_METHOD = None
+    REQUEST_HEADERS_METHOD: Optional[Callable[[Flask], Optional[Dict]]] = None
 
-    AUTH_USER_METHOD = None  # type: Optional[function]
+    AUTH_USER_METHOD: Optional[Callable[[Flask], User]] = None
     GET_PROFILE_URL = None
 
 
