@@ -68,7 +68,7 @@ const configDefault: AppConfig = {
       filterCategories: [
         {
           value: 'database',
-          displayName: 'Type',
+          displayName: 'Source',
           type: FilterType.MULTI_SELECT_VALUE,
           options: [
             { value: 'bigquery', displayName: 'BigQuery' },

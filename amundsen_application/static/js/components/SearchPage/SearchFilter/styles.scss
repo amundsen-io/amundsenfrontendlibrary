@@ -24,5 +24,9 @@
     button {
       margin-left: $spacer-1;
     }
+
+    input {
+      min-width: 0;
+    }
   }
 }
