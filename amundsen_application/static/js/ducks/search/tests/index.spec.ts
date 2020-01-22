@@ -433,7 +433,7 @@ describe('search ducks', () => {
   //     });
   //   });
   //
-  //   /*describe('searchResourceWorker', () => {
+  //   describe('searchResourceWorker', () => {
   //     it('executes flow for returning search results', () => {
   //       const pageIndex = 0;
   //       const resource = ResourceType.table;
@@ -449,7 +449,7 @@ describe('search ducks', () => {
   //         .next().throw(new Error()).put(searchResourceFailure())
   //         .next().isDone();
   //     });
-  //   });*/
+  //   });
   //
   //   describe('submitSearchWorker', () => {
   //     it('initiates a searchAll action', () => {
@@ -589,6 +589,8 @@ describe('search ducks', () => {
   //   });
   //
   //   describe('loadPreviousSearchWorker', () => {
+  //     // TODO - test 'BrowserHistory.goBack' case
+  //
   //     it('applies the existing search state into the URL', () => {
   //       updateSearchUrlSpy.mockClear();
   //
