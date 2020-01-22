@@ -54,6 +54,7 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
       <form className="input-section-content" onSubmit={ this.onApplyChanges }>
         <input
           type="text"
+          autoComplete="off"
           disabled={ disabled }
           name={ categoryId }
           onChange={ this.onInputChange }
