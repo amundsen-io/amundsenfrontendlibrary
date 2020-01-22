@@ -243,7 +243,7 @@ export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): Sa
     term: state.search_term,
     resource: state.selectedTab,
     index: getPageIndex(state),
-    filters: state.search.filters,
+    filters: state.filters,
   });
 };
 export function* loadPreviousSearchWatcher(): SagaIterator {
