@@ -63,26 +63,32 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
   }
 
   componentDidMount() {
-    // TODO - Move into utility function
-    const params = qs.parse(this.props.location.search);
-    const searchIndex = params['index'];
-    const source = params['source'];
-    /* update the url stored in the browser history to remove params used for logging purposes */
-    if (searchIndex !== undefined || source !== undefined) {
-      window.history.replaceState({}, '', `${window.location.origin}${window.location.pathname}`);
-    }
+    const { index, source } = this.getLoggingParams();
 
     this.key = this.getTableKey();
-    this.props.getTableData(this.key, searchIndex, source);
+    this.props.getTableData(this.key, index, source);
     this.didComponentMount = true;
   }
 
   componentDidUpdate(prevProps) {
     const newKey = this.getTableKey();
+
     if (this.key !== newKey) {
+      const { index, source } = this.getLoggingParams();
+      this.props.getTableData(this.key, index, source);
       this.key = newKey;
-      this.props.getTableData(this.key);
     }
+  }
+
+  getLoggingParams() {
+    const params = qs.parse(this.props.location.search);
+    const index = params['index'];
+    const source = params['source'];
+    /* update the url stored in the browser history to remove params used for logging purposes */
+    if (index !== undefined || source !== undefined) {
+      window.history.replaceState({}, '', `${window.location.origin}${window.location.pathname}`);
+    }
+    return { index, source };
   }
 
   getDisplayName() {
