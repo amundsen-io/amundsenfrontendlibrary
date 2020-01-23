@@ -90,7 +90,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   handleValueSubmit = (event: React.FormEvent<HTMLFormElement>) : void => {
     const searchTerm = this.state.searchTerm.trim();
-    const useFilters = this.props.location ? this.props.location.pathname == '/search' : false;
+    const useFilters = this.props.location ? this.props.location.pathname === '/search' : false;
     event.preventDefault();
     this.props.submitSearch(searchTerm, useFilters);
     this.hideTypeAhead();
