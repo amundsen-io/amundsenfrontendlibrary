@@ -47,12 +47,13 @@ export interface SearchReducerState {
 };
 
 /* ACTIONS */
-export function searchAll(term: string, resource?: ResourceType, pageIndex?: number): SearchAllRequest {
+export function searchAll(term: string, resource?: ResourceType, pageIndex?: number, useFilters?: boolean): SearchAllRequest {
   return {
     payload: {
       resource,
       pageIndex,
       term,
+      useFilters,
     },
     type: SearchAll.REQUEST,
   };
@@ -126,9 +127,9 @@ export function searchReset(): SearchAllReset {
   };
 };
 
-export function submitSearch(searchTerm: string): SubmitSearchRequest {
+export function submitSearch(searchTerm: string, useFilters: boolean = false): SubmitSearchRequest {
   return {
-    payload: { searchTerm },
+    payload: { searchTerm, useFilters },
     type: SubmitSearch.REQUEST,
   };
 };
@@ -200,6 +201,7 @@ export const initialState: SearchReducerState = {
 
 export default function reducer(state: SearchReducerState = initialState, action): SearchReducerState {
   switch (action.type) {
+    case UpdateSearchFilter.CLEAR_ALL:
     case UpdateSearchFilter.CLEAR_CATEGORY:
     case UpdateSearchFilter.SET_BY_RESOURCE:
     case UpdateSearchFilter.UPDATE_CATEGORY:
@@ -213,9 +215,6 @@ export default function reducer(state: SearchReducerState = initialState, action
       // updates search term to reflect action
       return {
         ...state,
-        filters: {
-          ...initialFilterState,
-        },
         inlineResults: {
           ...initialInlineResultsState,
         },

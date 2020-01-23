@@ -52,6 +52,7 @@ export interface SearchAllRequest {
     resource: ResourceType;
     pageIndex: number;
     term: string;
+    useFilters?: boolean;
   };
   type: SearchAll.REQUEST;
 };
@@ -120,6 +121,7 @@ export enum SubmitSearch {
 export interface SubmitSearchRequest {
   payload: {
     searchTerm: string;
+    useFilters?: boolean;
   };
   type: SubmitSearch.REQUEST;
 };

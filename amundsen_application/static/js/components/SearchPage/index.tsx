@@ -40,6 +40,7 @@ import {
 
 
 export interface StateFromProps {
+  hasFilters: boolean;
   searchTerm: string;
   selectedTab: ResourceType;
   isLoading: boolean;
@@ -97,14 +98,18 @@ export class SearchPage extends React.Component<SearchPageProps> {
   };
 
   getTabContent = (results: SearchResults<Resource>, tab: ResourceType) => {
-    const { searchTerm } = this.props;
+    const { hasFilters, searchTerm } = this.props;
     const { page_index, total_results } = results;
     const startIndex = (RESULTS_PER_PAGE * page_index) + 1;
     const tabLabel = this.generateTabLabel(tab);
 
-    // TODO - Move error messages into Tab Component
+    // No search input --> empty page
+    if (total_results === 0 && searchTerm.length === 0 && !hasFilters) {
+      return null;
+    }
+
     // Check no results
-    if (total_results === 0 && searchTerm.length > 0) {
+    if (total_results === 0 && (searchTerm.length > 0 || hasFilters)) {
       return (
         <div className="search-list-container">
           <div className="search-error body-placeholder">
@@ -171,7 +176,9 @@ export class SearchPage extends React.Component<SearchPageProps> {
 }
 
 export const mapStateToProps = (state: GlobalState) => {
+  const resourceFilters = state.search.filters[state.search.selectedTab];
   return {
+    hasFilters: resourceFilters && Object.keys(resourceFilters).length > 0,
     searchTerm: state.search.search_term,
     selectedTab: state.search.selectedTab,
     isLoading: state.search.isLoading,

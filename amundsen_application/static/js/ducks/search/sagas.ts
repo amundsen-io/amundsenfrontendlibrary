@@ -40,6 +40,7 @@ import {
   setPageIndex, setResource,
 } from './reducer';
 import {
+  clearAllFilters,
   setFilterByResource,
   UpdateSearchFilter
 } from './filters/reducer';
@@ -109,18 +110,22 @@ export function* selectInlineResultsWatcher(): SagaIterator {
 
 
 export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
-  const state = yield select();
   let { resource } = action.payload;
-  const { pageIndex, term } = action.payload;
+  const { pageIndex, term, useFilters } = action.payload;
+  if (!useFilters) {
+    yield put(clearAllFilters())
+  }
+
+  const state = yield select();
   const tableIndex = resource === ResourceType.table ? pageIndex : 0;
   const userIndex = resource === ResourceType.user ? pageIndex : 0;
   const dashboardIndex = resource === ResourceType.dashboard ? pageIndex : 0;
 
   try {
     const [tableResponse, userResponse, dashboardResponse] = yield all([
-      call(API.searchResource, tableIndex, ResourceType.table, term),
-      call(API.searchResource, userIndex, ResourceType.user, term),
-      call(API.searchResource, dashboardIndex, ResourceType.dashboard, term),
+      call(API.searchResource, tableIndex, ResourceType.table, term, state.search.filters[ResourceType.table]),
+      call(API.searchResource, userIndex, ResourceType.user, term, state.search.filters[ResourceType.user]),
+      call(API.searchResource, dashboardIndex, ResourceType.dashboard, term, state.search.filters[ResourceType.dashboard]),
     ]);
     const searchAllResponse = {
       search_term: term,
@@ -162,8 +167,8 @@ export function* searchResourceWatcher(): SagaIterator {
 
 export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
   const state = yield select();
-  const { searchTerm } = action.payload;
-  yield put(searchAll(searchTerm));
+  const { searchTerm, useFilters } = action.payload;
+  yield put(searchAll(searchTerm, undefined, undefined, useFilters));
   updateSearchUrl({ term: searchTerm, filters: state.search.filters });
 };
 export function* submitSearchWatcher(): SagaIterator {
