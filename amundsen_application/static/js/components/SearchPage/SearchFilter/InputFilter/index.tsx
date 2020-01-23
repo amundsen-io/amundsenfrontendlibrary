@@ -51,10 +51,10 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
   render = () => {
     const { categoryId, disabled = false } = this.props;
     return (
-      <form className="input-section-content" onSubmit={ this.onApplyChanges }>
+      <form className="input-section-content form-group" onSubmit={ this.onApplyChanges }>
         <input
           type="text"
-          autoComplete="off"
+          className="form-control"
           disabled={ disabled }
           name={ categoryId }
           onChange={ this.onInputChange }
