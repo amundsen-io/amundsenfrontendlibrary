@@ -13,8 +13,7 @@ export class ExploreButton extends React.Component<ExploreButtonProps> {
     super(props);
   }
 
-  generateUrl() {
-    const tableData = this.props.tableData;
+  generateUrl(tableData: TableMetadata) {
     const partition = tableData.partition;
 
     if (partition.is_partitioned) {
@@ -26,7 +25,7 @@ export class ExploreButton extends React.Component<ExploreButtonProps> {
   }
 
   render() {
-    const url = this.generateUrl();
+    const url = this.generateUrl(this.props.tableData);
     if (!url || !AppConfig.tableProfile.isExploreEnabled) {
       return null;
     }
