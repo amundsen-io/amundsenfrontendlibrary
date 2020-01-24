@@ -126,6 +126,12 @@ export interface SubmitSearchRequest {
   type: SubmitSearch.REQUEST;
 };
 
+export enum ClearSearch {
+  REQUEST = 'amundsen/search/CLEAR_SEARCH_REQUEST',
+};
+export interface ClearSearchRequest {
+  type: ClearSearch.REQUEST;
+};
 
 export enum SetResource {
   REQUEST = 'amundsen/search/SET_RESOURCE_REQUEST',

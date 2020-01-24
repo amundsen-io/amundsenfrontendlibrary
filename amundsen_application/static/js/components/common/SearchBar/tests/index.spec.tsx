@@ -21,6 +21,7 @@ describe('SearchBar', () => {
       onInputChange: jest.fn(),
       onSelectInlineResult: jest.fn(),
       searchTerm: '',
+      clearSearch: jest.fn(),
       submitSearch: jest.fn(),
       ...propOverrides
     };
