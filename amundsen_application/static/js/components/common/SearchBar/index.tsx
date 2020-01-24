@@ -90,6 +90,8 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   handleValueSubmit = (event: React.FormEvent<HTMLFormElement>) : void => {
     const searchTerm = this.state.searchTerm.trim();
+    // TODO (ttannis): Conside if there is a better way to address this, or if we want to prioritize
+    // and inmprovement to allow users to toggle
     const useFilters = this.props.location ? this.props.location.pathname === '/search' : false;
     event.preventDefault();
     this.props.submitSearch(searchTerm, useFilters);
