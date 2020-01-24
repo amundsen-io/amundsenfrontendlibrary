@@ -3,6 +3,7 @@ import { ResourceType } from 'interfaces';
 import { filterFromObj } from 'ducks/utilMethods';
 
 export enum UpdateSearchFilter {
+  CLEAR_ALL = 'amundsen/search/filter/CLEAR_ALL',
   CLEAR_CATEGORY = 'amundsen/search/filter/CLEAR_CATEGORY',
   SET_BY_RESOURCE = 'amundsen/search/filter/SET_BY_RESOURCE',
   UPDATE_CATEGORY = 'amundsen/search/filter/UPDATE_CATEGORY',
@@ -18,6 +19,12 @@ export function setFilterByResource(resourceType: ResourceType, filters: Resourc
       filters
     },
     type: UpdateSearchFilter.SET_BY_RESOURCE,
+  };
+};
+
+export function clearAllFilters() {
+  return {
+    type: UpdateSearchFilter.CLEAR_ALL,
   };
 };
 
@@ -63,6 +70,8 @@ export default function reducer(state: FilterReducerState = initialFilterState, 
   const { payload, type } = action;
 
   switch (type) {
+    case UpdateSearchFilter.CLEAR_ALL:
+      return initialFilterState;
     case UpdateSearchFilter.CLEAR_CATEGORY:
       return {
         ...state,

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as History from 'history';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 
@@ -23,12 +24,13 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  submitSearch: (searchTerm: string) => SubmitSearchRequest;
+  submitSearch: (searchTerm: string, useFilters?: boolean) => SubmitSearchRequest;
   onInputChange: (term: string) => InlineSearchRequest;
   onSelectInlineResult: (resourceType: ResourceType, searchTerm: string, updateUrl: boolean) => InlineSearchSelect;
 }
 
 export interface OwnProps {
+  location?: History.Location;
   placeholder?: string;
   size?: string;
 }
@@ -88,21 +90,16 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   handleValueSubmit = (event: React.FormEvent<HTMLFormElement>) : void => {
     const searchTerm = this.state.searchTerm.trim();
+    // TODO (ttannis): Conside if there is a better way to address this, or if we want to prioritize
+    // and inmprovement to allow users to toggle
+    const useFilters = this.props.location ? this.props.location.pathname === '/search' : false;
     event.preventDefault();
-    if (this.isFormValid()) {
-      this.props.submitSearch(searchTerm);
-      this.hideTypeAhead();
-    }
+    this.props.submitSearch(searchTerm, useFilters);
+    this.hideTypeAhead();
   };
 
   hideTypeAhead = () : void => {
     this.setState({ showTypeAhead: false });
-  };
-
-  /* TODO (ttannis): Remove if final implementation makes no checks whatsoever on search term */
-  isFormValid = () : boolean => {
-    const form = document.getElementById("search-bar-form") as HTMLFormElement;
-    return form.checkValidity();
   };
 
   onSelectInlineResult = (resourceType: ResourceType, updateUrl: boolean = false) : void => {
@@ -133,7 +130,6 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         <form id="search-bar-form" className="search-bar-form" onSubmit={ this.handleValueSubmit }>
             <input
               id="search-input"
-              required={ true }
               className={ inputClass }
               value={ this.state.searchTerm }
               onChange={ this.handleValueChange }

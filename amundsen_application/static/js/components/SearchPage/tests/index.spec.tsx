@@ -29,6 +29,7 @@ describe('SearchPage', () => {
   const setup = (propOverrides?: Partial<SearchPageProps>, location?: Partial<History.Location>) => {
     const routerProps = getMockRouterProps<any>(null, location);
     const props: SearchPageProps = {
+      hasFilters: false,
       searchTerm: globalState.search.search_term,
       selectedTab: ResourceType.table,
       isLoading: false,
