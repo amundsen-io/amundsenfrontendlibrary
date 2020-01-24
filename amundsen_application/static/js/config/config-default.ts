@@ -1,6 +1,6 @@
 import { AppConfig } from './config-types';
 
-import { FilterType, ResourceType } from '../interfaces';
+import { ResourceType } from '../interfaces';
 
 const configDefault: AppConfig = {
   badges: {},
@@ -65,40 +65,6 @@ const configDefault: AppConfig = {
           iconClass: 'icon-redshift',
         },
       },
-      filterCategories: [
-        {
-          value: 'database',
-          displayName: 'Source',
-          type: FilterType.MULTI_SELECT_VALUE,
-          options: [
-            { value: 'bigquery', displayName: 'BigQuery' },
-            { value: 'hive', displayName: 'Hive' },
-            { value: 'postgres', displayName: 'Postgres' },
-            { value: 'presto', displayName: 'Presto' },
-            { value: 'redshift', displayName: 'Redshift' },
-          ],
-        },
-        {
-          value: 'column',
-          displayName: 'Column',
-          type: FilterType.SINGLE_VALUE,
-        },
-        {
-          value: 'schema',
-          displayName: 'Schema',
-          type: FilterType.SINGLE_VALUE,
-        },
-        {
-          value: 'table',
-          displayName: 'Table',
-          type: FilterType.SINGLE_VALUE,
-        },
-        {
-          value: 'tag',
-          displayName: 'Tag',
-          type: FilterType.SINGLE_VALUE,
-        },
-      ]
     },
     [ResourceType.user]: {
       displayName: 'People'

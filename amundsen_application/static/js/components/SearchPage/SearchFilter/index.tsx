@@ -22,6 +22,7 @@ interface CheckboxFilterSection {
 
 interface InputFilterSection {
   categoryId: string;
+  helpText?: string;
   title: string;
   value: string;
 }
@@ -62,12 +63,13 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
   };
 
   createInputSection = (key: string, section: InputFilterSection) => {
-    const { categoryId, title, value } = section;
+    const { categoryId, helpText, title, value } = section;
     return (
       <FilterSection
         key={key}
         categoryId={ categoryId }
         hasValue={ value && value.length > 0 }
+        helpText={ helpText }
         title={ title }
       >
         <InputFilter
@@ -135,6 +137,7 @@ export const mapStateToProps = (state: GlobalState) => {
       if (categoryConfig.type === FilterType.SINGLE_VALUE) {
         inputSections.push({
           categoryId: categoryConfig.value,
+          helpText: categoryConfig.helpText || '',
           title: categoryConfig.displayName,
           value: currentFilterValue,
         });

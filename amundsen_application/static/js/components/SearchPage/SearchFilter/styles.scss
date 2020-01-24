@@ -8,8 +8,13 @@
   .search-filter-section-header {
     display: flex;
 
-    .title-2 {
+    .search-filter-section-title {
+      display: flex;
       flex-grow: 1;
+
+      button {
+        margin: auto 4px;
+      }
     }
   }
 

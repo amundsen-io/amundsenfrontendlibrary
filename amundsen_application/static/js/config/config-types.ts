@@ -64,6 +64,7 @@ interface MultiSelectFilterOptions {
 }
 
 interface BaseFilterCategory {
+  helpText?: string;
   value: string;
   displayName: string;
   type: FilterType;
