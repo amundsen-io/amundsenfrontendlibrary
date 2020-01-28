@@ -1,6 +1,6 @@
 import { AppConfig } from './config-types';
 
-import { ResourceType } from '../interfaces';
+import { FilterType, ResourceType } from '../interfaces';
 
 const configDefault: AppConfig = {
   badges: {},
@@ -65,6 +65,33 @@ const configDefault: AppConfig = {
           iconClass: 'icon-redshift',
         },
       },
+      filterCategories: [
+        {
+          value: 'database',
+          displayName: 'Source',
+          type: FilterType.SINGLE_VALUE,
+        },
+        {
+          value: 'column',
+          displayName: 'Column',
+          type: FilterType.SINGLE_VALUE,
+        },
+        {
+          value: 'schema',
+          displayName: 'Schema',
+          type: FilterType.SINGLE_VALUE,
+        },
+        {
+          value: 'table',
+          displayName: 'Table',
+          type: FilterType.SINGLE_VALUE,
+        },
+        {
+          value: 'tag',
+          displayName: 'Tag',
+          type: FilterType.SINGLE_VALUE,
+        },
+      ]
     },
     [ResourceType.user]: {
       displayName: 'People'
