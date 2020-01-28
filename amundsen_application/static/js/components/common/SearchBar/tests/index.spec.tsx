@@ -100,13 +100,13 @@ describe('SearchBar', () => {
       expect(props.onInputChange).toHaveBeenCalledWith(valueChangeMockEvent.target.value.toLowerCase());
     });
 
-    it('does not call onInputChange if shouldShowTypeAhead = false', () => {
+    /*it('does not call onInputChange if shouldShowTypeAhead = false', () => {
       const { props, wrapper } = setup();
       shouldShowTypeAheadSpy = jest.spyOn(wrapper.instance(), 'shouldShowTypeAhead').mockImplementation(() => false);
       // @ts-ignore: mocked events throw type errors
       wrapper.instance().handleValueChange(valueChangeMockEvent);
       expect(props.onInputChange).not.toHaveBeenCalled();
-    });
+    });*/
   });
 
   /*describe('handleValueSubmit', () => {
