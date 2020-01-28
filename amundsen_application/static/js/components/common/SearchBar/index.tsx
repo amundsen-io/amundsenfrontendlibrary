@@ -63,7 +63,10 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   clearSearchTerm = () : void => {
     this.setState({ showTypeAhead: false, searchTerm: '' });
-    this.props.clearSearch();
+    // TODO (ttannis): Still coonsidering better way to do this
+    if (this.props.location && this.props.location.pathname === '/search') {
+      this.props.clearSearch();
+    }
   };
 
   componentDidMount = () => {
