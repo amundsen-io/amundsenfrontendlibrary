@@ -1,5 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { all, call, debounce, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
+import * as _ from "lodash";
 import * as qs from 'simple-query-string';
 
 import { ResourceType } from 'interfaces/Resources';
@@ -7,6 +8,8 @@ import { ResourceType } from 'interfaces/Resources';
 import * as API from './api/v0';
 
 import {
+  ClearSearch,
+  ClearSearchRequest,
   LoadPreviousSearch,
   LoadPreviousSearchRequest,
   SearchAll,
@@ -209,27 +212,35 @@ export function* setPageIndexWatcher(): SagaIterator {
   yield takeEvery(SetPageIndex.REQUEST, setPageIndexWorker);
 };
 
+export function* clearSearchWorker(action: ClearSearchRequest): SagaIterator {
+  /* If there was a previous search term, search each resource using filters */
+  const state = yield select(getSearchState);
+  if (!!state.search_term) {
+    yield put(searchAll('', undefined, undefined, true));
+  }
+};
+export function* clearSearchWatcher(): SagaIterator {
+  yield takeEvery(ClearSearch.REQUEST, clearSearchWorker);
+};
+
 export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
   const { urlSearch } = action.payload;
-  const { term, resource, index, filters } = qs.parse(urlSearch);
+  const { term = '', resource, index, filters } = qs.parse(urlSearch);
   const parsedIndex = parseInt(index, 10);
   const parsedFilters = filters ? JSON.parse(filters) : null;
 
   const state = yield select(getSearchState);
-  if (!!term && state.search_term !== term && !parsedFilters) {
+  if (!!term && state.search_term !== term) {
     yield put(searchAll(term, resource, parsedIndex));
-  } else if (parsedFilters) {
-    /* Update filter state + search each resource */
-    yield put(setFilterByResource(resource, parsedFilters));
-    yield put(searchResource(term, resource, parsedIndex));
-    if (resource !== ResourceType.table) {
-      yield put(searchResource(term, ResourceType.table, 0));
+  } else if (!!resource) {
+    if (resource !== state.selectedTab) {
+      yield put(setResource(resource, false))
     }
-    if (resource !== ResourceType.user) {
-      yield put(searchResource(term, ResourceType.user, 0));
+    if (parsedFilters && !_.isEqual(state.filters[resource], parsedFilters)) {
+      /* Update filter state + search each resource */
+      yield put(setFilterByResource(resource, parsedFilters));
+      yield put(searchResource(term, resource, parsedIndex));
     }
-  } else if (!!resource && resource !== state.selectedTab) {
-    yield put(setResource(resource, false))
   } else if (!isNaN(parsedIndex) && parsedIndex !== getPageIndex(state, resource)) {
     yield put(setPageIndex(parsedIndex, false));
   }

@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux';
 
 import { GlobalState } from 'ducks/rootReducer';
-import { submitSearch, getInlineResultsDebounce, selectInlineResult } from 'ducks/search/reducer';
-import { SubmitSearchRequest, InlineSearchRequest, InlineSearchSelect } from 'ducks/search/types';
+import { clearSearch, submitSearch, getInlineResultsDebounce, selectInlineResult } from 'ducks/search/reducer';
+import { ClearSearchRequest, SubmitSearchRequest, InlineSearchRequest, InlineSearchSelect } from 'ducks/search/types';
 
 import { ResourceType } from 'interfaces';
 
@@ -24,6 +24,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
+  clearSearch: () => ClearSearchRequest;
   submitSearch: (searchTerm: string, useFilters?: boolean) => SubmitSearchRequest;
   onInputChange: (term: string) => InlineSearchRequest;
   onSelectInlineResult: (resourceType: ResourceType, searchTerm: string, updateUrl: boolean) => InlineSearchSelect;
@@ -62,6 +63,10 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   clearSearchTerm = () : void => {
     this.setState({ showTypeAhead: false, searchTerm: '' });
+    // TODO (ttannis): Still coonsidering better way to do this
+    if (this.props.location && this.props.location.pathname === '/search') {
+      this.props.clearSearch();
+    }
   };
 
   componentDidMount = () => {
@@ -80,11 +85,13 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   handleValueChange = (event: React.SyntheticEvent<HTMLInputElement>) : void => {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
-    const showTypeAhead = this.shouldShowTypeAhead(searchTerm);
-    this.setState({ searchTerm, showTypeAhead });
 
-    if (showTypeAhead) {
+    if (searchTerm.length > 0) {
       this.props.onInputChange(searchTerm);
+      this.setState({ searchTerm, showTypeAhead: true });
+    }
+    else {
+      this.clearSearchTerm();
     }
   };
 
@@ -94,12 +101,19 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     // and inmprovement to allow users to toggle
     const useFilters = this.props.location ? this.props.location.pathname === '/search' : false;
     event.preventDefault();
-    this.props.submitSearch(searchTerm, useFilters);
-    this.hideTypeAhead();
+    if (this.isFormValid()) {
+      this.props.submitSearch(searchTerm, useFilters);
+      this.hideTypeAhead();
+    }
   };
 
   hideTypeAhead = () : void => {
     this.setState({ showTypeAhead: false });
+  };
+
+  isFormValid = () : boolean => {
+    const form = document.getElementById("search-bar-form") as HTMLFormElement;
+    return form.checkValidity();
   };
 
   onSelectInlineResult = (resourceType: ResourceType, updateUrl: boolean = false) : void => {
@@ -130,6 +144,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         <form id="search-bar-form" className="search-bar-form" onSubmit={ this.handleValueSubmit }>
             <input
               id="search-input"
+              required={ true }
               className={ inputClass }
               value={ this.state.searchTerm }
               onChange={ this.handleValueChange }
@@ -167,7 +182,7 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ submitSearch, onInputChange: getInlineResultsDebounce, onSelectInlineResult: selectInlineResult }, dispatch);
+  return bindActionCreators({ clearSearch, submitSearch, onInputChange: getInlineResultsDebounce, onSelectInlineResult: selectInlineResult }, dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps, OwnProps>(mapStateToProps,  mapDispatchToProps)(SearchBar);

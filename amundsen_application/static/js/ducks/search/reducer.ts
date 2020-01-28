@@ -24,6 +24,8 @@ import {
   InlineSearchUpdate,
   TableSearchResults,
   UserSearchResults,
+  ClearSearch,
+  ClearSearchRequest,
   SubmitSearchRequest,
   SubmitSearch,
   SetResourceRequest,
@@ -134,6 +136,12 @@ export function submitSearch(searchTerm: string, useFilters: boolean = false): S
   };
 };
 
+export function clearSearch(): ClearSearchRequest {
+  return {
+    type: ClearSearch.REQUEST,
+  };
+};
+
 export function setResource(resource: ResourceType, updateUrl: boolean = true): SetResourceRequest {
   return {
     payload: { resource, updateUrl },
@@ -202,11 +210,16 @@ export const initialState: SearchReducerState = {
 export default function reducer(state: SearchReducerState = initialState, action): SearchReducerState {
   switch (action.type) {
     case UpdateSearchFilter.CLEAR_ALL:
-    case UpdateSearchFilter.CLEAR_CATEGORY:
     case UpdateSearchFilter.SET_BY_RESOURCE:
+      return {
+        ...state,
+        filters: filterReducer(state.filters, action, state.selectedTab),
+      }
+    case UpdateSearchFilter.CLEAR_CATEGORY:
     case UpdateSearchFilter.UPDATE_CATEGORY:
       return {
         ...state,
+        isLoading: true,
         filters: filterReducer(state.filters, action, state.selectedTab),
       }
     case SearchAll.RESET:

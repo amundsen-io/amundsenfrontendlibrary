@@ -15,22 +15,28 @@ interface SearchParams {
 
 export const updateSearchUrl = (searchParams: SearchParams, replace: boolean = false) => {
   const filtersForResource = searchParams.filters && searchParams.filters[searchParams.resource] || {};
+  const hasFilters = Object.keys(filtersForResource).length > 0;
+  let newUrl = "/search";
 
-  // Explicitly listing out parameters to ensure consistent URL format
-  const queryStringValues = {
-    term: searchParams.term,
-    resource: searchParams.resource,
-    index: searchParams.index,
-  };
+  if (!!searchParams.term || hasFilters) {
+    // Explicitly listing out parameters to ensure consistent URL format
+    const queryStringValues = {
+      term: searchParams.term || undefined,
+      resource: searchParams.resource,
+      index: searchParams.index,
+    };
 
-  if (Object.keys(filtersForResource).length > 0) {
-    queryStringValues['filters'] = filtersForResource;
+    if (hasFilters) {
+      queryStringValues['filters'] = filtersForResource;
+    }
+
+    const urlParams = qs.stringify(queryStringValues);
+    newUrl = `${newUrl}?${urlParams}`;
   }
 
-  const urlParams = qs.stringify(queryStringValues);
   if (replace) {
-    BrowserHistory.replace(`/search?${urlParams}`);
+    BrowserHistory.replace(newUrl);
   } else {
-    BrowserHistory.push(`/search?${urlParams}`);
+    BrowserHistory.push(newUrl);
   }
 };
