@@ -75,7 +75,48 @@ class MetadataTest(unittest.TestCase):
                 'name': 'test_name',
                 'id': 'test_id',
                 'description': 'This is a test'
+            }
+        }
+        self.mock_metadata2 = {
+            'cluster': 'test_cluster',
+            'columns': [
+                {
+                    'name': 'column_1',
+                    'description': 'This is a test',
+                    'col_type': 'bigint',
+                    'sort_order': 0,
+                    'stats': [
+                        {'stat_type': 'count', 'stat_val': '100', 'start_epoch': 1538352000, 'end_epoch': 1538352000},
+                        {'stat_type': 'count_null', 'stat_val': '0', 'start_epoch': 1538352000, 'end_epoch': 1538352000}
+                    ]
+                }
+            ],
+            'database': 'test_db',
+            'is_view': False,
+            'key': 'test_db://test_cluster.test_schema/test_table',
+            'owners': [],
+            'schema': 'test_schema',
+            'name': 'test_table',
+            'table_description': 'This is a test',
+            'tags': [],
+            'table_readers': [
+                {'user': {'email': 'test@test.com', 'first_name': None, 'last_name': None}, 'read_count': 100}
+            ],
+            'watermarks': [
+                {'watermark_type': 'low_watermark', 'partition_key': 'ds', 'partition_value': '', 'create_time': ''},
+                {'watermark_type': 'high_watermark', 'partition_key': 'ds', 'partition_value': '', 'create_time': ''}
+            ],
+            'table_writer': {
+                'application_url': 'https://test-test.test.test',
+                'name': 'test_name',
+                'id': 'test_id',
+                'description': 'This is a test'
             },
+            'programmatic_descriptions': [
+                {'source': 'c_1', 'text': 'description c'},
+                {'source': 'a_1', 'text': 'description a'},
+                {'source': 'b_1', 'text': 'description b'}
+            ]
         }
         self.expected_parsed_metadata = {
             'badges': [],
@@ -131,7 +172,24 @@ class MetadataTest(unittest.TestCase):
             ],
             'source': '/source',
             'is_editable': True,
-            'last_updated_timestamp': None,
+            'last_updated_timestamp': None
+        }
+
+        self.expected_programmatic_descriptions_with_config = {
+            "programmatic_descriptions": [
+                {
+                    'source': 'a',
+                    'text': 'description a'
+                },
+                {
+                    'source': 'b',
+                    'text': 'description b'
+                },
+                {
+                    'source': 'c',
+                    'text': 'description c'
+                },
+            ]
         }
         self.mock_tags = {
             'tag_usages': [
@@ -311,6 +369,85 @@ class MetadataTest(unittest.TestCase):
             data = json.loads(response.data)
             self.assertEqual(response.status_code, HTTPStatus.OK)
             self.assertCountEqual(data.get('tableData'), self.expected_parsed_metadata)
+
+    @responses.activate
+    def test_get_table_programmatic_metadata_success(self) -> None:
+        """
+        Test successful get_table_metadata request
+        :return:
+        """
+        url = local_app.config['METADATASERVICE_BASE'] + TABLE_ENDPOINT + '/db://cluster.schema/table'
+        responses.add(responses.GET, url, json=self.mock_metadata2, status=HTTPStatus.OK)
+
+        with local_app.test_client() as test:
+            response = test.get(
+                '/api/metadata/v0/table',
+                query_string=dict(
+                    key='db://cluster.schema/table',
+                    index='0',
+                    source='test_source'
+                )
+            )
+            data = json.loads(response.data)
+            expected_programmatic_descriptions = [
+                {
+                    'source': 'c_1',
+                    'text': 'description c'
+                },
+                {
+                    'source': 'a_1',
+                    'text': 'description a'
+                },
+                {
+                    'source': 'b_1',
+                    'text': 'description b'
+                }
+            ]
+            self.assertEqual(response.status_code, HTTPStatus.OK)
+            print(data['tableData']['programmatic_descriptions'])
+            self.assertEqual(data['tableData']['programmatic_descriptions'], expected_programmatic_descriptions)
+
+    @responses.activate
+    def test_get_table_programmatic_metadata_with_config_success(self) -> None:
+        """
+        Test successful get_table_metadata request
+        :return:
+        """
+        local_app.config['PROGRAMMATIC_DISPLAY'] = {
+            "a_1": {"display_order": 0},
+            "b_1": {"display_order": 1},
+            "c_1": {"display_order": 2}
+        }
+        url = local_app.config['METADATASERVICE_BASE'] + TABLE_ENDPOINT + '/db://cluster.schema/table'
+        responses.add(responses.GET, url, json=self.mock_metadata2, status=HTTPStatus.OK)
+
+        with local_app.test_client() as test:
+            response = test.get(
+                '/api/metadata/v0/table',
+                query_string=dict(
+                    key='db://cluster.schema/table',
+                    index='0',
+                    source='test_source'
+                )
+            )
+            data = json.loads(response.data)
+            expected_programmatic_descriptions = [
+                {
+                    'source': 'a_1',
+                    'text': 'description a'
+                },
+                {
+                    'source': 'b_1',
+                    'text': 'description b'
+                },
+                {
+                    'source': 'c_1',
+                    'text': 'description c'
+                }
+            ]
+            self.assertEqual(response.status_code, HTTPStatus.OK)
+            print(data['tableData']['programmatic_descriptions'])
+            self.assertEqual(data['tableData']['programmatic_descriptions'], expected_programmatic_descriptions)
 
     @responses.activate
     def test_update_table_owner_success(self) -> None:
