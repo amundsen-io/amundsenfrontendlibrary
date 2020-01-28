@@ -16,12 +16,14 @@ import './styles.scss'
 
 interface CheckboxFilterSection {
   categoryId: string;
+  helpText?: string;
   properties: CheckboxFilterProperties[];
   title: string;
 }
 
 interface InputFilterSection {
   categoryId: string;
+  helpText?: string;
   title: string;
   value: string;
 }
@@ -39,7 +41,7 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
   }
 
   createCheckBoxSection = (key: string, section: CheckboxFilterSection) => {
-    const { categoryId, properties, title } = section;
+    const { categoryId, helpText, properties, title } = section;
     let hasChecked = false;
     properties.forEach((item) => {
       if (item.checked) {
@@ -51,6 +53,7 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
         key={key}
         categoryId={ categoryId }
         hasValue={ hasChecked }
+        helpText={ helpText }
         title={ title }
       >
         <CheckBoxFilter
@@ -62,12 +65,13 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
   };
 
   createInputSection = (key: string, section: InputFilterSection) => {
-    const { categoryId, title, value } = section;
+    const { categoryId, helpText, title, value } = section;
     return (
       <FilterSection
         key={key}
         categoryId={ categoryId }
         hasValue={ value && value.length > 0 }
+        helpText={ helpText }
         title={ title }
       >
         <InputFilter
@@ -118,6 +122,7 @@ export const mapStateToProps = (state: GlobalState) => {
         checkBoxSections.push({
           title: categoryConfig.displayName,
           categoryId: categoryConfig.value,
+          helpText: categoryConfig.helpText,
           properties: categoryConfig.options.map((option) => {
             return {
               value: option.value,
@@ -135,6 +140,7 @@ export const mapStateToProps = (state: GlobalState) => {
       if (categoryConfig.type === FilterType.SINGLE_VALUE) {
         inputSections.push({
           categoryId: categoryConfig.value,
+          helpText: categoryConfig.helpText,
           title: categoryConfig.displayName,
           value: currentFilterValue,
         });

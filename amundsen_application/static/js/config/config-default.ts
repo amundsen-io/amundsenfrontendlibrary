@@ -69,33 +69,31 @@ const configDefault: AppConfig = {
         {
           value: 'database',
           displayName: 'Source',
-          type: FilterType.MULTI_SELECT_VALUE,
-          options: [
-            { value: 'bigquery', displayName: 'BigQuery' },
-            { value: 'hive', displayName: 'Hive' },
-            { value: 'postgres', displayName: 'Postgres' },
-            { value: 'presto', displayName: 'Presto' },
-            { value: 'redshift', displayName: 'Redshift' },
-          ],
+          helpText: 'Enter exact database name or a regex wildcard pattern',
+          type: FilterType.SINGLE_VALUE,
         },
         {
           value: 'column',
           displayName: 'Column',
+          helpText: 'Enter exact column name or a regex wildcard pattern',
           type: FilterType.SINGLE_VALUE,
         },
         {
           value: 'schema',
           displayName: 'Schema',
+          helpText: 'Enter exact schema name or a regex wildcard pattern',
           type: FilterType.SINGLE_VALUE,
         },
         {
           value: 'table',
           displayName: 'Table',
+          helpText: 'Enter exact table name or a regex wildcard pattern',
           type: FilterType.SINGLE_VALUE,
         },
         {
           value: 'tag',
           displayName: 'Tag',
+          helpText: 'Enter exact tag name or a regex wildcard pattern',
           type: FilterType.SINGLE_VALUE,
         },
       ]
