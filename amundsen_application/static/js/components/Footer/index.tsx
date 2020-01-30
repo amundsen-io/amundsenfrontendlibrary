@@ -1,5 +1,5 @@
 import * as React from 'react';
-import moment from 'moment-timezone';
+import * as moment from 'moment-timezone';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // TODO: Use css-modules instead of 'import'
@@ -7,6 +7,8 @@ import './styles.scss';
 import { GlobalState } from 'ducks/rootReducer';
 import { getLastIndexed } from 'ducks/tableMetadata/reducer';
 import { GetLastIndexedRequest } from 'ducks/tableMetadata/types';
+
+import { DATE_FORMAT_LONG, formatEpochTime } from 'utils/dateUtils';
 
 // Props
 interface StateFromProps {
@@ -30,7 +32,9 @@ export class Footer extends React.Component<FooterProps> {
 
   generateDateTimeString = () => {
     // 'moment.local' will utilize the client's local timezone.
-    return moment.unix(this.props.lastIndexed).local().format('MMMM Do YYYY [at] h:mm:ss a');
+    return formatEpochTime(this.props.lastIndexed, DATE_FORMAT_LONG);
+
+    // return moment.unix(this.props.lastIndexed).local().format('MMMM Do YYYY [at] h:mm:ss a');
   };
 
   render() {

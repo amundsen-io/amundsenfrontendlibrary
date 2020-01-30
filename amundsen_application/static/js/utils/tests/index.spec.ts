@@ -1,9 +1,10 @@
-import * as NavigationUtils from 'utils/navigation-utils';
+import * as DateUtils from 'utils/dateUtils';
+import * as NavigationUtils from 'utils/navigationUtils';
 import * as qs from 'simple-query-string';
 import { ResourceType } from 'interfaces/Resources';
 
 
-describe('Navigation utils', () => {
+describe('navigationUtils', () => {
   describe('updateSearchUrl', () => {
 
     let historyReplaceSpy;
@@ -45,4 +46,22 @@ describe('Navigation utils', () => {
       expect(historyPushSpy).toHaveBeenCalledWith(expectedQueryString);
     });
   });
+});
+
+
+describe('dateUtils', () => {
+  describe('formatEpochTime', () => {
+    it('formats an epoch time to the default format', () => {
+      const epochTime = 1580421964;
+      const dateString = DateUtils.formatEpochTime(epochTime);
+      expect(dateString).toEqual('Jan 30, 2020')
+
+    });
+
+    it('formats an epoch time to a custom format', () => {
+      const epochTime = 1580421964;
+      const dateString = DateUtils.formatEpochTime(epochTime, 'YYYY-MMM-DD');
+      expect(dateString).toEqual('2020-Jan-30')
+    });
+  })
 });
