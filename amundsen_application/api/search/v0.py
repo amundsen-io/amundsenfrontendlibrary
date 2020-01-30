@@ -263,7 +263,7 @@ def _search_user(*, search_term: str, page_index: int) -> Dict[str, Any]:
             results_dict['msg'] = message
             logging.error(message)
 
-            results_dict['status_code'] = status_code
+        results_dict['status_code'] = status_code
         return results_dict
     except Exception as e:
         message = 'Encountered exception: ' + str(e)

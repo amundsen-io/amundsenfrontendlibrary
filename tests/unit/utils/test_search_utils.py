@@ -38,11 +38,9 @@ class SearchUtilsTest(unittest.TestCase):
         query_json = generate_query_json(filters=self.test_filters,
                                          page_index=self.test_page_index,
                                          search_term=self.test_term)
-        self.assertEqual(query_json, {
-            'page_index': int(self.test_page_index),
-            'search_request': {
-                'type': 'AND',
-                'filters': self.expected_transformed_filters
-            },
-            'query_term': self.test_term
+        self.assertEqual(query_json.get('page_index'), int(self.test_page_index))
+        self.assertEqual(query_json.get('search_request'), {
+            'type': 'AND',
+            'filters': self.expected_transformed_filters
         })
+        self.assertEqual(query_json.get('query_term'), self.test_term)

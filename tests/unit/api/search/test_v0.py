@@ -10,41 +10,45 @@ from amundsen_application.api.search.v0 import _create_url_with_field, SEARCH_EN
 
 local_app = create_app('amundsen_application.config.TestConfig', 'tests/templates')
 
+MOCK_TABLE_RESULTS = {
+    'total_results': 1,
+    'results': [
+        {
+            'cluster': 'test_cluster',
+            'column_names': [
+                'column_1',
+                'column_2',
+                'column_3'
+            ],
+            'database': 'test_db',
+            'description': 'This is a test',
+            'key': 'test_key',
+            'last_updated_epoch': 1527283287,
+            'name': 'test_table',
+            'schema_name': 'test_schema',
+            'tags': [],
+        }
+    ]
+}
+
+MOCK_PARSED_TABLE_RESULTS = [
+    {
+        'type': 'table',
+        'cluster': 'test_cluster',
+        'database': 'test_db',
+        'description': 'This is a test',
+        'key': 'test_key',
+        'last_updated_epoch': 1527283287,
+        'name': 'test_table',
+        'schema_name': 'test_schema',
+    }
+]
+
 
 class SearchTableQueryString(unittest.TestCase):
     def setUp(self) -> None:
-        self.mock_table_results = {
-            'total_results': 1,
-            'results': [
-                {
-                    'cluster': 'test_cluster',
-                    'column_names': [
-                        'column_1',
-                        'column_2',
-                        'column_3'
-                    ],
-                    'database': 'test_db',
-                    'description': 'This is a test',
-                    'key': 'test_key',
-                    'last_updated_epoch': 1527283287,
-                    'name': 'test_table',
-                    'schema_name': 'test_schema',
-                    'tags': [],
-                }
-            ]
-        }
-        self.expected_parsed_table_results = [
-            {
-                'type': 'table',
-                'cluster': 'test_cluster',
-                'database': 'test_db',
-                'description': 'This is a test',
-                'key': 'test_key',
-                'last_updated_epoch': 1527283287,
-                'name': 'test_table',
-                'schema_name': 'test_schema',
-            }
-        ]
+        self.mock_table_results = MOCK_TABLE_RESULTS
+        self.expected_parsed_table_results = MOCK_PARSED_TABLE_RESULTS
 
     def test_fail_if_term_is_none(self) -> None:
         """
@@ -148,38 +152,8 @@ class SearchTableQueryString(unittest.TestCase):
 
 class SearchTest(unittest.TestCase):
     def setUp(self) -> None:
-        self.mock_search_table_results = {
-            'total_results': 1,
-            'results': [
-                {
-                    'cluster': 'test_cluster',
-                    'column_names': [
-                        'column_1',
-                        'column_2',
-                        'column_3'
-                    ],
-                    'database': 'test_db',
-                    'description': 'This is a test',
-                    'key': 'test_key',
-                    'last_updated_epoch': 1527283287,
-                    'name': 'test_table',
-                    'schema_name': 'test_schema',
-                    'tags': [],
-                }
-            ]
-        }
-        self.expected_parsed_search_table_results = [
-            {
-                'type': 'table',
-                'cluster': 'test_cluster',
-                'database': 'test_db',
-                'description': 'This is a test',
-                'key': 'test_key',
-                'last_updated_epoch': 1527283287,
-                'name': 'test_table',
-                'schema_name': 'test_schema',
-            }
-        ]
+        self.mock_search_table_results = MOCK_TABLE_RESULTS
+        self.expected_parsed_search_table_results = MOCK_PARSED_TABLE_RESULTS
         self.mock_search_user_results = {
             'total_results': 1,
             'results': [
