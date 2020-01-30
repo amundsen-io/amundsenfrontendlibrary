@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as moment from 'moment-timezone';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // TODO: Use css-modules instead of 'import'
@@ -31,10 +30,7 @@ export class Footer extends React.Component<FooterProps> {
   }
 
   generateDateTimeString = () => {
-    // 'moment.local' will utilize the client's local timezone.
     return formatEpochTime(this.props.lastIndexed, DATE_FORMAT_LONG);
-
-    // return moment.unix(this.props.lastIndexed).local().format('MMMM Do YYYY [at] h:mm:ss a');
   };
 
   render() {

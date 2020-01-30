@@ -7,10 +7,10 @@ import { Watermark } from 'interfaces';
 import {
   HIGH_WATERMARK_LABEL,
   NO_WATERMARK_LINE_1, NO_WATERMARK_LINE_2, LOW_WATERMARK_LABEL,
-  WATERMARK_DISPLAY_FORMAT,
   WATERMARK_INPUT_FORMAT,
   WatermarkType
 } from './constants';
+import { DATE_FORMAT } from 'utils/dateUtils';
 
 export interface WatermarkLabelProps {
   watermarks: Watermark[];
@@ -22,7 +22,7 @@ class WatermarkLabel extends React.Component<WatermarkLabelProps> {
   }
 
   formatWatermarkDate = (dateString: string) => {
-    return moment(dateString, WATERMARK_INPUT_FORMAT).format(WATERMARK_DISPLAY_FORMAT);
+    return moment(dateString, WATERMARK_INPUT_FORMAT).format(DATE_FORMAT);
   };
 
   getWatermarkValue = (type: WatermarkType) => {
