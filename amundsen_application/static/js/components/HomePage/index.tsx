@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+import { SEARCH_BREADCRUMB_TEXT } from './constants';
 
 import MyBookmarks from 'components/common/Bookmark/MyBookmarks';
 import Breadcrumb from 'components/common/Breadcrumb';
@@ -40,7 +41,7 @@ export class HomePage extends React.Component<HomePageProps> {
               <Breadcrumb
                 direction="right"
                 path="/search"
-                text="Search Filters"
+                text={SEARCH_BREADCRUMB_TEXT}
               />
             </div>
             <div className="home-element-container">

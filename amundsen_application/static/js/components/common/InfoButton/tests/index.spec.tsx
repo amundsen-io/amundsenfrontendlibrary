@@ -1,4 +1,5 @@
 import * as React from 'react';
+import SanitizedHTML from 'react-sanitized-html';
 
 import { shallow } from 'enzyme';
 
@@ -24,14 +25,14 @@ describe('InfoButton', () => {
             expect(subject.find(OverlayTrigger).props().placement).toEqual(props.placement);
         });
 
-        /*t('renders OverlayTrigger w/ correct Popover', () => {
+        it('renders OverlayTrigger w/ correct Popover', () => {
             const expectedPopover = (
              <Popover id="popover-trigger-hover-focus" title={ props.title }>
-               { props.infoText }
+               <SanitizedHTML html={props.infoText} />
              </Popover>
            );
             expect(subject.find(OverlayTrigger).props().overlay).toEqual(expectedPopover);
-        });*/
+        });
 
         it('renders OverlayTrigger w/ correct placement', () => {
             expect(subject.find(OverlayTrigger).find('button').props().className).toEqual(`btn icon info-button ${props.size}`);
