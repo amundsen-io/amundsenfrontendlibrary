@@ -3,11 +3,147 @@ import responses
 import unittest
 
 from http import HTTPStatus
+from unittest.mock import patch
 
 from amundsen_application import create_app
 from amundsen_application.api.search.v0 import _create_url_with_field, SEARCH_ENDPOINT, SEARCH_USER_ENDPOINT
 
 local_app = create_app('amundsen_application.config.TestConfig', 'tests/templates')
+
+
+class SearchTableQueryString(unittest.TestCase):
+    def setUp(self) -> None:
+        self.mock_table_results = {
+            'total_results': 1,
+            'results': [
+                {
+                    'cluster': 'test_cluster',
+                    'column_names': [
+                        'column_1',
+                        'column_2',
+                        'column_3'
+                    ],
+                    'database': 'test_db',
+                    'description': 'This is a test',
+                    'key': 'test_key',
+                    'last_updated_epoch': 1527283287,
+                    'name': 'test_table',
+                    'schema_name': 'test_schema',
+                    'tags': [],
+                }
+            ]
+        }
+        self.expected_parsed_table_results = [
+            {
+                'type': 'table',
+                'cluster': 'test_cluster',
+                'database': 'test_db',
+                'description': 'This is a test',
+                'key': 'test_key',
+                'last_updated_epoch': 1527283287,
+                'name': 'test_table',
+                'schema_name': 'test_schema',
+            }
+        ]
+
+    def test_fail_if_term_is_none(self) -> None:
+        """
+        Test request failure if 'term' is not provided in the request json
+        :return:
+        """
+        with local_app.test_client() as test:
+            response = test.post('/api/search/v0/table_qs', json={'pageIndex': 0})
+            self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+    def test_fail_if_page_index_is_none(self) -> None:
+        """
+        Test request failure if 'pageIndex' is not provided in the request json
+        :return:
+        """
+        with local_app.test_client() as test:
+            response = test.post('/api/search/v0/table_qs', json={'term': ''})
+            self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+    @responses.activate
+    @patch('amundsen_application.api.search.v0.generate_query_json')
+    def test_calls_generate_query_json(self, mock_generate_query_json) -> None:
+        """
+        Test generate_query_json helper method is called with correct arguments
+        from the request_json
+        :return:
+        """
+        test_filters = {'schema': 'test_schema'}
+        test_term = 'hello'
+        test_index = 1
+        responses.add(responses.POST, local_app.config['SEARCHSERVICE_BASE'] + '/search/query_filter_test',
+                      json=self.mock_table_results, status=HTTPStatus.OK)
+
+        with local_app.test_client() as test:
+            test.post('/api/search/v0/table_qs',
+                      json={'term': test_term, 'pageIndex': test_index, 'filters': test_filters})
+            mock_generate_query_json.assert_called_with(filters=test_filters,
+                                                        page_index=test_index,
+                                                        search_term=test_term)
+
+    @patch('amundsen_application.api.search.v0.generate_query_json')
+    def test_catch_exception_generate_query_json(self, mock_generate_query_json) -> None:
+        """
+        Test that any execeptions thrown by generate_query_json are caught
+        from the request_json
+        :return:
+        """
+        test_filters = {'schema': 'test_schema'}
+        test_term = 'hello'
+        test_index = 1
+        mock_generate_query_json.side_effect = Exception('Test exception')
+
+        with local_app.test_client() as test:
+            response = test.post('/api/search/v0/table_qs',
+                                 json={'term': test_term, 'pageIndex': test_index, 'filters': test_filters})
+            data = json.loads(response.data)
+            self.assertEqual(data.get('msg'), 'Encountered exception generating query json: Test exception')
+            self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+    @responses.activate
+    def test_request_success(self) -> None:
+        """
+        Test that the response contains the expected data and status code on success
+        :return:
+        """
+        test_filters = {'schema': 'test_schema'}
+        test_term = 'hello'
+        test_index = 1
+        responses.add(responses.POST, local_app.config['SEARCHSERVICE_BASE'] + '/search/query_filter_test',
+                      json=self.mock_table_results, status=HTTPStatus.OK)
+
+        with local_app.test_client() as test:
+            response = test.post('/api/search/v0/table_qs',
+                                 json={'term': test_term, 'pageIndex': test_index, 'filters': test_filters})
+            data = json.loads(response.data)
+            self.assertEqual(response.status_code, HTTPStatus.OK)
+
+            results = data.get('tables')
+            self.assertEqual(results.get('total_results'), self.mock_table_results.get('total_results'))
+            self.assertEqual(results.get('results'), self.expected_parsed_table_results)
+
+    @responses.activate
+    def test_request_fail(self) -> None:
+        """
+        Test that the response containes the failure status code from the search service on failure
+        :return:
+        """
+        test_filters = {'schema': 'test_schema'}
+        test_term = 'hello'
+        test_index = 1
+        responses.add(responses.POST, local_app.config['SEARCHSERVICE_BASE'] + '/search/query_filter_test',
+                      json={}, status=HTTPStatus.BAD_REQUEST)
+
+        with local_app.test_client() as test:
+            response = test.post('/api/search/v0/table_qs',
+                                 json={'term': test_term, 'pageIndex': test_index, 'filters': test_filters})
+            data = json.loads(response.data)
+            self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+            self.assertEqual(data.get('msg'), 'Encountered error: Search request failed')
 
 
 class SearchTest(unittest.TestCase):

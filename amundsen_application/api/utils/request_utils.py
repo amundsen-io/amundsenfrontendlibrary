@@ -21,7 +21,7 @@ def request_metadata(*,     # type: ignore
     """
     Helper function to make a request to metadata service.
     Sets the client and header information based on the configuration
-    :param headers: Optional headers for the request
+    :param headers: Optional headers for the request, e.g. specifying Content-Type
     :param method: DELETE | GET | POST | PUT
     :param url: The request URL
     :param timeout_sec: Number of seconds before timeout is triggered.
@@ -52,7 +52,7 @@ def request_search(*,     # type: ignore
     """
     Helper function to make a request to search service.
     Sets the client and header information based on the configuration
-    :param headers: Optional headers for the request
+    :param headers: Optional headers for the request, e.g. specifying Content-Type
     :param method: DELETE | GET | POST | PUT
     :param url: The request URL
     :param timeout_sec: Number of seconds before timeout is triggered.
