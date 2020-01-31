@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as History from 'history';
 import { bindActionCreators } from 'redux'
 import { RouteComponentProps } from 'react-router';
 import { withRouter } from 'react-router-dom';
@@ -33,7 +32,6 @@ export interface DispatchFromProps {
 }
 
 export interface OwnProps {
-  location?: History.Location;
   placeholder?: string;
   size?: string;
 }
@@ -65,6 +63,13 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   clearSearchTerm = () : void => {
     this.setState({ showTypeAhead: false, searchTerm: '' });
+
+    /*
+      This method fires when the searchTerm is empty to re-execute a search.
+      This should only be applied on the SearchPage route to keep the results
+      up-to-date as the user refines their search interacting back & forth with
+      the filter UI & SearchBar
+    */
     if (this.props.clearSearch) {
       this.props.clearSearch();
     }
@@ -180,7 +185,7 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any, ownProps) => {
-  /* These values activate behavior that is only supposed to execute on SearchPage */
+  /* These values activate behavior only applicable on SearchPage */
   const useFilters = ownProps.history.location.pathname === '/search';
   const updateStateOnClear = ownProps.history.location.pathname === '/search';
 

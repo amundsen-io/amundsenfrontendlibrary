@@ -1,9 +1,9 @@
 import * as React from 'react';
+import * as History from 'history';
 
 import { mount, shallow } from 'enzyme';
 
 import { mapStateToProps, mapDispatchToProps, SearchBar, SearchBarProps } from '../';
-
 import globalState from 'fixtures/globalState';
 import { getMockRouterProps } from 'fixtures/mockRouter';
 
@@ -13,16 +13,14 @@ document.addEventListener = jest.fn(() => {});
 document.removeEventListener = jest.fn(() => {});
 
 describe('SearchBar', () => {
-  const valueChangeMockEvent = { target: { value: 'Data Resources' } };
   const submitMockEvent = { preventDefault: jest.fn() };
   const setStateSpy = jest.spyOn(SearchBar.prototype, 'setState');
-  const routerProps = getMockRouterProps<any>(null, null);
-  const setup = (propOverrides?: Partial<SearchBarProps>, useMount?: boolean) => {
+  const setup = (propOverrides?: Partial<SearchBarProps>, useMount?: boolean, location?: Partial<History.Location>) => {
+    const routerProps = getMockRouterProps<any>(null, location);
     const props: SearchBarProps = {
       onInputChange: jest.fn(),
       onSelectInlineResult: jest.fn(),
       searchTerm: '',
-      clearSearch: jest.fn(),
       submitSearch: jest.fn(),
       ...routerProps,
       ...propOverrides
@@ -50,6 +48,13 @@ describe('SearchBar', () => {
       expect(wrapper.state().searchTerm).toBe(initialSearchTerm);
       wrapper.instance().clearSearchTerm();
       expect(setStateSpy).toHaveBeenCalledWith({ searchTerm: '', showTypeAhead: false });
+    });
+
+    it('calls props.clearSearch if it is defined', () => {
+      const { props, wrapper } = setup({ searchTerm: 'test', clearSearch: jest.fn() });
+      const clearSearchSpy = jest.spyOn(props, 'clearSearch');
+      wrapper.instance().clearSearchTerm();
+      expect(clearSearchSpy).toHaveBeenCalled();
     });
   });
 
@@ -83,80 +88,102 @@ describe('SearchBar', () => {
   });
 
   describe('handleValueChange', () => {
-    let shouldShowTypeAheadSpy;
-
-    it('calls setState on searchTerm and shouldShowTypeAhead ', () => {
-      const { props, wrapper } = setup();
-      const mockReturnValue = true;
-      shouldShowTypeAheadSpy = jest.spyOn(wrapper.instance(), 'shouldShowTypeAhead').mockImplementation(() => mockReturnValue);
-      // @ts-ignore: mocked events throw type errors
-      wrapper.instance().handleValueChange(valueChangeMockEvent);
-      expect(setStateSpy).toHaveBeenCalledWith({ searchTerm: valueChangeMockEvent.target.value.toLowerCase(), showTypeAhead: mockReturnValue });
-    });
-
-    it('calls onInputChange if shouldShowTypeAhead = true', () => {
-      const { props, wrapper } = setup();
-      shouldShowTypeAheadSpy = jest.spyOn(wrapper.instance(), 'shouldShowTypeAhead').mockImplementation(() => true);
-      // @ts-ignore: mocked events throw type errors
-      wrapper.instance().handleValueChange(valueChangeMockEvent);
-      expect(props.onInputChange).toHaveBeenCalledWith(valueChangeMockEvent.target.value.toLowerCase());
-    });
-
-    /*it('does not call onInputChange if shouldShowTypeAhead = false', () => {
-      const { props, wrapper } = setup();
-      shouldShowTypeAheadSpy = jest.spyOn(wrapper.instance(), 'shouldShowTypeAhead').mockImplementation(() => false);
-      // @ts-ignore: mocked events throw type errors
-      wrapper.instance().handleValueChange(valueChangeMockEvent);
-      expect(props.onInputChange).not.toHaveBeenCalled();
-    });*/
-  });
-
-  /*describe('handleValueSubmit', () => {
     let props;
     let wrapper;
-    let hideTypeAheadSpy;
     beforeAll(() => {
       const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
 
+    describe('if searchTerm has length', () => {
+      const mockSearchTerm = 'I have Length';
+      const expectedSearchTerm = 'i have length';
+      it('calls setState with searchTerm as lowercase target value & showTypeAhead as true ', () => {
+        setStateSpy.mockClear();
+        // @ts-ignore: mocked events throw type errors
+        wrapper.instance().handleValueChange({ target: { value: mockSearchTerm } });
+        expect(setStateSpy).toHaveBeenCalledWith({ searchTerm: expectedSearchTerm, showTypeAhead: true });
+      });
+
+      it('calls onInputChange with searchTerm as lowercase target value', () => {
+        // @ts-ignore: mocked events throw type errors
+        props.onInputChange.mockClear();
+        wrapper.instance().handleValueChange({ target: { value: mockSearchTerm } });
+        expect(props.onInputChange).toHaveBeenCalledWith(expectedSearchTerm);
+      });
+    })
+
+    describe('if searchTerm has zero length', () => {
+      const mockSearchTerm = '';
+      it('calls clearSearchTerm', () => {
+        const clearSearchTermSpy = jest.spyOn(wrapper.instance(), 'clearSearchTerm');
+        // @ts-ignore: mocked events throw type errors
+        wrapper.instance().handleValueChange({ target: { value: mockSearchTerm } });
+        expect(clearSearchTermSpy).toHaveBeenCalled();
+      });
+    });
+  });
+
+  describe('handleValueSubmit', () => {
+    let props;
+    let wrapper;
+    let hideTypeAheadSpy;
+    let isFormValidSpy;
+    let submitSearchSpy;
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+      hideTypeAheadSpy = jest.spyOn(wrapper.instance(), 'hideTypeAhead');
+      isFormValidSpy = jest.spyOn(wrapper.instance(), 'isFormValid');
+      submitSearchSpy = jest.spyOn(props, 'submitSearch');
+    });
+
     it('calls event.preventDefault', () => {
+      isFormValidSpy.mockImplementationOnce(() => true);
+      submitMockEvent.preventDefault.mockClear();
       // @ts-ignore: mocked events throw type errors
       wrapper.instance().handleValueSubmit(submitMockEvent);
       expect(submitMockEvent.preventDefault).toHaveBeenCalled();
     });
 
-    it('submits with correct props if isFormValid()', () => {
-      const { props, wrapper } = setup({ searchTerm: 'testTerm' });
-      // @ts-ignore: mocked events throw type errors
-      wrapper.instance().handleValueSubmit(submitMockEvent);
-      expect(props.submitSearch).toHaveBeenCalledWith(props.searchTerm);
-    });
+    describe('if isFormValid', () => {
+      it('submits with correct props', () => {
+        isFormValidSpy.mockImplementationOnce(() => true);
+        submitSearchSpy.mockClear();
+        // @ts-ignore: mocked events throw type errors
+        wrapper.instance().handleValueSubmit(submitMockEvent);
+        expect(submitSearchSpy).toHaveBeenCalledWith(props.searchTerm);
+      });
 
-    it('calls hideTypeAhead if isFormValid()', () => {
-      const { props, wrapper } = setup({ searchTerm: 'testTerm' });
-      hideTypeAheadSpy = jest.spyOn(wrapper.instance(), 'hideTypeAhead');
-      // @ts-ignore: mocked events throw type errors
-      wrapper.instance().handleValueSubmit(submitMockEvent);
-      expect(hideTypeAheadSpy).toHaveBeenCalled();
-    });
+      it('calls hideTypeAhead', () => {
+        isFormValidSpy.mockImplementationOnce(() => true);
+        hideTypeAheadSpy.mockClear();
+        // @ts-ignore: mocked events throw type errors
+        wrapper.instance().handleValueSubmit(submitMockEvent);
+        expect(hideTypeAheadSpy).toHaveBeenCalled();
+      });
+    })
 
-    it('does not submit if !isFormValid()', () => {
-      const { props, wrapper } = setup({ searchTerm: 'tag:tag1 tag:tag2' });
-      // @ts-ignore: mocked events throw type errors
-      wrapper.instance().handleValueSubmit(submitMockEvent);
-      expect(props.submitSearch).not.toHaveBeenCalled();
-    });
+    describe('if !isFormValid', () => {
+      it('does not submit if !isFormValid()', () => {
+        isFormValidSpy.mockImplementationOnce(() => false);
+        submitSearchSpy.mockClear();
+        // @ts-ignore: mocked events throw type errors
+        wrapper.instance().handleValueSubmit(submitMockEvent);
+        expect(submitSearchSpy).not.toHaveBeenCalled();
+      });
 
-    it('does not call hideTypeAhead if !isFormValid()', () => {
-      const { props, wrapper } = setup({ searchTerm: 'tag:tag1 tag:tag2' });
-      hideTypeAheadSpy = jest.spyOn(wrapper.instance(), 'hideTypeAhead');
-      // @ts-ignore: mocked events throw type errors
-      wrapper.instance().handleValueSubmit(submitMockEvent);
-      expect(hideTypeAheadSpy).not.toHaveBeenCalled();
-    });
-  });*/
+      it('does not call hideTypeAhead if !isFormValid()', () => {
+        isFormValidSpy.mockImplementationOnce(() => false);
+        hideTypeAheadSpy.mockClear();
+        // @ts-ignore: mocked events throw type errors
+        wrapper.instance().handleValueSubmit(submitMockEvent);
+        expect(hideTypeAheadSpy).not.toHaveBeenCalled();
+      });
+    })
+  });
 
   describe('hideTypeAhead', () => {
     it('sets shouldShowTypeAhead to false', () => {
@@ -204,73 +231,14 @@ describe('SearchBar', () => {
 
 
   describe('updateTypeAhead', () => {
-    /* TODO: How to test? */
+    /* TODO: How to test logic that leverages refs */
   });
 
-  /*describe('isFormValid', () => {
-    describe('if searchTerm has more than one category', () => {
-      let wrapper;
-      beforeAll(() => {
-        wrapper = setup().wrapper;
-      });
+  describe('isFormValid', () => {
+    /* TODO: How to test logic that access document elements */
+  });
 
-      it('does not accept multiple search categories', () => {
-        expect(wrapper.instance().isFormValid('tag:tag1 tag:tag2')).toEqual(false);
-      });
-
-      it('does not accept empty search term', () => {
-        expect(wrapper.instance().isFormValid('')).toEqual(false);
-      });
-
-      it('sets state.subText correctly', () => {
-        expect(wrapper.state().subText).toEqual(SYNTAX_ERROR_CATEGORY);
-      });
-
-      it('sets state.subTextClassName correctly', () => {
-        expect(wrapper.state().subTextClassName).toEqual(ERROR_CLASSNAME);
-      });
-    });
-
-    describe('if searchTerm has incorrect colon syntax', () => {
-      let wrapper;
-      beforeAll(() => {
-        wrapper = setup({ searchTerm: 'tag : tag1' }).wrapper;
-      });
-
-      it('returns false', () => {
-        expect(wrapper.instance().isFormValid('tag : tag1')).toEqual(false);
-      });
-
-      it('sets state.subText correctly', () => {
-        expect(wrapper.state().subText).toEqual(`${SYNTAX_ERROR_PREFIX}'tag:tag1'${SYNTAX_ERROR_SPACING_SUFFIX}`);
-      });
-
-      it('sets state.subTextClassName correctly', () => {
-        expect(wrapper.state().subTextClassName).toEqual(ERROR_CLASSNAME);
-      });
-    });
-
-    describe('if searchTerm has correct syntax', () => {
-      let wrapper;
-      beforeAll(() => {
-        wrapper = setup().wrapper;
-      });
-
-      it('returns true', () => {
-        expect(wrapper.instance().isFormValid('tag:tag1')).toEqual(true);
-      });
-
-      it('sets state.subText correctly', () => {
-        expect(wrapper.state().subText).toEqual(SUBTEXT_DEFAULT);
-      });
-
-      it('sets state.subTextClassName correctly', () => {
-        expect(wrapper.state().subTextClassName).toEqual('');
-      });
-    });
-  });*/
-
-  /*describe('render', () => {
+  describe('render', () => {
     let props;
     let wrapper;
     beforeAll(() => {
@@ -282,6 +250,7 @@ describe('SearchBar', () => {
     describe('form', () => {
       it('renders with correct props', () => {
         expect(wrapper.find('form').props()).toMatchObject({
+          id: 'search-bar-form',
           className: 'search-bar-form',
           onSubmit: wrapper.instance().handleValueSubmit,
         });
@@ -296,6 +265,7 @@ describe('SearchBar', () => {
           onChange: wrapper.instance().handleValueChange,
           placeholder: SearchBar.defaultProps.placeholder,
           value: wrapper.state().searchTerm,
+          required: true,
         });
       });
 
@@ -309,6 +279,7 @@ describe('SearchBar', () => {
           onChange: wrapper.instance().handleValueChange,
           placeholder: props.placeholder,
           value: wrapper.state().searchTerm,
+          required: true,
         });
       });
 
@@ -328,26 +299,8 @@ describe('SearchBar', () => {
       });
     });
 
-    describe('subtext', () =>{
-      it('renders div with correct class', () => {
-        expect(wrapper.children().at(1).props()).toMatchObject({
-          className: `subtext body-secondary-3 ${wrapper.state().subTextClassName}`,
-        });
-      });
-
-      it('renders correct text', () => {
-        expect(wrapper.children().at(1).text()).toEqual(wrapper.state().subText);
-      });
-    });
-
     describe('render with small mode', () => {
       const { wrapper, props } = setup({ size: "small" });
-
-      it('does not render a subtext', () => {
-        const subtext = wrapper.find('subtext');
-        expect(subtext.exists()).toBe(false);
-      });
-
       it('renders a close button', () => {
         const closeButton = wrapper.find('button.clear-button');
         expect(closeButton.exists()).toBe(true);
@@ -355,7 +308,7 @@ describe('SearchBar', () => {
         expect(buttonProps.onClick).toEqual(wrapper.instance().clearSearchTerm);
       });
     });
-  });*/
+  });
 
   describe('mapDispatchToProps', () => {
     let dispatch;
@@ -367,6 +320,7 @@ describe('SearchBar', () => {
     });
 
     it('sets submitSearch on the props', () => {
+      /* TODO: How to test the boolean logic surrounding submitSearch */
       expect(result.submitSearch).toBeInstanceOf(Function);
     });
     it('sets onInputChange on the props', () => {
@@ -375,8 +329,15 @@ describe('SearchBar', () => {
     it('sets onSelectInlineResult on the props', () => {
       expect(result.onSelectInlineResult).toBeInstanceOf(Function);
     });
-    it('sets searchAll on the props', () => {
-      expect(result.submitSearch).toBeInstanceOf(Function);
+    it('sets clearSearch on the props if on search route', () => {
+      const props = setup(null, null, { pathname: "/search" }).props;
+      result = mapDispatchToProps(dispatch, props);
+      expect(result.clearSearch).toBeInstanceOf(Function);
+    });
+    it('does not seat clearSearch on the props if not on search route', () => {
+      const props = setup().props;
+      result = mapDispatchToProps(dispatch, props);
+      expect(result.clearSearch).toBe(undefined);
     });
   });
 });
