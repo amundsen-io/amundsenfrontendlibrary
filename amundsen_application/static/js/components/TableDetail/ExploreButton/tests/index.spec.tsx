@@ -1,9 +1,21 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import ExploreButton, { ExploreButtonProps } from 'components/TableDetail/ExploreButton';
+import ExploreButton from 'components/TableDetail/ExploreButton';
 import { TableMetadata } from 'interfaces/TableMetadata';
-import AppConfig from 'config/config';
 import { logClick } from 'ducks/utilMethods';
+
+jest.mock('config/config', () => (
+  {
+    default: {
+      tableProfile: {
+        isExploreEnabled: true,
+        exploreUrlGenerator: (database: string, cluster: string, schema: string, table: string, partitionKey?: string, partitionValue?: string) =>
+          `https://DEFAULT_EXPLORE_URL?schema=${schema}&cluster=${cluster}&db=${database}&table=${table}`
+      }
+    }
+  }
+));
+import AppConfig from 'config/config';
 
 describe('ExploreButton', () => {
   const setup = (tableDataOverrides?: Partial<TableMetadata>) => {
