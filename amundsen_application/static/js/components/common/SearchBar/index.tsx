@@ -1,6 +1,8 @@
 import * as React from 'react';
 import * as History from 'history';
 import { bindActionCreators } from 'redux'
+import { RouteComponentProps } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { GlobalState } from 'ducks/rootReducer';
@@ -24,8 +26,8 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  clearSearch: () => ClearSearchRequest;
-  submitSearch: (searchTerm: string, useFilters?: boolean) => SubmitSearchRequest;
+  clearSearch?: () => ClearSearchRequest;
+  submitSearch: (searchTerm: string) => SubmitSearchRequest;
   onInputChange: (term: string) => InlineSearchRequest;
   onSelectInlineResult: (resourceType: ResourceType, searchTerm: string, updateUrl: boolean) => InlineSearchSelect;
 }
@@ -36,7 +38,7 @@ export interface OwnProps {
   size?: string;
 }
 
-export type SearchBarProps = StateFromProps & DispatchFromProps & OwnProps;
+export type SearchBarProps = StateFromProps & DispatchFromProps & OwnProps & RouteComponentProps<{}>;
 
 interface SearchBarState {
   showTypeAhead: boolean;
@@ -63,8 +65,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   clearSearchTerm = () : void => {
     this.setState({ showTypeAhead: false, searchTerm: '' });
-    // TODO (ttannis): Still coonsidering better way to do this
-    if (this.props.location && this.props.location.pathname === '/search') {
+    if (this.props.clearSearch) {
       this.props.clearSearch();
     }
   };
@@ -97,12 +98,9 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   handleValueSubmit = (event: React.FormEvent<HTMLFormElement>) : void => {
     const searchTerm = this.state.searchTerm.trim();
-    // TODO (ttannis): Conside if there is a better way to address this, or if we want to prioritize
-    // and inmprovement to allow users to toggle
-    const useFilters = this.props.location ? this.props.location.pathname === '/search' : false;
     event.preventDefault();
     if (this.isFormValid()) {
-      this.props.submitSearch(searchTerm, useFilters);
+      this.props.submitSearch(searchTerm);
       this.hideTypeAhead();
     }
   };
@@ -181,8 +179,17 @@ export const mapStateToProps = (state: GlobalState) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ clearSearch, submitSearch, onInputChange: getInlineResultsDebounce, onSelectInlineResult: selectInlineResult }, dispatch);
+export const mapDispatchToProps = (dispatch: any, ownProps) => {
+  /* These values activate behavior that is only supposed to execute on SearchPage */
+  const useFilters = ownProps.history.location.pathname === '/search';
+  const updateStateOnClear = ownProps.history.location.pathname === '/search';
+
+  return bindActionCreators({
+    clearSearch: updateStateOnClear ? clearSearch : null,
+    submitSearch: (searchTerm: string) => { return submitSearch(searchTerm, useFilters) },
+    onInputChange: getInlineResultsDebounce,
+    onSelectInlineResult: selectInlineResult
+  }, dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps, OwnProps>(mapStateToProps,  mapDispatchToProps)(SearchBar);
+export default withRouter(connect<StateFromProps, DispatchFromProps, OwnProps>(mapStateToProps,  mapDispatchToProps)(SearchBar));

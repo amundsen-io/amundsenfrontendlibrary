@@ -16,6 +16,7 @@ describe('SearchBar', () => {
   const valueChangeMockEvent = { target: { value: 'Data Resources' } };
   const submitMockEvent = { preventDefault: jest.fn() };
   const setStateSpy = jest.spyOn(SearchBar.prototype, 'setState');
+  const routerProps = getMockRouterProps<any>(null, null);
   const setup = (propOverrides?: Partial<SearchBarProps>, useMount?: boolean) => {
     const props: SearchBarProps = {
       onInputChange: jest.fn(),
@@ -23,6 +24,7 @@ describe('SearchBar', () => {
       searchTerm: '',
       clearSearch: jest.fn(),
       submitSearch: jest.fn(),
+      ...routerProps,
       ...propOverrides
     };
     const wrapper = useMount ? mount<SearchBar>(<SearchBar {...props} />) : shallow<SearchBar>(<SearchBar {...props} />);
@@ -354,37 +356,28 @@ describe('SearchBar', () => {
       });
     });
   });*/
-});
 
-describe('mapDispatchToProps', () => {
-  let dispatch;
-  let result;
-  beforeAll(() => {
-    dispatch = jest.fn(() => Promise.resolve());
-    result = mapDispatchToProps(dispatch);
-  });
+  describe('mapDispatchToProps', () => {
+    let dispatch;
+    let result;
+    beforeAll(() => {
+      const props = setup().props;
+      dispatch = jest.fn(() => Promise.resolve());
+      result = mapDispatchToProps(dispatch, props);
+    });
 
-  it('sets submitSearch on the props', () => {
-    expect(result.submitSearch).toBeInstanceOf(Function);
-  });
-  it('sets onInputChange on the props', () => {
-    expect(result.onInputChange).toBeInstanceOf(Function);
-  });
-  it('sets onSelectInlineResult on the props', () => {
-    expect(result.onSelectInlineResult).toBeInstanceOf(Function);
-  });
-});
-
-describe('mapDispatchToProps', () => {
-  let dispatch;
-  let result;
-  beforeAll(() => {
-    dispatch = jest.fn(() => Promise.resolve());
-    result = mapDispatchToProps(dispatch);
-  });
-
-  it('sets searchAll on the props', () => {
-    expect(result.submitSearch).toBeInstanceOf(Function);
+    it('sets submitSearch on the props', () => {
+      expect(result.submitSearch).toBeInstanceOf(Function);
+    });
+    it('sets onInputChange on the props', () => {
+      expect(result.onInputChange).toBeInstanceOf(Function);
+    });
+    it('sets onSelectInlineResult on the props', () => {
+      expect(result.onSelectInlineResult).toBeInstanceOf(Function);
+    });
+    it('sets searchAll on the props', () => {
+      expect(result.submitSearch).toBeInstanceOf(Function);
+    });
   });
 });
 
