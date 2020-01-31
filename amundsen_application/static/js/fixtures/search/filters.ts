@@ -1,5 +1,11 @@
 import { ResourceType } from 'interfaces';
 
-export const defaultFilters = {
+export const defaultEmptyFilters = {
   [ResourceType.table]: {}
+};
+
+export const datasetFilterExample = {
+  [ResourceType.table]: {
+    'schema': 'schema_name'
+  }
 };

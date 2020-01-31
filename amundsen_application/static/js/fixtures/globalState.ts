@@ -1,7 +1,7 @@
 import { GlobalState } from 'ducks/rootReducer';
 import { ResourceType, SendingState } from 'interfaces';
 
-import { defaultFilters } from './search/filters';
+import { defaultEmptyFilters } from './search/filters';
 
 const globalState: GlobalState = {
   announcements: {
@@ -101,7 +101,7 @@ const globalState: GlobalState = {
         total_results: 0,
       },
     },
-    filters: defaultFilters,
+    filters: defaultEmptyFilters,
   },
   tableMetadata: {
     isLoading: true,

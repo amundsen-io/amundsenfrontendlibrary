@@ -6,6 +6,9 @@ export const DOCUMENT_TITLE_SUFFIX = ' - Amundsen Search';
 
 export const PAGE_INDEX_ERROR_MESSAGE = 'Page index out of bounds for available matches';
 
+export const SEARCH_DEFAULT_MESSAGE = 'Your search results will be shown here.\n\
+Try entering a search term or using any of the filters to the left.';
+
 export const SEARCH_SOURCE_NAME = 'search_results';
 export const SEARCH_ERROR_MESSAGE_PREFIX = 'Your search did not match any ';
 export const SEARCH_ERROR_MESSAGE_SUFFIX = ' results';
