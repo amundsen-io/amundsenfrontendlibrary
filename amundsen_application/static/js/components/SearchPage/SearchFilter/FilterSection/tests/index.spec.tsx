@@ -17,8 +17,7 @@ describe('FilterSection', () => {
       onClearFilter: jest.fn(),
       ...propOverrides
     };
-    const hasChilden = propOverrides && propOverrides.children;
-    const wrapper = hasChilden ? shallow<FilterSection>(<FilterSection {...props}> { propOverrides.children } </FilterSection>) : shallow<FilterSection>(<FilterSection {...props} />);
+    const wrapper = shallow<FilterSection>(<FilterSection {...props} />);
     return { props, wrapper };
   };
 

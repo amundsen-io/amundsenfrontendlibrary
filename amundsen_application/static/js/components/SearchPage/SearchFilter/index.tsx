@@ -14,17 +14,17 @@ import { FilterType, ResourceType } from 'interfaces';
 
 import './styles.scss'
 
-interface CheckboxFilterSection {
+interface FilterSection {
   categoryId: string;
   helpText?: string;
-  properties: CheckboxFilterProperties[];
   title: string;
 }
 
-interface InputFilterSection {
-  categoryId: string;
-  helpText?: string;
-  title: string;
+interface CheckboxFilterSection extends FilterSection {
+  properties: CheckboxFilterProperties[];
+}
+
+interface InputFilterSection extends FilterSection {
   value: string;
 }
 
