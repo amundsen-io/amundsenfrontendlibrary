@@ -32,7 +32,7 @@ export class CheckBoxFilter extends React.Component<CheckBoxFilterProps> {
     return (
       <CheckBoxItem
         key={key}
-        checked={ checked || false }
+        checked={ checked }
         name={ categoryId }
         value={ value }
         onChange={ this.props.onCheckboxChange }>

@@ -6,6 +6,9 @@ export const defaultEmptyFilters = {
 
 export const datasetFilterExample = {
   [ResourceType.table]: {
-    'schema': 'schema_name'
+    'schema': 'schema_name',
+    'database': {
+      'hive': true
+    }
   }
 };

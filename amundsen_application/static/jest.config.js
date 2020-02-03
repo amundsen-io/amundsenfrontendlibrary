@@ -7,10 +7,10 @@ module.exports = {
           statements: 50, // 100
       },
       './js/components': {
-          branches: 40, // 75
-          functions: 45, // 75
-          lines: 50, // 75
-          statements: 50, // 75
+          branches: 60, // 75
+          functions: 65, // 75
+          lines: 65, // 75
+          statements: 70, // 75
       },
       './js/ducks': {
           branches: 60, // TODO (ttannis): return to 75 after writing tests

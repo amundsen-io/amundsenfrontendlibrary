@@ -7,7 +7,6 @@ import { APPLY_BTN_TEXT } from '../constants';
 
 interface StateFromProps {
   categoryId: string;
-  disabled?: boolean;
   value: string;
 }
 
@@ -39,9 +38,7 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
 
   onApplyChanges = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!this.props.disabled) {
-      this.props.onApplyChanges(this.props.categoryId, this.state.value);
-    }
+    this.props.onApplyChanges(this.props.categoryId, this.state.value);
   };
 
   onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,13 +46,12 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
   };
 
   render = () => {
-    const { categoryId, disabled = false } = this.props;
+    const { categoryId } = this.props;
     return (
       <form className="input-section-content form-group" onSubmit={ this.onApplyChanges }>
         <input
           type="text"
           className="form-control"
-          disabled={ disabled }
           name={ categoryId }
           onChange={ this.onInputChange }
           value={ this.state.value }
@@ -63,7 +59,6 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
         <button
           name={ categoryId }
           className="btn btn-default"
-          disabled={ disabled }
           type="submit"
         >
           { APPLY_BTN_TEXT }

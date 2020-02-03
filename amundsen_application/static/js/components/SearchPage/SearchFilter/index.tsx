@@ -70,7 +70,7 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
       <FilterSection
         key={key}
         categoryId={ categoryId }
-        hasValue={ value && value.length > 0 }
+        hasValue={ value.length > 0 }
         helpText={ helpText }
         title={ title }
       >
@@ -100,10 +100,6 @@ export class SearchFilter extends React.Component<SearchFilterProps> {
   };
 };
 
-/*
-  TODO (ttannis): Reminder don't write test tied to the implementation of the transformations.
-  Create test fixtures for input, and test output is the expected output in the correct data shape.
-*/
 export const mapStateToProps = (state: GlobalState) => {
   const resourceType = state.search.selectedTab;
   const filterCategories = getFilterConfigByResource(resourceType);
@@ -113,7 +109,6 @@ export const mapStateToProps = (state: GlobalState) => {
   const inputSections = [];
 
   let currentFilterValue;
-
   if (filterCategories) {
     /* checkbox sections */
     filterCategories.forEach((categoryConfig) => {
@@ -127,7 +122,8 @@ export const mapStateToProps = (state: GlobalState) => {
             return {
               value: option.value,
               labelText: option.displayName,
-              checked: currentFilterValue && currentFilterValue[option.value],
+              /* tertiary statement allows for 'false' to be explicity set as opposed to 'undefined' */
+              checked: currentFilterValue && currentFilterValue[option.value] ? true : false,
             };
           })
         });
