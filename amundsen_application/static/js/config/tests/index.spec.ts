@@ -30,10 +30,18 @@ describe('getDatabaseIconClass', () => {
   })
 });
 
+describe('getDisplayNameByResource', () => {
+  it('returns the displayName for a given resource', () => {
+    const testResource = ResourceType.table;
+    const expectedValue = AppConfig.resourceConfig[testResource].displayName;
+    expect(ConfigUtils.getDisplayNameByResource(testResource)).toBe(expectedValue);
+  });
+});
+
 describe('getFilterConfigByResource', () => {
   it('returns the filter categories for a given resource', () => {
     const testResource = ResourceType.table;
-    const expectedValue = AppConfig.resourceConfig[testResource].filterCategories
+    const expectedValue = AppConfig.resourceConfig[testResource].filterCategories;
     expect(ConfigUtils.getFilterConfigByResource(testResource)).toBe(expectedValue);
   });
 });
