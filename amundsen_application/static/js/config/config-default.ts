@@ -39,7 +39,6 @@ const configDefault: AppConfig = {
       use_router: true,
     }
   ],
-  // TODO (ttannis): Replace constants defined in some components with displayName
   resourceConfig: {
     [ResourceType.table]: {
       displayName: 'Datasets',

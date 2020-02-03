@@ -29,7 +29,9 @@ import TagInput from 'components/Tags/TagInput';
 import { TableMetadata } from 'interfaces/TableMetadata';
 
 import { EditableSection } from 'components/TableDetail/EditableSection';
-import { getDatabaseDisplayName, getDatabaseIconClass, notificationsEnabled } from 'config/config-utils';
+import { getDisplayNameByResource, getDatabaseDisplayName, getDatabaseIconClass, notificationsEnabled } from 'config/config-utils';
+
+import { ResourceType } from 'interfaces/Resources';
 
 import './styles';
 import RequestDescriptionText from './RequestDescriptionText';
@@ -137,7 +139,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               <BookmarkIcon bookmarkKey={ this.props.tableData.key }/>
               <div className="body-2">
                 <ul className="header-bullets">
-                  <li>Datasets</li>
+                  <li>{ getDisplayNameByResource(ResourceType.table) }</li>
                   <li>{ getDatabaseDisplayName(data.database) }</li>
                   <li>{ data.cluster }</li>
                 </ul>

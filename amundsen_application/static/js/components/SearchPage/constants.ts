@@ -1,3 +1,6 @@
+import { ResourceType } from 'interfaces/Resources';
+import { getDisplayNameByResource } from 'config/config-utils';
+
 export const PAGINATION_PAGE_RANGE = 10;
 export const RESULTS_PER_PAGE = 10;
 
@@ -13,5 +16,5 @@ export const SEARCH_SOURCE_NAME = 'search_results';
 export const SEARCH_ERROR_MESSAGE_PREFIX = 'Your search did not match any ';
 export const SEARCH_ERROR_MESSAGE_SUFFIX = ' results';
 
-export const TABLE_RESOURCE_TITLE = 'Datasets';
-export const USER_RESOURCE_TITLE = 'People';
+export const TABLE_RESOURCE_TITLE = getDisplayNameByResource(ResourceType.table);
+export const USER_RESOURCE_TITLE = getDisplayNameByResource(ResourceType.user);

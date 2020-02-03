@@ -1,10 +1,10 @@
 module.exports = {
   coverageThreshold: {
       './js/config': {
-          branches: 50, // 100
-          functions: 0, // 100
-          lines: 50, // 100
-          statements: 50, // 100
+          branches: 100,
+          functions: 75, // 100
+          lines: 90, // 100
+          statements: 90, // 100
       },
       './js/components': {
           branches: 60, // 75

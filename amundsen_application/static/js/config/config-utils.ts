@@ -7,9 +7,6 @@ import { ResourceType } from '../interfaces';
 
 export const DEFAULT_DATABASE_ICON_CLASS = 'icon-database icon-color';
 
-// TODO (ttannis): Harden all tests by using a fixture
-// TODO (ttannis): Add utils for new methods
-
 /**
  * Returns the database display name for a given database id.
  * If a configuration or display name does not exist for the give id, the id
@@ -38,6 +35,13 @@ export function getDatabaseIconClass(databaseId: string): string {
 
   return databaseConfig.iconClass;
 }
+
+/**
+ * Returns the displayName for the given resourceType
+ */
+export function getDisplayNameByResource(resourceType: ResourceType): string {
+  return AppConfig.resourceConfig[resourceType].displayName;
+};
 
 /**
  * Returns the filterCategories for the given resourceType
