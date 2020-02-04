@@ -132,7 +132,7 @@ export const mapStateToProps = (state: GlobalState) => {
 
     /* input sections */
     filterCategories.forEach((categoryConfig) => {
-      currentFilterValue = filterState[resourceType][categoryConfig.value];
+      currentFilterValue = filterState[resourceType][categoryConfig.value] || '';
       if (categoryConfig.type === FilterType.SINGLE_VALUE) {
         inputSections.push({
           categoryId: categoryConfig.value,

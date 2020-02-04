@@ -2,17 +2,58 @@ import { ResourceType } from 'interfaces';
 
 import { filterFromObj } from 'ducks/utilMethods';
 
+/* ACTION TYPES */
 export enum UpdateSearchFilter {
   CLEAR_ALL = 'amundsen/search/filter/CLEAR_ALL',
   CLEAR_CATEGORY = 'amundsen/search/filter/CLEAR_CATEGORY',
   SET_BY_RESOURCE = 'amundsen/search/filter/SET_BY_RESOURCE',
   UPDATE_CATEGORY = 'amundsen/search/filter/UPDATE_CATEGORY',
-}
+};
 
-/* TODO (ttannis): Add types for actions */
+interface ClearAllFiltersRequest {
+  type: UpdateSearchFilter.CLEAR_ALL;
+};
+
+interface ClearFilterRequest {
+  payload: {
+    category: string;
+  };
+  type: UpdateSearchFilter.CLEAR_CATEGORY;
+};
+
+interface SetFilterRequest {
+  payload: {
+    filters: ResourceFilterReducerState;
+    resourceType: ResourceType;
+  };
+  type: UpdateSearchFilter.SET_BY_RESOURCE;
+};
+
+interface UpdateFilterRequest {
+  payload: {
+    category: string;
+    value: string | FilterOptions;
+  };
+  type: UpdateSearchFilter.UPDATE_CATEGORY;
+};
 
 /* ACTIONS */
-export function setFilterByResource(resourceType: ResourceType, filters: ResourceFilterReducerState) {
+export function clearAllFilters(): ClearAllFiltersRequest {
+  return {
+    type: UpdateSearchFilter.CLEAR_ALL,
+  };
+};
+
+export function clearFilterByCategory(category: string): ClearFilterRequest {
+  return {
+    payload: {
+      category,
+    },
+    type: UpdateSearchFilter.CLEAR_CATEGORY,
+  };
+};
+
+export function setFilterByResource(resourceType: ResourceType, filters: ResourceFilterReducerState): SetFilterRequest {
   return {
     payload: {
       resourceType,
@@ -22,22 +63,7 @@ export function setFilterByResource(resourceType: ResourceType, filters: Resourc
   };
 };
 
-export function clearAllFilters() {
-  return {
-    type: UpdateSearchFilter.CLEAR_ALL,
-  };
-};
-
-export function clearFilterByCategory(category: string) {
-  return {
-    payload: {
-      category,
-    },
-    type: UpdateSearchFilter.CLEAR_CATEGORY,
-  };
-};
-
-export function updateFilterByCategory(category: string, value: string | FilterOptions) {
+export function updateFilterByCategory(category: string, value: string | FilterOptions): UpdateFilterRequest {
   return {
     payload: {
       category,
@@ -47,7 +73,7 @@ export function updateFilterByCategory(category: string, value: string | FilterO
   };
 };
 
-/* REDUCER */
+/* REDUCER TYPES */
 type FilterOptions = { [id:string]: boolean };
 
 export interface FilterReducerState {
@@ -55,10 +81,10 @@ export interface FilterReducerState {
 };
 
 export interface ResourceFilterReducerState {
-  /* TODO: Future improvements allowing multiple values for all categories will simplify this */
   [category: string]: string | FilterOptions;
 };
 
+/* REDUCER */
 export const initialTableFilterState = {};
 
 export const initialFilterState: FilterReducerState = {
