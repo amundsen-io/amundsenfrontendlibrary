@@ -14,7 +14,7 @@ interface ClearAllFiltersRequest {
   type: UpdateSearchFilter.CLEAR_ALL;
 };
 
-interface ClearFilterRequest {
+export interface ClearFilterRequest {
   payload: {
     category: string;
   };
@@ -29,7 +29,7 @@ interface SetFilterRequest {
   type: UpdateSearchFilter.SET_BY_RESOURCE;
 };
 
-interface UpdateFilterRequest {
+export interface UpdateFilterRequest {
   payload: {
     category: string;
     value: string | FilterOptions;

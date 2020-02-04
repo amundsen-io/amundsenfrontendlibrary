@@ -50,15 +50,26 @@ import {
 import { autoSelectResource, getPageIndex, getSearchState } from './utils';
 import { BrowserHistory, updateSearchUrl } from 'utils/navigation-utils';
 
-export function* filterWorker(action: any): SagaIterator {
-  const state = yield select();
-  const { search_term, selectedTab, filters } = state.search;
-  const pageIndex = getPageIndex(state.search)
-  yield put(searchResource(search_term, selectedTab, pageIndex));
-  updateSearchUrl({ filters, resource: selectedTab, term: search_term, index: pageIndex }, true);
-};
+/**
+ * Listens to actions triggers by user updates to the filter state.
+ * For better user experience debounce the start of the worker as multiple updates can happen in < 1 second.
+ */
 export function* filterWatcher(): SagaIterator {
   yield debounce(750, [UpdateSearchFilter.CLEAR_CATEGORY, UpdateSearchFilter.UPDATE_CATEGORY], filterWorker);
+};
+
+/*
+ * Executes a search on the current resource.
+ * Actions that trigger this worker will have updated the filter reducer .
+ * The updated filter state is applied in searchResourceWorker().
+ * Updates the search url to reflect the change in filters.
+ */
+export function* filterWorker(): SagaIterator {
+  const state = yield select(getSearchState);
+  const { search_term, selectedTab, filters } = state;
+  const pageIndex = getPageIndex(state)
+  yield put(searchResource(search_term, selectedTab, pageIndex));
+  updateSearchUrl({ filters, resource: selectedTab, term: search_term, index: pageIndex }, true);
 };
 
 export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
@@ -119,16 +130,16 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
     yield put(clearAllFilters())
   }
 
-  const state = yield select();
+  const state = yield select(getSearchState);
   const tableIndex = resource === ResourceType.table ? pageIndex : 0;
   const userIndex = resource === ResourceType.user ? pageIndex : 0;
   const dashboardIndex = resource === ResourceType.dashboard ? pageIndex : 0;
 
   try {
     const [tableResponse, userResponse, dashboardResponse] = yield all([
-      call(API.searchResource, tableIndex, ResourceType.table, term, state.search.filters[ResourceType.table]),
-      call(API.searchResource, userIndex, ResourceType.user, term, state.search.filters[ResourceType.user]),
-      call(API.searchResource, dashboardIndex, ResourceType.dashboard, term, state.search.filters[ResourceType.dashboard]),
+      call(API.searchResource, tableIndex, ResourceType.table, term, state.filters[ResourceType.table]),
+      call(API.searchResource, userIndex, ResourceType.user, term, state.filters[ResourceType.user]),
+      call(API.searchResource, dashboardIndex, ResourceType.dashboard, term, state.filters[ResourceType.dashboard]),
     ]);
     const searchAllResponse = {
       search_term: term,
@@ -144,7 +155,7 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
     }
     const index = getPageIndex(searchAllResponse);
     yield put(searchAllSuccess(searchAllResponse));
-    updateSearchUrl({ term, resource, index, filters: state.search.filters }, true);
+    updateSearchUrl({ term, resource, index, filters: state.filters }, true);
 
   } catch (e) {
     yield put(searchAllFailure());
@@ -156,9 +167,9 @@ export function* searchAllWatcher(): SagaIterator {
 
 export function* searchResourceWorker(action: SearchResourceRequest): SagaIterator {
   const { pageIndex, resource, term } = action.payload;
-  const state = yield select();
+  const state = yield select(getSearchState);
   try {
-    const searchResults = yield call(API.searchResource, pageIndex, resource, term, state.search.filters[resource]);
+    const searchResults = yield call(API.searchResource, pageIndex, resource, term, state.filters[resource]);
     yield put(searchResourceSuccess(searchResults));
   } catch (e) {
     yield put(searchResourceFailure());
@@ -169,10 +180,10 @@ export function* searchResourceWatcher(): SagaIterator {
 };
 
 export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
-  const state = yield select();
+  const state = yield select(getSearchState);
   const { searchTerm, useFilters } = action.payload;
   yield put(searchAll(searchTerm, undefined, undefined, useFilters));
-  updateSearchUrl({ term: searchTerm, filters: state.search.filters });
+  updateSearchUrl({ term: searchTerm, filters: state.filters });
 };
 export function* submitSearchWatcher(): SagaIterator {
   yield takeEvery(SubmitSearch.REQUEST, submitSearchWorker);
@@ -237,13 +248,16 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
       yield put(setResource(resource, false))
     }
     if (parsedFilters && !_.isEqual(state.filters[resource], parsedFilters)) {
-      /* Update filter state + search each resource */
+      /* Update filter state + search resource */
       yield put(setFilterByResource(resource, parsedFilters));
       yield put(searchResource(term, resource, parsedIndex));
     }
-  } else if (!isNaN(parsedIndex) && parsedIndex !== getPageIndex(state, resource)) {
-    yield put(setPageIndex(parsedIndex, false));
   }
+  /* TODO (ttannis): I can't seem to trigger this case with the current logic,
+    call out when reviewing
+  else if (!isNaN(parsedIndex) && parsedIndex !== getPageIndex(state, resource)) {
+    yield put(setPageIndex(parsedIndex, false));
+  }*/
 };
 export function* urlDidUpdateWatcher(): SagaIterator {
   yield takeEvery(UrlDidUpdate.REQUEST, urlDidUpdateWorker);
