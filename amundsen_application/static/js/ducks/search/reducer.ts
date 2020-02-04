@@ -49,7 +49,7 @@ export interface SearchReducerState {
 };
 
 /* ACTIONS */
-export function searchAll(term: string, resource?: ResourceType, pageIndex?: number, useFilters?: boolean): SearchAllRequest {
+export function searchAll(term: string, resource?: ResourceType, pageIndex?: number, useFilters: boolean = false): SearchAllRequest {
   return {
     payload: {
       resource,

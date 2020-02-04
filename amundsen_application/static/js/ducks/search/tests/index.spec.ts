@@ -4,7 +4,16 @@ import { DEFAULT_RESOURCE_TYPE, ResourceType } from 'interfaces';
 
 import * as API from '../api/v0';
 
+import * as filterReducer from '../filters/reducer';
+const MOCK_FILTER_STATE = {
+  [ResourceType.table]: {
+    'database': { 'hive': true }
+  }
+};
+const filterReducerSpy = jest.spyOn(filterReducer, 'default').mockImplementation(() => MOCK_FILTER_STATE);
+
 import reducer, {
+  clearSearch,
   getInlineResults,
   getInlineResultsSuccess,
   getInlineResultsFailure,
@@ -47,6 +56,7 @@ import {
   urlDidUpdateWorker
 } from '../sagas';
 import {
+  ClearSearch,
   LoadPreviousSearch,
   InlineSearch,
   InlineSearchResponsePayload,
@@ -148,7 +158,7 @@ describe('search ducks', () => {
   };
 
   describe('actions', () => {
-    it('searchAll - returns the action to search all resources', () => {
+    it('searchAll - returns the action to search all resources without useFilters', () => {
       const term = 'test';
       const resource = ResourceType.table;
       const pageIndex = 0;
@@ -158,6 +168,20 @@ describe('search ducks', () => {
       expect(payload.resource).toBe(resource);
       expect(payload.term).toBe(term);
       expect(payload.pageIndex).toBe(pageIndex);
+      expect(payload.useFilters).toBe(false);
+    });
+
+    it('searchAll - returns the action to search all resources with useFilters', () => {
+      const term = 'test';
+      const resource = ResourceType.table;
+      const pageIndex = 0;
+      const action = searchAll(term, resource, pageIndex, true);
+      const { payload } = action;
+      expect(action.type).toBe(SearchAll.REQUEST);
+      expect(payload.resource).toBe(resource);
+      expect(payload.term).toBe(term);
+      expect(payload.pageIndex).toBe(pageIndex);
+      expect(payload.useFilters).toBe(true);
     });
 
     it('searchAllSuccess - returns the action to process the success', () => {
@@ -201,11 +225,20 @@ describe('search ducks', () => {
       expect(action.type).toBe(SearchAll.RESET);
     });
 
-    it('submitSearch - returns the action to submit a search', () => {
+    it('submitSearch - returns the action to submit a search without useFilters', () => {
       const term = 'test';
       const action = submitSearch(term);
       expect(action.type).toBe(SubmitSearch.REQUEST);
       expect(action.payload.searchTerm).toBe(term);
+      expect(action.payload.useFilters).toBe(false);
+    });
+
+    it('submitSearch - returns the action to submit a search with useFilters', () => {
+      const term = 'test';
+      const action = submitSearch(term, true);
+      expect(action.type).toBe(SubmitSearch.REQUEST);
+      expect(action.payload.searchTerm).toBe(term);
+      expect(action.payload.useFilters).toBe(true);
     });
 
     it('setResource - returns the action to set the selected resource', () => {
@@ -276,6 +309,11 @@ describe('search ducks', () => {
       expect(action.type).toBe(InlineSearch.UPDATE);
       expect(action.payload).toBe(inlineUpdatePayload);
     });
+
+    it('clearSearch - returns the action that will clear the search term', () => {
+      const action = clearSearch();
+      expect(action.type).toBe(ClearSearch.REQUEST);
+    });
   });
 
   describe('reducer', () => {
@@ -303,6 +341,7 @@ describe('search ducks', () => {
       expect(reducer(testState, searchAllSuccess(expectedSearchAllResults))).toEqual({
         ...initialState,
         ...expectedSearchAllResults,
+        filters: testState.filters,
         inlineResults: {
           tables: expectedSearchAllResults.tables,
           users: expectedSearchAllResults.users,
@@ -360,6 +399,7 @@ describe('search ducks', () => {
         tables,
         users,
         search_term: searchTerm,
+        filters: filterReducer.initialFilterState,
       });
     });
 
@@ -392,6 +432,46 @@ describe('search ducks', () => {
           isLoading: true,
         },
       });
+    });
+
+    describe('handles cases that update the filter state', () => {
+      describe('cases that update the filter state only', () => {
+        it('UpdateSearchFilter.CLEAR_ALL', () => {
+          filterReducerSpy.mockClear();
+          const filterAction = filterReducer.clearAllFilters();
+          const result = reducer(testState, filterAction)
+          expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
+          expect(result.filters).toBe(MOCK_FILTER_STATE);
+        })
+
+        it('UpdateSearchFilter.SET_BY_RESOURCE', () => {
+          filterReducerSpy.mockClear();
+          const filterAction = filterReducer.setFilterByResource(ResourceType.table, {});
+          const result = reducer(testState, filterAction)
+          expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
+          expect(result.filters).toBe(MOCK_FILTER_STATE);
+        })
+      });
+
+      describe('cases that update the filter state & trigger a search', () => {
+        it('UpdateSearchFilter.CLEAR_CATEGORY', () => {
+          filterReducerSpy.mockClear();
+          const filterAction = filterReducer.clearFilterByCategory('column');
+          const result = reducer(testState, filterAction)
+          expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
+          expect(result.filters).toBe(MOCK_FILTER_STATE);
+          expect(result.isLoading).toBe(true);
+        })
+
+        it('UpdateSearchFilter.UPDATE_CATEGORY', () => {
+          filterReducerSpy.mockClear();
+          const filterAction = filterReducer.updateFilterByCategory('column', 'column_name')
+          const result = reducer(testState, filterAction)
+          expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
+          expect(result.filters).toBe(MOCK_FILTER_STATE);
+          expect(result.isLoading).toBe(true);
+        })
+      })
     });
   });
 
