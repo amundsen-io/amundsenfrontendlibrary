@@ -182,7 +182,7 @@ def search_table_query_string() -> Response:
 
     try:
         # TODO (ttannis): Change actual endpoint name after amundsensearch PR is merged
-        url = app.config['SEARCHSERVICE_BASE'] + '/search/query_filter_test'
+        url = app.config['SEARCHSERVICE_BASE'] + '/search_table'
         response = request_search(url=url,
                                   headers={'Content-Type': 'application/json'},
                                   method='POST',

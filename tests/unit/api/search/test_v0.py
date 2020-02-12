@@ -49,6 +49,7 @@ class SearchTableQueryString(unittest.TestCase):
     def setUp(self) -> None:
         self.mock_table_results = MOCK_TABLE_RESULTS
         self.expected_parsed_table_results = MOCK_PARSED_TABLE_RESULTS
+        self.search_url = local_app.config['SEARCHSERVICE_BASE'] + '/search_table'
 
     def test_fail_if_term_is_none(self) -> None:
         """
@@ -79,8 +80,7 @@ class SearchTableQueryString(unittest.TestCase):
         test_filters = {'schema': 'test_schema'}
         test_term = 'hello'
         test_index = 1
-        responses.add(responses.POST, local_app.config['SEARCHSERVICE_BASE'] + '/search/query_filter_test',
-                      json=self.mock_table_results, status=HTTPStatus.OK)
+        responses.add(responses.POST, self.search_url, json=self.mock_table_results, status=HTTPStatus.OK)
 
         with local_app.test_client() as test:
             test.post('/api/search/v0/table_qs',
@@ -117,8 +117,7 @@ class SearchTableQueryString(unittest.TestCase):
         test_filters = {'schema': 'test_schema'}
         test_term = 'hello'
         test_index = 1
-        responses.add(responses.POST, local_app.config['SEARCHSERVICE_BASE'] + '/search/query_filter_test',
-                      json=self.mock_table_results, status=HTTPStatus.OK)
+        responses.add(responses.POST, self.search_url, json=self.mock_table_results, status=HTTPStatus.OK)
 
         with local_app.test_client() as test:
             response = test.post('/api/search/v0/table_qs',
@@ -139,8 +138,7 @@ class SearchTableQueryString(unittest.TestCase):
         test_filters = {'schema': 'test_schema'}
         test_term = 'hello'
         test_index = 1
-        responses.add(responses.POST, local_app.config['SEARCHSERVICE_BASE'] + '/search/query_filter_test',
-                      json={}, status=HTTPStatus.BAD_REQUEST)
+        responses.add(responses.POST, self.search_url, json={}, status=HTTPStatus.BAD_REQUEST)
 
         with local_app.test_client() as test:
             response = test.post('/api/search/v0/table_qs',
