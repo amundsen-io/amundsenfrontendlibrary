@@ -30,7 +30,7 @@ import { TableMetadata } from 'interfaces/TableMetadata';
 
 import { EditableSection } from 'components/TableDetail/EditableSection';
 import { getDatabaseDisplayName, getDatabaseIconClass, notificationsEnabled } from 'config/config-utils';
-import { formatEpochTime } from 'utils/dateUtils';
+import { formatDateTimeShort } from 'utils/dateUtils';
 
 import './styles';
 import RequestDescriptionText from './RequestDescriptionText';
@@ -189,7 +189,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                     !!data.last_updated_timestamp &&
                     <>
                       <div className="section-title title-3">Last Updated</div>
-                      <div className="body-2">{ formatEpochTime(data.last_updated_timestamp) }</div>
+                      <div className="body-2">{ formatDateTimeShort({ epochTimestamp: data.last_updated_timestamp }) }</div>
                     </>
                   }
                   <div className="section-title title-3">Frequent Users</div>

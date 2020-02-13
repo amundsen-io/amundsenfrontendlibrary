@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as moment from 'moment-timezone';
-
 import './styles.scss';
 
 import { Watermark } from 'interfaces';
@@ -10,7 +8,7 @@ import {
   WATERMARK_INPUT_FORMAT,
   WatermarkType
 } from './constants';
-import { DATE_FORMAT } from 'utils/dateUtils';
+import { formatDate } from 'utils/dateUtils';
 
 export interface WatermarkLabelProps {
   watermarks: Watermark[];
@@ -22,7 +20,10 @@ class WatermarkLabel extends React.Component<WatermarkLabelProps> {
   }
 
   formatWatermarkDate = (dateString: string) => {
-    return moment(dateString, WATERMARK_INPUT_FORMAT).format(DATE_FORMAT);
+    return formatDate({
+      dateString,
+      dateStringFormat: WATERMARK_INPUT_FORMAT,
+    });
   };
 
   getWatermarkValue = (type: WatermarkType) => {

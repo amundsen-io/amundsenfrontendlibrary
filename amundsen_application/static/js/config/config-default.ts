@@ -6,6 +6,11 @@ const configDefault: AppConfig = {
     curatedTags: [],
     showAllTags: true,
   },
+  date: {
+    dateFormat: 'MMM DD, YYYY',
+    dateTimeFormatShort: 'MMM DD, YYYY ha z',
+    dateTimeFormatLong: 'MMMM Do YYYY [at] h:mm:ss a',
+  },
   editableText: {
     tableDescLength: 750,
     columnDescLength: 250,

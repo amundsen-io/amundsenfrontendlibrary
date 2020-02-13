@@ -7,7 +7,7 @@ import { GlobalState } from 'ducks/rootReducer';
 import { getLastIndexed } from 'ducks/tableMetadata/reducer';
 import { GetLastIndexedRequest } from 'ducks/tableMetadata/types';
 
-import { DATE_FORMAT_LONG, formatEpochTime } from 'utils/dateUtils';
+import { formatDateTimeLong } from 'utils/dateUtils';
 
 // Props
 interface StateFromProps {
@@ -30,7 +30,7 @@ export class Footer extends React.Component<FooterProps> {
   }
 
   generateDateTimeString = () => {
-    return formatEpochTime(this.props.lastIndexed, DATE_FORMAT_LONG);
+    return formatDateTimeLong({ epochTimestamp: this.props.lastIndexed });
   };
 
   render() {

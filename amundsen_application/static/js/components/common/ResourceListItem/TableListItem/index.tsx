@@ -8,7 +8,7 @@ import { TableResource } from 'interfaces';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 
 import { getDatabaseDisplayName, getDatabaseIconClass } from 'config/config-utils';
-import { formatEpochTime } from 'utils/dateUtils';
+import { formatDate } from 'utils/dateUtils';
 
 export interface TableListItemProps {
   table: TableResource;
@@ -57,7 +57,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
               <div>
                 <div className="title-3">Last Updated</div>
                 <div className="body-secondary-3">
-                  { formatEpochTime(table.last_updated_timestamp) }
+                  { formatDate({ epochTimestamp: table.last_updated_timestamp }) }
                 </div>
               </div>
             }

@@ -8,7 +8,7 @@ import TableListItem, { TableListItemProps } from '../';
 import { ResourceType } from 'interfaces';
 
 import * as ConfigUtils from 'config/config-utils';
-import { formatEpochTime } from 'utils/dateUtils';
+import { formatDate } from 'utils/dateUtils';
 
 const MOCK_DISPLAY_NAME = 'displayName';
 const MOCK_ICON_CLASS = 'test-class';
@@ -132,7 +132,7 @@ describe('TableListItem', () => {
         });
 
         it('renders getDateLabel value', () => {
-          const expectedString = formatEpochTime(props.table.last_updated_epoch);
+          const expectedString = formatDate({ epochTimestamp: props.table.last_updated_epoch });
           expect(resourceBadges.children().at(0).children().at(1).text()).toEqual(expectedString);
         });
       });
