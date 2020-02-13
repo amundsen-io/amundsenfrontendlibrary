@@ -21,6 +21,7 @@ import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import LineageLink from 'components/TableDetail/LineageLink';
 import OwnerEditor from 'components/TableDetail/OwnerEditor';
+import ReportTableIssue from 'components/TableDetail/ReportTableIssue';
 import SourceLink from 'components/TableDetail/SourceLink';
 import TableDescEditableText from 'components/TableDetail/TableDescEditableText';
 import TableIssues from 'components/TableDetail/TableIssues';
@@ -178,6 +179,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 />
               </EditableSection>
               { notificationsEnabled() && <RequestDescriptionText/> }
+              <ReportTableIssue tableKey={ this.key } tableName={ this.getDisplayName() } />
               <section className="column-layout-2">
                 <section className="left-panel">
                   {

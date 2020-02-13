@@ -40,6 +40,7 @@ class Config:
     JIRA_USER = None
     JIRA_PASSWORD = None
     JIRA_PROJECT_ID = None
+    JIRA_PROJECT_NAME = None
 
 
 class LocalConfig(Config):

@@ -14,6 +14,7 @@ class JiraClient:
         self.jira_user = app.config['JIRA_USER']
         self.jira_password = app.config['JIRA_PASSWORD']
         self.jira_project_id = app.config['JIRA_PROJECT_ID']
+        self.jira_project_name = app.config['JIRA_PROJECT_NAME']
         self.jira_client = self.get_client()
 
     def get_client(self) -> JIRA:
@@ -43,12 +44,13 @@ class JiraClient:
         :param table_key: Table key
         :return: Metadata of matching issues
         """
-        if self.jira_project_id is None:
-            raise Exception("JIRA_PROJECT_ID must be configured")
+        if self.jira_project_name is None:
+            raise Exception("JIRA_PROJECT_NAME must be configured")
         try:
             issues = self.jira_client.search_issues(SEARCH_STUB.format(
-                project_id=self.jira_project_id,
-                table_key=table_key))
+                project_id=self.jira_project_name,
+                table_key='Urgent'),
+                maxResults=3)
             result = []
             for issue in issues:
                 result.append(self.get_issue_properties(issue))
@@ -68,9 +70,9 @@ class JiraClient:
             raise Exception("JIRA_PROJECT_ID must be configured")
         try:
             issue = self.jira_client.create_issue(fields=dict(project={
-                "id": self.jira_project_id # might need to be an id
+                "id": self.jira_project_id
             }, issuetype={
-                # "id": 1,
+                "id": 1,
                 "name": "Bug",
             }, summary=title, description=description + "\n" + key))
 
