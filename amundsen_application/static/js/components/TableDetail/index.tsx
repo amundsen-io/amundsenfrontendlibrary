@@ -23,6 +23,7 @@ import LineageLink from 'components/TableDetail/LineageLink';
 import OwnerEditor from 'components/TableDetail/OwnerEditor';
 import SourceLink from 'components/TableDetail/SourceLink';
 import TableDescEditableText from 'components/TableDetail/TableDescEditableText';
+import TableIssues from 'components/TableDetail/TableIssues';
 import WatermarkLabel from 'components/TableDetail/WatermarkLabel';
 import WriterLink from 'components/TableDetail/WriterLink';
 import TagInput from 'components/Tags/TagInput';
@@ -167,6 +168,8 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 TODO - Add a banner here if necessary
                 <section className="banner">optional banner</section>
               */}
+              <TableIssues tableKey={ this.key }/>
+
               <EditableSection title="Description">
                 <TableDescEditableText
                   maxLength={ AppConfig.editableText.tableDescLength }

@@ -35,6 +35,12 @@ class Config:
     # Initialize custom routes
     INIT_CUSTOM_ROUTES = None  # type: Callable[[Flask], None]
 
+    # Settings for Jira integration
+    JIRA_URL = None
+    JIRA_USER = None
+    JIRA_PASSWORD = None
+    JIRA_PROJECT_ID = None
+
 
 class LocalConfig(Config):
     DEBUG = False
