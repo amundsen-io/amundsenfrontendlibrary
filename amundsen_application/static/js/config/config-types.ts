@@ -7,7 +7,7 @@
 export interface AppConfig {
   badges: BadgeConfig;
   browse: BrowseConfig;
-  date: DateConfig;
+  date: DateFormatConfig;
   editableText: EditableTextConfig;
   google: GoogleAnalyticsConfig;
   indexUsers: IndexUsersConfig;
@@ -22,7 +22,7 @@ export interface AppConfig {
 export interface AppConfigCustom {
   badges?: BadgeConfig;
   browse?: BrowseConfig;
-  date?: DateConfig;
+  date?: DateFormatConfig;
   editableText?: EditableTextConfig;
   google?: GoogleAnalyticsConfig
   indexUsers?: IndexUsersConfig;
@@ -83,10 +83,10 @@ interface BadgeConfig {
  * DateConfig - Configure various date formats
  *
  */
-interface DateConfig {
-  dateFormat: string;
-  dateTimeFormatLong: string;
-  dateTimeFormatShort: string;
+interface DateFormatConfig {
+  default: string;
+  dateTimeLong: string;
+  dateTimeShort: string;
 }
 
 /** ResourceConfig - For customizing values related to how various resources

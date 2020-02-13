@@ -7,9 +7,9 @@ const configDefault: AppConfig = {
     showAllTags: true,
   },
   date: {
-    dateFormat: 'MMM DD, YYYY',
-    dateTimeFormatShort: 'MMM DD, YYYY ha z',
-    dateTimeFormatLong: 'MMMM Do YYYY [at] h:mm:ss a',
+    default: 'MMM DD, YYYY',
+    dateTimeShort: 'MMM DD, YYYY ha z',
+    dateTimeLong: 'MMMM Do YYYY [at] h:mm:ss a',
   },
   editableText: {
     tableDescLength: 750,

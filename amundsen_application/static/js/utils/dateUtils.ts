@@ -27,15 +27,15 @@ export function getMomentDate(config: DateConfig): Moment {
 
 export function formatDate(config: DateConfig) {
   const date = getMomentDate(config);
-  return date.format(AppConfig.date.dateFormat);
+  return date.format(AppConfig.date.default);
 }
 
 export function formatDateTimeShort(config: DateConfig) {
   const date = getMomentDate(config);
-  return date.format(AppConfig.date.dateTimeFormatShort);
+  return date.format(AppConfig.date.dateTimeShort);
 }
 
 export function formatDateTimeLong(config: DateConfig) {
   const date = getMomentDate(config);
-  return date.format(AppConfig.date.dateTimeFormatLong);
+  return date.format(AppConfig.date.dateTimeLong);
 }
