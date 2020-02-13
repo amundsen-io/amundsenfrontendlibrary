@@ -1,8 +1,9 @@
 import * as React from 'react';
 import axios, { AxiosResponse } from 'axios';
-
+import { JiraIssue } from 'interfaces'; 
 
 import './styles.scss';
+import { GetJiraIssuesResponse } from 'ducks/jira/types';
 
 export interface TableIssueProps {
   tableKey: string;
@@ -12,17 +13,6 @@ interface TableIssueState {
   issues: JiraIssue[];
 }
 
-interface Response {
-  jiraIssues: JiraIssue[];
-}
-
-interface JiraIssue {
-  create_date: string;
-  issue_key: string;
-  last_updated: string;
-  title: string;
-  url: string;
-}
 
 export default class TableIssues extends React.Component<TableIssueProps, TableIssueState> {
 
@@ -40,9 +30,9 @@ export default class TableIssues extends React.Component<TableIssueProps, TableI
 
   fetchIssues = () => {
     axios.get(`/api/jira/v0/issues?key=${this.props.tableKey}`)
-      .then((response: AxiosResponse<Response>) => {
+      .then((response: AxiosResponse<GetJiraIssuesResponse>) => {
         // console.log(response);
-        this.setState({ issues: response.data.jiraIssues });
+        this.setState({ issues: response.data.payload.jiraIssues });
       });
   };
 

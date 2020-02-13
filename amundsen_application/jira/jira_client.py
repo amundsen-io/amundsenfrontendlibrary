@@ -22,17 +22,6 @@ class JiraClient:
         Get the Jira client properly formatted prepared for hitting Lyft JIRA
         :return: A Jira client.
         """
-        if self.jira_url is None:
-            logging.error("JIRA_URL must be configured")
-            raise Exception("JIRA_URL must be configured")
-
-        if self.jira_user is None:
-            logging.error("JIRA_USER must be configured")
-            raise Exception("JIRA_USER must be configured")
-
-        if self.jira_password is None:
-            logging.error("JIRA_PASSWORD must be configured")
-            raise Exception("JIRA_PASSWORD must be configured")
         return JIRA(
             server=self.jira_url,
             basic_auth=(self.jira_user, self.jira_password)
@@ -44,12 +33,10 @@ class JiraClient:
         :param table_key: Table key
         :return: Metadata of matching issues
         """
-        if self.jira_project_name is None:
-            raise Exception("JIRA_PROJECT_NAME must be configured")
         try:
             issues = self.jira_client.search_issues(SEARCH_STUB.format(
                 project_id=self.jira_project_name,
-                table_key='Urgent'),
+                table_key=table_key),
                 maxResults=3)
             result = []
             for issue in issues:
@@ -66,15 +53,13 @@ class JiraClient:
         :param title: Title of the Jira ticket
         :return: Metadata about the newly created issue
         """
-        if self.jira_project_id is None:
-            raise Exception("JIRA_PROJECT_ID must be configured")
         try:
             issue = self.jira_client.create_issue(fields=dict(project={
                 "id": self.jira_project_id
             }, issuetype={
                 "id": 1,
                 "name": "Bug",
-            }, summary=title, description=description + "\n" + key))
+            }, summary=title, description=description + "\n Table Key: " + key))
 
             return [self.get_issue_properties(issue)]
         except JIRAError as jira_error:
