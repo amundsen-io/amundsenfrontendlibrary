@@ -44,7 +44,6 @@ export class TableIssues extends React.Component<TableIssueProps> {
   };
 
   render() {
-
     if (this.props.jiraIssues.length === 0) {
       return null;
     }

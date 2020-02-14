@@ -1,14 +1,13 @@
 import axios, { AxiosResponse, AxiosError } from 'axios';
 import { JiraIssue } from 'interfaces'; 
 
-
 export const API_PATH = '/api/jira/v0';
 export type JiraIssueAPI = {jiraIssues: JiraIssue[] };  
 
 export function getJiraIssues(tableKey: string) {
-    axios.get(`${API_PATH}/issues?key=${this.props.tableKey}`)
-    .then((response: AxiosResponse<JiraIssueAPI>) => {
-        return response.data.jiraIssues; 
+    return axios.get(`${API_PATH}/issues?key=${tableKey}`)
+    .then((response: AxiosResponse) => {
+      return response.data;
     });
 }
 
@@ -19,3 +18,4 @@ export function createJiraIssue(tableKey: string, title: string, description: st
         title: title
     }); 
 }
+

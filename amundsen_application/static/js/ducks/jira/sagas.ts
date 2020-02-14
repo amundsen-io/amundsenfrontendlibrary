@@ -1,5 +1,5 @@
 import { SagaIterator } from 'redux-saga';
-import { all, call, put, select, takeEvery } from 'redux-saga/effects';
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import { getJiraIssuesSuccess, getJiraIssuesFailure } from './reducer'; 
 
@@ -11,15 +11,12 @@ import * as API from './api/v0';
 
 export function* getJiraIssuesWorker(action: GetJiraIssuesRequest): SagaIterator {
     const { key } = action.payload; 
-    const state = yield select();
-    let jiraIssues = state.jiraIssues; 
+    let response;
     try {
-        jiraIssues = yield call(API.getJiraIssues, key); 
-        if (action.payload.onSuccess) {
-            yield call(action.payload.onSuccess);
-        }
-    } catch (e) {
-        yield put(getJiraIssuesFailure(jiraIssues)); 
+        response = yield call(API.getJiraIssues, key); 
+        yield put(getJiraIssuesSuccess(response.jiraIssues)); 
+    } catch(e) {
+        yield put(getJiraIssuesFailure(response.jiraIssues)); 
     }
 }
 

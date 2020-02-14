@@ -60,12 +60,13 @@ export const initialJiraIssueState: JiraIssueReducerState = {
 
 
 /* maybe these should be separate reducers?*/
-export default function reducer(state: JiraIssueReducerState, action): JiraIssueReducerState {
+export default function reducer(state: JiraIssueReducerState = initialJiraIssueState, action): JiraIssueReducerState {
     switch (action.type) {
         case GetJiraIssues.REQUEST: 
             return { jiraIssues: [], isLoading: true, isOpen: false }; 
         case GetJiraIssues.FAILURE: 
         case GetJiraIssues.SUCCESS: 
+            return {...state, jiraIssues: (<GetJiraIssuesResponse> action).payload.jiraIssues, isLoading: false, isOpen: false}
         case CreateJiraIssue.REQUEST: 
             return {...state}; 
         case CreateJiraIssue.FAILURE: 
