@@ -15,6 +15,10 @@ import { submitNotificationWatcher } from './notification/sagas';
 
 // FeedbackForm
 import { submitFeedbackWatcher } from './feedback/sagas';
+
+//Jira
+import { getJiraIssuesWatcher } from './jira/sagas';
+
 // PopularTables
 import { getPopularTablesWatcher } from './popularTables/sagas';
 // Search
@@ -63,6 +67,8 @@ export default function* rootSaga() {
     submitNotificationWatcher(),
     // FeedbackForm
     submitFeedbackWatcher(),
+    //Jira 
+    getJiraIssuesWatcher(), 
     // Search
     inlineSearchWatcher(),
     inlineSearchWatcherDebounce(),

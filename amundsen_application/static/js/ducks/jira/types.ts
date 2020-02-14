@@ -1,4 +1,4 @@
-import { JiraIssue } from "interfaces";
+import { JiraIssue, JiraIssueData, JiraIssuesData } from "interfaces";
 
 export enum GetJiraIssues {
     REQUEST = 'amundsen/jira/GET_JIRA_ISSUES_REQUEST',
@@ -11,6 +11,24 @@ export enum CreateJiraIssue {
     SUCCESS = 'amundsen/jira/CREATE_JIRA_ISSUE_SUCCESS',
     FAILURE = 'amundsen/jira/CREATE_JIRA_ISSUE_FAILURE',
 }; 
+
+export interface GetJiraIssuesRequest {
+    type: GetJiraIssues.REQUEST; 
+    payload: {
+        key: string; 
+        onSuccess?: () => any;
+        onFailure?: () => any;
+    }
+}
+export interface CreateJiraIssueRequest {
+    type: CreateJiraIssue.REQUEST; 
+    payload: {
+        data: FormData;
+        //add payload type 
+        onSuccess?: () => any;
+        onFailure?: () => any;
+    }
+}
 
 export interface GetJiraIssuesResponse {
     type: GetJiraIssues.SUCCESS | GetJiraIssues.FAILURE; 

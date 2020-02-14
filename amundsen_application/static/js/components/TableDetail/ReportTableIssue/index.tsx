@@ -1,8 +1,12 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import axios from 'axios';
 
 import './styles.scss';
 import LoadingSpinner from 'components/common/LoadingSpinner';
+import { GlobalState } from 'ducks/rootReducer';
+import { createJiraIssue } from 'ducks/jira/reducer'; 
 
 export interface ReportTableIssueProps {
   tableKey: string;
@@ -87,3 +91,14 @@ export default class ReportTableIssue extends React.Component<ReportTableIssuePr
     );
   }
 }
+export const mapStateToProps = (state: GlobalState) => {
+  return {
+    sendState: state.feedback.sendState,
+  };
+};
+
+export const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators({ createJiraIssue } , dispatch);
+};
+
+//export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(BugReportFeedbackForm);

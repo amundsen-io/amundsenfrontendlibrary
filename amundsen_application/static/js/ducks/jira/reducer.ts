@@ -1,30 +1,76 @@
 import { JiraIssue } from "interfaces";
-import { GetJiraIssues, CreateJiraIssue, CreateJiraIssueResponse } from './types'; 
+import { 
+    GetJiraIssues, 
+    CreateJiraIssue, 
+    GetJiraIssuesResponse, 
+    CreateJiraIssueRequest,
+    GetJiraIssuesRequest} 
+    from './types'; 
+
+
+/* ACTIONS */
+export function createJiraIssue(formData: FormData): CreateJiraIssueRequest {
+    return {
+        payload: {
+          data: formData,
+        },
+        type: CreateJiraIssue.REQUEST,
+      };
+};
+
+export function getJiraIssues(tableKey: string): GetJiraIssuesRequest {
+    return {
+        type: GetJiraIssues.REQUEST, 
+        payload: {
+            key: tableKey
+        }
+    }; 
+}
+
+export function getJiraIssuesSuccess(jiraIssues: JiraIssue[]): GetJiraIssuesResponse {
+    return { 
+        type: GetJiraIssues.SUCCESS, 
+        payload: {
+            jiraIssues 
+        }
+    }
+}
+
+export function getJiraIssuesFailure(jiraIssues: JiraIssue[]): GetJiraIssuesResponse {
+    return { 
+        type: GetJiraIssues.FAILURE, 
+        payload: {
+            jiraIssues 
+        }
+    }
+}
 
 /* REDUCER */
 export interface JiraIssueReducerState {
-    issues: JiraIssue[], 
+    jiraIssues: JiraIssue[], 
     isLoading: boolean, 
     isOpen: boolean
 };
 
 export const initialJiraIssueState: JiraIssueReducerState = {
-    issues: [], 
+    jiraIssues: [], 
     isLoading: true, 
-    isOpen: false
+    isOpen: false, 
 };
 
+
+/* maybe these should be separate reducers?*/
 export default function reducer(state: JiraIssueReducerState, action): JiraIssueReducerState {
     switch (action.type) {
         case GetJiraIssues.REQUEST: 
-            return { issues: [], isLoading: true, isOpen: false }; 
+            return { jiraIssues: [], isLoading: true, isOpen: false }; 
         case GetJiraIssues.FAILURE: 
         case GetJiraIssues.SUCCESS: 
         case CreateJiraIssue.REQUEST: 
             return {...state}; 
         case CreateJiraIssue.FAILURE: 
         case CreateJiraIssue.SUCCESS: 
-            return {...state, issues: [(<CreateJiraIssueResponse>action).payload.issue], isLoading: false, isOpen: false}; 
+            return {...state, jiraIssues: [], isLoading: true, isOpen: false}; 
         default: 
             return state; 
     }

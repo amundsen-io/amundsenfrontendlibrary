@@ -1,41 +1,36 @@
 import * as React from 'react';
-import axios, { AxiosResponse } from 'axios';
+import { GlobalState } from 'ducks/rootReducer';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
 import { JiraIssue } from 'interfaces'; 
-
+import { getJiraIssues } from 'ducks/jira/reducer'; 
 import './styles.scss';
-import { GetJiraIssuesResponse } from 'ducks/jira/types';
+import { GetJiraIssuesRequest } from 'ducks/jira/types';
 
-export interface TableIssueProps {
+export interface StateFromProps {
+  jiraIssues: JiraIssue[]; 
+}
+
+export interface DispatchFromProps {
+  getJiraIssues: (key: string) => GetJiraIssuesRequest; 
+}
+
+export interface ComponentProps {
   tableKey: string;
 }
 
-interface TableIssueState {
-  issues: JiraIssue[];
-}
+export type TableIssueProps = StateFromProps & DispatchFromProps & ComponentProps; 
 
-
-export default class TableIssues extends React.Component<TableIssueProps, TableIssueState> {
+export class TableIssues extends React.Component<TableIssueProps> {
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      issues: []
-    };
   }
 
   componentDidMount() {
-    this.fetchIssues();
+    this.props.getJiraIssues(this.props.tableKey);
   }
-
-  fetchIssues = () => {
-    axios.get(`/api/jira/v0/issues?key=${this.props.tableKey}`)
-      .then((response: AxiosResponse<GetJiraIssuesResponse>) => {
-        // console.log(response);
-        this.setState({ issues: response.data.payload.jiraIssues });
-      });
-  };
-
 
   renderIssue = (issue: JiraIssue, index: number) => {
     return (
@@ -50,14 +45,27 @@ export default class TableIssues extends React.Component<TableIssueProps, TableI
 
   render() {
 
-    if (this.state.issues.length === 0) {
+    if (this.props.jiraIssues.length === 0) {
       return null;
     }
 
     return (
         <div className="table-issues">
-          { this.state.issues.map(this.renderIssue)}
+          { this.props.jiraIssues.map(this.renderIssue)}
         </div>
     );
   }
 }
+
+export const mapStateToProps = (state: GlobalState, componentProps: ComponentProps) => {
+  return {
+    jiraIssues: state.jira.jiraIssues,
+    tableKey: componentProps.tableKey
+  };
+};
+
+export const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators({ getJiraIssues }, dispatch);
+};
+
+export default connect<StateFromProps, DispatchFromProps, ComponentProps>(mapStateToProps, mapDispatchToProps)(TableIssues);

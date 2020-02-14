@@ -32,6 +32,11 @@ const globalState: GlobalState = {
   feedback: {
     sendState: SendingState.IDLE,
   },
+  jira: {
+    jiraIssues: [], 
+    isLoading: true, 
+    isOpen: false
+  }, 
   notification: {
     requestIsOpen: false,
     sendState: SendingState.IDLE,
