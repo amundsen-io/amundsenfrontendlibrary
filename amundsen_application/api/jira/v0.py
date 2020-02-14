@@ -42,7 +42,7 @@ def create_jira_issue() -> Response:
         key = request.form.get('key')
         title = request.form.get('title')
         response = jira_client.create_issue(description=description, key=key, title=title)
-        return make_response(jsonify({'issue': response}), HTTPStatus.OK)
+        return make_response(jsonify({'jiraIssue': response}), HTTPStatus.OK)
 
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
@@ -66,5 +66,4 @@ def validate_jira_properties():
     if len(missing_fields) > 0:
         return jsonify({'jiraIssues': {},
                         'msg': f'The following config settings must be set for Jira: { ", ".join(missing_fields) } '})
-
     return None

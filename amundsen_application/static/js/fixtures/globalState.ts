@@ -34,8 +34,7 @@ const globalState: GlobalState = {
   },
   jira: {
     jiraIssues: [], 
-    isLoading: true, 
-    isOpen: false
+    isLoading: true
   }, 
   notification: {
     requestIsOpen: false,

@@ -4,7 +4,8 @@ import {
     CreateJiraIssue, 
     GetJiraIssuesResponse, 
     CreateJiraIssueRequest,
-    GetJiraIssuesRequest} 
+    GetJiraIssuesRequest,
+    CreateJiraIssueResponse} 
     from './types'; 
 
 
@@ -16,6 +17,24 @@ export function createJiraIssue(formData: FormData): CreateJiraIssueRequest {
         },
         type: CreateJiraIssue.REQUEST,
       };
+};
+
+export function createJiraIssueSuccess(jiraIssue: JiraIssue): CreateJiraIssueResponse {
+    return {
+        type: CreateJiraIssue.SUCCESS, 
+        payload: {
+            jiraIssue: jiraIssue
+        }
+    };
+};
+
+export function createJiraIssueFailure(jiraIssue: JiraIssue): CreateJiraIssueResponse {
+    return {
+        type: CreateJiraIssue.FAILURE, 
+        payload: {
+            jiraIssue: jiraIssue
+        }
+    };
 };
 
 export function getJiraIssues(tableKey: string): GetJiraIssuesRequest {
@@ -48,14 +67,12 @@ export function getJiraIssuesFailure(jiraIssues: JiraIssue[]): GetJiraIssuesResp
 /* REDUCER */
 export interface JiraIssueReducerState {
     jiraIssues: JiraIssue[], 
-    isLoading: boolean, 
-    isOpen: boolean
+    isLoading: boolean
 };
 
 export const initialJiraIssueState: JiraIssueReducerState = {
     jiraIssues: [], 
-    isLoading: true, 
-    isOpen: false, 
+    isLoading: false, 
 };
 
 
@@ -63,15 +80,21 @@ export const initialJiraIssueState: JiraIssueReducerState = {
 export default function reducer(state: JiraIssueReducerState = initialJiraIssueState, action): JiraIssueReducerState {
     switch (action.type) {
         case GetJiraIssues.REQUEST: 
-            return { jiraIssues: [], isLoading: true, isOpen: false }; 
+            return { jiraIssues: [], isLoading: false }; 
         case GetJiraIssues.FAILURE: 
         case GetJiraIssues.SUCCESS: 
-            return {...state, jiraIssues: (<GetJiraIssuesResponse> action).payload.jiraIssues, isLoading: false, isOpen: false}
+            return {...state, 
+                jiraIssues: (<GetJiraIssuesResponse> action).payload.jiraIssues, 
+                isLoading: false}
         case CreateJiraIssue.REQUEST: 
-            return {...state}; 
+            return {...state, isLoading: true}; 
         case CreateJiraIssue.FAILURE: 
+            return {...state,
+                isLoading: false}; 
         case CreateJiraIssue.SUCCESS: 
-            return {...state, jiraIssues: [], isLoading: true, isOpen: false}; 
+            return {...state,
+                jiraIssues: [...state.jiraIssues, (<CreateJiraIssueResponse> action).payload.jiraIssue[0]], 
+                isLoading: false}; 
         default: 
             return state; 
     }

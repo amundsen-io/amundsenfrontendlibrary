@@ -1,4 +1,4 @@
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { JiraIssue } from 'interfaces'; 
 
 export const API_PATH = '/api/jira/v0';
@@ -11,11 +11,14 @@ export function getJiraIssues(tableKey: string) {
     });
 }
 
-export function createJiraIssue(tableKey: string, title: string, description: string) {
-    return axios.post(`${API_PATH}/issue`, {
-        description: description, 
-        key: tableKey, 
-        title: title
-    }); 
+export function createJiraIssue(data: FormData) {
+    return axios({
+        data,
+        method: 'post',
+        url: `${API_PATH}/issue`,
+        headers: {'Content-Type': 'multipart/form-data' }
+      }).then((response: AxiosResponse) => {
+          return response.data; 
+      });
 }
 

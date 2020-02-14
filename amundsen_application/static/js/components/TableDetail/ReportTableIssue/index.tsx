@@ -1,48 +1,46 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import axios from 'axios';
-
-import './styles.scss';
-import LoadingSpinner from 'components/common/LoadingSpinner';
 import { GlobalState } from 'ducks/rootReducer';
-import { createJiraIssue } from 'ducks/jira/reducer'; 
 
-export interface ReportTableIssueProps {
+import LoadingSpinner from 'components/common/LoadingSpinner';
+import { createJiraIssue } from 'ducks/jira/reducer'; 
+import { CreateJiraIssueRequest } from 'ducks/jira/types';
+import './styles.scss';
+import { ToggleRequest } from 'ducks/notification/types';
+
+
+export interface ComponentProps {
   tableKey: string;
   tableName: string;
 }
 
-interface ReportTableIssueState {
-  isOpen: boolean;
+export interface DispatchFromProps {
+  createJiraIssue: (data: FormData) => CreateJiraIssueRequest; 
+}
+
+export interface StateFromProps {
   isLoading: boolean;
 }
 
-export default class ReportTableIssue extends React.Component<ReportTableIssueProps, ReportTableIssueState> {
+interface ReportTableIssueState {
+  isOpen: boolean; 
+}
 
+export type ReportTableIssueProps = StateFromProps & DispatchFromProps & ComponentProps
+
+export class ReportTableIssue extends React.Component<ReportTableIssueProps, ReportTableIssueState> {
   constructor(props) {
     super(props);
-
-    this.state = {
-      isOpen: false,
-      isLoading: false,
-    };
+    this.state = { isOpen: false };
   }
 
   submitForm = (event) => {
     event.preventDefault();
     const form = document.getElementById("report-table-issue-form") as HTMLFormElement;
     const formData = new FormData(form);
-    axios({
-      data: formData,
-      url: '/api/jira/v0/issue',
-      method: 'post',
-      headers: {'Content-Type': 'multipart/form-data' }
-    }).then(() => {
-      // this.setState({ isLoading: false });
-      document.location.reload();
-    });
-    this.setState({ isLoading: true });
+    this.props.createJiraIssue(formData);
+    this.setState({isOpen: false}); 
   };
 
   toggle = () => {
@@ -50,7 +48,7 @@ export default class ReportTableIssue extends React.Component<ReportTableIssuePr
   };
 
   render() {
-    if (this.state.isLoading) {
+    if (this.props.isLoading) {
       return <LoadingSpinner />;
     }
 
@@ -82,7 +80,7 @@ export default class ReportTableIssue extends React.Component<ReportTableIssuePr
                 </div>
                 <div className="controls">
                   <button className="btn btn-default cancel" type="button" onClick={this.toggle}>Cancel</button>
-                  <button className="btn btn-primary submit" type="submit">Submit</button>
+                  <button className="btn btn-primary submit" type="submit" >Submit</button>
                 </div>
               </form>
             </div>
@@ -91,9 +89,11 @@ export default class ReportTableIssue extends React.Component<ReportTableIssuePr
     );
   }
 }
-export const mapStateToProps = (state: GlobalState) => {
+export const mapStateToProps = (state: GlobalState, componentProps: ComponentProps) => {
   return {
-    sendState: state.feedback.sendState,
+    isLoading: state.jira.isLoading,
+    tableKey: componentProps.tableKey, 
+    tableName: componentProps.tableName
   };
 };
 
@@ -101,4 +101,4 @@ export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({ createJiraIssue } , dispatch);
 };
 
-//export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(BugReportFeedbackForm);
+export default connect<StateFromProps, DispatchFromProps, ComponentProps>(mapStateToProps, mapDispatchToProps)(ReportTableIssue);

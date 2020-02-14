@@ -1,9 +1,9 @@
 import { SagaIterator } from 'redux-saga';
-import { call, put, select, takeEvery } from 'redux-saga/effects';
+import { call, put, takeEvery } from 'redux-saga/effects';
 
-import { getJiraIssuesSuccess, getJiraIssuesFailure } from './reducer'; 
+import { getJiraIssuesSuccess, getJiraIssuesFailure, createJiraIssueSuccess, createJiraIssueFailure } from './reducer'; 
 
-import { GetJiraIssues, GetJiraIssuesRequest } from './types'; 
+import { GetJiraIssues, GetJiraIssuesRequest, CreateJiraIssue, CreateJiraIssueRequest } from './types'; 
 
 import * as API from './api/v0';
 
@@ -23,3 +23,18 @@ export function* getJiraIssuesWorker(action: GetJiraIssuesRequest): SagaIterator
 export function* getJiraIssuesWatcher(): SagaIterator {
     yield takeEvery(GetJiraIssues.REQUEST, getJiraIssuesWorker); 
 }
+
+export function* createJiraIssueWorker(action: CreateJiraIssueRequest): SagaIterator {
+  try { 
+    let response; 
+    response = yield call(API.createJiraIssue, action.payload.data);
+    yield put((createJiraIssueSuccess(response.jiraIssue)));
+  } catch(error) {
+    yield put(createJiraIssueFailure(null));
+  }
+}
+
+export function* createJiraIssueWatcher(): SagaIterator {
+    yield takeEvery(CreateJiraIssue.REQUEST, createJiraIssueWorker)
+}
+  
