@@ -62,3 +62,6 @@ marshmallow==2.15.3
 # License: Apache 2.0
 # Upstream url: https://pypi.org/project/responses/
 responses==0.9.0
+
+# SDK for integration with Jira
+jira==2.0.0

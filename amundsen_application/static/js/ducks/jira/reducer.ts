@@ -23,7 +23,7 @@ export function createJiraIssueSuccess(jiraIssue: JiraIssue): CreateJiraIssueRes
     return {
         type: CreateJiraIssue.SUCCESS, 
         payload: {
-            jiraIssue: jiraIssue
+            jiraIssue
         }
     };
 };
@@ -32,7 +32,7 @@ export function createJiraIssueFailure(jiraIssue: JiraIssue): CreateJiraIssueRes
     return {
         type: CreateJiraIssue.FAILURE, 
         payload: {
-            jiraIssue: jiraIssue
+            jiraIssue
         }
     };
 };
