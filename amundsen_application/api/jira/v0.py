@@ -5,7 +5,7 @@ from http import HTTPStatus
 from flask import Response, jsonify, make_response, request
 from flask.blueprints import Blueprint
 from flask import current_app as app
-from upstream.amundsen_application.jira.jira_client import JiraClient
+from amundsen_application.jira.jira_client import JiraClient
 
 LOGGER = logging.getLogger(__name__)
 
