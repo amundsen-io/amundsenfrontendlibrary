@@ -1,11 +1,12 @@
 import logging
 
-from amundsen_application.api.utils.request_utils import get_query_param
 from http import HTTPStatus
 from flask import Response, jsonify, make_response, request
 from flask.blueprints import Blueprint
 from flask import current_app as app
+
 from amundsen_application.jira.jira_client import JiraClient
+from amundsen_application.api.utils.request_utils import get_query_param
 
 LOGGER = logging.getLogger(__name__)
 
@@ -50,7 +51,12 @@ def create_jira_issue() -> Response:
         return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-def validate_jira_properties():
+def validate_jira_properties() -> str:
+    """
+    Validates that all properties for jira configuration are set. Returns a list of missing properties
+    to return if they are missing
+    :return: String representing missing Jira properties, or none.
+    """
     missing_fields = []
     if app.config['JIRA_URL'] is None:
         missing_fields.append('JIRA_URL')
