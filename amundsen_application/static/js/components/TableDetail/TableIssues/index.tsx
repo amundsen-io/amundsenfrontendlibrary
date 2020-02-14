@@ -5,8 +5,9 @@ import { connect } from 'react-redux';
 
 import { JiraIssue } from 'interfaces'; 
 import { getJiraIssues } from 'ducks/jira/reducer'; 
-import './styles.scss';
 import { GetJiraIssuesRequest } from 'ducks/jira/types';
+import './styles.scss';
+
 
 export interface StateFromProps {
   jiraIssues: JiraIssue[]; 
@@ -23,6 +24,8 @@ export interface ComponentProps {
 export type TableIssueProps = StateFromProps & DispatchFromProps & ComponentProps; 
 
 export class TableIssues extends React.Component<TableIssueProps> {
+  static ASSOCIATION_TEXT = " is associated with this table";
+  static MAX_TEXT_LENGTH = 35; 
 
   constructor(props) {
     super(props);
@@ -32,13 +35,20 @@ export class TableIssues extends React.Component<TableIssueProps> {
     this.props.getJiraIssues(this.props.tableKey);
   }
 
+  truncateText(issueTitle: string) : string {
+      let truncated = issueTitle.length > TableIssues.MAX_TEXT_LENGTH ? 
+        issueTitle.substring(0, TableIssues.MAX_TEXT_LENGTH) : issueTitle;  
+      return '"' + truncated + '"' +  TableIssues.ASSOCIATION_TEXT; 
+  }
+
   renderIssue = (issue: JiraIssue, index: number) => {
     return (
-      <div className="issue-banner truncated" key={`jira-issue-${index}`}>
-        <a target="_blank" href={issue.url}>
+      <div className="issue-banner" key={`jira-issue-${index}`}>
+        <a className="issue-link" target="_blank" href={issue.url}>
+          <img className="icon icon-data-quality-warning"></img>
           { issue.issue_key }
         </a>
-        &nbsp;&mdash; { issue.title }
+        { this.truncateText(issue.title) }
       </div>
     )
   };
