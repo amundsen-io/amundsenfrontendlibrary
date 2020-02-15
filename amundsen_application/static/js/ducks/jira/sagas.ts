@@ -16,7 +16,7 @@ export function* getJiraIssuesWorker(action: GetJiraIssuesRequest): SagaIterator
         response = yield call(API.getJiraIssues, key); 
         yield put(getJiraIssuesSuccess(response.jiraIssues)); 
     } catch(e) {
-        yield put(getJiraIssuesFailure(response.jiraIssues)); 
+        yield put(getJiraIssuesFailure()); 
     }
 }
 
@@ -30,7 +30,7 @@ export function* createJiraIssueWorker(action: CreateJiraIssueRequest): SagaIter
     response = yield call(API.createJiraIssue, action.payload.data);
     yield put((createJiraIssueSuccess(response.jiraIssue)));
   } catch(error) {
-    yield put(createJiraIssueFailure(null));
+    yield put(createJiraIssueFailure());
   }
 }
 

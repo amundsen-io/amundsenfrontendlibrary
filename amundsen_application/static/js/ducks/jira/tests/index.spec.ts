@@ -1,4 +1,7 @@
-import { testSaga } from 'redux-saga-test-plan';
+import { testSaga, expectSaga } from 'redux-saga-test-plan';
+import * as matchers from 'redux-saga-test-plan/matchers';
+import globalState from 'fixtures/globalState';
+
 
 import * as API from '../api/v0';
 
@@ -14,9 +17,13 @@ import reducer, {
 
 import {
   CreateJiraIssue, 
-  GetJiraIssues
+  GetJiraIssues,
+  GetJiraIssuesRequest,
+  CreateJiraIssueRequest
 } from '../types'; 
 import { JiraIssue } from 'interfaces';
+import { getJiraIssuesWatcher, getJiraIssuesWorker, createJiraIssueWatcher, createJiraIssueWorker } from '../sagas';
+import { throwError } from 'redux-saga-test-plan/providers';
 
 describe('jira ducks', () => {
   let formData: FormData; 
@@ -59,7 +66,7 @@ describe('jira ducks', () => {
     });
 
     it('getJiraIssuesFailure - returns the action to process failure', () => {
-      const action = getJiraIssuesFailure(jiraIssues);
+      const action = getJiraIssuesFailure();
       expect(action.type).toBe(GetJiraIssues.FAILURE);
     });
 
@@ -71,10 +78,10 @@ describe('jira ducks', () => {
     });
 
     it('createJiraIssueFailure - returns the action to process failure', () => {
-      const action = createJiraIssueFailure(jiraIssue);
+      const action = createJiraIssueFailure();
       const { payload } = action;
       expect(action.type).toBe(CreateJiraIssue.FAILURE);
-      expect(payload.jiraIssue).toBe(jiraIssue);
+      expect(payload.jiraIssue).toBe(null);
     });
 
     it('createJiraIssueSuccess - returns the action to process success', () => {
@@ -102,13 +109,98 @@ describe('jira ducks', () => {
       expect(reducer(testState, getJiraIssues(tableKey))).toEqual({ jiraIssues: [], isLoading: false });
     });
 
-    it('should handle SubmitFeedback.SUCCESS', () => {
+    it('should handle GetJiraIssues.SUCCESS', () => {
       expect(reducer(testState, getJiraIssuesSuccess(jiraIssues))).toEqual({ jiraIssues: jiraIssues, isLoading: false });
     });
 
-    it('should handle SubmitFeedback.FAILURE', () => {
-      expect(reducer(testState, getJiraIssuesFailure(jiraIssues))).toEqual({ jiraIssues: [], isLoading: false  });
+    it('should handle GetJiraIssues.FAILURE', () => {
+      expect(reducer(testState, getJiraIssuesFailure())).toEqual({ jiraIssues: [], isLoading: false  });
+    });
+
+    it('should handle CreateJiraIssue.REQUEST', () => {
+      expect(reducer(testState, createJiraIssue(formData))).toEqual({ jiraIssues: [], isLoading: true });
+    });
+
+    it('should handle CreateJiraIssue.SUCCESS', () => {
+      debugger
+      expect(reducer(testState, createJiraIssueSuccess(jiraIssue))).toEqual({
+         ...testState, jiraIssues: [jiraIssue], isLoading: false });
+    });
+
+    it('should handle CreateJiraIssue.FAILURE', () => {
+      expect(reducer(testState, createJiraIssueFailure())).toEqual({ jiraIssues: [], isLoading: false  });
     });
   });
 
+  describe('sagas', () => {
+    describe('getJiraIssuesWatcher', () => {
+      it('takes every getJiraIssues.REQUEST with getJiraIssuesWatcher', () => {
+        testSaga(getJiraIssuesWatcher)
+          .next().takeEvery(GetJiraIssues.REQUEST, getJiraIssuesWorker)
+          .next().isDone();
+      });
+    });
+
+    describe('getJiraIssuesWorker', () => {
+      let action: GetJiraIssuesRequest;
+      beforeAll(() => {
+        action = getJiraIssues(tableKey);
+        jiraIssues = globalState.jira.jiraIssues;
+      });
+
+      it('gets jira issues', () => {
+        return expectSaga(getJiraIssuesWorker, action)
+          .provide([
+            [matchers.call.fn(API.getJiraIssues), { jiraIssues }],
+          ])
+          .put(getJiraIssuesSuccess(jiraIssues))
+          .run();
+      });
+
+      it('handles request error', () => {
+        return expectSaga(getJiraIssuesWorker, action)
+          .provide([
+            [matchers.call.fn(API.getJiraIssues), throwError(new Error())],
+          ])
+          .put(getJiraIssuesFailure())
+          .run();
+      });
+    });
+
+    describe('createJiraIssueWatcher', () => {
+      it('takes every createJiraIssue.REQUEST with getJiraIssuesWatcher', () => {
+        testSaga(createJiraIssueWatcher)
+          .next().takeEvery(CreateJiraIssue.REQUEST, createJiraIssueWorker)
+          .next().isDone();
+      });
+    });
+
+    describe('createJiraIssuesWorker', () => {
+      let action: CreateJiraIssueRequest;
+      beforeAll(() => {
+        action = createJiraIssue(formData);
+        jiraIssues = globalState.jira.jiraIssues;
+      });
+
+      it('creates a jira issue', () => {
+        return expectSaga(createJiraIssueWorker, action)
+          .provide([
+            [matchers.call.fn(API.createJiraIssue), {}],
+            [matchers.call.fn(API.createJiraIssue), { jiraIssues }],
+          ])
+          .put(createJiraIssueSuccess(jiraIssue))
+          .run();
+      });
+
+      it('handles request error', () => {
+        return expectSaga(createJiraIssueWorker, action)
+          .provide([
+            [matchers.call.fn(API.createJiraIssue), throwError(new Error())],
+          ])
+          .put(createJiraIssueFailure())
+          .run();
+      });
+    });
+
+  });
 }); 

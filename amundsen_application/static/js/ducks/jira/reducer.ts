@@ -28,11 +28,11 @@ export function createJiraIssueSuccess(jiraIssue: JiraIssue): CreateJiraIssueRes
   };
 };
 
-export function createJiraIssueFailure(jiraIssue: JiraIssue): CreateJiraIssueResponse {
+export function createJiraIssueFailure(): CreateJiraIssueResponse {
   return {
     type: CreateJiraIssue.FAILURE, 
     payload: {
-      jiraIssue
+      jiraIssue: null
     }
   };
 };
@@ -50,17 +50,17 @@ export function getJiraIssuesSuccess(jiraIssues: JiraIssue[]): GetJiraIssuesResp
   return { 
     type: GetJiraIssues.SUCCESS, 
     payload: {
-      jiraIssues 
+      jiraIssues
     }
   }
 }
 
-export function getJiraIssuesFailure(jiraIssues: JiraIssue[]): GetJiraIssuesResponse {
+export function getJiraIssuesFailure(): GetJiraIssuesResponse {
   return { 
-  type: GetJiraIssues.FAILURE, 
-  payload: {
-    jiraIssues 
-  }
+    type: GetJiraIssues.FAILURE, 
+    payload: {
+      jiraIssues: []
+    }
   }
 }
 
