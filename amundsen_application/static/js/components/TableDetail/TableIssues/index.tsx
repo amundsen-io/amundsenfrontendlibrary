@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { JiraIssue } from 'interfaces'; 
 import { getJiraIssues } from 'ducks/jira/reducer'; 
 import { GetJiraIssuesRequest } from 'ducks/jira/types';
+import { ASSOCIATION_TEXT, MAX_TEXT_LENGTH } from './constants';
 import './styles.scss';
 
 
@@ -24,9 +25,6 @@ export interface ComponentProps {
 export type TableIssueProps = StateFromProps & DispatchFromProps & ComponentProps; 
 
 export class TableIssues extends React.Component<TableIssueProps> {
-  static ASSOCIATION_TEXT = " is associated with this table";
-  static MAX_TEXT_LENGTH = 35; 
-
   constructor(props) {
     super(props);
   }
@@ -36,9 +34,9 @@ export class TableIssues extends React.Component<TableIssueProps> {
   }
 
   truncateText(issueTitle: string) : string {
-      let truncated = issueTitle.length > TableIssues.MAX_TEXT_LENGTH ? 
-        issueTitle.substring(0, TableIssues.MAX_TEXT_LENGTH) : issueTitle;  
-      return '"' + truncated + '"' +  TableIssues.ASSOCIATION_TEXT; 
+      let truncated = issueTitle.length > MAX_TEXT_LENGTH ? 
+        issueTitle.substring(0, MAX_TEXT_LENGTH) : issueTitle;  
+      return '"' + truncated + '"' +  ASSOCIATION_TEXT; 
   }
 
   renderIssue = (issue: JiraIssue, index: number) => {
