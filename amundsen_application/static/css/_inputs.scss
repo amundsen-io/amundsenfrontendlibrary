@@ -24,6 +24,10 @@ input {
   &[type="text"] {
     color: $text-secondary !important;
   }
+
+  &:not([disabled]) {
+    cursor: pointer;
+  }
 }
 
 textarea {

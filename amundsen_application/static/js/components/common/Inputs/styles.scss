@@ -7,9 +7,5 @@
   .radio-label {
     display: block;
     width: 100%;
-
-    input:not([disabled]) {
-      cursor: pointer;
-    }
   }
 }
