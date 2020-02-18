@@ -1,9 +1,6 @@
 import unittest
 
-# from amundsen_application import create_app
 from amundsen_application.api.utils.search_utils import generate_query_json
-
-# local_app = create_app('amundsen_application.config.TestConfig', 'tests/templates')
 
 
 class SearchUtilsTest(unittest.TestCase):
