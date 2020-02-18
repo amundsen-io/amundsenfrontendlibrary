@@ -122,7 +122,6 @@ describe('jira ducks', () => {
     });
 
     it('should handle CreateJiraIssue.SUCCESS', () => {
-      debugger
       expect(reducer(testState, createJiraIssueSuccess(jiraIssue))).toEqual({
          ...testState, jiraIssues: [jiraIssue], isLoading: false });
     });

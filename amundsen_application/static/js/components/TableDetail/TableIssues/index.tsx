@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { JiraIssue } from 'interfaces'; 
 import { getJiraIssues } from 'ducks/jira/reducer'; 
 import { GetJiraIssuesRequest } from 'ducks/jira/types';
-import { ASSOCIATION_TEXT, MAX_TEXT_LENGTH } from './constants';
+import { truncateText } from '../../../utils/tableissues-utils'; 
 import './styles.scss';
 
 
@@ -26,48 +26,42 @@ export type TableIssueProps = StateFromProps & DispatchFromProps & ComponentProp
 
 export class TableIssues extends React.Component<TableIssueProps> {
   constructor(props) {
-    super(props);
+  super(props);
   }
 
   componentDidMount() {
-    this.props.getJiraIssues(this.props.tableKey);
-  }
-
-  truncateText(issueTitle: string) : string {
-      let truncated = issueTitle.length > MAX_TEXT_LENGTH ? 
-        issueTitle.substring(0, MAX_TEXT_LENGTH) : issueTitle;  
-      return '"' + truncated + '"' +  ASSOCIATION_TEXT; 
+  this.props.getJiraIssues(this.props.tableKey);
   }
 
   renderIssue = (issue: JiraIssue, index: number) => {
-    return (
-      <div className="issue-banner" key={`jira-issue-${index}`}>
-        <a className="issue-link" target="_blank" href={issue.url}>
-          <img className="icon icon-data-quality-warning"></img>
-          { issue.issue_key }
-        </a>
-        { this.truncateText(issue.title) }
-      </div>
-    )
+  return (
+    <div className="issue-banner" key={`jira-issue-${index}`}>
+    <a className="issue-link" target="_blank" href={issue.url}>
+      <img className="icon icon-data-quality-warning"></img>
+      { issue.issue_key }
+    </a>
+    { truncateText(issue.title) }
+    </div>
+  )
   };
 
   render() {
-    if (this.props.jiraIssues.length === 0) {
-      return null;
-    }
+  if (this.props.jiraIssues.length === 0) {
+    return null;
+  }
 
-    return (
-        <div className="table-issues">
-          { this.props.jiraIssues.map(this.renderIssue)}
-        </div>
-    );
+  return (
+    <div className="table-issues">
+      { this.props.jiraIssues.map(this.renderIssue)}
+    </div>
+  );
   }
 }
 
 export const mapStateToProps = (state: GlobalState, componentProps: ComponentProps) => {
   return {
-    jiraIssues: state.jira.jiraIssues,
-    tableKey: componentProps.tableKey
+  jiraIssues: state.jira.jiraIssues,
+  tableKey: componentProps.tableKey
   };
 };
 

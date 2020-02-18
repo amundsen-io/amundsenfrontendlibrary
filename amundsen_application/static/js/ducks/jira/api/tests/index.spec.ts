@@ -1,5 +1,4 @@
 import axios, { AxiosResponse } from 'axios';
-import { JiraIssue } from 'interfaces'; 
 import * as API from '../v0';
 
 jest.mock('axios');
