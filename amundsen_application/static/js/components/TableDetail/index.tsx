@@ -32,7 +32,6 @@ import { EditableSection } from 'components/TableDetail/EditableSection';
 import { getDatabaseDisplayName, getDatabaseIconClass, notificationsEnabled } from 'config/config-utils';
 import { formatDateTimeShort } from 'utils/dateUtils';
 
-import './styles';
 import RequestDescriptionText from './RequestDescriptionText';
 import RequestMetadataForm from './RequestMetadataForm';
 

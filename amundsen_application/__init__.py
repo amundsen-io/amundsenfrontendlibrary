@@ -11,6 +11,7 @@ from amundsen_application.api.v0 import blueprint
 from amundsen_application.api.announcements.v0 import announcements_blueprint
 from amundsen_application.api.log.v0 import log_blueprint
 from amundsen_application.api.mail.v0 import mail_blueprint
+from amundsen_application.api.dashboard.v0 import dashboard_blueprint
 from amundsen_application.api.metadata.v0 import metadata_blueprint
 from amundsen_application.api.preview.v0 import preview_blueprint
 from amundsen_application.api.search.v0 import search_blueprint
@@ -56,6 +57,7 @@ def create_app(config_module_class: str, template_folder: str = None) -> Flask:
     app.register_blueprint(announcements_blueprint)
     app.register_blueprint(log_blueprint)
     app.register_blueprint(mail_blueprint)
+    app.register_blueprint(dashboard_blueprint)
     app.register_blueprint(metadata_blueprint)
     app.register_blueprint(preview_blueprint)
     app.register_blueprint(search_blueprint)
