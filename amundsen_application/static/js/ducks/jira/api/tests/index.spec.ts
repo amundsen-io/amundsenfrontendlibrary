@@ -39,7 +39,6 @@ describe('getJiraIssues', () => {
   });
 });
 
-
 describe('createJiraIssue', () => {
   let formData: FormData;
   let axiosMock;

@@ -4,7 +4,6 @@ import { shallow } from 'enzyme';
 
 import globalState from 'fixtures/globalState';
 
-import { JiraIssue } from 'interfaces'; 
 import { 
   TableIssues, 
   TableIssueProps, 
@@ -42,7 +41,7 @@ describe ('TableIssues', ()=> {
         title: 'title',
         url: 'http://url'
       }]}); 
-      expect(wrapper.find(".issue-link").text()).toEqual('issue_key'); 
+      expect(wrapper.find('.issue-link').text()).toEqual('issue_key'); 
       expect(wrapper.find('.issue-banner').text()).toContain('title');
     }); 
   });
@@ -59,13 +58,12 @@ describe ('TableIssues', ()=> {
     it('sets getJiraIssues on the props', () => {
       expect(props.getJiraIssues).toBeInstanceOf(Function);
     });
-  
   });
   
   describe('mapStateToProps', () => {
     let result;
     beforeAll(() => {
-      const componentProps: ComponentProps = { tableKey: "key" }; 
+      const componentProps: ComponentProps = { tableKey: 'key' }; 
       result = mapStateToProps(globalState, componentProps);
     });
 
@@ -73,7 +71,7 @@ describe ('TableIssues', ()=> {
       expect(result.jiraIssues).toEqual(globalState.jira.jiraIssues); 
     }); 
     it('sets tableKey on the props', () => {
-      expect(result.tableKey).toEqual("key"); 
+      expect(result.tableKey).toEqual('key'); 
     });
   }); 
 }); 

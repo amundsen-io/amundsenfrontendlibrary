@@ -7,8 +7,6 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import { createJiraIssue } from 'ducks/jira/reducer'; 
 import { CreateJiraIssueRequest } from 'ducks/jira/types';
 import './styles.scss';
-import { ToggleRequest } from 'ducks/notification/types';
-
 
 export interface ComponentProps {
   tableKey: string;
