@@ -56,7 +56,7 @@ export const mapDispatchToProps = (dispatch: any, ownProps: OwnProps) => {
     onCheckboxChange: (e: React.ChangeEvent<HTMLInputElement>) => {
       const checkedValues = {};
       const value = e.target.value;
-      const category = e.target.name;
+      const categoryId = e.target.name;
       let shouldClearFilter = true;
 
       ownProps.checkboxProperties.forEach((property) => {
@@ -67,10 +67,10 @@ export const mapDispatchToProps = (dispatch: any, ownProps: OwnProps) => {
       });
 
       if (shouldClearFilter) {
-        dispatch(clearFilterByCategory(category));
+        dispatch(clearFilterByCategory(categoryId));
       }
       else {
-        dispatch(updateFilterByCategory(category, checkedValues));
+        dispatch(updateFilterByCategory(categoryId, checkedValues));
       }
     },
   }

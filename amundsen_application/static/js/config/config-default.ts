@@ -66,31 +66,31 @@ const configDefault: AppConfig = {
       },
       filterCategories: [
         {
-          value: 'database',
+          categoryId: 'database',
           displayName: 'Source',
           helpText: 'Enter exact database name or a regex wildcard pattern',
           type: FilterType.SINGLE_VALUE,
         },
         {
-          value: 'column',
+          categoryId: 'column',
           displayName: 'Column',
           helpText: 'Enter exact column name or a regex wildcard pattern',
           type: FilterType.SINGLE_VALUE,
         },
         {
-          value: 'schema',
+          categoryId: 'schema',
           displayName: 'Schema',
           helpText: 'Enter exact schema name or a regex wildcard pattern',
           type: FilterType.SINGLE_VALUE,
         },
         {
-          value: 'table',
+          categoryId: 'table',
           displayName: 'Table',
           helpText: 'Enter exact table name or a regex wildcard pattern',
           type: FilterType.SINGLE_VALUE,
         },
         {
-          value: 'tag',
+          categoryId: 'tag',
           displayName: 'Tag',
           helpText: 'Enter exact tag name or a regex wildcard pattern',
           type: FilterType.SINGLE_VALUE,

@@ -71,15 +71,15 @@ interface MultiSelectFilterOptions {
 /**
  * Base interface for all possible FilterConfig objects
  *
- * helpText - An option string of text that will render in the filter UI for the filter category
- * value - The filter category that this config represents, e.g. 'database' or 'badges'
+ * categoryId - The filter category that this config represents, e.g. 'database' or 'badges'
  * displayName - The displayName for the filter category
+ * helpText - An option string of text that will render in the filter UI for the filter category
  * type - The FilterType for this filter category
  */
 interface BaseFilterCategory {
-  helpText?: string;
-  value: string;
+  categoryId: string;
   displayName: string;
+  helpText?: string;
   type: FilterType;
 }
 

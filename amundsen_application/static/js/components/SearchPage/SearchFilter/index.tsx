@@ -112,11 +112,11 @@ export const mapStateToProps = (state: GlobalState) => {
   if (filterCategories) {
     /* checkbox sections */
     filterCategories.forEach((categoryConfig) => {
-      currentFilterValue = filterState[resourceType][categoryConfig.value];
+      currentFilterValue = filterState[resourceType][categoryConfig.categoryId];
       if (categoryConfig.type === FilterType.MULTI_SELECT_VALUE) {
         checkBoxSections.push({
           title: categoryConfig.displayName,
-          categoryId: categoryConfig.value,
+          categoryId: categoryConfig.categoryId,
           helpText: categoryConfig.helpText,
           properties: categoryConfig.options.map((option) => {
             return {
@@ -132,10 +132,10 @@ export const mapStateToProps = (state: GlobalState) => {
 
     /* input sections */
     filterCategories.forEach((categoryConfig) => {
-      currentFilterValue = filterState[resourceType][categoryConfig.value] || '';
+      currentFilterValue = filterState[resourceType][categoryConfig.categoryId] || '';
       if (categoryConfig.type === FilterType.SINGLE_VALUE) {
         inputSections.push({
-          categoryId: categoryConfig.value,
+          categoryId: categoryConfig.categoryId,
           helpText: categoryConfig.helpText,
           title: categoryConfig.displayName,
           value: currentFilterValue,

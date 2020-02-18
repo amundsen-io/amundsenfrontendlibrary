@@ -251,7 +251,7 @@ describe('mapStateToProps', () => {
 
   const MOCK_CATEGORY_CONFIG: FilterConfig = [
     {
-      value: mockDbId,
+      categoryId: mockDbId,
       displayName: mockDbTitle,
       type: FilterType.MULTI_SELECT_VALUE,
       helpText: mockHelpText,
@@ -261,7 +261,7 @@ describe('mapStateToProps', () => {
       ],
     },
     {
-      value: mockSchemaId,
+      categoryId: mockSchemaId,
       displayName: mockSchemaTitle,
       helpText: mockHelpText,
       type: FilterType.SINGLE_VALUE,

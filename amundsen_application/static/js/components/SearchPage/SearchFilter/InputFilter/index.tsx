@@ -70,12 +70,12 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
 
 export const mapDispatchToProps = (dispatch: any) => {
   return {
-    onApplyChanges: (category, value) => {
+    onApplyChanges: (categoryId, value) => {
       if (!!value) {
-        dispatch(updateFilterByCategory(category, value));
+        dispatch(updateFilterByCategory(categoryId, value));
       }
       else {
-        dispatch(clearFilterByCategory(category));
+        dispatch(clearFilterByCategory(categoryId));
       }
     },
   };

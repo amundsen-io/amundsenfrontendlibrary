@@ -16,7 +16,7 @@ interface ClearAllFiltersRequest {
 
 export interface ClearFilterRequest {
   payload: {
-    category: string;
+    categoryId: string;
   };
   type: UpdateSearchFilter.CLEAR_CATEGORY;
 };
@@ -31,7 +31,7 @@ interface SetFilterRequest {
 
 export interface UpdateFilterRequest {
   payload: {
-    category: string;
+    categoryId: string;
     value: string | FilterOptions;
   };
   type: UpdateSearchFilter.UPDATE_CATEGORY;
@@ -44,10 +44,10 @@ export function clearAllFilters(): ClearAllFiltersRequest {
   };
 };
 
-export function clearFilterByCategory(category: string): ClearFilterRequest {
+export function clearFilterByCategory(categoryId: string): ClearFilterRequest {
   return {
     payload: {
-      category,
+      categoryId,
     },
     type: UpdateSearchFilter.CLEAR_CATEGORY,
   };
@@ -63,10 +63,10 @@ export function setFilterByResource(resourceType: ResourceType, filters: Resourc
   };
 };
 
-export function updateFilterByCategory(category: string, value: string | FilterOptions): UpdateFilterRequest {
+export function updateFilterByCategory(categoryId: string, value: string | FilterOptions): UpdateFilterRequest {
   return {
     payload: {
-      category,
+      categoryId,
       value
     },
     type: UpdateSearchFilter.UPDATE_CATEGORY,
@@ -81,7 +81,7 @@ export interface FilterReducerState {
 };
 
 export interface ResourceFilterReducerState {
-  [category: string]: string | FilterOptions;
+  [categoryId: string]: string | FilterOptions;
 };
 
 /* REDUCER */
@@ -101,7 +101,7 @@ export default function reducer(state: FilterReducerState = initialFilterState, 
     case UpdateSearchFilter.CLEAR_CATEGORY:
       return {
         ...state,
-        [resourceType]: filterFromObj(resourceFilters, [payload.category])
+        [resourceType]: filterFromObj(resourceFilters, [payload.categoryId])
       };
     case UpdateSearchFilter.SET_BY_RESOURCE:
       return {
@@ -113,7 +113,7 @@ export default function reducer(state: FilterReducerState = initialFilterState, 
         ...state,
         [resourceType]: {
           ...resourceFilters,
-          [payload.category]: payload.value
+          [payload.categoryId]: payload.value
         }
       };
     default:

@@ -22,7 +22,7 @@ describe('filters ducks', () => {
       const action = clearFilterByCategory(testCategory);
       const { payload } = action;
       expect(action.type).toBe(UpdateSearchFilter.CLEAR_CATEGORY);
-      expect(payload.category).toBe(testCategory);
+      expect(payload.categoryId).toBe(testCategory);
     });
 
     it('setFilterByResource - returns the action to set the filters for a give resource', () => {;
@@ -41,7 +41,7 @@ describe('filters ducks', () => {
       const action = updateFilterByCategory(testCategory, testValue);
       const { payload } = action;
       expect(action.type).toBe(UpdateSearchFilter.UPDATE_CATEGORY);
-      expect(payload.category).toBe(testCategory);
+      expect(payload.categoryId).toBe(testCategory);
       expect(payload.value).toBe(testValue);
     });
   });
