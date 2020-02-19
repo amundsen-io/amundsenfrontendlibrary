@@ -26,7 +26,7 @@ export function* getJiraIssuesWatcher(): SagaIterator {
 
 export function* createJiraIssueWorker(action: CreateJiraIssueRequest): SagaIterator {
   try { 
-    let response; 
+    let response;
     response = yield call(API.createJiraIssue, action.payload.data);
     yield put((createJiraIssueSuccess(response.jiraIssue)));
   } catch(error) {
@@ -37,4 +37,3 @@ export function* createJiraIssueWorker(action: CreateJiraIssueRequest): SagaIter
 export function* createJiraIssueWatcher(): SagaIterator {
     yield takeEvery(CreateJiraIssue.REQUEST, createJiraIssueWorker)
 }
-  

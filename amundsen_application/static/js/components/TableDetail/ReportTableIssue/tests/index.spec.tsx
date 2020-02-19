@@ -11,6 +11,10 @@ import {
   mapStateToProps, 
 } from '..';
 
+const mockFormData = { key1: 'val1', key2: 'val2' };
+// @ts-ignore: How to mock FormData without TypeScript error?
+global.FormData = () => (mockFormData);
+
 describe('ReportTableIssue', () => {
   const setStateSpy = jest.spyOn(ReportTableIssue.prototype, 'setState');
   const setup = (propOverrides?: Partial<ReportTableIssueProps>) => {
@@ -36,27 +40,34 @@ describe('ReportTableIssue', () => {
       wrapper.setState({isOpen: true}); 
       expect(wrapper.find('.report-table-issue-modal')).toBeTruthy();
     });
+
+    describe('toggle', () => {
+      it('calls setState with negation of state.isOpen', () => {
+        setStateSpy.mockClear();
+        const { props, wrapper } = setup();
+        const previsOpenState = wrapper.state().isOpen;
+        wrapper.instance().toggle();
+        expect(setStateSpy).toHaveBeenCalledWith({ isOpen: !previsOpenState });
+      });
+    });
     
     describe('submitForm', () => {
-      const clickEvent = {
-        preventDefault: jest.fn(),
-      };
-
-      it ('stops propagation and prevents default', () => {
+      it ('calls createJiraIssue with mocked form data', () => {
         const { props, wrapper } = setup();
-        wrapper.instance().submitForm({clickEvent});
-        expect(clickEvent.preventDefault).toHaveBeenCalled();
+        // @ts-ignore: mocked events throw type errors
+        wrapper.instance().submitForm({ preventDefault: jest.fn(), 
+        currentTarget: {id: 'id', nodeName: 'button'} });
+        expect(props.createJiraIssue).toHaveBeenCalledWith(mockFormData);
+        expect(wrapper.state().isOpen).toBe(false); 
       });
 
-      it('creates a jiraissue', () => {
-        const { props, wrapper } = setup({
-          isLoading: false,
-        });
-
-        wrapper.find('.submit').simulate('click', clickEvent);
-        expect(props.createJiraIssue).toHaveBeenCalled();
+      it ('calls sets isOpen to false', () => {
+        const { props, wrapper } = setup();
+        // @ts-ignore: mocked events throw type errors
+        wrapper.instance().submitForm({ preventDefault: jest.fn(), 
+        currentTarget: {id: 'id', nodeName: 'button'} });
+        expect(wrapper.state().isOpen).toBe(false); 
       });
-
     }); 
 
     describe('mapDispatchToProps', () => {
@@ -76,7 +87,7 @@ describe('ReportTableIssue', () => {
     describe('mapStateToProps', () => {
       let result;
       beforeAll(() => {
-        let componentProps: ComponentProps = { 
+        const componentProps: ComponentProps = {
           tableKey: 'key', 
           tableName: 'name'
         }; 

@@ -40,14 +40,13 @@ describe('getJiraIssues', () => {
 });
 
 describe('createJiraIssue', () => {
-  let formData: FormData;
+  let mockGetResponse;
   let axiosMock;
-  let mockPostResponse;
+  let formData;
   beforeAll(() => {
-    formData = new FormData();
-    mockPostResponse = {
+    mockGetResponse = {
       data: {
-       jiraIssue: [],
+       jiraIssue: { issue_key: 'key' },
        msg: 'Success'
       },
       status: 200,
@@ -55,18 +54,29 @@ describe('createJiraIssue', () => {
       headers: {},
       config: {}
     };
-    axiosMock = jest.spyOn(axios, 'post').mockImplementation(() => Promise.resolve(mockPostResponse));
+    formData = new FormData();
+    axiosMock = jest.spyOn(axios, 'post').mockImplementation(() => Promise.resolve(mockGetResponse));
   });
 
-  it('calls axios with expected payload', async () => {
+  it('calls expected endpoint with headers', async () => {
     expect.assertions(1);
     await API.createJiraIssue(formData).then(data => {
-      expect(axios).toHaveBeenCalledWith({
-        data: formData,
-        method: 'post',
-        url: `${API.API_PATH}/issue`,
-        headers: {'Content-Type': 'multipart/form-data' }
+      expect(axiosMock).toHaveBeenCalledWith(
+        `${API.API_PATH}/issue`,
+        formData, {
+        headers: {'Content-Type': 'multipart/form-data'}
       });
     });
+  });
+
+  it('returns response data', async () => {
+    expect.assertions(1);
+    await API.createJiraIssue(formData).then(data => {
+      expect(data).toEqual(mockGetResponse.data);
+    });
+  });
+
+  afterAll(() => {
+    axiosMock.mockClear();
   });
 });

@@ -7,6 +7,7 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import { createJiraIssue } from 'ducks/jira/reducer'; 
 import { CreateJiraIssueRequest } from 'ducks/jira/types';
 import './styles.scss';
+import { logClick } from 'ducks/utilMethods';
 
 export interface ComponentProps {
   tableKey: string;
@@ -34,6 +35,7 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
   }
 
   submitForm = (event) => {
+    logClick(event);
     event.preventDefault();
     const form = document.getElementById("report-table-issue-form") as HTMLFormElement;
     const formData = new FormData(form);

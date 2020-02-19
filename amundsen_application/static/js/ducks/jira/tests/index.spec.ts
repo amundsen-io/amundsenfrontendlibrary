@@ -95,9 +95,10 @@ describe('jira ducks', () => {
   describe('reducer', () => {
     let testState: JiraIssueReducerState;
     beforeAll(() => {
+      const stateJiraIssues: JiraIssue[]=[];
       testState = { 
         isLoading: false, 
-        jiraIssues: [] 
+        jiraIssues: stateJiraIssues
       };
     });
 
@@ -110,7 +111,7 @@ describe('jira ducks', () => {
     });
 
     it('should handle GetJiraIssues.SUCCESS', () => {
-      expect(reducer(testState, getJiraIssuesSuccess(jiraIssues))).toEqual({ jiraIssues: jiraIssues, isLoading: false });
+      expect(reducer(testState, getJiraIssuesSuccess(jiraIssues))).toEqual({ jiraIssues, isLoading: false });
     });
 
     it('should handle GetJiraIssues.FAILURE', () => {
@@ -178,14 +179,13 @@ describe('jira ducks', () => {
       let action: CreateJiraIssueRequest;
       beforeAll(() => {
         action = createJiraIssue(formData);
-        jiraIssues = globalState.jira.jiraIssues;
+        jiraIssues = [jiraIssue];
       });
 
       it('creates a jira issue', () => {
         return expectSaga(createJiraIssueWorker, action)
           .provide([
-            [matchers.call.fn(API.createJiraIssue), {}],
-            [matchers.call.fn(API.createJiraIssue), { jiraIssues }],
+            [matchers.call.fn(API.createJiraIssue), { jiraIssue }],
           ])
           .put(createJiraIssueSuccess(jiraIssue))
           .run();

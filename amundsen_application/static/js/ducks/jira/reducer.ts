@@ -94,7 +94,7 @@ export default function reducer(state: JiraIssueReducerState = initialJiraIssueS
         isLoading: false}; 
     case CreateJiraIssue.SUCCESS: 
       return {...state,
-        jiraIssues: [...state.jiraIssues, (<CreateJiraIssueResponse> action).payload.jiraIssue[0]], 
+        jiraIssues: [...state.jiraIssues, (<CreateJiraIssueResponse> action).payload.jiraIssue],
         isLoading: false}; 
     default: 
       return state; 
