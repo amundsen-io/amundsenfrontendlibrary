@@ -11,12 +11,12 @@ class JiraClientTest(unittest.TestCase):
 
     def setUp(self) -> None:
         self.mock_issue = {
-                'issue_key': 'key',
-                'title': 'some title',
-                'url': 'http://somewhere',
-                'create_date': 'some date',
-                'last_updated': 'some other date'
-            }
+            'issue_key': 'key',
+            'title': 'some title',
+            'url': 'http://somewhere',
+            'create_date': 'some date',
+            'last_updated': 'some other date'
+        }
         self.mock_jira_issues = [self.mock_issue]
 
     @unittest.mock.patch('amundsen_application.jira.jira_client.JIRA')
