@@ -1,3 +1,5 @@
+from unittest.mock import Mock
+
 import flask
 import unittest
 from amundsen_application.jira.jira_client import JiraClient
@@ -20,7 +22,7 @@ class JiraClientTest(unittest.TestCase):
         self.mock_jira_issues = [self.mock_issue]
 
     @unittest.mock.patch('amundsen_application.jira.jira_client.JIRA')
-    def test_search_returns_JIRAError(self, mock_JIRA_client) -> None:
+    def test_search_returns_JIRAError(self, mock_JIRA_client: Mock) -> None:
         mock_JIRA_client.return_value.search_issues.side_effect = JIRAError('Some exception')
         with app.test_request_context():
             jira_client = JiraClient()
@@ -32,7 +34,7 @@ class JiraClientTest(unittest.TestCase):
 
     @unittest.mock.patch('amundsen_application.jira.jira_client.JIRA')
     @unittest.mock.patch('amundsen_application.jira.jira_client.JiraClient.get_issue_properties')
-    def test_search_returns_issues(self, mock_get_issue_properties, mock_JIRA_client) -> None:
+    def test_search_returns_issues(self, mock_get_issue_properties: Mock, mock_JIRA_client: Mock) -> None:
         mock_JIRA_client.return_value.search_issues.return_value = self.mock_jira_issues
         mock_get_issue_properties.return_value = self.mock_issue
         with app.test_request_context():
@@ -44,7 +46,7 @@ class JiraClientTest(unittest.TestCase):
                 'project=test_project_name AND text ~ "key"', maxResults=3)
 
     @unittest.mock.patch('amundsen_application.jira.jira_client.JIRA')
-    def test_create_returns_JIRAError(self, mock_JIRA_client) -> None:
+    def test_create_returns_JIRAError(self, mock_JIRA_client: Mock) -> None:
         mock_JIRA_client.return_value.create_issue.side_effect = JIRAError('Some exception')
         with app.test_request_context():
             jira_client = JiraClient()
@@ -56,7 +58,7 @@ class JiraClientTest(unittest.TestCase):
 
     @unittest.mock.patch('amundsen_application.jira.jira_client.JIRA')
     @unittest.mock.patch('amundsen_application.jira.jira_client.JiraClient.get_issue_properties')
-    def test_create_issue(self, mock_get_issue_properties, mock_JIRA_client) -> None:
+    def test_create_issue(self, mock_get_issue_properties: Mock, mock_JIRA_client: Mock) -> None:
         mock_JIRA_client.return_value.create_issue.return_value = self.mock_issue
         mock_get_issue_properties.return_value = self.mock_issue
         with app.test_request_context():
