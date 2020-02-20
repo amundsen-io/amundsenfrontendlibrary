@@ -2,6 +2,7 @@ from typing import Any, Dict
 
 from amundsen_common.models.popular_table import PopularTable, PopularTableSchema
 from amundsen_common.models.table import Table, TableSchema
+from amundsen_application.models.user import load_user, dump_user
 from flask import current_app as app
 
 
@@ -41,6 +42,14 @@ def marshall_table_full(table_dict: Dict) -> Dict:
     is_editable = results['schema'] not in app.config['UNEDITABLE_SCHEMAS']
     results['is_editable'] = is_editable
 
+    # TODO - Cleanup https://github.com/lyft/amundsen/issues/296
+    #  This code will try to supplement some missing data since the data here is incomplete.
+    #  Once the metadata service response provides complete user objects we can remove this.
+    results['owners'] = [_map_user_object_to_schema(owner) for owner in results['owners']]
+    readers = results['table_readers']
+    for reader_object in readers:
+        reader_object['user'] = _map_user_object_to_schema(reader_object['user'])
+
     # If order is provided, we sort the column based on the pre-defined order
     if app.config['COLUMN_STAT_ORDER']:
         columns = results['columns']
@@ -55,6 +64,10 @@ def marshall_table_full(table_dict: Dict) -> Dict:
     # Temp code to make 'partition_key' and 'partition_value' part of the table
     results['partition'] = _get_partition_data(results['watermarks'])
     return results
+
+
+def _map_user_object_to_schema(u: Dict) -> Dict:
+    return dump_user(load_user(u))
 
 
 def _get_partition_data(watermarks: Dict) -> Dict:
