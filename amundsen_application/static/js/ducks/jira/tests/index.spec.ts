@@ -185,7 +185,7 @@ describe('jira ducks', () => {
       it('creates a jira issue', () => {
         return expectSaga(createJiraIssueWorker, action)
           .provide([
-            [matchers.call.fn(API.createJiraIssue), { jiraIssue }],
+            [matchers.call.fn(API.createJiraIssue), jiraIssue],
           ])
           .put(createJiraIssueSuccess(jiraIssue))
           .run();

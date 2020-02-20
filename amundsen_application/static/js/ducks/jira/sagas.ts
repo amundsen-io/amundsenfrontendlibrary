@@ -28,7 +28,7 @@ export function* createJiraIssueWorker(action: CreateJiraIssueRequest): SagaIter
   try { 
     let response;
     response = yield call(API.createJiraIssue, action.payload.data);
-    yield put((createJiraIssueSuccess(response.jiraIssue)));
+    yield put((createJiraIssueSuccess(response)));
   } catch(error) {
     yield put(createJiraIssueFailure());
   }

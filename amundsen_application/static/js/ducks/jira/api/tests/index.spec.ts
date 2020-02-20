@@ -43,10 +43,11 @@ describe('createJiraIssue', () => {
   let mockGetResponse;
   let axiosMock;
   let formData;
+  const jiraIssueResult = { issue_key: 'key' };
   beforeAll(() => {
     mockGetResponse = {
       data: {
-       jiraIssue: { issue_key: 'key' },
+       jiraIssue: [jiraIssueResult],
        msg: 'Success'
       },
       status: 200,
@@ -72,7 +73,7 @@ describe('createJiraIssue', () => {
   it('returns response data', async () => {
     expect.assertions(1);
     await API.createJiraIssue(formData).then(data => {
-      expect(data).toEqual(mockGetResponse.data);
+      expect(data).toEqual(jiraIssueResult);
     });
   });
 
