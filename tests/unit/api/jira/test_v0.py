@@ -1,5 +1,4 @@
 import json
-import responses
 import unittest
 from http import HTTPStatus
 from amundsen_application import create_app
