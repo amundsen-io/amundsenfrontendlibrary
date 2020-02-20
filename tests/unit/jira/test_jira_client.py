@@ -1,8 +1,5 @@
 import flask
 import unittest
-from mock import patch, MagicMock
-from http import HTTPStatus
-from amundsen_application import create_app
 from amundsen_application.jira.jira_client import JiraClient
 from jira import JIRAError
 
