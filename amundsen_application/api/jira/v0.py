@@ -16,13 +16,17 @@ jira_blueprint = Blueprint('jira', __name__, url_prefix='/api/jira/v0')
 
 @jira_blueprint.route('/issues', methods=['GET'])
 def get_jira_issues() -> Response:
+    """
+    Given a table key, returns all JIRA tickets containing that key. Returns an empty array if none exist
+    :return: List of JIRA tickets
+    """
     try:
         table_key = get_query_param(request.args, 'key', 'Request requires a key')
         missing_config_response = validate_jira_properties()
         if len(missing_config_response) > 0:
             return make_response(jsonify({'msg': missing_config_response}), HTTPStatus.NOT_IMPLEMENTED)
 
-        jira_client = JiraClient()  # should lazy load this instead
+        jira_client = JiraClient()
         response = jira_client.search(table_key)
         return make_response(jsonify({'jiraIssues': response}), HTTPStatus.OK)
 
@@ -34,6 +38,12 @@ def get_jira_issues() -> Response:
 
 @jira_blueprint.route('/issue', methods=["POST"])
 def create_jira_issue() -> Response:
+    """
+    Given a title, description, and table key, creates a JIRA ticket in the configured project
+    Automatically places the tablekey in the description of the JIRA ticket.
+    Returns the JIRA ticket information, including UI.
+    :return: List containing a single JIRA ticket
+    """
     try:
         missing_config_response = validate_jira_properties()
         if len(missing_config_response) > 0:
@@ -42,7 +52,7 @@ def create_jira_issue() -> Response:
         description = get_query_param(request.form, 'description', 'Request requires a description')
         key = get_query_param(request.form, 'key', 'Request requires a key')
         title = get_query_param(request.form, 'title', 'Request requires a title')
-        jira_client = JiraClient()  # should lazy load this instead
+        jira_client = JiraClient()
         response = jira_client.create_issue(description=description, key=key, title=title)
         return make_response(jsonify({'jiraIssue': response}), HTTPStatus.OK)
 
@@ -56,7 +66,7 @@ def validate_jira_properties() -> Any:
     """
     Validates that all properties for jira configuration are set. Returns a list of missing properties
     to return if they are missing
-    :return: String representing missing Jira properties, or none.
+    :return: String representing missing Jira properties, or an empty string.
     """
     missing_fields = []
     if app.config['JIRA_URL'] is None:
