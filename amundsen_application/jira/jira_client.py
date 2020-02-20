@@ -42,8 +42,9 @@ class JiraClient:
             for issue in issues:
                 result.append(self.get_issue_properties(issue))
             return result
-        except JIRAError:
-            return None
+        except JIRAError as e:
+            logging.exception(str(e))
+            raise e
 
     def create_issue(self, description: str, key: str, title: str) -> Any:
         """
@@ -62,9 +63,9 @@ class JiraClient:
             }, summary=title, description=description + '\n Table Key: ' + key))
 
             return [self.get_issue_properties(issue)]
-        except JIRAError as jira_error:
-            logging.error(str(jira_error))
-            raise Exception(str(jira_error))
+        except JIRAError as e:
+            logging.error(str(e))
+            raise e
 
     @staticmethod
     def get_issue_properties(issue: Issue) -> Any:

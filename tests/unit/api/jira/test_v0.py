@@ -1,10 +1,7 @@
 import json
 import responses
 import unittest
-from mock import patch, MagicMock
-
 from http import HTTPStatus
-
 from amundsen_application import create_app
 
 local_app = create_app('amundsen_application.config.TestConfig', 'tests/templates')
