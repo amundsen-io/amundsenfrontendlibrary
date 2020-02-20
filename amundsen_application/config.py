@@ -36,11 +36,11 @@ class Config:
     INIT_CUSTOM_ROUTES = None  # type: Callable[[Flask], None]
 
     # Settings for Jira integration
-    JIRA_URL = None
-    JIRA_USER = None
-    JIRA_PASSWORD = None
-    JIRA_PROJECT_ID = None
-    JIRA_PROJECT_NAME = None
+    JIRA_URL = None  # type: str
+    JIRA_USER = None  # type: str
+    JIRA_PASSWORD = None  # type: str
+    JIRA_PROJECT_ID = None  # type: int
+    JIRA_PROJECT_NAME = None  # type: str
 
 
 class LocalConfig(Config):
@@ -92,6 +92,11 @@ class LocalConfig(Config):
 class TestConfig(LocalConfig):
     AUTH_USER_METHOD = get_test_user
     NOTIFICATIONS_ENABLED = True
+    JIRA_URL = 'test_url'
+    JIRA_USER = 'test_user'
+    JIRA_PASSWORD = 'test_password'
+    JIRA_PROJECT_ID = 1
+    JIRA_PROJECT_NAME = 'test_project_name'
 
 
 class TestNotificationsDisabledConfig(LocalConfig):

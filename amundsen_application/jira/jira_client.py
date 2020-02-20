@@ -1,5 +1,5 @@
 from typing import Any
-from jira import JIRA, JIRAError
+from jira import JIRA, JIRAError, Issue
 from flask import current_app as app
 
 import logging
@@ -9,7 +9,7 @@ SEARCH_STUB = 'project={project_id} AND text ~ "{table_key}"'
 
 class JiraClient:
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.jira_url = app.config['JIRA_URL']
         self.jira_user = app.config['JIRA_USER']
         self.jira_password = app.config['JIRA_PASSWORD']
@@ -27,7 +27,7 @@ class JiraClient:
             basic_auth=(self.jira_user, self.jira_password)
         )
 
-    def search(self, table_key) -> Any:
+    def search(self, table_key: str) -> Any:
         """
         Runs a query against a given Jira project for tickets matching the key
         :param table_key: Table key
@@ -45,7 +45,7 @@ class JiraClient:
         except JIRAError:
             return None
 
-    def create_issue(self, description, key, title) -> Any:
+    def create_issue(self, description: str, key: str, title: str) -> Any:
         """
         Creates an issue in Jira
         :param description: Description of the Jira issue
@@ -55,18 +55,19 @@ class JiraClient:
         """
         try:
             issue = self.jira_client.create_issue(fields=dict(project={
-                "id": self.jira_project_id
+                'id': self.jira_project_id
             }, issuetype={
-                "id": 1,
-                "name": "Bug",
-            }, summary=title, description=description + "\n Table Key: " + key))
+                'id': 1,
+                'name': 'Bug',
+            }, summary=title, description=description + '\n Table Key: ' + key))
 
             return [self.get_issue_properties(issue)]
         except JIRAError as jira_error:
             logging.error(str(jira_error))
             raise Exception(str(jira_error))
 
-    def get_issue_properties(self, issue):
+    @staticmethod
+    def get_issue_properties(issue: Issue) -> Any:
         return {
             'issue_key': issue.key,
             'title': issue.fields.summary,

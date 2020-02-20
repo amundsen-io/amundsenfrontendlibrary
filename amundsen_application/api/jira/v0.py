@@ -4,6 +4,7 @@ from http import HTTPStatus
 from flask import Response, jsonify, make_response, request
 from flask.blueprints import Blueprint
 from flask import current_app as app
+from typing import Any
 
 from amundsen_application.jira.jira_client import JiraClient
 from amundsen_application.api.utils.request_utils import get_query_param
@@ -16,12 +17,12 @@ jira_blueprint = Blueprint('jira', __name__, url_prefix='/api/jira/v0')
 @jira_blueprint.route('/issues', methods=['GET'])
 def get_jira_issues() -> Response:
     try:
+        table_key = get_query_param(request.args, 'key', 'Request requires a key')
         missing_config_response = validate_jira_properties()
-        if missing_config_response is not None:
-            return make_response(missing_config_response, HTTPStatus.NOT_IMPLEMENTED)
+        if len(missing_config_response) > 0:
+            return make_response(jsonify({'msg': missing_config_response}), HTTPStatus.NOT_IMPLEMENTED)
 
         jira_client = JiraClient()  # should lazy load this instead
-        table_key = get_query_param(request.args, 'key', 'Request requires a key')
         response = jira_client.search(table_key)
         return make_response(jsonify({'jiraIssues': response}), HTTPStatus.OK)
 
@@ -35,13 +36,13 @@ def get_jira_issues() -> Response:
 def create_jira_issue() -> Response:
     try:
         missing_config_response = validate_jira_properties()
-        if missing_config_response is not None:
+        if len(missing_config_response) > 0:
             return make_response(missing_config_response, HTTPStatus.NOT_IMPLEMENTED)
 
+        description = get_query_param(request.form, 'description', 'Request requires a description')
+        key = get_query_param(request.form, 'key', 'Request requires a key')
+        title = get_query_param(request.form, 'title', 'Request requires a title')
         jira_client = JiraClient()  # should lazy load this instead
-        description = request.form.get('description')
-        key = request.form.get('key')
-        title = request.form.get('title')
         response = jira_client.create_issue(description=description, key=key, title=title)
         return make_response(jsonify({'jiraIssue': response}), HTTPStatus.OK)
 
@@ -51,7 +52,7 @@ def create_jira_issue() -> Response:
         return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-def validate_jira_properties() -> str:
+def validate_jira_properties() -> Any:
     """
     Validates that all properties for jira configuration are set. Returns a list of missing properties
     to return if they are missing
@@ -70,6 +71,5 @@ def validate_jira_properties() -> str:
         missing_fields.append('JIRA_PROJECT_NAME')
 
     if len(missing_fields) > 0:
-        return jsonify({'jiraIssues': {},
-                        'msg': f'The following config settings must be set for Jira: { ", ".join(missing_fields) } '})
-    return None
+        return f'The following config settings must be set for Jira: { ", ".join(missing_fields) } '
+    return ''

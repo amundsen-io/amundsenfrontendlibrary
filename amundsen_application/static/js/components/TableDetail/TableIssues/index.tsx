@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { JiraIssue } from 'interfaces'; 
 import { getJiraIssues } from 'ducks/jira/reducer'; 
+import { logClick } from 'ducks/utilMethods';
 import { GetJiraIssuesRequest } from 'ducks/jira/types';
 import { truncateText } from '../../../utils/tableissues-utils'; 
 import './styles.scss';
@@ -33,10 +34,14 @@ export class TableIssues extends React.Component<TableIssueProps> {
     this.props.getJiraIssues(this.props.tableKey);
   }
 
+  logIssueClick = (event) => {
+    logClick(event); 
+  }
+
   renderIssue = (issue: JiraIssue, index: number) => {
     return (
       <div className="issue-banner" key={`jira-issue-${index}`}>
-      <a className="issue-link" target="_blank" href={issue.url}>
+      <a className="issue-link" target="_blank" href={issue.url} onClick={this.logIssueClick}>
         <img className="icon icon-data-quality-warning"/>
         { issue.issue_key }
       </a>
