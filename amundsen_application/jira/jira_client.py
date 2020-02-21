@@ -3,7 +3,7 @@ from amundsen_application.models.jira_issue import JiraIssue
 
 import logging
 
-SEARCH_STUB = 'project={project_id} AND text ~ "{table_key}" AND resolution = Unresolved order by createdDate DESC'
+SEARCH_STUB = 'text ~ "{table_key}" AND resolution = Unresolved order by createdDate DESC'
 # this is provided by jira as the type of a bug
 ISSUE_TYPE_ID = 1
 ISSUE_TYPE_NAME = 'Bug'
@@ -14,13 +14,11 @@ class JiraClient:
     def __init__(self, jira_url: str,
                  jira_user: str,
                  jira_password: str,
-                 jira_project_id: int,
-                 jira_project_name: str) -> None:
+                 jira_project_id: int) -> None:
         self.jira_url = jira_url
         self.jira_user = jira_user
         self.jira_password = jira_password
         self.jira_project_id = jira_project_id
-        self.jira_project_name = jira_project_name
         self._validate_jira_configuration()
         self.jira_client = self.get_client()
 
@@ -43,7 +41,6 @@ class JiraClient:
         """
         try:
             issues = self.jira_client.search_issues(SEARCH_STUB.format(
-                project_id=self.jira_project_name,
                 table_key=table_key))
             return [self._get_issue_properties(issue) for issue in issues]
         except JIRAError as e:
@@ -86,8 +83,6 @@ class JiraClient:
             missing_fields.append('JIRA_PASSWORD')
         if not self.jira_project_id:
             missing_fields.append('JIRA_PROJECT_ID')
-        if not self.jira_project_name:
-            missing_fields.append('JIRA_PROJECT_NAME')
 
         if len(missing_fields) > 0:
             raise Exception(f'The following config settings must be set for Jira: { ", ".join(missing_fields) } ')

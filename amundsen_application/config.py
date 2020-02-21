@@ -40,7 +40,6 @@ class Config:
     JIRA_USER = None  # type: str
     JIRA_PASSWORD = None  # type: str
     JIRA_PROJECT_ID = None  # type: int
-    JIRA_PROJECT_NAME = None  # type: str
 
 
 class LocalConfig(Config):
@@ -96,7 +95,6 @@ class TestConfig(LocalConfig):
     JIRA_USER = 'test_user'
     JIRA_PASSWORD = 'test_password'
     JIRA_PROJECT_ID = 1
-    JIRA_PROJECT_NAME = 'test_project_name'
 
 
 class TestNotificationsDisabledConfig(LocalConfig):

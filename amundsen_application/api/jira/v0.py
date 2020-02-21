@@ -25,8 +25,7 @@ def get_jira_issues() -> Response:
         jira_client = JiraClient(jira_url=app.config['JIRA_URL'],
                                  jira_user=app.config['JIRA_USER'],
                                  jira_password=app.config['JIRA_PASSWORD'],
-                                 jira_project_id=app.config['JIRA_PROJECT_ID'],
-                                 jira_project_name=app.config['JIRA_PROJECT_NAME'])
+                                 jira_project_id=app.config['JIRA_PROJECT_ID'])
         response = jira_client.search(table_key)
         return make_response(jsonify({'jiraIssues': response}), HTTPStatus.OK)
 
@@ -54,8 +53,7 @@ def create_jira_issue() -> Response:
         jira_client = JiraClient(jira_url=app.config['JIRA_URL'],
                                  jira_user=app.config['JIRA_USER'],
                                  jira_password=app.config['JIRA_PASSWORD'],
-                                 jira_project_id=app.config['JIRA_PROJECT_ID'],
-                                 jira_project_name=app.config['JIRA_PROJECT_NAME'])
+                                 jira_project_id=app.config['JIRA_PROJECT_ID'])
         response = jira_client.create_issue(description=description, key=key, title=title)
         return make_response(jsonify({'jiraIssue': response}), HTTPStatus.OK)
 
