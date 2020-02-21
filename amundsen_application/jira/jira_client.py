@@ -1,10 +1,9 @@
-from typing import Any
 from jira import JIRA, JIRAError, Issue
 from amundsen_application.models.jira_issue import JiraIssue
 
 import logging
 
-SEARCH_STUB = 'project={project_id} AND text ~ "{table_key}"'
+SEARCH_STUB = 'project={project_id} AND text ~ "{table_key}" AND resolution = Unresolved order by createdDate DESC'
 # this is provided by jira as the type of a bug
 ISSUE_TYPE_ID = 1
 ISSUE_TYPE_NAME = 'Bug'
@@ -35,9 +34,10 @@ class JiraClient:
             basic_auth=(self.jira_user, self.jira_password)
         )
 
-    def search(self, table_key: str) -> Any:
+    def search(self, table_key: str) -> [JiraIssue]:
         """
         Runs a query against a given Jira project for tickets matching the key
+        Returns open issues sorted by most recently created.
         :param table_key: Table key
         :return: Metadata of matching issues
         """
@@ -50,7 +50,7 @@ class JiraClient:
             logging.exception(str(e))
             raise e
 
-    def create_issue(self, description: str, key: str, title: str) -> Any:
+    def create_issue(self, description: str, key: str, title: str) -> JiraIssue:
         """
         Creates an issue in Jira
         :param description: Description of the Jira issue
@@ -66,12 +66,12 @@ class JiraClient:
                 'name': ISSUE_TYPE_NAME,
             }, summary=title, description=description + '\n Table Key: ' + key))
 
-            return [self._get_issue_properties(issue)]
+            return self._get_issue_properties(issue)
         except JIRAError as e:
             logging.exception(str(e))
             raise e
 
-    def _validate_jira_configuration(self) -> Any:
+    def _validate_jira_configuration(self) -> None:
         """
         Validates that all properties for jira configuration are set. Returns a list of missing properties
         to return if they are missing
