@@ -5,6 +5,9 @@ from amundsen_application.models.jira_issue import JiraIssue
 import logging
 
 SEARCH_STUB = 'project={project_id} AND text ~ "{table_key}"'
+# this is provided by jira as the type of a bug
+ISSUE_TYPE_ID = 1
+ISSUE_TYPE_NAME = 'Bug'
 
 
 class JiraClient:
@@ -24,7 +27,7 @@ class JiraClient:
 
     def get_client(self) -> JIRA:
         """
-        Get the Jira client properly formatted prepared for hitting Lyft JIRA
+        Get the Jira client properly formatted prepared for hitting JIRA
         :return: A Jira client.
         """
         return JIRA(
@@ -35,19 +38,14 @@ class JiraClient:
     def search(self, table_key: str) -> Any:
         """
         Runs a query against a given Jira project for tickets matching the key
-        Returns only the first 3 results
         :param table_key: Table key
         :return: Metadata of matching issues
         """
         try:
             issues = self.jira_client.search_issues(SEARCH_STUB.format(
                 project_id=self.jira_project_name,
-                table_key=table_key),
-                maxResults=3)
-            result = []
-            for issue in issues:
-                result.append(self._get_issue_properties(issue))
-            return result
+                table_key=table_key))
+            return [self._get_issue_properties(issue) for issue in issues]
         except JIRAError as e:
             logging.exception(str(e))
             raise e
@@ -56,7 +54,7 @@ class JiraClient:
         """
         Creates an issue in Jira
         :param description: Description of the Jira issue
-        :param key: Table key
+        :param key: Table Uri ie databasetype://database/table
         :param title: Title of the Jira ticket
         :return: Metadata about the newly created issue
         """
@@ -64,8 +62,8 @@ class JiraClient:
             issue = self.jira_client.create_issue(fields=dict(project={
                 'id': self.jira_project_id
             }, issuetype={
-                'id': 1,
-                'name': 'Bug',
+                'id': ISSUE_TYPE_ID,
+                'name': ISSUE_TYPE_NAME,
             }, summary=title, description=description + '\n Table Key: ' + key))
 
             return [self._get_issue_properties(issue)]
@@ -80,20 +78,19 @@ class JiraClient:
         :return: String representing missing Jira properties, or an empty string.
         """
         missing_fields = []
-        if self.jira_url is None:
+        if not self.jira_url:
             missing_fields.append('JIRA_URL')
-        if self.jira_user is None:
+        if not self.jira_user:
             missing_fields.append('JIRA_USER')
-        if self.jira_password is None:
+        if not self.jira_password:
             missing_fields.append('JIRA_PASSWORD')
-        if self.jira_project_id is None:
+        if not self.jira_project_id:
             missing_fields.append('JIRA_PROJECT_ID')
-        if self.jira_project_name is None:
+        if not self.jira_project_name:
             missing_fields.append('JIRA_PROJECT_NAME')
 
         if len(missing_fields) > 0:
             raise Exception(f'The following config settings must be set for Jira: { ", ".join(missing_fields) } ')
-
 
     @staticmethod
     def _get_issue_properties(issue: Issue) -> JiraIssue:

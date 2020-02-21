@@ -4,7 +4,6 @@ from http import HTTPStatus
 from flask import Response, jsonify, make_response, request
 from flask.blueprints import Blueprint
 from flask import current_app as app
-from typing import Any
 
 from amundsen_application.jira.jira_client import JiraClient
 from amundsen_application.api.utils.request_utils import get_query_param
@@ -18,6 +17,7 @@ jira_blueprint = Blueprint('jira', __name__, url_prefix='/api/jira/v0')
 def get_jira_issues() -> Response:
     """
     Given a table key, returns all JIRA tickets containing that key. Returns an empty array if none exist
+    :param key: Table URI ie databasetype://database/table
     :return: List of JIRA tickets
     """
     try:
@@ -42,6 +42,9 @@ def create_jira_issue() -> Response:
     Given a title, description, and table key, creates a JIRA ticket in the configured project
     Automatically places the tablekey in the description of the JIRA ticket.
     Returns the JIRA ticket information, including UI.
+    :param description: user provided description for the jira ticket
+    :param key: Table URI ie databasetype://database/table
+    :param title: Title of the jira ticket
     :return: List containing a single JIRA ticket
     """
     try:
