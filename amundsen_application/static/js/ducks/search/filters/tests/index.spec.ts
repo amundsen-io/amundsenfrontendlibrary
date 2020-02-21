@@ -3,7 +3,7 @@ import { ResourceType } from 'interfaces';
 import reducer, {
   clearAllFilters,
   clearFilterByCategory,
-  setFilterByResource,
+  setSearchInputByResource,
   updateFilterByCategory,
   initialFilterState,
   FilterReducerState,
@@ -25,14 +25,18 @@ describe('filters ducks', () => {
       expect(payload.categoryId).toBe(testCategory);
     });
 
-    it('setFilterByResource - returns the action to set the filters for a give resource', () => {;
+    it('setSearchInputByResource - returns the action to set all search input for a given resource', () => {;
       const testResource = ResourceType.table;
       const testFilters = { 'column': 'column_name' }
-      const action = setFilterByResource(testResource, testFilters);
+      const testIndex = 0;
+      const testTerm = 'test';
+      const action = setSearchInputByResource(testFilters, testResource, testIndex, testTerm);
       const { payload } = action;
       expect(action.type).toBe(UpdateSearchFilter.SET_BY_RESOURCE);
       expect(payload.resourceType).toBe(testResource);
       expect(payload.filters).toBe(testFilters);
+      expect(payload.pageIndex).toBe(testIndex);
+      expect(payload.term).toBe(testTerm);
     });
 
     it('updateFilterByCategory - returns the action to update the filters for a given category', () => {;
@@ -78,7 +82,7 @@ describe('filters ducks', () => {
         'schema': 'schema_name',
         'database': { 'testDb': true }
       }
-      const result = reducer(initialFilterState, setFilterByResource(givenResource, givenFilters), givenResource);
+      const result = reducer(initialFilterState, setSearchInputByResource(givenFilters, givenResource), givenResource);
       expect(result[givenResource]).toBe(givenFilters);
     });
 
@@ -89,9 +93,5 @@ describe('filters ducks', () => {
       const result = reducer(initialFilterState, updateFilterByCategory(givenCategory, givenValue), givenResource);
       expect(result[givenResource][givenCategory]).toBe(givenValue);
     });
-  });
-
-  describe('sagas', () => {
-    // TODO
   });
 });

@@ -21,6 +21,7 @@ import { getPopularTablesWatcher } from './popularTables/sagas';
 import {
   clearSearchWatcher,
   filterWatcher,
+  filterWatcher2,
   inlineSearchWatcher,
   inlineSearchWatcherDebounce,
   loadPreviousSearchWatcher,
@@ -68,6 +69,7 @@ export default function* rootSaga() {
     // Search
     clearSearchWatcher(),
     filterWatcher(),
+    filterWatcher2(),
     inlineSearchWatcher(),
     inlineSearchWatcherDebounce(),
     loadPreviousSearchWatcher(),

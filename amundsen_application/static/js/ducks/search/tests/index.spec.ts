@@ -427,13 +427,17 @@ describe('search ducks', () => {
           expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
           expect(result.filters).toBe(MOCK_FILTER_STATE);
         })
+      });
 
+      describe('cases that update the search term & filter state', () => {
         it('UpdateSearchFilter.SET_BY_RESOURCE', () => {
           filterReducerSpy.mockClear();
-          const filterAction = filterReducer.setFilterByResource(ResourceType.table, {});
+          const mockTerm = 'rides';
+          const filterAction = filterReducer.setSearchInputByResource({ 'tag': 'tagName' }, ResourceType.table, 2, mockTerm);
           const result = reducer(testState, filterAction)
           expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
           expect(result.filters).toBe(MOCK_FILTER_STATE);
+          expect(result.search_term).toBe(mockTerm);
         })
       });
 
@@ -688,8 +692,7 @@ describe('search ducks', () => {
 
       it('when filters have changed', () => {
         sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}&filters=%7B"database"%3A%7B"hive"%3Atrue%7D%7D`))
-          .put(filterReducer.setFilterByResource(resource, { 'database': { 'hive' : true }}))
-          .next().put(searchResource(term, resource, index))
+          .put(filterReducer.setSearchInputByResource({ 'database': { 'hive' : true }}, resource, index, term))
           .next().isDone();
       });
 

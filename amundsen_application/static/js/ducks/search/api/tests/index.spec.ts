@@ -1,7 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
 
-import AppConfig from 'config/config';
-
 import { DashboardSearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
 
 import globalState from 'fixtures/globalState';
@@ -12,12 +10,15 @@ import * as API from '../v0';
 
 jest.mock('axios');
 
+import * as ConfigUtils from 'config/config-utils';
+
 describe('searchResource', () => {
   let axiosMockGet;
   let axiosMockPost;
-  let mockTableResponse: AxiosResponse<API.SearchAPI>;
+  let userEnabledMock;
+  let mockSearchResponse: AxiosResponse<API.SearchAPI>;
   beforeAll(() => {
-    mockTableResponse = {
+    mockSearchResponse = {
       data: {
         msg: 'Success',
         status_code: 200,
@@ -30,8 +31,9 @@ describe('searchResource', () => {
       headers: {},
       config: {},
     };
-    axiosMockGet = jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(mockTableResponse));
-    axiosMockPost = jest.spyOn(axios, 'post').mockImplementation(() => Promise.resolve(mockTableResponse));
+    axiosMockGet = jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(mockSearchResponse));
+    axiosMockPost = jest.spyOn(axios, 'post').mockImplementation(() => Promise.resolve(mockSearchResponse));
+    userEnabledMock = jest.spyOn(ConfigUtils, 'indexUsersEnabled').mockImplementation(() => true);
   });
 
   describe('searchResource', () => {
@@ -52,7 +54,7 @@ describe('searchResource', () => {
     it('resolves with empty object if user resource search not supported', async () => {
       axiosMockGet.mockClear();
       axiosMockPost.mockClear();
-      AppConfig.indexUsers.enabled = false;
+      userEnabledMock.mockImplementationOnce(() => false);
       const pageIndex = 0;
       const resourceType = ResourceType.user;
       const term = 'test';
@@ -64,12 +66,13 @@ describe('searchResource', () => {
       expect(axiosMockPost).not.toHaveBeenCalled();
     });
 
-    describe('if no filters are passed', () => {
+    describe('if not searching a table resource', () => {
       it('calls axios get with request for a resource', async () => {
         axiosMockGet.mockClear();
         axiosMockPost.mockClear();
+        userEnabledMock.mockImplementationOnce(() => true);
         const pageIndex = 0;
-        const resourceType = ResourceType.table;
+        const resourceType = ResourceType.user;
         const term = 'test';
         await API.searchResource(pageIndex, resourceType, term);
         expect(axiosMockGet).toHaveBeenCalledWith(`${API.BASE_URL}/${resourceType}?query=${term}&page_index=${pageIndex}`);
@@ -78,12 +81,12 @@ describe('searchResource', () => {
 
       it('calls searchResourceHelper with api call response', async () => {
         const searchResourceHelperSpy = jest.spyOn(API, 'searchResourceHelper');
-        await API.searchResource(0, ResourceType.table, 'test');
-        expect(searchResourceHelperSpy).toHaveBeenCalledWith(mockTableResponse);
+        await API.searchResource(0, ResourceType.user, 'test');
+        expect(searchResourceHelperSpy).toHaveBeenCalledWith(mockSearchResponse);
       });
     })
 
-    describe('if filters are passed', () => {
+    describe('if searching a table resource', () => {
       it('calls axios post with request for a resource', async () => {
         axiosMockGet.mockClear();
         axiosMockPost.mockClear();
@@ -103,17 +106,17 @@ describe('searchResource', () => {
       it('calls searchResourceHelper with api call response', async () => {
         const searchResourceHelperSpy = jest.spyOn(API, 'searchResourceHelper');
         await API.searchResource(0, ResourceType.table, 'test', { 'schema': 'schema_name' });
-        expect(searchResourceHelperSpy).toHaveBeenCalledWith(mockTableResponse);
+        expect(searchResourceHelperSpy).toHaveBeenCalledWith(mockSearchResponse);
       });
     })
   });
 
   describe('searchResourceHelper', () => {
     it('returns expected object', () => {
-      expect(API.searchResourceHelper(mockTableResponse)).toEqual({
-        searchTerm: mockTableResponse.data.search_term,
-        tables: mockTableResponse.data.tables,
-        users: mockTableResponse.data.users,
+      expect(API.searchResourceHelper(mockSearchResponse)).toEqual({
+        searchTerm: mockSearchResponse.data.search_term,
+        tables: mockSearchResponse.data.tables,
+        users: mockSearchResponse.data.users,
       });
     });
   });

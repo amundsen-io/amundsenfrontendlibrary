@@ -209,8 +209,13 @@ export const initialState: SearchReducerState = {
 
 export default function reducer(state: SearchReducerState = initialState, action): SearchReducerState {
   switch (action.type) {
-    case UpdateSearchFilter.CLEAR_ALL:
     case UpdateSearchFilter.SET_BY_RESOURCE:
+      return {
+        ...state,
+        search_term: action.payload.term,
+        filters: filterReducer(state.filters, action, state.selectedTab),
+      }
+    case UpdateSearchFilter.CLEAR_ALL:
       return {
         ...state,
         filters: filterReducer(state.filters, action, state.selectedTab),

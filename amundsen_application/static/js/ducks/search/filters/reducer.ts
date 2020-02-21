@@ -21,10 +21,12 @@ export interface ClearFilterRequest {
   type: UpdateSearchFilter.CLEAR_CATEGORY;
 };
 
-interface SetFilterRequest {
+export interface SetSearchInputRequest {
   payload: {
     filters: ResourceFilterReducerState;
+    pageIndex?: number;
     resourceType: ResourceType;
+    term?: string;
   };
   type: UpdateSearchFilter.SET_BY_RESOURCE;
 };
@@ -53,11 +55,16 @@ export function clearFilterByCategory(categoryId: string): ClearFilterRequest {
   };
 };
 
-export function setFilterByResource(resourceType: ResourceType, filters: ResourceFilterReducerState): SetFilterRequest {
+export function setSearchInputByResource(filters: ResourceFilterReducerState,
+                                         resourceType: ResourceType,
+                                         pageIndex?: number,
+                                         term?: string): SetSearchInputRequest {
   return {
     payload: {
+      filters,
+      pageIndex,
       resourceType,
-      filters
+      term
     },
     type: UpdateSearchFilter.SET_BY_RESOURCE,
   };

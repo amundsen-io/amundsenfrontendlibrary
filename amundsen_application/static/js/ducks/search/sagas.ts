@@ -44,7 +44,7 @@ import {
 } from './reducer';
 import {
   clearAllFilters,
-  setFilterByResource,
+  setSearchInputByResource,
   UpdateSearchFilter
 } from './filters/reducer';
 import { autoSelectResource, getPageIndex, getSearchState } from './utils';
@@ -60,7 +60,7 @@ export function* filterWatcher(): SagaIterator {
 
 /*
  * Executes a search on the current resource.
- * Actions that trigger this worker will have updated the filter reducer .
+ * Actions that trigger this worker will have updated the filter reducer.
  * The updated filter state is applied in searchResourceWorker().
  * Updates the search url to reflect the change in filters.
  */
@@ -70,6 +70,28 @@ export function* filterWorker(): SagaIterator {
   const pageIndex = getPageIndex(state)
   yield put(searchResource(search_term, selectedTab, pageIndex));
   updateSearchUrl({ filters, resource: selectedTab, term: search_term, index: pageIndex }, true);
+};
+
+/**
+ * Listens to actions triggers by application updates to both the filter state and search term.
+ * This is intended to be temporary code. searchResource saga restructring will allow us to consolidate this support.
+ */
+export function* filterWatcher2(): SagaIterator {
+  yield takeLatest(UpdateSearchFilter.SET_BY_RESOURCE, filterWorker2);
+};
+
+/**
+ * Executes a search on the given resource.
+ * Actions that trigger this worker will have updated the filter reducer.
+ * The updated filter state is applied in searchResourceWorker().
+ * Updates the search url to reflect the change in filters.
+ * This is intended to be temporary code. searchResource Saga restructring will allow us to consolidate this support.
+ */
+export function* filterWorker2(action: any): SagaIterator {
+  const state = yield select(getSearchState);
+  const { pageIndex = 0, resourceType, term = '' } = action.payload;
+  yield put(searchResource(term, resourceType, pageIndex));
+  updateSearchUrl({ filters: state.filters, term, resource: resourceType, index: pageIndex }, false);
 };
 
 export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
@@ -248,16 +270,17 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
       yield put(setResource(resource, false))
     }
     if (parsedFilters && !_.isEqual(state.filters[resource], parsedFilters)) {
-      /* Update filter state + search resource */
-      yield put(setFilterByResource(resource, parsedFilters));
-      yield put(searchResource(term, resource, parsedIndex));
+      /* This will update filter state + search resource */
+      yield put(setSearchInputByResource(parsedFilters, resource, parsedIndex, term));
     }
-  }
-  /* TODO (ttannis): I can't seem to trigger this case with the current logic,
-    call out when reviewing
-  else if (!isNaN(parsedIndex) && parsedIndex !== getPageIndex(state, resource)) {
+  } else if (!isNaN(parsedIndex) && parsedIndex !== getPageIndex(state, resource)) {
+    /*
+     Note: Current filtering logic seems to reproduction of this case.
+     Could there be a race condition between url and reducer state updates?
+     Re-evaluate when restrucuring sagas to consolidate filter support.
+    */
     yield put(setPageIndex(parsedIndex, false));
-  }*/
+  }
 };
 export function* urlDidUpdateWatcher(): SagaIterator {
   yield takeEvery(UrlDidUpdate.REQUEST, urlDidUpdateWorker);
