@@ -9,7 +9,7 @@ local_app = create_app('amundsen_application.config.TestConfig', 'tests/template
 class JiraTest(unittest.TestCase):
 
     def setUp(self) -> None:
-        local_app.config['JIRA_URL'] = 'url'
+        local_app.config['ISSUE_TRACKER_URL'] = 'url'
         self.mock_jira_issues = {
             'jiraIssues': [
                 {
@@ -38,7 +38,7 @@ class JiraTest(unittest.TestCase):
         Test request failure if config settings are missing
         :return:
         """
-        local_app.config['JIRA_URL'] = None
+        local_app.config['ISSUE_TRACKER_URL'] = None
         with local_app.test_client() as test:
             response = test.get('/api/jira/v0/issues', query_string=dict(key='table_key'))
             self.assertEqual(response.status_code, HTTPStatus.NOT_IMPLEMENTED)
@@ -72,7 +72,7 @@ class JiraTest(unittest.TestCase):
         Test request failure if config settings are missing
         :return:
         """
-        local_app.config['JIRA_URL'] = None
+        local_app.config['ISSUE_TRACKER_URL'] = None
         with local_app.test_client() as test:
             response = test.post('/api/jira/v0/issue', data={
                 'description': 'test description',

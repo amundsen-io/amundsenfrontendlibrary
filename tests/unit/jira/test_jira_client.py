@@ -67,7 +67,7 @@ class JiraClientTest(unittest.TestCase):
             mock_JIRA_client.assert_called
             self.assertEqual(results, self.mock_jira_issues)
             mock_JIRA_client.return_value.create_issue.assert_called_with(fields=dict(project={
-                'id': app.config["JIRA_PROJECT_ID"]
+                'id': app.config["ISSUE_TRACKER_PROJECT_ID"]
             }, issuetype={
                 'id': 1,
                 'name': 'Bug',

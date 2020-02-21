@@ -7,6 +7,9 @@ from flask import Flask  # noqa: F401
 from amundsen_application.tests.test_utils import get_test_user
 
 
+
+
+
 class Config:
     LOG_FORMAT = '%(asctime)s.%(msecs)03d [%(levelname)s] %(module)s.%(funcName)s:%(lineno)d (%(process)d:' \
                  + '%(threadName)s) - %(message)s'
@@ -35,11 +38,14 @@ class Config:
     # Initialize custom routes
     INIT_CUSTOM_ROUTES = None  # type: Callable[[Flask], None]
 
-    # Settings for Jira integration
-    JIRA_URL = None  # type: str
-    JIRA_USER = None  # type: str
-    JIRA_PASSWORD = None  # type: str
-    JIRA_PROJECT_ID = None  # type: int
+    # Settings for Issue tracker integration
+    ISSUE_TRACKER_URL = None  # type: str
+    ISSUE_TRACKER_USER = None  # type: str
+    ISSUE_TRACKER_PASSWORD = None  # type: str
+    ISSUE_TRACKER_PROJECT_ID = None  # type: int
+    # Maps to a class path and name
+    ISSUE_TRACKER_CLIENT = None  # type: str
+    ISSUE_TRACKER_CLIENT_ENABLED = False
 
 
 class LocalConfig(Config):
@@ -91,10 +97,10 @@ class LocalConfig(Config):
 class TestConfig(LocalConfig):
     AUTH_USER_METHOD = get_test_user
     NOTIFICATIONS_ENABLED = True
-    JIRA_URL = 'test_url'
-    JIRA_USER = 'test_user'
-    JIRA_PASSWORD = 'test_password'
-    JIRA_PROJECT_ID = 1
+    ISSUE_TRACKER_URL = 'test_url'
+    ISSUE_TRACKER_USER = 'test_user'
+    ISSUE_TRACKER_PASSWORD = 'test_password'
+    ISSUE_TRACKER_PROJECT_ID = 1
 
 
 class TestNotificationsDisabledConfig(LocalConfig):

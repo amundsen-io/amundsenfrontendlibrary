@@ -12,14 +12,14 @@ ISSUE_TYPE_NAME = 'Bug'
 
 class JiraClient(BaseIssueTrackerClient):
 
-    def __init__(self, jira_url: str,
-                 jira_user: str,
-                 jira_password: str,
-                 jira_project_id: int) -> None:
-        self.jira_url = jira_url
-        self.jira_user = jira_user
-        self.jira_password = jira_password
-        self.jira_project_id = jira_project_id
+    def __init__(self, issue_tracker_url: str,
+                 issue_tracker_user: str,
+                 issue_tracker_password: str,
+                 issue_tracker_project_id: int) -> None:
+        self.jira_url = issue_tracker_url
+        self.jira_user = issue_tracker_user
+        self.jira_password = issue_tracker_password
+        self.jira_project_id = issue_tracker_project_id
         self._validate_jira_configuration()
         self.jira_client = self.get_client()
 
@@ -77,13 +77,13 @@ class JiraClient(BaseIssueTrackerClient):
         """
         missing_fields = []
         if not self.jira_url:
-            missing_fields.append('JIRA_URL')
+            missing_fields.append('ISSUE_TRACKER_URL')
         if not self.jira_user:
-            missing_fields.append('JIRA_USER')
+            missing_fields.append('ISSUE_TRACKER_USER')
         if not self.jira_password:
-            missing_fields.append('JIRA_PASSWORD')
+            missing_fields.append('ISSUE_TRACKER_PASSWORD')
         if not self.jira_project_id:
-            missing_fields.append('JIRA_PROJECT_ID')
+            missing_fields.append('ISSUE_TRACKER_PROJECT_ID')
 
         if len(missing_fields) > 0:
             raise Exception(f'The following config settings must be set for Jira: { ", ".join(missing_fields) } ')
