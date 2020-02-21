@@ -1,21 +1,22 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
+import * as ConfigUtils from 'config/config-utils';
 import ExploreButton from 'components/TableDetail/ExploreButton';
 import { TableMetadata } from 'interfaces/TableMetadata';
 import { logClick } from 'ducks/utilMethods';
 
-jest.mock('config/config', () => (
+
+let mockExploreEnabled = true;
+let mockExploreUrl = 'https://test-website.com';
+
+jest.mock('config/config-utils', () => (
   {
-    default: {
-      tableProfile: {
-        isExploreEnabled: true,
-        exploreUrlGenerator: (database: string, cluster: string, schema: string, table: string, partitionKey?: string, partitionValue?: string) =>
-          `https://DEFAULT_EXPLORE_URL?schema=${schema}&cluster=${cluster}&db=${database}&table=${table}`
-      }
-    }
+    exploreEnabled: () => { return mockExploreEnabled },
+    generateExploreUrl: () => { return mockExploreUrl }
   }
 ));
-import AppConfig from 'config/config';
+
+const generateExploreUrlSpy = jest.spyOn(ConfigUtils, "generateExploreUrl");
 
 describe('ExploreButton', () => {
   const setup = (tableDataOverrides?: Partial<TableMetadata>) => {
@@ -32,7 +33,11 @@ describe('ExploreButton', () => {
         table_name: 'table_name',
         table_description: '',
         table_writer: { application_url: '', description: '', id: '', name: '' },
-        partition: { is_partitioned: true },
+        partition: {
+          is_partitioned: true,
+          key: 'partition_key',
+          value: 'partition_value',
+        },
         table_readers: [],
         source: { source: '', source_type: '' },
         watermarks: [],
@@ -45,71 +50,35 @@ describe('ExploreButton', () => {
 
   describe('generateUrl', () => {
     const { props, wrapper } = setup();
-    const urlGeneratorSpy = jest.spyOn(AppConfig.tableProfile, "exploreUrlGenerator");
 
     it('calls url generator with the partition value and key, if partitioned', () => {
-      urlGeneratorSpy.mockClear();
-      const tableData = {
-        ...props.tableData,
-        partition: {
-          is_partitioned: true,
-          key: 'partition_key',
-          value: 'partition_value',
-        },
-      };
-      const partition = tableData.partition;
-      wrapper.instance().generateUrl(tableData);
-      expect(urlGeneratorSpy).toHaveBeenCalledWith(
-        tableData.database,
-        tableData.cluster,
-        tableData.schema,
-        tableData.table_name,
-        partition.key,
-        partition.value);
-    });
-
-
-    it('calls url generator with no partition value and key, if not partitioned', () => {
-      urlGeneratorSpy.mockClear();
-      const tableData = {
-        ...props.tableData,
-        partition: {
-          is_partitioned: false,
-        },
-      };
-      wrapper.instance().generateUrl(tableData);
-      expect(urlGeneratorSpy).toHaveBeenCalledWith(
-        tableData.database,
-        tableData.cluster,
-        tableData.schema,
-        tableData.table_name);
+      wrapper.instance().render();
+      expect(generateExploreUrlSpy).toHaveBeenCalledWith(props.tableData);
     });
   });
 
-
   describe('render', () => {
     beforeEach(() => {
-      AppConfig.tableProfile.isExploreEnabled = true;
+      mockExploreEnabled = true;
+      mockExploreUrl = 'https://test-website.com';
     });
 
     it('returns null if explore is not enabled', () => {
-      AppConfig.tableProfile.isExploreEnabled = false;
+      mockExploreEnabled = false;
       const { props, wrapper } = setup();
       expect(wrapper.instance().render()).toBeNull();
     });
 
     it('returns null if the generated url is empty', () => {
       const { props, wrapper } = setup();
-      const generateUrlSpy = jest.spyOn(AppConfig.tableProfile, "exploreUrlGenerator")
-      generateUrlSpy.mockImplementationOnce(() => '');
+      mockExploreUrl = '';
       expect(wrapper.instance().render()).toBeNull();
     });
 
     it('renders a link to the explore URL', () => {
       const { props, wrapper } = setup();
-      const url = wrapper.instance().generateUrl(props.tableData);
       expect(wrapper.find('a').props()).toMatchObject({
-        href: url,
+        href: mockExploreUrl,
         target: "_blank",
         id: "explore-sql",
         onClick: logClick,

@@ -88,3 +88,67 @@ describe('getCuratedTags', () => {
     expect(ConfigUtils.getCuratedTags()).toBe(AppConfig.browse.curatedTags);
   });
 });
+
+describe('exploreEnabled', () => {
+  it('returns whether the explore function is enabled', () => {
+    AppConfig.tableProfile.isExploreEnabled = true;
+    expect(ConfigUtils.exploreEnabled()).toBe(AppConfig.tableProfile.isExploreEnabled);
+    AppConfig.tableProfile.isExploreEnabled = false;
+    expect(ConfigUtils.exploreEnabled()).toBe(AppConfig.tableProfile.isExploreEnabled);
+  });
+});
+
+
+describe('generateExploreUrl', () => {
+  const tableData = {
+    badges: [],
+    cluster: 'cluster',
+    columns: [],
+    database: 'database',
+    is_editable: false,
+    is_view: false,
+    key: '',
+    schema: 'schema',
+    table_name: 'table_name',
+    table_description: '',
+    table_writer: { application_url: '', description: '', id: '', name: '' },
+    partition: {
+      is_partitioned: true,
+      key: 'partition_key',
+      value: 'partition_value',
+    },
+    table_readers: [],
+    source: { source: '', source_type: '' },
+    watermarks: [],
+  };
+
+
+  it('calls `exploreUrlGenerator` with table metadata', () => {
+    const exploreUrlGeneratorSpy = jest.spyOn(AppConfig.tableProfile, 'exploreUrlGenerator');
+    ConfigUtils.generateExploreUrl(tableData);
+    expect(exploreUrlGeneratorSpy).toBeCalledWith(
+      tableData.database,
+      tableData.cluster,
+      tableData.schema,
+      tableData.table_name,
+      tableData.partition.key,
+      tableData.partition.value);
+  });
+
+  it('excludes partition data if it does not exist', () => {
+    const mockTableData = {
+      ...tableData,
+      partition: {
+        is_partitioned: false,
+      },
+    };
+
+    const exploreUrlGeneratorSpy = jest.spyOn(AppConfig.tableProfile, 'exploreUrlGenerator');
+    ConfigUtils.generateExploreUrl(mockTableData);
+    expect(exploreUrlGeneratorSpy).toBeCalledWith(
+      mockTableData.database,
+      mockTableData.cluster,
+      mockTableData.schema,
+      mockTableData.table_name);
+  });
+});

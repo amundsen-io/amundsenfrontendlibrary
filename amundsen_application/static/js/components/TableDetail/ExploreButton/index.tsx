@@ -1,8 +1,8 @@
 import * as React from 'react';
 
-import AppConfig from 'config/config';
 import { logClick } from 'ducks/utilMethods';
 import { TableMetadata } from 'interfaces';
+import { exploreEnabled, generateExploreUrl } from 'config/config-utils';
 
 export interface ExploreButtonProps {
   tableData: TableMetadata;
@@ -13,20 +13,9 @@ export class ExploreButton extends React.Component<ExploreButtonProps> {
     super(props);
   }
 
-  generateUrl(tableData: TableMetadata) {
-    const partition = tableData.partition;
-
-    if (partition.is_partitioned) {
-      return AppConfig.tableProfile.exploreUrlGenerator(
-        tableData.database, tableData.cluster, tableData.schema, tableData.name, partition.key, partition.value);
-    }
-    return AppConfig.tableProfile.exploreUrlGenerator(
-      tableData.database, tableData.cluster, tableData.schema, tableData.name);
-  }
-
   render() {
-    const url = this.generateUrl(this.props.tableData);
-    if (!url || !AppConfig.tableProfile.isExploreEnabled) {
+    const url = generateExploreUrl(this.props.tableData);
+    if (!url || !exploreEnabled()) {
       return null;
     }
 
