@@ -3,24 +3,35 @@ import AppConfig from 'config/config';
 
 const timezone = Moment.tz.guess();
 
-interface DateConfig {
-  timestamp?: number;
-  epochTimestamp?: number;
-  dateString?: string;
-  dateStringFormat?: string;
+interface TimestampDateConfig {
+  timestamp: number;
 }
+
+interface EpochDateConfig {
+  epochTimestamp: number;
+}
+
+interface StringDateConfig {
+  dateString: string;
+  dateStringFormat: string;
+}
+
+type DateConfig = TimestampDateConfig | EpochDateConfig | StringDateConfig;
 
 // This function is only exported for testing
 export function getMomentDate(config: DateConfig): Moment {
   let moment;
-  if (config.timestamp) {
-    moment = Moment(config.timestamp);
-  }
-  if (config.epochTimestamp) {
-    moment = Moment(config.epochTimestamp * 1000);
-  }
-  if (config.dateString && config.dateStringFormat) {
-    moment = Moment(config.dateString, config.dateStringFormat)
+  const timestamp = (config as TimestampDateConfig).timestamp;
+  const epoch = (config as EpochDateConfig).epochTimestamp;
+  const { dateString, dateStringFormat } = config as StringDateConfig;
+  if (timestamp !== undefined) {
+    moment = Moment(timestamp);
+  } else if (epoch !== undefined) {
+    moment = Moment(epoch * 1000);
+  } else if (dateString && dateStringFormat) {
+    moment = Moment(dateString, dateStringFormat)
+  } else {
+    throw new Error('Cannot format date with invalid DateConfig object.')
   }
   return moment.tz(timezone);
 }
