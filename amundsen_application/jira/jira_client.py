@@ -1,6 +1,6 @@
 from typing import Any
 from jira import JIRA, JIRAError, Issue
-from flask import current_app as app
+from amundsen_application.models.jira_issue import JiraIssue
 
 import logging
 
@@ -9,12 +9,17 @@ SEARCH_STUB = 'project={project_id} AND text ~ "{table_key}"'
 
 class JiraClient:
 
-    def __init__(self) -> None:
-        self.jira_url = app.config['JIRA_URL']
-        self.jira_user = app.config['JIRA_USER']
-        self.jira_password = app.config['JIRA_PASSWORD']
-        self.jira_project_id = app.config['JIRA_PROJECT_ID']
-        self.jira_project_name = app.config['JIRA_PROJECT_NAME']
+    def __init__(self, jira_url: str,
+                 jira_user: str,
+                 jira_password: str,
+                 jira_project_id: int,
+                 jira_project_name: str) -> None:
+        self.jira_url = jira_url
+        self.jira_user = jira_user
+        self.jira_password = jira_password
+        self.jira_project_id = jira_project_id
+        self.jira_project_name = jira_project_name
+        self._validate_jira_configuration()
         self.jira_client = self.get_client()
 
     def get_client(self) -> JIRA:
@@ -30,6 +35,7 @@ class JiraClient:
     def search(self, table_key: str) -> Any:
         """
         Runs a query against a given Jira project for tickets matching the key
+        Returns only the first 3 results
         :param table_key: Table key
         :return: Metadata of matching issues
         """
@@ -40,7 +46,7 @@ class JiraClient:
                 maxResults=3)
             result = []
             for issue in issues:
-                result.append(self.get_issue_properties(issue))
+                result.append(self._get_issue_properties(issue))
             return result
         except JIRAError as e:
             logging.exception(str(e))
@@ -62,17 +68,42 @@ class JiraClient:
                 'name': 'Bug',
             }, summary=title, description=description + '\n Table Key: ' + key))
 
-            return [self.get_issue_properties(issue)]
+            return [self._get_issue_properties(issue)]
         except JIRAError as e:
-            logging.error(str(e))
+            logging.exception(str(e))
             raise e
 
+    def _validate_jira_configuration(self) -> Any:
+        """
+        Validates that all properties for jira configuration are set. Returns a list of missing properties
+        to return if they are missing
+        :return: String representing missing Jira properties, or an empty string.
+        """
+        missing_fields = []
+        if self.jira_url is None:
+            missing_fields.append('JIRA_URL')
+        if self.jira_user is None:
+            missing_fields.append('JIRA_USER')
+        if self.jira_password is None:
+            missing_fields.append('JIRA_PASSWORD')
+        if self.jira_project_id is None:
+            missing_fields.append('JIRA_PROJECT_ID')
+        if self.jira_project_name is None:
+            missing_fields.append('JIRA_PROJECT_NAME')
+
+        if len(missing_fields) > 0:
+            raise Exception(f'The following config settings must be set for Jira: { ", ".join(missing_fields) } ')
+
+
     @staticmethod
-    def get_issue_properties(issue: Issue) -> Any:
-        return {
-            'issue_key': issue.key,
-            'title': issue.fields.summary,
-            'url': issue.permalink(),
-            'create_date': issue.fields.created,
-            'last_updated': issue.fields.updated
-        }
+    def _get_issue_properties(issue: Issue) -> JiraIssue:
+        """
+        Maps the jira issue object to properties we want in the UI
+        :param issue: Jira issue to map
+        :return: JiraIssue
+        """
+        return JiraIssue(issue_key=issue.key,
+                         title=issue.fields.summary,
+                         url=issue.permalink(),
+                         create_date=issue.fields.created,
+                         last_updated=issue.fields.updated)

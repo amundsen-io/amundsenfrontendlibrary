@@ -33,7 +33,7 @@ class JiraClientTest(unittest.TestCase):
                 self.assertTrue(e, 'Some exception')
 
     @unittest.mock.patch('amundsen_application.jira.jira_client.JIRA')
-    @unittest.mock.patch('amundsen_application.jira.jira_client.JiraClient.get_issue_properties')
+    @unittest.mock.patch('amundsen_application.jira.jira_client.JiraClient._get_issue_properties')
     def test_search_returns_issues(self, mock_get_issue_properties: Mock, mock_JIRA_client: Mock) -> None:
         mock_JIRA_client.return_value.search_issues.return_value = self.mock_jira_issues
         mock_get_issue_properties.return_value = self.mock_issue
@@ -57,7 +57,7 @@ class JiraClientTest(unittest.TestCase):
                 self.assertTrue(e, 'Some exception')
 
     @unittest.mock.patch('amundsen_application.jira.jira_client.JIRA')
-    @unittest.mock.patch('amundsen_application.jira.jira_client.JiraClient.get_issue_properties')
+    @unittest.mock.patch('amundsen_application.jira.jira_client.JiraClient._get_issue_properties')
     def test_create_issue(self, mock_get_issue_properties: Mock, mock_JIRA_client: Mock) -> None:
         mock_JIRA_client.return_value.create_issue.return_value = self.mock_issue
         mock_get_issue_properties.return_value = self.mock_issue
