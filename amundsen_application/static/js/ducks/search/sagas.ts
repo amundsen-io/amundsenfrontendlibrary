@@ -91,7 +91,7 @@ export function* filterWorker2(action: any): SagaIterator {
   const state = yield select(getSearchState);
   const { pageIndex = 0, resourceType, term = '' } = action.payload;
   yield put(searchResource(term, resourceType, pageIndex));
-  updateSearchUrl({ filters: state.filters, term, resource: resourceType, index: pageIndex }, false);
+  updateSearchUrl({ term, filters: state.filters, resource: resourceType, index: pageIndex }, false);
 };
 
 export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
