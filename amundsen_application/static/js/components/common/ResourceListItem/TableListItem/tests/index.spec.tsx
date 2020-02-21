@@ -132,7 +132,7 @@ describe('TableListItem', () => {
         });
 
         it('renders getDateLabel value', () => {
-          const expectedString = formatDate({ epochTimestamp: props.table.last_updated_epoch });
+          const expectedString = formatDate({ epochTimestamp: props.table.last_updated_timestamp });
           expect(resourceBadges.children().at(0).children().at(1).text()).toEqual(expectedString);
         });
       });
