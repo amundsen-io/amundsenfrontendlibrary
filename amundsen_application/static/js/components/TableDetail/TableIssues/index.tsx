@@ -12,7 +12,7 @@ import './styles.scss';
 
 
 export interface StateFromProps {
-  jiraIssues: JiraIssue[]; 
+  issues: JiraIssue[]; 
 }
 
 export interface DispatchFromProps {
@@ -51,13 +51,13 @@ export class TableIssues extends React.Component<TableIssueProps> {
   }
 
   render() {
-    if (this.props.jiraIssues.length === 0) {
+    if (this.props.issues.length === 0) {
       return null;
     }
 
     return (
       <div className="table-issues">
-        { this.props.jiraIssues.map(this.renderIssue)}
+        { this.props.issues.map(this.renderIssue)}
       </div>
     );
   }
@@ -65,7 +65,7 @@ export class TableIssues extends React.Component<TableIssueProps> {
 
 export const mapStateToProps = (state: GlobalState, componentProps: ComponentProps) => {
   return {
-    jiraIssues: state.jira.jiraIssues,
+    issues: state.jira.jiraIssues,
     tableKey: componentProps.tableKey
   };
 };

@@ -81,14 +81,14 @@ describe('jira ducks', () => {
       const action = createJiraIssueFailure();
       const { payload } = action;
       expect(action.type).toBe(CreateJiraIssue.FAILURE);
-      expect(payload.jiraIssue).toBe(null);
+      expect(payload.issue).toBe(null);
     });
 
     it('createJiraIssueSuccess - returns the action to process success', () => {
       const action = createJiraIssueSuccess(jiraIssue);
       const { payload } = action;
       expect(action.type).toBe(CreateJiraIssue.SUCCESS);
-      expect(payload.jiraIssue).toBe(jiraIssue);
+      expect(payload.issue).toBe(jiraIssue);
     });
   });
 

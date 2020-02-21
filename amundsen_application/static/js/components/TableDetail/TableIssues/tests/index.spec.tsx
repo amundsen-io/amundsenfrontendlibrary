@@ -18,7 +18,7 @@ describe ('TableIssues', ()=> {
   
   const setup = (propOverrides?: Partial<TableIssueProps>) => {
     const props: TableIssueProps = {
-      jiraIssues: [], 
+      issues: [], 
       tableKey: 'key',
       getJiraIssues: jest.fn(),
       ...propOverrides
@@ -29,12 +29,12 @@ describe ('TableIssues', ()=> {
 
   describe('render', () => {
     it('renders nothing if no jira issues', () => {
-      const { props, wrapper } = setup({ jiraIssues: [] });
+      const { props, wrapper } = setup({ issues: [] });
       expect(wrapper.html()).toBeFalsy(); 
     }); 
 
     it('renders jira issues if they exist', () => {
-      const { props, wrapper } = setup({ jiraIssues: [{
+      const { props, wrapper } = setup({ issues: [{
         create_date: 'create_date', 
         issue_key: 'issue_key', 
         last_updated: 'last_updated', 
@@ -68,7 +68,7 @@ describe ('TableIssues', ()=> {
     });
 
     it('sets jiraIssues on the props', () => {
-      expect(result.jiraIssues).toEqual(globalState.jira.jiraIssues); 
+      expect(result.issues).toEqual(globalState.jira.jiraIssues); 
     }); 
     it('sets tableKey on the props', () => {
       expect(result.tableKey).toEqual('key'); 

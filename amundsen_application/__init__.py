@@ -4,11 +4,10 @@ import logging
 import logging.config
 import os
 
+from amundsen_application.api import init_routes
 from flask import Flask, Blueprint
 from flask_restful import Api
 
-
-from amundsen_application.api import init_routes
 from amundsen_application.api.v0 import blueprint
 from amundsen_application.api.announcements.v0 import announcements_blueprint
 from amundsen_application.api.log.v0 import log_blueprint
@@ -61,10 +60,11 @@ def create_app(config_module_class: str, template_folder: str = None) -> Flask:
     api = Api(api_bp)
 
     api.add_resource(IssuesAPI,
-                     '/api/issues', endpoint='issues')
+                     '/api/issue/issues', endpoint='issues')
     api.add_resource(IssueAPI,
-                     '/api/issue/', endpoint='issue')
+                     '/api/issue/issue', endpoint='issue')
 
+    app.register_blueprint(blueprint)
     app.register_blueprint(announcements_blueprint)
     app.register_blueprint(log_blueprint)
     app.register_blueprint(mail_blueprint)
@@ -73,6 +73,7 @@ def create_app(config_module_class: str, template_folder: str = None) -> Flask:
     app.register_blueprint(search_blueprint)
     app.register_blueprint(jira_blueprint)
     app.register_blueprint(api_bp)
+    init_routes(app)
 
     init_custom_routes = app.config.get('INIT_CUSTOM_ROUTES')
     if init_custom_routes:

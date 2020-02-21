@@ -19,11 +19,11 @@ export function createJiraIssue(formData: FormData): CreateJiraIssueRequest {
     };
 };
 
-export function createJiraIssueSuccess(jiraIssue: JiraIssue): CreateJiraIssueResponse {
+export function createJiraIssueSuccess(issue: JiraIssue): CreateJiraIssueResponse {
   return {
     type: CreateJiraIssue.SUCCESS, 
     payload: {
-      jiraIssue
+      issue
     }
   };
 };
@@ -32,7 +32,7 @@ export function createJiraIssueFailure(): CreateJiraIssueResponse {
   return {
     type: CreateJiraIssue.FAILURE, 
     payload: {
-      jiraIssue: null
+      issue: null
     }
   };
 };
@@ -46,11 +46,11 @@ export function getJiraIssues(tableKey: string): GetJiraIssuesRequest {
   }; 
 }
 
-export function getJiraIssuesSuccess(jiraIssues: JiraIssue[]): GetJiraIssuesResponse {
+export function getJiraIssuesSuccess(issues: JiraIssue[]): GetJiraIssuesResponse {
   return { 
     type: GetJiraIssues.SUCCESS, 
     payload: {
-      jiraIssues
+      issues
     }
   }
 }
@@ -59,7 +59,7 @@ export function getJiraIssuesFailure(): GetJiraIssuesResponse {
   return { 
     type: GetJiraIssues.FAILURE, 
     payload: {
-      jiraIssues: []
+      issues: []
     }
   }
 }
@@ -85,7 +85,7 @@ export default function reducer(state: JiraIssueReducerState = initialJiraIssueS
       return { jiraIssues: [], isLoading: false }; 
     case GetJiraIssues.SUCCESS: 
       return {...state, 
-        jiraIssues: (<GetJiraIssuesResponse> action).payload.jiraIssues, 
+        jiraIssues: (<GetJiraIssuesResponse> action).payload.issues, 
         isLoading: false}
     case CreateJiraIssue.REQUEST: 
       return {...state, isLoading: true}; 
@@ -94,7 +94,7 @@ export default function reducer(state: JiraIssueReducerState = initialJiraIssueS
         isLoading: false}; 
     case CreateJiraIssue.SUCCESS: 
       return {...state,
-        jiraIssues: [...state.jiraIssues, (<CreateJiraIssueResponse> action).payload.jiraIssue],
+        jiraIssues: [(<CreateJiraIssueResponse> action).payload.issue, ...state.jiraIssues],
         isLoading: false}; 
     default: 
       return state; 

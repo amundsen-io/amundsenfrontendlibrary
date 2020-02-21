@@ -28,13 +28,13 @@ export interface CreateJiraIssueRequest {
 export interface GetJiraIssuesResponse {
     type: GetJiraIssues.SUCCESS | GetJiraIssues.FAILURE; 
     payload: {
-        jiraIssues: JiraIssue[]; 
+        issues: JiraIssue[]; 
     }
 }; 
 
 export interface CreateJiraIssueResponse {
     type: CreateJiraIssue.SUCCESS | CreateJiraIssue.FAILURE; 
     payload: {
-        jiraIssue: JiraIssue
+        issue: JiraIssue
     }
 }; 

@@ -14,7 +14,7 @@ export function* getJiraIssuesWorker(action: GetJiraIssuesRequest): SagaIterator
     let response;
     try {
         response = yield call(API.getJiraIssues, key); 
-        yield put(getJiraIssuesSuccess(response.jiraIssues)); 
+        yield put(getJiraIssuesSuccess(response)); 
     } catch(e) {
         yield put(getJiraIssuesFailure()); 
     }

@@ -50,7 +50,7 @@ class IssueAPI(Resource):
             self.reqparse.add_argument('description', type=str, location='form')
             args = self.reqparse.parse_args()
             response = self.client.create_issue(description=args['description'],
-                                                key=args['key'],
+                                                table_uri=args['key'],
                                                 title=args['title'])
             return make_response(jsonify({'issue': response}), HTTPStatus.OK)
 

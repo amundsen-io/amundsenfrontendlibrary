@@ -1,7 +1,7 @@
 import logging
 
 from http import HTTPStatus
-from flask import Response, jsonify, make_response, request
+from flask import Response, jsonify, make_response, request, url_for
 from flask.blueprints import Blueprint
 from flask import current_app as app
 
@@ -13,6 +13,12 @@ LOGGER = logging.getLogger(__name__)
 jira_blueprint = Blueprint('jira', __name__, url_prefix='/api/jira/v0')
 
 
+def has_no_empty_params(rule):
+    defaults = rule.defaults if rule.defaults is not None else ()
+    arguments = rule.arguments if rule.arguments is not None else ()
+    return len(defaults) >= len(arguments)
+
+
 @jira_blueprint.route('/issues', methods=['GET'])
 def get_jira_issues() -> Response:
     """
@@ -20,19 +26,28 @@ def get_jira_issues() -> Response:
     :param key: Table URI ie databasetype://database/table
     :return: List of JIRA tickets
     """
-    try:
-        table_uri = get_query_param(request.args, 'key', 'Request requires a key')
-        jira_client = JiraClient(jira_url=app.config['JIRA_URL'],
-                                 jira_user=app.config['JIRA_USER'],
-                                 jira_password=app.config['JIRA_PASSWORD'],
-                                 jira_project_id=app.config['JIRA_PROJECT_ID'])
-        response = jira_client.get_issues(table_uri=table_uri)
-        return make_response(jsonify({'jiraIssues': response}), HTTPStatus.OK)
+    links = []
+    for rule in app.url_map.iter_rules():
+        # Filter out rules we can't navigate to in a browser
+        # and rules that require parameters
+         if has_no_empty_params(rule):
+            url = url_for(rule.endpoint, **(rule.defaults or {}))
+            links.append((url, rule.endpoint))
+    return make_response(jsonify({'jiraIssues': links}), HTTPStatus.OK)
 
-    except Exception as e:
-        message = 'Encountered exception: ' + str(e)
-        logging.exception(message)
-        return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
+    # try:
+    #     table_uri = get_query_param(request.args, 'key', 'Request requires a key')
+    #     jira_client = JiraClient(jira_url=app.config['JIRA_URL'],
+    #                              jira_user=app.config['JIRA_USER'],
+    #                              jira_password=app.config['JIRA_PASSWORD'],
+    #                              jira_project_id=app.config['JIRA_PROJECT_ID'])
+    #     response = jira_client.get_issues(table_uri=table_uri)
+    #     return make_response(jsonify({'jiraIssues': response}), HTTPStatus.OK)
+    #
+    # except Exception as e:
+    #     message = 'Encountered exception: ' + str(e)
+    #     logging.exception(message)
+    #     return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 @jira_blueprint.route('/issue', methods=["POST"])
