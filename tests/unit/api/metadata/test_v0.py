@@ -60,6 +60,7 @@ class MetadataTest(unittest.TestCase):
             'schema': 'test_schema',
             'name': 'test_table',
             'description': 'This is a test',
+            'programmatic_descriptions': [],
             'tags': [],
             'table_readers': [
                 {'user': {'email': 'test@test.com', 'first_name': None, 'last_name': None}, 'read_count': 100}
@@ -83,6 +84,7 @@ class MetadataTest(unittest.TestCase):
             'name': 'test_table',
             'key': 'test_db://test_cluster.test_schema/test_table',
             'description': 'This is a test',
+            'programmatic_descriptions': [],
             'tags': [],
             'table_readers': [
                 {
