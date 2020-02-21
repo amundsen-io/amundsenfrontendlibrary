@@ -47,7 +47,7 @@ describe('createJiraIssue', () => {
   beforeAll(() => {
     mockGetResponse = {
       data: {
-       jiraIssue: [jiraIssueResult],
+       jiraIssue: jiraIssueResult,
        msg: 'Success'
       },
       status: 200,

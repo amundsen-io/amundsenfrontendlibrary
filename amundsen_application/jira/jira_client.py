@@ -1,5 +1,6 @@
 from jira import JIRA, JIRAError, Issue
 from amundsen_application.models.jira_issue import JiraIssue
+from amundsen_application.base.base_issue_tracker_client import BaseIssueTrackerClient
 
 import logging
 
@@ -9,7 +10,7 @@ ISSUE_TYPE_ID = 1
 ISSUE_TYPE_NAME = 'Bug'
 
 
-class JiraClient:
+class JiraClient(BaseIssueTrackerClient):
 
     def __init__(self, jira_url: str,
                  jira_user: str,
@@ -32,26 +33,26 @@ class JiraClient:
             basic_auth=(self.jira_user, self.jira_password)
         )
 
-    def search(self, table_key: str) -> [JiraIssue]:
+    def get_issues(self, table_uri: str) -> [JiraIssue]:
         """
         Runs a query against a given Jira project for tickets matching the key
         Returns open issues sorted by most recently created.
-        :param table_key: Table key
+        :param table_uri: Table Uri ie databasetype://database/table
         :return: Metadata of matching issues
         """
         try:
             issues = self.jira_client.search_issues(SEARCH_STUB.format(
-                table_key=table_key))
+                table_key=table_uri))
             return [self._get_issue_properties(issue) for issue in issues]
         except JIRAError as e:
             logging.exception(str(e))
             raise e
 
-    def create_issue(self, description: str, key: str, title: str) -> JiraIssue:
+    def create_issue(self, description: str, table_uri: str, title: str) -> JiraIssue:
         """
         Creates an issue in Jira
         :param description: Description of the Jira issue
-        :param key: Table Uri ie databasetype://database/table
+        :param table_uri: Table Uri ie databasetype://database/table
         :param title: Title of the Jira ticket
         :return: Metadata about the newly created issue
         """
@@ -61,7 +62,7 @@ class JiraClient:
             }, issuetype={
                 'id': ISSUE_TYPE_ID,
                 'name': ISSUE_TYPE_NAME,
-            }, summary=title, description=description + '\n Table Key: ' + key))
+            }, summary=title, description=description + '\n Table Key: ' + table_uri))
 
             return self._get_issue_properties(issue)
         except JIRAError as e:

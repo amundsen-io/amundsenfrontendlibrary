@@ -13,7 +13,7 @@ export function createJiraIssue(data: FormData) {
   const headers =  {'Content-Type': 'multipart/form-data' };
   return axios.post(`${API_PATH}/issue`, data, { headers }
     ).then((response: AxiosResponse) => {
-      return response.data.jiraIssue[0]; 
+      return response.data.jiraIssue; 
     });
 }
 

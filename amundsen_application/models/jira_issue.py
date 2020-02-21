@@ -1,6 +1,9 @@
+from amundsen_application.base.base_issue import BaseIssue
 
-class JiraIssue(dict):
-    def __init__(self, issue_key: str,
+
+class JiraIssue(dict, BaseIssue):
+    def __init__(self,
+                 issue_key: str,
                  title: str,
                  url: str,
                  create_date: str,
