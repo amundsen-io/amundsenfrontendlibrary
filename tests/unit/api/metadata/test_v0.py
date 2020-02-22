@@ -99,7 +99,6 @@ class MetadataTest(unittest.TestCase):
                     'read_count': 100
                 }
             ],
-            'last_updated_timestamp': 1563872712,
             'partition': {
                 'is_partitioned': True,
                 'key': 'ds',
