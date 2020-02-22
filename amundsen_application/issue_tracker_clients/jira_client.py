@@ -88,7 +88,8 @@ class JiraClient(BaseIssueTrackerClient):
             missing_fields.append('ISSUE_TRACKER_PROJECT_ID')
 
         if missing_fields:
-            raise IssueConfigurationException(f'The following config settings must be set for Jira: { ", ".join(missing_fields) } ')
+            raise IssueConfigurationException(
+                f'The following config settings must be set for Jira: { ", ".join(missing_fields) } ')
 
     @staticmethod
     def _get_issue_properties(issue: Issue) -> JiraIssue:

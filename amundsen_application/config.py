@@ -7,9 +7,6 @@ from flask import Flask  # noqa: F401
 from amundsen_application.tests.test_utils import get_test_user
 
 
-
-
-
 class Config:
     LOG_FORMAT = '%(asctime)s.%(msecs)03d [%(levelname)s] %(module)s.%(funcName)s:%(lineno)d (%(process)d:' \
                  + '%(threadName)s) - %(message)s'
@@ -101,6 +98,7 @@ class TestConfig(LocalConfig):
     ISSUE_TRACKER_USER = 'test_user'
     ISSUE_TRACKER_PASSWORD = 'test_password'
     ISSUE_TRACKER_PROJECT_ID = 1
+    ISSUE_TRACKER_CLIENT_ENABLED = True
 
 
 class TestNotificationsDisabledConfig(LocalConfig):
