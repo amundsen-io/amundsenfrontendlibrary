@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { GlobalState } from 'ducks/rootReducer';
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import { createJiraIssue } from 'ducks/jira/reducer'; 
-import { CreateJiraIssueRequest } from 'ducks/jira/types';
+import { createIssue } from 'ducks/issue/reducer'; 
+import { CreateIssueRequest } from 'ducks/issue/types';
 import './styles.scss';
 import { logClick } from 'ducks/utilMethods';
 
@@ -15,7 +15,7 @@ export interface ComponentProps {
 }
 
 export interface DispatchFromProps {
-  createJiraIssue: (data: FormData) => CreateJiraIssueRequest; 
+  createIssue: (data: FormData) => CreateIssueRequest; 
 }
 
 export interface StateFromProps {
@@ -39,7 +39,7 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     event.preventDefault();
     const form = document.getElementById("report-table-issue-form") as HTMLFormElement;
     const formData = new FormData(form);
-    this.props.createJiraIssue(formData);
+    this.props.createIssue(formData);
     this.setState({isOpen: false}); 
   };
 
@@ -91,14 +91,14 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
 }
 export const mapStateToProps = (state: GlobalState, componentProps: ComponentProps) => {
   return {
-    isLoading: state.jira.isLoading,
+    isLoading: state.issue.isLoading,
     tableKey: componentProps.tableKey, 
     tableName: componentProps.tableName
   };
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ createJiraIssue } , dispatch);
+  return bindActionCreators({ createIssue } , dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps, ComponentProps>(mapStateToProps, mapDispatchToProps)(ReportTableIssue);

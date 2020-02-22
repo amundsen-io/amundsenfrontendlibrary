@@ -20,7 +20,7 @@ describe('ReportTableIssue', () => {
   const setup = (propOverrides?: Partial<ReportTableIssueProps>) => {
     const props: ReportTableIssueProps = {
       isLoading: false,
-      createJiraIssue: jest.fn(), 
+      createIssue: jest.fn(), 
       tableKey: 'key', 
       tableName: 'name',
       ...propOverrides
@@ -52,12 +52,12 @@ describe('ReportTableIssue', () => {
     });
     
     describe('submitForm', () => {
-      it ('calls createJiraIssue with mocked form data', () => {
+      it ('calls createIssue with mocked form data', () => {
         const { props, wrapper } = setup();
         // @ts-ignore: mocked events throw type errors
         wrapper.instance().submitForm({ preventDefault: jest.fn(), 
         currentTarget: {id: 'id', nodeName: 'button'} });
-        expect(props.createJiraIssue).toHaveBeenCalledWith(mockFormData);
+        expect(props.createIssue).toHaveBeenCalledWith(mockFormData);
         expect(wrapper.state().isOpen).toBe(false); 
       });
 
@@ -79,8 +79,8 @@ describe('ReportTableIssue', () => {
         props = mapDispatchToProps(dispatch);
       });
     
-      it('sets getJiraIssues on the props', () => {
-        expect(props.createJiraIssue).toBeInstanceOf(Function);
+      it('sets getIssues on the props', () => {
+        expect(props.createIssue).toBeInstanceOf(Function);
       });
     });
 
@@ -95,7 +95,7 @@ describe('ReportTableIssue', () => {
       });
     
       it('sets isLoading on the props', () => {
-        expect(result.isLoading).toEqual(globalState.jira.isLoading);
+        expect(result.isLoading).toEqual(globalState.issue.isLoading);
       });
     
       it('sets tableKey on the props', () => {

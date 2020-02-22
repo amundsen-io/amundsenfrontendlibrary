@@ -20,7 +20,7 @@ describe ('TableIssues', ()=> {
     const props: TableIssueProps = {
       issues: [], 
       tableKey: 'key',
-      getJiraIssues: jest.fn(),
+      getIssues: jest.fn(),
       ...propOverrides
     };
     const wrapper = shallow<TableIssues>(<TableIssues {...props} />);
@@ -28,12 +28,12 @@ describe ('TableIssues', ()=> {
   }
 
   describe('render', () => {
-    it('renders nothing if no jira issues', () => {
+    it('renders nothing if no issues', () => {
       const { props, wrapper } = setup({ issues: [] });
       expect(wrapper.html()).toBeFalsy(); 
     }); 
 
-    it('renders jira issues if they exist', () => {
+    it('renders issues if they exist', () => {
       const { props, wrapper } = setup({ issues: [{
         create_date: 'create_date', 
         issue_key: 'issue_key', 
@@ -55,8 +55,8 @@ describe ('TableIssues', ()=> {
       props = mapDispatchToProps(dispatch);
     });
   
-    it('sets getJiraIssues on the props', () => {
-      expect(props.getJiraIssues).toBeInstanceOf(Function);
+    it('sets getIssues on the props', () => {
+      expect(props.getIssues).toBeInstanceOf(Function);
     });
   });
   
@@ -67,8 +67,8 @@ describe ('TableIssues', ()=> {
       result = mapStateToProps(globalState, componentProps);
     });
 
-    it('sets jiraIssues on the props', () => {
-      expect(result.issues).toEqual(globalState.jira.jiraIssues); 
+    it('sets issues on the props', () => {
+      expect(result.issues).toEqual(globalState.issue.issues); 
     }); 
     it('sets tableKey on the props', () => {
       expect(result.tableKey).toEqual('key'); 

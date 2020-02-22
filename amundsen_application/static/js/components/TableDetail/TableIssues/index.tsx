@@ -3,20 +3,20 @@ import { GlobalState } from 'ducks/rootReducer';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { JiraIssue } from 'interfaces'; 
-import { getJiraIssues } from 'ducks/jira/reducer'; 
+import { Issue } from 'interfaces'; 
+import { getIssues } from 'ducks/issue/reducer'; 
 import { logClick } from 'ducks/utilMethods';
-import { GetJiraIssuesRequest } from 'ducks/jira/types';
+import { GetIssuesRequest } from 'ducks/issue/types';
 import { truncateText } from '../../../utils/tableissues-utils'; 
 import './styles.scss';
 
 
 export interface StateFromProps {
-  issues: JiraIssue[]; 
+  issues: Issue[]; 
 }
 
 export interface DispatchFromProps {
-  getJiraIssues: (key: string) => GetJiraIssuesRequest; 
+  getIssues: (key: string) => GetIssuesRequest; 
 }
 
 export interface ComponentProps {
@@ -31,16 +31,16 @@ export class TableIssues extends React.Component<TableIssueProps> {
   }
 
   componentDidMount() {
-    this.props.getJiraIssues(this.props.tableKey);
+    this.props.getIssues(this.props.tableKey);
   }
 
   logIssueClick = (event) => {
     logClick(event); 
   }
 
-  renderIssue = (issue: JiraIssue, index: number) => {
+  renderIssue = (issue: Issue, index: number) => {
     return (
-      <div className="issue-banner" key={`jira-issue-${index}`}>
+      <div className="issue-banner" key={`issue-${index}`}>
       <a className="issue-link" target="_blank" href={issue.url} onClick={this.logIssueClick}>
         <img className="icon icon-data-quality-warning"/>
         { issue.issue_key }
@@ -65,13 +65,13 @@ export class TableIssues extends React.Component<TableIssueProps> {
 
 export const mapStateToProps = (state: GlobalState, componentProps: ComponentProps) => {
   return {
-    issues: state.jira.jiraIssues,
+    issues: state.issue.issues,
     tableKey: componentProps.tableKey
   };
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ getJiraIssues }, dispatch);
+  return bindActionCreators({ getIssues }, dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps, ComponentProps>(mapStateToProps, mapDispatchToProps)(TableIssues);

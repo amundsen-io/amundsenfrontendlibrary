@@ -3,7 +3,7 @@ import * as API from '../v0';
 
 jest.mock('axios');
 
-describe('getJiraIssues', () => {
+describe('getIssues', () => {
   let mockGetResponse;
   let axiosMock;
   beforeAll(() => {
@@ -22,14 +22,14 @@ describe('getJiraIssues', () => {
 
   it('calls axios with correct parameters if tableKey provided', async () => {
     expect.assertions(1);
-    await API.getJiraIssues('tableKey').then(data => {
+    await API.getIssues('tableKey').then(data => {
       expect(axiosMock).toHaveBeenCalledWith(`${API.API_PATH}/issues?key=tableKey`);
     });
   });
 
   it('returns response data', async () => {
     expect.assertions(1);
-    await API.getJiraIssues('tableKey').then(data => {
+    await API.getIssues('tableKey').then(data => {
       expect(data).toEqual(mockGetResponse.data);
     });
   });
@@ -39,15 +39,15 @@ describe('getJiraIssues', () => {
   });
 });
 
-describe('createJiraIssue', () => {
+describe('createIssue', () => {
   let mockGetResponse;
   let axiosMock;
   let formData;
-  const jiraIssueResult = { issue_key: 'key' };
+  const issueResult = { issue_key: 'key' };
   beforeAll(() => {
     mockGetResponse = {
       data: {
-       issue: jiraIssueResult,
+       issue: issueResult,
        msg: 'Success'
       },
       status: 200,
@@ -61,7 +61,7 @@ describe('createJiraIssue', () => {
 
   it('calls expected endpoint with headers', async () => {
     expect.assertions(1);
-    await API.createJiraIssue(formData).then(data => {
+    await API.createIssue(formData).then(data => {
       expect(axiosMock).toHaveBeenCalledWith(
         `${API.API_PATH}/issue`,
         formData, {
@@ -72,8 +72,8 @@ describe('createJiraIssue', () => {
 
   it('returns response data', async () => {
     expect.assertions(1);
-    await API.createJiraIssue(formData).then(data => {
-      expect(data).toEqual(jiraIssueResult);
+    await API.createIssue(formData).then(data => {
+      expect(data).toEqual(issueResult);
     });
   });
 

@@ -1,5 +1,5 @@
 from flask import current_app as app
-from flask import jsonify, make_response
+from flask import jsonify, make_response, Response
 from flask_restful import Resource, reqparse
 from http import HTTPStatus
 import logging
@@ -14,7 +14,7 @@ class IssuesAPI(Resource):
         self.reqparse = reqparse.RequestParser()
         self.client = get_issue_tracker_client()
 
-    def get(self):
+    def get(self) -> Response:
         """
         Given a table key, returns all tickets containing that key. Returns an empty array if none exist
         :return: List of tickets
@@ -42,7 +42,7 @@ class IssueAPI(Resource):
         self.client = get_issue_tracker_client()
         super(IssueAPI, self).__init__()
 
-    def post(self):
+    def post(self) -> Response:
         try:
             if not app.config['ISSUE_TRACKER_ENABLED']:
                 message = 'Issuing tracking is not enabled. Request was accepted but no issue will be created.'

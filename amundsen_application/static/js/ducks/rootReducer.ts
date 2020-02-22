@@ -9,13 +9,13 @@ import allTags, { AllTagsReducerState } from './allTags/reducer';
 import user, { UserReducerState } from './user/reducer';
 import bookmarks, { BookmarkReducerState } from "./bookmark/reducer";
 import notification, { NotificationReducerState } from './notification/reducer';
-import jira, { JiraIssueReducerState } from './jira/reducer';
+import issue, { IssueReducerState } from './issue/reducer';
 
 export interface GlobalState {
   announcements: AnnouncementsReducerState;
   bookmarks: BookmarkReducerState;
   feedback: FeedbackReducerState;
-  jira: JiraIssueReducerState; 
+  issue: IssueReducerState; 
   notification: NotificationReducerState;
   popularTables: PopularTablesReducerState;
   search: SearchReducerState;
@@ -28,7 +28,7 @@ export default combineReducers<GlobalState>({
   announcements,
   bookmarks,
   feedback,
-  jira,
+  issue,
   notification,
   popularTables,
   search,

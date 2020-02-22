@@ -16,8 +16,8 @@ import { submitNotificationWatcher } from './notification/sagas';
 // FeedbackForm
 import { submitFeedbackWatcher } from './feedback/sagas';
 
-// Jira
-import { createJiraIssueWatcher, getJiraIssuesWatcher } from './jira/sagas';
+// Issues
+import { createIssueWatcher, getIssuesWatcher } from './issue/sagas';
 
 // PopularTables
 import { getPopularTablesWatcher } from './popularTables/sagas';
@@ -67,9 +67,9 @@ export default function* rootSaga() {
     submitNotificationWatcher(),
     // FeedbackForm
     submitFeedbackWatcher(),
-    // Jira 
-    getJiraIssuesWatcher(), 
-    createJiraIssueWatcher(), 
+    // Issues 
+    getIssuesWatcher(), 
+    createIssueWatcher(), 
     // Search
     inlineSearchWatcher(),
     inlineSearchWatcherDebounce(),
