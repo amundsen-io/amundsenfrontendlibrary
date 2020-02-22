@@ -13,11 +13,24 @@
       margin-top: 24px;
     }
   }
-  .icon-data-quality-warning {
-    background: #DB3615;
+  .icon-red-triangle-warning  {
+    background: $red-triangle-warning;
     margin: 0px 5px 0px 0px;
   }
-  .issue-link {
+  .table-issue-link {
     margin: 0px 5px 0px 0px; 
+  }
+  .issue-title-name {
+    max-width: 200px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display:inline-block;
+  }
+  .issue-title-display-text {
+    display: inline-flex; 
+  }
+  .issue-association-text {
+    margin: 0px 0px 0px 3px;
   }
 }

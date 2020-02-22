@@ -7,8 +7,8 @@ import { Issue } from 'interfaces';
 import { getIssues } from 'ducks/issue/reducer'; 
 import { logClick } from 'ducks/utilMethods';
 import { GetIssuesRequest } from 'ducks/issue/types';
-import { truncateText } from '../../../utils/tableissues-utils'; 
 import './styles.scss';
+import { ASSOCIATION_TEXT } from './constants';
 
 
 export interface StateFromProps {
@@ -38,11 +38,18 @@ export class TableIssues extends React.Component<TableIssueProps> {
   renderIssue = (issue: Issue, index: number) => {
     return (
       <div className="issue-banner" key={`issue-${index}`}>
-      <a id={`table-issue-link-${index}`} className="table-issue-link" target="_blank" href={issue.url} onClick={e => logClick(e)}>
-        <img className="icon icon-data-quality-warning"/>
-        { issue.issue_key }
-      </a>
-      { truncateText(issue.title) }
+        <a id={`table-issue-link-${index}`} className="table-issue-link" target="_blank" href={issue.url} onClick={e => logClick(e)}>
+          <img className="icon icon-red-triangle-warning "/>
+          { issue.issue_key }
+        </a>
+        <span className="issue-title-display-text">
+          <span className="issue-title-name">"
+            { issue.title }
+          </span>"
+          <span className="issue-association-text">
+            {ASSOCIATION_TEXT}
+          </span>
+        </span>
       </div>
     ); 
   }
