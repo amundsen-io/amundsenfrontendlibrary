@@ -38,7 +38,7 @@ export class TableIssues extends React.Component<TableIssueProps> {
   renderIssue = (issue: Issue, index: number) => {
     return (
       <div className="issue-banner" key={`issue-${index}`}>
-        <a id={`table-issue-link-${index}`} className="table-issue-link" target="_blank" href={issue.url} onClick={e => logClick(e)}>
+        <a id={`table-issue-link-${index}`} className="table-issue-link" target="_blank" href={issue.url} onClick={logClick}>
           <img className="icon icon-red-triangle-warning "/>
           { issue.issue_key }
         </a>
