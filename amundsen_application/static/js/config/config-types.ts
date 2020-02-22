@@ -87,7 +87,7 @@ interface BaseFilterCategory {
  * Interface for filter categories which allow multiple values to be selected by the user
  */
 interface MultiSelectFilterCategory extends BaseFilterCategory {
-  type: FilterType.MULTI_SELECT_VALUE;
+  type: FilterType.CHECKBOX_SELECT;
   options: MultiSelectFilterOptions[];
 }
 
@@ -95,7 +95,7 @@ interface MultiSelectFilterCategory extends BaseFilterCategory {
  * Interface for filter categories which allow only one value to be entered by the user
  */
 interface SingleFilterCategory extends BaseFilterCategory {
-  type: FilterType.SINGLE_VALUE;
+  type: FilterType.INPUT_SELECT;
 }
 
 /**

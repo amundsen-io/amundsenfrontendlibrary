@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { CheckBoxFilter, CheckBoxFilterProps, mapDispatchToProps } from '../';
+import { CheckBoxFilter, CheckBoxFilterProps, mapDispatchToProps, mapStateToProps } from '../';
 import CheckBoxItem from 'components/common/Inputs/CheckBoxItem';
 
-import { clearFilterByCategory, updateFilterByCategory } from 'ducks/search/filters/reducer';
+import globalState from 'fixtures/globalState';
+
+import { GlobalState } from 'ducks/rootReducer';
+
+import { FilterType, ResourceType } from 'interfaces';
 
 describe('CheckBoxFilter', () => {
   const setup = (propOverrides?: Partial<CheckBoxFilterProps>) => {
@@ -12,17 +16,19 @@ describe('CheckBoxFilter', () => {
       categoryId: 'database',
       checkboxProperties: [
         {
-          checked: false,
-          labelText: 'BigQuery',
+          label: 'BigQuery',
           value: 'bigquery'
         },
         {
-          checked: true,
-          labelText: 'Hive',
+          label: 'Hive',
           value: 'hive'
         }
       ],
-      onCheckboxChange: jest.fn(),
+      checkedValues: {
+        'hive': true,
+      },
+      clearFilterByCategory: jest.fn(),
+      updateFilterByCategory: jest.fn(),
       ...propOverrides
     };
     const wrapper = shallow<CheckBoxFilter>(<CheckBoxFilter {...props} />);
@@ -51,14 +57,49 @@ describe('CheckBoxFilter', () => {
 
     it('returns a CheckBoxItem with correct props', () => {
       const itemProps = checkBoxItem.props()
-      expect(itemProps.checked).toBe(mockProperties.checked);
+      expect(itemProps.checked).toBe(props.checkedValues[mockProperties.value]);
       expect(itemProps.name).toBe(mockCategoryId);
       expect(itemProps.value).toBe(mockProperties.value);
-      expect(itemProps.onChange).toBe(props.onCheckboxChange)
+      expect(itemProps.onChange).toBe(wrapper.instance().onCheckboxChange)
     });
 
     it('returns a CheckBoxItem with correct labelText as child', () => {
-      expect(checkBoxItem.children().text()).toBe(mockProperties.labelText)
+      expect(checkBoxItem.children().text()).toBe(mockProperties.label)
+    });
+  });
+
+  describe('onCheckboxChange', () => {
+    const mockCategoryId = 'database';
+    let props;
+    let wrapper;
+    let mockEvent;
+
+    let clearCategorySpy;
+    let updateCategorySpy;
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+      clearCategorySpy = jest.spyOn(props, 'clearFilterByCategory');
+      updateCategorySpy = jest.spyOn(props, 'updateFilterByCategory');
+    })
+
+    it('calls props.clearFilterByCategory if no items will be checked', () => {
+      clearCategorySpy.mockClear();
+      mockEvent = { target: { name: mockCategoryId, value: 'hive', checked: false }};
+      wrapper.instance().onCheckboxChange(mockEvent);
+      expect(clearCategorySpy).toHaveBeenCalledWith(mockCategoryId)
+    });
+
+    it('calls props.updateFilterByCategory with expected parameters', () => {
+      updateCategorySpy.mockClear();
+      mockEvent = { target: { name: mockCategoryId, value: 'bigquery', checked: true}};
+      const expectedCheckedValues = {
+        ...props.checkedValues,
+        'bigquery': true
+      }
+      wrapper.instance().onCheckboxChange(mockEvent);
+      expect(updateCategorySpy).toHaveBeenCalledWith(mockCategoryId, expectedCheckedValues)
     });
   });
 
@@ -81,58 +122,73 @@ describe('CheckBoxFilter', () => {
     })
   });
 
-  describe('mapDispatchToProps', () => {
-    const dispatchMock = jest.fn();
+  describe('mapStateToProps', () => {
     const mockCategoryId = 'database';
-    const mockValue = 'hive';
+    const props = setup({ categoryId: mockCategoryId }).props;
+    const mockFilters = {
+      'hive': true
+    };
+
+    const mockStateWithFilters: GlobalState = {
+      ...globalState,
+      search: {
+        ...globalState.search,
+        selectedTab: ResourceType.table,
+        filters: {
+          [ResourceType.table]: {
+            [mockCategoryId]: mockFilters
+          }
+        }
+      },
+    };
+
+    const mockStateWithOutFilters: GlobalState = {
+      ...globalState,
+      search: {
+        ...globalState.search,
+        selectedTab: ResourceType.user,
+        filters: {
+          [ResourceType.table]: {}
+        }
+      },
+    };
+
     let result;
-    let ownProps: CheckBoxFilterProps;
-    let testProps: Partial<CheckBoxFilterProps>;
-    let mockEvent;
+    beforeEach(() => {
+      result = mapStateToProps(mockStateWithFilters, props);
+    });
 
-    describe('sets onCheckboxChange on the props', () => {
-      it('to clearfilters if no value will be checked due to the change', () => {
-        testProps = {
-          categoryId: mockCategoryId,
-          checkboxProperties: [
-            {
-              checked: true,
-              labelText: 'Hive',
-              value: mockValue
-            }
-          ],
-        };
-        mockEvent = { target: { name: mockCategoryId, value: mockValue, checked: false }};
-        ownProps = setup(testProps).props;
-        dispatchMock.mockClear();
-        result = mapDispatchToProps(dispatchMock, ownProps);
-        result.onCheckboxChange(mockEvent);
-        expect(dispatchMock).toHaveBeenCalledWith(clearFilterByCategory(mockCategoryId));
-      })
+    it('sets checkedValues on the props with the filter value for the categoryId', () => {
+      expect(result.checkedValues).toBe(mockFilters);
+    });
 
-      it('to update filters for a given category if values will be checked due to the change', () => {
-        testProps = {
-          categoryId: mockCategoryId,
-          checkboxProperties: [
-            {
-              checked: true,
-              labelText: 'BigQuery',
-              value: 'bigquery'
-            },
-            {
-              checked: false,
-              labelText: 'Hive',
-              value: mockValue
-            }
-          ],
-        };
-        mockEvent = { target: { name: mockCategoryId, value: mockValue, checked: true }};
-        ownProps = setup(testProps).props;
-        dispatchMock.mockClear();
-        result = mapDispatchToProps(dispatchMock, ownProps);
-        result.onCheckboxChange(mockEvent);
-        expect(dispatchMock).toHaveBeenCalledWith(updateFilterByCategory(mockCategoryId, { [mockValue]: true, 'bigquery': true }));
-      })
+    it('sets checkedValues to empty object if no filters exist for the given resource', () => {
+      result = mapStateToProps(mockStateWithOutFilters, props);
+      expect(result.checkedValues).toEqual({});
+    });
+
+    it('sets checkedValues to empty object if no filters exist for the given category', () => {
+      const props = setup({ categoryId: 'fakeCategory' }).props;
+      result = mapStateToProps(mockStateWithFilters, props);
+      expect(result.checkedValues).toEqual({});
+    });
+  });
+
+  describe('mapDispatchToProps', () => {
+    let dispatch;
+    let result;
+    beforeAll(() => {
+      const props = setup().props;
+      dispatch = jest.fn(() => Promise.resolve());
+      result = mapDispatchToProps(dispatch);
+    });
+
+    it('sets clearFilterByCategory on the props', () => {
+      expect(result.clearFilterByCategory).toBeInstanceOf(Function);
+    });
+
+    it('sets updateFilterByCategory on the props', () => {
+      expect(result.updateFilterByCategory).toBeInstanceOf(Function);
     });
   });
 });

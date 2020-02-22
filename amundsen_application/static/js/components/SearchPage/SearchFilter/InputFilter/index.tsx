@@ -1,20 +1,27 @@
 import * as React from 'react';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { clearFilterByCategory, updateFilterByCategory } from 'ducks/search/filters/reducer';
+import { clearFilterByCategory, updateFilterByCategory, ClearFilterRequest, UpdateFilterRequest } from 'ducks/search/filters/reducer';
 
 import { APPLY_BTN_TEXT } from '../constants';
 
-interface StateFromProps {
+import { GlobalState } from 'ducks/rootReducer';
+
+interface OwnProps {
   categoryId: string;
+}
+
+interface StateFromProps {
   value: string;
 }
 
 interface DispatchFromProps {
-  onApplyChanges: (category: string, value: string) => void;
+  clearFilterByCategory: (categoryId: string) => ClearFilterRequest;
+  updateFilterByCategory: (categoryId: string, value: string) => UpdateFilterRequest;
 }
 
-export type InputFilterProps = StateFromProps & DispatchFromProps;
+export type InputFilterProps = StateFromProps & DispatchFromProps & OwnProps;
 
 export interface InputFilterState {
   value: string;
@@ -38,7 +45,12 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
 
   onApplyChanges = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    this.props.onApplyChanges(this.props.categoryId, this.state.value);
+    if(!!this.state.value) {
+      this.props.updateFilterByCategory(this.props.categoryId, this.state.value);
+    }
+    else {
+      this.props.clearFilterByCategory(this.props.categoryId);
+    }
   };
 
   onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,17 +80,19 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
   }
 };
 
-export const mapDispatchToProps = (dispatch: any) => {
+export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
+  const filterState = state.search.filters;
+  const value = filterState[state.search.selectedTab] ? filterState[state.search.selectedTab][ownProps.categoryId] : '';
   return {
-    onApplyChanges: (categoryId, value) => {
-      if (!!value) {
-        dispatch(updateFilterByCategory(categoryId, value));
-      }
-      else {
-        dispatch(clearFilterByCategory(categoryId));
-      }
-    },
-  };
+    value: value || '',
+  }
 };
 
-export default connect<{}, DispatchFromProps, StateFromProps>(null, mapDispatchToProps)(InputFilter);
+export const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators({
+    clearFilterByCategory,
+    updateFilterByCategory,
+  }, dispatch);
+};
+
+export default connect<StateFromProps, DispatchFromProps, OwnProps>(mapStateToProps, mapDispatchToProps)(InputFilter);

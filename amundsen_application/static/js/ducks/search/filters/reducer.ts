@@ -81,7 +81,7 @@ export function updateFilterByCategory(categoryId: string, value: string | Filte
 };
 
 /* REDUCER TYPES */
-type FilterOptions = { [id:string]: boolean };
+export type FilterOptions = { [id:string]: boolean };
 
 export interface FilterReducerState {
   [ResourceType.table]: ResourceFilterReducerState;

@@ -9,70 +9,48 @@ import { FilterType, ResourceType } from 'interfaces';
 import globalState from 'fixtures/globalState';
 import { GlobalState } from 'ducks/rootReducer';
 
-import { mapStateToProps, SearchFilter, SearchFilterProps} from '../';
+import { mapStateToProps, SearchFilter, SearchFilterProps, FilterSection, CheckboxFilterSection } from '../';
 
 describe('SearchFilter', () => {
-  const setup = (propOverrides?: Partial<SearchFilterProps>) => {
+    const setup = (propOverrides?: Partial<SearchFilterProps>) => {
     const props = {
-      checkBoxSections: [
+      filterSections: [
         {
-          title: 'Type',
-          categoryId: 'datasets',
-          properties: [
-            {
-              value: 'bigquery',
-              labelText: 'BigQuery',
-              checked: true,
-            },
-            {
-              value: 'hive',
-              labelText: 'Hive',
-              checked: true,
-            }
-          ]
-        }
-      ],
-      inputSections: [
-        {
-          categoryId: 'column',
-          title: 'Column',
-          value: 'test'
+          categoryId: 'database',
+          helpText: 'This is what to do',
+          options: [
+            { value: 'bigquery', label: 'BigQuery'},
+            { value: 'hive', label: 'Hive'}
+          ],
+          title: 'Source',
+          type: FilterType.CHECKBOX_SELECT
         },
         {
           categoryId: 'schema',
+          helpText: 'This is what to do',
           title: 'Schema',
-          value: 'test'
-        },
-        {
-          categoryId: 'tablr',
-          title: 'Table',
-          value: 'test'
-        },
-        {
-          categoryId: 'tag',
-          title: 'Tag',
-          value: 'test'
+          type: FilterType.INPUT_SELECT
         }
       ],
-      onCheckboxChange: jest.fn(),
-      onClearFilter: jest.fn(),
       ...propOverrides
     };
     const wrapper = shallow<SearchFilter>(<SearchFilter {...props} />);
     return { props, wrapper };
   };
 
-  describe('createCheckBoxSection', () => {
+  describe('createFilterSection', () => {
     let props;
     let wrapper;
     let content;
-    let mockCheckedSectionData;
+    let mockCheckboxFilterData: CheckboxFilterSection;
+    let mockInputFilterData: FilterSection;
     beforeAll(() => {
       const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
-      mockCheckedSectionData = props.checkBoxSections[0];
-      content = wrapper.instance().createCheckBoxSection('sectionKey', mockCheckedSectionData);
+      mockCheckboxFilterData = props.filterSections[0];
+      mockInputFilterData = props.filterSections[1];
+      content = wrapper.instance().createFilterSection('sectionKey', mockCheckboxFilterData);
     });
 
     describe('renders a FilterSection', () => {
@@ -81,135 +59,48 @@ describe('SearchFilter', () => {
       });
 
       it('with correct categoryId', () => {
-        expect(content.props.categoryId).toBe(mockCheckedSectionData.categoryId);
+        expect(content.props.categoryId).toBe(mockCheckboxFilterData.categoryId);
       });
 
       it('with correct helpText', () => {
-        expect(content.props.helpText).toBe(mockCheckedSectionData.helpText);
+        expect(content.props.helpText).toBe(mockCheckboxFilterData.helpText);
       });
 
       it('with correct title', () => {
-        expect(content.props.title).toBe(mockCheckedSectionData.title);
+        expect(content.props.title).toBe(mockCheckboxFilterData.title);
       });
 
-      it('with hasValue as true if at least one section is checked', () => {
-        expect(content.props.hasValue).toBe(true);
+      it('with correct type', () => {
+        expect(content.props.type).toBe(mockCheckboxFilterData.type);
       });
 
-      it('with hasValue as false if no section is checked', () => {
-        const mockUncheckedSectionData = {
-          title: 'Type',
-          categoryId: 'datasets',
-          properties: [
-            {
-              value: 'bigquery',
-              labelText: 'BigQuery',
-              checked: false,
-            }
-          ]
-        };
-        const content = wrapper.instance().createCheckBoxSection('sectionKey', mockUncheckedSectionData);
-        expect(content.props.hasValue).toBe(false);
+      it('with options if not supported for the filter type ', () => {
+        expect(content.props.options).toBe(mockCheckboxFilterData.options);
       });
 
-      it('renders FilterSection with CheckBoxFilter child with correct props', () => {
-        const child = content.props.children;
-        expect(child.type.displayName).toBe('Connect(CheckBoxFilter)');
-        expect(child.props.categoryId).toEqual(mockCheckedSectionData.categoryId)
-        expect(child.props.checkboxProperties).toEqual(mockCheckedSectionData.properties)
+      it('without options if not supported for the filter type ', () => {
+        const content = wrapper.instance().createFilterSection('sectionKey', mockInputFilterData);
+        expect(content.props.options).toBe(undefined);
       });
     });
   });
 
-  describe('createInputSection', () => {
+  describe('renderFilterSections', () => {
     let props;
     let wrapper;
-    let content;
-    let mockInputDataWithValue;
-    beforeAll(() => {
-      const setupResult = setup();
-      props = setupResult.props;
-      wrapper = setupResult.wrapper;
-      mockInputDataWithValue = props.inputSections[0];
-      content = wrapper.instance().createInputSection('sectionKey', mockInputDataWithValue);
-    });
-
-    describe('renders a FilterSection', () => {
-      it('FilterSection exists', () => {
-        expect(content.type.displayName).toBe('Connect(FilterSection)');
-      });
-
-      it('with correct categoryId', () => {
-        expect(content.props.categoryId).toBe(mockInputDataWithValue.categoryId);
-      });
-
-      it('with correct helpText', () => {
-        expect(content.props.helpText).toBe(mockInputDataWithValue.helpText);
-      });
-
-      it('with correct title', () => {
-        expect(content.props.title).toBe(mockInputDataWithValue.title);
-      });
-
-      it('with hasValue as true if section object has value key with non-zero string', () => {
-        expect(content.props.hasValue).toBe(true);
-      });
-
-      it('with hasValue as false if section object has no non-zero length value string ', () => {
-        const mockInputDataNoValue = {
-          categoryId: 'column',
-          title: 'Column',
-          value: ''
-        }
-        const content = wrapper.instance().createInputSection('sectionKey', mockInputDataNoValue);
-        expect(content.props.hasValue).toBe(false);
-      });
-
-      it('renders FilterSection with InputFilter child with correct props', () => {
-        const child = content.props.children;
-        expect(child.type.displayName).toBe('Connect(InputFilter)');
-        expect(child.props.categoryId).toEqual(mockInputDataWithValue.categoryId)
-        expect(child.props.value).toEqual(mockInputDataWithValue.value)
-      });
-    });
-  });
-
-  describe('renderCheckBoxFilters', () => {
-    let props;
-    let wrapper;
-    let createCheckBoxSectionSpy;
+    let createFilterSectionSpy;
 
     beforeAll(() => {
       const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
-      createCheckBoxSectionSpy = jest.spyOn(wrapper.instance(), 'createCheckBoxSection');
-      wrapper.instance().renderCheckBoxFilters();
+      createFilterSectionSpy = jest.spyOn(wrapper.instance(), 'createFilterSection');
+      wrapper.instance().renderFilterSections();
     });
 
-    it('calls createCheckBoxSection with correct key and section for each props.inputSections', () => {
-      props.checkBoxSections.forEach((section) => {
-        expect(createCheckBoxSectionSpy).toHaveBeenCalledWith(`section:${section.categoryId}`, section);
-      })
-    });
-  });
-
-  describe('renderInputFilters', () => {
-    let props;
-    let wrapper;
-    let createInputSectionSpy;
-
-    beforeAll(() => {
-      const setupResult = setup();
-      props = setupResult.props;
-      wrapper = setupResult.wrapper;
-      createInputSectionSpy = jest.spyOn(wrapper.instance(), 'createInputSection');
-      wrapper.instance().renderInputFilters();
-    });
-
-    it('calls createInputSection with correct key and section for each props.inputSections', () => {
-      props.inputSections.forEach((section) => {
-        expect(createInputSectionSpy).toHaveBeenCalledWith(`section:${section.categoryId}`, section);
+    it('calls createFilterSection with correct key and section for each props.filterSections', () => {
+      props.filterSections.forEach((section) => {
+        expect(createFilterSectionSpy).toHaveBeenCalledWith(`section:${section.categoryId}`, section);
       })
     });
   });
@@ -217,24 +108,18 @@ describe('SearchFilter', () => {
   describe('render', () => {
     let props;
     let wrapper;
-    let renderCheckBoxFiltersSpy;
-    let renderInputFiltersSpy;
+    let renderFilterSectionsSpy;
 
     beforeAll(() => {
       const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
-      renderCheckBoxFiltersSpy = jest.spyOn(wrapper.instance(), 'renderCheckBoxFilters');
-      renderInputFiltersSpy = jest.spyOn(wrapper.instance(), 'renderInputFilters');
+      renderFilterSectionsSpy = jest.spyOn(wrapper.instance(), 'renderFilterSections');
       wrapper.instance().render();
     });
 
-    it('calls renderCheckBoxFilters', () => {
-      expect(renderCheckBoxFiltersSpy).toHaveBeenCalledTimes(1);
-    });
-
-    it('calls renderInputFilters', () => {
-      expect(renderInputFiltersSpy).toHaveBeenCalledTimes(1);
+    it('calls renderFilterSections', () => {
+      expect(renderFilterSectionsSpy).toHaveBeenCalledTimes(1);
     });
   });
 });
@@ -253,7 +138,7 @@ describe('mapStateToProps', () => {
     {
       categoryId: mockDbId,
       displayName: mockDbTitle,
-      type: FilterType.MULTI_SELECT_VALUE,
+      type: FilterType.CHECKBOX_SELECT,
       helpText: mockHelpText,
       options: [
         { value: 'bigquery', displayName: 'BigQuery' },
@@ -264,7 +149,7 @@ describe('mapStateToProps', () => {
       categoryId: mockSchemaId,
       displayName: mockSchemaTitle,
       helpText: mockHelpText,
-      type: FilterType.SINGLE_VALUE,
+      type: FilterType.INPUT_SELECT,
     },
   ];
   const mockStateWithFilters: GlobalState = {
@@ -282,47 +167,41 @@ describe('mapStateToProps', () => {
       }
     },
   };
-  const getFilterConfigByResourceSpy = jest.spyOn(ConfigUtils, 'getFilterConfigByResource').mockReturnValue(MOCK_CATEGORY_CONFIG)
-
+  let getFilterConfigByResourceSpy;
   let result;
-  beforeEach(() => {
-    result = mapStateToProps(mockStateWithFilters);
-  });
 
   it('calls getFilterConfigByResource with selectedTab', () => {
+    getFilterConfigByResourceSpy = jest.spyOn(ConfigUtils, 'getFilterConfigByResource').mockReturnValue(MOCK_CATEGORY_CONFIG);
+    mapStateToProps(mockStateWithFilters);
     expect(getFilterConfigByResourceSpy).toHaveBeenCalledWith(mockStateWithFilters.search.selectedTab);
   });
 
-  it('sets expected checkboxSections on the result', () => {
-    expect(result.checkBoxSections).toEqual([
+  it('sets expected filterSections on the result', () => {
+    getFilterConfigByResourceSpy = jest.spyOn(ConfigUtils, 'getFilterConfigByResource').mockReturnValue(MOCK_CATEGORY_CONFIG);
+    result = mapStateToProps(mockStateWithFilters);
+    expect(result.filterSections).toEqual([
       {
         categoryId: mockDbId,
         helpText: mockHelpText,
-        properties: [
-          {
-            checked: false,
-            labelText: 'BigQuery',
-            value: 'bigquery'
-          },
-          {
-            checked: true,
-            labelText: 'Hive',
-            value: 'hive'
-          }
+        options: [
+          { label: 'BigQuery', value: 'bigquery' },
+          { label: 'Hive', value: 'hive' }
         ],
+        type: FilterType.CHECKBOX_SELECT,
         title: mockDbTitle
-      }
-    ])
-  });
-
-  it('sets expected inputSections on the result', () => {
-    expect(result.inputSections).toEqual([
+      },
       {
         categoryId: mockSchemaId,
         helpText: mockHelpText,
         title: mockSchemaTitle,
-        value: mockSchemaValue,
+        type: FilterType.INPUT_SELECT,
       }
     ])
+  });
+
+  it('sets empty array on filterSections if there are no configured filterCategories', () => {
+    getFilterConfigByResourceSpy = jest.spyOn(ConfigUtils, 'getFilterConfigByResource').mockReturnValue(undefined);
+    result = mapStateToProps(globalState);
+    expect(result.filterSections).toEqual([])
   });
 });

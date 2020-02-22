@@ -4,6 +4,6 @@ export enum UpdateMethod {
 };
 
 export enum FilterType {
-  MULTI_SELECT_VALUE = 'multiSelectValue',
-  SINGLE_VALUE = 'singleValue'
+  CHECKBOX_SELECT = 'checkboxFilter',
+  INPUT_SELECT = 'inputFilter'
 }
