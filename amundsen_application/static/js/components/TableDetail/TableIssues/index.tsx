@@ -34,14 +34,11 @@ export class TableIssues extends React.Component<TableIssueProps> {
     this.props.getIssues(this.props.tableKey);
   }
 
-  logIssueClick = (event) => {
-    logClick(event); 
-  }
 
   renderIssue = (issue: Issue, index: number) => {
     return (
       <div className="issue-banner" key={`issue-${index}`}>
-      <a className="issue-link" target="_blank" href={issue.url} onClick={this.logIssueClick}>
+      <a id={`table-issue-link-${index}`} className="table-issue-link" target="_blank" href={issue.url} onClick={e => logClick(e)}>
         <img className="icon icon-data-quality-warning"/>
         { issue.issue_key }
       </a>

@@ -63,7 +63,7 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
           {
             this.state.isOpen &&
             <div className="report-table-issue-modal">
-              <h3 className="">
+              <h3 className="data-issue-header">
                 Report Data Issue
               </h3>
               <button type="button" className="btn btn-close" aria-label={"close"} onClick={this.toggle} />
