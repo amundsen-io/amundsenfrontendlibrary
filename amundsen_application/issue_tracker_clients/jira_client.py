@@ -1,8 +1,10 @@
 from jira import JIRA, JIRAError, Issue
-from amundsen_application.models.jira_issue import JiraIssue
 from amundsen_application.base.base_issue_tracker_client import BaseIssueTrackerClient
+from amundsen_application.issue_tracker_clients.issue_exceptions import IssueConfigurationException
+from amundsen_application.models.jira_issue import JiraIssue
 
 import logging
+
 
 SEARCH_STUB = 'text ~ "{table_key}" AND resolution = Unresolved order by createdDate DESC'
 # this is provided by jira as the type of a bug
@@ -85,8 +87,8 @@ class JiraClient(BaseIssueTrackerClient):
         if not self.jira_project_id:
             missing_fields.append('ISSUE_TRACKER_PROJECT_ID')
 
-        if len(missing_fields) > 0:
-            raise Exception(f'The following config settings must be set for Jira: { ", ".join(missing_fields) } ')
+        if missing_fields:
+            raise IssueConfigurationException(f'The following config settings must be set for Jira: { ", ".join(missing_fields) } ')
 
     @staticmethod
     def _get_issue_properties(issue: Issue) -> JiraIssue:
