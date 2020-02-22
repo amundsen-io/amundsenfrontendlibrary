@@ -30,7 +30,7 @@ describe('getIssues', () => {
   it('returns response data', async () => {
     expect.assertions(1);
     await API.getIssues('tableKey').then(data => {
-      expect(data).toEqual(mockGetResponse.data);
+      expect(data).toEqual(mockGetResponse.data.issues);
     });
   });
 

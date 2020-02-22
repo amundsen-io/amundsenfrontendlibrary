@@ -151,7 +151,7 @@ describe('issue ducks', () => {
       it('gets issues', () => {
         return expectSaga(getIssuesWorker, action)
           .provide([
-            [matchers.call.fn(API.getIssues), { issues }],
+            [matchers.call.fn(API.getIssues), issues],
           ])
           .put(getIssuesSuccess(issues))
           .run();
