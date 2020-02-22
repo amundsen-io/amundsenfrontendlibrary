@@ -63,15 +63,11 @@ describe ('TableIssues', ()=> {
   describe('mapStateToProps', () => {
     let result;
     beforeAll(() => {
-      const componentProps: ComponentProps = { tableKey: 'key' }; 
-      result = mapStateToProps(globalState, componentProps);
+      result = mapStateToProps(globalState);
     });
 
     it('sets issues on the props', () => {
       expect(result.issues).toEqual(globalState.issue.issues); 
     }); 
-    it('sets tableKey on the props', () => {
-      expect(result.tableKey).toEqual('key'); 
-    });
   }); 
 }); 

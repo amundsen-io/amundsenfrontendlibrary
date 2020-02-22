@@ -165,10 +165,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
           </header>
           <main className="column-layout-1">
             <section className="left-panel">
-              {/*
-                TODO - Add a banner here if necessary
-                <section className="banner">optional banner</section>
-              */}
+              {}
               <TableIssues tableKey={ this.key }/>
 
               <EditableSection title="Description">

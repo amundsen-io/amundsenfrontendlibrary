@@ -89,11 +89,9 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     );
   }
 }
-export const mapStateToProps = (state: GlobalState, componentProps: ComponentProps) => {
+export const mapStateToProps = (state: GlobalState) => {
   return {
-    isLoading: state.issue.isLoading,
-    tableKey: componentProps.tableKey, 
-    tableName: componentProps.tableName
+    isLoading: state.issue.isLoading
   };
 };
 

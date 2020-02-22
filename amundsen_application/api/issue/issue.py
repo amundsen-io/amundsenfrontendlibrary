@@ -20,7 +20,7 @@ class IssuesAPI(Resource):
         :return: List of tickets
         """
         try:
-            if not app.config['ISSUE_TRACKER_ENABLED']:
+            if not app.config['ISSUE_TRACKER_CLIENT_ENABLED']:
                 message = 'Issuing tracking is not enabled. Request was accepted but no issue will be returned.'
                 logging.exception(message)
                 return make_response(jsonify({'msg': message}), HTTPStatus.ACCEPTED)
@@ -44,7 +44,7 @@ class IssueAPI(Resource):
 
     def post(self) -> Response:
         try:
-            if not app.config['ISSUE_TRACKER_ENABLED']:
+            if not app.config['ISSUE_TRACKER_CLIENT_ENABLED']:
                 message = 'Issuing tracking is not enabled. Request was accepted but no issue will be created.'
                 logging.exception(message)
                 return make_response(jsonify({'msg': message}), HTTPStatus.ACCEPTED)

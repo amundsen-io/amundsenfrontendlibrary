@@ -63,10 +63,9 @@ export class TableIssues extends React.Component<TableIssueProps> {
   }
 }
 
-export const mapStateToProps = (state: GlobalState, componentProps: ComponentProps) => {
+export const mapStateToProps = (state: GlobalState) => {
   return {
-    issues: state.issue.issues,
-    tableKey: componentProps.tableKey
+    issues: state.issue.issues
   };
 };
 

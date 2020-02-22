@@ -87,23 +87,11 @@ describe('ReportTableIssue', () => {
     describe('mapStateToProps', () => {
       let result;
       beforeAll(() => {
-        const componentProps: ComponentProps = {
-          tableKey: 'key', 
-          tableName: 'name'
-        }; 
-        result = mapStateToProps(globalState, componentProps);
+        result = mapStateToProps(globalState);
       });
     
       it('sets isLoading on the props', () => {
         expect(result.isLoading).toEqual(globalState.issue.isLoading);
-      });
-    
-      it('sets tableKey on the props', () => {
-        expect(result.tableKey).toEqual('key');
-      });
-
-      it('sets tableName on the props', () => {
-        expect(result.tableName).toEqual('name');
       });
     });  
   }); 

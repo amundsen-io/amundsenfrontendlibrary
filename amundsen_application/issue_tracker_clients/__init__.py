@@ -23,15 +23,17 @@ def get_issue_tracker_client() -> BaseIssueTrackerClient:
             return _issue_tracker_client
         else:
             # Gather all the configuration to create an IssueTrackerClient
-            url = app.config['ISSUE_TRACKER_URL']
-            user = app.config['ISSUE_TRACKER_USER']
-            password = app.config['ISSUE_TRACKER_PASSWORD']
-            project_id = app.config['ISSUE_TRACKER_PROJECT_ID']
+            if app.config['ISSUE_TRACKER_CLIENT_ENABLED']:
+                url = app.config['ISSUE_TRACKER_URL']
+                user = app.config['ISSUE_TRACKER_USER']
+                password = app.config['ISSUE_TRACKER_PASSWORD']
+                project_id = app.config['ISSUE_TRACKER_PROJECT_ID']
 
-            client = import_string(app.config['ISSUE_TRACKER_CLIENT'])
-            _issue_tracker_client = client(issue_tracker_url=url,
-                                           issue_tracker_user=user,
-                                           issue_tracker_password=password,
-                                           issue_tracker_project_id=project_id)
+                if app.config['ISSUE_TRACKER_CLIENT']:
+                    client = import_string(app.config['ISSUE_TRACKER_CLIENT'])
+                    _issue_tracker_client = client(issue_tracker_url=url,
+                                                   issue_tracker_user=user,
+                                                   issue_tracker_password=password,
+                                                   issue_tracker_project_id=project_id)
 
     return _issue_tracker_client
