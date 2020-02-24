@@ -5,7 +5,7 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from http import HTTPStatus
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from flask import Response, jsonify, make_response
 
@@ -20,7 +20,7 @@ class MailClient(BaseMailClient):
     def send_email(self,
                    html: str,
                    subject: str,
-                   options: Dict = None,
+                   options: Optional[Dict] = None,
                    recipients: List[str] = None,
                    sender: str = None) -> Response:
         if not sender:
