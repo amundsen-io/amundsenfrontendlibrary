@@ -4,7 +4,7 @@ from amundsen_application.issue_tracker_clients.issue_exceptions import IssueCon
 from amundsen_application.models.jira_issue import JiraIssue
 from amundsen_application.models.issue_results import IssueResults
 
-
+import urllib.parse
 import logging
 
 
@@ -51,7 +51,9 @@ class JiraClient(BaseIssueTrackerClient):
                 table_key=table_uri),
                 maxResults=self.jira_max_results)
             returned_issues = [self._get_issue_properties(issue=issue) for issue in issues]
-            return IssueResults(issues=returned_issues, remaining=self._get_remaining_issues(total=issues.total))
+            return IssueResults(issues=returned_issues,
+                                remaining=self._get_remaining_issues(total=issues.total),
+                                remaining_url=self._generate_remaining_issues_url(table_uri, returned_issues))
         except JIRAError as e:
             logging.exception(str(e))
             raise e
@@ -118,3 +120,17 @@ class JiraClient(BaseIssueTrackerClient):
         :return: int - 0, or how many issues remain
         """
         return 0 if total < self.jira_max_results else total - self.jira_max_results
+
+    def _generate_remaining_issues_url(self, table_uri: str, issues: [JiraIssue]) -> str:
+        """
+        Hacky way to get the list full list of jira tickets
+        SDK doesn't return a query
+        :param table_uri: table uri from the ui
+        :param issues: list of jira issues, only needed to grab a ticket name
+        :return: url to the full list of issues in jira
+        """
+        if not issues or len(issues) == 0:
+            return ''
+        first_issue_key = issues[0].issue_key  # jira expects a ticket key in the query, so pick a random one
+        search_query = urllib.parse.quote(SEARCH_STUB.format(table_key=table_uri))
+        return f'{self.jira_url}/browse/{first_issue_key}?jql={search_query}'
