@@ -43,6 +43,8 @@ class Config:
     # Maps to a class path and name
     ISSUE_TRACKER_CLIENT = None  # type: str
     ISSUE_TRACKER_CLIENT_ENABLED = False
+    # Max issues to display at a time
+    ISSUE_TRACKER_MAX_RESULTS = None  # type: int
 
 
 class LocalConfig(Config):
@@ -99,6 +101,7 @@ class TestConfig(LocalConfig):
     ISSUE_TRACKER_PASSWORD = 'test_password'
     ISSUE_TRACKER_PROJECT_ID = 1
     ISSUE_TRACKER_CLIENT_ENABLED = True
+    ISSUE_TRACKER_MAX_RESULTS = 3
 
 
 class TestNotificationsDisabledConfig(LocalConfig):

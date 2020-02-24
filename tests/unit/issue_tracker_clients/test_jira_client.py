@@ -11,22 +11,28 @@ app = flask.Flask(__name__)
 app.config.from_object('amundsen_application.config.TestConfig')
 
 
+class MockJiraResultList(list):
+    def __init__(self, iterable=None, _total=0):
+        if iterable is not None:
+            list.__init__(self, iterable)
+        else:
+            list.__init__(self)
+        self.total = _total
+
+
 class JiraClientTest(unittest.TestCase):
 
     def setUp(self) -> None:
         self.mock_issue = {
             'issue_key': 'key',
             'title': 'some title',
-            'url': 'http://somewhere',
-            'create_date': 'some date',
-            'last_updated': 'some other date'
+            'url': 'http://somewhere'
         }
-        self.mock_jira_issues = [self.mock_issue]
+        result_list = MockJiraResultList(iterable=self.mock_issue, _total=0)
+        self.mock_jira_issues = result_list
         self.mock_issue_instance = JiraIssue(issue_key='key',
                                              title='some title',
-                                             url='http://somewhere',
-                                             create_date='some date',
-                                             last_updated='some other date')
+                                             url='http://somewhere')
 
     @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JIRA')
     def test_create_JiraClient_validates_config(self, mock_JIRA_client: Mock) -> None:
@@ -35,7 +41,8 @@ class JiraClientTest(unittest.TestCase):
                 JiraClient(issue_tracker_url=None,
                            issue_tracker_user=None,
                            issue_tracker_password=None,
-                           issue_tracker_project_id=None)
+                           issue_tracker_project_id=None,
+                           issue_tracker_max_results=None)
             except IssueConfigurationException as e:
                 self.assertTrue(type(e), type(IssueConfigurationException))
                 self.assertTrue(e, 'The following config settings must be set for Jira: '
@@ -43,14 +50,17 @@ class JiraClientTest(unittest.TestCase):
                                    'ISSUE_TRACKER_PROJECT_ID')
 
     @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JIRA')
-    def test_get_issues_returns_JIRAError(self, mock_JIRA_client: Mock) -> None:
+    @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JiraClient._get_remaining_issues')
+    def test_get_issues_returns_JIRAError(self, mock_remaining_issues, mock_JIRA_client: Mock) -> None:
         mock_JIRA_client.return_value.get_issues.side_effect = JIRAError('Some exception')
+        mock_remaining_issues.return_value = 0
         with app.test_request_context():
             try:
                 jira_client = JiraClient(issue_tracker_url=app.config['ISSUE_TRACKER_URL'],
                                          issue_tracker_user=app.config['ISSUE_TRACKER_USER'],
                                          issue_tracker_password=app.config['ISSUE_TRACKER_PASSWORD'],
-                                         issue_tracker_project_id=app.config['ISSUE_TRACKER_PROJECT_ID'])
+                                         issue_tracker_project_id=app.config['ISSUE_TRACKER_PROJECT_ID'],
+                                         issue_tracker_max_results=app.config['ISSUE_TRACKER_MAX_RESULTS'])
                 jira_client.get_issues('key')
             except JIRAError as e:
                 self.assertTrue(type(e), type(JIRAError))
@@ -65,12 +75,15 @@ class JiraClientTest(unittest.TestCase):
             jira_client = JiraClient(issue_tracker_url=app.config['ISSUE_TRACKER_URL'],
                                      issue_tracker_user=app.config['ISSUE_TRACKER_USER'],
                                      issue_tracker_password=app.config['ISSUE_TRACKER_PASSWORD'],
-                                     issue_tracker_project_id=app.config['ISSUE_TRACKER_PROJECT_ID'])
+                                     issue_tracker_project_id=app.config['ISSUE_TRACKER_PROJECT_ID'],
+                                     issue_tracker_max_results=app.config['ISSUE_TRACKER_MAX_RESULTS'])
             results = jira_client.get_issues(table_uri='key')
             mock_JIRA_client.assert_called
-            self.assertEqual(results, self.mock_jira_issues)
+            self.assertEqual(results.issues[0], self.mock_issue)
+            self.assertEqual(results.remaining, self.mock_jira_issues.total)
             mock_JIRA_client.return_value.search_issues.assert_called_with(
-                'text ~ "key" AND resolution = Unresolved order by createdDate DESC')
+                'text ~ "key" AND resolution = Unresolved order by createdDate DESC',
+                maxResults=3)
 
     @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JIRA')
     def test_create_returns_JIRAError(self, mock_JIRA_client: Mock) -> None:
@@ -80,7 +93,8 @@ class JiraClientTest(unittest.TestCase):
                 jira_client = JiraClient(issue_tracker_url=app.config['ISSUE_TRACKER_URL'],
                                          issue_tracker_user=app.config['ISSUE_TRACKER_USER'],
                                          issue_tracker_password=app.config['ISSUE_TRACKER_PASSWORD'],
-                                         issue_tracker_project_id=app.config['ISSUE_TRACKER_PROJECT_ID'])
+                                         issue_tracker_project_id=app.config['ISSUE_TRACKER_PROJECT_ID'],
+                                         issue_tracker_max_results=app.config['ISSUE_TRACKER_MAX_RESULTS'])
                 jira_client.create_issue(description='desc', table_uri='key', title='title')
             except JIRAError as e:
                 self.assertTrue(type(e), type(JIRAError))
@@ -95,7 +109,8 @@ class JiraClientTest(unittest.TestCase):
             jira_client = JiraClient(issue_tracker_url=app.config['ISSUE_TRACKER_URL'],
                                      issue_tracker_user=app.config['ISSUE_TRACKER_USER'],
                                      issue_tracker_password=app.config['ISSUE_TRACKER_PASSWORD'],
-                                     issue_tracker_project_id=app.config['ISSUE_TRACKER_PROJECT_ID'])
+                                     issue_tracker_project_id=app.config['ISSUE_TRACKER_PROJECT_ID'],
+                                     issue_tracker_max_results=app.config['ISSUE_TRACKER_MAX_RESULTS'])
             results = jira_client.create_issue(description='desc', table_uri='key', title='title')
             mock_JIRA_client.assert_called
             self.assertEqual(results, self.mock_issue_instance)

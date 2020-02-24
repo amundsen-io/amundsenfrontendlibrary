@@ -41,9 +41,7 @@ describe('issue ducks', () => {
     Object.keys(testData).forEach(key => formData.append(key, testData[key]));
 
     issue =  {
-      create_date: 'date', 
       issue_key: 'issue_key', 
-      last_updated: 'also date', 
       title: 'title', 
       url: 'http://url'
     }; 
