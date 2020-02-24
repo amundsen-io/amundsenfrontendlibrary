@@ -8,7 +8,7 @@ export interface ExploreButtonProps {
   tableData: TableMetadata;
 }
 
-export class ExploreButton extends React.Component<ExploreButtonProps> {
+class ExploreButton extends React.Component<ExploreButtonProps> {
   constructor(props) {
     super(props);
   }

@@ -30,8 +30,8 @@ describe('ExploreButton', () => {
         is_view: false,
         key: '',
         schema: 'schema',
-        table_name: 'table_name',
-        table_description: '',
+        name: 'table_name',
+        description: '',
         table_writer: { application_url: '', description: '', id: '', name: '' },
         partition: {
           is_partitioned: true,

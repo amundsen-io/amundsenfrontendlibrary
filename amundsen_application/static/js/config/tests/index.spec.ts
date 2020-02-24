@@ -109,8 +109,8 @@ describe('generateExploreUrl', () => {
     is_view: false,
     key: '',
     schema: 'schema',
-    table_name: 'table_name',
-    table_description: '',
+    name: 'table_name',
+    description: '',
     table_writer: { application_url: '', description: '', id: '', name: '' },
     partition: {
       is_partitioned: true,
@@ -130,7 +130,7 @@ describe('generateExploreUrl', () => {
       tableData.database,
       tableData.cluster,
       tableData.schema,
-      tableData.table_name,
+      tableData.name,
       tableData.partition.key,
       tableData.partition.value);
   });
@@ -149,6 +149,6 @@ describe('generateExploreUrl', () => {
       mockTableData.database,
       mockTableData.cluster,
       mockTableData.schema,
-      mockTableData.table_name);
+      mockTableData.name);
   });
 });
