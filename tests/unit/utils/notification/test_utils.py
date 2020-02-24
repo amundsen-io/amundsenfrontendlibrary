@@ -26,7 +26,7 @@ class MockMailClient(BaseMailClient):
                    subject: str = None,
                    text: str = None,
                    html: str = None,
-                   optional_data: Dict = {}) -> Response:
+                   options: Dict = {}) -> Response:
         return make_response(jsonify({}), self.status_code)
 
 
@@ -374,7 +374,7 @@ class NotificationUtilsTest(unittest.TestCase):
             mock_client.send_email.assert_called_with(
                 html=mock_html,
                 subject=mock_subject,
-                optional_data={'email_type': test_notification_type},
+                options={'email_type': test_notification_type},
                 recipients=expected_recipients,
                 sender=test_sender
             )

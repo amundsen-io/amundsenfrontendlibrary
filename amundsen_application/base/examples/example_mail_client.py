@@ -20,7 +20,7 @@ class MailClient(BaseMailClient):
     def send_email(self,
                    html: str,
                    subject: str,
-                   optional_data: Dict = None,
+                   options: Dict = None,
                    recipients: List[str] = None,
                    sender: str = None) -> Response:
         if not sender:

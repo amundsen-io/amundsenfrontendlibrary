@@ -50,7 +50,7 @@ def feedback() -> Response:
             'form_data': data
         }
 
-        response = mail_client.send_email(html=html_content, subject=subject, optional_data=options)
+        response = mail_client.send_email(html=html_content, subject=subject, options=options)
         status_code = response.status_code
 
         if status_code == HTTPStatus.OK:

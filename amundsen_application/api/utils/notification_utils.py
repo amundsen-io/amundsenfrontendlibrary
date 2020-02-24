@@ -194,7 +194,7 @@ def send_notification(*, notification_type: str, options: Dict, recipients: List
         response = mail_client.send_email(
             html=html,
             subject=subject,
-            optional_data={
+            options={
                 'email_type': notification_type,
             },
             recipients=recipients,

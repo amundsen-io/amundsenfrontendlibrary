@@ -21,7 +21,7 @@ class MockMailClient(BaseMailClient):
                    subject: str = None,
                    text: str = None,
                    html: str = None,
-                   optional_data: Dict = {}) -> Response:
+                   options: Dict = {}) -> Response:
         return make_response(jsonify({}), self.status_code)
 
 
@@ -35,7 +35,7 @@ class MockBadClient(BaseMailClient):
                    subject: str = None,
                    text: str = None,
                    html: str = None,
-                   optional_data: Dict = {}) -> Response:
+                   options: Dict = {}) -> Response:
         raise Exception('Bad client')
 
 
