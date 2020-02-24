@@ -35,9 +35,7 @@ describe ('TableIssues', ()=> {
 
     it('renders issues if they exist', () => {
       const { props, wrapper } = setup({ issues: [{
-        create_date: 'create_date', 
         issue_key: 'issue_key', 
-        last_updated: 'last_updated', 
         title: 'title',
         url: 'http://url'
       }]}); 

@@ -18,8 +18,6 @@ class IssueTest(unittest.TestCase):
                     'issue_key': 'key',
                     'title': 'some title',
                     'url': 'http://somewhere',
-                    'create_date': 'some date',
-                    'last_updated': 'some other date'
                 }
             ]
         }
@@ -28,8 +26,6 @@ class IssueTest(unittest.TestCase):
                 'issue_key': 'key',
                 'title': 'some title',
                 'url': 'http://somewhere',
-                'create_date': 'some date',
-                'last_updated': 'some other date'
             }
         ]
 
