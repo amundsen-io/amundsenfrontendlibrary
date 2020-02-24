@@ -41,8 +41,8 @@ describe ('TableIssues', ()=> {
         title: 'title',
         url: 'http://url'
       }]}); 
-      expect(wrapper.find('.issue-link').text()).toEqual('issue_key'); 
-      expect(wrapper.find('.issue-banner').text()).toContain('title');
+      expect(wrapper.find('.table-issue-link').text()).toEqual('issue_key'); 
+      expect(wrapper.find('.issue-title-name').text()).toContain('title');
     }); 
   });
 

@@ -107,7 +107,7 @@ describe('issue ducks', () => {
     });
 
     it('should handle GetIssues.REQUEST', () => {
-      expect(reducer(testState, getIssues(tableKey))).toEqual({ issues: [], isLoading: false });
+      expect(reducer(testState, getIssues(tableKey))).toEqual({ issues: [], isLoading: true });
     });
 
     it('should handle GetIssues.SUCCESS', () => {
