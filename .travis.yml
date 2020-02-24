@@ -7,7 +7,7 @@ matrix:
     - IS_DEPLOYABLE=true
     install:
     - pip3 install -r requirements.txt
-    - pip install ".[jira]"
+    - pip install .[jira]
     - pip3 install codecov
     script:
     - make test
