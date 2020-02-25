@@ -175,7 +175,7 @@ describe('issue ducks', () => {
 
     describe('getIssuesWorker', () => {
       let action: GetIssuesRequest;
-      let remaining_url: string; 
+      let remaining_url: string;
       beforeAll(() => {
         action = getIssues(tableKey);
         issues = globalState.issue.issues;

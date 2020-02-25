@@ -43,6 +43,29 @@ describe ('TableIssues', ()=> {
       expect(wrapper.find('.table-issue-link').text()).toEqual('issue_key'); 
       expect(wrapper.find('.issue-title-name').text()).toContain('title');
     }); 
+
+    it('renders no extra notice if no remaining issues', () => {
+      const { props, wrapper } = setup({ issues: [{
+          issue_key: 'issue_key', 
+          title: 'title',
+          url: 'http://url'
+        }],
+        remainingIssues: 0, 
+        remainingIssuesUrl: null
+      });
+      expect(wrapper.find('.table-issue-more-issues').length).toEqual(0); 
+    }); 
+    it('renders extra notice if remaining issues', () => {
+      const { props, wrapper } = setup({ issues: [{
+          issue_key: 'issue_key', 
+          title: 'title',
+          url: 'http://url'
+        }],
+        remainingIssues: 1, 
+        remainingIssuesUrl: 'url'
+      });
+      expect(wrapper.find('.table-issue-more-issues').text()).toEqual('1 additional issues'); 
+    }); 
   });
 
   describe('mapDispatchToProps', () => {

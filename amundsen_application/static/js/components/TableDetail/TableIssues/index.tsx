@@ -8,7 +8,12 @@ import { getIssues } from 'ducks/issue/reducer';
 import { logClick } from 'ducks/utilMethods';
 import { GetIssuesRequest } from 'ducks/issue/types';
 import './styles.scss';
-import { ASSOCIATION_TEXT } from './constants';
+import { 
+  ASSOCIATION_TEXT, 
+  ADDITIONAL_ISSUES_TEXT, 
+  ADDITIONAL_ISSUES_END, 
+  ADDITIONAL_ISSUES_START
+} from './constants';
 
 
 export interface StateFromProps {
@@ -63,11 +68,11 @@ export class TableIssues extends React.Component<TableIssueProps> {
     return (
       <div className="issue-banner" key="more-issue-link">
         <img className="icon icon-red-triangle-warning "/>
-        There are 
+        {ADDITIONAL_ISSUES_START}
         <a id="more-issues-link" className="table-issue-more-issues" target="_blank" href={url} onClick={logClick}>
-          {count} additional issues
+          {count} {ADDITIONAL_ISSUES_TEXT}
         </a> 
-        associated with this table 
+        {ADDITIONAL_ISSUES_END}
     </div>
     );
   }
