@@ -15,7 +15,7 @@ class IssuesAPI(Resource):
     def __init__(self) -> None:
         self.reqparse = reqparse.RequestParser()
         # declared as none initially so that it doesn't throw configuration errors until a call is made
-        self.client = None
+        self.client = get_issue_tracker_client()
 
     def get(self) -> Response:
         """
@@ -23,7 +23,6 @@ class IssuesAPI(Resource):
         :return: List of tickets
         """
         try:
-            self.client = get_issue_tracker_client()
             if not app.config['ISSUE_TRACKER_CLIENT_ENABLED']:
                 message = 'Issuing tracking is not enabled. Request was accepted but no issue will be returned.'
                 logging.exception(message)
@@ -48,12 +47,11 @@ class IssueAPI(Resource):
     def __init__(self) -> None:
         self.reqparse = reqparse.RequestParser()
         # declared as none initially so that it doesn't throw configuration errors until a call is made
-        self.client = None
+        self.client = get_issue_tracker_client()
         super(IssueAPI, self).__init__()
 
     def post(self) -> Response:
         try:
-            self.client = get_issue_tracker_client()
             if not app.config['ISSUE_TRACKER_CLIENT_ENABLED']:
                 message = 'Issuing tracking is not enabled. Request was accepted but no issue will be created.'
                 logging.exception(message)

@@ -1,5 +1,6 @@
 import abc
 from amundsen_application.base.base_issue import BaseIssue
+from amundsen_application.models.issue_results import IssueResults
 
 
 class BaseIssueTrackerClient(abc.ABC):
@@ -8,7 +9,7 @@ class BaseIssueTrackerClient(abc.ABC):
         pass  # pragma: no cover
 
     @abc.abstractmethod
-    def get_issues(self, table_uri: str):
+    def get_issues(self, table_uri: str) -> IssueResults:
         """
         Gets issues from the issue tracker
         :param table_uri: Table Uri ie databasetype://database/table

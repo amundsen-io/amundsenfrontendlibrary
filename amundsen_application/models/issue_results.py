@@ -1,9 +1,10 @@
 from amundsen_application.base.base_issue import BaseIssue
+from typing import List
 
 
 class IssueResults(dict):
     def __init__(self,
-                 issues: [BaseIssue],
+                 issues: List[BaseIssue],
                  remaining: int,
                  remaining_url: str) -> None:
         """

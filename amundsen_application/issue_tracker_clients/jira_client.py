@@ -1,4 +1,5 @@
 from jira import JIRA, JIRAError, Issue
+from typing import List
 from amundsen_application.base.base_issue_tracker_client import BaseIssueTrackerClient
 from amundsen_application.issue_tracker_clients.issue_exceptions import IssueConfigurationException
 from amundsen_application.models.jira_issue import JiraIssue
@@ -102,7 +103,7 @@ class JiraClient(BaseIssueTrackerClient):
                 f'The following config settings must be set for Jira: { ", ".join(missing_fields) } ')
 
     @staticmethod
-    def _get_issue_properties(issue: Issue) -> object:
+    def _get_issue_properties(issue: Issue) -> JiraIssue:
         """
         Maps the jira issue object to properties we want in the UI
         :param issue: Jira issue to map
@@ -121,7 +122,7 @@ class JiraClient(BaseIssueTrackerClient):
         """
         return 0 if total < self.jira_max_results else total - self.jira_max_results
 
-    def _generate_remaining_issues_url(self, table_uri: str, issues: [JiraIssue]) -> str:
+    def _generate_remaining_issues_url(self, table_uri: str, issues: List[JiraIssue]) -> str:
         """
         Way to get the full list of jira tickets
         SDK doesn't return a query
