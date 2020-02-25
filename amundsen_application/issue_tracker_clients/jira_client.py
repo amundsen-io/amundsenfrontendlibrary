@@ -123,7 +123,7 @@ class JiraClient(BaseIssueTrackerClient):
 
     def _generate_remaining_issues_url(self, table_uri: str, issues: [JiraIssue]) -> str:
         """
-        Hacky way to get the list full list of jira tickets
+        Way to get the full list of jira tickets
         SDK doesn't return a query
         :param table_uri: table uri from the ui
         :param issues: list of jira issues, only needed to grab a ticket name
@@ -131,6 +131,7 @@ class JiraClient(BaseIssueTrackerClient):
         """
         if not issues or len(issues) == 0:
             return ''
-        first_issue_key = issues[0].issue_key  # jira expects a ticket key in the query, so pick a random one
+        # jira expects a ticket key in the query to default to, so pick the first one
+        first_issue_key = issues[0].issue_key
         search_query = urllib.parse.quote(SEARCH_STUB.format(table_key=table_uri))
         return f'{self.jira_url}/browse/{first_issue_key}?jql={search_query}'

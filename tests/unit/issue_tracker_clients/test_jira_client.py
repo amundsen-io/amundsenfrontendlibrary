@@ -107,7 +107,6 @@ class JiraClientTest(unittest.TestCase):
 
     @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JIRA')
     def test__generate_remaining_issues_url_no_issues(self, mock_JIRA_client: Mock):
-
         with app.test_request_context():
             jira_client = JiraClient(issue_tracker_url=app.config['ISSUE_TRACKER_URL'],
                                      issue_tracker_user=app.config['ISSUE_TRACKER_USER'],
