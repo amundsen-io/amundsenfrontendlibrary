@@ -6,7 +6,6 @@ import logging
 
 from amundsen_application.issue_tracker_clients import get_issue_tracker_client
 from amundsen_application.issue_tracker_clients.issue_exceptions import IssueConfigurationException
-from jira import JIRAError
 
 LOGGER = logging.getLogger(__name__)
 
@@ -37,7 +36,7 @@ class IssuesAPI(Resource):
             message = 'Encountered exception: ' + str(e)
             logging.exception(message)
             return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
-        except (JIRAError, Exception) as e:
+        except Exception as e:
             message = 'Encountered exception: ' + str(e)
             logging.exception(message)
             return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
@@ -70,7 +69,7 @@ class IssueAPI(Resource):
             message = 'Encountered exception: ' + str(e)
             logging.exception(message)
             return make_response(jsonify({'msg': message}), HTTPStatus.NOT_IMPLEMENTED)
-        except (JIRAError, Exception) as e:
+        except Exception as e:
             message = 'Encountered exception: ' + str(e)
             logging.exception(message)
             return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
