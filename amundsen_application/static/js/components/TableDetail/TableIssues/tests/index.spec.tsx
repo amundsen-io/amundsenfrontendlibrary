@@ -8,8 +8,7 @@ import {
   TableIssues, 
   TableIssueProps, 
   mapStateToProps, 
-  mapDispatchToProps, 
-  ComponentProps 
+  mapDispatchToProps
 } from '..';
 
 
@@ -20,6 +19,8 @@ describe ('TableIssues', ()=> {
     const props: TableIssueProps = {
       issues: [], 
       tableKey: 'key',
+      remainingIssues: 0, 
+      remainingIssuesUrl: 'testUrl', 
       getIssues: jest.fn(),
       ...propOverrides
     };

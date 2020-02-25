@@ -46,11 +46,13 @@ export function getIssues(tableKey: string): GetIssuesRequest {
   }; 
 }
 
-export function getIssuesSuccess(issues: Issue[]): GetIssuesResponse {
+export function getIssuesSuccess(issues: Issue[], remaining: number, remaining_url: string): GetIssuesResponse {
   return { 
     type: GetIssues.SUCCESS, 
     payload: {
-      issues
+      issues, 
+      remaining, 
+      remaining_url
     }
   }
 }
@@ -59,7 +61,9 @@ export function getIssuesFailure(): GetIssuesResponse {
   return { 
     type: GetIssues.FAILURE, 
     payload: {
-      issues: []
+      issues: [], 
+      remaining: 0,
+      remaining_url: null
     }
   }
 }
@@ -67,11 +71,15 @@ export function getIssuesFailure(): GetIssuesResponse {
 /* REDUCER */
 export interface IssueReducerState {
   issues: Issue[], 
+  remainingIssuesUrl: string,
+  remainingIssues: number, 
   isLoading: boolean
 };
 
 export const initialIssuestate: IssueReducerState = {
   issues: [], 
+  remainingIssuesUrl: null, 
+  remainingIssues: 0, 
   isLoading: false, 
 };
 
@@ -80,22 +88,25 @@ export const initialIssuestate: IssueReducerState = {
 export default function reducer(state: IssueReducerState = initialIssuestate, action): IssueReducerState {
   switch (action.type) {
     case GetIssues.REQUEST: 
-      return { issues: [], isLoading: true }; 
+      return { issues: [], remainingIssuesUrl: null, remainingIssues: 0, isLoading: true }; 
     case GetIssues.FAILURE: 
-      return { issues: [], isLoading: false }; 
+      return { issues: [], remainingIssuesUrl: null, remainingIssues: 0, isLoading: false }; 
     case GetIssues.SUCCESS: 
       return {...state, 
         issues: (<GetIssuesResponse> action).payload.issues, 
+        remainingIssues: (<GetIssuesResponse> action).payload.remaining, 
+        remainingIssuesUrl: (<GetIssuesResponse> action).payload.remaining_url, 
         isLoading: false}
     case CreateIssue.REQUEST: 
       return {...state, isLoading: true}; 
     case CreateIssue.FAILURE: 
       return {...state,
-        isLoading: false}; 
+        isLoading: false
+      }; 
     case CreateIssue.SUCCESS: 
       return {...state,
         issues: [(<CreateIssueResponse> action).payload.issue, ...state.issues],
-        isLoading: false}; 
+        isLoading: false } 
     default: 
       return state; 
   }

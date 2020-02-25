@@ -34,6 +34,8 @@ const globalState: GlobalState = {
   },
   issue: {
     issues: [], 
+    remainingIssuesUrl: null, 
+    remainingIssues: 0,
     isLoading: true
   }, 
   notification: {

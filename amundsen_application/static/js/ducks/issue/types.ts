@@ -29,6 +29,8 @@ export interface GetIssuesResponse {
     type: GetIssues.SUCCESS | GetIssues.FAILURE; 
     payload: {
         issues: Issue[]; 
+        remaining: number; 
+        remaining_url: string; 
     }
 }; 
 

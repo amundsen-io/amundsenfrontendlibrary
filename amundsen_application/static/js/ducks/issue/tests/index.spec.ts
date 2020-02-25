@@ -30,6 +30,8 @@ describe('issue ducks', () => {
   let tableKey: string; 
   let issue: Issue; 
   let issues: Issue[]; 
+  let remaining: number; 
+  let remainingUrl: string; 
   beforeAll(() => {
     tableKey = 'key'; 
     const testData = { 
@@ -47,7 +49,8 @@ describe('issue ducks', () => {
     }; 
 
     issues = [issue];
-
+    remaining = 0; 
+    remainingUrl = 'testurl'; 
   }); 
 
   describe('actions', () => {
@@ -59,7 +62,7 @@ describe('issue ducks', () => {
     });
 
     it('getIssuesSuccess - returns the action to process success', () => {
-      const action = getIssuesSuccess(issues);
+      const action = getIssuesSuccess(issues, remaining, remainingUrl);
       expect(action.type).toBe(GetIssues.SUCCESS);
     });
 
@@ -92,12 +95,19 @@ describe('issue ducks', () => {
 
   describe('reducer', () => {
     let testState: IssueReducerState;
+    let remainingUrl: string; 
+    let remaining: number; 
     beforeAll(() => {
       const stateIssues: Issue[]=[];
+      remaining = 0; 
+      remainingUrl = 'testUrl'; 
       testState = { 
         isLoading: false, 
-        issues: stateIssues
+        issues: stateIssues, 
+        remainingIssues: remaining, 
+        remainingIssuesUrl: remainingUrl
       };
+     
     });
 
     it('should return the existing state if action is not handled', () => {
@@ -105,19 +115,39 @@ describe('issue ducks', () => {
     });
 
     it('should handle GetIssues.REQUEST', () => {
-      expect(reducer(testState, getIssues(tableKey))).toEqual({ issues: [], isLoading: true });
+      expect(reducer(testState, getIssues(tableKey))).toEqual({ 
+        issues: [], 
+        isLoading: true, 
+        remainingIssuesUrl: null, 
+        remainingIssues: 0
+      });
     });
 
     it('should handle GetIssues.SUCCESS', () => {
-      expect(reducer(testState, getIssuesSuccess(issues))).toEqual({ issues, isLoading: false });
+      expect(reducer(testState, getIssuesSuccess(issues, remaining, remainingUrl))).toEqual({ 
+        issues, 
+        isLoading: false,
+        remainingIssues: remaining, 
+        remainingIssuesUrl: remainingUrl
+      });
     });
 
     it('should handle GetIssues.FAILURE', () => {
-      expect(reducer(testState, getIssuesFailure())).toEqual({ issues: [], isLoading: false  });
+      expect(reducer(testState, getIssuesFailure())).toEqual({ 
+        issues: [], 
+        isLoading: false, 
+        remainingIssuesUrl: null,
+        remainingIssues: remaining 
+      });
     });
 
     it('should handle CreateIssue.REQUEST', () => {
-      expect(reducer(testState, createIssue(formData))).toEqual({ issues: [], isLoading: true });
+      expect(reducer(testState, createIssue(formData))).toEqual({ 
+        issues: [], 
+        isLoading: true, 
+        remainingIssuesUrl: remainingUrl,
+        remainingIssues: remaining 
+       });
     });
 
     it('should handle CreateIssue.SUCCESS', () => {
@@ -126,7 +156,11 @@ describe('issue ducks', () => {
     });
 
     it('should handle CreateIssue.FAILURE', () => {
-      expect(reducer(testState, createIssueFailure())).toEqual({ issues: [], isLoading: false  });
+      expect(reducer(testState, createIssueFailure())).toEqual({ issues: [], 
+        isLoading: false, 
+        remainingIssuesUrl: remainingUrl,
+        remainingIssues: remaining 
+      });
     });
   });
 
@@ -141,17 +175,20 @@ describe('issue ducks', () => {
 
     describe('getIssuesWorker', () => {
       let action: GetIssuesRequest;
+      let remaining_url: string; 
       beforeAll(() => {
         action = getIssues(tableKey);
         issues = globalState.issue.issues;
+        remaining = globalState.issue.remainingIssues; 
+        remaining_url = globalState.issue.remainingIssuesUrl;
       });
 
       it('gets issues', () => {
         return expectSaga(getIssuesWorker, action)
           .provide([
-            [matchers.call.fn(API.getIssues), issues],
+            [matchers.call.fn(API.getIssues), {issues, remaining, remaining_url}],
           ])
-          .put(getIssuesSuccess(issues))
+          .put(getIssuesSuccess(issues, remaining, remaining_url))
           .run();
       });
 
