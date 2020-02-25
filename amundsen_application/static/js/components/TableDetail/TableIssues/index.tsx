@@ -52,9 +52,6 @@ export class TableIssues extends React.Component<TableIssueProps> {
           <span className="issue-title-name">"
             { issue.title }
           </span>"
-          <span className="issue-association-text">
-            {ASSOCIATION_TEXT}
-          </span>
         </span>
       </div>
     ); 

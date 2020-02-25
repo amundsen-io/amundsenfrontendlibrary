@@ -21,7 +21,7 @@
     margin: 0px 5px 0px 0px; 
   }
   .issue-title-name {
-    max-width: 229px; 
+    max-width: 390px; 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -29,9 +29,6 @@
   }
   .issue-title-display-text {
     display: inline-flex; 
-  }
-  .issue-association-text {
-    margin: 0px 0px 0px 3px;
   }
   .table-issue-more-issues {
     margin: 0px 2px 0px 2px; 
