@@ -12,4 +12,3 @@ class DataIssue:
         return {'issue_key': self.issue_key,
                 'title': self.title,
                 'url': self.url}
-

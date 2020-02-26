@@ -5,8 +5,8 @@ from http import HTTPStatus
 import logging
 
 from amundsen_application.base.base_issue_tracker_client import BaseIssueTrackerClient
-from amundsen_application.issue_tracker_clients import get_issue_tracker_client
-from amundsen_application.issue_tracker_clients.issue_exceptions import IssueConfigurationException
+from amundsen_application.proxy.issue_tracker_clients import get_issue_tracker_client
+from amundsen_application.proxy.issue_tracker_clients.issue_exceptions import IssueConfigurationException
 
 LOGGER = logging.getLogger(__name__)
 

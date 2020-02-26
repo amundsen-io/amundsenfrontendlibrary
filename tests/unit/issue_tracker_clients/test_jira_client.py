@@ -2,8 +2,8 @@ from unittest.mock import Mock
 
 import flask
 import unittest
-from amundsen_application.issue_tracker_clients.issue_exceptions import IssueConfigurationException
-from amundsen_application.issue_tracker_clients.jira_client import JiraClient
+from amundsen_application.proxy.issue_tracker_clients.issue_exceptions import IssueConfigurationException
+from amundsen_application.proxy.issue_tracker_clients.jira_client import JiraClient
 from amundsen_application.models.data_issue import DataIssue
 from jira import JIRAError
 from typing import Dict, List
@@ -35,7 +35,7 @@ class JiraClientTest(unittest.TestCase):
                                              title='some title',
                                              url='http://somewhere')
 
-    @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JIRA')
+    @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.jira_client.JIRA')
     def test_create_JiraClient_validates_config(self, mock_JIRA_client: Mock) -> None:
         with app.test_request_context():
             try:
@@ -51,8 +51,9 @@ class JiraClientTest(unittest.TestCase):
                                    'ISSUE_TRACKER_URL, ISSUE_TRACKER_USER, ISSUE_TRACKER_PASSWORD, '
                                    'ISSUE_TRACKER_PROJECT_ID')
 
-    @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JIRA')
-    @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JiraClient._get_remaining_issues')
+    @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.jira_client.JIRA')
+    @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.jira_client.'
+                         'JiraClient._get_remaining_issues')
     def test_get_issues_returns_JIRAError(self, mock_remaining_issues: Mock, mock_JIRA_client: Mock) -> None:
         mock_JIRA_client.return_value.get_issues.side_effect = JIRAError('Some exception')
         mock_remaining_issues.return_value = 0
@@ -68,9 +69,10 @@ class JiraClientTest(unittest.TestCase):
                 self.assertTrue(type(e), type(JIRAError))
                 self.assertTrue(e, 'Some exception')
 
-    @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JIRA')
-    @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JiraClient._get_issue_properties')
-    @unittest.mock.patch('amundsen_application.issue_tracker_clients.'
+    @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.jira_client.JIRA')
+    @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.jira_client.'
+                         'JiraClient._get_issue_properties')
+    @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.'
                          'jira_client.JiraClient._generate_remaining_issues_url')
     def test_get_issues_returns_issues(self,
                                        mock_get_url: Mock,
@@ -93,8 +95,8 @@ class JiraClientTest(unittest.TestCase):
                 'text ~ "key" AND resolution = Unresolved order by createdDate DESC',
                 maxResults=3)
 
-    @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JIRA')
-    @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.urllib.parse.quote')
+    @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.jira_client.JIRA')
+    @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.jira_client.urllib.parse.quote')
     def test__generate_remaining_issues_url(self, mock_url_lib: Mock, mock_JIRA_client: Mock) -> None:
         mock_url_lib.return_value = 'test'
         with app.test_request_context():
@@ -107,7 +109,7 @@ class JiraClientTest(unittest.TestCase):
             url = jira_client._generate_remaining_issues_url(table_uri="table", issues=issues)
             self.assertEqual(url, 'test_url/browse/key?jql=test')
 
-    @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JIRA')
+    @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.jira_client.JIRA')
     def test__generate_remaining_issues_url_no_issues(self, mock_JIRA_client: Mock) -> None:
         with app.test_request_context():
             jira_client = JiraClient(issue_tracker_url=app.config['ISSUE_TRACKER_URL'],
@@ -115,11 +117,12 @@ class JiraClientTest(unittest.TestCase):
                                      issue_tracker_password=app.config['ISSUE_TRACKER_PASSWORD'],
                                      issue_tracker_project_id=app.config['ISSUE_TRACKER_PROJECT_ID'],
                                      issue_tracker_max_results=app.config['ISSUE_TRACKER_MAX_RESULTS'])
-            issues = []  # type: List[DataIssue]
+            issues: List[DataIssue]
+            issues = []
             url = jira_client._generate_remaining_issues_url(table_uri="table", issues=issues)
             self.assertEqual(url, '')
 
-    @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JIRA')
+    @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.jira_client.JIRA')
     def test_create_returns_JIRAError(self, mock_JIRA_client: Mock) -> None:
         mock_JIRA_client.return_value.create_issue.side_effect = JIRAError('Some exception')
         with app.test_request_context():
@@ -134,8 +137,9 @@ class JiraClientTest(unittest.TestCase):
                 self.assertTrue(type(e), type(JIRAError))
                 self.assertTrue(e, 'Some exception')
 
-    @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JIRA')
-    @unittest.mock.patch('amundsen_application.issue_tracker_clients.jira_client.JiraClient._get_issue_properties')
+    @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.jira_client.JIRA')
+    @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.jira_client.'
+                         'JiraClient._get_issue_properties')
     def test_create_issue(self, mock_get_issue_properties: Mock, mock_JIRA_client: Mock) -> None:
         mock_JIRA_client.return_value.create_issue.return_value = self.mock_issue
         mock_get_issue_properties.return_value = self.mock_issue_instance

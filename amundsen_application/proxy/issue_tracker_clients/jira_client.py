@@ -1,7 +1,7 @@
 from jira import JIRA, JIRAError, Issue
 from typing import List
 from amundsen_application.base.base_issue_tracker_client import BaseIssueTrackerClient
-from amundsen_application.issue_tracker_clients.issue_exceptions import IssueConfigurationException
+from amundsen_application.proxy.issue_tracker_clients.issue_exceptions import IssueConfigurationException
 from amundsen_application.models.data_issue import DataIssue
 from amundsen_application.models.issue_results import IssueResults
 

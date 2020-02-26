@@ -2,7 +2,7 @@ import json
 import unittest
 from http import HTTPStatus
 from amundsen_application import create_app
-from amundsen_application.issue_tracker_clients.issue_exceptions import IssueConfigurationException
+from amundsen_application.proxy.issue_tracker_clients.issue_exceptions import IssueConfigurationException
 from amundsen_application.models.data_issue import DataIssue
 from amundsen_application.models.issue_results import IssueResults
 
@@ -25,8 +25,7 @@ class IssueTest(unittest.TestCase):
         self.mock_data_issue = DataIssue(issue_key='key',
                                          title='title',
                                          url='http://somewhere')
-        self.expected_issues = IssueResults(issues=
-                                            [self.mock_data_issue],
+        self.expected_issues = IssueResults(issues=[self.mock_data_issue],
                                             remaining=0,
                                             remaining_url="http://moredata")
 
@@ -103,7 +102,7 @@ class IssueTest(unittest.TestCase):
         Test request failure if config settings are missing
         :return:
         """
-        mock_issue_tracker_client.return_value.get_issues.side_effect = IssueConfigurationException
+        mock_issue_tracker_client.side_effect = IssueConfigurationException
         local_app.config['ISSUE_TRACKER_URL'] = None
         with local_app.test_client() as test:
             response = test.post('/api/issue/issue', data={
@@ -171,4 +170,3 @@ class IssueTest(unittest.TestCase):
             mock_issue_tracker_client.return_value.create_issue.assert_called
             self.assertEqual(data['issue'].get('title'), 'title')
             self.assertEqual(data['issue'].get('issue_key'), 'key')
-
