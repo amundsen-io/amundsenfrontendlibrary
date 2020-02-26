@@ -4,6 +4,7 @@ from flask_restful import Resource, reqparse
 from http import HTTPStatus
 import logging
 
+from amundsen_application.base.base_issue_tracker_client import BaseIssueTrackerClient
 from amundsen_application.issue_tracker_clients import get_issue_tracker_client
 from amundsen_application.issue_tracker_clients.issue_exceptions import IssueConfigurationException
 
@@ -13,8 +14,7 @@ LOGGER = logging.getLogger(__name__)
 class IssuesAPI(Resource):
     def __init__(self) -> None:
         self.reqparse = reqparse.RequestParser()
-        # declared as none initially so that it doesn't throw configuration errors until a call is made
-        self.client = get_issue_tracker_client()
+        self.client: BaseIssueTrackerClient
 
     def get(self) -> Response:
         """
@@ -27,6 +27,7 @@ class IssuesAPI(Resource):
                 logging.exception(message)
                 return make_response(jsonify({'msg': message}), HTTPStatus.ACCEPTED)
 
+            self.client = get_issue_tracker_client()
             self.reqparse.add_argument('key', 'Request requires a key', location='args')
             args = self.reqparse.parse_args()
             response = self.client.get_issues(args['key'])
@@ -45,8 +46,7 @@ class IssuesAPI(Resource):
 class IssueAPI(Resource):
     def __init__(self) -> None:
         self.reqparse = reqparse.RequestParser()
-        # declared as none initially so that it doesn't throw configuration errors until a call is made
-        self.client = get_issue_tracker_client()
+        self.client: BaseIssueTrackerClient
         super(IssueAPI, self).__init__()
 
     def post(self) -> Response:
@@ -55,6 +55,7 @@ class IssueAPI(Resource):
                 message = 'Issuing tracking is not enabled. Request was accepted but no issue will be created.'
                 logging.exception(message)
                 return make_response(jsonify({'msg': message}), HTTPStatus.ACCEPTED)
+            self.client = get_issue_tracker_client()
 
             self.reqparse.add_argument('title', type=str, location='form')
             self.reqparse.add_argument('key', type=str, location='form')

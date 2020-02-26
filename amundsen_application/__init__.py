@@ -4,10 +4,10 @@ import logging
 import logging.config
 import os
 
-from amundsen_application.api import init_routes
 from flask import Flask, Blueprint
 from flask_restful import Api
 
+from amundsen_application.api import init_routes
 from amundsen_application.api.v0 import blueprint
 from amundsen_application.api.announcements.v0 import announcements_blueprint
 from amundsen_application.api.log.v0 import log_blueprint

@@ -15,17 +15,18 @@ class IssueTest(unittest.TestCase):
         local_app.config['ISSUE_TRACKER_URL'] = 'url'
         local_app.config['ISSUE_TRACKER_CLIENT_ENABLED'] = True
         self.mock_issue = {
-                    'issue_key': 'key',
-                    'title': 'some title',
-                    'url': 'http://somewhere',
-                }
+            'issue_key': 'key',
+            'title': 'some title',
+            'url': 'http://somewhere',
+        }
         self.mock_issues = {
             'issues': [self.mock_issue]
         }
+        self.mock_data_issue = DataIssue(issue_key='key',
+                                         title='title',
+                                         url='http://somewhere')
         self.expected_issues = IssueResults(issues=
-                                            [DataIssue(issue_key='key',
-                                                       title='title',
-                                                       url='http://somewhere')],
+                                            [self.mock_data_issue],
                                             remaining=0,
                                             remaining_url="http://moredata")
 
@@ -154,18 +155,20 @@ class IssueTest(unittest.TestCase):
         Test request returns success and expected outcome
         :return:
         """
-        mock_issue_tracker_client.return_value.create_issue.return_value = self.mock_issue
+        mock_issue_tracker_client.return_value.create_issue.return_value = self.mock_data_issue
 
         with local_app.test_client() as test:
             response = test.post('/api/issue/issue',
                                  content_type='multipart/form-data',
                                  data={
                                      'description': 'test description',
-                                     'title': 'test title',
+                                     'title': 'title',
                                      'key': 'key'
                                  })
             data = json.loads(response.data)
             self.assertEqual(response.status_code, HTTPStatus.OK)
             mock_issue_tracker_client.assert_called
             mock_issue_tracker_client.return_value.create_issue.assert_called
-            self.assertCountEqual(data['issue'], self.mock_issue)
+            self.assertEqual(data['issue'].get('title'), 'title')
+            self.assertEqual(data['issue'].get('issue_key'), 'key')
+
