@@ -1,5 +1,5 @@
 import abc
-from amundsen_application.models.issue import Issue
+from amundsen_application.models.data_issue import DataIssue
 from amundsen_application.models.issue_results import IssueResults
 
 
@@ -18,7 +18,7 @@ class BaseIssueTrackerClient(abc.ABC):
         raise NotImplementedError  # pragma: no cover
 
     @abc.abstractmethod
-    def create_issue(self, table_uri: str, title: str, description: str) -> Issue:
+    def create_issue(self, table_uri: str, title: str, description: str) -> DataIssue:
         """
         Given a title, description, and table key, creates a ticket in the configured project
         Automatically places the table_uri in the description of the ticket.

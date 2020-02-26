@@ -3,6 +3,8 @@ import unittest
 from http import HTTPStatus
 from amundsen_application import create_app
 from amundsen_application.issue_tracker_clients.issue_exceptions import IssueConfigurationException
+from amundsen_application.models.data_issue import DataIssue
+from amundsen_application.models.issue_results import IssueResults
 
 local_app = create_app('amundsen_application.config.TestConfig', 'tests/templates')
 
@@ -21,13 +23,12 @@ class IssueTest(unittest.TestCase):
                 }
             ]
         }
-        self.expected_issues = [
-            {
-                'issue_key': 'key',
-                'title': 'some title',
-                'url': 'http://somewhere',
-            }
-        ]
+        self.expected_issues = IssueResults(issues=
+                                            [DataIssue(issue_key='key',
+                                                       title='title',
+                                                       url='http://somewhere')],
+                                            remaining=0,
+                                            remaining_url="http://moredata")
 
     # ----- Jira API Tests ---- #
 
@@ -74,7 +75,12 @@ class IssueTest(unittest.TestCase):
             response = test.get('/api/issue/issues', query_string=dict(key='table_key'))
             data = json.loads(response.data)
             self.assertEqual(response.status_code, HTTPStatus.OK)
-            self.assertCountEqual(data.get('issues'), self.expected_issues)
+            self.assertEqual(data['issues']['issues'][0]['issue_key'],
+                             self.expected_issues.issues[0].issue_key)
+            self.assertEqual(data['issues']['remaining'],
+                             self.expected_issues.remaining)
+            self.assertEqual(data['issues']['remaining_url'],
+                             self.expected_issues.remaining_url)
             mock_issue_tracker_client.return_value.get_issues.assert_called_with('table_key')
 
     def test_create_issue_not_enabled(self) -> None:
@@ -163,4 +169,4 @@ class IssueTest(unittest.TestCase):
             self.assertEqual(response.status_code, HTTPStatus.OK)
             mock_issue_tracker_client.assert_called
             mock_issue_tracker_client.return_value.create_issue.assert_called
-            self.assertCountEqual(data.get('issue'), self.expected_issues)
+            self.assertEqual(data['issue']['issue_key'], 'key')

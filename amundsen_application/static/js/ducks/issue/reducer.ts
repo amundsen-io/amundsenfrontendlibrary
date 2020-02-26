@@ -46,13 +46,13 @@ export function getIssues(tableKey: string): GetIssuesRequest {
   }; 
 }
 
-export function getIssuesSuccess(issues: Issue[], remaining: number, remaining_url: string): GetIssuesResponse {
+export function getIssuesSuccess(issues: Issue[], remainingIssues: number, remainingIssuesUrl: string): GetIssuesResponse {
   return { 
     type: GetIssues.SUCCESS, 
     payload: {
       issues, 
-      remaining, 
-      remaining_url
+      remainingIssues, 
+      remainingIssuesUrl
     }
   }
 }
@@ -62,8 +62,8 @@ export function getIssuesFailure(): GetIssuesResponse {
     type: GetIssues.FAILURE, 
     payload: {
       issues: [], 
-      remaining: 0,
-      remaining_url: null
+      remainingIssues: 0,
+      remainingIssuesUrl: null
     }
   }
 }
@@ -94,8 +94,8 @@ export default function reducer(state: IssueReducerState = initialIssuestate, ac
     case GetIssues.SUCCESS: 
       return {...state, 
         issues: (<GetIssuesResponse> action).payload.issues, 
-        remainingIssues: (<GetIssuesResponse> action).payload.remaining, 
-        remainingIssuesUrl: (<GetIssuesResponse> action).payload.remaining_url, 
+        remainingIssues: (<GetIssuesResponse> action).payload.remainingIssues, 
+        remainingIssuesUrl: (<GetIssuesResponse> action).payload.remainingIssuesUrl, 
         isLoading: false}
     case CreateIssue.REQUEST: 
       return {...state, isLoading: true}; 

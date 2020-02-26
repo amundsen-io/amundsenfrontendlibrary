@@ -1,10 +1,10 @@
-from amundsen_application.models.issue import Issue
+from amundsen_application.models.data_issue import DataIssue
 from typing import List
 
 
-class IssueResults(dict):
+class IssueResults:
     def __init__(self,
-                 issues: List[Issue],
+                 issues: List[DataIssue],
                  remaining: int,
                  remaining_url: str) -> None:
         """
@@ -17,6 +17,7 @@ class IssueResults(dict):
         self.remaining = remaining
         self.remaining_url = remaining_url
 
-        dict.__init__(self, issues=issues,
-                      remaining=remaining,
-                      remaining_url=remaining_url)
+    def serialize(self):
+        return {'issues': [issue.serialize() for issue in self.issues],
+                'remaining': self.remaining,
+                'remaining_url': self.remaining_url}

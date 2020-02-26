@@ -4,7 +4,7 @@ import flask
 import unittest
 from amundsen_application.issue_tracker_clients.issue_exceptions import IssueConfigurationException
 from amundsen_application.issue_tracker_clients.jira_client import JiraClient
-from amundsen_application.models.jira_issue import JiraIssue
+from amundsen_application.models.data_issue import DataIssue
 from jira import JIRAError
 
 app = flask.Flask(__name__)
@@ -30,7 +30,7 @@ class JiraClientTest(unittest.TestCase):
         }
         result_list = MockJiraResultList(iterable=self.mock_issue, _total=0)
         self.mock_jira_issues = result_list
-        self.mock_issue_instance = JiraIssue(issue_key='key',
+        self.mock_issue_instance = DataIssue(issue_key='key',
                                              title='some title',
                                              url='http://somewhere')
 
@@ -101,7 +101,7 @@ class JiraClientTest(unittest.TestCase):
                                      issue_tracker_password=app.config['ISSUE_TRACKER_PASSWORD'],
                                      issue_tracker_project_id=app.config['ISSUE_TRACKER_PROJECT_ID'],
                                      issue_tracker_max_results=app.config['ISSUE_TRACKER_MAX_RESULTS'])
-            issues = [JiraIssue(issue_key='key', title='title', url='url')]
+            issues = [DataIssue(issue_key='key', title='title', url='url')]
             url = jira_client._generate_remaining_issues_url(table_uri="table", issues=issues)
             self.assertEqual(url, 'test_url/browse/key?jql=test')
 

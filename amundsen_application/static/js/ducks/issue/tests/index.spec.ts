@@ -175,20 +175,21 @@ describe('issue ducks', () => {
 
     describe('getIssuesWorker', () => {
       let action: GetIssuesRequest;
-      let remaining_url: string;
+      let remainingIssuesUrl: string;
+      let remainingIssues: number; 
       beforeAll(() => {
         action = getIssues(tableKey);
         issues = globalState.issue.issues;
-        remaining = globalState.issue.remainingIssues; 
-        remaining_url = globalState.issue.remainingIssuesUrl;
+        remainingIssues = globalState.issue.remainingIssues; 
+        remainingIssuesUrl = globalState.issue.remainingIssuesUrl;
       });
 
       it('gets issues', () => {
         return expectSaga(getIssuesWorker, action)
           .provide([
-            [matchers.call.fn(API.getIssues), {issues, remaining, remaining_url}],
+            [matchers.call.fn(API.getIssues), {issues, remainingIssues, remainingIssuesUrl}],
           ])
-          .put(getIssuesSuccess(issues, remaining, remaining_url))
+          .put(getIssuesSuccess(issues, remainingIssues, remainingIssuesUrl))
           .run();
       });
 

@@ -30,7 +30,7 @@ class IssuesAPI(Resource):
             self.reqparse.add_argument('key', 'Request requires a key', location='args')
             args = self.reqparse.parse_args()
             response = self.client.get_issues(args['key'])
-            return make_response(jsonify({'issues': response}), HTTPStatus.OK)
+            return make_response(jsonify({'issues': response.serialize()}), HTTPStatus.OK)
 
         except IssueConfigurationException as e:
             message = 'Encountered exception: ' + str(e)
@@ -63,7 +63,7 @@ class IssueAPI(Resource):
             response = self.client.create_issue(description=args['description'],
                                                 table_uri=args['key'],
                                                 title=args['title'])
-            return make_response(jsonify({'issue': response}), HTTPStatus.OK)
+            return make_response(jsonify({'issue': response.serialize()}), HTTPStatus.OK)
 
         except IssueConfigurationException as e:
             message = 'Encountered exception: ' + str(e)

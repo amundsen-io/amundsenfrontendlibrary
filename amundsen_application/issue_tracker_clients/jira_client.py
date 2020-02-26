@@ -1,8 +1,8 @@
-from jira import JIRA, JIRAError, Issue as JiraIssue
+from jira import JIRA, JIRAError, Issue
 from typing import List
 from amundsen_application.base.base_issue_tracker_client import BaseIssueTrackerClient
 from amundsen_application.issue_tracker_clients.issue_exceptions import IssueConfigurationException
-from amundsen_application.models.issue import Issue
+from amundsen_application.models.data_issue import DataIssue
 from amundsen_application.models.issue_results import IssueResults
 
 import urllib.parse
@@ -58,7 +58,7 @@ class JiraClient(BaseIssueTrackerClient):
             logging.exception(str(e))
             raise e
 
-    def create_issue(self, description: str, table_uri: str, title: str) -> Issue:
+    def create_issue(self, description: str, table_uri: str, title: str) -> DataIssue:
         """
         Creates an issue in Jira
         :param description: Description of the Jira issue
@@ -102,15 +102,15 @@ class JiraClient(BaseIssueTrackerClient):
                 f'The following config settings must be set for Jira: {", ".join(missing_fields)} ')
 
     @staticmethod
-    def _get_issue_properties(issue: JiraIssue) -> Issue:
+    def _get_issue_properties(issue: Issue) -> DataIssue:
         """
         Maps the jira issue object to properties we want in the UI
         :param issue: Jira issue to map
         :return: JiraIssue
         """
-        return Issue(issue_key=issue.key,
-                     title=issue.fields.summary,
-                     url=issue.permalink())
+        return DataIssue(issue_key=issue.key,
+                         title=issue.fields.summary,
+                         url=issue.permalink())
 
     def _get_remaining_issues(self, total: int) -> int:
         """
@@ -121,7 +121,7 @@ class JiraClient(BaseIssueTrackerClient):
         """
         return 0 if total < self.jira_max_results else total - self.jira_max_results
 
-    def _generate_remaining_issues_url(self, table_uri: str, issues: List[Issue]) -> str:
+    def _generate_remaining_issues_url(self, table_uri: str, issues: List[DataIssue]) -> str:
         """
         Way to get the full list of jira tickets
         SDK doesn't return a query

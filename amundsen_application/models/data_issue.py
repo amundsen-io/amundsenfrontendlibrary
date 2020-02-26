@@ -1,4 +1,5 @@
-class Issue(dict):
+
+class DataIssue:
     def __init__(self,
                  issue_key: str,
                  title: str,
@@ -7,6 +8,8 @@ class Issue(dict):
         self.title = title
         self.url = url
 
-        dict.__init__(self, issue_key=issue_key,
-                      title=title,
-                      url=url)
+    def serialize(self):
+        return {'issue_key': self.issue_key,
+                'title': self.title,
+                'url': self.url}
+
