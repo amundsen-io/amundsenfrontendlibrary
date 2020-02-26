@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
+import AppConfig from 'config/config';
 import globalState from 'fixtures/globalState';
 import { 
   ComponentProps,
@@ -30,6 +31,16 @@ describe('ReportTableIssue', () => {
   }
 
   describe('render', () => {
+    beforeAll(() => {
+      AppConfig.issueTracking.enabled = true;
+    }); 
+
+    it('renders nothing if issueTracking not enabled', () => {
+      AppConfig.issueTracking.enabled = false;
+      const { props, wrapper } = setup({ isLoading: false });
+      expect(wrapper.html()).toBeFalsy(); 
+    }); 
+
     it('Renders loading spinner if not ready', () => {
       const { props, wrapper } = setup();
       expect(wrapper.find('.loading-spinner')).toBeTruthy();

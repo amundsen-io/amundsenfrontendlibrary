@@ -2,6 +2,7 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
+import AppConfig from 'config/config';
 import globalState from 'fixtures/globalState';
 
 import { 
@@ -29,12 +30,23 @@ describe ('TableIssues', ()=> {
   }
 
   describe('render', () => {
+    beforeAll(() => {
+      AppConfig.issueTracking.enabled = true;
+    }); 
+
     it('renders nothing if no issues', () => {
       const { props, wrapper } = setup({ issues: [] });
       expect(wrapper.html()).toBeFalsy(); 
     }); 
 
+    it('renders nothing if issueTracking not enabled', () => {
+      AppConfig.issueTracking.enabled = false;
+      const { props, wrapper } = setup({ issues: [] });
+      expect(wrapper.html()).toBeFalsy(); 
+    }); 
+
     it('renders issues if they exist', () => {
+      AppConfig.issueTracking.enabled = true;
       const { props, wrapper } = setup({ issues: [{
         issue_key: 'issue_key', 
         title: 'title',
