@@ -49,18 +49,19 @@ describe('ExploreButton', () => {
   };
 
   describe('generateUrl', () => {
-    const { props, wrapper } = setup();
 
-    it('calls url generator with the partition value and key, if partitioned', () => {
-      wrapper.instance().render();
-      expect(generateExploreUrlSpy).toHaveBeenCalledWith(props.tableData);
-    });
   });
 
   describe('render', () => {
     beforeEach(() => {
       mockExploreEnabled = true;
       mockExploreUrl = 'https://test-website.com';
+    });
+
+    it('calls url generator with the partition value and key, if partitioned', () => {
+      const { props, wrapper } = setup();
+      wrapper.instance().render();
+      expect(generateExploreUrlSpy).toHaveBeenCalledWith(props.tableData);
     });
 
     it('returns null if explore is not enabled', () => {
