@@ -9,6 +9,7 @@ valid_search_fields = {
     'tag'
 }
 
+
 def map_table_result(result: Dict) -> Dict:
     return {
         'type': 'table',
