@@ -58,7 +58,7 @@ class JiraClient(BaseIssueTrackerClient):
             logging.exception(str(e))
             raise e
 
-    def create_issue(self, description: str, table_uri: str, title: str) -> DataIssue:
+    def create_issue(self, table_uri: str, title: str, description: str) -> DataIssue:
         """
         Creates an issue in Jira
         :param description: Description of the Jira issue

@@ -14,14 +14,13 @@ class IssueTest(unittest.TestCase):
     def setUp(self) -> None:
         local_app.config['ISSUE_TRACKER_URL'] = 'url'
         local_app.config['ISSUE_TRACKER_CLIENT_ENABLED'] = True
-        self.mock_issues = {
-            'issues': [
-                {
+        self.mock_issue = {
                     'issue_key': 'key',
                     'title': 'some title',
                     'url': 'http://somewhere',
                 }
-            ]
+        self.mock_issues = {
+            'issues': [self.mock_issue]
         }
         self.expected_issues = IssueResults(issues=
                                             [DataIssue(issue_key='key',
@@ -49,7 +48,7 @@ class IssueTest(unittest.TestCase):
         :return:
         """
         local_app.config['ISSUE_TRACKER_URL'] = None
-        mock_issue_tracker_client.side_effect = IssueConfigurationException
+        mock_issue_tracker_client.return_value.get_issues.side_effect = IssueConfigurationException
         with local_app.test_client() as test:
             response = test.get('/api/issue/issues', query_string=dict(key='table_key'))
             self.assertEqual(response.status_code, HTTPStatus.NOT_IMPLEMENTED)
@@ -103,7 +102,7 @@ class IssueTest(unittest.TestCase):
         Test request failure if config settings are missing
         :return:
         """
-        mock_issue_tracker_client.side_effect = IssueConfigurationException
+        mock_issue_tracker_client.return_value.get_issues.side_effect = IssueConfigurationException
         local_app.config['ISSUE_TRACKER_URL'] = None
         with local_app.test_client() as test:
             response = test.post('/api/issue/issue', data={
@@ -155,7 +154,7 @@ class IssueTest(unittest.TestCase):
         Test request returns success and expected outcome
         :return:
         """
-        mock_issue_tracker_client.return_value.create_issue.return_value = self.expected_issues
+        mock_issue_tracker_client.return_value.create_issue.return_value = self.mock_issue
 
         with local_app.test_client() as test:
             response = test.post('/api/issue/issue',
@@ -169,4 +168,4 @@ class IssueTest(unittest.TestCase):
             self.assertEqual(response.status_code, HTTPStatus.OK)
             mock_issue_tracker_client.assert_called
             mock_issue_tracker_client.return_value.create_issue.assert_called
-            self.assertEqual(data['issue']['issue_key'], 'key')
+            self.assertCountEqual(data['issue'], self.mock_issue)

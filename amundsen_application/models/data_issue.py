@@ -8,7 +8,7 @@ class DataIssue:
         self.title = title
         self.url = url
 
-    def serialize(self):
+    def serialize(self) -> dict:
         return {'issue_key': self.issue_key,
                 'title': self.title,
                 'url': self.url}

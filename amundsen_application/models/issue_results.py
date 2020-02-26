@@ -1,5 +1,5 @@
 from amundsen_application.models.data_issue import DataIssue
-from typing import List
+from typing import List, Dict
 
 
 class IssueResults:
@@ -17,7 +17,7 @@ class IssueResults:
         self.remaining = remaining
         self.remaining_url = remaining_url
 
-    def serialize(self):
+    def serialize(self) -> Dict:
         return {'issues': [issue.serialize() for issue in self.issues],
                 'remaining': self.remaining,
                 'remaining_url': self.remaining_url}
