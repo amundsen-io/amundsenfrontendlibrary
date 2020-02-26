@@ -7,7 +7,7 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import { createIssue } from 'ducks/issue/reducer'; 
 import { CreateIssueRequest } from 'ducks/issue/types';
 import './styles.scss';
-import { MODAL_HEADER_TEXT, DEFAULT_TITLE_TEXT } from './constants'; 
+import { REPORT_DATA_ISSUE_TEXT, SUMMARY_PREFIX_TEXT } from './constants'; 
 import { logClick } from 'ducks/utilMethods';
 
 export interface ComponentProps {
@@ -59,13 +59,13 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
              className="report-table-issue-link"
              onClick={this.toggle}
           >
-            { MODAL_HEADER_TEXT }
+            { REPORT_DATA_ISSUE_TEXT }
           </a>
           {
             this.state.isOpen &&
             <div className="report-table-issue-modal">
               <h3 className="data-issue-header">
-                { MODAL_HEADER_TEXT }
+                { REPORT_DATA_ISSUE_TEXT }
               </h3>
               <button type="button" className="btn btn-close" aria-label={"close"} onClick={this.toggle} />
               <form id="report-table-issue-form" onSubmit={ this.submitForm }>
@@ -73,7 +73,7 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
 
                 <div className="form-group">
                   <label>Title</label>
-                  <input name="title" className="form-control" required={true} maxLength={200} defaultValue={`${DEFAULT_TITLE_TEXT}${this.props.tableName}`}/>
+                  <input name="title" className="form-control" required={true} maxLength={200} defaultValue={`${SUMMARY_PREFIX_TEXT}${this.props.tableName}`}/>
                 </div>
                 <div className="form-group">
                   <label>Description</label>
