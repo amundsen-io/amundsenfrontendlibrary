@@ -9,8 +9,6 @@ valid_search_fields = {
     'tag'
 }
 
-
-# TODO: Consolidate with marshall_table_partial after schemas are unified & delete
 def map_table_result(result: Dict) -> Dict:
     return {
         'type': 'table',
@@ -19,8 +17,8 @@ def map_table_result(result: Dict) -> Dict:
         'cluster': result.get('cluster', None),
         'description': result.get('description', None),
         'database': result.get('database', None),
-        'schema_name': result.get('schema_name', None),
-        'last_updated_epoch': result.get('last_updated_epoch', None),
+        'schema': result.get('schema', None),
+        'last_updated_timestamp': result.get('last_updated_timestamp', None),
     }
 
 

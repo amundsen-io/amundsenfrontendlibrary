@@ -8,6 +8,7 @@ import { TableResource } from 'interfaces';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 
 import { getDatabaseDisplayName, getDatabaseIconClass } from 'config/config-utils';
+import { formatDate } from 'utils/dateUtils';
 
 export interface TableListItemProps {
   table: TableResource;
@@ -19,15 +20,9 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
     super(props);
   }
 
-  getDateLabel = () => {
-    const { table } = this.props;
-    const dateTokens = new Date(table.last_updated_epoch * 1000).toDateString().split(' ');
-    return `${dateTokens[1]} ${dateTokens[2]}, ${dateTokens[3]}`;
-  };
-
   getLink = () => {
     const { table, logging } = this.props;
-    return `/table_detail/${table.cluster}/${table.database}/${table.schema_name}/${table.name}`
+    return `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}`
       + `?index=${logging.index}&source=${logging.source}`;
   };
 
@@ -37,7 +32,6 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
 
   render() {
     const { table } = this.props;
-    const hasLastUpdated = !!table.last_updated_epoch;
 
     return (
       <li className="list-group-item">
@@ -47,7 +41,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
             <div className="resource-info-text">
               <div className="resource-name title-2">
                 <div className="truncated">
-                  { `${table.schema_name}.${table.name}`}
+                  { `${table.schema}.${table.name}`}
                 </div>
                 <BookmarkIcon bookmarkKey={ this.props.table.key }/>
               </div>
@@ -59,11 +53,11 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
           </div>
           <div className="resource-badges">
             {
-              hasLastUpdated &&
+              !!table.last_updated_timestamp &&
               <div>
                 <div className="title-3">Last Updated</div>
                 <div className="body-secondary-3">
-                  { this.getDateLabel() }
+                  { formatDate({ epochTimestamp: table.last_updated_timestamp }) }
                 </div>
               </div>
             }

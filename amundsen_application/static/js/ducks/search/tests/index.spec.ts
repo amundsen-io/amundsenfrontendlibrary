@@ -3,7 +3,7 @@ import { debounce } from 'redux-saga/effects';
 
 import { DEFAULT_RESOURCE_TYPE, ResourceType } from 'interfaces';
 
-import * as NavigationUtils from 'utils/navigation-utils';
+import * as NavigationUtils from 'utils/navigationUtils';
 import * as SearchUtils from 'ducks/search/utils';
 
 import * as API from '../api/v0';
@@ -58,9 +58,9 @@ import {
 } from '../types';
 
 import globalState from 'fixtures/globalState';
-const searchState = globalState.search;
 
 const updateSearchUrlSpy = jest.spyOn(NavigationUtils, 'updateSearchUrl');
+const searchState = globalState.search;
 
 describe('search ducks', () => {
   const expectedSearchResults: SearchResponsePayload = {
@@ -73,9 +73,9 @@ describe('search ducks', () => {
           database: 'testDatabase',
           description: 'I have a lot of users',
           key: 'testDatabase://testCluster.testSchema/testName',
-          last_updated_epoch: 946684799,
+          last_updated_timestamp: 946684799,
           name: 'testName',
-          schema_name: 'testSchema',
+          schema: 'testSchema',
           type: ResourceType.table,
         },
       ],
@@ -98,9 +98,9 @@ describe('search ducks', () => {
           database: 'testDatabase',
           description: 'I have a lot of users',
           key: 'testDatabase://testCluster.testSchema/testName',
-          last_updated_epoch: 946684799,
+          last_updated_timestamp: 946684799,
           name: 'testName',
-          schema_name: 'testSchema',
+          schema: 'testSchema',
           type: ResourceType.table,
         },
       ],

@@ -29,9 +29,12 @@ import TagInput from 'components/Tags/TagInput';
 import { TableMetadata } from 'interfaces/TableMetadata';
 
 import { EditableSection } from 'components/TableDetail/EditableSection';
+
 import { getDisplayNameByResource, getDatabaseDisplayName, getDatabaseIconClass, notificationsEnabled } from 'config/config-utils';
 
 import { ResourceType } from 'interfaces/Resources';
+
+import { formatDateTimeShort } from 'utils/dateUtils';
 
 import './styles';
 import RequestDescriptionText from './RequestDescriptionText';
@@ -172,7 +175,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               <EditableSection title="Description">
                 <TableDescEditableText
                   maxLength={ AppConfig.editableText.tableDescLength }
-                  value={ data.table_description }
+                  value={ data.description }
                   editable={ data.is_editable }
                 />
               </EditableSection>
@@ -186,6 +189,13 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                       <WatermarkLabel watermarks={ data.watermarks }/>
                     </>
                   }
+                  {
+                    !!data.last_updated_timestamp &&
+                    <>
+                      <div className="section-title title-3">Last Updated</div>
+                      <div className="body-2">{ formatDateTimeShort({ epochTimestamp: data.last_updated_timestamp }) }</div>
+                    </>
+                  }
                   <div className="section-title title-3">Frequent Users</div>
                   <FrequentUsers readers={ data.table_readers }/>
                 </section>
@@ -193,11 +203,9 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                   <EditableSection title="Tags">
                     <TagInput/>
                   </EditableSection>
-
                   <EditableSection title="Owners">
                     <OwnerEditor />
                   </EditableSection>
-
                 </section>
               </section>
             </section>

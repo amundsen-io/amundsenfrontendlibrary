@@ -48,7 +48,7 @@ import {
   UpdateSearchFilter
 } from './filters/reducer';
 import { autoSelectResource, getPageIndex, getSearchState } from './utils';
-import { BrowserHistory, updateSearchUrl } from 'utils/navigation-utils';
+import { BrowserHistory, updateSearchUrl } from 'utils/navigationUtils';
 
 /**
  * Listens to actions triggers by user updates to the filter state.
