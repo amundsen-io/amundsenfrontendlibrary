@@ -110,6 +110,7 @@ describe('generateExploreUrl', () => {
     key: '',
     schema: 'schema',
     name: 'table_name',
+    last_updated_timestamp: 12321312312,
     description: '',
     table_writer: { application_url: '', description: '', id: '', name: '' },
     partition: {

@@ -31,6 +31,7 @@ describe('ExploreButton', () => {
         key: '',
         schema: 'schema',
         name: 'table_name',
+        last_updated_timestamp: 12321312321,
         description: '',
         table_writer: { application_url: '', description: '', id: '', name: '' },
         partition: {
