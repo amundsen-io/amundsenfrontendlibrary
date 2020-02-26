@@ -9,6 +9,7 @@ import { CreateIssueRequest } from 'ducks/issue/types';
 import './styles.scss';
 import { REPORT_DATA_ISSUE_TEXT, SUMMARY_PREFIX_TEXT } from './constants'; 
 import { logClick } from 'ducks/utilMethods';
+import { issueTrackingEnabled } from 'config/config-utils';
 
 export interface ComponentProps {
   tableKey: string;
@@ -49,6 +50,10 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
   };
 
   render() {
+    if (!issueTrackingEnabled()) {
+      return ''; 
+    }
+    
     if (this.props.isLoading) {
       return <LoadingSpinner />;
     }

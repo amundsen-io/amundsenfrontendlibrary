@@ -9,11 +9,11 @@ import { logClick } from 'ducks/utilMethods';
 import { GetIssuesRequest } from 'ducks/issue/types';
 import './styles.scss';
 import { 
-  ASSOCIATION_TEXT, 
   ADDITIONAL_ISSUES_TEXT, 
   ADDITIONAL_ISSUES_END, 
   ADDITIONAL_ISSUES_START
 } from './constants';
+import { issueTrackingEnabled } from 'config/config-utils';
 
 
 export interface StateFromProps {
@@ -38,7 +38,9 @@ export class TableIssues extends React.Component<TableIssueProps> {
   }
 
   componentDidMount() {
-    this.props.getIssues(this.props.tableKey);
+    if (issueTrackingEnabled()) {
+      this.props.getIssues(this.props.tableKey);
+    }
   }
 
   renderIssue = (issue: Issue, index: number) => {
@@ -75,6 +77,10 @@ export class TableIssues extends React.Component<TableIssueProps> {
   }
 
   render() {
+    if (!issueTrackingEnabled()) {
+      return ''; 
+    }
+    
     if (this.props.issues.length === 0) {
       return null;
     }
