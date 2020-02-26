@@ -189,7 +189,7 @@ describe('issue ducks', () => {
           .provide([
             [matchers.call.fn(API.getIssues), {issues, remainingIssues, remainingIssuesUrl}],
           ])
-          .put(getIssuesSuccess(issues, remainingIssues, remainingIssuesUrl))
+          .put(getIssuesSuccess(issues, undefined, undefined))
           .run();
       });
 

@@ -93,9 +93,7 @@ export default function reducer(state: IssueReducerState = initialIssuestate, ac
       return { issues: [], remainingIssuesUrl: null, remainingIssues: 0, isLoading: false }; 
     case GetIssues.SUCCESS: 
       return {...state, 
-        issues: (<GetIssuesResponse> action).payload.issues, 
-        remainingIssues: (<GetIssuesResponse> action).payload.remainingIssues, 
-        remainingIssuesUrl: (<GetIssuesResponse> action).payload.remainingIssuesUrl, 
+        ...(<GetIssuesResponse> action).payload, 
         isLoading: false}
     case CreateIssue.REQUEST: 
       return {...state, isLoading: true}; 

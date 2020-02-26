@@ -49,8 +49,8 @@ export class TableIssues extends React.Component<TableIssueProps> {
           { issue.issue_key }
         </a>
         <span className="issue-title-display-text">
-          <span className="issue-title-name">"
-            { issue.title }
+          <span className="issue-title-name">
+           "{ issue.title }
           </span>"
         </span>
       </div>
