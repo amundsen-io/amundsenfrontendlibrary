@@ -63,8 +63,6 @@ def create_app(config_module_class: str, template_folder: str = None) -> Flask:
     api.add_resource(IssueAPI,
                      '/api/issue/issue', endpoint='issue')
 
-    # TODO might want to refactor all endpoints to be restful
-
     app.register_blueprint(blueprint)
     app.register_blueprint(announcements_blueprint)
     app.register_blueprint(log_blueprint)
