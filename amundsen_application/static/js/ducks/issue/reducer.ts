@@ -46,7 +46,7 @@ export function getIssues(tableKey: string): GetIssuesRequest {
   }; 
 }
 
-export function getIssuesSuccess(issues: Issue[], remainingIssues: number, remainingIssuesUrl: string): GetIssuesResponse {
+export function getIssuesSuccess(issues: Issue[], remainingIssues?: number, remainingIssuesUrl?: string): GetIssuesResponse {
   return { 
     type: GetIssues.SUCCESS, 
     payload: {
