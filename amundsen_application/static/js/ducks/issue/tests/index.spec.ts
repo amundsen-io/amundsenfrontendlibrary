@@ -67,7 +67,7 @@ describe('issue ducks', () => {
     });
 
     it('getIssuesFailure - returns the action to process failure', () => {
-      const action = getIssuesFailure();
+      const action = getIssuesFailure(null);
       expect(action.type).toBe(GetIssues.FAILURE);
     });
 
@@ -79,7 +79,7 @@ describe('issue ducks', () => {
     });
 
     it('createIssueFailure - returns the action to process failure', () => {
-      const action = createIssueFailure();
+      const action = createIssueFailure(null);
       const { payload } = action;
       expect(action.type).toBe(CreateIssue.FAILURE);
       expect(payload.issue).toBe(null);
@@ -133,7 +133,7 @@ describe('issue ducks', () => {
     });
 
     it('should handle GetIssues.FAILURE', () => {
-      expect(reducer(testState, getIssuesFailure())).toEqual({ 
+      expect(reducer(testState, getIssuesFailure([], 0, null))).toEqual({ 
         issues: [], 
         isLoading: false, 
         remainingIssuesUrl: null,
@@ -156,7 +156,7 @@ describe('issue ducks', () => {
     });
 
     it('should handle CreateIssue.FAILURE', () => {
-      expect(reducer(testState, createIssueFailure())).toEqual({ issues: [], 
+      expect(reducer(testState, createIssueFailure(null))).toEqual({ issues: [], 
         isLoading: false, 
         remainingIssuesUrl: remainingUrl,
         remainingIssues: remaining 
@@ -198,7 +198,7 @@ describe('issue ducks', () => {
           .provide([
             [matchers.call.fn(API.getIssues), throwError(new Error())],
           ])
-          .put(getIssuesFailure())
+          .put(getIssuesFailure([], 0, null))
           .run();
       });
     });
@@ -232,7 +232,7 @@ describe('issue ducks', () => {
           .provide([
             [matchers.call.fn(API.createIssue), throwError(new Error())],
           ])
-          .put(createIssueFailure())
+          .put(createIssueFailure(null))
           .run();
       });
     });

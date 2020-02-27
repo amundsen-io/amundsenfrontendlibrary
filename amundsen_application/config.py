@@ -42,7 +42,7 @@ class Config:
     ISSUE_TRACKER_PROJECT_ID = None  # type: int
     # Maps to a class path and name
     ISSUE_TRACKER_CLIENT = None  # type: str
-    ISSUE_TRACKER_CLIENT_ENABLED = False  #type: bool
+    ISSUE_TRACKER_CLIENT_ENABLED = False  # type: bool
     # Max issues to display at a time
     ISSUE_TRACKER_MAX_RESULTS = None  # type: int
 

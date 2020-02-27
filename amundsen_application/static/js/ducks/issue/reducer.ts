@@ -28,11 +28,11 @@ export function createIssueSuccess(issue: Issue): CreateIssueResponse {
   };
 };
 
-export function createIssueFailure(): CreateIssueResponse {
+export function createIssueFailure(issue: Issue): CreateIssueResponse {
   return {
     type: CreateIssue.FAILURE, 
     payload: {
-      issue: null
+      issue
     }
   };
 };
@@ -57,13 +57,13 @@ export function getIssuesSuccess(issues: Issue[], remainingIssues?: number, rema
   }
 }
 
-export function getIssuesFailure(): GetIssuesResponse {
+export function getIssuesFailure(issues: Issue[], remainingIssues?: number, remainingIssuesUrl?: string): GetIssuesResponse {
   return { 
     type: GetIssues.FAILURE, 
     payload: {
-      issues: [], 
-      remainingIssues: 0,
-      remainingIssuesUrl: null
+      issues, 
+      remainingIssues, 
+      remainingIssuesUrl
     }
   }
 }
@@ -92,7 +92,7 @@ export default function reducer(state: IssueReducerState = initialIssuestate, ac
         isLoading: true
       }
     case GetIssues.FAILURE: 
-      return { issues: [], remainingIssuesUrl: null, remainingIssues: 0, isLoading: false }; 
+      return { ...initialIssuestate }; 
     case GetIssues.SUCCESS: 
       return {...state, 
         ...(<GetIssuesResponse> action).payload, 
