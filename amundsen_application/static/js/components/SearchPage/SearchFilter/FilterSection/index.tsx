@@ -7,6 +7,7 @@ import { clearFilterByCategory, ClearFilterRequest } from 'ducks/search/filters/
 import { CLEAR_BTN_TEXT } from '../constants';
 
 import { GlobalState } from 'ducks/rootReducer';
+import { logFilterAction } from 'ducks/utilMethods';
 
 import CheckBoxFilter, { CheckboxFilterProperties } from '../CheckBoxFilter';
 import InputFilter from '../InputFilter';
@@ -40,6 +41,7 @@ export class FilterSection extends React.Component<FilterSectionProps> {
 
   onClearFilter = () => {
     this.props.clearFilterByCategory(this.props.categoryId);
+    logFilterAction({ command: "search:clear_filter", filter_category: this.props.categoryId });
   }
 
   renderFilterComponent = () => {

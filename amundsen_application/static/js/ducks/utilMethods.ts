@@ -1,4 +1,4 @@
-import { ActionLogParams, postActionLog } from "./log/api/v0";
+import * as LOG_API from "./log/api/v0";
 import { Tag } from 'interfaces';
 
 export function sortTagsAlphabetical(a: Tag, b: Tag): number {
@@ -27,9 +27,9 @@ export function filterFromObj(initialObj: object, rejectedKeys: string[]): objec
   }, {});
 }
 
-export function logClick(event: React.MouseEvent<HTMLElement>, declaredProps?: ActionLogParams) {
+export function logClick(event: React.MouseEvent<HTMLElement>, declaredProps?: LOG_API.ActionLogParams) {
   const target = event.currentTarget;
-  const inferredProps: ActionLogParams = {
+  const inferredProps: LOG_API.ActionLogParams = {
     command: "click",
     target_id: target.id,
     label: target.innerText || target.textContent,
@@ -52,9 +52,21 @@ export function logClick(event: React.MouseEvent<HTMLElement>, declaredProps?: A
   logAction({ ...inferredProps, ...declaredProps });
 }
 
-export function logAction(declaredProps: ActionLogParams) {
+export function logSearchAction(declaredProps: LOG_API.SearchActionParams) {
+  logAction(declaredProps);
+};
+
+export function logPaginationAction(declaredProps: LOG_API.PaginationActionParams) {
+  logAction(declaredProps);
+};
+
+export function logFilterAction(declaredProps: LOG_API.FilterActionParams) {
+  logAction(declaredProps);
+};
+
+export function logAction(declaredProps: LOG_API.ActionLogParams) {
   const inferredProps = {
     location: window.location.pathname
   };
-  postActionLog({ ...inferredProps, ...declaredProps });
+  LOG_API.postActionLog({ ...inferredProps, ...declaredProps });
 }

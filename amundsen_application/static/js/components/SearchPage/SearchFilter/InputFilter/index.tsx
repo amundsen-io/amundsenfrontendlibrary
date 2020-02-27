@@ -7,6 +7,7 @@ import { clearFilterByCategory, updateFilterByCategory, ClearFilterRequest, Upda
 import { APPLY_BTN_TEXT } from '../constants';
 
 import { GlobalState } from 'ducks/rootReducer';
+import { logFilterAction } from 'ducks/utilMethods';
 
 interface OwnProps {
   categoryId: string;
@@ -45,11 +46,15 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
 
   onApplyChanges = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if(!!this.state.value) {
-      this.props.updateFilterByCategory(this.props.categoryId, this.state.value);
+    const value = this.state.value;
+    const categoryId = this.props.categoryId;
+    if(!!value) {
+      this.props.updateFilterByCategory(categoryId, value);
+      logFilterAction({ command: "search:update_filter", filter_category: categoryId, filter_value: value });
     }
     else {
-      this.props.clearFilterByCategory(this.props.categoryId);
+      this.props.clearFilterByCategory(categoryId);
+      logFilterAction({ command: "search:clear_filter", filter_category: categoryId });
     }
   };
 
