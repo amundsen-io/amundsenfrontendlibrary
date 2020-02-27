@@ -7,20 +7,16 @@ from flask.blueprints import Blueprint
 
 from amundsen_application.log.action_log import action_logging
 
-
 LOGGER = logging.getLogger(__name__)
 
-
 dashboard_blueprint = Blueprint('dashboard', __name__, url_prefix='/api/dashboard/v0')
-
-
 DASHBOARD_ENDPOINT = '/dashboard'
 
 
 @dashboard_blueprint.route('/dashboard', methods=['GET'])
 def get_dashboard() -> Response:
     """
-
+    Call metadata service endpoint to fet specified dashboard
     :return:
     """
     @action_logging
@@ -69,4 +65,3 @@ def get_dashboard() -> Response:
     }
     time.sleep(1)
     return make_response(jsonify(results_dict), HTTPStatus.OK)
-

@@ -1,33 +1,29 @@
 import * as React from 'react';
-import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-
 import * as qs from 'simple-query-string';
 
+import AvatarLabel from 'components/common/AvatarLabel';
 import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
-import { GlobalState } from 'ducks/rootReducer';
-import { Dashboard } from 'interfaces/Dashboard';
-import { getDashboard } from 'ducks/dashboard/reducer';
-import { GetDashboardRequest } from 'ducks/dashboard/types';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import { EditableSection } from 'components/TableDetail/EditableSection';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
-import AvatarLabel from 'components/common/AvatarLabel';
 import TabsComponent from 'components/common/TabsComponent';
+import { getDashboard } from 'ducks/dashboard/reducer';
+import { GetDashboardRequest } from 'ducks/dashboard/types';
+import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
-
+import { Dashboard } from 'interfaces/Dashboard';
 
 export interface RouteProps {
   uri: string;
 }
 
-
 interface DashboardPageState {
   uri: string;
 }
-
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -40,9 +36,7 @@ export interface DispatchFromProps {
 
 export type DashboardPageProps = RouteComponentProps<RouteProps> & StateFromProps & DispatchFromProps;
 
-export class DashboardPage extends React.Component<DashboardPageProps> {
-
-
+export class DashboardPage extends React.Component<DashboardPageProps, DashboardPageState> {
   constructor(props) {
     super(props);
 
@@ -55,7 +49,7 @@ export class DashboardPage extends React.Component<DashboardPageProps> {
   }
 
   loadDashboard() {
-    this.props.getDashboard('test-dashboard-uri');
+    this.props.getDashboard(this.state.uri);
   }
 
   renderTabs() {
@@ -76,10 +70,7 @@ export class DashboardPage extends React.Component<DashboardPageProps> {
         title: 'Tables',
       }
     ];
-    return (
-      <TabsComponent tabs={ tabInfo } defaultTab={ "charts" } />
-    )
-
+    return <TabsComponent tabs={ tabInfo } defaultTab={ "charts" } />;
   }
 
   render() {
