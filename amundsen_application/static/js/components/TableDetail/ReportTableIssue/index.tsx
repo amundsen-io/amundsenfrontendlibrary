@@ -92,10 +92,7 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
                   <label>Description</label>
                   <textarea name="description" className="form-control" rows={5} required={true} maxLength={2000}/>
                 </div>
-                <div className="controls">
-                  <button className="btn btn-default cancel" type="button" onClick={this.toggle}>Cancel</button>
-                  <button className="btn btn-primary submit" type="submit" >Submit</button>
-                </div>
+                <button className="btn btn-primary submit" type="submit" >Submit</button>
               </form>
             </div>
           }

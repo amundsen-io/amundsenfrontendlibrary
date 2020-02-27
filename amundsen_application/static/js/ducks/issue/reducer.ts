@@ -84,11 +84,13 @@ export const initialIssuestate: IssueReducerState = {
 };
 
 
-/* maybe these should be separate reducers?*/
 export default function reducer(state: IssueReducerState = initialIssuestate, action): IssueReducerState {
   switch (action.type) {
     case GetIssues.REQUEST: 
-      return { issues: [], remainingIssuesUrl: null, remainingIssues: 0, isLoading: true }; 
+      return {
+        ...initialIssuestate,
+        isLoading: true
+      }
     case GetIssues.FAILURE: 
       return { issues: [], remainingIssuesUrl: null, remainingIssues: 0, isLoading: false }; 
     case GetIssues.SUCCESS: 
