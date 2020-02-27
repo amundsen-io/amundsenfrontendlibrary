@@ -15,13 +15,11 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import { EditableSection } from 'components/TableDetail/EditableSection';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import AvatarLabel from 'components/common/AvatarLabel';
-import Tabs from 'components/common/Tabs';
-import { BOOKMARKED_TAB_KEY } from 'components/ProfilePage/constants';
-import { getDatabaseDisplayName } from 'config/config-utils';
+import TabsComponent from 'components/common/TabsComponent';
 import { logClick } from 'ducks/utilMethods';
 
 
-interface RouteProps {
+export interface RouteProps {
   uri: string;
 }
 
@@ -40,9 +38,9 @@ export interface DispatchFromProps {
   getDashboard: (uri: string, index?: string, source?: string) => GetDashboardRequest;
 }
 
-type DashboardPageProps = RouteComponentProps<RouteProps> & StateFromProps & DispatchFromProps;
+export type DashboardPageProps = RouteComponentProps<RouteProps> & StateFromProps & DispatchFromProps;
 
-class DashboardPage extends React.Component<DashboardPageProps> {
+export class DashboardPage extends React.Component<DashboardPageProps> {
 
 
   constructor(props) {
@@ -79,9 +77,7 @@ class DashboardPage extends React.Component<DashboardPageProps> {
       }
     ];
     return (
-      <div className="profile-tabs">
-        <Tabs tabs={ tabInfo } defaultTab={ "charts" } />
-      </div>
+      <TabsComponent tabs={ tabInfo } defaultTab={ "charts" } />
     )
 
   }

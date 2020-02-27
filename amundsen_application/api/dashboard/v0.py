@@ -48,7 +48,7 @@ def get_dashboard() -> Response:
             'owners': [{
                     'email': 'dwon@lyft.com',
                     'display_name': 'Daniel Won',
-                    'full_name': 'Daniel Won',
+                    'profile_url': '',
                     'user_id': 'dwon@lyft.com',
                 }],
             'frequent_users': [{
@@ -56,7 +56,7 @@ def get_dashboard() -> Response:
                 'user': {
                     'email': 'dwon@lyft.com',
                     'display_name': 'Daniel Won',
-                    'full_name': 'Daniel Won',
+                    'profile_url': '',
                     'user_id': 'dwon@lyft.com',
                 }
             }],
