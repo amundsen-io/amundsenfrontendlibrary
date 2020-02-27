@@ -7,9 +7,9 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import { createIssue } from 'ducks/issue/reducer'; 
 import { CreateIssueRequest } from 'ducks/issue/types';
 import './styles.scss';
-import { REPORT_DATA_ISSUE_TEXT, SUMMARY_PREFIX_TEXT } from './constants'; 
+import { REPORT_DATA_ISSUE_TEXT } from './constants'; 
 import { logClick } from 'ducks/utilMethods';
-import { issueTrackingEnabled } from 'config/config-utils';
+import { notificationsEnabled, issueTrackingEnabled } from 'config/config-utils';
 
 export interface ComponentProps {
   tableKey: string;
@@ -48,6 +48,13 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
   toggle = () => {
     this.setState({ isOpen: !this.state.isOpen });
   };
+  
+  renderPipe = () => {
+    if (notificationsEnabled()) {
+      return ' | '; 
+    }
+    return ''; 
+  } 
 
   render() {
     if (!issueTrackingEnabled()) {
@@ -60,11 +67,12 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
 
     return (
         <>
+         {this.renderPipe()}
           <a href="javascript:void(0)"
              className="report-table-issue-link"
              onClick={this.toggle}
           >
-            { REPORT_DATA_ISSUE_TEXT }
+           { REPORT_DATA_ISSUE_TEXT }
           </a>
           {
             this.state.isOpen &&
@@ -78,7 +86,7 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
 
                 <div className="form-group">
                   <label>Title</label>
-                  <input name="title" className="form-control" required={true} maxLength={200} defaultValue={`${SUMMARY_PREFIX_TEXT}${this.props.tableName}`}/>
+                  <input name="title" className="form-control" required={true} maxLength={200} />
                 </div>
                 <div className="form-group">
                   <label>Description</label>

@@ -31,7 +31,7 @@ import TagInput from 'components/Tags/TagInput';
 import { TableMetadata } from 'interfaces/TableMetadata';
 
 import { EditableSection } from 'components/TableDetail/EditableSection';
-import { getDatabaseDisplayName, getDatabaseIconClass, notificationsEnabled } from 'config/config-utils';
+import { getDatabaseDisplayName, getDatabaseIconClass, notificationsEnabled, issueTrackingEnabled } from 'config/config-utils';
 import { formatDateTimeShort } from 'utils/dateUtils';
 
 import './styles';
@@ -176,8 +176,10 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                   editable={ data.is_editable }
                 />
               </EditableSection>
-              { notificationsEnabled() && <RequestDescriptionText/> }
-              <ReportTableIssue tableKey={ this.key } tableName={ this.getDisplayName() } />
+              <span>
+                { notificationsEnabled() && <RequestDescriptionText/> } 
+                { issueTrackingEnabled() && <ReportTableIssue tableKey={ this.key } tableName={ this.getDisplayName() } />}
+              </span>
               <section className="column-layout-2">
                 <section className="left-panel">
                   {

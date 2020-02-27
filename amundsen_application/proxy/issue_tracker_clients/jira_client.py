@@ -72,7 +72,7 @@ class JiraClient(BaseIssueTrackerClient):
             }, issuetype={
                 'id': ISSUE_TYPE_ID,
                 'name': ISSUE_TYPE_NAME,
-            }, summary=title, description=description + '\n Table Key: ' + table_uri))
+            }, summary=title, description=f'{description} \n Table Key: {table_uri} [PLEASE DO NOT REMOVE]'))
 
             return self._get_issue_properties(issue=issue)
         except JIRAError as e:
