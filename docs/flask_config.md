@@ -25,7 +25,7 @@ To fully enable these features in the UI, the application configuration variable
 Amundsen has a feature to allow display of associated tickets within the table detail view. The feature both displays 
 open tickets and allows users to report new tickets associated with the table. These tickets must contain the 
 `table_uri` within the ticket text in order to be displayed; it is automatically added to tickets created via the 
-feature. Tickets are displayed from most recent to oldest. Currently only
+feature. Tickets are displayed from most recent to oldest, and currently only open tickets are displayed. Currently only
  [JIRA](https://www.atlassian.com/software/jira) is supported. The UI must also be enabled to use this feature, please 
  see configuration notes [here](application_config.md#issue-tracking-features). 
 
