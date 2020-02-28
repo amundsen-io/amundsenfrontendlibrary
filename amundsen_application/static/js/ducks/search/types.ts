@@ -53,6 +53,7 @@ export interface SearchAllRequest {
     pageIndex: number;
     term: string;
     useFilters?: boolean;
+    searchType: string;
   };
   type: SearchAll.REQUEST;
 };
@@ -75,6 +76,7 @@ export interface SearchResourceRequest {
     pageIndex: number;
     resource: ResourceType;
     term: string;
+    searchType: string;
   };
   type: SearchResource.REQUEST;
 };

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { clearFilterByCategory, updateFilterByCategory, ClearFilterRequest, UpdateFilterRequest, FilterOptions } from 'ducks/search/filters/reducer';
-import { logFilterAction } from 'ducks/utilMethods';
 
 import CheckBoxItem from 'components/common/Inputs/CheckBoxItem';
 
@@ -66,11 +65,9 @@ export class CheckBoxFilter extends React.Component<CheckBoxFilterProps> {
 
     if (Object.keys(checkedValues).length === 0) {
       this.props.clearFilterByCategory(categoryId);
-      logFilterAction({ command: "search:clear_filter", filter_category: categoryId });
     }
     else {
       this.props.updateFilterByCategory(categoryId, checkedValues);
-      logFilterAction({ command: "search:update_filter", filter_category: categoryId, filter_value: checkedValues });
     }
   };
 

@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { GlobalState } from 'ducks/rootReducer';
 import { clearSearch, submitSearch, getInlineResultsDebounce, selectInlineResult } from 'ducks/search/reducer';
 import { ClearSearchRequest, SubmitSearchRequest, InlineSearchRequest, InlineSearchSelect } from 'ducks/search/types';
-import { logAction, logSearchAction } from 'ducks/utilMethods';
 
 import { ResourceType } from 'interfaces';
 
@@ -73,7 +72,6 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     */
     if (this.props.clearSearch) {
       this.props.clearSearch();
-      logAction({ command: "search:clear_term" });
     }
   };
 
@@ -109,7 +107,6 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     if (this.isFormValid()) {
       this.props.submitSearch(searchTerm);
       this.hideTypeAhead();
-      logSearchAction({ command: "search:query_all_resources", search_term: searchTerm });
     }
   };
 

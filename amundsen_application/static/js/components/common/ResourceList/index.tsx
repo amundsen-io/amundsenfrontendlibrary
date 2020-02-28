@@ -4,7 +4,6 @@ import ResourceListItem from 'components/common/ResourceListItem';
 import { Resource } from 'interfaces';
 import { ITEMS_PER_PAGE, PAGINATION_PAGE_RANGE } from './constants';
 
-import { logPaginationAction } from 'ducks/utilMethods';
 
 export interface ResourceListProps {
   source: string;
@@ -44,7 +43,6 @@ class ResourceList extends React.Component<ResourceListProps, ResourceListState>
     if (this.props.onPagination !== undefined) {
       // activePage is managed externally via 'props'
       this.props.onPagination(activePage);
-      logPaginationAction({ command: "search:pagination", page_index: activePage });
     } else {
       // activePage is managed internally via 'state'.
       this.setState({ activePage });
