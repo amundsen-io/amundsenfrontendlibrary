@@ -13,6 +13,7 @@ export interface AppConfig {
   editableText: EditableTextConfig;
   google: GoogleAnalyticsConfig;
   indexUsers: IndexUsersConfig;
+  issueTracking: IssueTrackingConfig;
   logoPath: string | null;
   mailClientFeatures: MailClientFeaturesConfig;
   navLinks: Array<LinkConfig>;
@@ -28,6 +29,7 @@ export interface AppConfigCustom {
   editableText?: EditableTextConfig;
   google?: GoogleAnalyticsConfig
   indexUsers?: IndexUsersConfig;
+  issueTracking?: IssueTrackingConfig; 
   logoPath?: string;
   mailClientFeatures?: MailClientFeaturesConfig;
   navLinks?: Array<LinkConfig>;
@@ -246,4 +248,12 @@ interface IndexUsersConfig {
 interface EditableTextConfig {
   tableDescLength: number;
   columnDescLength: number;
+}
+/**
+ * IssueTrackingConfig - configures whether to display the issue tracking feature
+ * that allows users to display tickets associated with a table and create ones 
+ * linked to a table
+ */
+interface IssueTrackingConfig {
+  enabled: boolean; 
 }
