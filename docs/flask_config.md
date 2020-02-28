@@ -43,5 +43,3 @@ Here are the settings and what they should be set to
     ISSUE_TRACKER_MAX_RESULTS = None  # type: int (Max issues to display at a time)
 
 ```
-
-
