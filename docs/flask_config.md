@@ -27,7 +27,7 @@ open tickets and allows users to report new tickets associated with the table. T
 `table_uri` within the ticket text in order to be displayed; it is automatically added to tickets created via the 
 feature. Tickets are displayed from most recent to oldest. Currently only
  [JIRA](https://www.atlassian.com/software/jira) is supported. The UI must also be enabled to use this feature, please 
- see configuration notes [here](application_config.md#issue-tracking-features)
+ see configuration notes [here](application_config.md#issue-tracking-features). 
 
 There are several configuration 
 settings in `config.py` that should be set in order to use this feature. 
