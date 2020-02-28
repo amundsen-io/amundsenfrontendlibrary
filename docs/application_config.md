@@ -69,3 +69,7 @@ _TODO: Please add doc_
 ## Table Profile
 
 _TODO: Please add doc*_
+
+## Issue Tracking Features
+In order to enable Issue Tracking set `IssueTrackingConfig.enabled` to `true` to see UI features. Further configuration
+is required in `config.py` to fully enable the feature. 
