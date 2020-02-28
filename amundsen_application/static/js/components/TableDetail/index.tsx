@@ -32,7 +32,7 @@ import { TableMetadata } from 'interfaces/TableMetadata';
 
 import { EditableSection } from 'components/TableDetail/EditableSection';
 
-import { getDisplayNameByResource, getDatabaseDisplayName, getDatabaseIconClass, notificationsEnabled } from 'config/config-utils';
+import { getDisplayNameByResource, getDatabaseDisplayName, getDatabaseIconClass, issueTrackingEnabled, notificationsEnabled } from 'config/config-utils';
 
 import { ResourceType } from 'interfaces/Resources';
 import { formatDateTimeShort } from 'utils/dateUtils';
