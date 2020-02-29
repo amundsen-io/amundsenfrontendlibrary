@@ -1,6 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { all, call, debounce, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
-import * as _ from "lodash";
+import * as _ from 'lodash';
 import * as qs from 'simple-query-string';
 
 import { ResourceType } from 'interfaces/Resources';
