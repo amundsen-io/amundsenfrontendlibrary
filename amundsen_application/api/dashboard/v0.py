@@ -21,7 +21,7 @@ def get_dashboard() -> Response:
     """
     @action_logging
     def _get_dashboard(*, uri: str, index: int, source: str) -> None:
-        pass  #pragma: no cover
+        pass  # pragma: no cover
 
     uri = request.args.get('uri', None)
     index = request.args.get('index', None)
@@ -46,7 +46,7 @@ def get_dashboard() -> Response:
                     'display_name': 'Daniel Won',
                     'profile_url': '',
                     'user_id': 'dwon@lyft.com',
-                }],
+            }],
             'frequent_users': [{
                 'read_count': 10,
                 'user': {
