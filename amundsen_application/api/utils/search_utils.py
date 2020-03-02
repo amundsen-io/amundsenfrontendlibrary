@@ -23,7 +23,7 @@ def map_table_result(result: Dict) -> Dict:
     }
 
 
-def generate_query_json(*, filters: Dict = {}, page_index: str, search_term: str) -> Dict:
+def generate_query_json(*, filters: Dict = {}, page_index: int, search_term: str) -> Dict:
     """
     Transforms the given paramaters to the query json for the search service according to
     the api defined at:

@@ -81,7 +81,6 @@ def _search_table(*, search_term: str, page_index: int, filters: Dict, search_ty
     except Exception as e:
         message = 'Encountered exception generating query json: ' + str(e)
         results_dict['msg'] = message
-        results_dict['status_code'] = HTTPStatus.INTERNAL_SERVER_ERROR
         logging.exception(message)
         return results_dict
 
@@ -107,7 +106,6 @@ def _search_table(*, search_term: str, page_index: int, filters: Dict, search_ty
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         results_dict['msg'] = message
-        results_dict['status_code'] = HTTPStatus.INTERNAL_SERVER_ERROR
         logging.exception(message)
         return results_dict
 
