@@ -11,8 +11,7 @@ from flask.blueprints import Blueprint
 
 from amundsen_application.log.action_log import action_logging
 from amundsen_application.api.utils.request_utils import get_query_param, request_search
-from amundsen_application.api.utils.response_utils import create_error_response
-from amundsen_application.api.utils.search_utils import generate_query_json, map_table_result, valid_search_fields
+from amundsen_application.api.utils.search_utils import generate_query_json, map_table_result
 from amundsen_application.models.user import load_user, dump_user
 
 LOGGER = logging.getLogger(__name__)
@@ -42,11 +41,13 @@ def search_table() -> Response:
 
         filters = request_json.get('filters', {})
 
-        results_dict = _search_table(filters=filters, search_term=search_term, page_index=page_index, search_type=search_type)
+        results_dict = _search_table(filters=filters,
+                                     search_term=search_term,
+                                     page_index=page_index,
+                                     search_type=search_type)
         return make_response(jsonify(results_dict), results_dict.get('status_code', HTTPStatus.INTERNAL_SERVER_ERROR))
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
-        results_dict['msg'] = message
         logging.exception(message)
         return make_response(jsonify(results_dict), HTTPStatus.INTERNAL_SERVER_ERROR)
 
@@ -80,9 +81,9 @@ def _search_table(*, search_term: str, page_index: int, filters: Dict, search_ty
     except Exception as e:
         message = 'Encountered exception generating query json: ' + str(e)
         results_dict['msg'] = message
+        results_dict['status_code'] = HTTPStatus.INTERNAL_SERVER_ERROR
         logging.exception(message)
-        return make_response(jsonify(results_dict), HTTPStatus.INTERNAL_SERVER_ERROR)
-
+        return results_dict
 
     try:
         url = app.config['SEARCHSERVICE_BASE'] + SEARCH_ENDPOINT
@@ -106,6 +107,7 @@ def _search_table(*, search_term: str, page_index: int, filters: Dict, search_ty
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         results_dict['msg'] = message
+        results_dict['status_code'] = HTTPStatus.INTERNAL_SERVER_ERROR
         logging.exception(message)
         return results_dict
 
@@ -114,7 +116,7 @@ def _search_table(*, search_term: str, page_index: int, filters: Dict, search_ty
 def search_user() -> Response:
     search_term = get_query_param(request.args, 'query', 'Endpoint takes a "query" parameter')
     page_index = get_query_param(request.args, 'page_index', 'Endpoint takes a "page_index" parameter')
-    search_type = request.args.get('searchType')
+    search_type = request.args.get('search_type')
 
     results_dict = _search_user(search_term=search_term, page_index=page_index, search_type=search_type)
 
@@ -173,6 +175,7 @@ def _search_user(*, search_term: str, page_index: int, search_type: str) -> Dict
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         results_dict['msg'] = message
+        results_dict['status_code'] = HTTPStatus.INTERNAL_SERVER_ERROR
         logging.exception(message)
         return results_dict
 

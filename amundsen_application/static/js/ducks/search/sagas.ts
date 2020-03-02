@@ -173,7 +173,7 @@ export function* setResourceWatcher(): SagaIterator {
 export function* setPageIndexWorker(action: SetPageIndexRequest): SagaIterator {
   const { pageIndex, updateUrl } = action.payload;
   const state = yield select(getSearchState);
-  yield put(searchResource("pagintation", state.search_term, state.selectedTab, pageIndex));
+  yield put(searchResource("pagination", state.search_term, state.selectedTab, pageIndex));
 
   if (updateUrl) {
     updateSearchUrl({

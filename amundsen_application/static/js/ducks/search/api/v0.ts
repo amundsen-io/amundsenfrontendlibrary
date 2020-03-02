@@ -29,7 +29,7 @@ export const searchResourceHelper = (response: AxiosResponse<SearchAPI>) => {
   return ret;
 };
 
-export function searchResource(pageIndex: number, resource: ResourceType, term: string, filters: ResourceFilterReducerState = {}, searchType?: string) {
+export function searchResource(pageIndex: number, resource: ResourceType, term: string, filters: ResourceFilterReducerState = {}, searchType: string) {
   if (resource === ResourceType.dashboard ||
      (resource === ResourceType.user && !indexUsersEnabled())) {
     return Promise.resolve({});
@@ -44,6 +44,6 @@ export function searchResource(pageIndex: number, resource: ResourceType, term: 
       searchType,
     }).then(searchResourceHelper);
   }
-  return axios.get(`${BASE_URL}/${resource}?query=${term}&page_index=${pageIndex}`)
+  return axios.get(`${BASE_URL}/${resource}?query=${term}&page_index=${pageIndex}&search_type=${searchType}`)
     .then(searchResourceHelper);
 };
