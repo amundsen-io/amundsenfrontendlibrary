@@ -6,7 +6,7 @@ from http import HTTPStatus
 from unittest.mock import patch
 
 from amundsen_application import create_app
-from amundsen_application.api.search.v0 import SEARCH_ENDPOINT, SEARCH_USER_ENDPOINT
+from amundsen_application.api.search.v0 import SEARCH_TABLE_ENDPOINT, SEARCH_USER_ENDPOINT
 
 local_app = create_app('amundsen_application.config.TestConfig', 'tests/templates')
 
@@ -49,7 +49,8 @@ class SearchTableQueryString(unittest.TestCase):
     def setUp(self) -> None:
         self.mock_table_results = MOCK_TABLE_RESULTS
         self.expected_parsed_table_results = MOCK_PARSED_TABLE_RESULTS
-        self.search_url = local_app.config['SEARCHSERVICE_BASE'] + SEARCH_ENDPOINT
+        self.search_service_url = local_app.config['SEARCHSERVICE_BASE'] + SEARCH_TABLE_ENDPOINT
+        self.fe_flask_endpoint = '/api/search/v0/table'
 
     def test_fail_if_term_is_none(self) -> None:
         """
@@ -57,7 +58,7 @@ class SearchTableQueryString(unittest.TestCase):
         :return:
         """
         with local_app.test_client() as test:
-            response = test.post('/api/search/v0/table', json={'pageIndex': 0})
+            response = test.post(self.fe_flask_endpoint, json={'pageIndex': 0})
             self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     def test_fail_if_page_index_is_none(self) -> None:
@@ -66,7 +67,7 @@ class SearchTableQueryString(unittest.TestCase):
         :return:
         """
         with local_app.test_client() as test:
-            response = test.post('/api/search/v0/table', json={'term': ''})
+            response = test.post(self.fe_flask_endpoint, json={'term': ''})
             self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     @responses.activate
@@ -81,10 +82,10 @@ class SearchTableQueryString(unittest.TestCase):
         test_term = 'hello'
         test_index = 1
         test_search_type = 'test'
-        responses.add(responses.POST, self.search_url, json=self.mock_table_results, status=HTTPStatus.OK)
+        responses.add(responses.POST, self.search_service_url, json=self.mock_table_results, status=HTTPStatus.OK)
 
         with local_app.test_client() as test:
-            test.post('/api/search/v0/table',
+            test.post(self.fe_flask_endpoint,
                       json={
                           'term': test_term,
                           'pageIndex': test_index,
@@ -106,10 +107,10 @@ class SearchTableQueryString(unittest.TestCase):
         test_filters = {'schema': 'test_schema'}
         test_term = 'hello'
         test_index = 1
-        responses.add(responses.POST, self.search_url, json=self.mock_table_results, status=HTTPStatus.OK)
+        responses.add(responses.POST, self.search_service_url, json=self.mock_table_results, status=HTTPStatus.OK)
 
         with local_app.test_client() as test:
-            test.post('/api/search/v0/table',
+            test.post(self.fe_flask_endpoint,
                       json={'term': test_term, 'pageIndex': test_index, 'filters': test_filters})
             mock_generate_query_json.assert_called_with(filters=test_filters,
                                                         page_index=test_index,
@@ -128,7 +129,7 @@ class SearchTableQueryString(unittest.TestCase):
         mock_generate_query_json.side_effect = Exception('Test exception')
 
         with local_app.test_client() as test:
-            response = test.post('/api/search/v0/table',
+            response = test.post(self.fe_flask_endpoint,
                                  json={'term': test_term, 'pageIndex': test_index, 'filters': test_filters})
             data = json.loads(response.data)
             self.assertEqual(data.get('msg'), 'Encountered exception generating query json: Test exception')
@@ -143,10 +144,10 @@ class SearchTableQueryString(unittest.TestCase):
         test_filters = {'schema': 'test_schema'}
         test_term = 'hello'
         test_index = 1
-        responses.add(responses.POST, self.search_url, json=self.mock_table_results, status=HTTPStatus.OK)
+        responses.add(responses.POST, self.search_service_url, json=self.mock_table_results, status=HTTPStatus.OK)
 
         with local_app.test_client() as test:
-            response = test.post('/api/search/v0/table',
+            response = test.post(self.fe_flask_endpoint,
                                  json={'term': test_term, 'pageIndex': test_index, 'filters': test_filters})
             data = json.loads(response.data)
             self.assertEqual(response.status_code, HTTPStatus.OK)
@@ -164,10 +165,10 @@ class SearchTableQueryString(unittest.TestCase):
         test_filters = {'schema': 'test_schema'}
         test_term = 'hello'
         test_index = 1
-        responses.add(responses.POST, self.search_url, json={}, status=HTTPStatus.BAD_REQUEST)
+        responses.add(responses.POST, self.search_service_url, json={}, status=HTTPStatus.BAD_REQUEST)
 
         with local_app.test_client() as test:
-            response = test.post('/api/search/v0/table',
+            response = test.post(self.fe_flask_endpoint,
                                  json={'term': test_term, 'pageIndex': test_index, 'filters': test_filters})
             data = json.loads(response.data)
             self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
@@ -218,6 +219,7 @@ class SearchUserTest(unittest.TestCase):
             'total_results': 1,
             'results': 'Bad results to trigger exception'
         }
+        self.fe_flask_endpoint = '/api/search/v0/user'
 
     def test_search_user_fail_if_no_query(self) -> None:
         """
@@ -226,7 +228,7 @@ class SearchUserTest(unittest.TestCase):
         :return:
         """
         with local_app.test_client() as test:
-            response = test.get('/api/search/v0/user', query_string=dict(page_index='0'))
+            response = test.get(self.fe_flask_endpoint, query_string=dict(page_index='0'))
             self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     def test_search_user_fail_if_no_page_index(self) -> None:
@@ -236,7 +238,7 @@ class SearchUserTest(unittest.TestCase):
         :return:
         """
         with local_app.test_client() as test:
-            response = test.get('/api/search/v0/user', query_string=dict(query='test'))
+            response = test.get(self.fe_flask_endpoint, query_string=dict(query='test'))
             self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     @responses.activate
@@ -249,7 +251,7 @@ class SearchUserTest(unittest.TestCase):
                       json=self.mock_search_user_results, status=HTTPStatus.OK)
 
         with local_app.test_client() as test:
-            response = test.get('/api/search/v0/user', query_string=dict(query='test', page_index='0'))
+            response = test.get(self.fe_flask_endpoint, query_string=dict(query='test', page_index='0'))
             data = json.loads(response.data)
             self.assertEqual(response.status_code, HTTPStatus.OK)
 
@@ -267,5 +269,5 @@ class SearchUserTest(unittest.TestCase):
                       json=self.mock_search_user_results, status=HTTPStatus.INTERNAL_SERVER_ERROR)
 
         with local_app.test_client() as test:
-            response = test.get('/api/search/v0/user', query_string=dict(query='test', page_index='0'))
+            response = test.get(self.fe_flask_endpoint, query_string=dict(query='test', page_index='0'))
             self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)

@@ -3,7 +3,7 @@ import { all, call, debounce, put, select, takeEvery, takeLatest } from 'redux-s
 import * as _ from 'lodash';
 import * as qs from 'simple-query-string';
 
-import { ResourceType } from 'interfaces/Resources';
+import { ResourceType, SearchType } from 'interfaces';
 
 import * as API from './api/v0';
 
@@ -68,7 +68,7 @@ export function* filterWorker(): SagaIterator {
   const state = yield select(getSearchState);
   const { search_term, selectedTab, filters } = state;
   const pageIndex = getPageIndex(state)
-  yield put(searchResource("filter", search_term, selectedTab, pageIndex));
+  yield put(searchResource(SearchType.FILTER, search_term, selectedTab, pageIndex));
   updateSearchUrl({ filters, resource: selectedTab, term: search_term, index: pageIndex }, true);
 };
 
@@ -90,7 +90,7 @@ export function* filterWatcher2(): SagaIterator {
 export function* filterWorker2(action: any): SagaIterator {
   const state = yield select(getSearchState);
   const { pageIndex = 0, resourceType, term = '' } = action.payload;
-  yield put(searchResource("filter", term, resourceType, pageIndex));
+  yield put(searchResource(SearchType.FILTER, term, resourceType, pageIndex));
   updateSearchUrl({ term, filters: state.filters, resource: resourceType, index: pageIndex }, false);
 };
 
@@ -98,8 +98,8 @@ export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
   const { term } = action.payload;
   try {
     const [tableResponse, userResponse] = yield all([
-      call(API.searchResource, 0, ResourceType.table, term, {}, "automatic"),
-      call(API.searchResource, 0, ResourceType.user, term, {}, "automatic"),
+      call(API.searchResource, 0, ResourceType.table, term, {}, SearchType.INLINE_SEARCH),
+      call(API.searchResource, 0, ResourceType.user, term, {}, SearchType.INLINE_SEARCH),
     ]);
     const inlineSearchResponse = {
       tables: tableResponse.tables || initialInlineResultsState.tables,
@@ -124,7 +124,7 @@ export function* selectInlineResultWorker(action): SagaIterator {
   const state = yield select();
   const { searchTerm, resourceType, updateUrl } = action.payload;
   if (state.search.inlineResults.isLoading) {
-    yield put(searchAll("searchbar", searchTerm, resourceType, 0, false))
+    yield put(searchAll(SearchType.SEARCH_BAR, searchTerm, resourceType, 0, false))
     updateSearchUrl({ term: searchTerm, filters: state.search.filters });
   }
   else {
@@ -147,7 +147,7 @@ export function* selectInlineResultsWatcher(): SagaIterator {
 export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
   const state = yield select(getSearchState);
   const { searchTerm, useFilters } = action.payload;
-  yield put(searchAll("searchbar", searchTerm, undefined, undefined, useFilters));
+  yield put(searchAll(SearchType.SEARCH_BAR, searchTerm, undefined, undefined, useFilters));
   updateSearchUrl({ term: searchTerm, filters: state.filters });
 };
 export function* submitSearchWatcher(): SagaIterator {
@@ -173,7 +173,7 @@ export function* setResourceWatcher(): SagaIterator {
 export function* setPageIndexWorker(action: SetPageIndexRequest): SagaIterator {
   const { pageIndex, updateUrl } = action.payload;
   const state = yield select(getSearchState);
-  yield put(searchResource("pagination", state.search_term, state.selectedTab, pageIndex));
+  yield put(searchResource(SearchType.PAGINATION, state.search_term, state.selectedTab, pageIndex));
 
   if (updateUrl) {
     updateSearchUrl({
@@ -192,7 +192,7 @@ export function* clearSearchWorker(action: ClearSearchRequest): SagaIterator {
   /* If there was a previous search term, search each resource using filters */
   const state = yield select(getSearchState);
   if (!!state.search_term) {
-    yield put(searchAll("automatic", '', undefined, undefined, true));
+    yield put(searchAll(SearchType.CLEAR_TERM, '', undefined, undefined, true));
   }
 };
 export function* clearSearchWatcher(): SagaIterator {
@@ -207,7 +207,7 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
 
   const state = yield select(getSearchState);
   if (!!term && state.search_term !== term) {
-    yield put(searchAll("external_page_view", term, resource, parsedIndex));
+    yield put(searchAll(SearchType.LOAD_FROM_URL, term, resource, parsedIndex));
   } else if (!!resource) {
     if (resource !== state.selectedTab) {
       yield put(setResource(resource, false))

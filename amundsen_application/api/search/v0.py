@@ -20,16 +20,15 @@ REQUEST_SESSION_TIMEOUT_SEC = 3
 
 search_blueprint = Blueprint('search', __name__, url_prefix='/api/search/v0')
 
-SEARCH_ENDPOINT = '/search_table'
+SEARCH_TABLE_ENDPOINT = '/search_table'
 SEARCH_USER_ENDPOINT = '/search_user'
 
 
 @search_blueprint.route('/table', methods=['POST'])
 def search_table() -> Response:
     """
-    TODO (ttannis): Update this docstring after amundsensearch documentation is merged
-    Calls the search service to execute a search. The request data is transformed
-    to the json payload defined [link]
+    Parse the request arguments and call the helper method to execute a table search
+    :return: a Response created with the results from the helper method
     """
     try:
         request_json = request.get_json()
@@ -55,13 +54,11 @@ def search_table() -> Response:
 @action_logging
 def _search_table(*, search_term: str, page_index: int, filters: Dict, search_type: str) -> Dict[str, Any]:
     """
-    call the search service endpoint and return matching results
+    Call the search service endpoint and return matching results
+    Search service logic defined here:
+    https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/api/table.py
+
     :return: a json output containing search results array as 'results'
-
-    Schema Defined Here:
-    https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/api/search.py
-
-    TODO: Define an interface for envoy_client (ttannis fix for filter)
     """
     # Default results
     tables = {
@@ -85,7 +82,7 @@ def _search_table(*, search_term: str, page_index: int, filters: Dict, search_ty
         return results_dict
 
     try:
-        url = app.config['SEARCHSERVICE_BASE'] + SEARCH_ENDPOINT
+        url = app.config['SEARCHSERVICE_BASE'] + SEARCH_TABLE_ENDPOINT
         response = request_search(url=url,
                                   headers={'Content-Type': 'application/json'},
                                   method='POST',
@@ -112,24 +109,32 @@ def _search_table(*, search_term: str, page_index: int, filters: Dict, search_ty
 
 @search_blueprint.route('/user', methods=['GET'])
 def search_user() -> Response:
-    search_term = get_query_param(request.args, 'query', 'Endpoint takes a "query" parameter')
-    page_index = get_query_param(request.args, 'page_index', 'Endpoint takes a "page_index" parameter')
-    search_type = request.args.get('search_type')
+    """
+    Parse the request arguments and call the helper method to execute a user search
+    :return: a Response created with the results from the helper method
+    """
+    try:
+        search_term = get_query_param(request.args, 'query', 'Endpoint takes a "query" parameter')
+        page_index = get_query_param(request.args, 'page_index', 'Endpoint takes a "page_index" parameter')
+        search_type = request.args.get('search_type')
 
-    results_dict = _search_user(search_term=search_term, page_index=page_index, search_type=search_type)
+        results_dict = _search_user(search_term=search_term, page_index=page_index, search_type=search_type)
 
-    return make_response(jsonify(results_dict), results_dict.get('status_code', HTTPStatus.INTERNAL_SERVER_ERROR))
+        return make_response(jsonify(results_dict), results_dict.get('status_code', HTTPStatus.INTERNAL_SERVER_ERROR))
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        return make_response(jsonify(results_dict), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 @action_logging
 def _search_user(*, search_term: str, page_index: int, search_type: str) -> Dict[str, Any]:
     """
-    call the search service endpoint and return matching results
-    :return: a json output containing search results array as 'results'
-
-    Schema Defined Here:
+    Call the search service endpoint and return matching results
+    Search service logic defined here:
     https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/api/user.py
-    TODO: Define an interface for envoy_client
+
+    :return: a json output containing search results array as 'results'
     """
 
     def _map_user_result(result: Dict) -> Dict:

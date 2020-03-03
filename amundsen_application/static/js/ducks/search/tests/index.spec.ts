@@ -1,7 +1,7 @@
 import { testSaga } from 'redux-saga-test-plan';
 import { debounce } from 'redux-saga/effects';
 
-import { DEFAULT_RESOURCE_TYPE, ResourceType } from 'interfaces';
+import { DEFAULT_RESOURCE_TYPE, ResourceType, SearchType } from 'interfaces';
 
 import * as NavigationUtils from 'utils/navigationUtils';
 import * as SearchUtils from 'ducks/search/utils';
@@ -142,31 +142,35 @@ describe('search ducks', () => {
   };
 
   describe('actions', () => {
-    /*it('searchAll - returns the action to search all resources without useFilters', () => {
+    it('searchAll - returns the action to search all resources without useFilters', () => {
       const term = 'test';
       const resource = ResourceType.table;
       const pageIndex = 0;
-      const action = searchAll(term, resource, pageIndex);
+      const searchType = SearchType.SEARCH_BAR;
+      const action = searchAll(searchType, term, resource, pageIndex);
       const { payload } = action;
       expect(action.type).toBe(SearchAll.REQUEST);
       expect(payload.resource).toBe(resource);
       expect(payload.term).toBe(term);
       expect(payload.pageIndex).toBe(pageIndex);
       expect(payload.useFilters).toBe(false);
+      expect(payload.searchType).toBe(searchType);
     });
 
     it('searchAll - returns the action to search all resources with useFilters', () => {
       const term = 'test';
       const resource = ResourceType.table;
       const pageIndex = 0;
-      const action = searchAll(term, resource, pageIndex, true);
+      const searchType = SearchType.SEARCH_BAR;
+      const action = searchAll(searchType, term, resource, pageIndex, true);
       const { payload } = action;
       expect(action.type).toBe(SearchAll.REQUEST);
       expect(payload.resource).toBe(resource);
       expect(payload.term).toBe(term);
       expect(payload.pageIndex).toBe(pageIndex);
       expect(payload.useFilters).toBe(true);
-    });*/
+      expect(payload.searchType).toBe(searchType);
+    });
 
     it('searchAllSuccess - returns the action to process the success', () => {
       const action = searchAllSuccess(expectedSearchAllResults);
@@ -180,17 +184,19 @@ describe('search ducks', () => {
       expect(action.type).toBe(SearchAll.FAILURE);
     });
 
-    /*it('searchResource - returns the action to search all resources', () => {
+    it('searchResource - returns the action to search all resources', () => {
       const term = 'test';
       const resource = ResourceType.table;
       const pageIndex = 0;
-      const action = searchResource(term, resource, pageIndex);
+      const searchType = SearchType.SEARCH_BAR;
+      const action = searchResource(searchType, term, resource, pageIndex);
       const { payload } = action;
       expect(action.type).toBe(SearchResource.REQUEST);
       expect(payload.resource).toBe(resource);
       expect(payload.term).toBe(term);
       expect(payload.pageIndex).toBe(pageIndex);
-    });*/
+      expect(payload.searchType).toBe(searchType);
+    });
 
     it('searchResourceSuccess - returns the action to process the success', () => {
       const action = searchResourceSuccess(expectedSearchResults);
@@ -311,7 +317,7 @@ describe('search ducks', () => {
 
    it('should handle SearchAll.REQUEST', () => {
       const term = 'testSearch';
-      expect(reducer(testState, searchAll('searchbar', term, ResourceType.table, 0))).toEqual({
+      expect(reducer(testState, searchAll(SearchType.SEARCH_BAR, term, ResourceType.table, 0))).toEqual({
         ...testState,
         inlineResults: initialInlineResultsState,
         search_term: term,
@@ -344,7 +350,7 @@ describe('search ducks', () => {
     });
 
     it('should handle SearchResource.REQUEST', () => {
-      expect(reducer(testState, searchResource('searchbar', 'test', ResourceType.table, 0))).toEqual({
+      expect(reducer(testState, searchResource(SearchType.SEARCH_BAR, 'test', ResourceType.table, 0))).toEqual({
         ...initialState,
         isLoading: true,
       });
@@ -496,7 +502,7 @@ describe('search ducks', () => {
           updateSearchUrlSpy.mockClear();
           saga = saga.next().select(SearchUtils.getSearchState).next(mockSearchState);
           expect(getPageIndexSpy).toHaveBeenCalledWith(mockSearchState);
-          saga = saga.put(searchResource('filter', mockSearchState.search_term, mockSearchState.selectedTab, mockIndex)).next();
+          saga = saga.put(searchResource(SearchType.FILTER, mockSearchState.search_term, mockSearchState.selectedTab, mockIndex)).next();
           expect(updateSearchUrlSpy).toHaveBeenCalledWith({
             filters: mockSearchState.filters,
             resource: mockSearchState.selectedTab,
@@ -528,7 +534,7 @@ describe('search ducks', () => {
       */
 
       it('handles request error', () => {
-        testSaga(Sagas.searchAllWorker, searchAll('test', 'test', ResourceType.table, 0, true))
+        testSaga(Sagas.searchAllWorker, searchAll(SearchType.SEARCH_BAR, 'test', ResourceType.table, 0, true))
           .next().select(SearchUtils.getSearchState)
           .next(globalState.search).throw(new Error()).put(searchAllFailure())
           .next().isDone();
@@ -549,7 +555,7 @@ describe('search ducks', () => {
         const resource = ResourceType.table;
         const term = 'test';
         const mockSearchState = globalState.search;
-        const searchType = 'testtype';
+        const searchType = SearchType.PAGINATION;
         testSaga(Sagas.searchResourceWorker, searchResource(searchType, term, resource, pageIndex))
           .next().select(SearchUtils.getSearchState)
           .next(mockSearchState).call(API.searchResource, pageIndex, resource, term, mockSearchState.filters[resource], searchType)
@@ -558,7 +564,7 @@ describe('search ducks', () => {
       });
 
       it('handles request error', () => {
-        testSaga(Sagas.searchResourceWorker, searchResource('testtype', 'test', ResourceType.table, 0))
+        testSaga(Sagas.searchResourceWorker, searchResource(SearchType.PAGINATION, 'test', ResourceType.table, 0))
           .next().select(SearchUtils.getSearchState)
           .next(globalState.search).throw(new Error()).put(searchResourceFailure())
           .next().isDone();
@@ -572,7 +578,7 @@ describe('search ducks', () => {
         updateSearchUrlSpy.mockClear();
         testSaga(Sagas.submitSearchWorker, submitSearch(term, true))
           .next().select(SearchUtils.getSearchState)
-          .next(mockSearchState).put(searchAll('searchbar', term, undefined, undefined, true))
+          .next(mockSearchState).put(searchAll(SearchType.SEARCH_BAR, term, undefined, undefined, true))
           .next().isDone();
           expect(updateSearchUrlSpy).toHaveBeenCalledWith({ term, filters: mockSearchState.filters });
 
@@ -631,7 +637,7 @@ describe('search ducks', () => {
 
         testSaga(Sagas.setPageIndexWorker, setPageIndex(index, updateUrl))
           .next().select(SearchUtils.getSearchState)
-          .next(searchState).put(searchResource('pagination', searchState.search_term, searchState.selectedTab, index))
+          .next(searchState).put(searchResource(SearchType.PAGINATION, searchState.search_term, searchState.selectedTab, index))
           .next().isDone();
         expect(updateSearchUrlSpy).toHaveBeenCalled();
       });
@@ -643,7 +649,7 @@ describe('search ducks', () => {
 
         testSaga(Sagas.setPageIndexWorker, setPageIndex(index, updateUrl))
           .next().select(SearchUtils.getSearchState)
-          .next(searchState).put(searchResource('pagination', searchState.search_term, searchState.selectedTab, index))
+          .next(searchState).put(searchResource(SearchType.PAGINATION, searchState.search_term, searchState.selectedTab, index))
           .next().isDone();
         expect(updateSearchUrlSpy).not.toHaveBeenCalled();
       });
@@ -678,7 +684,7 @@ describe('search ducks', () => {
       it('Calls searchAll when search term changes', () => {
         term = 'new search';
         sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
-          .put(searchAll('external_page_view', term, resource, index))
+          .put(searchAll(SearchType.LOAD_FROM_URL, term, resource, index))
           .next().isDone();
       });
 

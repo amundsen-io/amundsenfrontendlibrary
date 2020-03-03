@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 import { indexUsersEnabled } from 'config/config-utils';
-import { ResourceType } from 'interfaces';
+import { ResourceType, SearchType } from 'interfaces';
 
 import { DashboardSearchResults, TableSearchResults, UserSearchResults } from '../types';
 
@@ -29,7 +29,7 @@ export const searchResourceHelper = (response: AxiosResponse<SearchAPI>) => {
   return ret;
 };
 
-export function searchResource(pageIndex: number, resource: ResourceType, term: string, filters: ResourceFilterReducerState = {}, searchType: string) {
+export function searchResource(pageIndex: number, resource: ResourceType, term: string, filters: ResourceFilterReducerState = {}, searchType: SearchType) {
   if (resource === ResourceType.dashboard ||
      (resource === ResourceType.user && !indexUsersEnabled())) {
     return Promise.resolve({});
