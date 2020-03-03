@@ -11,8 +11,9 @@ export enum FilterType {
 export enum SearchType {
   CLEAR_TERM = 'clearTerm',
   FILTER = 'filter',
-  INLINE_SEARCH = 'inline',
+  INLINE_SEARCH = 'inlineSearch',
+  INLINE_SELECT = 'inlineSelect',
   LOAD_FROM_URL = 'loadFromUrl',
   PAGINATION = 'pagination',
-  SEARCH_BAR = 'search',
+  SEARCH_BAR = 'searchbar',
 }

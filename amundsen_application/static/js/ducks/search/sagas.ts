@@ -124,7 +124,7 @@ export function* selectInlineResultWorker(action): SagaIterator {
   const state = yield select();
   const { searchTerm, resourceType, updateUrl } = action.payload;
   if (state.search.inlineResults.isLoading) {
-    yield put(searchAll(SearchType.SEARCH_BAR, searchTerm, resourceType, 0, false))
+    yield put(searchAll(SearchType.INLINE_SELECT, searchTerm, resourceType, 0, false))
     updateSearchUrl({ term: searchTerm, filters: state.search.filters });
   }
   else {
