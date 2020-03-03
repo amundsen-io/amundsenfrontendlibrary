@@ -1,5 +1,6 @@
 import * as React from 'react';
 
+import { mocked } from 'ts-jest/utils';
 import { shallow } from 'enzyme';
 
 import TableHeaderBullets, { TableHeaderBulletsProps } from '../';
@@ -31,8 +32,8 @@ describe('TableHeaderBullets', () => {
     let wrapper;
     let listElement;
     beforeAll(() => {
-      getDatabaseDisplayName.mockImplementation(() => MOCK_DB_DISPLAY_NAME);
-      getDisplayNameByResource.mockImplementation(() => MOCK_RESOURCE_DISPLAY_NAME);
+      mocked(getDatabaseDisplayName).mockImplementation(() => MOCK_DB_DISPLAY_NAME);
+      mocked(getDisplayNameByResource).mockImplementation(() => MOCK_RESOURCE_DISPLAY_NAME);
       const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
