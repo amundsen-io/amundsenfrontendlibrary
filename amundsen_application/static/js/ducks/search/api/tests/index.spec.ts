@@ -74,7 +74,7 @@ describe('searchResource', () => {
         const pageIndex = 0;
         const resourceType = ResourceType.user;
         const term = 'test';
-        const searchType = SearchType.SEARCH_BAR;
+        const searchType = SearchType.SUBMIT_TERM;
         await API.searchResource(pageIndex, resourceType, term, undefined, searchType);
         expect(axiosMockGet).toHaveBeenCalledWith(`${API.BASE_URL}/${resourceType}?query=${term}&page_index=${pageIndex}&search_type=${searchType}`);
         expect(axiosMockPost).not.toHaveBeenCalled();
@@ -95,7 +95,7 @@ describe('searchResource', () => {
         const resourceType = ResourceType.table;
         const term = 'test';
         const filters = { 'schema': 'schema_name' }
-        const searchType = SearchType.SEARCH_BAR;
+        const searchType = SearchType.SUBMIT_TERM;
         await API.searchResource(pageIndex, resourceType, term, filters, searchType);
         expect(axiosMockGet).not.toHaveBeenCalled();
         expect(axiosMockPost).toHaveBeenCalledWith(`${API.BASE_URL}/${resourceType}`, {

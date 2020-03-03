@@ -147,7 +147,7 @@ export function* selectInlineResultsWatcher(): SagaIterator {
 export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
   const state = yield select(getSearchState);
   const { searchTerm, useFilters } = action.payload;
-  yield put(searchAll(SearchType.SEARCH_BAR, searchTerm, undefined, undefined, useFilters));
+  yield put(searchAll(SearchType.SUBMIT_TERM, searchTerm, undefined, undefined, useFilters));
   updateSearchUrl({ term: searchTerm, filters: state.filters });
 };
 export function* submitSearchWatcher(): SagaIterator {
@@ -207,7 +207,7 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
 
   const state = yield select(getSearchState);
   if (!!term && state.search_term !== term) {
-    yield put(searchAll(SearchType.LOAD_FROM_URL, term, resource, parsedIndex));
+    yield put(searchAll(SearchType.LOAD_URL, term, resource, parsedIndex));
   } else if (!!resource) {
     if (resource !== state.selectedTab) {
       yield put(setResource(resource, false))

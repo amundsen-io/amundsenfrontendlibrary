@@ -9,11 +9,11 @@ export enum FilterType {
 }
 
 export enum SearchType {
-  CLEAR_TERM = 'clearTerm',
-  FILTER = 'filter',
+  CLEAR_TERM = 'clearSearchTerm',
+  FILTER = 'updateFilter',
   INLINE_SEARCH = 'inlineSearch',
   INLINE_SELECT = 'inlineSelect',
-  LOAD_FROM_URL = 'loadFromUrl',
-  PAGINATION = 'pagination',
-  SEARCH_BAR = 'searchbar',
+  LOAD_URL = 'loadUrl',
+  PAGINATION = 'updatePage',
+  SUBMIT_TERM = 'submitSearchTerm',
 }

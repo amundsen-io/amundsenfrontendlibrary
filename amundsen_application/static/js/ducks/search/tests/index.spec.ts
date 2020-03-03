@@ -146,7 +146,7 @@ describe('search ducks', () => {
       const term = 'test';
       const resource = ResourceType.table;
       const pageIndex = 0;
-      const searchType = SearchType.SEARCH_BAR;
+      const searchType = SearchType.SUBMIT_TERM;
       const action = searchAll(searchType, term, resource, pageIndex);
       const { payload } = action;
       expect(action.type).toBe(SearchAll.REQUEST);
@@ -161,7 +161,7 @@ describe('search ducks', () => {
       const term = 'test';
       const resource = ResourceType.table;
       const pageIndex = 0;
-      const searchType = SearchType.SEARCH_BAR;
+      const searchType = SearchType.SUBMIT_TERM;
       const action = searchAll(searchType, term, resource, pageIndex, true);
       const { payload } = action;
       expect(action.type).toBe(SearchAll.REQUEST);
@@ -188,7 +188,7 @@ describe('search ducks', () => {
       const term = 'test';
       const resource = ResourceType.table;
       const pageIndex = 0;
-      const searchType = SearchType.SEARCH_BAR;
+      const searchType = SearchType.SUBMIT_TERM;
       const action = searchResource(searchType, term, resource, pageIndex);
       const { payload } = action;
       expect(action.type).toBe(SearchResource.REQUEST);
@@ -317,7 +317,7 @@ describe('search ducks', () => {
 
    it('should handle SearchAll.REQUEST', () => {
       const term = 'testSearch';
-      expect(reducer(testState, searchAll(SearchType.SEARCH_BAR, term, ResourceType.table, 0))).toEqual({
+      expect(reducer(testState, searchAll(SearchType.SUBMIT_TERM, term, ResourceType.table, 0))).toEqual({
         ...testState,
         inlineResults: initialInlineResultsState,
         search_term: term,
@@ -350,7 +350,7 @@ describe('search ducks', () => {
     });
 
     it('should handle SearchResource.REQUEST', () => {
-      expect(reducer(testState, searchResource(SearchType.SEARCH_BAR, 'test', ResourceType.table, 0))).toEqual({
+      expect(reducer(testState, searchResource(SearchType.SUBMIT_TERM, 'test', ResourceType.table, 0))).toEqual({
         ...initialState,
         isLoading: true,
       });
@@ -534,7 +534,7 @@ describe('search ducks', () => {
       */
 
       it('handles request error', () => {
-        testSaga(Sagas.searchAllWorker, searchAll(SearchType.SEARCH_BAR, 'test', ResourceType.table, 0, true))
+        testSaga(Sagas.searchAllWorker, searchAll(SearchType.SUBMIT_TERM, 'test', ResourceType.table, 0, true))
           .next().select(SearchUtils.getSearchState)
           .next(globalState.search).throw(new Error()).put(searchAllFailure())
           .next().isDone();
@@ -578,7 +578,7 @@ describe('search ducks', () => {
         updateSearchUrlSpy.mockClear();
         testSaga(Sagas.submitSearchWorker, submitSearch(term, true))
           .next().select(SearchUtils.getSearchState)
-          .next(mockSearchState).put(searchAll(SearchType.SEARCH_BAR, term, undefined, undefined, true))
+          .next(mockSearchState).put(searchAll(SearchType.SUBMIT_TERM, term, undefined, undefined, true))
           .next().isDone();
           expect(updateSearchUrlSpy).toHaveBeenCalledWith({ term, filters: mockSearchState.filters });
 
@@ -684,7 +684,7 @@ describe('search ducks', () => {
       it('Calls searchAll when search term changes', () => {
         term = 'new search';
         sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
-          .put(searchAll(SearchType.LOAD_FROM_URL, term, resource, index))
+          .put(searchAll(SearchType.LOAD_URL, term, resource, index))
           .next().isDone();
       });
 
