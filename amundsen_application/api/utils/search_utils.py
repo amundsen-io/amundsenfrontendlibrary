@@ -4,6 +4,7 @@ from typing import Dict, List  # noqa: F401
 valid_search_fields = {
     'column',
     'database',
+    'badge',
     'schema',
     'table',
     'tag'
@@ -19,6 +20,7 @@ def map_table_result(result: Dict) -> Dict:
         'description': result.get('description', None),
         'database': result.get('database', None),
         'schema': result.get('schema', None),
+        'badges': _map_badges(result.get('badges', None)),
         'last_updated_timestamp': result.get('last_updated_timestamp', None),
     }
 
@@ -51,3 +53,9 @@ def generate_query_json(*, filters: Dict = {}, page_index: int, search_term: str
         },
         'query_term': search_term
     }
+
+
+def _map_badges(badges: List[str]) -> List[Dict[str, str]]:
+    if not badges:
+        return []
+    return [{"tag_name": badge, "tag_type": "badge"} for badge in badges]
