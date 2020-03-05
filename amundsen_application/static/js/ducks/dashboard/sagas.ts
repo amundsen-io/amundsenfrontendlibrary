@@ -5,9 +5,9 @@ import * as API from './api/v0';
 import { getDashboardSuccess, getDashboardFailure } from './reducer';
 import { GetDashboard } from './types';
 
-export function* getDashboardWorker(request): SagaIterator {
+export function* getDashboardWorker(action): SagaIterator {
   try {
-    const uri = request.payload.uri;
+    const uri = action.payload.uri;
     const dashboard = yield call(API.getDashboard, uri);
     yield put(getDashboardSuccess(dashboard));
   } catch (e) {

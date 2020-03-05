@@ -29,6 +29,7 @@ const globalState: GlobalState = {
     myBookmarksIsLoaded: false,
     bookmarksForUser: [],
   },
+  // TODO - move dashboard to separate fixture
   dashboard: {
     isLoading: false,
     dashboard: {

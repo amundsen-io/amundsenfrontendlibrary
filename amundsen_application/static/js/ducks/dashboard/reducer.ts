@@ -1,20 +1,12 @@
+import { GetDashboard, GetDashboardRequest } from 'ducks/dashboard/types';
+import { Dashboard } from 'interfaces/Dashboard';
 
 
 /* Actions */
-import { GetDashboard, GetDashboardRequest } from 'ducks/dashboard/types';
-import { Dashboard } from 'interfaces/Dashboard';
-import { User } from 'interfaces/User';
-import { TableSummary } from 'interfaces/TableMetadata';
-import { Tag } from 'interfaces/Tags';
-import { TableMetadataReducerState } from 'ducks/tableMetadata/reducer';
 
-export function getDashboard(uri: string, searchIndex?: string, source?: string): GetDashboardRequest {
+export function getDashboard(payload: { uri: string, searchIndex?: string, source?: string }): GetDashboardRequest {
   return {
-    payload: {
-      uri,
-      searchIndex,
-      source,
-    },
+    payload,
     type: GetDashboard.REQUEST,
   }
 }
@@ -22,7 +14,7 @@ export function getDashboard(uri: string, searchIndex?: string, source?: string)
 export function getDashboardFailure() {
   return {
     type: GetDashboard.FAILURE,
-    payload: { }
+    payload: {}
   }
 }
 export function getDashboardSuccess(dashboard) {

@@ -31,7 +31,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  getDashboard: (uri: string, index?: string, source?: string) => GetDashboardRequest;
+  getDashboard: (payload: { uri: string, index?: string, source?: string }) => GetDashboardRequest;
 }
 
 export type DashboardPageProps = RouteComponentProps<RouteProps> & StateFromProps & DispatchFromProps;
@@ -49,7 +49,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
   }
 
   loadDashboard() {
-    this.props.getDashboard(this.state.uri);
+    this.props.getDashboard({ uri: this.state.uri });
   }
 
   renderTabs() {

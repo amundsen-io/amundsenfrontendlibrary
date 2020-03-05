@@ -1,3 +1,5 @@
+import { Dashboard } from 'interfaces/Dashboard';
+
 export enum GetDashboard {
   REQUEST = 'amundsen/dashboard/GET_DASHBOARD_REQUEST',
   SUCCESS = 'amundsen/dashboard/GET_DASHBOARD_SUCCESS',
@@ -16,6 +18,6 @@ export interface GetDashboardRequest {
 export interface GetDashboardResponse {
   type: GetDashboard.SUCCESS | GetDashboard.FAILURE;
   payload: {
-    dashboard: any;
+    dashboard: Dashboard;
   }
 }
