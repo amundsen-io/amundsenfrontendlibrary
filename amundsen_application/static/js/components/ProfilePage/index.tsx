@@ -8,7 +8,7 @@ import * as qs from 'simple-query-string';
 
 import Breadcrumb from 'components/common/Breadcrumb';
 import Flag from 'components/common/Flag';
-import Tabs from 'components/common/Tabs';
+import TabsComponent from 'components/common/TabsComponent';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { getUser, getUserOwn, getUserRead } from 'ducks/user/reducer';
@@ -212,10 +212,8 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
               }
             </div>
           </header>
-          <main>
-            <div className="profile-tabs">
-              <Tabs tabs={ this.generateTabInfo() } defaultTab={ BOOKMARKED_TAB_KEY } />
-            </div>
+          <main className="profile-body">
+            <TabsComponent tabs={ this.generateTabInfo() } defaultTab={ BOOKMARKED_TAB_KEY } />
           </main>
         </div>
       </DocumentTitle>

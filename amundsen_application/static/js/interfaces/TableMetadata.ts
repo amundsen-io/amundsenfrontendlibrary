@@ -26,6 +26,7 @@ export interface TableColumnStats {
   end_epoch: number;
 }
 
+// TODO - Make this reusable for dashboards
 export interface TableReader {
   read_count: number;
   user: User;
@@ -85,6 +86,13 @@ export interface TableMetadata {
   table_readers: TableReader[];
   source: TableSource;
   watermarks: Watermark[];
+}
+
+export interface TableSummary {
+  database: string;
+  cluster: string;
+  schema: string;
+  name: string;
 }
 
 export interface UpdateOwnerPayload {
