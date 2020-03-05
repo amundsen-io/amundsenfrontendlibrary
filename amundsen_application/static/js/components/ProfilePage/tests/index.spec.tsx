@@ -6,7 +6,7 @@ import { shallow } from 'enzyme';
 
 import Breadcrumb from 'components/common/Breadcrumb';
 import Flag from 'components/common/Flag';
-import Tabs from 'components/common/Tabs';
+import TabsComponent from 'components/common/TabsComponent';
 import { mapDispatchToProps, mapStateToProps, ProfilePage, ProfilePageProps, RouteProps } from '../';
 
 import globalState from 'fixtures/globalState';
@@ -293,7 +293,7 @@ describe('ProfilePage', () => {
     });
 
     it('renders Tabs w/ correct props', () => {
-      expect(wrapper.find('.profile-tabs').find(Tabs).props()).toMatchObject({
+      expect(wrapper.find('.profile-body').find(TabsComponent).props()).toMatchObject({
         tabs: wrapper.instance().generateTabInfo(),
         defaultTab: BOOKMARKED_TAB_KEY,
       });

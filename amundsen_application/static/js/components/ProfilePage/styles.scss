@@ -12,17 +12,7 @@
     }
   }
 
-  .profile-tabs {
-    margin-top: 24px;
-
-    .nav-tabs {
-      margin-left: 16px;
-    }
-
-    .list-group {
-      margin-top: 0;
-    }
-
+  .profile-body {
 
     // TODO: consider moving logic for empty content into Tab component
     .empty-tab-message {
