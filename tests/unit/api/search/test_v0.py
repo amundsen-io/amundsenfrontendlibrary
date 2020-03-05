@@ -130,8 +130,7 @@ class SearchTable(unittest.TestCase):
     @patch('amundsen_application.api.search.v0.generate_query_json')
     def test_does_not_calls_generate_query_json(self, mock_generate_query_json, has_filters_mock) -> None:
         """
-        Test generate_query_json helper method is called with correct arguments
-        from the request_json if filters exist
+        Test generate_query_json helper method is not called if filters do not exist
         :return:
         """
         test_term = 'hello'
