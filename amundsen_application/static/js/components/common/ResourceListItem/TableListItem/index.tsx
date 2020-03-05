@@ -34,7 +34,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
     const { table } = this.props;
 
     return (
-      <li className="list-group-item">
+      <li className="list-group-item clickable">
         <Link className="resource-list-item table-list-item" to={ this.getLink() }>
           <div className="resource-info">
             <img className={this.generateResourceIconClass(table.database)} />
