@@ -1,5 +1,8 @@
 from jira import JIRA, JIRAError, Issue
 from typing import List
+
+from flask import current_app as app
+
 from amundsen_application.base.base_issue_tracker_client import BaseIssueTrackerClient
 from amundsen_application.proxy.issue_tracker_clients.issue_exceptions import IssueConfigurationException
 from amundsen_application.models.data_issue import DataIssue
@@ -72,7 +75,8 @@ class JiraClient(BaseIssueTrackerClient):
             }, issuetype={
                 'id': ISSUE_TYPE_ID,
                 'name': ISSUE_TYPE_NAME,
-            }, summary=title, description=f'{description} \n Table Key: {table_uri} [PLEASE DO NOT REMOVE]'))
+            }, summary=title, description=f'{description} \n Table Key: {table_uri} [PLEASE DO NOT REMOVE]',
+                reporter=app.config['AUTH_USER_METHOD'](app).email))
 
             return self._get_issue_properties(issue=issue)
         except JIRAError as e:
