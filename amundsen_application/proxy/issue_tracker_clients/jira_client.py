@@ -76,7 +76,7 @@ class JiraClient(BaseIssueTrackerClient):
                 'id': ISSUE_TYPE_ID,
                 'name': ISSUE_TYPE_NAME,
             }, summary=title, description=f'{description} \n Table Key: {table_uri} [PLEASE DO NOT REMOVE]',
-                reporter=app.config['AUTH_USER_METHOD'](app).email))
+                reporter={'email': app.config['AUTH_USER_METHOD'](app).email}))
 
             return self._get_issue_properties(issue=issue)
         except JIRAError as e:
