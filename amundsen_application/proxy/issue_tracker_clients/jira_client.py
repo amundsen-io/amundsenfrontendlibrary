@@ -70,8 +70,12 @@ class JiraClient(BaseIssueTrackerClient):
         :return: Metadata about the newly created issue
         """
         try:
-            user_email = app.config['AUTH_USER_METHOD'](app).email
-            jira_id = user_email.split('@')[0]
+            if app.config['AUTH_USER_METHOD']:
+                user_email = app.config['AUTH_USER_METHOD'](app).email
+                jira_id = user_email.split('@')[0]
+            else:
+                raise Exception('AUTH_USER_METHOD must be configured to set the JIRA issue reporter')
+
             issue = self.jira_client.create_issue(fields=dict(project={
                 'id': self.jira_project_id
             }, issuetype={
