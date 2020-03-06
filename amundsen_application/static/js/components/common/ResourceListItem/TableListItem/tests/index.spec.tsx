@@ -33,7 +33,7 @@ describe('TableListItem', () => {
         description: 'I am the description',
         key: '',
         last_updated_timestamp: 1553829681,
-        badges: [ { tag_name: "badgeName", tag_type: TagType.BADGE } ],
+        badges: [ { tag_name: 'badgeName', tag_type: TagType.BADGE } ],
         name: 'tableName',
         schema: 'tableSchema',
       },
