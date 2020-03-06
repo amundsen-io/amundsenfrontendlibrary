@@ -72,6 +72,8 @@ class JiraClient(BaseIssueTrackerClient):
         try:
             if app.config['AUTH_USER_METHOD']:
                 user_email = app.config['AUTH_USER_METHOD'](app).email
+                # We currently cannot use the email directly because of the following issue:
+                # https://community.atlassian.com/t5/Answers-Developer-Questions/JIRA-Rest-API-find-JIRA-user-based-on-user-s-email-address/qaq-p/532715
                 jira_id = user_email.split('@')[0]
             else:
                 raise Exception('AUTH_USER_METHOD must be configured to set the JIRA issue reporter')
@@ -81,7 +83,10 @@ class JiraClient(BaseIssueTrackerClient):
             }, issuetype={
                 'id': ISSUE_TYPE_ID,
                 'name': ISSUE_TYPE_NAME,
-            }, summary=title, description=f'{description} \n Table Key: {table_uri} [PLEASE DO NOT REMOVE]',
+            }, summary=title,
+                description=(f'{description} '
+                             f'\n Reported By: {user_email} '
+                             f'\n Table Key: {table_uri} [PLEASE DO NOT REMOVE]'),
                 reporter={'name': jira_id}))
 
             return self._get_issue_properties(issue=issue)
