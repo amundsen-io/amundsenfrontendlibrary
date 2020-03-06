@@ -22,6 +22,7 @@ def map_table_result(result: Dict) -> Dict:
         'last_updated_timestamp': result.get('last_updated_timestamp', None),
     }
 
+
 def transform_filters(*, filters: Dict = {}) -> Dict:
     """
     Transforms the data shape of filters from the application to the data

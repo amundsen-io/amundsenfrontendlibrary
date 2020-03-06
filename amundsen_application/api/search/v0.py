@@ -11,7 +11,8 @@ from flask.blueprints import Blueprint
 
 from amundsen_application.log.action_log import action_logging
 from amundsen_application.api.utils.request_utils import get_query_param, request_search
-from amundsen_application.api.utils.search_utils import generate_query_json, has_filters, map_table_result, transform_filters
+from amundsen_application.api.utils.search_utils import generate_query_json, has_filters, \
+    map_table_result, transform_filters
 from amundsen_application.models.user import load_user, dump_user
 
 LOGGER = logging.getLogger(__name__)
