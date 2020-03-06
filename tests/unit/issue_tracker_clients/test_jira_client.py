@@ -158,4 +158,4 @@ class JiraClientTest(unittest.TestCase):
                 'id': 1,
                 'name': 'Bug',
             }, summary='title', description='desc' + ' \n Table Key: ' + 'key [PLEASE DO NOT REMOVE]',
-                reporter={'email': 'test@email.com'}))
+                reporter='ttannis'))

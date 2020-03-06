@@ -70,13 +70,15 @@ class JiraClient(BaseIssueTrackerClient):
         :return: Metadata about the newly created issue
         """
         try:
+            # user_email = app.config['AUTH_USER_METHOD'](app).email
+            # Testing if we need user_id vs email
             issue = self.jira_client.create_issue(fields=dict(project={
                 'id': self.jira_project_id
             }, issuetype={
                 'id': ISSUE_TYPE_ID,
                 'name': ISSUE_TYPE_NAME,
             }, summary=title, description=f'{description} \n Table Key: {table_uri} [PLEASE DO NOT REMOVE]',
-                reporter={'email': app.config['AUTH_USER_METHOD'](app).email}))
+                reporter='ttannis'))
 
             return self._get_issue_properties(issue=issue)
         except JIRAError as e:
