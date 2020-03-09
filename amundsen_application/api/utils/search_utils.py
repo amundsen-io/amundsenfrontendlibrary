@@ -53,4 +53,3 @@ def generate_query_json(*, filters: Dict = {}, page_index: int, search_term: str
         },
         'query_term': search_term
     }
-
