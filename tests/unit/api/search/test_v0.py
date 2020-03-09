@@ -6,7 +6,7 @@ from http import HTTPStatus
 from unittest.mock import patch
 
 from amundsen_application import create_app
-from amundsen_application.api.search.v0 import SEARCH_TABLE_ENDPOINT, SEARCH_USER_ENDPOINT
+from amundsen_application.api.search.v0 import SEARCH_TABLE_ENDPOINT, SEARCH_TABLE_FILTER_ENDPOINT, SEARCH_USER_ENDPOINT
 
 local_app = create_app('amundsen_application.config.TestConfig', 'tests/templates')
 
@@ -47,11 +47,12 @@ MOCK_PARSED_TABLE_RESULTS = [
 ]
 
 
-class SearchTableQueryString(unittest.TestCase):
+class SearchTable(unittest.TestCase):
     def setUp(self) -> None:
         self.mock_table_results = MOCK_TABLE_RESULTS
         self.expected_parsed_table_results = MOCK_PARSED_TABLE_RESULTS
         self.search_service_url = local_app.config['SEARCHSERVICE_BASE'] + SEARCH_TABLE_ENDPOINT
+        self.search_service_filter_url = local_app.config['SEARCHSERVICE_BASE'] + SEARCH_TABLE_FILTER_ENDPOINT
         self.fe_flask_endpoint = '/api/search/v0/table'
 
     def test_fail_if_term_is_none(self) -> None:
@@ -73,69 +74,102 @@ class SearchTableQueryString(unittest.TestCase):
             self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     @responses.activate
+    @patch('amundsen_application.api.search.v0.transform_filters')
+    def test_calls_transform_filters(self, transform_filter_mock) -> None:
+        """
+        Test transform_filters is called with the filters from the request json
+        from the request_json
+        :return:
+        """
+        test_filters = {'schema': 'test_schema'}
+        responses.add(responses.POST,
+                      self.search_service_filter_url,
+                      json=self.mock_table_results,
+                      status=HTTPStatus.OK)
+
+        with local_app.test_client() as test:
+            test.post(self.fe_flask_endpoint,
+                      json={
+                          'term': 'hello',
+                          'pageIndex': 1,
+                          'filters': test_filters,
+                          'searchType': 'test'})
+            transform_filter_mock.assert_called_with(filters=test_filters)
+
+    @responses.activate
+    @patch('amundsen_application.api.search.v0.transform_filters')
     @patch('amundsen_application.api.search.v0._search_table')
-    def test_calls_search_table_log_helper(self, search_table_mock) -> None:
+    def test_calls_search_table_log_helper(self, search_table_mock, transform_filter_mock) -> None:
         """
         Test _search_table helper method is called with correct arguments for logging
         from the request_json
         :return:
         """
-        test_filters = {'schema': 'test_schema'}
         test_term = 'hello'
         test_index = 1
         test_search_type = 'test'
-        responses.add(responses.POST, self.search_service_url, json=self.mock_table_results, status=HTTPStatus.OK)
+        mock_filters = {'schema': ['test_schema']}
+        transform_filter_mock.return_value = mock_filters
+        responses.add(responses.POST,
+                      self.search_service_filter_url,
+                      json=self.mock_table_results,
+                      status=HTTPStatus.OK)
 
         with local_app.test_client() as test:
             test.post(self.fe_flask_endpoint,
                       json={
                           'term': test_term,
                           'pageIndex': test_index,
-                          'filters': test_filters,
+                          'filters': {},
                           'searchType': test_search_type})
-            search_table_mock.assert_called_with(filters=test_filters,
+            search_table_mock.assert_called_with(filters=mock_filters,
                                                  page_index=test_index,
                                                  search_term=test_term,
                                                  search_type=test_search_type)
 
     @responses.activate
+    @patch('amundsen_application.api.search.v0.transform_filters')
+    @patch('amundsen_application.api.search.v0.has_filters')
     @patch('amundsen_application.api.search.v0.generate_query_json')
-    def test_calls_generate_query_json(self, mock_generate_query_json) -> None:
+    def test_calls_generate_query_json(self, mock_generate_query_json, has_filters_mock, transform_filter_mock) -> None:
         """
         Test generate_query_json helper method is called with correct arguments
-        from the request_json
+        from the request_json if filters exist
         :return:
         """
-        test_filters = {'schema': 'test_schema'}
         test_term = 'hello'
         test_index = 1
-        responses.add(responses.POST, self.search_service_url, json=self.mock_table_results, status=HTTPStatus.OK)
+        responses.add(responses.POST,
+                      self.search_service_filter_url,
+                      json=self.mock_table_results,
+                      status=HTTPStatus.OK)
+        has_filters_mock.return_value = True
+        mock_filters = {'schema': ['test_schema']}
+        transform_filter_mock.return_value = mock_filters
 
         with local_app.test_client() as test:
             test.post(self.fe_flask_endpoint,
-                      json={'term': test_term, 'pageIndex': test_index, 'filters': test_filters})
-            mock_generate_query_json.assert_called_with(filters=test_filters,
+                      json={'term': test_term, 'pageIndex': test_index, 'filters': {}})
+            mock_generate_query_json.assert_called_with(filters=mock_filters,
                                                         page_index=test_index,
                                                         search_term=test_term)
 
+    @responses.activate
+    @patch('amundsen_application.api.search.v0.has_filters')
     @patch('amundsen_application.api.search.v0.generate_query_json')
-    def test_catch_exception_generate_query_json(self, mock_generate_query_json) -> None:
+    def test_does_not_calls_generate_query_json(self, mock_generate_query_json, has_filters_mock) -> None:
         """
-        Test that any execeptions thrown by generate_query_json are caught
-        from the request_json
+        Test generate_query_json helper method is not called if filters do not exist
         :return:
         """
-        test_filters = {'schema': 'test_schema'}
         test_term = 'hello'
         test_index = 1
-        mock_generate_query_json.side_effect = Exception('Test exception')
+        responses.add(responses.GET, self.search_service_url, json=self.mock_table_results, status=HTTPStatus.OK)
+        has_filters_mock.return_value = False
 
         with local_app.test_client() as test:
-            response = test.post(self.fe_flask_endpoint,
-                                 json={'term': test_term, 'pageIndex': test_index, 'filters': test_filters})
-            data = json.loads(response.data)
-            self.assertEqual(data.get('msg'), 'Encountered exception generating query json: Test exception')
-            self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
+            test.post(self.fe_flask_endpoint, json={'term': test_term, 'pageIndex': test_index, 'filters': {}})
+            mock_generate_query_json.assert_not_called()
 
     @responses.activate
     def test_request_success(self) -> None:
@@ -146,7 +180,10 @@ class SearchTableQueryString(unittest.TestCase):
         test_filters = {'schema': 'test_schema'}
         test_term = 'hello'
         test_index = 1
-        responses.add(responses.POST, self.search_service_url, json=self.mock_table_results, status=HTTPStatus.OK)
+        responses.add(responses.POST,
+                      self.search_service_filter_url,
+                      json=self.mock_table_results,
+                      status=HTTPStatus.OK)
 
         with local_app.test_client() as test:
             response = test.post(self.fe_flask_endpoint,
@@ -167,7 +204,7 @@ class SearchTableQueryString(unittest.TestCase):
         test_filters = {'schema': 'test_schema'}
         test_term = 'hello'
         test_index = 1
-        responses.add(responses.POST, self.search_service_url, json={}, status=HTTPStatus.BAD_REQUEST)
+        responses.add(responses.POST, self.search_service_filter_url, json={}, status=HTTPStatus.BAD_REQUEST)
 
         with local_app.test_client() as test:
             response = test.post(self.fe_flask_endpoint,
@@ -177,7 +214,7 @@ class SearchTableQueryString(unittest.TestCase):
             self.assertEqual(data.get('msg'), 'Encountered error: Search request failed')
 
 
-class SearchUserTest(unittest.TestCase):
+class SearchUser(unittest.TestCase):
     def setUp(self) -> None:
         self.mock_search_user_results = {
             'total_results': 1,
