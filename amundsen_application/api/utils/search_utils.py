@@ -1,8 +1,4 @@
-import logging
-
 from typing import Dict, List  # noqa: F401
-
-LOGGER = logging.getLogger(__name__)
 
 
 # These can move to a configuration when we have custom use cases outside of these default values

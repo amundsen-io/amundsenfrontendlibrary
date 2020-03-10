@@ -128,9 +128,8 @@ describe('TableListItem', () => {
       });
 
       describe('if props.table has badges', () => {
-      
-        it('renders flag for badge', () => {
-          expect(resourceBadges.find(BadgeList).exists()).toBe(true);
+        it('renders BadgeList for badges', () => {
+          expect(resourceBadges.find(BadgeList).props().badges).toEqual(props.table.badges);
         });
       });
 
