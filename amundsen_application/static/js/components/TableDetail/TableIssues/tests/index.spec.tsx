@@ -51,7 +51,9 @@ describe ('TableIssues', ()=> {
       const { props, wrapper } = setup({ issues: [{
         issue_key: 'issue_key', 
         title: 'title',
-        url: 'http://url'
+        url: 'http://url', 
+        status: 'Open', 
+        priority: 'P2'
       }]}); 
       expect(wrapper.find('.table-issue-link').text()).toEqual('issue_key'); 
       expect(wrapper.find('.issue-title-name').text()).toContain('title');
@@ -61,7 +63,9 @@ describe ('TableIssues', ()=> {
       const { props, wrapper } = setup({ issues: [{
           issue_key: 'issue_key', 
           title: 'title',
-          url: 'http://url'
+          url: 'http://url',
+          status: 'Open', 
+          priority: 'P2'
         }],
         remainingIssues: 0, 
         remainingIssuesUrl: null
@@ -72,7 +76,9 @@ describe ('TableIssues', ()=> {
       const { props, wrapper } = setup({ issues: [{
           issue_key: 'issue_key', 
           title: 'title',
-          url: 'http://url'
+          url: 'http://url',
+          status: 'Open', 
+          priority: 'P2'
         }],
         remainingIssues: 1, 
         remainingIssuesUrl: 'url'

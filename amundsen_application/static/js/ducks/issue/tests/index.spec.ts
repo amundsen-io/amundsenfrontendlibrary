@@ -45,7 +45,9 @@ describe('issue ducks', () => {
     issue =  {
       issue_key: 'issue_key', 
       title: 'title', 
-      url: 'http://url'
+      url: 'http://url', 
+      status: 'Open', 
+      priority: 'P2'
     }; 
 
     issues = [issue];

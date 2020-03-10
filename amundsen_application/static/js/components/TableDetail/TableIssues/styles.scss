@@ -26,11 +26,19 @@
     overflow: hidden;
     text-overflow: ellipsis;
     display:inline-block;
+    float: left; 
   }
   .issue-title-display-text {
     display: inline-flex; 
   }
   .table-issue-more-issues {
     margin: 0px 2px 0px 2px; 
+  }
+  .table-issue-priority {
+    margin: 0px 2px 0px 2px; 
+  }
+  .table-issue-status {
+    display: inline-flex; 
+    float: right; 
   }
 }

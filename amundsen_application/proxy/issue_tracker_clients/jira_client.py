@@ -125,7 +125,9 @@ class JiraClient(BaseIssueTrackerClient):
         """
         return DataIssue(issue_key=issue.key,
                          title=issue.fields.summary,
-                         url=issue.permalink())
+                         url=issue.permalink(),
+                         status=issue.fields.status.name,
+                         priority=issue.fields.priority.name)
 
     def _get_remaining_issues(self, total: int) -> int:
         """
