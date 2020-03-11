@@ -40,7 +40,6 @@ describe('SearchPage', () => {
       dashboards: globalState.search.dashboards,
       tables: globalState.search.tables,
       users: globalState.search.users,
-      setResource: jest.fn(),
       setPageIndex: jest.fn(),
       urlDidUpdate: jest.fn(),
       ...routerProps,
@@ -311,10 +310,6 @@ describe('mapDispatchToProps', () => {
   beforeAll(() => {
     dispatch = jest.fn(() => Promise.resolve());
     result = mapDispatchToProps(dispatch);
-  });
-
-  it('sets setResource on the props', () => {
-    expect(result.setResource).toBeInstanceOf(Function);
   });
 
   it('sets setPageIndex on the props', () => {
