@@ -124,16 +124,9 @@ export enum SubmitSearch {
 export interface SubmitSearchRequest {
   payload: {
     searchTerm: string;
-    useFilters?: boolean;
+    useFilters: boolean;
   };
   type: SubmitSearch.REQUEST;
-};
-
-export enum ClearSearch {
-  REQUEST = 'amundsen/search/CLEAR_SEARCH_REQUEST',
-};
-export interface ClearSearchRequest {
-  type: ClearSearch.REQUEST;
 };
 
 export enum SetResource {

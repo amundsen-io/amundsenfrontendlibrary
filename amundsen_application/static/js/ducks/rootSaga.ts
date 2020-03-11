@@ -23,7 +23,6 @@ import { createIssueWatcher, getIssuesWatcher } from './issue/sagas';
 import { getPopularTablesWatcher } from './popularTables/sagas';
 // Search
 import {
-  clearSearchWatcher,
   filterWatcher,
   filterWatcher2,
   inlineSearchWatcher,
@@ -70,11 +69,10 @@ export default function* rootSaga() {
     submitNotificationWatcher(),
     // FeedbackForm
     submitFeedbackWatcher(),
-    // Issues 
-    getIssuesWatcher(), 
-    createIssueWatcher(), 
+    // Issues
+    getIssuesWatcher(),
+    createIssueWatcher(),
     // Search
-    clearSearchWatcher(),
     filterWatcher(),
     filterWatcher2(),
     inlineSearchWatcher(),

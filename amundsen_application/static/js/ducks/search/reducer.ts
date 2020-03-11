@@ -24,8 +24,6 @@ import {
   InlineSearchUpdate,
   TableSearchResults,
   UserSearchResults,
-  ClearSearch,
-  ClearSearchRequest,
   SubmitSearchRequest,
   SubmitSearch,
   SetResourceRequest,
@@ -108,6 +106,7 @@ export function getInlineResultsSuccess(inlineResults: InlineSearchResponsePaylo
 export function getInlineResultsFailure(): InlineSearchResponse {
   return { type: InlineSearch.FAILURE };
 };
+
 export function selectInlineResult(resourceType: ResourceType, searchTerm: string, updateUrl: boolean = false): InlineSearchSelect {
   return {
     payload: {
@@ -118,6 +117,7 @@ export function selectInlineResult(resourceType: ResourceType, searchTerm: strin
     type: InlineSearch.SELECT
   };
 };
+
 export function updateFromInlineResult(data: InlineSearchUpdatePayload): InlineSearchUpdate {
   return {
     payload: data,
@@ -131,16 +131,10 @@ export function searchReset(): SearchAllReset {
   };
 };
 
-export function submitSearch(searchTerm: string, useFilters: boolean = false): SubmitSearchRequest {
+export function submitSearch({ searchTerm, useFilters } : { searchTerm: string, useFilters: boolean }): SubmitSearchRequest {
   return {
     payload: { searchTerm, useFilters },
     type: SubmitSearch.REQUEST,
-  };
-};
-
-export function clearSearch(): ClearSearchRequest {
-  return {
-    type: ClearSearch.REQUEST,
   };
 };
 

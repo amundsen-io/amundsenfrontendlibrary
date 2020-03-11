@@ -8,8 +8,6 @@ import { ResourceType, SearchType } from 'interfaces';
 import * as API from './api/v0';
 
 import {
-  ClearSearch,
-  ClearSearchRequest,
   LoadPreviousSearch,
   LoadPreviousSearchRequest,
   SearchAll,
@@ -145,16 +143,6 @@ export function* selectInlineResultsWatcher(): SagaIterator {
   yield takeEvery(InlineSearch.SELECT, selectInlineResultWorker);
 };
 
-export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
-  const state = yield select(getSearchState);
-  const { searchTerm, useFilters } = action.payload;
-  yield put(searchAll(SearchType.SUBMIT_TERM, searchTerm, undefined, undefined, useFilters));
-  updateSearchUrl({ term: searchTerm, filters: state.filters });
-};
-export function* submitSearchWatcher(): SagaIterator {
-  yield takeEvery(SubmitSearch.REQUEST, submitSearchWorker);
-};
-
 export function* setResourceWorker(action: SetResourceRequest): SagaIterator {
   const { resource, updateUrl } = action.payload;
   const state = yield select(getSearchState);
@@ -187,17 +175,6 @@ export function* setPageIndexWorker(action: SetPageIndexRequest): SagaIterator {
 };
 export function* setPageIndexWatcher(): SagaIterator {
   yield takeEvery(SetPageIndex.REQUEST, setPageIndexWorker);
-};
-
-export function* clearSearchWorker(action: ClearSearchRequest): SagaIterator {
-  /* If there was a previous search term, search each resource using filters */
-  const state = yield select(getSearchState);
-  if (!!state.search_term) {
-    yield put(searchAll(SearchType.CLEAR_TERM, '', undefined, undefined, true));
-  }
-};
-export function* clearSearchWatcher(): SagaIterator {
-  yield takeEvery(ClearSearch.REQUEST, clearSearchWorker);
 };
 
 export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
@@ -245,6 +222,23 @@ export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): Sa
 };
 export function* loadPreviousSearchWatcher(): SagaIterator {
   yield takeEvery(LoadPreviousSearch.REQUEST, loadPreviousSearchWorker);
+};
+
+//////////////////////////////////////////////////////////////////////////////
+//  COMPONENT SAGAS
+//  The actions that trigger these sagas are fired directly from components.
+//  These sagas should not directly trigger search requests
+//////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Handles workflow for any user action that causes an update to the searchTerm
+ */
+export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
+  const { searchTerm, useFilters } = action.payload;
+  yield put(searchAll(!!searchTerm ? SearchType.SUBMIT_TERM : SearchType.CLEAR_TERM, searchTerm, undefined, 0, useFilters));
+};
+export function* submitSearchWatcher(): SagaIterator {
+  yield takeLatest(SubmitSearch.REQUEST, submitSearchWorker);
 };
 
 //////////////////////////////////////////////////////////////////////////////

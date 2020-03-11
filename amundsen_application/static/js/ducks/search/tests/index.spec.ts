@@ -19,7 +19,6 @@ const MOCK_FILTER_STATE = {
 const filterReducerSpy = jest.spyOn(filterReducer, 'default').mockImplementation(() => MOCK_FILTER_STATE);
 
 import reducer, {
-  clearSearch,
   getInlineResults,
   getInlineResultsSuccess,
   getInlineResultsFailure,
@@ -42,7 +41,6 @@ import reducer, {
   urlDidUpdate,
 } from '../reducer';
 import {
-  ClearSearch,
   LoadPreviousSearch,
   InlineSearch,
   InlineSearchResponsePayload,
@@ -215,20 +213,13 @@ describe('search ducks', () => {
       expect(action.type).toBe(SearchAll.RESET);
     });
 
-    it('submitSearch - returns the action to submit a search without useFilters', () => {
+    it('submitSearch - returns the action to submit a search', () => {
       const term = 'test';
-      const action = submitSearch(term);
+      const shouldUseFilters = true;
+      const action = submitSearch({ searchTerm: term, useFilters: shouldUseFilters });
       expect(action.type).toBe(SubmitSearch.REQUEST);
       expect(action.payload.searchTerm).toBe(term);
-      expect(action.payload.useFilters).toBe(false);
-    });
-
-    it('submitSearch - returns the action to submit a search with useFilters', () => {
-      const term = 'test';
-      const action = submitSearch(term, true);
-      expect(action.type).toBe(SubmitSearch.REQUEST);
-      expect(action.payload.searchTerm).toBe(term);
-      expect(action.payload.useFilters).toBe(true);
+      expect(action.payload.useFilters).toBe(shouldUseFilters);
     });
 
     it('setResource - returns the action to set the selected resource', () => {
@@ -298,11 +289,6 @@ describe('search ducks', () => {
       const action = updateFromInlineResult(inlineUpdatePayload)
       expect(action.type).toBe(InlineSearch.UPDATE);
       expect(action.payload).toBe(inlineUpdatePayload);
-    });
-
-    it('clearSearch - returns the action that will clear the search term', () => {
-      const action = clearSearch();
-      expect(action.type).toBe(ClearSearch.REQUEST);
     });
   });
 
@@ -568,23 +554,24 @@ describe('search ducks', () => {
     });
 
     describe('submitSearchWorker', () => {
-      it('initiates a searchAll action', () => {
+      it('initiates flow to search with a term and existing filters', () => {
         const term = 'test';
-        const mockSearchState = globalState.search;
-        updateSearchUrlSpy.mockClear();
-        testSaga(Sagas.submitSearchWorker, submitSearch(term, true))
-          .next().select(SearchUtils.getSearchState)
-          .next(mockSearchState).put(searchAll(SearchType.SUBMIT_TERM, term, undefined, undefined, true))
+        testSaga(Sagas.submitSearchWorker, submitSearch({ searchTerm: term, useFilters: true }))
+          .next().put(searchAll(SearchType.SUBMIT_TERM, term, undefined, 0, true))
           .next().isDone();
-          expect(updateSearchUrlSpy).toHaveBeenCalledWith({ term, filters: mockSearchState.filters });
+      });
 
+      it('initiates flow to search with empty term and existing filters', () => {
+        testSaga(Sagas.submitSearchWorker, submitSearch({ searchTerm: '', useFilters: false }))
+          .next().put(searchAll(SearchType.CLEAR_TERM, '', undefined, 0, false))
+          .next().isDone();
       });
     });
 
     describe('submitSearchWatcher', () => {
       it('takes every SubmitSearch.REQUEST with submitSearchWorker', () => {
         testSaga(Sagas.submitSearchWatcher)
-          .next().takeEvery(SubmitSearch.REQUEST, Sagas.submitSearchWorker)
+          .next().takeLatest(SubmitSearch.REQUEST, Sagas.submitSearchWorker)
           .next().isDone();
       });
     });
