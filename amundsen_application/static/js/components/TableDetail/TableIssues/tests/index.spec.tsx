@@ -53,7 +53,8 @@ describe ('TableIssues', ()=> {
         title: 'title',
         url: 'http://url', 
         status: 'Open', 
-        priority: 'P2'
+        priority_display_name: 'P2', 
+        priority_name: 'Major'
       }]}); 
       expect(wrapper.find('.table-issue-link').text()).toEqual('issue_key'); 
       expect(wrapper.find('.issue-title-name').text()).toContain('title');
@@ -65,7 +66,8 @@ describe ('TableIssues', ()=> {
           title: 'title',
           url: 'http://url',
           status: 'Open', 
-          priority: 'P2'
+          priority_display_name: 'P2', 
+          priority_name: 'Major'
         }],
         remainingIssues: 0, 
         remainingIssuesUrl: null
@@ -78,7 +80,8 @@ describe ('TableIssues', ()=> {
           title: 'title',
           url: 'http://url',
           status: 'Open', 
-          priority: 'P2'
+          priority_display_name: 'P2', 
+          priority_name: 'Major'
         }],
         remainingIssues: 1, 
         remainingIssuesUrl: 'url'

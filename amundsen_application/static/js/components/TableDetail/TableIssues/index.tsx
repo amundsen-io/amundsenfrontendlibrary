@@ -42,7 +42,7 @@ export class TableIssues extends React.Component<TableIssueProps> {
   renderIssue = (issue: Issue, index: number) => {
     return (
       <div className="issue-banner" key={`issue-${index}`}>
-        <span className="table-issue-priority">{issue.priority}</span>
+        <span className={`table-issue-priority ${issue.priority_name}`}>{issue.priority_display_name}</span>
         <a id={`table-issue-link-${index}`} className="table-issue-link" target="_blank" href={issue.url} onClick={logClick}>
           { issue.issue_key }
         </a>
