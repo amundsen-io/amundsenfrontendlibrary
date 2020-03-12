@@ -56,8 +56,8 @@ def get_dashboard() -> Response:
                     'user_id': 'dwon@lyft.com',
                 }
             }],
-            'chart_names': [],
-            'query_names': [],
+            'chart_names': ['chart name 1', 'chart number 2', 'chart three'],
+            'query_names': ['query number 1', 'query number 2', 'query three'],
             'tables': [],
             'tags': [],
         },

@@ -83,6 +83,12 @@ $resource-header-height: 84px;
     height: calc(100% - #{$resource-header-height});
 
     > .left-panel {
+      border-right: 4px solid $divider;
+      flex-basis: 634px; // 630 + 4px border
+      flex-shrink: 0;
+      overflow-y: scroll;
+      padding: 0 24px;
+
       > .banner {
         border: 1px solid $stroke;
         height: 40px;
@@ -90,11 +96,14 @@ $resource-header-height: 84px;
         padding: 8px;
       }
 
-      border-right: 4px solid $divider;
-      flex-basis: 634px; // 630 + 4px border
-      flex-shrink: 0;
-      overflow-y: scroll;
-      padding: 0 24px;
+      .section-title {
+        color: $text-tertiary;
+        margin: 40px 0 8px;
+      }
+
+      .editable-text {
+        font-size: 16px;
+      }
     }
 
     > .right-panel {
@@ -103,15 +112,6 @@ $resource-header-height: 84px;
       flex-shrink: 0;
       overflow-y: scroll;
       width: 0; // Required for text truncation
-    }
-
-    .section-title {
-      color: $text-tertiary;
-      margin: 40px 0 8px;
-    }
-
-    .editable-text {
-      font-size: 16px;
     }
   }
 
