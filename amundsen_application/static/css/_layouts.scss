@@ -94,6 +94,15 @@ $resource-header-height: 84px;
         margin: 24px 24px 0 24px;
         padding: 8px;
       }
+
+      .section-title {
+        color: $text-tertiary;
+        margin: 40px 0 8px;
+      }
+
+      .editable-text {
+        font-size: 16px;
+      }
     }
 
     > .right-panel {
@@ -114,15 +123,6 @@ $resource-header-height: 84px;
       > .left-panel {
        flex-basis: 415px;
       }
-
-    .section-title {
-      color: $text-tertiary;
-      margin: 40px 0 8px;
-    }
-
-    .editable-text {
-      font-size: 16px;
-    }
   }
 
   // Inner column layout

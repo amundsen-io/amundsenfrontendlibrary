@@ -16,6 +16,8 @@ import { GetDashboardRequest } from 'ducks/dashboard/types';
 import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
 import { Dashboard } from 'interfaces/Dashboard';
+import QueryList from 'components/DashboardPage/QueryList';
+import ChartList from 'components/DashboardPage/ChartList';
 
 export interface RouteProps {
   uri: string;
@@ -55,12 +57,12 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
   renderTabs() {
     const tabInfo = [
       {
-        content: <span>Charts</span>,
+        content: <ChartList charts={ this.props.dashboard.chart_names }/>,
         key: 'charts',
         title: 'Charts',
       },
       {
-        content: <span>Queries</span>,
+        content: <QueryList queries={ this.props.dashboard.query_names }/>,
         key: 'queries',
         title: 'Queries',
       },
