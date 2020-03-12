@@ -9,7 +9,8 @@ import { logClick } from 'ducks/utilMethods';
 import { GetIssuesRequest } from 'ducks/issue/types';
 import './styles.scss';
 import { issueTrackingEnabled } from 'config/config-utils';
-import { SEE_ADDITIONAL_ISSUES_TEXT } from './constants';
+import { ReportTableIssue } from '../ReportTableIssue';
+import BadgeList from 'components/common/BadgeList';
 
 
 export interface StateFromProps {
@@ -62,21 +63,24 @@ export class TableIssues extends React.Component<TableIssueProps> {
 
     return (
       <div className="issue-banner" key="more-issue-link">
-        <img className="icon icon-red-triangle-warning "/>
         <a id="more-issues-link" className="table-issue-more-issues" target="_blank" href={url} onClick={logClick}>
-          { SEE_ADDITIONAL_ISSUES_TEXT }
+         `View all {count} issues`
         </a> 
     </div>
     );
   }
 
+  
   render() {
+    <h2>Issues</h2>
     if (!issueTrackingEnabled()) {
       return ''; 
     }
     
     if (this.props.issues.length === 0) {
-      return null;
+      return (
+        <div>No associated issues</div>
+      );
     }
 
     return (

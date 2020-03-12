@@ -11,7 +11,6 @@ import {
   mapStateToProps, 
   mapDispatchToProps
 } from '..';
-import { SEE_ADDITIONAL_ISSUES_TEXT } from '../constants';
 
 
 describe ('TableIssues', ()=> {
@@ -86,7 +85,7 @@ describe ('TableIssues', ()=> {
         remainingIssues: 1, 
         remainingIssuesUrl: 'url'
       });
-      expect(wrapper.find('.table-issue-more-issues').text()).toEqual(SEE_ADDITIONAL_ISSUES_TEXT); 
+      expect(wrapper.find('.table-issue-more-issues').text()).toEqual('View all 1 issues'); 
     }); 
   });
 

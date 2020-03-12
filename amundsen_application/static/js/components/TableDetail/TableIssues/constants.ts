@@ -1,1 +1,1 @@
-export const SEE_ADDITIONAL_ISSUES_TEXT = "See additional issues associated with this table"; 
+export const REPORT_DATA_ISSUE_TEXT = "Report an issue"; 

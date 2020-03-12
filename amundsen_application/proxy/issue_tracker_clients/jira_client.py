@@ -55,8 +55,8 @@ class JiraClient(BaseIssueTrackerClient):
                 maxResults=self.jira_max_results)
             returned_issues = [self._get_issue_properties(issue=issue) for issue in issues]
             return IssueResults(issues=returned_issues,
-                                remaining=self._get_remaining_issues(total=issues.total),
-                                remaining_url=self._generate_remaining_issues_url(table_uri, returned_issues))
+                                total=issues.total,
+                                all_issues_url=self._generate_remaining_issues_url(table_uri, returned_issues))
         except JIRAError as e:
             logging.exception(str(e))
             raise e
@@ -128,15 +128,6 @@ class JiraClient(BaseIssueTrackerClient):
                          url=issue.permalink(),
                          status=issue.fields.status.name,
                          priority=issue.fields.priority.name)
-
-    def _get_remaining_issues(self, total: int) -> int:
-        """
-        Calculates how many issues are not being displayed, so the FE can determine whether to
-        display a message about issues remaining
-        :param total: number from the result set representing how many issues were found in all
-        :return: int - 0, or how many issues remain
-        """
-        return 0 if total < self.jira_max_results else total - self.jira_max_results
 
     def _generate_remaining_issues_url(self, table_uri: str, issues: List[DataIssue]) -> str:
         """
