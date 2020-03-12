@@ -24,16 +24,14 @@ import { getPopularTablesWatcher } from './popularTables/sagas';
 // Search
 import {
   filterWatcher,
-  filterWatcher2,
   inlineSearchWatcher,
   inlineSearchWatcherDebounce,
   loadPreviousSearchWatcher,
   searchAllWatcher,
   searchResourceWatcher,
-  setPageIndexWatcher,
-  setResourceWatcher,
   selectInlineResultsWatcher,
   submitSearchWatcher,
+  submitSearchResourceWatcher,
   urlDidUpdateWatcher
 } from './search/sagas';
 
@@ -74,16 +72,14 @@ export default function* rootSaga() {
     createIssueWatcher(),
     // Search
     filterWatcher(),
-    filterWatcher2(),
     inlineSearchWatcher(),
     inlineSearchWatcherDebounce(),
     loadPreviousSearchWatcher(),
     searchAllWatcher(),
     searchResourceWatcher(),
     selectInlineResultsWatcher(),
-    setPageIndexWatcher(),
-    setResourceWatcher(),
     submitSearchWatcher(),
+    submitSearchResourceWatcher(),
     urlDidUpdateWatcher(),
     // PopularTables
     getPopularTablesWatcher(),

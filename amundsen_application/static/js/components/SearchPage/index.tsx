@@ -12,17 +12,16 @@ import SearchFilter from './SearchFilter';
 import SearchPanel from './SearchPanel';
 
 import { GlobalState } from 'ducks/rootReducer';
-import { setPageIndex, urlDidUpdate } from 'ducks/search/reducer';
+import { submitSearchResource, urlDidUpdate } from 'ducks/search/reducer';
 import {
   DashboardSearchResults,
   SearchResults,
-  SetPageIndexRequest,
   TableSearchResults,
   UrlDidUpdateRequest,
   UserSearchResults,
 } from 'ducks/search/types';
 
-import { Resource, ResourceType } from 'interfaces';
+import { Resource, ResourceType, SearchType } from 'interfaces';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
@@ -50,7 +49,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  setPageIndex: (pageIndex: number) => SetPageIndexRequest;
+  setPageIndex: (pageIndex: number) => any; // TODO ttannis: Set type
   urlDidUpdate: (urlSearch: UrlSearch) => UrlDidUpdateRequest;
 }
 
@@ -194,7 +193,10 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ setPageIndex, urlDidUpdate }, dispatch);
+  return bindActionCreators({
+    urlDidUpdate,
+    setPageIndex: (pageIndex: number) => submitSearchResource({ pageIndex, searchType: SearchType.PAGINATION, updateUrl: true }),
+  }, dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(SearchPage);

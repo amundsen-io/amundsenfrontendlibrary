@@ -2,16 +2,12 @@ import { ResourceType } from 'interfaces';
 
 import { filterFromObj } from 'ducks/utilMethods';
 
+import { SubmitSearchResource } from 'ducks/search/types';
+
 /* ACTION TYPES */
 export enum UpdateSearchFilter {
-  CLEAR_ALL = 'amundsen/search/filter/CLEAR_ALL',
   CLEAR_CATEGORY = 'amundsen/search/filter/CLEAR_CATEGORY',
-  SET_BY_RESOURCE = 'amundsen/search/filter/SET_BY_RESOURCE',
   UPDATE_CATEGORY = 'amundsen/search/filter/UPDATE_CATEGORY',
-};
-
-interface ClearAllFiltersRequest {
-  type: UpdateSearchFilter.CLEAR_ALL;
 };
 
 export interface ClearFilterRequest {
@@ -19,16 +15,6 @@ export interface ClearFilterRequest {
     categoryId: string;
   };
   type: UpdateSearchFilter.CLEAR_CATEGORY;
-};
-
-export interface SetSearchInputRequest {
-  payload: {
-    filters: ResourceFilterReducerState;
-    pageIndex?: number;
-    resourceType: ResourceType;
-    term?: string;
-  };
-  type: UpdateSearchFilter.SET_BY_RESOURCE;
 };
 
 export interface UpdateFilterRequest {
@@ -40,33 +26,12 @@ export interface UpdateFilterRequest {
 };
 
 /* ACTIONS */
-export function clearAllFilters(): ClearAllFiltersRequest {
-  return {
-    type: UpdateSearchFilter.CLEAR_ALL,
-  };
-};
-
 export function clearFilterByCategory(categoryId: string): ClearFilterRequest {
   return {
     payload: {
       categoryId,
     },
     type: UpdateSearchFilter.CLEAR_CATEGORY,
-  };
-};
-
-export function setSearchInputByResource(filters: ResourceFilterReducerState,
-                                         resourceType: ResourceType,
-                                         pageIndex?: number,
-                                         term?: string): SetSearchInputRequest {
-  return {
-    payload: {
-      filters,
-      pageIndex,
-      resourceType,
-      term
-    },
-    type: UpdateSearchFilter.SET_BY_RESOURCE,
   };
 };
 
@@ -103,17 +68,18 @@ export default function reducer(state: FilterReducerState = initialFilterState, 
   const { payload, type } = action;
 
   switch (type) {
-    case UpdateSearchFilter.CLEAR_ALL:
-      return initialFilterState;
+    case SubmitSearchResource.REQUEST:
+      if (payload.selectedTab && payload.filters) {
+        return {
+          ...state,
+          [payload.selectedTab]: payload.filters
+        };
+      }
+      return state;
     case UpdateSearchFilter.CLEAR_CATEGORY:
       return {
         ...state,
         [resourceType]: filterFromObj(resourceFilters, [payload.categoryId])
-      };
-    case UpdateSearchFilter.SET_BY_RESOURCE:
-      return {
-        ...state,
-        [payload.resourceType]: payload.filters
       };
     case UpdateSearchFilter.UPDATE_CATEGORY:
       return {

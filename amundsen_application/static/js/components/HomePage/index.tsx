@@ -10,14 +10,13 @@ import { SEARCH_BREADCRUMB_TEXT } from './constants';
 import MyBookmarks from 'components/common/Bookmark/MyBookmarks';
 import Breadcrumb from 'components/common/Breadcrumb';
 import PopularTables from 'components/common/PopularTables';
-import { SearchAllReset } from 'ducks/search/types';
-import { searchReset } from 'ducks/search/reducer';
+import { updateSearchState } from 'ducks/search/reducer';
 import SearchBar from 'components/common/SearchBar';
 import TagsList from 'components/common/TagsList';
 
 
 export interface DispatchFromProps {
-  searchReset: () => SearchAllReset;
+  searchReset: () => any;  // TODO ttannis: Set type
 }
 
 export type HomePageProps = DispatchFromProps & RouteComponentProps<any>;
@@ -62,7 +61,9 @@ export class HomePage extends React.Component<HomePageProps> {
 }
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ searchReset } , dispatch);
+  return bindActionCreators({
+    searchReset: () => updateSearchState(),
+  }, dispatch);
 };
 
 export default connect<DispatchFromProps>(null, mapDispatchToProps)(HomePage);

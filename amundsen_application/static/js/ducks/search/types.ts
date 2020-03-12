@@ -129,29 +129,29 @@ export interface SubmitSearchRequest {
   type: SubmitSearch.REQUEST;
 };
 
-export enum SetResource {
-  REQUEST = 'amundsen/search/SET_RESOURCE_REQUEST',
+export enum SubmitSearchResource {
+  REQUEST = 'amundsen/search/SUBMIT_SEARCH_RESOURCE_REQUEST',
 };
-export interface SetResourceRequest {
-  payload: {
-    resource: ResourceType;
-    updateUrl: boolean;
-  };
-  type: SetResource.REQUEST;
-};
-
-
-export enum SetPageIndex {
-  REQUEST = 'amundsen/search/SET_PAGE_INDEX_REQUEST',
-};
-export interface SetPageIndexRequest {
-  payload: {
-    pageIndex: number;
-    updateUrl: boolean;
-  };
-  type: SetPageIndex.REQUEST;
+export type SubmitSearchResourcePayload = {
+  pageIndex: number;
+  searchType: SearchType;
+  updateUrl?: boolean;
+  filters?: any; // Real type is FilterReducerState
+  searchTerm?: string;
+  selectedTab?: ResourceType;
+}
+export interface SubmitSearchResourceRequest {
+  payload: SubmitSearchResourcePayload;
+  type: SubmitSearchResource.REQUEST;
 };
 
+export enum UpdateSearchState {
+  REQUEST = 'amundsen/search/UPDATE_SEARCH_STATE',
+};
+export interface UpdateSearchStateRequest {
+  payload: any; // Real type is searchreducerstate but dont want to circular import between files
+  type: UpdateSearchState.REQUEST;
+};
 
 export enum LoadPreviousSearch {
   REQUEST = 'amundsen/search/LOAD_PREVIOUS_SEARCH_REQUEST',
@@ -159,7 +159,6 @@ export enum LoadPreviousSearch {
 export interface LoadPreviousSearchRequest {
   type: LoadPreviousSearch.REQUEST;
 };
-
 
 export enum UrlDidUpdate {
   REQUEST = 'amundsen/search/URL_DID_UPDATE_REQUEST',

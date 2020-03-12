@@ -7,12 +7,11 @@ import AppConfig from 'config/config';
 import { GlobalState } from 'ducks/rootReducer';
 import {
   DashboardSearchResults,
-  SetResourceRequest,
   TableSearchResults,
   UserSearchResults
 } from 'ducks/search/types';
 import { ResourceType } from 'interfaces/Resources';
-import { setResource } from 'ducks/search/reducer';
+import { updateSearchState } from 'ducks/search/reducer';
 
 export interface StateFromProps {
   selectedTab: ResourceType,
@@ -22,7 +21,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  setResource: (resource: ResourceType) => SetResourceRequest;
+  setResource: (resource: ResourceType) => any; // TODO ttannis: Set type
 }
 
 export type ResourceSelectorProps = StateFromProps & DispatchFromProps;
@@ -96,7 +95,9 @@ export const mapStateToProps = (state: GlobalState) => {
 };
 
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ setResource }, dispatch);
+  return bindActionCreators({
+    setResource: (resource: ResourceType) => updateSearchState({ selectedTab: resource }),
+  }, dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps>(mapStateToProps, mapDispatchToProps)(ResourceSelector);

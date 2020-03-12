@@ -26,9 +26,15 @@ import {
   UserSearchResults,
   SubmitSearchRequest,
   SubmitSearch,
-  SetResourceRequest,
-  SetResource,
-  SetPageIndexRequest, SetPageIndex, LoadPreviousSearchRequest, LoadPreviousSearch, UrlDidUpdateRequest, UrlDidUpdate,
+  SubmitSearchResourcePayload,
+  SubmitSearchResourceRequest,
+  SubmitSearchResource,
+  LoadPreviousSearchRequest,
+  LoadPreviousSearch,
+  UpdateSearchStateRequest,
+  UpdateSearchState,
+  UrlDidUpdateRequest,
+  UrlDidUpdate
 } from './types';
 
 export interface SearchReducerState {
@@ -125,12 +131,6 @@ export function updateFromInlineResult(data: InlineSearchUpdatePayload): InlineS
   };
 };
 
-export function searchReset(): SearchAllReset {
-  return {
-    type: SearchAll.RESET,
-  };
-};
-
 export function submitSearch({ searchTerm, useFilters } : { searchTerm: string, useFilters: boolean }): SubmitSearchRequest {
   return {
     payload: { searchTerm, useFilters },
@@ -138,17 +138,21 @@ export function submitSearch({ searchTerm, useFilters } : { searchTerm: string, 
   };
 };
 
-export function setResource(resource: ResourceType, updateUrl: boolean = true): SetResourceRequest {
+export function submitSearchResource({ filters, pageIndex, searchTerm, selectedTab, searchType, updateUrl } : SubmitSearchResourcePayload): SubmitSearchResourceRequest {
   return {
-    payload: { resource, updateUrl },
-    type: SetResource.REQUEST,
+    payload: { filters, pageIndex, searchTerm, selectedTab, searchType, updateUrl },
+    type: SubmitSearchResource.REQUEST,
   };
 };
 
-export function setPageIndex(pageIndex: number, updateUrl: boolean = true): SetPageIndexRequest {
+export function updateSearchState(searchState?: Partial<SearchReducerState>): any {
+  /*
+    TODO: Purpose is to just update state but sometimes url update is needed.
+    Is there anyway around needing a saga given no api request is needed
+  */
   return {
-    payload: { pageIndex, updateUrl },
-    type: SetPageIndex.REQUEST,
+    payload: searchState,
+    type: UpdateSearchState.REQUEST,
   };
 };
 
@@ -158,13 +162,12 @@ export function loadPreviousSearch(): LoadPreviousSearchRequest {
   };
 };
 
-export function urlDidUpdate(urlSearch: UrlSearch): UrlDidUpdateRequest{
+export function urlDidUpdate(urlSearch: UrlSearch): UrlDidUpdateRequest {
   return {
     payload: { urlSearch },
     type: UrlDidUpdate.REQUEST,
   };
 };
-
 
 /* REDUCER */
 export const initialInlineResultsState = {
@@ -205,17 +208,6 @@ export const initialState: SearchReducerState = {
 
 export default function reducer(state: SearchReducerState = initialState, action): SearchReducerState {
   switch (action.type) {
-    case UpdateSearchFilter.SET_BY_RESOURCE:
-      return {
-        ...state,
-        search_term: action.payload.term,
-        filters: filterReducer(state.filters, action, state.selectedTab),
-      }
-    case UpdateSearchFilter.CLEAR_ALL:
-      return {
-        ...state,
-        filters: filterReducer(state.filters, action, state.selectedTab),
-      }
     case UpdateSearchFilter.CLEAR_CATEGORY:
     case UpdateSearchFilter.UPDATE_CATEGORY:
       return {
@@ -223,8 +215,22 @@ export default function reducer(state: SearchReducerState = initialState, action
         isLoading: true,
         filters: filterReducer(state.filters, action, state.selectedTab),
       }
-    case SearchAll.RESET:
-      return initialState;
+    case SubmitSearchResource.REQUEST:
+      return {
+        ...state,
+        search_term: action.payload.searchTerm,
+        filters: filterReducer(state.filters, action, state.selectedTab),
+      }
+    case UpdateSearchState.REQUEST:
+      const payload = action.payload;
+      if (!payload) {
+        return initialState;
+      }
+      return {
+        ...state,
+        selectedTab: payload.selectedTab || state.selectedTab,
+        filters: filterReducer(payload.filters || state.filters, action, state.selectedTab),
+      }
     case SearchAll.REQUEST:
       // updates search term to reflect action
       return {
@@ -266,11 +272,6 @@ export default function reducer(state: SearchReducerState = initialState, action
       return {
         ...initialState,
         search_term: state.search_term,
-      };
-    case SetResource.REQUEST:
-      return {
-        ...state,
-        selectedTab: (<SetResourceRequest>action).payload.resource
       };
     case InlineSearch.UPDATE:
       const { searchTerm, selectedTab, tables, users } = (<InlineSearchUpdate>action).payload;
