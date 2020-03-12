@@ -6,8 +6,7 @@ import './styles.scss';
 export enum CaseType {
   LOWER_CASE = 'lowerCase',
   SENTENCE_CASE = 'sentenceCase',
-  UPPER_CASE = 'upperCase',
-  PASCAL_CASE = 'pascalCase'
+  UPPER_CASE = 'upperCase'
 }
 
 export interface FlagProps {
@@ -24,8 +23,6 @@ export function convertText(str: string, caseType: string): string {
       return `${str.charAt(0).toUpperCase()}${str.slice(1).toLowerCase()}`;
     case CaseType.UPPER_CASE:
       return str.toUpperCase();
-    case CaseType.PASCAL_CASE:
-      return str.split(new RegExp('[\\s+_]')).map(x => x.charAt(0).toUpperCase() + x.slice(1).toLowerCase()).join(" ");
     default:
       return str;
   }
