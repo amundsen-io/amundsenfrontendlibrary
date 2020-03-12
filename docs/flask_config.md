@@ -58,20 +58,17 @@ report to provide context.
 table page
 
 Programmatic Descriptions are referred to by a "description source" which is a unique identifier.
-You can then configure the descriptions to have a display title and order in the config.py file like so:
+You can then configure the descriptions to have a custom order in the config.py file like so:
 ```    
 PROGRAMMATIC_DISPLAY = {
            "s3_crawler": {
-               "display_order": 0,
-               "title": "S3"
+               "display_order": 0
            },
            "quality_service": {
-               "display_order": 1,
-               "title": "Quality"
+               "display_order": 1
            },
            "doesnt_exist": {
-               "display_order": 2,
-               "title": "Nobody Cares"
+               "display_order": 2
            }
        }
 ```
