@@ -2,7 +2,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { clearFilterByCategory, updateFilterByCategory, ClearFilterRequest, UpdateFilterRequest } from 'ducks/search/filters/reducer';
+import { updateFilterByCategory, UpdateFilterRequest } from 'ducks/search/filters/reducer';
 
 import { APPLY_BTN_TEXT } from '../constants';
 
@@ -17,8 +17,7 @@ interface StateFromProps {
 }
 
 interface DispatchFromProps {
-  clearFilterByCategory: (categoryId: string) => ClearFilterRequest;
-  updateFilterByCategory: (categoryId: string, value: string) => UpdateFilterRequest;
+  updateFilterByCategory: ({ categoryId, value }: { categoryId: string, value: string }) => UpdateFilterRequest;
 }
 
 export type InputFilterProps = StateFromProps & DispatchFromProps & OwnProps;
@@ -46,10 +45,10 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
   onApplyChanges = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if(!!this.state.value) {
-      this.props.updateFilterByCategory(this.props.categoryId, this.state.value);
+      this.props.updateFilterByCategory({ categoryId: this.props.categoryId, value: this.state.value });
     }
     else {
-      this.props.clearFilterByCategory(this.props.categoryId);
+      this.props.updateFilterByCategory({ categoryId: this.props.categoryId, value: null });
     }
   };
 
@@ -90,7 +89,6 @@ export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
 
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    clearFilterByCategory,
     updateFilterByCategory,
   }, dispatch);
 };

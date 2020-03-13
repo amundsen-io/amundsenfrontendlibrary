@@ -2,7 +2,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { clearFilterByCategory, ClearFilterRequest } from 'ducks/search/filters/reducer';
+import { updateFilterByCategory, UpdateFilterRequest } from 'ducks/search/filters/reducer';
 
 import { CLEAR_BTN_TEXT } from '../constants';
 
@@ -28,7 +28,7 @@ export interface StateFromProps {
 };
 
 export interface DispatchFromProps {
-  clearFilterByCategory: (categoryId: string) => ClearFilterRequest;
+  updateFilterByCategory: ({ categoryId, value } : { categoryId: string; value: null }) => UpdateFilterRequest;
 };
 
 export type FilterSectionProps = OwnProps & DispatchFromProps & StateFromProps;
@@ -39,7 +39,7 @@ export class FilterSection extends React.Component<FilterSectionProps> {
   }
 
   onClearFilter = () => {
-    this.props.clearFilterByCategory(this.props.categoryId);
+    this.props.updateFilterByCategory({ categoryId: this.props.categoryId, value: null });
   }
 
   renderFilterComponent = () => {
@@ -110,7 +110,7 @@ export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
 
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    clearFilterByCategory,
+    updateFilterByCategory,
   }, dispatch);
 };
 

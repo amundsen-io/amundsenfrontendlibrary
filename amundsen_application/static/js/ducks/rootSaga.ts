@@ -23,7 +23,6 @@ import { createIssueWatcher, getIssuesWatcher } from './issue/sagas';
 import { getPopularTablesWatcher } from './popularTables/sagas';
 // Search
 import {
-  filterWatcher,
   inlineSearchWatcher,
   inlineSearchWatcherDebounce,
   loadPreviousSearchWatcher,
@@ -32,8 +31,12 @@ import {
   selectInlineResultsWatcher,
   submitSearchWatcher,
   submitSearchResourceWatcher,
+  updateSearchStateWatcher,
   urlDidUpdateWatcher
 } from './search/sagas';
+import {
+  filterWatcher,
+} from './search/filters/sagas';
 
 // TableDetail
 import { updateTableOwnerWatcher } from './tableMetadata/owners/sagas';
@@ -80,6 +83,7 @@ export default function* rootSaga() {
     selectInlineResultsWatcher(),
     submitSearchWatcher(),
     submitSearchResourceWatcher(),
+    updateSearchStateWatcher(),
     urlDidUpdateWatcher(),
     // PopularTables
     getPopularTablesWatcher(),

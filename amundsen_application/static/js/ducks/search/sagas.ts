@@ -50,28 +50,6 @@ import {
 import { autoSelectResource, getPageIndex, getSearchState } from './utils';
 import { BrowserHistory, updateSearchUrl } from 'utils/navigationUtils';
 
-/**
- * Listens to actions triggers by user updates to the filter state.
- * For better user experience debounce the start of the worker as multiple updates can happen in < 1 second.
- */
-export function* filterWatcher(): SagaIterator {
-  yield debounce(750, [UpdateSearchFilter.CLEAR_CATEGORY, UpdateSearchFilter.UPDATE_CATEGORY], filterWorker);
-};
-
-/*
- * Executes a search on the current resource.
- * Actions that trigger this worker will have updated the filter reducer.
- * The updated filter state is applied in searchResourceWorker().
- * Updates the search url to reflect the change in filters.
- */
-export function* filterWorker(): SagaIterator {
-  const state = yield select(getSearchState);
-  const { search_term, selectedTab, filters } = state;
-  /* filters must reset pageIndex to 0 as the number of results is expected to change */
-  const pageIndex = 0;
-  yield put(searchResource(SearchType.FILTER, search_term, selectedTab, pageIndex));
-  updateSearchUrl({ filters, resource: selectedTab, term: search_term, index: pageIndex }, true);
-};
 
 export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
   const { term } = action.payload;
@@ -131,7 +109,12 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
 
   const state = yield select(getSearchState);
   if (!!term && state.search_term !== term) {
-    yield put(searchAll(SearchType.LOAD_URL, term, resource, parsedIndex));
+    const newFilters = {
+      ...state.filters,
+      [resource]: parsedFilters
+    }
+    yield put(updateSearchState({ filters: newFilters }));
+    yield put(searchAll(SearchType.LOAD_URL, term, resource, parsedIndex, true));
   } else if (!!resource) {
     if (resource !== state.selectedTab) {
       yield put(updateSearchState({ selectedTab: resource }))
@@ -140,7 +123,7 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
       /* This will update filter state + search resource */
       yield put(submitSearchResource({
         searchTerm: term,
-        filters: parsedFilters,
+        resourceFilters: parsedFilters,
         selectedTab: resource,
         pageIndex: parsedIndex,
         searchType: SearchType.FILTER
@@ -203,9 +186,10 @@ export function* submitSearchWatcher(): SagaIterator {
    const state = yield select(getSearchState);
    let { search_term, selectedTab, filters } = state;
    const { pageIndex, searchType, updateUrl } = action.payload;
+   console.log(action.payload);
    search_term = action.payload.searchTerm !== undefined ? action.payload.searchTerm : search_term;
    selectedTab = action.payload.selectedTab || selectedTab;
-   filters = action.payload.filters || filters;
+   filters[selectedTab] = action.payload.resourceFilters || filters[selectedTab];
    yield put(searchResource(searchType, search_term, selectedTab, pageIndex));
 
    if (updateUrl) {
@@ -221,6 +205,24 @@ export function* submitSearchWatcher(): SagaIterator {
    yield takeEvery(SubmitSearchResource.REQUEST, submitSearchResourceWorker);
  };
 
+ /**
+  * Handles workflow for any user action that causes an update to the search state
+  */
+  export function* updateSearchStateWorker(action: UpdateSearchStateRequest): SagaIterator {
+    const { filters, selectedTab, updateUrl } = action.payload;
+    const state = yield select(getSearchState);
+    if (updateUrl) {
+      updateSearchUrl({
+        resource: selectedTab || state.selectedTab,
+        term: state.search_term,
+        index: getPageIndex(state, selectedTab),
+        filters: filters || state.filters,
+      });
+    }
+  };
+  export function* updateSearchStateWatcher(): SagaIterator {
+    yield takeEvery(UpdateSearchState.REQUEST, updateSearchStateWorker);
+  };
 //////////////////////////////////////////////////////////////////////////////
 //  API SAGAS TODO : Still trying to think of a good way to think of things
 //  These sagas directly trigger axios search requests.

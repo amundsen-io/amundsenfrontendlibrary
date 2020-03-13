@@ -136,7 +136,7 @@ export type SubmitSearchResourcePayload = {
   pageIndex: number;
   searchType: SearchType;
   updateUrl?: boolean;
-  filters?: any; // Real type is FilterReducerState
+  resourceFilters?: {[categoryId: string]: string | { [id:string]: boolean }}; // ResourceFilterReducerState
   searchTerm?: string;
   selectedTab?: ResourceType;
 }
@@ -149,7 +149,7 @@ export enum UpdateSearchState {
   REQUEST = 'amundsen/search/UPDATE_SEARCH_STATE',
 };
 export interface UpdateSearchStateRequest {
-  payload: any; // Real type is searchreducerstate but dont want to circular import between files
+  payload: any; // Real type is searchreducerstate + updateUrl but dont want to circular import between files
   type: UpdateSearchState.REQUEST;
 };
 

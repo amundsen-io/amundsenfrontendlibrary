@@ -1,47 +1,27 @@
+import { SubmitSearchResource, SubmitSearchResourceRequest } from 'ducks/search/types';
 import { ResourceType } from 'interfaces';
-
-import { filterFromObj } from 'ducks/utilMethods';
-
-import { SubmitSearchResource } from 'ducks/search/types';
 
 /* ACTION TYPES */
 export enum UpdateSearchFilter {
-  CLEAR_CATEGORY = 'amundsen/search/filter/CLEAR_CATEGORY',
-  UPDATE_CATEGORY = 'amundsen/search/filter/UPDATE_CATEGORY',
+  REQUEST = 'amundsen/search/filter/UPDATE_SEARCH_FILTER_REQUEST',
 };
-
-export interface ClearFilterRequest {
-  payload: {
-    categoryId: string;
-  };
-  type: UpdateSearchFilter.CLEAR_CATEGORY;
-};
-
+export type UpdateFilterPayload = {
+  categoryId: string;
+  value: string | FilterOptions | null;
+}
 export interface UpdateFilterRequest {
-  payload: {
-    categoryId: string;
-    value: string | FilterOptions;
-  };
-  type: UpdateSearchFilter.UPDATE_CATEGORY;
+  payload: UpdateFilterPayload;
+  type: UpdateSearchFilter.REQUEST;
 };
 
 /* ACTIONS */
-export function clearFilterByCategory(categoryId: string): ClearFilterRequest {
-  return {
-    payload: {
-      categoryId,
-    },
-    type: UpdateSearchFilter.CLEAR_CATEGORY,
-  };
-};
-
-export function updateFilterByCategory(categoryId: string, value: string | FilterOptions): UpdateFilterRequest {
+export function updateFilterByCategory({ categoryId, value }: UpdateFilterPayload): UpdateFilterRequest {
   return {
     payload: {
       categoryId,
       value
     },
-    type: UpdateSearchFilter.UPDATE_CATEGORY,
+    type: UpdateSearchFilter.REQUEST,
   };
 };
 
@@ -63,32 +43,17 @@ export const initialFilterState: FilterReducerState = {
   [ResourceType.table]: initialTableFilterState,
 };
 
-export default function reducer(state: FilterReducerState = initialFilterState, action, resourceType: ResourceType): FilterReducerState {
-  const resourceFilters = state[resourceType];
-  const { payload, type } = action;
-
-  switch (type) {
+export default function reducer(state: FilterReducerState = initialFilterState, action): FilterReducerState {
+  switch (action.type) {
     case SubmitSearchResource.REQUEST:
-      if (payload.selectedTab && payload.filters) {
+      const { payload } = <SubmitSearchResourceRequest>action;
+      if (payload.selectedTab && payload.resourceFilters) {
         return {
           ...state,
-          [payload.selectedTab]: payload.filters
+          [payload.selectedTab]: payload.resourceFilters
         };
       }
       return state;
-    case UpdateSearchFilter.CLEAR_CATEGORY:
-      return {
-        ...state,
-        [resourceType]: filterFromObj(resourceFilters, [payload.categoryId])
-      };
-    case UpdateSearchFilter.UPDATE_CATEGORY:
-      return {
-        ...state,
-        [resourceType]: {
-          ...resourceFilters,
-          [payload.categoryId]: payload.value
-        }
-      };
     default:
       return state;
   };

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { GlobalState } from 'ducks/rootReducer';
-import { clearFilterByCategory, updateFilterByCategory, ClearFilterRequest, UpdateFilterRequest, FilterOptions } from 'ducks/search/filters/reducer';
+import { updateFilterByCategory, UpdateFilterRequest, FilterOptions } from 'ducks/search/filters/reducer';
 
 import CheckBoxItem from 'components/common/Inputs/CheckBoxItem';
 
@@ -22,8 +22,7 @@ interface StateFromProps {
 }
 
 interface DispatchFromProps {
-  clearFilterByCategory: (categoryId: string) => ClearFilterRequest;
-  updateFilterByCategory: (categoryId: string, value: FilterOptions) => UpdateFilterRequest;
+  updateFilterByCategory: ({ categoryId, value }: { categoryId: string, value: FilterOptions | null }) => UpdateFilterRequest;
 }
 
 export type CheckBoxFilterProps = OwnProps & DispatchFromProps & StateFromProps;
@@ -64,10 +63,10 @@ export class CheckBoxFilter extends React.Component<CheckBoxFilterProps> {
     }
 
     if (Object.keys(checkedValues).length === 0) {
-      this.props.clearFilterByCategory(categoryId);
+      this.props.updateFilterByCategory({ categoryId, value: null });
     }
     else {
-      this.props.updateFilterByCategory(categoryId, checkedValues);
+      this.props.updateFilterByCategory({ categoryId, value: checkedValues });
     }
   };
 
@@ -95,7 +94,6 @@ export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
 
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    clearFilterByCategory,
     updateFilterByCategory,
   }, dispatch);
 };

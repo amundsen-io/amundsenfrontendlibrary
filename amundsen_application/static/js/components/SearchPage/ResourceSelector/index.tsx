@@ -96,7 +96,7 @@ export const mapStateToProps = (state: GlobalState) => {
 
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    setResource: (resource: ResourceType) => updateSearchState({ selectedTab: resource }),
+    setResource: (resource: ResourceType) => updateSearchState({ selectedTab: resource, updateUrl: true }),
   }, dispatch);
 };
 

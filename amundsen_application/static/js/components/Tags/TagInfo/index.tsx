@@ -63,7 +63,7 @@ export const mapDispatchToProps = (dispatch: any) => {
     /* Note: Pattern intentionally isolates component from extraneous hardcoded parameters */
     /* Note: This will have to be extended to all resources that support tags */
     searchTag: (tagName: string) => submitSearchResource({
-      filters: { 'tag': tagName },
+      resourceFilters: { 'tag': tagName },
       selectedTab: ResourceType.table,
       pageIndex: 0,
       searchTerm: '',

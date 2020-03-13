@@ -62,7 +62,7 @@ export class HomePage extends React.Component<HomePageProps> {
 
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    searchReset: () => updateSearchState(),
+    searchReset: () => updateSearchState({}),
   }, dispatch);
 };
 

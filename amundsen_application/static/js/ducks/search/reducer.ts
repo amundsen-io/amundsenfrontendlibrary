@@ -2,7 +2,7 @@ import { ResourceType, SearchType} from 'interfaces';
 
 import { Search as UrlSearch } from 'history';
 
-import filterReducer, { initialFilterState, UpdateSearchFilter, FilterReducerState } from './filters/reducer';
+import filterReducer, { initialFilterState, FilterReducerState } from './filters/reducer';
 
 import {
   DashboardSearchResults,
@@ -138,20 +138,20 @@ export function submitSearch({ searchTerm, useFilters } : { searchTerm: string, 
   };
 };
 
-export function submitSearchResource({ filters, pageIndex, searchTerm, selectedTab, searchType, updateUrl } : SubmitSearchResourcePayload): SubmitSearchResourceRequest {
+export function submitSearchResource({ resourceFilters, pageIndex, searchTerm, selectedTab, searchType, updateUrl } : SubmitSearchResourcePayload): SubmitSearchResourceRequest {
   return {
-    payload: { filters, pageIndex, searchTerm, selectedTab, searchType, updateUrl },
+    payload: { resourceFilters, pageIndex, searchTerm, selectedTab, searchType, updateUrl },
     type: SubmitSearchResource.REQUEST,
   };
 };
 
-export function updateSearchState(searchState?: Partial<SearchReducerState>): any {
-  /*
-    TODO: Purpose is to just update state but sometimes url update is needed.
-    Is there anyway around needing a saga given no api request is needed
-  */
+export function updateSearchState({ selectedTab, filters, updateUrl }: { selectedTab?: ResourceType, filters?: FilterReducerState, updateUrl?: boolean }): any {
   return {
-    payload: searchState,
+    payload: {
+      selectedTab,
+      filters,
+      updateUrl,
+    },
     type: UpdateSearchState.REQUEST,
   };
 };
@@ -208,28 +208,21 @@ export const initialState: SearchReducerState = {
 
 export default function reducer(state: SearchReducerState = initialState, action): SearchReducerState {
   switch (action.type) {
-    case UpdateSearchFilter.CLEAR_CATEGORY:
-    case UpdateSearchFilter.UPDATE_CATEGORY:
-      return {
-        ...state,
-        isLoading: true,
-        filters: filterReducer(state.filters, action, state.selectedTab),
-      }
     case SubmitSearchResource.REQUEST:
       return {
         ...state,
-        search_term: action.payload.searchTerm,
-        filters: filterReducer(state.filters, action, state.selectedTab),
+        search_term: action.payload.searchTerm || state.search_term,
+        filters: filterReducer(action.payload.filters || state.filters, action),
       }
     case UpdateSearchState.REQUEST:
       const payload = action.payload;
-      if (!payload) {
+      if (!payload.selectedTab && !payload.filters) {
         return initialState;
       }
       return {
         ...state,
         selectedTab: payload.selectedTab || state.selectedTab,
-        filters: filterReducer(payload.filters || state.filters, action, state.selectedTab),
+        filters: payload.filters || state.filters,
       }
     case SearchAll.REQUEST:
       // updates search term to reflect action

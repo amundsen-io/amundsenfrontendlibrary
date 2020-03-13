@@ -1,7 +1,6 @@
 import { ResourceType } from 'interfaces';
 
 import reducer, {
-  clearFilterByCategory,
   updateFilterByCategory,
   initialFilterState,
   FilterReducerState,

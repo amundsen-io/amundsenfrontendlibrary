@@ -27,7 +27,6 @@ describe('CheckBoxFilter', () => {
       checkedValues: {
         'hive': true,
       },
-      clearFilterByCategory: jest.fn(),
       updateFilterByCategory: jest.fn(),
       ...propOverrides
     };
@@ -74,21 +73,19 @@ describe('CheckBoxFilter', () => {
     let wrapper;
     let mockEvent;
 
-    let clearCategorySpy;
     let updateCategorySpy;
     beforeAll(() => {
       const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
-      clearCategorySpy = jest.spyOn(props, 'clearFilterByCategory');
       updateCategorySpy = jest.spyOn(props, 'updateFilterByCategory');
     })
 
-    it('calls props.clearFilterByCategory if no items will be checked', () => {
-      clearCategorySpy.mockClear();
+    it('calls props.updateFilterByCategory if no items will be checked', () => {
+      updateCategorySpy.mockClear();
       mockEvent = { target: { name: mockCategoryId, value: 'hive', checked: false }};
       wrapper.instance().onCheckboxChange(mockEvent);
-      expect(clearCategorySpy).toHaveBeenCalledWith(mockCategoryId)
+      expect(updateCategorySpy).toHaveBeenCalledWith({ categoryId: mockCategoryId, value: null })
     });
 
     it('calls props.updateFilterByCategory with expected parameters', () => {
@@ -99,7 +96,7 @@ describe('CheckBoxFilter', () => {
         'bigquery': true
       }
       wrapper.instance().onCheckboxChange(mockEvent);
-      expect(updateCategorySpy).toHaveBeenCalledWith(mockCategoryId, expectedCheckedValues)
+      expect(updateCategorySpy).toHaveBeenCalledWith({ categoryId: mockCategoryId, value: expectedCheckedValues })
     });
   });
 
@@ -181,10 +178,6 @@ describe('CheckBoxFilter', () => {
       const props = setup().props;
       dispatch = jest.fn(() => Promise.resolve());
       result = mapDispatchToProps(dispatch);
-    });
-
-    it('sets clearFilterByCategory on the props', () => {
-      expect(result.clearFilterByCategory).toBeInstanceOf(Function);
     });
 
     it('sets updateFilterByCategory on the props', () => {
