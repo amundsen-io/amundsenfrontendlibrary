@@ -8,7 +8,6 @@ import {
   DashboardSearchResults,
   SearchAll,
   SearchAllRequest,
-  SearchAllReset,
   SearchAllResponse,
   SearchAllResponsePayload,
   SearchResource,
@@ -214,23 +213,29 @@ export const initialState: SearchReducerState = {
 
 export default function reducer(state: SearchReducerState = initialState, action): SearchReducerState {
   switch (action.type) {
+    case SubmitSearch.REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        search_term: action.payload.searchTerm,
+      }
     case SubmitSearchResource.REQUEST:
       return {
         ...state,
-        search_term: action.payload.searchTerm || state.search_term,
+        isLoading: true,
         filters: filterReducer(action.payload.filters || state.filters, action),
+        search_term: action.payload.searchTerm || state.search_term,
       }
     case UpdateSearchState.REQUEST:
       const payload = action.payload;
       return {
         ...state,
-        resource: payload.resource || state.resource,
         filters: payload.filters || state.filters,
+        resource: payload.resource || state.resource,
       }
     case UpdateSearchState.RESET:
         return initialState;
     case SearchAll.REQUEST:
-      // updates search term to reflect action
       return {
         ...state,
         inlineResults: {

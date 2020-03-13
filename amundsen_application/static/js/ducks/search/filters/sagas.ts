@@ -1,5 +1,5 @@
 import { SagaIterator } from 'redux-saga';
-import { debounce, put, select } from 'redux-saga/effects';
+import { takeEvery, put, select } from 'redux-saga/effects';
 
 import { SearchType } from 'interfaces';
 
@@ -15,11 +15,15 @@ import {
 } from './reducer';
 
 /**
- * Listens to actions triggers by user updates to the filter state.
- * For better user experience debounce the start of the worker as multiple updates can happen in < 1 second.
+ * Listens to actions triggers by user updates to the filter state..
  */
 export function* filterWatcher(): SagaIterator {
-  yield debounce(750, UpdateSearchFilter.REQUEST, filterWorker);
+  /*
+    TODO: If we want to minimize api calls on checkbox quick-select,
+    we will have to debounce and accumulate filter updates elsewhere.
+    To be revisited when we have more checkbox filters
+  */
+  yield takeEvery(UpdateSearchFilter.REQUEST, filterWorker);
 };
 
 /*

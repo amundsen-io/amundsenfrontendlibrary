@@ -126,11 +126,15 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
 
   const state = yield select(getSearchState);
   if (!!term && state.search_term !== term) {
-    yield put(updateSearchState({ filters: {
-      ...state.filters,
-      [resource]: parsedFilters
-    }}));
-    yield put(searchAll(SearchType.LOAD_URL, term, resource, parsedIndex));
+    let updateUrl = false;
+    if (parsedFilters) {
+      updateUrl = true;
+      yield put(updateSearchState({ filters: {
+        ...state.filters,
+        [resource]: parsedFilters
+      }}));
+    }
+    yield put(searchAll(SearchType.LOAD_URL, term, resource, parsedIndex, updateUrl));
   } else if (!!resource) {
     if (resource !== state.resource) {
       yield put(updateSearchState({ resource }))

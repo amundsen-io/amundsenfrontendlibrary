@@ -1,5 +1,5 @@
 import { testSaga } from 'redux-saga-test-plan';
-import { debounce } from 'redux-saga/effects';
+import { takeEvery } from 'redux-saga/effects';
 
 import { submitSearchResource } from 'ducks/search/reducer';
 import * as SearchUtils from 'ducks/search/utils';
@@ -20,7 +20,7 @@ describe('filter sagas', () => {
     it('debounces update filter actions with filterWorker', () => {
       testSaga(Sagas.filterWatcher)
         .next()
-        .is(debounce(750, UpdateSearchFilter.REQUEST, Sagas.filterWorker))
+        .is(takeEvery(UpdateSearchFilter.REQUEST, Sagas.filterWorker))
         .next().isDone();
     });
   });

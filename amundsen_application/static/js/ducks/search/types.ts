@@ -51,7 +51,6 @@ export enum SearchAll {
   REQUEST = 'amundsen/search/SEARCH_ALL_REQUEST',
   SUCCESS = 'amundsen/search/SEARCH_ALL_SUCCESS',
   FAILURE = 'amundsen/search/SEARCH_ALL_FAILURE',
-  RESET = 'amundsen/search/SEARCH_ALL_RESET',
 };
 export interface SearchAllRequest {
   payload: {
@@ -67,10 +66,6 @@ export interface SearchAllResponse {
   type: SearchAll.SUCCESS | SearchAll.FAILURE;
   payload?: SearchAllResponsePayload;
 };
-export interface SearchAllReset {
-  type: SearchAll.RESET;
-};
-
 
 export enum SearchResource {
   REQUEST = 'amundsen/search/SEARCH_RESOURCE_REQUEST',
