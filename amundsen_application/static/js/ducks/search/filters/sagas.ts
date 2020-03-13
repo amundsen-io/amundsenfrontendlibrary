@@ -30,19 +30,19 @@ export function* filterWatcher(): SagaIterator {
  */
 export function* filterWorker(action: UpdateFilterRequest): SagaIterator {
   const state = yield select(getSearchState);
-  const { search_term, selectedTab, filters } = state;
+  const { search_term, resource, filters } = state;
   const { categoryId, value } = action.payload;
 
-  let resourceFilters = filters[selectedTab] || {};
+  let resourceFilters = filters[resource] || {};
   if (value === null) {
     resourceFilters = filterFromObj(resourceFilters, [categoryId])
   }
   else {
     resourceFilters[categoryId] = value;
   }
-  filters[selectedTab] = resourceFilters;
+  filters[resource] = resourceFilters;
   yield put(submitSearchResource({
-    selectedTab,
+    resource,
     resourceFilters,
     searchTerm: search_term,
     pageIndex: 0,

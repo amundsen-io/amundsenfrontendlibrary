@@ -90,7 +90,7 @@ export function* selectInlineResultWorker(action): SagaIterator {
     }
     const data = {
       searchTerm,
-      selectedTab: resourceType,
+      resource: resourceType,
       tables: state.search.inlineResults.tables,
       users: state.search.inlineResults.users,
     };
@@ -116,15 +116,15 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
     yield put(updateSearchState({ filters: newFilters }));
     yield put(searchAll(SearchType.LOAD_URL, term, resource, parsedIndex, true));
   } else if (!!resource) {
-    if (resource !== state.selectedTab) {
-      yield put(updateSearchState({ selectedTab: resource }))
+    if (resource !== state.resource) {
+      yield put(updateSearchState({ resource }))
     }
     if (parsedFilters && !_.isEqual(state.filters[resource], parsedFilters)) {
       /* This will update filter state + search resource */
-      yield put(submitSearchResource({
+      yield put(submitSearchResource({,
+        resource,
         searchTerm: term,
         resourceFilters: parsedFilters,
-        selectedTab: resource,
         pageIndex: parsedIndex,
         searchType: SearchType.FILTER
       }));
@@ -153,7 +153,7 @@ export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): Sa
   }
   updateSearchUrl({
     term: state.search_term,
-    resource: state.selectedTab,
+    resource: state.resource,
     index: getPageIndex(state),
     filters: state.filters,
   });
@@ -184,19 +184,19 @@ export function* submitSearchWatcher(): SagaIterator {
  */
  export function* submitSearchResourceWorker(action: SubmitSearchResourceRequest): SagaIterator {
    const state = yield select(getSearchState);
-   let { search_term, selectedTab, filters } = state;
+   const { search_term, resource, filters } = state;
    const { pageIndex, searchType, updateUrl } = action.payload;
    console.log(action.payload);
    search_term = action.payload.searchTerm !== undefined ? action.payload.searchTerm : search_term;
-   selectedTab = action.payload.selectedTab || selectedTab;
-   filters[selectedTab] = action.payload.resourceFilters || filters[selectedTab];
-   yield put(searchResource(searchType, search_term, selectedTab, pageIndex));
+   resource = action.payload.resource || resource;
+   filters[resource] = action.payload.resourceFilters || filters[resource];
+   yield put(searchResource(searchType, search_term, resource, pageIndex));
 
    if (updateUrl) {
     updateSearchUrl({
       filters,
+      resource,
       term: search_term,
-      resource: selectedTab,
       index: pageIndex,
     });
   }
@@ -209,13 +209,13 @@ export function* submitSearchWatcher(): SagaIterator {
   * Handles workflow for any user action that causes an update to the search state
   */
   export function* updateSearchStateWorker(action: UpdateSearchStateRequest): SagaIterator {
-    const { filters, selectedTab, updateUrl } = action.payload;
+    const { filters, resource, updateUrl } = action.payload;
     const state = yield select(getSearchState);
     if (updateUrl) {
       updateSearchUrl({
-        resource: selectedTab || state.selectedTab,
+        resource: resource || state.resource,
         term: state.search_term,
-        index: getPageIndex(state, selectedTab),
+        index: getPageIndex(state, resource),
         filters: filters || state.filters,
       });
     }
@@ -264,8 +264,8 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
       call(API.searchResource, dashboardIndex, ResourceType.dashboard, term, state.filters[ResourceType.dashboard], searchType),
     ]);
     const searchAllResponse = {
+      resource,
       search_term: term,
-      selectedTab: resource,
       tables: tableResponse.tables || initialState.tables,
       users: userResponse.users || initialState.users,
       dashboards: dashboardResponse.dashboards || initialState.dashboards,
@@ -273,7 +273,7 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
     };
     if (resource === undefined) {
       resource = autoSelectResource(searchAllResponse);
-      searchAllResponse.selectedTab = resource;
+      searchAllResponse.resource = resource;
     }
     const index = getPageIndex(searchAllResponse);
     yield put(searchAllSuccess(searchAllResponse));

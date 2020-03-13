@@ -39,7 +39,7 @@ import {
 
 export interface SearchReducerState {
   search_term: string;
-  selectedTab: ResourceType;
+  resource: ResourceType;
   isLoading: boolean;
   dashboards: DashboardSearchResults;
   tables: TableSearchResults;
@@ -138,17 +138,17 @@ export function submitSearch({ searchTerm, useFilters } : { searchTerm: string, 
   };
 };
 
-export function submitSearchResource({ resourceFilters, pageIndex, searchTerm, selectedTab, searchType, updateUrl } : SubmitSearchResourcePayload): SubmitSearchResourceRequest {
+export function submitSearchResource({ resourceFilters, pageIndex, searchTerm, resource, searchType, updateUrl } : SubmitSearchResourcePayload): SubmitSearchResourceRequest {
   return {
-    payload: { resourceFilters, pageIndex, searchTerm, selectedTab, searchType, updateUrl },
+    payload: { resourceFilters, pageIndex, searchTerm, resource, searchType, updateUrl },
     type: SubmitSearchResource.REQUEST,
   };
 };
 
-export function updateSearchState({ selectedTab, filters, updateUrl }: { selectedTab?: ResourceType, filters?: FilterReducerState, updateUrl?: boolean }): any {
+export function updateSearchState({ resource, filters, updateUrl }: { resource?: ResourceType, filters?: FilterReducerState, updateUrl?: boolean }): any {
   return {
     payload: {
-      selectedTab,
+      resource,
       filters,
       updateUrl,
     },
@@ -186,7 +186,7 @@ export const initialInlineResultsState = {
 export const initialState: SearchReducerState = {
   search_term: '',
   isLoading: false,
-  selectedTab: ResourceType.table,
+  resource: ResourceType.table,
   dashboards: {
     page_index: 0,
     results: [],
@@ -216,12 +216,12 @@ export default function reducer(state: SearchReducerState = initialState, action
       }
     case UpdateSearchState.REQUEST:
       const payload = action.payload;
-      if (!payload.selectedTab && !payload.filters) {
+      if (!payload.resource && !payload.filters) {
         return initialState;
       }
       return {
         ...state,
-        selectedTab: payload.selectedTab || state.selectedTab,
+        resource: payload.resource || state.resource,
         filters: payload.filters || state.filters,
       }
     case SearchAll.REQUEST:
@@ -267,10 +267,10 @@ export default function reducer(state: SearchReducerState = initialState, action
         search_term: state.search_term,
       };
     case InlineSearch.UPDATE:
-      const { searchTerm, selectedTab, tables, users } = (<InlineSearchUpdate>action).payload;
+      const { searchTerm, resource, tables, users } = (<InlineSearchUpdate>action).payload;
       return {
         ...state,
-        selectedTab,
+        resource,
         tables,
         users,
         search_term: searchTerm,

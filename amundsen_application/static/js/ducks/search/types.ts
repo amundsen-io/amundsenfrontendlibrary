@@ -25,7 +25,7 @@ export interface SearchResponsePayload {
   users?: UserSearchResults;
 };
 export interface SearchAllResponsePayload extends SearchResponsePayload {
-  selectedTab: ResourceType;
+  resource: ResourceType;
   dashboards: DashboardSearchResults;
   tables: TableSearchResults;
   users: UserSearchResults;
@@ -36,7 +36,7 @@ export interface InlineSearchResponsePayload {
 };
 export interface InlineSearchUpdatePayload {
   searchTerm: string;
-  selectedTab: ResourceType;
+  resource: ResourceType;
   tables: TableSearchResults;
   users: UserSearchResults;
 };
@@ -138,7 +138,7 @@ export type SubmitSearchResourcePayload = {
   updateUrl?: boolean;
   resourceFilters?: {[categoryId: string]: string | { [id:string]: boolean }}; // ResourceFilterReducerState
   searchTerm?: string;
-  selectedTab?: ResourceType;
+  resource?: ResourceType;
 }
 export interface SubmitSearchResourceRequest {
   payload: SubmitSearchResourcePayload;

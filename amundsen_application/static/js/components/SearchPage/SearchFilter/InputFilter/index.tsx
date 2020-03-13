@@ -81,7 +81,7 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
 
 export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
   const filterState = state.search.filters;
-  const value = filterState[state.search.selectedTab] ? filterState[state.search.selectedTab][ownProps.categoryId] : '';
+  const value = filterState[state.search.resource] ? filterState[state.search.resource][ownProps.categoryId] : '';
   return {
     value: value || '',
   }

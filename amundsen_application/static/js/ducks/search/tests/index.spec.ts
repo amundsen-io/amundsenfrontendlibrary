@@ -82,7 +82,7 @@ describe('search ducks', () => {
   // };
   // const expectedSearchAllResults: SearchAllResponsePayload = {
   //   search_term: 'testName',
-  //   selectedTab: ResourceType.table,
+  //   resource: ResourceType.table,
   //   dashboards: {
   //     page_index: 0,
   //     results: [],
@@ -126,7 +126,7 @@ describe('search ducks', () => {
   //
   // const inlineUpdatePayload: InlineSearchUpdatePayload = {
   //   searchTerm: 'testName',
-  //   selectedTab: ResourceType.table,
+  //   resource: ResourceType.table,
   //   tables: {
   //     page_index: 0,
   //     results: [],
@@ -358,18 +358,18 @@ describe('search ducks', () => {
   //   });
   //
   //   it('should handle SetResource.REQUEST', () => {
-  //     const selectedTab = ResourceType.user;
-  //     expect(reducer(testState, setResource(selectedTab))).toEqual({
+  //     const resource = ResourceType.user;
+  //     expect(reducer(testState, setResource(resource))).toEqual({
   //       ...testState,
-  //       selectedTab,
+  //       resource,
   //     });
   //   });
   //
   //   it('should handle InlineSearch.UPDATE', () => {
-  //     const { searchTerm, selectedTab, tables, users } = inlineUpdatePayload;
+  //     const { searchTerm, resource, tables, users } = inlineUpdatePayload;
   //     expect(reducer(testState, updateFromInlineResult(inlineUpdatePayload))).toEqual({
   //       ...testState,
-  //       selectedTab,
+  //       resource,
   //       tables,
   //       users,
   //       search_term: searchTerm,
@@ -414,7 +414,7 @@ describe('search ducks', () => {
   //         filterReducerSpy.mockClear();
   //         const filterAction = filterReducer.clearAllFilters();
   //         const result = reducer(testState, filterAction)
-  //         expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
+  //         expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.resource);
   //         expect(result.filters).toBe(MOCK_FILTER_STATE);
   //       })
   //     });
@@ -425,7 +425,7 @@ describe('search ducks', () => {
   //         const mockTerm = 'rides';
   //         const filterAction = filterReducer.setSearchInputByResource({ 'tag': 'tagName' }, ResourceType.table, 2, mockTerm);
   //         const result = reducer(testState, filterAction)
-  //         expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
+  //         expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.resource);
   //         expect(result.filters).toBe(MOCK_FILTER_STATE);
   //         expect(result.search_term).toBe(mockTerm);
   //       })
@@ -436,7 +436,7 @@ describe('search ducks', () => {
   //         filterReducerSpy.mockClear();
   //         const filterAction = filterReducer.clearFilterByCategory('column');
   //         const result = reducer(testState, filterAction)
-  //         expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
+  //         expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.resource);
   //         expect(result.filters).toBe(MOCK_FILTER_STATE);
   //         expect(result.isLoading).toBe(true);
   //       })
@@ -445,7 +445,7 @@ describe('search ducks', () => {
   //         filterReducerSpy.mockClear();
   //         const filterAction = filterReducer.updateFilterByCategory('column', 'column_name')
   //         const result = reducer(testState, filterAction)
-  //         expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
+  //         expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.resource);
   //         expect(result.filters).toBe(MOCK_FILTER_STATE);
   //         expect(result.isLoading).toBe(true);
   //       })
@@ -484,10 +484,10 @@ describe('search ducks', () => {
   //         updateSearchUrlSpy.mockClear();
   //         saga = saga.next()
   //                 .select(SearchUtils.getSearchState).next(mockSearchState)
-  //                 .put(searchResource(SearchType.FILTER, mockSearchState.search_term, mockSearchState.selectedTab, 0)).next();
+  //                 .put(searchResource(SearchType.FILTER, mockSearchState.search_term, mockSearchState.resource, 0)).next();
   //         expect(updateSearchUrlSpy).toHaveBeenCalledWith({
   //           filters: mockSearchState.filters,
-  //           resource: mockSearchState.selectedTab,
+  //           resource: mockSearchState.resource,
   //           term: mockSearchState.search_term,
   //           index: 0,
   //         }, true);
@@ -620,7 +620,7 @@ describe('search ducks', () => {
   //
   //       testSaga(Sagas.setPageIndexWorker, setPageIndex(index, updateUrl))
   //         .next().select(SearchUtils.getSearchState)
-  //         .next(searchState).put(searchResource(SearchType.PAGINATION, searchState.search_term, searchState.selectedTab, index))
+  //         .next(searchState).put(searchResource(SearchType.PAGINATION, searchState.search_term, searchState.resource, index))
   //         .next().isDone();
   //       expect(updateSearchUrlSpy).toHaveBeenCalled();
   //     });
@@ -632,7 +632,7 @@ describe('search ducks', () => {
   //
   //       testSaga(Sagas.setPageIndexWorker, setPageIndex(index, updateUrl))
   //         .next().select(SearchUtils.getSearchState)
-  //         .next(searchState).put(searchResource(SearchType.PAGINATION, searchState.search_term, searchState.selectedTab, index))
+  //         .next(searchState).put(searchResource(SearchType.PAGINATION, searchState.search_term, searchState.resource, index))
   //         .next().isDone();
   //       expect(updateSearchUrlSpy).not.toHaveBeenCalled();
   //     });
@@ -654,7 +654,7 @@ describe('search ducks', () => {
   //
   //     beforeEach(() => {
   //       term = searchState.search_term;
-  //       resource = searchState.selectedTab;
+  //       resource = searchState.resource;
   //       index = SearchUtils.getPageIndex(searchState, resource);
   //
   //       sagaTest = (action) => {
@@ -712,8 +712,8 @@ describe('search ducks', () => {
   //
   //       expect(updateSearchUrlSpy).toHaveBeenCalledWith({
   //         term: searchState.search_term,
-  //         resource: searchState.selectedTab,
-  //         index: SearchUtils.getPageIndex(searchState, searchState.selectedTab),
+  //         resource: searchState.resource,
+  //         index: SearchUtils.getPageIndex(searchState, searchState.resource),
   //         filters: searchState.filters,
   //       });
   //     });
@@ -762,7 +762,7 @@ describe('search ducks', () => {
   //   describe('getPageIndex', () => {
   //     const mockState = {
   //       ...searchState,
-  //       selectedTab: ResourceType.dashboard,
+  //       resource: ResourceType.dashboard,
   //       dashboards: {
   //         ...searchState.dashboards,
   //         page_index: 1,
@@ -790,7 +790,7 @@ describe('search ducks', () => {
   //     });
   //
   //     it('given no resource, returns page_index for the selected resource', () => {
-  //       const resourceToUse = mockState[mockState.selectedTab + 's'];
+  //       const resourceToUse = mockState[mockState.resource + 's'];
   //       expect(SearchUtils.getPageIndex(mockState)).toEqual(resourceToUse.page_index);
   //     });
   //

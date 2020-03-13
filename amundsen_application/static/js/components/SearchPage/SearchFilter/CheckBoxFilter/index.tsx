@@ -82,7 +82,7 @@ export class CheckBoxFilter extends React.Component<CheckBoxFilterProps> {
 
 export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
   const filterState = state.search.filters;
-  let filterValues = filterState[state.search.selectedTab] ? filterState[state.search.selectedTab][ownProps.categoryId] : {};
+  let filterValues = filterState[state.search.resource] ? filterState[state.search.resource][ownProps.categoryId] : {};
   if (!filterValues) {
     filterValues = {};
   }

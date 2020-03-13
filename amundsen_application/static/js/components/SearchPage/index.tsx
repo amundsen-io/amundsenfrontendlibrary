@@ -41,7 +41,7 @@ import {
 export interface StateFromProps {
   hasFilters: boolean;
   searchTerm: string;
-  selectedTab: ResourceType;
+  resource: ResourceType;
   isLoading: boolean;
   tables: TableSearchResults;
   dashboards: DashboardSearchResults;
@@ -73,7 +73,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
   }
 
   renderSearchResults = () => {
-    switch(this.props.selectedTab) {
+    switch(this.props.resource) {
       case ResourceType.table:
         return this.getTabContent(this.props.tables, ResourceType.table);
       case ResourceType.user:
@@ -180,11 +180,11 @@ export class SearchPage extends React.Component<SearchPageProps> {
 }
 
 export const mapStateToProps = (state: GlobalState) => {
-  const resourceFilters = state.search.filters[state.search.selectedTab];
+  const resourceFilters = state.search.filters[state.search.resource];
   return {
     hasFilters: resourceFilters && Object.keys(resourceFilters).length > 0,
     searchTerm: state.search.search_term,
-    selectedTab: state.search.selectedTab,
+    resource: state.search.resource,
     isLoading: state.search.isLoading,
     tables: state.search.tables,
     users: state.search.users,

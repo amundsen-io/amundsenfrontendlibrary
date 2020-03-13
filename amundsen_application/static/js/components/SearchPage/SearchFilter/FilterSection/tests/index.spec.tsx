@@ -109,7 +109,7 @@ describe('FilterSection', () => {
       ...globalState,
       search: {
         ...globalState.search,
-        selectedTab: ResourceType.table,
+        resource: ResourceType.table,
         filters: {
           [ResourceType.table]: {
             'database': { 'hive': true },
@@ -123,7 +123,7 @@ describe('FilterSection', () => {
       ...globalState,
       search: {
         ...globalState.search,
-        selectedTab: ResourceType.user,
+        resource: ResourceType.user,
         filters: {
           [ResourceType.table]: {}
         }

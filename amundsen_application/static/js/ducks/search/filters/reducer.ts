@@ -47,10 +47,10 @@ export default function reducer(state: FilterReducerState = initialFilterState, 
   switch (action.type) {
     case SubmitSearchResource.REQUEST:
       const { payload } = <SubmitSearchResourceRequest>action;
-      if (payload.selectedTab && payload.resourceFilters) {
+      if (payload.resource && payload.resourceFilters) {
         return {
           ...state,
-          [payload.selectedTab]: payload.resourceFilters
+          [payload.resource]: payload.resourceFilters
         };
       }
       return state;

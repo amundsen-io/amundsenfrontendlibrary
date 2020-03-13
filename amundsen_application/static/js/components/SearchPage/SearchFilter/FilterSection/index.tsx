@@ -93,7 +93,7 @@ export class FilterSection extends React.Component<FilterSectionProps> {
 
 export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
   const filterState = state.search.filters;
-  const filterValue = filterState[state.search.selectedTab] ? filterState[state.search.selectedTab][ownProps.categoryId] : null;
+  const filterValue = filterState[state.search.resource] ? filterState[state.search.resource][ownProps.categoryId] : null;
   let hasValue = false;
   if (filterValue && ownProps.type === FilterType.CHECKBOX_SELECT) {
     Object.keys(filterValue).forEach(key => {

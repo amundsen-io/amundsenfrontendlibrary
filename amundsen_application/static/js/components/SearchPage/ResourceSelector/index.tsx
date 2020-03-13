@@ -14,7 +14,7 @@ import { ResourceType } from 'interfaces/Resources';
 import { updateSearchState } from 'ducks/search/reducer';
 
 export interface StateFromProps {
-  selectedTab: ResourceType,
+  resource: ResourceType,
   tables: TableSearchResults;
   dashboards: DashboardSearchResults;
   users: UserSearchResults;
@@ -49,7 +49,7 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
             type="radio"
             name="resource"
             value={ option.type }
-            checked={ this.props.selectedTab === option.type }
+            checked={ this.props.resource === option.type }
             onChange={ this.onChange }
           />
           <span className="subtitle-2">{ option.label }</span>
@@ -87,7 +87,7 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
 
 export const mapStateToProps = (state: GlobalState) => {
   return {
-    selectedTab: state.search.selectedTab,
+    resource: state.search.resource,
     tables: state.search.tables,
     users: state.search.users,
     dashboards: state.search.dashboards,
@@ -96,7 +96,7 @@ export const mapStateToProps = (state: GlobalState) => {
 
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    setResource: (resource: ResourceType) => updateSearchState({ selectedTab: resource, updateUrl: true }),
+    setResource: (resource: ResourceType) => updateSearchState({ resource, updateUrl: true }),
   }, dispatch);
 };
 

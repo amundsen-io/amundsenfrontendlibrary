@@ -64,7 +64,7 @@ export const mapDispatchToProps = (dispatch: any) => {
     /* Note: This will have to be extended to all resources that support tags */
     searchTag: (tagName: string) => submitSearchResource({
       resourceFilters: { 'tag': tagName },
-      selectedTab: ResourceType.table,
+      resource: ResourceType.table,
       pageIndex: 0,
       searchTerm: '',
       searchType: SearchType.FILTER,

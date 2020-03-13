@@ -159,7 +159,7 @@ describe('InputFilter', () => {
       ...globalState,
       search: {
         ...globalState.search,
-        selectedTab: ResourceType.table,
+        resource: ResourceType.table,
         filters: {
           [ResourceType.table]: {
             [mockCategoryId]: mockFilters
@@ -172,7 +172,7 @@ describe('InputFilter', () => {
       ...globalState,
       search: {
         ...globalState.search,
-        selectedTab: ResourceType.user,
+        resource: ResourceType.user,
         filters: {
           [ResourceType.table]: {}
         }
