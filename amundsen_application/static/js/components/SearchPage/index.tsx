@@ -16,6 +16,7 @@ import { submitSearchResource, urlDidUpdate } from 'ducks/search/reducer';
 import {
   DashboardSearchResults,
   SearchResults,
+  SubmitSearchResourceRequest,
   TableSearchResults,
   UrlDidUpdateRequest,
   UserSearchResults,
@@ -49,7 +50,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  setPageIndex: (pageIndex: number) => any; // TODO ttannis: Set type
+  setPageIndex: (pageIndex: number) => SubmitSearchResourceRequest;
   urlDidUpdate: (urlSearch: UrlSearch) => UrlDidUpdateRequest;
 }
 

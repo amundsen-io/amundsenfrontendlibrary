@@ -28,7 +28,7 @@ export interface StateFromProps {
 };
 
 export interface DispatchFromProps {
-  updateFilterByCategory: ({ categoryId, value } : { categoryId: string; value: null }) => UpdateFilterRequest;
+  clearFilter: (categoryId: string) => UpdateFilterRequest;
 };
 
 export type FilterSectionProps = OwnProps & DispatchFromProps & StateFromProps;
@@ -39,7 +39,7 @@ export class FilterSection extends React.Component<FilterSectionProps> {
   }
 
   onClearFilter = () => {
-    this.props.updateFilterByCategory({ categoryId: this.props.categoryId, value: null });
+    this.props.clearFilter(this.props.categoryId);
   }
 
   renderFilterComponent = () => {
@@ -110,7 +110,7 @@ export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
 
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    updateFilterByCategory,
+    clearFilter: (categoryId: string) => updateFilterByCategory({ categoryId, value: undefined }),
   }, dispatch);
 };
 

@@ -27,7 +27,7 @@ describe('CheckBoxFilter', () => {
       checkedValues: {
         'hive': true,
       },
-      updateFilterByCategory: jest.fn(),
+      updateFilter: jest.fn(),
       ...propOverrides
     };
     const wrapper = shallow<CheckBoxFilter>(<CheckBoxFilter {...props} />);
@@ -78,17 +78,17 @@ describe('CheckBoxFilter', () => {
       const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
-      updateCategorySpy = jest.spyOn(props, 'updateFilterByCategory');
+      updateCategorySpy = jest.spyOn(props, 'updateFilter');
     })
 
-    it('calls props.updateFilterByCategory if no items will be checked', () => {
+    it('calls props.updateFilter if no items will be checked', () => {
       updateCategorySpy.mockClear();
       mockEvent = { target: { name: mockCategoryId, value: 'hive', checked: false }};
       wrapper.instance().onCheckboxChange(mockEvent);
-      expect(updateCategorySpy).toHaveBeenCalledWith({ categoryId: mockCategoryId, value: null })
+      expect(updateCategorySpy).toHaveBeenCalledWith(mockCategoryId, undefined)
     });
 
-    it('calls props.updateFilterByCategory with expected parameters', () => {
+    it('calls props.updateFilter with expected parameters', () => {
       updateCategorySpy.mockClear();
       mockEvent = { target: { name: mockCategoryId, value: 'bigquery', checked: true}};
       const expectedCheckedValues = {
@@ -96,7 +96,7 @@ describe('CheckBoxFilter', () => {
         'bigquery': true
       }
       wrapper.instance().onCheckboxChange(mockEvent);
-      expect(updateCategorySpy).toHaveBeenCalledWith({ categoryId: mockCategoryId, value: expectedCheckedValues })
+      expect(updateCategorySpy).toHaveBeenCalledWith(mockCategoryId, expectedCheckedValues)
     });
   });
 
@@ -180,8 +180,8 @@ describe('CheckBoxFilter', () => {
       result = mapDispatchToProps(dispatch);
     });
 
-    it('sets updateFilterByCategory on the props', () => {
-      expect(result.updateFilterByCategory).toBeInstanceOf(Function);
+    it('sets updateFilter on the props', () => {
+      expect(result.updateFilter).toBeInstanceOf(Function);
     });
   });
 });

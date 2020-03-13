@@ -9,6 +9,11 @@ import {
   UserResource,
 } from 'interfaces';
 
+import {
+  FilterReducerState,
+  ResourceFilterReducerState,
+} from 'ducks/search/filters/reducer';
+
 export interface SearchResults<T extends Resource> {
   page_index: number;
   total_results: number;
@@ -136,7 +141,7 @@ export type SubmitSearchResourcePayload = {
   pageIndex: number;
   searchType: SearchType;
   updateUrl?: boolean;
-  resourceFilters?: {[categoryId: string]: string | { [id:string]: boolean }}; // ResourceFilterReducerState
+  resourceFilters?: ResourceFilterReducerState;
   searchTerm?: string;
   resource?: ResourceType;
 }
@@ -147,10 +152,16 @@ export interface SubmitSearchResourceRequest {
 
 export enum UpdateSearchState {
   REQUEST = 'amundsen/search/UPDATE_SEARCH_STATE',
+  RESET = 'amundsen/search/RESET_SEARCH_STATE',
 };
+export type UpdateSearchStatePayload = {
+  filters?: FilterReducerState;
+  resource?: ResourceType;
+  updateUrl?: boolean;
+}
 export interface UpdateSearchStateRequest {
-  payload: any; // Real type is searchreducerstate + updateUrl but dont want to circular import between files
-  type: UpdateSearchState.REQUEST;
+  payload?: UpdateSearchStatePayload;
+  type: UpdateSearchState.REQUEST | UpdateSearchState.RESET;
 };
 
 export enum LoadPreviousSearch {

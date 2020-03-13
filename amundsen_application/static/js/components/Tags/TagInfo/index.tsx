@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { ResourceType, Tag, SearchType } from 'interfaces';
 
 import { submitSearchResource } from 'ducks/search/reducer';
+import { SubmitSearchResourceRequest } from 'ducks/search/types';
 import { logClick } from 'ducks/utilMethods';
 
 import './styles.scss';
@@ -14,7 +15,7 @@ interface OwnProps {
 }
 
 export interface DispatchFromProps {
-  searchTag: (tagName: string) => any;
+  searchTag: (tagName: string) => SubmitSearchResourceRequest;
 }
 
 export type TagInfoProps = OwnProps & DispatchFromProps;
@@ -60,8 +61,6 @@ export class TagInfo extends React.Component<TagInfoProps> {
 
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    /* Note: Pattern intentionally isolates component from extraneous hardcoded parameters */
-    /* Note: This will have to be extended to all resources that support tags */
     searchTag: (tagName: string) => submitSearchResource({
       resourceFilters: { 'tag': tagName },
       resource: ResourceType.table,

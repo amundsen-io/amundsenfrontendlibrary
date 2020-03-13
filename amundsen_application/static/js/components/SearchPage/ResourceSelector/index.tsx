@@ -5,13 +5,14 @@ import { connect } from 'react-redux';
 import { TABLE_RESOURCE_TITLE, USER_RESOURCE_TITLE } from 'components/SearchPage/constants';
 import AppConfig from 'config/config';
 import { GlobalState } from 'ducks/rootReducer';
+import { updateSearchState } from 'ducks/search/reducer';
 import {
   DashboardSearchResults,
   TableSearchResults,
+  UpdateSearchStateRequest,
   UserSearchResults
 } from 'ducks/search/types';
 import { ResourceType } from 'interfaces/Resources';
-import { updateSearchState } from 'ducks/search/reducer';
 
 export interface StateFromProps {
   resource: ResourceType,
@@ -21,7 +22,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  setResource: (resource: ResourceType) => any; // TODO ttannis: Set type
+  setResource: (resource: ResourceType) => UpdateSearchStateRequest;
 }
 
 export type ResourceSelectorProps = StateFromProps & DispatchFromProps;

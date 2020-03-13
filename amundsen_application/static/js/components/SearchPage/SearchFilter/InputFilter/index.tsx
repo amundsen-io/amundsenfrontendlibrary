@@ -17,7 +17,7 @@ interface StateFromProps {
 }
 
 interface DispatchFromProps {
-  updateFilterByCategory: ({ categoryId, value }: { categoryId: string, value: string }) => UpdateFilterRequest;
+  updateFilter: (categoryId: string, value: string | undefined) => UpdateFilterRequest;
 }
 
 export type InputFilterProps = StateFromProps & DispatchFromProps & OwnProps;
@@ -45,10 +45,10 @@ export class InputFilter extends React.Component<InputFilterProps, InputFilterSt
   onApplyChanges = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if(!!this.state.value) {
-      this.props.updateFilterByCategory({ categoryId: this.props.categoryId, value: this.state.value });
+      this.props.updateFilter(this.props.categoryId, this.state.value);
     }
     else {
-      this.props.updateFilterByCategory({ categoryId: this.props.categoryId, value: null });
+      this.props.updateFilter(this.props.categoryId, undefined);
     }
   };
 
@@ -89,7 +89,7 @@ export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
 
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    updateFilterByCategory,
+    updateFilter: (categoryId: string, value: string | undefined) => updateFilterByCategory({ categoryId, value }),
   }, dispatch);
 };
 

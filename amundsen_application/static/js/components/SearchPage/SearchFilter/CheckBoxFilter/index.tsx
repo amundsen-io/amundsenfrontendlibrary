@@ -22,7 +22,7 @@ interface StateFromProps {
 }
 
 interface DispatchFromProps {
-  updateFilterByCategory: ({ categoryId, value }: { categoryId: string, value: FilterOptions | null }) => UpdateFilterRequest;
+  updateFilter: (categoryId: string, value?: FilterOptions) => UpdateFilterRequest;
 }
 
 export type CheckBoxFilterProps = OwnProps & DispatchFromProps & StateFromProps;
@@ -63,10 +63,10 @@ export class CheckBoxFilter extends React.Component<CheckBoxFilterProps> {
     }
 
     if (Object.keys(checkedValues).length === 0) {
-      this.props.updateFilterByCategory({ categoryId, value: null });
+      this.props.updateFilter(categoryId, undefined);
     }
     else {
-      this.props.updateFilterByCategory({ categoryId, value: checkedValues });
+      this.props.updateFilter(categoryId, checkedValues);
     }
   };
 
@@ -94,7 +94,7 @@ export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
 
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({
-    updateFilterByCategory,
+    updateFilter: (categoryId: string, checkedValues: FilterOptions | undefined) => updateFilterByCategory({ categoryId, value: checkedValues }),
   }, dispatch);
 };
 

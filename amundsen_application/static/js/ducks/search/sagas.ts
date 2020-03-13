@@ -121,7 +121,7 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
     }
     if (parsedFilters && !_.isEqual(state.filters[resource], parsedFilters)) {
       /* This will update filter state + search resource */
-      yield put(submitSearchResource({,
+      yield put(submitSearchResource({
         resource,
         searchTerm: term,
         resourceFilters: parsedFilters,
@@ -184,9 +184,10 @@ export function* submitSearchWatcher(): SagaIterator {
  */
  export function* submitSearchResourceWorker(action: SubmitSearchResourceRequest): SagaIterator {
    const state = yield select(getSearchState);
-   const { search_term, resource, filters } = state;
+   let { search_term, resource } = state;
+   const { filters } = state;
    const { pageIndex, searchType, updateUrl } = action.payload;
-   console.log(action.payload);
+
    search_term = action.payload.searchTerm !== undefined ? action.payload.searchTerm : search_term;
    resource = action.payload.resource || resource;
    filters[resource] = action.payload.resourceFilters || filters[resource];

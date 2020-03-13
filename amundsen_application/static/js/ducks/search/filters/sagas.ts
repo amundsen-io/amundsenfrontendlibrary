@@ -23,24 +23,24 @@ export function* filterWatcher(): SagaIterator {
 };
 
 /*
- * Executes a search on the current resource.
- * Actions that trigger this worker will have updated the filter reducer.
- * The updated filter state is applied in searchResourceWorker().
- * Updates the search url to reflect the change in filters.
+ * Generates new filter shape from action payload.
+ * Then executes a search on current resource based with new filters and current search state values.
  */
 export function* filterWorker(action: UpdateFilterRequest): SagaIterator {
+  const { categoryId, value } = action.payload;
   const state = yield select(getSearchState);
   const { search_term, resource, filters } = state;
-  const { categoryId, value } = action.payload;
+  let resourceFilters = {
+    ...filters[resource],
+  }
 
-  let resourceFilters = filters[resource] || {};
-  if (value === null) {
+  if (value === undefined) {
     resourceFilters = filterFromObj(resourceFilters, [categoryId])
   }
   else {
     resourceFilters[categoryId] = value;
   }
-  filters[resource] = resourceFilters;
+
   yield put(submitSearchResource({
     resource,
     resourceFilters,

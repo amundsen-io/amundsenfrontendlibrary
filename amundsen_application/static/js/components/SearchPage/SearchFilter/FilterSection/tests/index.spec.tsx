@@ -2,7 +2,6 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import { GlobalState } from 'ducks/rootReducer';
-import { updateFilterByCategory } from 'ducks/search/filters/reducer';
 
 import { FilterSection, FilterSectionProps, mapDispatchToProps, mapStateToProps } from '../';
 
@@ -19,7 +18,7 @@ describe('FilterSection', () => {
       categoryId: 'testId',
       hasValue: true,
       title: 'Category',
-      updateFilterByCategory: jest.fn(),
+      clearFilter: jest.fn(),
       type: FilterType.INPUT_SELECT,
       ...propOverrides
     };
@@ -36,12 +35,12 @@ describe('FilterSection', () => {
       const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
-      clearFilterSpy = jest.spyOn(props, 'updateFilterByCategory');
+      clearFilterSpy = jest.spyOn(props, 'clearFilter');
     });
 
-    it('calls props.updateFilterByCategory with props.categoryId', () => {
+    it('calls props.clearFilter with props.categoryId', () => {
       wrapper.instance().onClearFilter();
-      expect(clearFilterSpy).toHaveBeenCalledWith({ categoryId: props.categoryId, value: null });
+      expect(clearFilterSpy).toHaveBeenCalledWith(props.categoryId);
     })
   });
 
@@ -175,8 +174,8 @@ describe('FilterSection', () => {
       result = mapDispatchToProps(dispatch);
     });
 
-    it('sets updateFilterByCategory on the props', () => {
-      expect(result.updateFilterByCategory).toBeInstanceOf(Function);
+    it('sets clearFilter on the props', () => {
+      expect(result.clearFilter).toBeInstanceOf(Function);
     });
   });
 });

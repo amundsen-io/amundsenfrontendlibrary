@@ -32,6 +32,7 @@ import {
   LoadPreviousSearchRequest,
   LoadPreviousSearch,
   UpdateSearchStateRequest,
+  UpdateSearchStatePayload,
   UpdateSearchState,
   UrlDidUpdateRequest,
   UrlDidUpdate
@@ -145,14 +146,19 @@ export function submitSearchResource({ resourceFilters, pageIndex, searchTerm, r
   };
 };
 
-export function updateSearchState({ resource, filters, updateUrl }: { resource?: ResourceType, filters?: FilterReducerState, updateUrl?: boolean }): any {
+export function updateSearchState({ filters, resource, updateUrl }: UpdateSearchStatePayload): UpdateSearchStateRequest {
   return {
     payload: {
-      resource,
       filters,
+      resource,
       updateUrl,
     },
     type: UpdateSearchState.REQUEST,
+  };
+};
+export function resetSearchState(): UpdateSearchStateRequest {
+  return {
+    type: UpdateSearchState.RESET,
   };
 };
 
@@ -216,14 +222,13 @@ export default function reducer(state: SearchReducerState = initialState, action
       }
     case UpdateSearchState.REQUEST:
       const payload = action.payload;
-      if (!payload.resource && !payload.filters) {
-        return initialState;
-      }
       return {
         ...state,
         resource: payload.resource || state.resource,
         filters: payload.filters || state.filters,
       }
+    case UpdateSearchState.RESET:
+        return initialState;
     case SearchAll.REQUEST:
       // updates search term to reflect action
       return {

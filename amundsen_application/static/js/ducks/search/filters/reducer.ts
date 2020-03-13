@@ -7,7 +7,7 @@ export enum UpdateSearchFilter {
 };
 export type UpdateFilterPayload = {
   categoryId: string;
-  value: string | FilterOptions | null;
+  value: string | FilterOptions | undefined;
 }
 export interface UpdateFilterRequest {
   payload: UpdateFilterPayload;
