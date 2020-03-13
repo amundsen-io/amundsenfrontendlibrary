@@ -50,57 +50,74 @@ import {
 import { autoSelectResource, getPageIndex, getSearchState } from './utils';
 import { BrowserHistory, updateSearchUrl } from 'utils/navigationUtils';
 
+//////////////////////////////////////////////////////////////////////////////
+//  SEARCH SAGAS
+//  The actions that trigger these sagas are fired directly from components.
+//////////////////////////////////////////////////////////////////////////////
 
-export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
-  const { term } = action.payload;
-  try {
-    const [tableResponse, userResponse] = yield all([
-      call(API.searchResource, 0, ResourceType.table, term, {}, SearchType.INLINE_SEARCH),
-      call(API.searchResource, 0, ResourceType.user, term, {}, SearchType.INLINE_SEARCH),
-    ]);
-    const inlineSearchResponse = {
-      tables: tableResponse.tables || initialInlineResultsState.tables,
-      users: userResponse.users || initialInlineResultsState.users,
-    };
-    yield put(getInlineResultsSuccess(inlineSearchResponse));
-  } catch (e) {
-    yield put(getInlineResultsFailure());
-  }
+/**
+ * Handles workflow for any user action that causes an update to the searchTerm,
+ * which requires that all resources be re-searched.
+ */
+export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
+  const { searchTerm, useFilters } = action.payload;
+  yield put(searchAll(!!searchTerm ? SearchType.SUBMIT_TERM : SearchType.CLEAR_TERM, searchTerm, undefined, 0, useFilters));
 };
-export function* inlineSearchWatcher(): SagaIterator {
-  yield takeLatest(InlineSearch.REQUEST, inlineSearchWorker);
-}
-export function* debounceWorker(action): SagaIterator {
-  yield put(getInlineResults(action.payload.term));
-}
-export function* inlineSearchWatcherDebounce(): SagaIterator {
-  yield debounce(350, InlineSearch.REQUEST_DEBOUNCE, debounceWorker);
-}
-
-export function* selectInlineResultWorker(action): SagaIterator {
-  const state = yield select();
-  const { searchTerm, resourceType, updateUrl } = action.payload;
-  if (state.search.inlineResults.isLoading) {
-    yield put(searchAll(SearchType.INLINE_SELECT, searchTerm, resourceType, 0, false))
-    updateSearchUrl({ term: searchTerm, filters: state.search.filters });
-  }
-  else {
-    if (updateUrl) {
-      updateSearchUrl({ resource: resourceType, term: searchTerm, index: 0, filters: state.search.filters });
-    }
-    const data = {
-      searchTerm,
-      resource: resourceType,
-      tables: state.search.inlineResults.tables,
-      users: state.search.inlineResults.users,
-    };
-    yield put(updateFromInlineResult(data));
-  }
-};
-export function* selectInlineResultsWatcher(): SagaIterator {
-  yield takeEvery(InlineSearch.SELECT, selectInlineResultWorker);
+export function* submitSearchWatcher(): SagaIterator {
+  yield takeLatest(SubmitSearch.REQUEST, submitSearchWorker);
 };
 
+/**
+ * Handles workflow for any user action that causes an update to the search input for a given resource
+ */
+export function* submitSearchResourceWorker(action: SubmitSearchResourceRequest): SagaIterator {
+ const state = yield select(getSearchState);
+ let { search_term, resource } = state;
+ const { filters } = state;
+ const { pageIndex, searchType, updateUrl } = action.payload;
+
+ search_term = action.payload.searchTerm !== undefined ? action.payload.searchTerm : search_term;
+ resource = action.payload.resource || resource;
+ filters[resource] = action.payload.resourceFilters || filters[resource];
+ yield put(searchResource(searchType, search_term, resource, pageIndex));
+
+ if (updateUrl) {
+  updateSearchUrl({
+    filters,
+    resource,
+    term: search_term,
+    index: pageIndex,
+  });
+}
+};
+export function* submitSearchResourceWatcher(): SagaIterator {
+ yield takeEvery(SubmitSearchResource.REQUEST, submitSearchResourceWorker);
+};
+
+/**
+ * Handles workflow for any user action that causes an update to the search state.
+ * Updates the search url if necessary.
+ */
+export function* updateSearchStateWorker(action: UpdateSearchStateRequest): SagaIterator {
+  const { filters, resource, updateUrl } = action.payload;
+  const state = yield select(getSearchState);
+  if (updateUrl) {
+    updateSearchUrl({
+      resource: resource || state.resource,
+      term: state.search_term,
+      index: getPageIndex(state, resource),
+      filters: filters || state.filters,
+    });
+  }
+};
+export function* updateSearchStateWatcher(): SagaIterator {
+  yield takeEvery(UpdateSearchState.REQUEST, updateSearchStateWorker);
+};
+
+/**
+ * Handles workflow for handling url updates on the /search route.
+ * Ensures that search state and and search results are updated based on url parameters.
+ */
 export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
   const { urlSearch } = action.payload;
   const { term = '', resource, index, filters } = qs.parse(urlSearch);
@@ -109,18 +126,16 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
 
   const state = yield select(getSearchState);
   if (!!term && state.search_term !== term) {
-    const newFilters = {
+    yield put(updateSearchState({ filters: {
       ...state.filters,
       [resource]: parsedFilters
-    }
-    yield put(updateSearchState({ filters: newFilters }));
-    yield put(searchAll(SearchType.LOAD_URL, term, resource, parsedIndex, true));
+    }}));
+    yield put(searchAll(SearchType.LOAD_URL, term, resource, parsedIndex));
   } else if (!!resource) {
     if (resource !== state.resource) {
       yield put(updateSearchState({ resource }))
     }
     if (parsedFilters && !_.isEqual(state.filters[resource], parsedFilters)) {
-      /* This will update filter state + search resource */
       yield put(submitSearchResource({
         resource,
         searchTerm: term,
@@ -130,11 +145,6 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
       }));
     }
   } else if (!isNaN(parsedIndex) && parsedIndex !== getPageIndex(state, resource)) {
-    /*
-     Note: Current filtering logic seems to reproduction of this case.
-     Could there be a race condition between url and reducer state updates?
-     Re-evaluate when restrucuring sagas to consolidate filter support.
-    */
     yield put(submitSearchResource({ pageIndex: parsedIndex, searchType: SearchType.PAGINATION }));
   }
 };
@@ -142,10 +152,12 @@ export function* urlDidUpdateWatcher(): SagaIterator {
   yield takeEvery(UrlDidUpdate.REQUEST, urlDidUpdateWorker);
 };
 
+/**
+ * Handles workflow for user actions on navigations components.
+ * Leverages BrowserHistory or updates search url accordingly.
+ */
 export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): SagaIterator {
-  /*
-    Is there anyway around needing a saga given no api request is needed
-  */
+  /* TODO ttannis: Consolidate? Can Breadcrumb call BrowserHistory or use updateSearchState() */
   const state = yield select(getSearchState);
   if (state.search_term === "") {
     BrowserHistory.goBack();
@@ -163,73 +175,10 @@ export function* loadPreviousSearchWatcher(): SagaIterator {
 };
 
 //////////////////////////////////////////////////////////////////////////////
-//  COMPONENT SAGAS TODO : Still trying to think of a good way to think of things
-//  The actions that trigger these sagas are fired directly from components.
-//////////////////////////////////////////////////////////////////////////////
-
-/**
- * Handles workflow for any user action that causes an update to the searchTerm
- */
-export function* submitSearchWorker(action: SubmitSearchRequest): SagaIterator {
-  const { searchTerm, useFilters } = action.payload;
-  yield put(searchAll(!!searchTerm ? SearchType.SUBMIT_TERM : SearchType.CLEAR_TERM, searchTerm, undefined, 0, useFilters));
-};
-export function* submitSearchWatcher(): SagaIterator {
-  yield takeLatest(SubmitSearch.REQUEST, submitSearchWorker);
-};
-
-/**
- * Handles workflow for any user action that causes an update to any piece of search input
- * for a given resource
- */
- export function* submitSearchResourceWorker(action: SubmitSearchResourceRequest): SagaIterator {
-   const state = yield select(getSearchState);
-   let { search_term, resource } = state;
-   const { filters } = state;
-   const { pageIndex, searchType, updateUrl } = action.payload;
-
-   search_term = action.payload.searchTerm !== undefined ? action.payload.searchTerm : search_term;
-   resource = action.payload.resource || resource;
-   filters[resource] = action.payload.resourceFilters || filters[resource];
-   yield put(searchResource(searchType, search_term, resource, pageIndex));
-
-   if (updateUrl) {
-    updateSearchUrl({
-      filters,
-      resource,
-      term: search_term,
-      index: pageIndex,
-    });
-  }
- };
- export function* submitSearchResourceWatcher(): SagaIterator {
-   yield takeEvery(SubmitSearchResource.REQUEST, submitSearchResourceWorker);
- };
-
- /**
-  * Handles workflow for any user action that causes an update to the search state
-  */
-  export function* updateSearchStateWorker(action: UpdateSearchStateRequest): SagaIterator {
-    const { filters, resource, updateUrl } = action.payload;
-    const state = yield select(getSearchState);
-    if (updateUrl) {
-      updateSearchUrl({
-        resource: resource || state.resource,
-        term: state.search_term,
-        index: getPageIndex(state, resource),
-        filters: filters || state.filters,
-      });
-    }
-  };
-  export function* updateSearchStateWatcher(): SagaIterator {
-    yield takeEvery(UpdateSearchState.REQUEST, updateSearchStateWorker);
-  };
-//////////////////////////////////////////////////////////////////////////////
-//  API SAGAS TODO : Still trying to think of a good way to think of things
-//  These sagas directly trigger axios search requests.
-//  The actions that trigger them should only be fired by other sagas,
-//  and these sagas should be considered the "end" of any saga chain, firing
-//  only success/failure actions.
+//  CORE SEARCH SAGAS
+//  These sagas are not called directly by any components. They should be
+//  called by other sagas as the final step for all use cases that will update
+//  search results.
 //////////////////////////////////////////////////////////////////////////////
 
 export function* searchResourceWorker(action: SearchResourceRequest): SagaIterator {
@@ -286,4 +235,61 @@ export function* searchAllWorker(action: SearchAllRequest): SagaIterator {
 };
 export function* searchAllWatcher(): SagaIterator {
   yield takeEvery(SearchAll.REQUEST, searchAllWorker);
+};
+
+//////////////////////////////////////////////////////////////////////////////
+//  INLINE SEARCH RESULTS SAGAS
+//  These sagas support the inline search results feature.
+//  TODO: Consider moving into nested directory similar to how filter logic.
+//////////////////////////////////////////////////////////////////////////////
+
+export function* inlineSearchWorker(action: InlineSearchRequest): SagaIterator {
+  const { term } = action.payload;
+  try {
+    const [tableResponse, userResponse] = yield all([
+      call(API.searchResource, 0, ResourceType.table, term, {}, SearchType.INLINE_SEARCH),
+      call(API.searchResource, 0, ResourceType.user, term, {}, SearchType.INLINE_SEARCH),
+    ]);
+    const inlineSearchResponse = {
+      tables: tableResponse.tables || initialInlineResultsState.tables,
+      users: userResponse.users || initialInlineResultsState.users,
+    };
+    yield put(getInlineResultsSuccess(inlineSearchResponse));
+  } catch (e) {
+    yield put(getInlineResultsFailure());
+  }
+};
+export function* inlineSearchWatcher(): SagaIterator {
+  yield takeLatest(InlineSearch.REQUEST, inlineSearchWorker);
+}
+
+export function* debounceWorker(action): SagaIterator {
+  yield put(getInlineResults(action.payload.term));
+}
+export function* inlineSearchWatcherDebounce(): SagaIterator {
+  yield debounce(350, InlineSearch.REQUEST_DEBOUNCE, debounceWorker);
+}
+
+export function* selectInlineResultWorker(action): SagaIterator {
+  const state = yield select();
+  const { searchTerm, resourceType, updateUrl } = action.payload;
+  if (state.search.inlineResults.isLoading) {
+    yield put(searchAll(SearchType.INLINE_SELECT, searchTerm, resourceType, 0, false))
+    updateSearchUrl({ term: searchTerm, filters: state.search.filters });
+  }
+  else {
+    if (updateUrl) {
+      updateSearchUrl({ resource: resourceType, term: searchTerm, index: 0, filters: state.search.filters });
+    }
+    const data = {
+      searchTerm,
+      resource: resourceType,
+      tables: state.search.inlineResults.tables,
+      users: state.search.inlineResults.users,
+    };
+    yield put(updateFromInlineResult(data));
+  }
+};
+export function* selectInlineResultsWatcher(): SagaIterator {
+  yield takeEvery(InlineSearch.SELECT, selectInlineResultWorker);
 };

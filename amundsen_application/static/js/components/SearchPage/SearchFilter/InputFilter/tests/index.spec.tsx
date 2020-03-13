@@ -76,27 +76,27 @@ describe('InputFilter', () => {
     let props;
     let wrapper;
 
-    let updateCategorySpy;
+    let updateFilterSpy;
     beforeAll(() => {
        const setupResult = setup();
        props = setupResult.props;
        wrapper = setupResult.wrapper;
-       updateCategorySpy = jest.spyOn(props, 'updateFilter');
+       updateFilterSpy = jest.spyOn(props, 'updateFilter');
     });
 
     it('calls props.updateFilter if state.value is falsy', () => {
-      updateCategorySpy.mockClear();
+      updateFilterSpy.mockClear();
       wrapper.setState({ value: '' });
       wrapper.instance().onApplyChanges({ preventDefault: jest.fn() });
-      expect(updateCategorySpy).toHaveBeenCalledWith(props.categoryId, undefined);
+      expect(updateFilterSpy).toHaveBeenCalledWith(props.categoryId, undefined);
     });
 
     it('calls props.updateFilter if state.value has a truthy value', () => {
-      updateCategorySpy.mockClear();
+      updateFilterSpy.mockClear();
       const mockValue = 'hello';
       wrapper.setState({ value: mockValue });
       wrapper.instance().onApplyChanges({ preventDefault: jest.fn() });
-      expect(updateCategorySpy).toHaveBeenCalledWith(props.categoryId, mockValue);
+      expect(updateFilterSpy).toHaveBeenCalledWith(props.categoryId, mockValue);
     });
   });
 

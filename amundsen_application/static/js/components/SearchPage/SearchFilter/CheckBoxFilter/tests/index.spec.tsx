@@ -73,30 +73,30 @@ describe('CheckBoxFilter', () => {
     let wrapper;
     let mockEvent;
 
-    let updateCategorySpy;
+    let updateFilterSpy;
     beforeAll(() => {
       const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
-      updateCategorySpy = jest.spyOn(props, 'updateFilter');
+      updateFilterSpy = jest.spyOn(props, 'updateFilter');
     })
 
     it('calls props.updateFilter if no items will be checked', () => {
-      updateCategorySpy.mockClear();
+      updateFilterSpy.mockClear();
       mockEvent = { target: { name: mockCategoryId, value: 'hive', checked: false }};
       wrapper.instance().onCheckboxChange(mockEvent);
-      expect(updateCategorySpy).toHaveBeenCalledWith(mockCategoryId, undefined)
+      expect(updateFilterSpy).toHaveBeenCalledWith(mockCategoryId, undefined)
     });
 
     it('calls props.updateFilter with expected parameters', () => {
-      updateCategorySpy.mockClear();
+      updateFilterSpy.mockClear();
       mockEvent = { target: { name: mockCategoryId, value: 'bigquery', checked: true}};
       const expectedCheckedValues = {
         ...props.checkedValues,
         'bigquery': true
       }
       wrapper.instance().onCheckboxChange(mockEvent);
-      expect(updateCategorySpy).toHaveBeenCalledWith(mockCategoryId, expectedCheckedValues)
+      expect(updateFilterSpy).toHaveBeenCalledWith(mockCategoryId, expectedCheckedValues)
     });
   });
 
