@@ -31,6 +31,7 @@ import {
   LoadPreviousSearchRequest,
   LoadPreviousSearch,
   UpdateSearchStateRequest,
+  UpdateSearchStateReset,
   UpdateSearchStatePayload,
   UpdateSearchState,
   UrlDidUpdateRequest,
@@ -155,7 +156,7 @@ export function updateSearchState({ filters, resource, updateUrl }: UpdateSearch
     type: UpdateSearchState.REQUEST,
   };
 };
-export function resetSearchState(): UpdateSearchStateRequest {
+export function resetSearchState(): UpdateSearchStateReset {
   return {
     type: UpdateSearchState.RESET,
   };

@@ -11,13 +11,13 @@ import MyBookmarks from 'components/common/Bookmark/MyBookmarks';
 import Breadcrumb from 'components/common/Breadcrumb';
 import PopularTables from 'components/common/PopularTables';
 import { resetSearchState } from 'ducks/search/reducer';
-import { UpdateSearchStateRequest } from 'ducks/search/types';
+import { UpdateSearchStateReset } from 'ducks/search/types';
 import SearchBar from 'components/common/SearchBar';
 import TagsList from 'components/common/TagsList';
 
 
 export interface DispatchFromProps {
-  searchReset: () => UpdateSearchStateRequest;
+  searchReset: () => UpdateSearchStateReset;
 }
 
 export type HomePageProps = DispatchFromProps & RouteComponentProps<any>;

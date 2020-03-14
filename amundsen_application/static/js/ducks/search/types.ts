@@ -156,7 +156,10 @@ export type UpdateSearchStatePayload = {
 }
 export interface UpdateSearchStateRequest {
   payload?: UpdateSearchStatePayload;
-  type: UpdateSearchState.REQUEST | UpdateSearchState.RESET;
+  type: UpdateSearchState.REQUEST;
+};
+export interface UpdateSearchStateReset {
+  type: UpdateSearchState.RESET;
 };
 
 export enum LoadPreviousSearch {
