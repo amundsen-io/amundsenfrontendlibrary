@@ -261,6 +261,7 @@ describe('search sagas', () => {
       term = 'new search';
       sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}&filters=%7B"database"%3A%7B"hive"%3Atrue%7D%7D`))
         .put(updateSearchState({
+          // @ts-ignore: Has trouble with resource = 'table' vs explicityly being ResourceType.table
           filters: {
             [resource]: {'database': {'hive': true}},
           }
