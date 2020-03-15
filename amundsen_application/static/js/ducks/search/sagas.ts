@@ -74,9 +74,9 @@ export function* submitSearchResourceWorker(action: SubmitSearchResourceRequest)
  const state = yield select(getSearchState);
  let { search_term, resource } = state;
  const { filters } = state;
- const { pageIndex, searchType, updateUrl } = action.payload;
+ const { pageIndex, searchType, searchTerm, updateUrl } = action.payload;
 
- search_term = action.payload.searchTerm !== undefined ? action.payload.searchTerm : search_term;
+ search_term = searchTerm !== undefined ? searchTerm : search_term;
  resource = action.payload.resource || resource;
  filters[resource] = action.payload.resourceFilters || filters[resource];
  yield put(searchResource(searchType, search_term, resource, pageIndex));
@@ -139,6 +139,7 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
     if (resource !== state.resource) {
       yield put(updateSearchState({ resource }))
     }
+
     if (parsedFilters && !_.isEqual(state.filters[resource], parsedFilters)) {
       yield put(submitSearchResource({
         resource,
@@ -148,8 +149,9 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
         searchType: SearchType.FILTER
       }));
     }
-  } else if (!isNaN(parsedIndex) && parsedIndex !== getPageIndex(state, resource)) {
-    yield put(submitSearchResource({ pageIndex: parsedIndex, searchType: SearchType.PAGINATION }));
+    else if (!isNaN(parsedIndex) && parsedIndex !== getPageIndex(state, resource)) {
+      yield put(submitSearchResource({ pageIndex: parsedIndex, searchType: SearchType.PAGINATION }));
+    }
   }
 };
 export function* urlDidUpdateWatcher(): SagaIterator {
@@ -161,7 +163,6 @@ export function* urlDidUpdateWatcher(): SagaIterator {
  * Leverages BrowserHistory or updates search url accordingly.
  */
 export function* loadPreviousSearchWorker(action: LoadPreviousSearchRequest): SagaIterator {
-  /* TODO ttannis: Consolidate? Can Breadcrumb call BrowserHistory or use updateSearchState() */
   const state = yield select(getSearchState);
   if (state.search_term === "") {
     BrowserHistory.goBack();

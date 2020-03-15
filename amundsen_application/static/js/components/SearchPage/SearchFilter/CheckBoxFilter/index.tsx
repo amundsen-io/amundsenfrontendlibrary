@@ -22,7 +22,7 @@ interface StateFromProps {
 }
 
 interface DispatchFromProps {
-  updateFilter: (categoryId: string, value?: FilterOptions) => UpdateFilterRequest;
+  updateFilter: (categoryId: string, checkedValues: FilterOptions | undefined) => UpdateFilterRequest;
 }
 
 export type CheckBoxFilterProps = OwnProps & DispatchFromProps & StateFromProps;

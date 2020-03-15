@@ -6,20 +6,21 @@ import * as SearchUtils from 'ducks/search/utils';
 import * as API from '../api/v0';
 
 import * as filterReducer from '../filters/reducer';
+const MOCK_TABLE_FILTER_STATE = {'database': { 'hive': true }};
 const MOCK_FILTER_STATE = {
-  [ResourceType.table]: {
-    'database': { 'hive': true }
-  }
+  [ResourceType.table]: MOCK_TABLE_FILTER_STATE,
 };
 const filterReducerSpy = jest.spyOn(filterReducer, 'default').mockImplementation(() => MOCK_FILTER_STATE);
 
 import reducer, {
   getInlineResults,
+  getInlineResultsDebounce,
   getInlineResultsSuccess,
   getInlineResultsFailure,
   initialState,
   initialInlineResultsState,
   loadPreviousSearch,
+  resetSearchState,
   searchAll,
   searchAllFailure,
   searchAllSuccess,
@@ -29,7 +30,9 @@ import reducer, {
   searchResourceSuccess,
   selectInlineResult,
   submitSearch,
+  submitSearchResource,
   updateFromInlineResult,
+  updateSearchState,
   urlDidUpdate,
 } from '../reducer';
 import {
@@ -259,8 +262,13 @@ describe('search reducer', () => {
 
   describe('reducer', () => {
     let testState: SearchReducerState;
+    let result;
     beforeAll(() => {
-      testState = initialState;
+      testState = {
+        ...searchState,
+        filters: MOCK_FILTER_STATE,
+        resource: ResourceType.user,
+      }
     });
     it('should return the existing state if action is not handled', () => {
       expect(reducer(testState, { type: 'INVALID.ACTION' })).toEqual(testState);
@@ -298,14 +306,14 @@ describe('search reducer', () => {
 
     it('should handle SearchResource.REQUEST', () => {
       expect(reducer(testState, searchResource(SearchType.SUBMIT_TERM, 'test', ResourceType.table, 0))).toEqual({
-        ...initialState,
+        ...testState,
         isLoading: true,
       });
     });
 
     it('should handle SearchResource.SUCCESS', () => {
       expect(reducer(testState, searchResourceSuccess(expectedSearchResults))).toEqual({
-        ...initialState,
+        ...testState,
         ...expectedSearchResults,
         isLoading: false,
       });
@@ -330,47 +338,117 @@ describe('search reducer', () => {
       });
     });
 
-    it('should handle InlineSearch.SUCCESS', () => {
-      const { tables, users } = expectedInlineResults;
-      expect(reducer(testState, getInlineResultsSuccess(expectedInlineResults))).toEqual({
-        ...testState,
-        inlineResults: {
-          tables,
-          users,
-          isLoading: false,
-        }
+    describe('InlineSearch', () => {
+      it('should handle InlineSearch.SUCCESS', () => {
+        const { tables, users } = expectedInlineResults;
+        expect(reducer(testState, getInlineResultsSuccess(expectedInlineResults))).toEqual({
+          ...testState,
+          inlineResults: {
+            tables,
+            users,
+            isLoading: false,
+          }
+        });
+      });
+
+      it('should handle InlineSearch.FAILURE', () => {
+        expect(reducer(testState, getInlineResultsFailure())).toEqual({
+          ...testState,
+          inlineResults: initialInlineResultsState,
+        });
+      });
+
+      it('should handle InlineSearch.REQUEST', () => {
+        const term = 'testSearch';
+        expect(reducer(testState, getInlineResults(term))).toEqual({
+          ...testState,
+          inlineResults: {
+            tables: initialInlineResultsState.tables,
+            users: initialInlineResultsState.users,
+            isLoading: true,
+          },
+        });
+      });
+
+      it('should handle InlineSearch.REQUEST_DEBOUNCE', () => {
+        const term = 'testSearch';
+        expect(reducer(testState, getInlineResultsDebounce(term))).toEqual({
+          ...testState,
+          inlineResults: {
+            tables: initialInlineResultsState.tables,
+            users: initialInlineResultsState.users,
+            isLoading: true,
+          },
+        });
       });
     });
 
-    it('should handle InlineSearch.FAILURE', () => {
-      expect(reducer(testState, getInlineResultsFailure())).toEqual({
-        ...testState,
-        inlineResults: initialInlineResultsState,
+    describe('UpdateSearchState', () => {
+      it('UpdateSearchState.REQUEST returns existing filter state if not provided', () => {
+        result = reducer(testState, updateSearchState({ updateUrl: true }));
+        expect(result.filters).toBe(testState.filters);
+      });
+
+      it('UpdateSearchState.REQUEST returns existing resource state if not provided', () => {
+        result = reducer(testState, updateSearchState({ updateUrl: true }));
+        expect(result.resource).toBe(testState.resource);
+      });
+
+      it('UpdateSearchState.REQUEST updates filter state if provided', () => {
+        result = reducer(initialState, updateSearchState({ filters: MOCK_FILTER_STATE }));
+        expect(result.filters).toBe(MOCK_FILTER_STATE);
+      });
+
+      it('UpdateSearchState.REQUEST updates resource state if provided', () => {
+        const testResource = ResourceType.user;
+        result = reducer(initialState, updateSearchState({ resource: testResource }));
+        expect(result.resource).toEqual(testResource);
+      });
+
+      it('UpdateSearchState.RESET returns initialState', () => {
+        result = reducer(testState, resetSearchState());
+        expect(result).toBe(initialState);
       });
     });
 
-    it('should handle InlineSearch.REQUEST', () => {
-      const term = 'testSearch';
-      expect(reducer(testState, getInlineResults(term))).toEqual({
+    it('SubmitSearch.REQUEST updates given search term and enters isLoading state', () => {
+      const searchTerm = 'testTerm';
+      result = reducer(testState, submitSearch({ searchTerm, useFilters: true }));
+      expect(result).toEqual({
         ...testState,
-        inlineResults: {
-          tables: initialInlineResultsState.tables,
-          users: initialInlineResultsState.users,
-          isLoading: true,
-        },
-      });
+        isLoading: true,
+        search_term: searchTerm,
+      })
     });
 
-    /*describe('handles cases that update the filter state', () => {
-      describe('cases that update the filter state only', () => {
-        it('UpdateSearchFilter.CLEAR_ALL', () => {
-          filterReducerSpy.mockClear();
-          const filterAction = filterReducer.clearAllFilters();
-          const result = reducer(testState, filterAction)
-          expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.resource);
-          expect(result.filters).toBe(MOCK_FILTER_STATE);
-        })
+    describe('should handle SubmitSearchResource.REQUEST', () => {
+      let filterAction;
+      let paginationAction;
+      beforeAll(() => {
+        filterAction = submitSearchResource({
+          pageIndex: 0,
+          searchTerm: 'hello',
+          searchType: SearchType.FILTER,
+          resourceFilters: MOCK_TABLE_FILTER_STATE,
+        });
+        paginationAction = submitSearchResource({ pageIndex: 1, searchType: SearchType.PAGINATION });
+      })
+
+      it('calls filter reducer with existing filters', () => {
+        filterReducerSpy.mockClear();
+        const result = reducer(initialState, filterAction);
+        expect(filterReducerSpy).toHaveBeenCalledWith(initialState.filters, filterAction);
       });
-    });*/
+
+      it('updates search term if provided', () => {
+        result = reducer(testState, filterAction);
+        expect(result.search_term).toBe(filterAction.payload.searchTerm);
+      });
+
+      it('sets search term with existing state if provided', () => {
+        result = reducer(testState, paginationAction);
+        expect(result.search_term).toBe(testState.search_term);
+      });
+    });
   });
 });

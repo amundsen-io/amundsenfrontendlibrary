@@ -224,7 +224,7 @@ export default function reducer(state: SearchReducerState = initialState, action
       return {
         ...state,
         isLoading: true,
-        filters: filterReducer(action.payload.filters || state.filters, action),
+        filters: filterReducer(state.filters, action),
         search_term: action.payload.searchTerm || state.search_term,
       }
     case UpdateSearchState.REQUEST:
