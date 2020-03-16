@@ -80,20 +80,20 @@ def _update_prog_descriptions(prog_descriptions: List) -> None:
         source = desc.get('source')
         if not source:
             logging.warning("no source found in: " + str(desc))
-    if app.config['PROGRAMMATIC_DISPLAY'] and prog_descriptions:
+    prog_display_config = app.config['PROGRAMMATIC_DISPLAY']
+    if prog_display_config and prog_descriptions:
         # If config is defined for programmatic disply we look to see what configuration is being used
-        prog_display_config = app.config['PROGRAMMATIC_DISPLAY']
         prog_descriptions.sort(key=lambda x: _sort_prog_descriptions(prog_display_config, x))
 
 
 def _sort_prog_descriptions(base_config: Dict, prog_description: Dict) -> int:
-   default_order =  len(base_config)
+    default_order =  len(base_config)
     prog_description_source = prog_description.get('source')
     config_dict = base_config.get(prog_description_source)
-    
+
     if config_dict:
         return config_dict.get('display_order', default_order)
- 
+
     return default_order
 
 
