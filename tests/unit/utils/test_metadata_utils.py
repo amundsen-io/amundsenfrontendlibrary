@@ -5,9 +5,6 @@ from amundsen_application import create_app
 
 local_app = create_app('amundsen_application.config.TestConfig', 'tests/templates')
 
-'''
-self.mock_metadata2 =
-'''
 
 class MetadataUtilsTest(unittest.TestCase):
     def setUp(self) -> None:
@@ -116,4 +113,3 @@ class MetadataUtilsTest(unittest.TestCase):
         with local_app.app_context():
             actual_result = marshall_table_full(self.input_data)
             self.assertEqual(actual_result, self.expected_data)
-
