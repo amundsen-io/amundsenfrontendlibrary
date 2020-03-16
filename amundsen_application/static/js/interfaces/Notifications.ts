@@ -16,5 +16,6 @@ export interface SendNotificationOptions {
   resource_path: string,
   description_requested: boolean,
   fields_requested: boolean,
-  comment?: string
+  comment?: string, 
+  data_issue_url?: string
 };

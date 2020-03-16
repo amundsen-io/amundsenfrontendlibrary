@@ -25,6 +25,7 @@ describe('ReportTableIssue', () => {
       tableKey: 'key', 
       tableName: 'name',
       tableOwners: ['owner@email'], 
+      tableMetadata: null,
       ...propOverrides
     };
     const wrapper = shallow<ReportTableIssue>(<ReportTableIssue {...props} />);

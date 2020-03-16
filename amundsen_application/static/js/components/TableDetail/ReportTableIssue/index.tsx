@@ -18,7 +18,14 @@ export interface ComponentProps {
 }
 
 export interface DispatchFromProps {
-  createIssue: (data: FormData) => CreateIssueRequest;
+  createIssue: (
+    key: string, 
+    title: string, 
+    description: string, 
+    resource_name: string, 
+    resource_path: string, 
+    owners: string[]
+    ) => CreateIssueRequest;
 }
 
 export interface StateFromProps {
@@ -44,7 +51,15 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     event.preventDefault();
     const form = document.getElementById("report-table-issue-form") as HTMLFormElement;
     const formData = new FormData(form);
-    this.props.createIssue(formData);
+    const key = formData.get('key') as string;
+    const ownersString = formData.get('owners') as string;  
+    const owners = ownersString.split(','); 
+    const resource_name = formData.get('resource_name') as string;  
+    const resource_path = formData.get('resource_path') as string;  
+    const title = formData.get('title') as string;  
+    const description = formData.get('description') as string;
+    debugger  
+    this.props.createIssue(key, title, description, resource_name, resource_path, owners);
     this.setState({isOpen: false}); 
   };
 

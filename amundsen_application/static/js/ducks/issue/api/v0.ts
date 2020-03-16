@@ -22,9 +22,12 @@ export function getIssues(tableKey: string) {
   });
 }
 
-export function createIssue(data: FormData) {
-  const headers =  {'Content-Type': 'multipart/form-data' };
-  return axios.post(`${API_PATH}/issue`, data, { headers }
+export function createIssue(key: string, title: string, description: string) {
+  return axios.post(`${API_PATH}/issue`, {data: 
+    key, 
+    title, 
+    description
+  }
     ).then((response: AxiosResponse<IssueApi>) => {
       return response.data.issue; 
     });

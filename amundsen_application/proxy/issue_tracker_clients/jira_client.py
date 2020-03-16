@@ -62,8 +62,7 @@ class JiraClient(BaseIssueTrackerClient):
             logging.exception(str(e))
             raise e
 
-    def create_issue(self, table_uri: str, title: str, description: str, table_owners: List[str], resource_path: str,
-                     resource_name: str) -> DataIssue:
+    def create_issue(self, table_uri: str, title: str, description: str) -> DataIssue:
         """
         Creates an issue in Jira
         :param description: Description of the Jira issue
@@ -94,21 +93,6 @@ class JiraClient(BaseIssueTrackerClient):
                              f'\n Table Key: {table_uri} [PLEASE DO NOT REMOVE]'),
                 reporter={'name': jira_id}))
             issue = self._get_issue_properties(issue=issue)
-            mail_client = app.config['MAIL_CLIENT']
-            # Only send a notification if the mail client is enabled
-            if mail_client:
-                options = {
-                    'resource_name': resource_name,
-                    'resource_path': resource_path,
-                    'data_issue_url': issue.url
-                }
-                send_notification(
-                    notification_type='data_issue_created',
-                    options=options,
-                    recipients=table_owners,
-                    sender=app.config['AUTH_USER_METHOD'](app).email
-                )
-
             return issue
         except JIRAError as e:
             logging.exception(str(e))

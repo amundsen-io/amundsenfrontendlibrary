@@ -57,19 +57,13 @@ class IssueAPI(Resource):
                 return make_response(jsonify({'msg': message}), HTTPStatus.ACCEPTED)
             self.client = get_issue_tracker_client()
 
-            self.reqparse.add_argument('title', type=str, location='form')
-            self.reqparse.add_argument('key', type=str, location='form')
-            self.reqparse.add_argument('description', type=str, location='form')
-            self.reqparse.add_argument('owners', type=list, location='form')
-            self.reqparse.add_argument('resource_path', type=str, location='form')
-            self.reqparse.add_argument('resource_name', type=str, location='form')
+            self.reqparse.add_argument('title', type=str, location='json')
+            self.reqparse.add_argument('key', type=str, location='json')
+            self.reqparse.add_argument('description', type=str, location='json')
             args = self.reqparse.parse_args()
             response = self.client.create_issue(description=args['description'],
                                                 table_uri=args['key'],
-                                                title=args['title'],
-                                                table_owners=args['owners'],
-                                                resource_path=args['resource_path'],
-                                                resource_name=args['resource_name'])
+                                                title=args['title'])
             return make_response(jsonify({'issue': response.serialize()}), HTTPStatus.OK)
 
         except IssueConfigurationException as e:

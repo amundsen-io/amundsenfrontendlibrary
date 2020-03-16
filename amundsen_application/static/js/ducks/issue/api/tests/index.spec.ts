@@ -43,6 +43,9 @@ describe('createIssue', () => {
   let mockGetResponse;
   let axiosMock;
   let formData;
+  let key;
+  let title;
+  let description;  
   const issueResult = { issue_key: 'key' };
   beforeAll(() => {
     mockGetResponse = {
@@ -55,13 +58,15 @@ describe('createIssue', () => {
       headers: {},
       config: {}
     };
-    formData = new FormData();
+    key = 'key', 
+    title = 'title', 
+    description = 'description' 
     axiosMock = jest.spyOn(axios, 'post').mockImplementation(() => Promise.resolve(mockGetResponse));
   });
 
   it('calls expected endpoint with headers', async () => {
     expect.assertions(1);
-    await API.createIssue(formData).then(data => {
+    await API.createIssue(key, title, description).then(data => {
       expect(axiosMock).toHaveBeenCalledWith(
         `${API.API_PATH}/issue`,
         formData, {
@@ -72,7 +77,7 @@ describe('createIssue', () => {
 
   it('returns response data', async () => {
     expect.assertions(1);
-    await API.createIssue(formData).then(data => {
+    await API.createIssue(key, title, description).then(data => {
       expect(data).toEqual(issueResult);
     });
   });

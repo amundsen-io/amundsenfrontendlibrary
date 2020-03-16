@@ -10,10 +10,22 @@ import {
 
 
 /* ACTIONS */
-export function createIssue(formData: FormData): CreateIssueRequest {
+export function createIssue(
+  key: string, 
+  title: string, 
+  description: string, 
+  resource_name: string, 
+  resource_path: string, 
+  owners: string[]
+  ): CreateIssueRequest {
   return {
     payload: {
-      data: formData,
+      key, 
+      title, 
+      description, 
+      resource_name, 
+      resource_path, 
+      owners
     },
     type: CreateIssue.REQUEST,
     };

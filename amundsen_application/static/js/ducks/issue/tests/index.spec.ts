@@ -26,22 +26,25 @@ import { getIssuesWatcher, getIssuesWorker, createIssueWatcher, createIssueWorke
 import { throwError } from 'redux-saga-test-plan/providers';
 
 describe('issue ducks', () => {
-  let formData: FormData; 
   let tableKey: string; 
   let issue: Issue; 
   let issues: Issue[]; 
   let remaining: number; 
   let remainingUrl: string; 
+  let key; 
+  let title; 
+  let description; 
+  let resource_name; 
+  let resource_path; 
+  let owners; 
   beforeAll(() => {
     tableKey = 'key'; 
-    const testData = { 
-      key: 'table', 
-      title: 'stuff', 
-      description: 'This is a test' 
-    };
-    formData = new FormData();
-    Object.keys(testData).forEach(key => formData.append(key, testData[key]));
-
+    key = 'table', 
+    title ='stuff';
+    description ='This is a test';
+    resource_name = 'resource_name'; 
+    resource_path = 'resource_path'; 
+    owners = ['email@email']; 
     issue =  {
       issue_key: 'issue_key', 
       title: 'title', 
@@ -72,10 +75,15 @@ describe('issue ducks', () => {
     });
 
     it('createIssue - returns the action to create items', () => {
-      const action = createIssue(formData);
+      const action = createIssue(key, title, description, resource_name, resource_path, owners);
       const { payload } = action;
       expect(action.type).toBe(CreateIssue.REQUEST);
-      expect(payload.data).toBe(formData);
+      expect(payload.key).toBe(key);
+      expect(payload.title).toBe(title); 
+      expect(payload.description).toBe(description); 
+      expect(payload.resource_name).toBe(resource_name); 
+      expect(payload.resource_path).toBe(resource_path); 
+      expect(payload.owners).toBe(owners); 
     });
 
     it('createIssueFailure - returns the action to process failure', () => {
@@ -142,7 +150,7 @@ describe('issue ducks', () => {
     });
 
     it('should handle CreateIssue.REQUEST', () => {
-      expect(reducer(testState, createIssue(formData))).toEqual({ 
+      expect(reducer(testState, createIssue(key, title, description, resource_name, resource_path, owners))).toEqual({ 
         issues: [], 
         isLoading: true, 
         remainingIssuesUrl: remainingUrl,
@@ -214,7 +222,7 @@ describe('issue ducks', () => {
     describe('createIssuesWorker', () => {
       let action: CreateIssueRequest;
       beforeAll(() => {
-        action = createIssue(formData);
+        action = createIssue(key, title, description, resource_name, resource_path, owners);
         issues = [issue];
       });
 

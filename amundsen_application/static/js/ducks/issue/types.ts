@@ -21,7 +21,12 @@ export interface GetIssuesRequest {
 export interface CreateIssueRequest {
     type: CreateIssue.REQUEST;
     payload: {
-        data: FormData
+        key: string, 
+        title: string, 
+        description: string, 
+        resource_name: string, 
+        resource_path: string, 
+        owners: string[]
     }
 };
 
