@@ -68,12 +68,12 @@ describe("EditableSection", () => {
     });
 
     it("renders button when readOnly=false", () => {
-      expect(wrapper.find(".btn").length).toEqual(1);
+      expect(wrapper.find(".edit-button").length).toEqual(1);
     });
 
     it("renders does not add button when readOnly=true", () => {
       const { wrapper } = setup({readOnly: true}, <TagInput/>);
-      expect(wrapper.find(".btn").length).toEqual(0);
+      expect(wrapper.find(".edit-button").length).toEqual(0);
     });
 
     it('renders modifies title to have no underscores', () => {
