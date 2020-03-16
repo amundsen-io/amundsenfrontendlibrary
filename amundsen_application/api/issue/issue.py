@@ -60,10 +60,16 @@ class IssueAPI(Resource):
             self.reqparse.add_argument('title', type=str, location='form')
             self.reqparse.add_argument('key', type=str, location='form')
             self.reqparse.add_argument('description', type=str, location='form')
+            self.reqparse.add_argument('owners', type=list, location='form')
+            self.reqparse.add_argument('resource_path', type=str, location='form')
+            self.reqparse.add_argument('resource_name', type=str, location='form')
             args = self.reqparse.parse_args()
             response = self.client.create_issue(description=args['description'],
                                                 table_uri=args['key'],
-                                                title=args['title'])
+                                                title=args['title'],
+                                                table_owners=args['owners'],
+                                                resource_path=args['resource_path'],
+                                                resource_name=args['resource_name'])
             return make_response(jsonify({'issue': response.serialize()}), HTTPStatus.OK)
 
         except IssueConfigurationException as e:

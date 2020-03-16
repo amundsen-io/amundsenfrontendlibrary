@@ -24,6 +24,7 @@ describe('ReportTableIssue', () => {
       createIssue: jest.fn(), 
       tableKey: 'key', 
       tableName: 'name',
+      tableOwners: ['owner@email'], 
       ...propOverrides
     };
     const wrapper = shallow<ReportTableIssue>(<ReportTableIssue {...props} />);

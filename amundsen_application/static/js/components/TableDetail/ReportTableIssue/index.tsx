@@ -10,6 +10,7 @@ import './styles.scss';
 import { REPORT_DATA_ISSUE_TEXT } from './constants'; 
 import { logClick } from 'ducks/utilMethods';
 import { notificationsEnabled, issueTrackingEnabled } from 'config/config-utils';
+import { TableMetadata } from 'interfaces';
 
 export interface ComponentProps {
   tableKey: string;
@@ -17,11 +18,13 @@ export interface ComponentProps {
 }
 
 export interface DispatchFromProps {
-  createIssue: (data: FormData) => CreateIssueRequest; 
+  createIssue: (data: FormData) => CreateIssueRequest;
 }
 
 export interface StateFromProps {
   isLoading: boolean;
+  tableOwners: string[]; 
+  tableMetadata: TableMetadata; 
 }
 
 interface ReportTableIssueState {
@@ -33,7 +36,7 @@ export type ReportTableIssueProps = StateFromProps & DispatchFromProps & Compone
 export class ReportTableIssue extends React.Component<ReportTableIssueProps, ReportTableIssueState> {
   constructor(props) {
     super(props);
-    this.state = { isOpen: false };
+    this.state = { isOpen: false, ...this.state };
   }
 
   submitForm = (event) => {
@@ -64,7 +67,7 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     if (this.props.isLoading) {
       return <LoadingSpinner />;
     }
-
+    const { cluster, database, schema, name } = this.props.tableMetadata;
     return (
         <>
          {this.renderPipe()}
@@ -83,7 +86,9 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
               <button type="button" className="btn btn-close" aria-label={"close"} onClick={this.toggle} />
               <form id="report-table-issue-form" onSubmit={ this.submitForm }>
                 <input type="hidden" name="key" value={ this.props.tableKey }/>
-
+                <input type="hidden" name="owners" value={ this.props.tableOwners}/>
+                <input type='hidden' name='resource_name' value={`${schema}.${name}`}/>
+                <input type='hidden' name='resource_path' value={`/table_detail/${cluster}/${database}/${schema}/${name}`}/>
                 <div className="form-group">
                   <label>Title</label>
                   <input name="title" className="form-control" required={true} maxLength={200} />
@@ -101,8 +106,16 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
   }
 }
 export const mapStateToProps = (state: GlobalState) => {
+  const ownerObj = state.tableMetadata.tableOwners.owners; 
+  let tableOwnersEmails = []; 
+  Object.keys(ownerObj).map(function(ownerId) {
+    const { email } = ownerObj[ownerId]
+    tableOwnersEmails.push(email); 
+  });
   return {
-    isLoading: state.issue.isLoading
+    isLoading: state.issue.isLoading, 
+    tableOwners: tableOwnersEmails, 
+    tableMetadata: state.tableMetadata.tableData
   };
 };
 

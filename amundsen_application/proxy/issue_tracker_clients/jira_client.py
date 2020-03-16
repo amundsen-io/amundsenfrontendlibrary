@@ -7,6 +7,7 @@ from amundsen_application.base.base_issue_tracker_client import BaseIssueTracker
 from amundsen_application.proxy.issue_tracker_clients.issue_exceptions import IssueConfigurationException
 from amundsen_application.models.data_issue import DataIssue
 from amundsen_application.models.issue_results import IssueResults
+from amundsen_application.api.utils.notification_utils import send_notification
 
 import urllib.parse
 import logging
@@ -61,12 +62,16 @@ class JiraClient(BaseIssueTrackerClient):
             logging.exception(str(e))
             raise e
 
-    def create_issue(self, table_uri: str, title: str, description: str) -> DataIssue:
+    def create_issue(self, table_uri: str, title: str, description: str, table_owners: List[str], resource_path: str,
+                     resource_name: str) -> DataIssue:
         """
         Creates an issue in Jira
         :param description: Description of the Jira issue
         :param table_uri: Table Uri ie databasetype://database/table
         :param title: Title of the Jira ticket
+        :param table_owners: Emails of the owners of the table
+        :param resource_name: Table + schema
+        :param resource_path: Url to the resource
         :return: Metadata about the newly created issue
         """
         try:
@@ -88,8 +93,23 @@ class JiraClient(BaseIssueTrackerClient):
                              f'\n Reported By: {user_email} '
                              f'\n Table Key: {table_uri} [PLEASE DO NOT REMOVE]'),
                 reporter={'name': jira_id}))
+            issue = self._get_issue_properties(issue=issue)
+            mail_client = app.config['MAIL_CLIENT']
+            # Only send a notification if the mail client is enabled
+            if mail_client:
+                options = {
+                    'resource_name': resource_name,
+                    'resource_path': resource_path,
+                    'data_issue_url': issue.url
+                }
+                send_notification(
+                    notification_type='data_issue_created',
+                    options=options,
+                    recipients=table_owners,
+                    sender=app.config['AUTH_USER_METHOD'](app).email
+                )
 
-            return self._get_issue_properties(issue=issue)
+            return issue
         except JIRAError as e:
             logging.exception(str(e))
             raise e
