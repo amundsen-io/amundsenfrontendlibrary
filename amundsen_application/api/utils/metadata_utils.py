@@ -79,7 +79,7 @@ def _update_prog_descriptions(prog_descriptions: List) -> None:
     for desc in prog_descriptions:
         source = desc.get('source')
         if not source:
-            logging.error("no source found in: " + str(desc))
+            logging.warning("no source found in: " + str(desc))
     if app.config['PROGRAMMATIC_DISPLAY'] and prog_descriptions:
         # If config is defined for programmatic disply we look to see what configuration is being used
         prog_display_config = app.config['PROGRAMMATIC_DISPLAY']
