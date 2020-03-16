@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import {convertText, EditableSection, EditableSectionProps} from '../';
+import {EditableSection, EditableSectionProps} from '../';
 import TagInput from 'components/Tags/TagInput';
 
 
@@ -76,8 +76,8 @@ describe("EditableSection", () => {
       expect(wrapper.find(".btn").length).toEqual(0);
     });
 
-    it( 'renders modifies title to have no underscores', () => {
-      expect(convertText("testing_a123_b456 c789")).toEqual("Testing A123 B456 C789")
+    it('renders modifies title to have no underscores', () => {
+      expect(EditableSection.convertText("testing_a123_b456 c789")).toEqual("Testing A123 B456 C789")
     })
   });
 });

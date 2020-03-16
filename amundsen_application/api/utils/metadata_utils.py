@@ -87,13 +87,11 @@ def _update_prog_descriptions(prog_descriptions: List) -> None:
 
 
 def _sort_prog_descriptions(base_config: Dict, prog_description: Dict) -> int:
-    default_order =  len(base_config)
+    default_order = len(base_config)
     prog_description_source = prog_description.get('source')
     config_dict = base_config.get(prog_description_source)
-
     if config_dict:
         return config_dict.get('display_order', default_order)
-
     return default_order
 
 
