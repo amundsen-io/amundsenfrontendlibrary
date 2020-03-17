@@ -9,8 +9,6 @@ import { NotificationType } from 'interfaces';
 
 import * as API from './api/v0';
 
-/** maybe just reload the issues content when there is a new issue created?*/
-
 export function* getIssuesWorker(action: GetIssuesRequest): SagaIterator {
     const { key } = action.payload; 
     let response;
@@ -30,10 +28,9 @@ export function* createIssueWorker(action: CreateIssueRequest): SagaIterator {
   try { 
     let response;
     let notificationResponse; 
-    const { key, title, description, owners, resource_name, resource_path} = action.payload;
+     const { key, title, description, owners, resource_name, resource_path} = action.payload;
     response = yield call(API.createIssue, key, title, description);
     yield put((createIssueSuccess(response)));
-    debugger
     notificationResponse = yield put(submitNotification(owners, '', NotificationType.DATA_ISSUE_CREATED, {
       resource_name, 
       resource_path, 

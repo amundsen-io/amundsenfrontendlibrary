@@ -58,7 +58,6 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     const resource_path = formData.get('resource_path') as string;  
     const title = formData.get('title') as string;  
     const description = formData.get('description') as string;
-    debugger  
     this.props.createIssue(key, title, description, resource_name, resource_path, owners);
     this.setState({isOpen: false}); 
   };

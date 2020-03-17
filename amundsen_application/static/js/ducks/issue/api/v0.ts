@@ -23,7 +23,7 @@ export function getIssues(tableKey: string) {
 }
 
 export function createIssue(key: string, title: string, description: string) {
-  return axios.post(`${API_PATH}/issue`, {data: 
+  return axios.post(`${API_PATH}/issue`, {
     key, 
     title, 
     description
