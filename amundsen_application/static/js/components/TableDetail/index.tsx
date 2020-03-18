@@ -15,25 +15,34 @@ import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import Breadcrumb from 'components/common/Breadcrumb';
 import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
 import ColumnList from 'components/TableDetail/ColumnList';
+import EditableText from 'components/common/EditableText';
 import ExploreButton from 'components/TableDetail/ExploreButton';
 import Flag from 'components/common/Flag';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import LineageLink from 'components/TableDetail/LineageLink';
 import OwnerEditor from 'components/TableDetail/OwnerEditor';
+import ReportTableIssue from 'components/TableDetail/ReportTableIssue';
 import SourceLink from 'components/TableDetail/SourceLink';
 import TableDescEditableText from 'components/TableDetail/TableDescEditableText';
+import TableHeaderBullets from 'components/TableDetail/TableHeaderBullets';
+import TableIssues from 'components/TableDetail/TableIssues';
 import WatermarkLabel from 'components/TableDetail/WatermarkLabel';
 import WriterLink from 'components/TableDetail/WriterLink';
 import TagInput from 'components/Tags/TagInput';
-import { TableMetadata } from 'interfaces/TableMetadata';
+import {TableMetadata} from 'interfaces/TableMetadata';
 
 import { EditableSection } from 'components/TableDetail/EditableSection';
-import { getDatabaseDisplayName, getDatabaseIconClass, notificationsEnabled } from 'config/config-utils';
+
+import { getDatabaseIconClass, issueTrackingEnabled, notificationsEnabled } from 'config/config-utils';
+
 import { formatDateTimeShort } from 'utils/dateUtils';
 
+import './styles';
 import RequestDescriptionText from './RequestDescriptionText';
 import RequestMetadataForm from './RequestMetadataForm';
+
+import { PROGRMMATIC_DESC_HEADER } from './constants';
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -136,11 +145,10 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               </h3>
               <BookmarkIcon bookmarkKey={ this.props.tableData.key }/>
               <div className="body-2">
-                <ul className="header-bullets">
-                  <li>Datasets</li>
-                  <li>{ getDatabaseDisplayName(data.database) }</li>
-                  <li>{ data.cluster }</li>
-                </ul>
+                <TableHeaderBullets
+                  database={ data.database }
+                  cluster={ data.cluster }
+                />
                 {
                   data.badges.length > 0 &&
                   <BadgeList badges={ data.badges } />
@@ -163,10 +171,9 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
           </header>
           <main className="column-layout-1">
             <section className="left-panel">
-              {/*
-                TODO - Add a banner here if necessary
-                <section className="banner">optional banner</section>
-              */}
+              {}
+              <TableIssues tableKey={ this.key }/>
+
               <EditableSection title="Description">
                 <TableDescEditableText
                   maxLength={ AppConfig.editableText.tableDescLength }
@@ -174,7 +181,10 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                   editable={ data.is_editable }
                 />
               </EditableSection>
-              { notificationsEnabled() && <RequestDescriptionText/> }
+              <span>
+                { notificationsEnabled() && <RequestDescriptionText/> }
+                { issueTrackingEnabled() && <ReportTableIssue tableKey={ this.key } tableName={ this.getDisplayName() } />}
+              </span>
               <section className="column-layout-2">
                 <section className="left-panel">
                   {
@@ -203,6 +213,28 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                   </EditableSection>
                 </section>
               </section>
+              {
+                data.programmatic_descriptions.length > 0 &&
+                <>
+                  <div className="programmatic-title title-4">{PROGRMMATIC_DESC_HEADER}</div>
+                  <hr className="programmatic-hr hr1"/>
+                </>
+              }
+              {
+                data.programmatic_descriptions
+                  .map(d =>
+                    <section key={d.source} className="column-layout-2">
+                    <EditableSection title={d.source} readOnly={true}>
+                      <EditableText
+                        maxLength={999999}
+                        value={d.text}
+                        editable={false}
+                        onSubmitValue={null}
+                      />
+                    </EditableSection>
+                    </section>
+                  )
+              }
             </section>
             <section className="right-panel">
               <ColumnList columns={ data.columns }/>

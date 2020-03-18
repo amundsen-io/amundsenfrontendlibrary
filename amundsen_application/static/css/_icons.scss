@@ -66,6 +66,11 @@ img.icon {
     mask-image: url('/static/images/icons/dashboard.svg');
   }
 
+  &.icon-red-triangle-warning {
+    -webkit-mask-image: url('/static/images/icons/DataQualityWarning.svg');
+    mask-image: url('/static/images/icons/DataQualityWarning.svg');
+  }
+
   &.icon-down {
     -webkit-mask-image: url('/static/images/icons/Down.svg');
     mask-image: url('/static/images/icons/Down.svg');

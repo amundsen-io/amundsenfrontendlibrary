@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { EditableSection, EditableSectionProps } from '../';
+import {EditableSection, EditableSectionProps} from '../';
 import TagInput from 'components/Tags/TagInput';
 
 
@@ -9,12 +9,13 @@ describe("EditableSection", () => {
   const setup = (propOverrides?: Partial<EditableSectionProps>, children?) => {
     const props = {
       title: "defaultTitle",
+      readOnly: false,
       ...propOverrides,
     };
     const wrapper = shallow<EditableSection>(<EditableSection {...props} >{ children }</EditableSection>)
     return { wrapper, props };
   };
-  
+
   describe("setEditMode", () => {
     const { wrapper, props } = setup();
 
@@ -45,11 +46,15 @@ describe("EditableSection", () => {
   });
 
   describe("render", () => {
-    const customTitle = "custom title";
-    const { wrapper, props } = setup({ title: customTitle }, <TagInput/>);
+    const mockTitle = 'Mock';
+    const convertTextSpy = jest.spyOn(EditableSection, 'convertText').mockImplementation(() => mockTitle);
+    const { wrapper, props } = setup({ title: 'custom title' }, <TagInput/>);
 
-    it("sets the title from a prop", () => {
-      expect(wrapper.find(".section-title").text()).toBe(customTitle);
+    it("renders the converted props.title as the section title", () => {
+      convertTextSpy.mockClear();
+      wrapper.instance().render();
+      expect(convertTextSpy).toHaveBeenCalledWith(props.title);
+      expect(wrapper.find(".section-title").text()).toBe(mockTitle);
     });
 
     it("renders children with additional props", () => {
@@ -64,6 +69,15 @@ describe("EditableSection", () => {
       const child = "non-react-child";
       const { wrapper } = setup(null, child);
       expect(wrapper.childAt(1).text()).toBe(child);
+    });
+
+    it("renders button when readOnly=false", () => {
+      expect(wrapper.find(".edit-button").length).toEqual(1);
+    });
+
+    it("renders does not add button when readOnly=true", () => {
+      const { wrapper } = setup({readOnly: true}, <TagInput/>);
+      expect(wrapper.find(".edit-button").length).toEqual(0);
     });
   });
 });

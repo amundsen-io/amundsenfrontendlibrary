@@ -83,7 +83,7 @@ $icon-bg:          $gray20 !default;
 $icon-bg-brand:    $brand-color-3 !default;
 $icon-bg-dark:     $gray60 !default;
 $icon-bg-disabled: $gray20 !default;
-
+$red-triangle-warning: $sunset60;
 
 // Header, Body, & Footer
 $nav-bar-color: $indigo100;
@@ -91,6 +91,9 @@ $nav-bar-height: 60px;
 $body-min-width: 1048px;
 $footer-height: 60px;
 
+// SearchPanel
+$search-panel-width: 270px;
+$search-panel-border-width: 4px;
 
 // List Group
 $list-group-border:        $stroke !default;

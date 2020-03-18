@@ -28,12 +28,48 @@ class Config:
     # Request Timeout Configurations in Seconds
     REQUEST_SESSION_TIMEOUT_SEC = 3
 
+    # Frontend Application
+    FRONTEND_BASE = ''
+
+    # Search Service
+    SEARCHSERVICE_REQUEST_CLIENT = None
+    SEARCHSERVICE_REQUEST_HEADERS = None
+    SEARCHSERVICE_BASE = ''
+
+    # Metadata Service
+    METADATASERVICE_REQUEST_CLIENT = None
+    METADATASERVICE_REQUEST_HEADERS = None
+    METADATASERVICE_BASE = ''
+
     # Mail Client Features
     MAIL_CLIENT = None
     NOTIFICATIONS_ENABLED = False
 
     # Initialize custom routes
     INIT_CUSTOM_ROUTES = None  # type: Callable[[Flask], None]
+
+    # Settings for Issue tracker integration
+    ISSUE_TRACKER_URL = None  # type: str
+    ISSUE_TRACKER_USER = None  # type: str
+    ISSUE_TRACKER_PASSWORD = None  # type: str
+    ISSUE_TRACKER_PROJECT_ID = None  # type: int
+    # Maps to a class path and name
+    ISSUE_TRACKER_CLIENT = None  # type: str
+    ISSUE_TRACKER_CLIENT_ENABLED = False  # type: bool
+    # Max issues to display at a time
+    ISSUE_TRACKER_MAX_RESULTS = None  # type: int
+
+    # Programmatic Description configuration. Please see docs/flask_config.md
+    PROGRAMMATIC_DISPLAY = None  # type: Optional[Dict]
+
+    # If specified, will be used to generate headers for service-to-service communication
+    # Please note that if specified, this will ignore following config properties:
+    # 1. METADATASERVICE_REQUEST_HEADERS
+    # 2. SEARCHSERVICE_REQUEST_HEADERS
+    REQUEST_HEADERS_METHOD: Optional[Callable[[Flask], Optional[Dict]]] = None
+
+    AUTH_USER_METHOD: Optional[Callable[[Flask], User]] = None
+    GET_PROFILE_URL = None
 
 
 class LocalConfig(Config):
@@ -56,35 +92,28 @@ class LocalConfig(Config):
                                        PORT=FRONTEND_PORT)
                                    )
 
-    SEARCHSERVICE_REQUEST_CLIENT = None
-    SEARCHSERVICE_REQUEST_HEADERS = None
     SEARCHSERVICE_BASE = os.environ.get('SEARCHSERVICE_BASE',
                                         'http://{LOCAL_HOST}:{PORT}'.format(
                                             LOCAL_HOST=LOCAL_HOST,
                                             PORT=SEARCH_PORT)
                                         )
 
-    METADATASERVICE_REQUEST_CLIENT = None
-    METADATASERVICE_REQUEST_HEADERS = None
     METADATASERVICE_BASE = os.environ.get('METADATASERVICE_BASE',
                                           'http://{LOCAL_HOST}:{PORT}'.format(
                                               LOCAL_HOST=LOCAL_HOST,
                                               PORT=METADATA_PORT)
                                           )
 
-    # If specified, will be used to generate headers for service-to-service communication
-    # Please note that if specified, this will ignore following config properties:
-    # 1. METADATASERVICE_REQUEST_HEADERS
-    # 2. SEARCHSERVICE_REQUEST_HEADERS
-    REQUEST_HEADERS_METHOD: Optional[Callable[[Flask], Optional[Dict]]] = None
-
-    AUTH_USER_METHOD: Optional[Callable[[Flask], User]] = None
-    GET_PROFILE_URL = None
-
 
 class TestConfig(LocalConfig):
     AUTH_USER_METHOD = get_test_user
     NOTIFICATIONS_ENABLED = True
+    ISSUE_TRACKER_URL = 'test_url'
+    ISSUE_TRACKER_USER = 'test_user'
+    ISSUE_TRACKER_PASSWORD = 'test_password'
+    ISSUE_TRACKER_PROJECT_ID = 1
+    ISSUE_TRACKER_CLIENT_ENABLED = True
+    ISSUE_TRACKER_MAX_RESULTS = 3
 
 
 class TestNotificationsDisabledConfig(LocalConfig):
