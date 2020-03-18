@@ -13,8 +13,8 @@ input {
   &:-webkit-autofill:hover,
   &:-webkit-autofill:focus,
   &:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 1000px $white inset !important;
-    box-shadow: 0 0 0 1000px $white inset !important;
+    -webkit-box-shadow: 0 0 0px 1000px $white inset !important;
+    font-size: 20px !important;
   }
 
   &[type="radio"] {
@@ -23,10 +23,6 @@ input {
 
   &[type="text"] {
     color: $text-secondary !important;
-  }
-
-  &:not([disabled]) {
-    cursor: pointer;
   }
 }
 

@@ -1,5 +1,4 @@
-import { PeopleUser } from './User';
-import { Badge } from './Tags';
+import { PeopleUser } from 'interfaces/User';
 
 export enum ResourceType {
   table = "table",
@@ -29,7 +28,6 @@ export interface TableResource extends Resource {
   last_updated_timestamp?: number;
   name: string;
   schema: string;
-  badges?: Badge[];  
 };
 
 export interface UserResource extends Resource, PeopleUser {

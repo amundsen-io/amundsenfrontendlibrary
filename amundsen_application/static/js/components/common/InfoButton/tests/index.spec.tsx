@@ -1,5 +1,4 @@
 import * as React from 'react';
-import SanitizedHTML from 'react-sanitized-html';
 
 import { shallow } from 'enzyme';
 
@@ -28,7 +27,7 @@ describe('InfoButton', () => {
         it('renders OverlayTrigger w/ correct Popover', () => {
             const expectedPopover = (
              <Popover id="popover-trigger-hover-focus" title={ props.title }>
-               <SanitizedHTML html={props.infoText} />
+               { props.infoText }
              </Popover>
            );
             expect(subject.find(OverlayTrigger).props().overlay).toEqual(expectedPopover);

@@ -18,9 +18,6 @@ const configCustom: AppConfigCustom = {
   },
   indexUsers: {
     enabled: false,
-  }, 
-  issueTracking: {
-    enabled: false
   }
 };
 

@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { mocked } from 'ts-jest/utils';
 import { shallow } from 'enzyme';
 
 import SearchItemList, { SearchItemListProps } from '../';
@@ -10,10 +9,7 @@ import { ResourceType } from 'interfaces';
 
 import * as CONSTANTS from '../../constants';
 
-jest.mock('config/config-utils', () => ({
-  getDisplayNameByResource: jest.fn(),
-  indexUsersEnabled: jest.fn()
-}));
+jest.mock('config/config-utils', () => ({ indexUsersEnabled: jest.fn() }));
 import { indexUsersEnabled } from 'config/config-utils';
 
 jest.mock("react-redux", () => {
@@ -83,7 +79,8 @@ describe('SearchItemList', () => {
 
     describe('renders ResourceType.user SearchItem based on config', () =>{
       it('when indexUsersEnabled = true, renders SearchItem', () => {
-        mocked(indexUsersEnabled).mockImplementation(() => true);
+        // @ts-ignore: Known issue but can't find solution: https://github.com/kulshekhar/ts-jest/issues/661
+        indexUsersEnabled.mockImplementation(() => true);
         setUpResult = setup();
         props = setUpResult.props;
         wrapper = setUpResult.wrapper;
@@ -101,7 +98,8 @@ describe('SearchItemList', () => {
       });
 
       it('when indexUsersEnabled = false, does not render SearchItem', () => {
-        mocked(indexUsersEnabled).mockImplementation(() => false);
+        // @ts-ignore: Known issue but can't find solution: https://github.com/kulshekhar/ts-jest/issues/661
+        indexUsersEnabled.mockImplementation(() => false);
         wrapper = setup().wrapper;
         const item = wrapper.find('SearchItem').findWhere(item => item.prop('resourceType') === ResourceType.user);
         expect(item.exists()).toBe(false)

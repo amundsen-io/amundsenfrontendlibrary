@@ -4,7 +4,6 @@ import {
   DashboardResource,
   Resource,
   ResourceType,
-  SearchType,
   TableResource,
   UserResource,
 } from 'interfaces';
@@ -53,8 +52,6 @@ export interface SearchAllRequest {
     resource: ResourceType;
     pageIndex: number;
     term: string;
-    useFilters?: boolean;
-    searchType: SearchType;
   };
   type: SearchAll.REQUEST;
 };
@@ -77,7 +74,6 @@ export interface SearchResourceRequest {
     pageIndex: number;
     resource: ResourceType;
     term: string;
-    searchType: SearchType;
   };
   type: SearchResource.REQUEST;
 };
@@ -124,17 +120,10 @@ export enum SubmitSearch {
 export interface SubmitSearchRequest {
   payload: {
     searchTerm: string;
-    useFilters?: boolean;
   };
   type: SubmitSearch.REQUEST;
 };
 
-export enum ClearSearch {
-  REQUEST = 'amundsen/search/CLEAR_SEARCH_REQUEST',
-};
-export interface ClearSearchRequest {
-  type: ClearSearch.REQUEST;
-};
 
 export enum SetResource {
   REQUEST = 'amundsen/search/SET_RESOURCE_REQUEST',

@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { mocked } from 'ts-jest/utils';
 import { shallow } from 'enzyme';
 
 import { InlineSearchResults, InlineSearchResultsProps, mapStateToProps } from '../';
@@ -15,7 +14,6 @@ import { ResourceType, TableResource, UserResource } from 'interfaces';
 import * as CONSTANTS from '../constants';
 
 jest.mock('config/config-utils', () => ({
-  getDisplayNameByResource: jest.fn(),
   getDatabaseDisplayName: jest.fn(),
   getDatabaseIconClass: jest.fn(),
   indexUsersEnabled: jest.fn(),
@@ -211,7 +209,8 @@ describe('InlineSearchResults', () => {
     });
     it('returns the results of getDatabaseIconClass for ResourceType.table', () => {
       const mockClass = 'test-class';
-      mocked(getDatabaseIconClass).mockImplementation(() => mockClass);
+      // @ts-ignore: Known issue but can't find solution: https://github.com/kulshekhar/ts-jest/issues/661
+      getDatabaseIconClass.mockImplementation(() => mockClass);
       const givenTable = props.tables.results[0];
       const output = wrapper.instance().getSuggestedResultIconClass(ResourceType.table, givenTable);
       expect(output).toEqual(mockClass);
@@ -285,7 +284,8 @@ describe('InlineSearchResults', () => {
     });
     it('returns the results of getDatabaseDisplayName for ResourceType.table', () => {
       const mockName = 'Hive';
-      mocked(getDatabaseDisplayName).mockImplementation(() => mockName);
+      // @ts-ignore: Known issue but can't find solution: https://github.com/kulshekhar/ts-jest/issues/661
+      getDatabaseDisplayName.mockImplementation(() => mockName);
       const givenTable = props.tables.results[0];
       const output = wrapper.instance().getSuggestedResultType(ResourceType.table, givenTable);
       expect(output).toEqual(mockName);
@@ -400,14 +400,16 @@ describe('InlineSearchResults', () => {
 
       describe('calls renderResultsByResource for ResourceType.user based on config', () => {
         it('does not call if indexUsersEnabled() = false', () => {
-          mocked(indexUsersEnabled).mockImplementation(() => false);
+          // @ts-ignore: Known issue but can't find solution: https://github.com/kulshekhar/ts-jest/issues/661
+          indexUsersEnabled.mockImplementation(() => false);
           renderResultsByResourceSpy.mockClear();
           wrapper.instance().renderResults();
           expect(renderResultsByResourceSpy).not.toHaveBeenCalledWith(ResourceType.user);
         });
 
         it('calls if indexUsersEnabled() = true', () => {
-          mocked(indexUsersEnabled).mockImplementation(() => true);
+          // @ts-ignore: Known issue but can't find solution: https://github.com/kulshekhar/ts-jest/issues/661
+          indexUsersEnabled.mockImplementation(() => true);
           renderResultsByResourceSpy.mockClear();
           wrapper.instance().renderResults();
           expect(renderResultsByResourceSpy).toHaveBeenCalledWith(ResourceType.user);

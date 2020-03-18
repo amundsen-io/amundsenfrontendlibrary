@@ -20,17 +20,10 @@ import { submitNotificationWatcher } from './notification/sagas';
 
 // FeedbackForm
 import { submitFeedbackWatcher } from './feedback/sagas';
-
-// Issues
-import { createIssueWatcher, getIssuesWatcher } from './issue/sagas';
-
 // PopularTables
 import { getPopularTablesWatcher } from './popularTables/sagas';
 // Search
 import {
-  clearSearchWatcher,
-  filterWatcher,
-  filterWatcher2,
   inlineSearchWatcher,
   inlineSearchWatcherDebounce,
   loadPreviousSearchWatcher,
@@ -77,13 +70,7 @@ export default function* rootSaga() {
     submitNotificationWatcher(),
     // FeedbackForm
     submitFeedbackWatcher(),
-    // Issues 
-    getIssuesWatcher(), 
-    createIssueWatcher(), 
     // Search
-    clearSearchWatcher(),
-    filterWatcher(),
-    filterWatcher2(),
     inlineSearchWatcher(),
     inlineSearchWatcherDebounce(),
     loadPreviousSearchWatcher(),

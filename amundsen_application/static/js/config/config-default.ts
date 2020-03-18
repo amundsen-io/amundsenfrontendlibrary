@@ -1,7 +1,5 @@
 import { AppConfig } from './config-types';
 
-import { FilterType, ResourceType } from '../interfaces';
-
 const configDefault: AppConfig = {
   badges: {},
   browse: {
@@ -25,9 +23,6 @@ const configDefault: AppConfig = {
   indexUsers: {
     enabled: false,
   },
-  issueTracking: {
-    enabled: false
-  },
   logoPath: null,
   mailClientFeatures: {
     feedbackEnabled: false,
@@ -48,65 +43,27 @@ const configDefault: AppConfig = {
     }
   ],
   resourceConfig: {
-    [ResourceType.table]: {
-      displayName: 'Datasets',
-      supportedDatabases: {
-        'bigquery': {
-          displayName: 'BigQuery',
-          iconClass: 'icon-bigquery',
-        },
-        'hive': {
-          displayName: 'Hive',
-          iconClass: 'icon-hive',
-        },
-        'presto': {
-          displayName: 'Presto',
-          iconClass: 'icon-presto',
-        },
-        'postgres': {
-          displayName: 'Postgres',
-          iconClass: 'icon-postgres',
-        },
-        'redshift': {
-          displayName: 'Redshift',
-          iconClass: 'icon-redshift',
-        },
+    datasets: {
+      'bigquery': {
+        displayName: 'BigQuery',
+        iconClass: 'icon-bigquery',
       },
-      filterCategories: [
-        {
-          categoryId: 'database',
-          displayName: 'Source',
-          helpText: 'Enter exact database name or a regex wildcard pattern',
-          type: FilterType.INPUT_SELECT,
-        },
-        {
-          categoryId: 'column',
-          displayName: 'Column',
-          helpText: 'Enter exact column name or a regex wildcard pattern',
-          type: FilterType.INPUT_SELECT,
-        },
-        {
-          categoryId: 'schema',
-          displayName: 'Schema',
-          helpText: 'Enter exact schema name or a regex wildcard pattern',
-          type: FilterType.INPUT_SELECT,
-        },
-        {
-          categoryId: 'table',
-          displayName: 'Table',
-          helpText: 'Enter exact table name or a regex wildcard pattern',
-          type: FilterType.INPUT_SELECT,
-        },
-        {
-          categoryId: 'tag',
-          displayName: 'Tag',
-          helpText: 'Enter exact tag name or a regex wildcard pattern',
-          type: FilterType.INPUT_SELECT,
-        },
-      ]
-    },
-    [ResourceType.user]: {
-      displayName: 'People'
+      'hive': {
+        displayName: 'Hive',
+        iconClass: 'icon-hive',
+      },
+      'presto': {
+        displayName: 'Presto',
+        iconClass: 'icon-presto',
+      },
+      'postgres': {
+        displayName: 'Postgres',
+        iconClass: 'icon-postgres',
+      },
+      'redshift': {
+        displayName: 'Redshift',
+        iconClass: 'icon-redshift',
+      },
     },
   },
   tableLineage: {

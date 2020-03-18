@@ -1,25 +1,10 @@
 import { testSaga } from 'redux-saga-test-plan';
-import { debounce } from 'redux-saga/effects';
 
-import { DEFAULT_RESOURCE_TYPE, ResourceType, SearchType } from 'interfaces';
-
-import * as NavigationUtils from 'utils/navigationUtils';
-import * as SearchUtils from 'ducks/search/utils';
+import { DEFAULT_RESOURCE_TYPE, ResourceType } from 'interfaces';
 
 import * as API from '../api/v0';
-import * as Utils from '../utils';
-import * as Sagas from '../sagas';
-
-import * as filterReducer from '../filters/reducer';
-const MOCK_FILTER_STATE = {
-  [ResourceType.table]: {
-    'database': { 'hive': true }
-  }
-};
-const filterReducerSpy = jest.spyOn(filterReducer, 'default').mockImplementation(() => MOCK_FILTER_STATE);
 
 import reducer, {
-  clearSearch,
   getInlineResults,
   getInlineResultsSuccess,
   getInlineResultsFailure,
@@ -42,7 +27,26 @@ import reducer, {
   urlDidUpdate,
 } from '../reducer';
 import {
-  ClearSearch,
+  inlineSearchWatcher,
+  inlineSearchWorker,
+  loadPreviousSearchWatcher,
+  loadPreviousSearchWorker,
+  searchAllWatcher,
+  searchAllWorker,
+  searchResourceWatcher,
+  searchResourceWorker,
+  selectInlineResultsWatcher,
+  selectInlineResultWorker,
+  setPageIndexWatcher,
+  setPageIndexWorker,
+  setResourceWatcher,
+  setResourceWorker,
+  submitSearchWatcher,
+  submitSearchWorker,
+  urlDidUpdateWatcher,
+  urlDidUpdateWorker
+} from '../sagas';
+import {
   LoadPreviousSearch,
   InlineSearch,
   InlineSearchResponsePayload,
@@ -56,6 +60,8 @@ import {
   SubmitSearch,
   UrlDidUpdate,
 } from '../types';
+import * as NavigationUtils from 'utils/navigationUtils';
+import * as SearchUtils from 'ducks/search/utils';
 
 import globalState from 'fixtures/globalState';
 
@@ -142,34 +148,16 @@ describe('search ducks', () => {
   };
 
   describe('actions', () => {
-    it('searchAll - returns the action to search all resources without useFilters', () => {
+    it('searchAll - returns the action to search all resources', () => {
       const term = 'test';
       const resource = ResourceType.table;
       const pageIndex = 0;
-      const searchType = SearchType.SUBMIT_TERM;
-      const action = searchAll(searchType, term, resource, pageIndex);
+      const action = searchAll(term, resource, pageIndex);
       const { payload } = action;
       expect(action.type).toBe(SearchAll.REQUEST);
       expect(payload.resource).toBe(resource);
       expect(payload.term).toBe(term);
       expect(payload.pageIndex).toBe(pageIndex);
-      expect(payload.useFilters).toBe(false);
-      expect(payload.searchType).toBe(searchType);
-    });
-
-    it('searchAll - returns the action to search all resources with useFilters', () => {
-      const term = 'test';
-      const resource = ResourceType.table;
-      const pageIndex = 0;
-      const searchType = SearchType.SUBMIT_TERM;
-      const action = searchAll(searchType, term, resource, pageIndex, true);
-      const { payload } = action;
-      expect(action.type).toBe(SearchAll.REQUEST);
-      expect(payload.resource).toBe(resource);
-      expect(payload.term).toBe(term);
-      expect(payload.pageIndex).toBe(pageIndex);
-      expect(payload.useFilters).toBe(true);
-      expect(payload.searchType).toBe(searchType);
     });
 
     it('searchAllSuccess - returns the action to process the success', () => {
@@ -188,14 +176,12 @@ describe('search ducks', () => {
       const term = 'test';
       const resource = ResourceType.table;
       const pageIndex = 0;
-      const searchType = SearchType.SUBMIT_TERM;
-      const action = searchResource(searchType, term, resource, pageIndex);
+      const action = searchResource(term, resource, pageIndex);
       const { payload } = action;
       expect(action.type).toBe(SearchResource.REQUEST);
       expect(payload.resource).toBe(resource);
       expect(payload.term).toBe(term);
       expect(payload.pageIndex).toBe(pageIndex);
-      expect(payload.searchType).toBe(searchType);
     });
 
     it('searchResourceSuccess - returns the action to process the success', () => {
@@ -215,20 +201,11 @@ describe('search ducks', () => {
       expect(action.type).toBe(SearchAll.RESET);
     });
 
-    it('submitSearch - returns the action to submit a search without useFilters', () => {
+    it('submitSearch - returns the action to submit a search', () => {
       const term = 'test';
       const action = submitSearch(term);
       expect(action.type).toBe(SubmitSearch.REQUEST);
       expect(action.payload.searchTerm).toBe(term);
-      expect(action.payload.useFilters).toBe(false);
-    });
-
-    it('submitSearch - returns the action to submit a search with useFilters', () => {
-      const term = 'test';
-      const action = submitSearch(term, true);
-      expect(action.type).toBe(SubmitSearch.REQUEST);
-      expect(action.payload.searchTerm).toBe(term);
-      expect(action.payload.useFilters).toBe(true);
     });
 
     it('setResource - returns the action to set the selected resource', () => {
@@ -299,11 +276,6 @@ describe('search ducks', () => {
       expect(action.type).toBe(InlineSearch.UPDATE);
       expect(action.payload).toBe(inlineUpdatePayload);
     });
-
-    it('clearSearch - returns the action that will clear the search term', () => {
-      const action = clearSearch();
-      expect(action.type).toBe(ClearSearch.REQUEST);
-    });
   });
 
   describe('reducer', () => {
@@ -315,9 +287,11 @@ describe('search ducks', () => {
       expect(reducer(testState, { type: 'INVALID.ACTION' })).toEqual(testState);
     });
 
-   it('should handle SearchAll.REQUEST', () => {
+    it('should handle SearchAll.REQUEST', () => {
       const term = 'testSearch';
-      expect(reducer(testState, searchAll(SearchType.SUBMIT_TERM, term, ResourceType.table, 0))).toEqual({
+      const resource = ResourceType.table;
+      const pageIndex = 0;
+      expect(reducer(testState, searchAll(term, resource, pageIndex))).toEqual({
         ...testState,
         inlineResults: initialInlineResultsState,
         search_term: term,
@@ -329,7 +303,6 @@ describe('search ducks', () => {
       expect(reducer(testState, searchAllSuccess(expectedSearchAllResults))).toEqual({
         ...initialState,
         ...expectedSearchAllResults,
-        filters: testState.filters,
         inlineResults: {
           tables: expectedSearchAllResults.tables,
           users: expectedSearchAllResults.users,
@@ -350,7 +323,7 @@ describe('search ducks', () => {
     });
 
     it('should handle SearchResource.REQUEST', () => {
-      expect(reducer(testState, searchResource(SearchType.SUBMIT_TERM, 'test', ResourceType.table, 0))).toEqual({
+      expect(reducer(testState, searchResource('test', ResourceType.table, 0))).toEqual({
         ...initialState,
         isLoading: true,
       });
@@ -387,7 +360,6 @@ describe('search ducks', () => {
         tables,
         users,
         search_term: searchTerm,
-        filters: filterReducer.initialFilterState,
       });
     });
 
@@ -421,126 +393,42 @@ describe('search ducks', () => {
         },
       });
     });
-
-    describe('handles cases that update the filter state', () => {
-      describe('cases that update the filter state only', () => {
-        it('UpdateSearchFilter.CLEAR_ALL', () => {
-          filterReducerSpy.mockClear();
-          const filterAction = filterReducer.clearAllFilters();
-          const result = reducer(testState, filterAction)
-          expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
-          expect(result.filters).toBe(MOCK_FILTER_STATE);
-        })
-      });
-
-      describe('cases that update the search term & filter state', () => {
-        it('UpdateSearchFilter.SET_BY_RESOURCE', () => {
-          filterReducerSpy.mockClear();
-          const mockTerm = 'rides';
-          const filterAction = filterReducer.setSearchInputByResource({ 'tag': 'tagName' }, ResourceType.table, 2, mockTerm);
-          const result = reducer(testState, filterAction)
-          expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
-          expect(result.filters).toBe(MOCK_FILTER_STATE);
-          expect(result.search_term).toBe(mockTerm);
-        })
-      });
-
-      describe('cases that update the filter state & trigger a search', () => {
-        it('UpdateSearchFilter.CLEAR_CATEGORY', () => {
-          filterReducerSpy.mockClear();
-          const filterAction = filterReducer.clearFilterByCategory('column');
-          const result = reducer(testState, filterAction)
-          expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
-          expect(result.filters).toBe(MOCK_FILTER_STATE);
-          expect(result.isLoading).toBe(true);
-        })
-
-        it('UpdateSearchFilter.UPDATE_CATEGORY', () => {
-          filterReducerSpy.mockClear();
-          const filterAction = filterReducer.updateFilterByCategory('column', 'column_name')
-          const result = reducer(testState, filterAction)
-          expect(filterReducerSpy).toHaveBeenCalledWith(testState.filters, filterAction, testState.selectedTab);
-          expect(result.filters).toBe(MOCK_FILTER_STATE);
-          expect(result.isLoading).toBe(true);
-        })
-      })
-    });
   });
 
   describe('sagas', () => {
-    describe('filter sagas', () => {
-      describe('filterWatcher', () => {
-        it('debounces clear and update category actions with filterWorker', () => {
-          testSaga(Sagas.filterWatcher)
-            .next()
-            .is(debounce(
-              750,
-              [filterReducer.UpdateSearchFilter.CLEAR_CATEGORY, filterReducer.UpdateSearchFilter.UPDATE_CATEGORY],
-              Sagas.filterWorker
-            ))
-            .next().isDone();
-        });
-      });
-
-      describe('filterWorker', () => {
-        let mockSearchState;
-        let saga;
-        beforeAll(() => {
-          mockSearchState = globalState.search;
-          saga = testSaga(Sagas.filterWorker);
-        })
-        it('verifies saga executes as written', () => {
-          /*
-            Note: This is an experimental pattern for best effort coverage.
-            Sagas have become a mix of both asynchronous api calls & synchronous helper methods --
-            unsure if that's a good practice or what it means for writing robust unit tests
-          */
-          updateSearchUrlSpy.mockClear();
-          saga = saga.next()
-                  .select(SearchUtils.getSearchState).next(mockSearchState)
-                  .put(searchResource(SearchType.FILTER, mockSearchState.search_term, mockSearchState.selectedTab, 0)).next();
-          expect(updateSearchUrlSpy).toHaveBeenCalledWith({
-            filters: mockSearchState.filters,
-            resource: mockSearchState.selectedTab,
-            term: mockSearchState.search_term,
-            index: 0,
-          }, true);
-          saga.isDone();
-        });
-      });
-    });
-
     describe('searchAllWatcher', () => {
       it('takes every SearchAll.REQUEST with searchAllWorker', () => {
-        testSaga(Sagas.searchAllWatcher)
-          .next().takeEvery(SearchAll.REQUEST, Sagas.searchAllWorker)
+        testSaga(searchAllWatcher)
+          .next().takeEvery(SearchAll.REQUEST, searchAllWorker)
           .next().isDone();
       });
     });
 
     describe('searchAllWorker', () => {
-      /*
-        TODO - There seems to be no straughtforward way to test this method.
-        We should re-evaluate how much logic is wrapped into sagas specifically
-        question:
-        1. Processing the response in the saga
-        2. Helper methods
-        Can we pass all necessary information to the api method such that the api method
-        does all of the processing and returns what we need?
-      */
+      /* TODO - Improve this test
+      it('executes flow for returning search results', () => {
+        const term = 'testSearch';
+        const options = {};
+        testSaga(searchAllWorker, searchAll(term, options))
+          .next()
+          .call(srchAll, options, term)
+          .next(expectedSearchResults)
+          .put(searchAllSuccess(expectedSearchResults))
+          .next()
+          .isDone();
+      });*/
 
       it('handles request error', () => {
-        testSaga(Sagas.searchAllWorker, searchAll(SearchType.SUBMIT_TERM, 'test', ResourceType.table, 0, true))
-          .next().select(SearchUtils.getSearchState)
-          .next(globalState.search).throw(new Error()).put(searchAllFailure())
+        testSaga(searchAllWorker, searchAll('test', ResourceType.table, 0))
+          .next().throw(new Error()).put(searchAllFailure())
           .next().isDone();
       });
     });
 
     describe('searchResourceWatcher', () => {
       it('takes every SearchResource.REQUEST with searchResourceWorker', () => {
-        testSaga(Sagas.searchResourceWatcher)
-          .next().takeEvery(SearchResource.REQUEST, Sagas.searchResourceWorker)
+        testSaga(searchResourceWatcher)
+          .next().takeEvery(SearchResource.REQUEST, searchResourceWorker)
           .next().isDone();
       });
     });
@@ -550,19 +438,15 @@ describe('search ducks', () => {
         const pageIndex = 0;
         const resource = ResourceType.table;
         const term = 'test';
-        const mockSearchState = globalState.search;
-        const searchType = SearchType.PAGINATION;
-        testSaga(Sagas.searchResourceWorker, searchResource(searchType, term, resource, pageIndex))
-          .next().select(SearchUtils.getSearchState)
-          .next(mockSearchState).call(API.searchResource, pageIndex, resource, term, mockSearchState.filters[resource], searchType)
+        testSaga(searchResourceWorker, searchResource(term, resource, pageIndex))
+          .next().call(API.searchResource, pageIndex, resource, term)
           .next(expectedSearchResults).put(searchResourceSuccess(expectedSearchResults))
           .next().isDone();
       });
 
       it('handles request error', () => {
-        testSaga(Sagas.searchResourceWorker, searchResource(SearchType.PAGINATION, 'test', ResourceType.table, 0))
-          .next().select(SearchUtils.getSearchState)
-          .next(globalState.search).throw(new Error()).put(searchResourceFailure())
+        testSaga(searchResourceWorker, searchResource('test', ResourceType.table, 0))
+          .next().throw(new Error()).put(searchResourceFailure())
           .next().isDone();
       });
     });
@@ -570,21 +454,19 @@ describe('search ducks', () => {
     describe('submitSearchWorker', () => {
       it('initiates a searchAll action', () => {
         const term = 'test';
-        const mockSearchState = globalState.search;
         updateSearchUrlSpy.mockClear();
-        testSaga(Sagas.submitSearchWorker, submitSearch(term, true))
-          .next().select(SearchUtils.getSearchState)
-          .next(mockSearchState).put(searchAll(SearchType.SUBMIT_TERM, term, undefined, undefined, true))
+        testSaga(submitSearchWorker, submitSearch(term))
+          .next().put(searchAll(term))
           .next().isDone();
-          expect(updateSearchUrlSpy).toHaveBeenCalledWith({ term, filters: mockSearchState.filters });
+          expect(updateSearchUrlSpy).toHaveBeenCalledWith({ term });
 
       });
     });
 
     describe('submitSearchWatcher', () => {
       it('takes every SubmitSearch.REQUEST with submitSearchWorker', () => {
-        testSaga(Sagas.submitSearchWatcher)
-          .next().takeEvery(SubmitSearch.REQUEST, Sagas.submitSearchWorker)
+        testSaga(submitSearchWatcher)
+          .next().takeEvery(SubmitSearch.REQUEST, submitSearchWorker)
           .next().isDone();
       });
     });
@@ -594,14 +476,13 @@ describe('search ducks', () => {
         const resource = ResourceType.table;
         const updateUrl = true;
         updateSearchUrlSpy.mockClear();
-        testSaga(Sagas.setResourceWorker, setResource(resource, updateUrl))
+        testSaga(setResourceWorker, setResource(resource, updateUrl))
           .next().select(SearchUtils.getSearchState)
           .next(globalState.search).isDone();
         expect(updateSearchUrlSpy).toHaveBeenCalledWith({
           resource,
           term: searchState.search_term,
           index: searchState.tables.page_index,
-          filters: searchState.filters,
         });
       });
 
@@ -610,7 +491,7 @@ describe('search ducks', () => {
         const updateUrl = false;
         updateSearchUrlSpy.mockClear();
 
-        testSaga(Sagas.setResourceWorker, setResource(resource, updateUrl))
+        testSaga(setResourceWorker, setResource(resource, updateUrl))
           .next().select(SearchUtils.getSearchState)
           .next(searchState).isDone();
         expect(updateSearchUrlSpy).not.toHaveBeenCalled();
@@ -619,8 +500,8 @@ describe('search ducks', () => {
 
     describe('setResourceWatcher', () => {
       it('takes every SetResource.REQUEST with setResourceWorker', () => {
-        testSaga(Sagas.setResourceWatcher)
-          .next().takeEvery(SetResource.REQUEST, Sagas.setResourceWorker)
+        testSaga(setResourceWatcher)
+          .next().takeEvery(SetResource.REQUEST, setResourceWorker)
           .next().isDone();
       });
     });
@@ -631,9 +512,9 @@ describe('search ducks', () => {
         const updateUrl = true;
         updateSearchUrlSpy.mockClear();
 
-        testSaga(Sagas.setPageIndexWorker, setPageIndex(index, updateUrl))
+        testSaga(setPageIndexWorker, setPageIndex(index, updateUrl))
           .next().select(SearchUtils.getSearchState)
-          .next(searchState).put(searchResource(SearchType.PAGINATION, searchState.search_term, searchState.selectedTab, index))
+          .next(searchState).put(searchResource(searchState.search_term, searchState.selectedTab, index))
           .next().isDone();
         expect(updateSearchUrlSpy).toHaveBeenCalled();
       });
@@ -643,9 +524,9 @@ describe('search ducks', () => {
         const updateUrl = false;
         updateSearchUrlSpy.mockClear();
 
-        testSaga(Sagas.setPageIndexWorker, setPageIndex(index, updateUrl))
+        testSaga(setPageIndexWorker, setPageIndex(index, updateUrl))
           .next().select(SearchUtils.getSearchState)
-          .next(searchState).put(searchResource(SearchType.PAGINATION, searchState.search_term, searchState.selectedTab, index))
+          .next(searchState).put(searchResource(searchState.search_term, searchState.selectedTab, index))
           .next().isDone();
         expect(updateSearchUrlSpy).not.toHaveBeenCalled();
       });
@@ -653,8 +534,8 @@ describe('search ducks', () => {
 
     describe('setPageIndexWatcher', () => {
       it('takes every SetPageIndex.REQUEST with setPageIndexWorker', () => {
-        testSaga(Sagas.setPageIndexWatcher)
-          .next().takeEvery(SetPageIndex.REQUEST, Sagas.setPageIndexWorker)
+        testSaga(setPageIndexWatcher)
+          .next().takeEvery(SetPageIndex.REQUEST, setPageIndexWorker)
           .next().isDone();
       });
     });
@@ -671,7 +552,7 @@ describe('search ducks', () => {
         index = SearchUtils.getPageIndex(searchState, resource);
 
         sagaTest = (action) => {
-          return testSaga(Sagas.urlDidUpdateWorker, action)
+          return testSaga(urlDidUpdateWorker, action)
             .next().select(SearchUtils.getSearchState)
             .next(searchState);
         };
@@ -680,7 +561,7 @@ describe('search ducks', () => {
       it('Calls searchAll when search term changes', () => {
         term = 'new search';
         sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
-          .put(searchAll(SearchType.LOAD_URL, term, resource, index))
+          .put(searchAll(term, resource, index))
           .next().isDone();
       });
 
@@ -691,24 +572,18 @@ describe('search ducks', () => {
           .next().isDone();
       });
 
-      it('when filters have changed', () => {
-        sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}&filters=%7B"database"%3A%7B"hive"%3Atrue%7D%7D`))
-          .put(filterReducer.setSearchInputByResource({ 'database': { 'hive' : true }}, resource, index, term))
-          .next().isDone();
-      });
-
-      /*it('Calls setPageIndex when the index changes', () => {
+      it('Calls setPageIndex when the index changes', () => {
         index = 10;
         sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
           .put(setPageIndex(index, false))
           .next().isDone();
-      });*/
+      });
     });
 
     describe('urlDidUpdateWatcher', () => {
       it('takes every UrlDidUpdate.REQUEST with urlDidUpdateWorker', () => {
-        testSaga(Sagas.urlDidUpdateWatcher)
-          .next().takeEvery(UrlDidUpdate.REQUEST, Sagas.urlDidUpdateWorker)
+        testSaga(urlDidUpdateWatcher)
+          .next().takeEvery(UrlDidUpdate.REQUEST, urlDidUpdateWorker)
           .next().isDone();
       });
     });
@@ -719,7 +594,7 @@ describe('search ducks', () => {
       it('applies the existing search state into the URL', () => {
         updateSearchUrlSpy.mockClear();
 
-        testSaga(Sagas.loadPreviousSearchWorker, loadPreviousSearch())
+        testSaga(loadPreviousSearchWorker, loadPreviousSearch())
           .next().select(SearchUtils.getSearchState)
           .next(searchState).isDone();
 
@@ -727,15 +602,14 @@ describe('search ducks', () => {
           term: searchState.search_term,
           resource: searchState.selectedTab,
           index: SearchUtils.getPageIndex(searchState, searchState.selectedTab),
-          filters: searchState.filters,
         });
       });
     });
 
     describe('loadPreviousSearchWatcher', () => {
       it('takes every LoadPreviousSearch.REQUEST with loadPreviousSearchWorker', () => {
-        testSaga(Sagas.loadPreviousSearchWatcher)
-          .next().takeEvery(LoadPreviousSearch.REQUEST, Sagas.loadPreviousSearchWorker)
+        testSaga(loadPreviousSearchWatcher)
+          .next().takeEvery(LoadPreviousSearch.REQUEST, loadPreviousSearchWorker)
           .next().isDone();
       });
     });
@@ -757,8 +631,8 @@ describe('search ducks', () => {
 
     describe('selectInlineResultsWatcher', () => {
       it('takes every InlineSearch.REQUEST with selectInlineResultWorker', () => {
-        testSaga(Sagas.selectInlineResultsWatcher)
-          .next().takeEvery(InlineSearch.SELECT, Sagas.selectInlineResultWorker)
+        testSaga(selectInlineResultsWatcher)
+          .next().takeEvery(InlineSearch.SELECT, selectInlineResultWorker)
           .next().isDone();
       });
     });

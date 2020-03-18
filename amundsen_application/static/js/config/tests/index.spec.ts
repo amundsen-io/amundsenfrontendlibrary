@@ -2,8 +2,6 @@ import AppConfig from 'config/config';
 import * as ConfigUtils from 'config/config-utils';
 import { BadgeStyle } from 'config/config-types';
 
-import { ResourceType } from 'interfaces';
-
 describe('getDatabaseDisplayName', () => {
   it('returns given id if no config for that id exists', () => {
     const testId = 'fakeName';
@@ -12,7 +10,7 @@ describe('getDatabaseDisplayName', () => {
 
   it('returns given id for a configured database id', () => {
     const testId = 'hive';
-    const expectedName = AppConfig.resourceConfig[ResourceType.table].supportedDatabases[testId].displayName;
+    const expectedName = AppConfig.resourceConfig.datasets[testId].displayName;
     expect(ConfigUtils.getDatabaseDisplayName(testId)).toBe(expectedName);
   })
 });
@@ -25,25 +23,9 @@ describe('getDatabaseIconClass', () => {
 
   it('returns given icon class for a configured database id', () => {
     const testId = 'hive';
-    const expectedClass = AppConfig.resourceConfig[ResourceType.table].supportedDatabases[testId].iconClass;
+    const expectedClass = AppConfig.resourceConfig.datasets[testId].iconClass;
     expect(ConfigUtils.getDatabaseIconClass(testId)).toBe(expectedClass);
   })
-});
-
-describe('getDisplayNameByResource', () => {
-  it('returns the displayName for a given resource', () => {
-    const testResource = ResourceType.table;
-    const expectedValue = AppConfig.resourceConfig[testResource].displayName;
-    expect(ConfigUtils.getDisplayNameByResource(testResource)).toBe(expectedValue);
-  });
-});
-
-describe('getFilterConfigByResource', () => {
-  it('returns the filter categories for a given resource', () => {
-    const testResource = ResourceType.table;
-    const expectedValue = AppConfig.resourceConfig[testResource].filterCategories;
-    expect(ConfigUtils.getFilterConfigByResource(testResource)).toBe(expectedValue);
-  });
 });
 
 describe('getBadgeConfig', () => {
@@ -139,7 +121,6 @@ describe('generateExploreUrl', () => {
     table_readers: [],
     source: { source: '', source_type: '' },
     watermarks: [],
-    programmatic_descriptions: []
   };
 
 
