@@ -14,8 +14,8 @@ export function createIssue(
   key: string, 
   title: string, 
   description: string, 
-  resource_name: string, 
-  resource_path: string, 
+  resourceName: string, 
+  resourcePath: string, 
   owners: string[], 
   sender: string
   ): CreateIssueRequest {
@@ -24,8 +24,8 @@ export function createIssue(
       key, 
       title, 
       description, 
-      resource_name, 
-      resource_path, 
+      resourceName, 
+      resourcePath, 
       owners, 
       sender
     },

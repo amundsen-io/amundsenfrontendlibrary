@@ -35,8 +35,8 @@ describe('issue ducks', () => {
   let key; 
   let title; 
   let description; 
-  let resource_name; 
-  let resource_path; 
+  let resourceName; 
+  let resourcePath; 
   let owners; 
   let sender; 
   beforeAll(() => {
@@ -44,8 +44,8 @@ describe('issue ducks', () => {
     key = 'table', 
     title ='stuff';
     description ='This is a test';
-    resource_name = 'resource_name'; 
-    resource_path = 'resource_path'; 
+    resourceName = 'resource_name'; 
+    resourcePath = 'resource_path'; 
     owners = ['email@email']; 
     sender = 'sender@email'; 
     issue =  {
@@ -78,14 +78,14 @@ describe('issue ducks', () => {
     });
 
     it('createIssue - returns the action to create items', () => {
-      const action = createIssue(key, title, description, resource_name, resource_path, owners, sender);
+      const action = createIssue(key, title, description, resourceName, resourcePath, owners, sender);
       const { payload } = action;
       expect(action.type).toBe(CreateIssue.REQUEST);
       expect(payload.key).toBe(key);
       expect(payload.title).toBe(title); 
       expect(payload.description).toBe(description); 
-      expect(payload.resource_name).toBe(resource_name); 
-      expect(payload.resource_path).toBe(resource_path); 
+      expect(payload.resourceName).toBe(resourceName); 
+      expect(payload.resourcePath).toBe(resourcePath); 
       expect(payload.owners).toBe(owners); 
     });
 
@@ -153,7 +153,7 @@ describe('issue ducks', () => {
     });
 
     it('should handle CreateIssue.REQUEST', () => {
-      expect(reducer(testState, createIssue(key, title, description, resource_name, resource_path, owners, sender))).toEqual({ 
+      expect(reducer(testState, createIssue(key, title, description, resourceName, resourcePath, owners, sender))).toEqual({ 
         issues: [], 
         isLoading: true, 
         remainingIssuesUrl: remainingUrl,
@@ -225,7 +225,7 @@ describe('issue ducks', () => {
     describe('createIssuesWorker', () => {
       let action: CreateIssueRequest;
       beforeAll(() => {
-        action = createIssue(key, title, description, resource_name, resource_path, owners, sender);
+        action = createIssue(key, title, description, resourceName, resourcePath, owners, sender);
         issues = [issue];
       });
 
@@ -248,8 +248,8 @@ describe('issue ducks', () => {
             action.payload.sender, 
             NotificationType.DATA_ISSUE_CREATED, 
             {
-              resource_name, 
-              resource_path, 
+              resource_name: resourceName, 
+              resource_path: resourcePath, 
               description_requested: false, 
               fields_requested: false, 
               data_issue_url: issue.url

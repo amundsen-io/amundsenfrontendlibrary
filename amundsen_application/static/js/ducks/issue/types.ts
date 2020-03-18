@@ -24,8 +24,8 @@ export interface CreateIssueRequest {
         key: string, 
         title: string, 
         description: string, 
-        resource_name: string, 
-        resource_path: string, 
+        resourceName: string, 
+        resourcePath: string, 
         owners: string[], 
         sender: string
     }

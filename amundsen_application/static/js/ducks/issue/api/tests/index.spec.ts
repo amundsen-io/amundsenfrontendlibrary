@@ -42,7 +42,6 @@ describe('getIssues', () => {
 describe('createIssue', () => {
   let mockGetResponse;
   let axiosMock;
-  let formData;
   let key;
   let title;
   let description;  

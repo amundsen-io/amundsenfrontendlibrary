@@ -22,8 +22,8 @@ export interface DispatchFromProps {
     key: string, 
     title: string, 
     description: string, 
-    resource_name: string, 
-    resource_path: string, 
+    resourceName: string, 
+    resourcePath: string, 
     owners: string[], 
     sender: string
     ) => CreateIssueRequest;
@@ -59,11 +59,11 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     if (ownersString) {
       owners = ownersString.split(','); 
     }
-    const resource_name = formData.get('resource_name') as string;  
-    const resource_path = formData.get('resource_path') as string;  
+    const resourceName = formData.get('resource_name') as string;  
+    const resourcePath = formData.get('resource_path') as string;  
     const title = formData.get('title') as string;  
     const description = formData.get('description') as string;
-    this.props.createIssue(key, title, description, resource_name, resource_path, owners, this.props.userEmail);
+    this.props.createIssue(key, title, description, resourceName, resourcePath, owners, this.props.userEmail);
     this.setState({isOpen: false}); 
   };
 
@@ -126,17 +126,17 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
 }
 export const mapStateToProps = (state: GlobalState) => {
   const ownerObj = state.tableMetadata.tableOwners.owners; 
-  let tableOwnersEmails = []; 
-  Object.keys(ownerObj).map(function(ownerId) {
+  const tableOwnersEmails = []; 
+  Object.keys(ownerObj).map((ownerId) => {
     const { email } = ownerObj[ownerId]
     tableOwnersEmails.push(email); 
   });
   const userEmail = state.user.loggedInUser.email;
   return {
+    userEmail,
     isLoading: state.issue.isLoading, 
     tableOwners: tableOwnersEmails, 
-    tableMetadata: state.tableMetadata.tableData, 
-    userEmail: userEmail
+    tableMetadata: state.tableMetadata.tableData
   };
 };
 

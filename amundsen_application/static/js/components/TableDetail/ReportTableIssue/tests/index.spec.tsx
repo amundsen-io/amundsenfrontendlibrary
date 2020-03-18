@@ -19,7 +19,7 @@ const mockFormData = {
   'resource_name': 'resource name', 
   'resource_path': 'path', 
   'owners': 'test@test.com', 
-  get: function(key: string) {
+  get: (key: string) => {
     return mockFormData[key]; 
   }
  };

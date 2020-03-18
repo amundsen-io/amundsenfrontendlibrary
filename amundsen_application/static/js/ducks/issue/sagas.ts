@@ -27,15 +27,15 @@ export function* getIssuesWatcher(): SagaIterator {
 export function* createIssueWorker(action: CreateIssueRequest): SagaIterator {
   try { 
     let response;
-    const { key, title, description, owners, resource_name, resource_path, sender} = action.payload;
+    const { key, title, description, owners, resourceName, resourcePath, sender} = action.payload;
     response = yield call(API.createIssue, key, title, description);
     yield put((createIssueSuccess(response)));
 
-    //Send a notification to table owners if they exist 
+    // Send a notification to table owners if they exist 
     if (owners && owners.length > 0) {
       yield put(submitNotification(owners, sender, NotificationType.DATA_ISSUE_CREATED, {
-        resource_name, 
-        resource_path, 
+        resource_name: resourceName, 
+        resource_path: resourcePath, 
         description_requested: false, 
         fields_requested: false, 
         data_issue_url: response.url
