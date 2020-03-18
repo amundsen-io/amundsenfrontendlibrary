@@ -12,8 +12,21 @@ import {
   mapStateToProps, 
 } from '..';
 
-const mockFormData = { key1: 'val1', key2: 'val2' };
+const mockFormData = { 
+  'key': 'val1', 
+  'title': 'title', 
+  'description': 'description', 
+  'resource_name': 'resource name', 
+  'resource_path': 'path', 
+  'owners': 'test@test.com', 
+  get: function(key: string) {
+    return mockFormData[key]; 
+  }
+ };
+
+  
 // @ts-ignore: How to mock FormData without TypeScript error?
+
 global.FormData = () => (mockFormData);
 
 describe('ReportTableIssue', () => {
@@ -70,7 +83,13 @@ describe('ReportTableIssue', () => {
         // @ts-ignore: mocked events throw type errors
         wrapper.instance().submitForm({ preventDefault: jest.fn(), 
         currentTarget: {id: 'id', nodeName: 'button'} });
-        expect(props.createIssue).toHaveBeenCalledWith(mockFormData);
+        expect(props.createIssue).toHaveBeenCalledWith(
+          "val1", 
+          "title", 
+          "description", 
+          "resource name", 
+          "path", 
+          ["test@test.com"]);
         expect(wrapper.state().isOpen).toBe(false); 
       });
 

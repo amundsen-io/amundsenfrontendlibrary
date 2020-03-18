@@ -53,7 +53,10 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     const formData = new FormData(form);
     const key = formData.get('key') as string;
     const ownersString = formData.get('owners') as string;  
-    const owners = ownersString.split(','); 
+    let owners; 
+    if (ownersString) {
+      owners = ownersString.split(','); 
+    }
     const resource_name = formData.get('resource_name') as string;  
     const resource_path = formData.get('resource_path') as string;  
     const title = formData.get('title') as string;  

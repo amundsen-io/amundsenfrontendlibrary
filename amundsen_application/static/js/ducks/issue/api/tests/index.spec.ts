@@ -64,17 +64,6 @@ describe('createIssue', () => {
     axiosMock = jest.spyOn(axios, 'post').mockImplementation(() => Promise.resolve(mockGetResponse));
   });
 
-  it('calls expected endpoint with headers', async () => {
-    expect.assertions(1);
-    await API.createIssue(key, title, description).then(data => {
-      expect(axiosMock).toHaveBeenCalledWith(
-        `${API.API_PATH}/issue`,
-        formData, {
-        headers: {'Content-Type': 'multipart/form-data'}
-      });
-    });
-  });
-
   it('returns response data', async () => {
     expect.assertions(1);
     await API.createIssue(key, title, description).then(data => {

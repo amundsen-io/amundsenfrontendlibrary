@@ -132,7 +132,6 @@ def get_notification_html(*, notification_type: str, options: Dict, sender: str)
         data_issue_url = options.get('data_issue_url')
         comment = ('<br/>Link to the issue: {data_issue_url}<br/>').format(data_issue_url=data_issue_url)
 
-
     return '{greeting}{notification}{comment}{end_note}{salutation}'.format(greeting=greeting,
                                                                             notification=notification,
                                                                             comment=comment,

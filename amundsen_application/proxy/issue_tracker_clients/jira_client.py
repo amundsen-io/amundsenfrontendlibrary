@@ -7,7 +7,6 @@ from amundsen_application.base.base_issue_tracker_client import BaseIssueTracker
 from amundsen_application.proxy.issue_tracker_clients.issue_exceptions import IssueConfigurationException
 from amundsen_application.models.data_issue import DataIssue
 from amundsen_application.models.issue_results import IssueResults
-from amundsen_application.api.utils.notification_utils import send_notification
 
 import urllib.parse
 import logging
