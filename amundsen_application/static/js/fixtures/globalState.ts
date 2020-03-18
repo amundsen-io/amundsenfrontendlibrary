@@ -1,6 +1,8 @@
 import { GlobalState } from 'ducks/rootReducer';
 import { ResourceType, SendingState } from 'interfaces';
 
+import { defaultEmptyFilters } from './search/filters';
+
 const globalState: GlobalState = {
   announcements: {
       posts: [{
@@ -55,6 +57,12 @@ const globalState: GlobalState = {
   feedback: {
     sendState: SendingState.IDLE,
   },
+  issue: {
+    issues: [], 
+    remainingIssuesUrl: null, 
+    remainingIssues: 0,
+    isLoading: true
+  }, 
   notification: {
     requestIsOpen: false,
     sendState: SendingState.IDLE,
@@ -121,7 +129,8 @@ const globalState: GlobalState = {
         results: [],
         total_results: 0,
       },
-    }
+    },
+    filters: defaultEmptyFilters,
   },
   tableMetadata: {
     isLoading: true,
@@ -148,6 +157,7 @@ const globalState: GlobalState = {
       table_readers: [],
       source: { source: '', source_type: '' },
       watermarks: [],
+      programmatic_descriptions: []
     },
     tableOwners: {
       isLoading: true,

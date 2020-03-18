@@ -10,12 +10,14 @@ import user, { UserReducerState } from './user/reducer';
 import bookmarks, { BookmarkReducerState } from "./bookmark/reducer";
 import notification, { NotificationReducerState } from './notification/reducer';
 import dashboard, { DashboardReducerState } from 'ducks/dashboard/reducer';
+import issue, { IssueReducerState } from './issue/reducer';
 
 export interface GlobalState {
   announcements: AnnouncementsReducerState;
   bookmarks: BookmarkReducerState;
   dashboard: DashboardReducerState;
   feedback: FeedbackReducerState;
+  issue: IssueReducerState;
   notification: NotificationReducerState;
   popularTables: PopularTablesReducerState;
   search: SearchReducerState;
@@ -29,6 +31,7 @@ export default combineReducers<GlobalState>({
   bookmarks,
   dashboard,
   feedback,
+  issue,
   notification,
   popularTables,
   search,

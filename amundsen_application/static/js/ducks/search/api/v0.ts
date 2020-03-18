@@ -1,9 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
 
-import AppConfig from 'config/config';
-import { ResourceType } from 'interfaces';
+import { indexUsersEnabled } from 'config/config-utils';
+import { ResourceType, SearchType } from 'interfaces';
 
 import { DashboardSearchResults, TableSearchResults, UserSearchResults } from '../types';
+
+import { ResourceFilterReducerState } from '../filters/reducer';
 
 export const BASE_URL = '/api/search/v0';
 
@@ -27,11 +29,21 @@ export const searchResourceHelper = (response: AxiosResponse<SearchAPI>) => {
   return ret;
 };
 
-export function searchResource(pageIndex: number, resource: ResourceType, term: string) {
+export function searchResource(pageIndex: number, resource: ResourceType, term: string, filters: ResourceFilterReducerState = {}, searchType: SearchType) {
   if (resource === ResourceType.dashboard ||
-     (resource === ResourceType.user && !AppConfig.indexUsers.enabled)) {
+     (resource === ResourceType.user && !indexUsersEnabled())) {
     return Promise.resolve({});
   }
-  return axios.get(`${BASE_URL}/${resource}?query=${term}&page_index=${pageIndex}`)
+
+  /* Note: This logic must exist until query string endpoints are created for all resources */
+  if (resource === ResourceType.table) {
+    return axios.post(`${BASE_URL}/${resource}`, {
+      filters,
+      pageIndex,
+      term,
+      searchType,
+    }).then(searchResourceHelper);
+  }
+  return axios.get(`${BASE_URL}/${resource}?query=${term}&page_index=${pageIndex}&search_type=${searchType}`)
     .then(searchResourceHelper);
 };
