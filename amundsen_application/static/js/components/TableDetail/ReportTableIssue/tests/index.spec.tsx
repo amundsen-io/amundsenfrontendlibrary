@@ -39,6 +39,7 @@ describe('ReportTableIssue', () => {
       tableName: 'name',
       tableOwners: ['owner@email'], 
       tableMetadata: null,
+      userEmail: 'user@email', 
       ...propOverrides
     };
     const wrapper = shallow<ReportTableIssue>(<ReportTableIssue {...props} />);
@@ -89,7 +90,8 @@ describe('ReportTableIssue', () => {
           "description", 
           "resource name", 
           "path", 
-          ["test@test.com"]);
+          ["test@test.com"], 
+          props.userEmail);
         expect(wrapper.state().isOpen).toBe(false); 
       });
 

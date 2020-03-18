@@ -16,7 +16,8 @@ export function createIssue(
   description: string, 
   resource_name: string, 
   resource_path: string, 
-  owners: string[]
+  owners: string[], 
+  sender: string
   ): CreateIssueRequest {
   return {
     payload: {
@@ -25,7 +26,8 @@ export function createIssue(
       description, 
       resource_name, 
       resource_path, 
-      owners
+      owners, 
+      sender
     },
     type: CreateIssue.REQUEST,
     };

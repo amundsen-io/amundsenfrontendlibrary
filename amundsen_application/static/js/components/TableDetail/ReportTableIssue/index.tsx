@@ -24,13 +24,15 @@ export interface DispatchFromProps {
     description: string, 
     resource_name: string, 
     resource_path: string, 
-    owners: string[]
+    owners: string[], 
+    sender: string
     ) => CreateIssueRequest;
 }
 
 export interface StateFromProps {
   isLoading: boolean;
   tableOwners: string[]; 
+  userEmail: string; 
   tableMetadata: TableMetadata; 
 }
 
@@ -61,7 +63,7 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     const resource_path = formData.get('resource_path') as string;  
     const title = formData.get('title') as string;  
     const description = formData.get('description') as string;
-    this.props.createIssue(key, title, description, resource_name, resource_path, owners);
+    this.props.createIssue(key, title, description, resource_name, resource_path, owners, this.props.userEmail);
     this.setState({isOpen: false}); 
   };
 
@@ -129,10 +131,12 @@ export const mapStateToProps = (state: GlobalState) => {
     const { email } = ownerObj[ownerId]
     tableOwnersEmails.push(email); 
   });
+  const userEmail = state.user.loggedInUser.email;
   return {
     isLoading: state.issue.isLoading, 
     tableOwners: tableOwnersEmails, 
-    tableMetadata: state.tableMetadata.tableData
+    tableMetadata: state.tableMetadata.tableData, 
+    userEmail: userEmail
   };
 };
 

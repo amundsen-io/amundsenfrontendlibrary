@@ -21,9 +21,10 @@ import {
   GetIssuesRequest,
   CreateIssueRequest
 } from '../types'; 
-import { Issue } from 'interfaces';
+import { Issue, NotificationType } from 'interfaces';
 import { getIssuesWatcher, getIssuesWorker, createIssueWatcher, createIssueWorker } from '../sagas';
 import { throwError } from 'redux-saga-test-plan/providers';
+import { submitNotification } from 'ducks/notification/reducer';
 
 describe('issue ducks', () => {
   let tableKey: string; 
@@ -37,6 +38,7 @@ describe('issue ducks', () => {
   let resource_name; 
   let resource_path; 
   let owners; 
+  let sender; 
   beforeAll(() => {
     tableKey = 'key'; 
     key = 'table', 
@@ -45,6 +47,7 @@ describe('issue ducks', () => {
     resource_name = 'resource_name'; 
     resource_path = 'resource_path'; 
     owners = ['email@email']; 
+    sender = 'sender@email'; 
     issue =  {
       issue_key: 'issue_key', 
       title: 'title', 
@@ -75,7 +78,7 @@ describe('issue ducks', () => {
     });
 
     it('createIssue - returns the action to create items', () => {
-      const action = createIssue(key, title, description, resource_name, resource_path, owners);
+      const action = createIssue(key, title, description, resource_name, resource_path, owners, sender);
       const { payload } = action;
       expect(action.type).toBe(CreateIssue.REQUEST);
       expect(payload.key).toBe(key);
@@ -150,7 +153,7 @@ describe('issue ducks', () => {
     });
 
     it('should handle CreateIssue.REQUEST', () => {
-      expect(reducer(testState, createIssue(key, title, description, resource_name, resource_path, owners))).toEqual({ 
+      expect(reducer(testState, createIssue(key, title, description, resource_name, resource_path, owners, sender))).toEqual({ 
         issues: [], 
         isLoading: true, 
         remainingIssuesUrl: remainingUrl,
@@ -222,11 +225,39 @@ describe('issue ducks', () => {
     describe('createIssuesWorker', () => {
       let action: CreateIssueRequest;
       beforeAll(() => {
-        action = createIssue(key, title, description, resource_name, resource_path, owners);
+        action = createIssue(key, title, description, resource_name, resource_path, owners, sender);
         issues = [issue];
       });
 
       it('creates a issue', () => {
+        return expectSaga(createIssueWorker, action)
+          .provide([
+            [matchers.call.fn(API.createIssue), issue],
+          ])
+          .put(createIssueSuccess(issue))
+          .run();
+      });
+
+      it('creates notifications', () => {
+        return expectSaga(createIssueWorker, action)
+          .provide([
+            [matchers.call.fn(API.createIssue), issue],
+          ])
+          .put(createIssueSuccess(issue))
+          .put(submitNotification(action.payload.owners, 
+            action.payload.sender, 
+            NotificationType.DATA_ISSUE_CREATED, 
+            {
+              resource_name, 
+              resource_path, 
+              description_requested: false, 
+              fields_requested: false, 
+              data_issue_url: issue.url
+            }))
+          .run();
+      });
+
+      it('creates notifications', () => {
         return expectSaga(createIssueWorker, action)
           .provide([
             [matchers.call.fn(API.createIssue), issue],
