@@ -54,7 +54,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
           </div>
           <div className="resource-badges">
             {
-              !!table.badges && table.badges.length > 0 && 
+              !!table.badges && table.badges.length > 0 &&
               <div>
                 <div className="body-secondary-3">
                 <BadgeList badges={ table.badges } />

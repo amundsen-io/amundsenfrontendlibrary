@@ -58,11 +58,11 @@ const globalState: GlobalState = {
     sendState: SendingState.IDLE,
   },
   issue: {
-    issues: [], 
-    remainingIssuesUrl: null, 
+    issues: [],
+    remainingIssuesUrl: null,
     remainingIssues: 0,
     isLoading: true
-  }, 
+  },
   notification: {
     requestIsOpen: false,
     sendState: SendingState.IDLE,
@@ -119,6 +119,11 @@ const globalState: GlobalState = {
     },
     inlineResults: {
       isLoading: false,
+      dashboards: {
+        page_index: 0,
+        results: [],
+        total_results: 0,
+      },
       tables: {
         page_index: 0,
         results: [],

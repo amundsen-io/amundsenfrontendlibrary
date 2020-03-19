@@ -22,6 +22,9 @@ const configDefault: AppConfig = {
     key: 'default-key',
     sampleRate: 100,
   },
+  indexDashboards: {
+    enabled: false,
+  },
   indexUsers: {
     enabled: false,
   },
@@ -48,6 +51,9 @@ const configDefault: AppConfig = {
     }
   ],
   resourceConfig: {
+    [ResourceType.dashboard]: {
+      displayName: 'Dashboards',
+    },
     [ResourceType.table]: {
       displayName: 'Datasets',
       supportedDatabases: {

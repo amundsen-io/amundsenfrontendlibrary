@@ -31,12 +31,14 @@ export interface SearchAllResponsePayload extends SearchResponsePayload {
   users: UserSearchResults;
 };
 export interface InlineSearchResponsePayload {
+  dashboards: DashboardSearchResults;
   tables: TableSearchResults;
   users: UserSearchResults;
 };
 export interface InlineSearchUpdatePayload {
   searchTerm: string;
   selectedTab: ResourceType;
+  dashboards: DashboardSearchResults;
   tables: TableSearchResults;
   users: UserSearchResults;
 };

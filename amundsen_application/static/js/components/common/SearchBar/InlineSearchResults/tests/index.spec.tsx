@@ -29,6 +29,7 @@ describe('InlineSearchResults', () => {
   const setup = (propOverrides?: Partial<InlineSearchResultsProps>) => {
     const props: InlineSearchResultsProps = {
       isLoading: false,
+      dashboards: allResourcesExample.dashboards as any, // TODO ttannis: Update type
       tables: allResourcesExample.tables as SearchResults<TableResource>,
       users: allResourcesExample.users as SearchResults<UserResource>,
       className: 'testClass',

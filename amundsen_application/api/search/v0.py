@@ -185,12 +185,25 @@ def _search_user(*, search_term: str, page_index: int, search_type: str) -> Dict
         logging.exception(message)
         return results_dict
 
+
 @search_blueprint.route('/dashboard', methods=['GET'])
 def search_dashboard() -> Response:
     """
     Parse the request arguments and call the helper method to execute a dashboard search
     :return: a Response created with the results from the helper method
     """
+    # Default results
+    dashboards = {
+        'page_index': 0,
+        'results': [],
+        'total_results': 0,
+    }
+
+    results_dict = {
+        'search_term': '',
+        'msg': '',
+        'dashboards': dashboards,
+    }
     try:
         search_term = get_query_param(request.args, 'query', 'Endpoint takes a "query" parameter')
         page_index = get_query_param(request.args, 'page_index', 'Endpoint takes a "page_index" parameter')
@@ -207,7 +220,7 @@ def search_dashboard() -> Response:
         return make_response(jsonify(results_dict), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-def _search_dashboard(*, search_term: str, page_index: int, filters: Dict, search_type: str) -> Dict[str, Any]:
+def _search_dashboard(*, search_term: str, page_index: int, search_type: str) -> Dict[str, Any]:
     """
     TODO ttannis: Add docstring
     """
@@ -239,9 +252,9 @@ def _search_dashboard(*, search_term: str, page_index: int, filters: Dict, searc
                 {'dashboard_group': 'Data Team', 'dashboard_name': 'Data Metrics Dashboard4','dashboard_group_description': 'I am a dashboard8','product': 'mode','total_usage': 1},
             ]
         }
-        dashboards['results'] = [map_dashboard_result(result) for result in dummy_data]
+        dashboards['results'] = [map_dashboard_result(result) for result in dummy_data.get('results')]
         dashboards['total_results'] = dummy_data.get('total_results')
-
+        results_dict['status_code'] = HTTPStatus.OK
         """
         TODO ttannis: This is the real code
         url_base = app.config['SEARCHSERVICE_BASE'] + SEARCH_DASHBOARD_ENDPOINT

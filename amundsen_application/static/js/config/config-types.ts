@@ -12,6 +12,7 @@ export interface AppConfig {
   date: DateFormatConfig;
   editableText: EditableTextConfig;
   google: GoogleAnalyticsConfig;
+  indexDashboards: IndexDashboardsConfig;
   indexUsers: IndexUsersConfig;
   issueTracking: IssueTrackingConfig;
   logoPath: string | null;
@@ -27,9 +28,10 @@ export interface AppConfigCustom {
   browse?: BrowseConfig;
   date?: DateFormatConfig;
   editableText?: EditableTextConfig;
-  google?: GoogleAnalyticsConfig
+  google?: GoogleAnalyticsConfig;
+  indexDashboards?: IndexDashboardsConfig;
   indexUsers?: IndexUsersConfig;
-  issueTracking?: IssueTrackingConfig; 
+  issueTracking?: IssueTrackingConfig;
   logoPath?: string;
   mailClientFeatures?: MailClientFeaturesConfig;
   navLinks?: Array<LinkConfig>;
@@ -166,6 +168,7 @@ interface DateFormatConfig {
  * A map of each resource type to its configuration
  */
 interface ResourceConfig {
+  [ResourceType.dashboard]: BaseResourceConfig;
   [ResourceType.table]: TableResourceConfig;
   [ResourceType.user]: BaseResourceConfig;
 }
@@ -230,8 +233,18 @@ export interface LinkConfig {
 }
 
 /**
- * IndexUsersConfig - When enabled, the IndexUsers feature will index users as searchable resources. This requires
- * user objects are ingested via Databuilder
+ * IndexDashboardsConfig - When enabled, dashboards will be avaialable as searchable resources. This requires
+ * dashboards objects to be ingested via Databuilder and made available in the metadata and serch services.
+ *
+ * enabled - Enables/disables this feature in the frontend only
+ */
+interface IndexDashboardsConfig {
+  enabled: boolean;
+}
+
+/**
+ * IndexUsersConfig - When enabled, users will be avaialable as searchable resources. This requires
+ * user objects to bed ingested via Databuilder and made available in the metadata and serch services.
  *
  * enabled - Enables/disables this feature in the frontend only
  */
@@ -251,9 +264,9 @@ interface EditableTextConfig {
 }
 /**
  * IssueTrackingConfig - configures whether to display the issue tracking feature
- * that allows users to display tickets associated with a table and create ones 
+ * that allows users to display tickets associated with a table and create ones
  * linked to a table
  */
 interface IssueTrackingConfig {
-  enabled: boolean; 
+  enabled: boolean;
 }

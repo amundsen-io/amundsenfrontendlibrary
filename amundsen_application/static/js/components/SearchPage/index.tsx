@@ -35,6 +35,7 @@ import {
   SEARCH_ERROR_MESSAGE_PREFIX,
   SEARCH_ERROR_MESSAGE_SUFFIX,
   SEARCH_SOURCE_NAME,
+  DASHBOARD_RESOURCE_TITLE,
   TABLE_RESOURCE_TITLE,
   USER_RESOURCE_TITLE,
 } from './constants';
@@ -89,6 +90,8 @@ export class SearchPage extends React.Component<SearchPageProps> {
 
   generateTabLabel = (tab: ResourceType): string => {
     switch (tab) {
+      case ResourceType.dashboard:
+        return DASHBOARD_RESOURCE_TITLE;
       case ResourceType.table:
         return TABLE_RESOURCE_TITLE;
       case ResourceType.user:

@@ -114,6 +114,11 @@ describe('search ducks', () => {
   };
 
   const expectedInlineResults: InlineSearchResponsePayload = {
+    dashboards: {
+      page_index: 0,
+      results: [],
+      total_results: 0,
+    },
     tables: {
       page_index: 0,
       results: [],
@@ -129,6 +134,11 @@ describe('search ducks', () => {
   const inlineUpdatePayload: InlineSearchUpdatePayload = {
     searchTerm: 'testName',
     selectedTab: ResourceType.table,
+    dashboards: {
+      page_index: 0,
+      results: [],
+      total_results: 0,
+    },
     tables: {
       page_index: 0,
       results: [],
