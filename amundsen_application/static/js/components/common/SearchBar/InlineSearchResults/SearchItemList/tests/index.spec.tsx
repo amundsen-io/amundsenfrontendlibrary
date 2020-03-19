@@ -12,7 +12,8 @@ import * as CONSTANTS from '../../constants';
 
 jest.mock('config/config-utils', () => ({
   getDisplayNameByResource: jest.fn(),
-  indexUsersEnabled: jest.fn()
+  indexUsersEnabled: jest.fn(),
+  indexDashboardsEnabled: jest.fn(),
 }));
 import { indexUsersEnabled } from 'config/config-utils';
 

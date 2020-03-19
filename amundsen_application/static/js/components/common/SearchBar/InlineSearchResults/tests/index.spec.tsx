@@ -19,6 +19,7 @@ jest.mock('config/config-utils', () => ({
   getDatabaseDisplayName: jest.fn(),
   getDatabaseIconClass: jest.fn(),
   indexUsersEnabled: jest.fn(),
+  indexDashboardsEnabled: jest.fn(),
 }));
 import { getDatabaseDisplayName, getDatabaseIconClass, indexUsersEnabled } from 'config/config-utils';
 

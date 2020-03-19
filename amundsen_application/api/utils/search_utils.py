@@ -10,6 +10,7 @@ valid_search_fields = {
     'tag'
 }
 
+
 def map_dashboard_result(result: Dict) -> Dict:
     # TODO ttannis: We need the dashboard_uri
     return {
@@ -19,6 +20,7 @@ def map_dashboard_result(result: Dict) -> Dict:
         'dashboard_group_description': result.get('dashboard_group_description', None),
         'product': result.get('product', None),
     }
+
 
 def map_table_result(result: Dict) -> Dict:
     return {

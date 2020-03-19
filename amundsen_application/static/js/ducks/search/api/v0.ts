@@ -30,8 +30,9 @@ export const searchResourceHelper = (response: AxiosResponse<SearchAPI>) => {
 };
 
 export function searchResource(pageIndex: number, resource: ResourceType, term: string, filters: ResourceFilterReducerState = {}, searchType: SearchType) {
-  if ((resource === ResourceType.dashboard && !indexDashboardsEnabled()) ||
-     (resource === ResourceType.user && !indexUsersEnabled())) {
+  /* If resource support is not configured or if there is no search term for non-filter supported resources */
+  if ((resource === ResourceType.dashboard && (!indexDashboardsEnabled() || term.length === 0)) ||
+     (resource === ResourceType.user && (!indexUsersEnabled() || term.length === 0))) {
     return Promise.resolve({});
   }
 

@@ -341,6 +341,7 @@ describe('search ducks', () => {
         ...expectedSearchAllResults,
         filters: testState.filters,
         inlineResults: {
+          dashboards: expectedSearchAllResults.dashboards,
           tables: expectedSearchAllResults.tables,
           users: expectedSearchAllResults.users,
           isLoading: false,
@@ -390,10 +391,11 @@ describe('search ducks', () => {
     });
 
     it('should handle InlineSearch.UPDATE', () => {
-      const { searchTerm, selectedTab, tables, users } = inlineUpdatePayload;
+      const { searchTerm, selectedTab, dashboards, tables, users } = inlineUpdatePayload;
       expect(reducer(testState, updateFromInlineResult(inlineUpdatePayload))).toEqual({
         ...testState,
         selectedTab,
+        dashboards,
         tables,
         users,
         search_term: searchTerm,
@@ -402,10 +404,11 @@ describe('search ducks', () => {
     });
 
     it('should handle InlineSearch.SUCCESS', () => {
-      const { tables, users } = expectedInlineResults;
+      const { dashboards, tables, users } = expectedInlineResults;
       expect(reducer(testState, getInlineResultsSuccess(expectedInlineResults))).toEqual({
         ...testState,
         inlineResults: {
+          dashboards,
           tables,
           users,
           isLoading: false,
@@ -425,6 +428,7 @@ describe('search ducks', () => {
       expect(reducer(testState, getInlineResults(term))).toEqual({
         ...testState,
         inlineResults: {
+          dashboards: initialInlineResultsState.dashboards,
           tables: initialInlineResultsState.tables,
           users: initialInlineResultsState.users,
           isLoading: true,

@@ -192,25 +192,11 @@ def search_dashboard() -> Response:
     Parse the request arguments and call the helper method to execute a dashboard search
     :return: a Response created with the results from the helper method
     """
-    # Default results
-    dashboards = {
-        'page_index': 0,
-        'results': [],
-        'total_results': 0,
-    }
-
-    results_dict = {
-        'search_term': '',
-        'msg': '',
-        'dashboards': dashboards,
-    }
     try:
         search_term = get_query_param(request.args, 'query', 'Endpoint takes a "query" parameter')
         page_index = get_query_param(request.args, 'page_index', 'Endpoint takes a "page_index" parameter')
         search_type = request.args.get('search_type')
 
-        # TODO ttannis: This pattern has to change because if a failure occurs before this point, results_dict
-        # is not defined on line 207
         results_dict = _search_dashboard(search_term=search_term, page_index=page_index, search_type=search_type)
 
         return make_response(jsonify(results_dict), results_dict.get('status_code', HTTPStatus.INTERNAL_SERVER_ERROR))
@@ -220,6 +206,7 @@ def search_dashboard() -> Response:
         return make_response(jsonify(results_dict), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
+@action_logging
 def _search_dashboard(*, search_term: str, page_index: int, search_type: str) -> Dict[str, Any]:
     """
     TODO ttannis: Add docstring
@@ -238,27 +225,8 @@ def _search_dashboard(*, search_term: str, page_index: int, search_type: str) ->
     }
 
     try:
-        results_dict['msg'] = 'Success'
-        dummy_data = {
-            'total_results': 8,
-            'results': [
-                {'dashboard_group': 'Amundsen Team', 'dashboard_name': 'Amundsen Metrics Dashboard1','dashboard_group_description': 'I am a dashboard1','product': 'mode','total_usage': 1},
-                {'dashboard_group': 'Amundsen Team', 'dashboard_name': 'Amundsen Metrics Dashboard2','dashboard_group_description': 'I am a dashboard2','product': 'mode','total_usage': 1},
-                {'dashboard_group': 'Amundsen Team', 'dashboard_name': 'Amundsen Metrics Dashboard3','dashboard_group_description': 'I am a dashboard3','product': 'mode','total_usage': 1},
-                {'dashboard_group': 'Amundsen Team', 'dashboard_name': 'Amundsen Metrics Dashboard4','dashboard_group_description': 'I am a dashboard4','product': 'mode','total_usage': 1},
-                {'dashboard_group': 'Data Team', 'dashboard_name': 'Data Metrics Dashboard1','dashboard_group_description': 'I am a dashboard5','product': 'mode','total_usage': 1},
-                {'dashboard_group': 'Data Team', 'dashboard_name': 'Data Metrics Dashboard2','dashboard_group_description': 'I am a dashboard6','product': 'mode','total_usage': 1},
-                {'dashboard_group': 'Data Team', 'dashboard_name': 'Data Metrics Dashboard3','dashboard_group_description': 'I am a dashboard7','product': 'mode','total_usage': 1},
-                {'dashboard_group': 'Data Team', 'dashboard_name': 'Data Metrics Dashboard4','dashboard_group_description': 'I am a dashboard8','product': 'mode','total_usage': 1},
-            ]
-        }
-        dashboards['results'] = [map_dashboard_result(result) for result in dummy_data.get('results')]
-        dashboards['total_results'] = dummy_data.get('total_results')
-        results_dict['status_code'] = HTTPStatus.OK
-        """
-        TODO ttannis: This is the real code
         url_base = app.config['SEARCHSERVICE_BASE'] + SEARCH_DASHBOARD_ENDPOINT
-        # TODO ttannis: Request consistency for the non-filter endpoint
+        # TODO ttannis: Request consistency for url of the non-filter endpoint.
         url = f'{url_base}{search_term}&page_index={page_index}'
         response = request_search(url=url)
 
@@ -274,7 +242,6 @@ def _search_dashboard(*, search_term: str, page_index: int, search_type: str) ->
             logging.error(message)
 
         results_dict['status_code'] = status_code
-        """
         return results_dict
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
