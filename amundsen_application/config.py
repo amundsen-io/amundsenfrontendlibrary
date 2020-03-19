@@ -59,6 +59,9 @@ class Config:
     # Max issues to display at a time
     ISSUE_TRACKER_MAX_RESULTS = None  # type: int
 
+    # Programmatic Description configuration. Please see docs/flask_config.md
+    PROGRAMMATIC_DISPLAY = None  # type: Optional[Dict]
+
     # If specified, will be used to generate headers for service-to-service communication
     # Please note that if specified, this will ignore following config properties:
     # 1. METADATASERVICE_REQUEST_HEADERS
