@@ -55,7 +55,8 @@ NOTIFICATION_STRINGS = {
     },
     NotificationType.DATA_ISSUE_CREATED.value: {
         'comment': '',
-        'end_note': '<br/>Please visit the provided issue link for more information.<br/>',
+        'end_note': '<br/>Please visit the provided issue link for more information. You are getting this email '
+                    'because you are listed as an owner of the resource. Please do not reply to this email.<br/>',
         'notification': '<br/>{sender} has created a data issue for <a href="{resource_url}">{resource_name}</a>, ',
     }
 }
@@ -129,6 +130,7 @@ def get_notification_html(*, notification_type: str, options: Dict, sender: str)
                        '<br/>{comment}<br/>').format(sender=sender, comment=options_comment)
 
     if notification_type == NotificationType.DATA_ISSUE_CREATED:
+        greeting = 'Hello data owner,<br>'
         data_issue_url = options.get('data_issue_url')
         comment = ('<br/>Link to the issue: {data_issue_url}<br/>').format(data_issue_url=data_issue_url)
 
