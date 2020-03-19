@@ -67,10 +67,6 @@ class JiraClient(BaseIssueTrackerClient):
         :param description: Description of the Jira issue
         :param table_uri: Table Uri ie databasetype://database/table
         :param title: Title of the Jira ticket
-        :param table_owners: Emails of the owners of the table
-        :param resource_name: Table + schema
-        :param resource_path: Url to the resource
-        :return: Metadata about the newly created issue
         """
         try:
             if app.config['AUTH_USER_METHOD']:
@@ -91,8 +87,7 @@ class JiraClient(BaseIssueTrackerClient):
                              f'\n Reported By: {user_email} '
                              f'\n Table Key: {table_uri} [PLEASE DO NOT REMOVE]'),
                 reporter={'name': jira_id}))
-            issue = self._get_issue_properties(issue=issue)
-            return issue
+            return self._get_issue_properties(issue=issue)
         except JIRAError as e:
             logging.exception(str(e))
             raise e
