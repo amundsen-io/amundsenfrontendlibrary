@@ -12,7 +12,7 @@ from flask.blueprints import Blueprint
 from amundsen_application.log.action_log import action_logging
 from amundsen_application.api.utils.request_utils import get_query_param, request_search
 from amundsen_application.api.utils.search_utils import generate_query_json, has_filters, \
-    map_table_result, transform_filters
+    map_dashboard_result, map_table_result, transform_filters
 from amundsen_application.models.user import load_user, dump_user
 
 LOGGER = logging.getLogger(__name__)
@@ -21,6 +21,8 @@ REQUEST_SESSION_TIMEOUT_SEC = 3
 
 search_blueprint = Blueprint('search', __name__, url_prefix='/api/search/v0')
 
+# TODO ttannis: Request consistency for the non-filter endpoint
+SEARCH_DASHBOARD_ENDPOINT = '/search_dashboard/query/'
 SEARCH_TABLE_ENDPOINT = '/search'
 SEARCH_TABLE_FILTER_ENDPOINT = '/search_table'
 SEARCH_USER_ENDPOINT = '/search_user'
@@ -183,7 +185,86 @@ def _search_user(*, search_term: str, page_index: int, search_type: str) -> Dict
         logging.exception(message)
         return results_dict
 
+@search_blueprint.route('/dashboard', methods=['GET'])
+def search_dashboard() -> Response:
+    """
+    Parse the request arguments and call the helper method to execute a dashboard search
+    :return: a Response created with the results from the helper method
+    """
+    try:
+        search_term = get_query_param(request.args, 'query', 'Endpoint takes a "query" parameter')
+        page_index = get_query_param(request.args, 'page_index', 'Endpoint takes a "page_index" parameter')
+        search_type = request.args.get('search_type')
 
-# TODO - Implement
+        # TODO ttannis: This pattern has to change because if a failure occurs before this point, results_dict
+        # is not defined on line 207
+        results_dict = _search_dashboard(search_term=search_term, page_index=page_index, search_type=search_type)
+
+        return make_response(jsonify(results_dict), results_dict.get('status_code', HTTPStatus.INTERNAL_SERVER_ERROR))
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        return make_response(jsonify(results_dict), HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
 def _search_dashboard(*, search_term: str, page_index: int, filters: Dict, search_type: str) -> Dict[str, Any]:
-    return {}
+    """
+    TODO ttannis: Add docstring
+    """
+    # Default results
+    dashboards = {
+        'page_index': int(page_index),
+        'results': [],
+        'total_results': 0,
+    }
+
+    results_dict = {
+        'search_term': search_term,
+        'msg': '',
+        'dashboards': dashboards,
+    }
+
+    try:
+        results_dict['msg'] = 'Success'
+        dummy_data = {
+            'total_results': 8,
+            'results': [
+                {'dashboard_group': 'Amundsen Team', 'dashboard_name': 'Amundsen Metrics Dashboard1','dashboard_group_description': 'I am a dashboard1','product': 'mode','total_usage': 1},
+                {'dashboard_group': 'Amundsen Team', 'dashboard_name': 'Amundsen Metrics Dashboard2','dashboard_group_description': 'I am a dashboard2','product': 'mode','total_usage': 1},
+                {'dashboard_group': 'Amundsen Team', 'dashboard_name': 'Amundsen Metrics Dashboard3','dashboard_group_description': 'I am a dashboard3','product': 'mode','total_usage': 1},
+                {'dashboard_group': 'Amundsen Team', 'dashboard_name': 'Amundsen Metrics Dashboard4','dashboard_group_description': 'I am a dashboard4','product': 'mode','total_usage': 1},
+                {'dashboard_group': 'Data Team', 'dashboard_name': 'Data Metrics Dashboard1','dashboard_group_description': 'I am a dashboard5','product': 'mode','total_usage': 1},
+                {'dashboard_group': 'Data Team', 'dashboard_name': 'Data Metrics Dashboard2','dashboard_group_description': 'I am a dashboard6','product': 'mode','total_usage': 1},
+                {'dashboard_group': 'Data Team', 'dashboard_name': 'Data Metrics Dashboard3','dashboard_group_description': 'I am a dashboard7','product': 'mode','total_usage': 1},
+                {'dashboard_group': 'Data Team', 'dashboard_name': 'Data Metrics Dashboard4','dashboard_group_description': 'I am a dashboard8','product': 'mode','total_usage': 1},
+            ]
+        }
+        dashboards['results'] = [map_dashboard_result(result) for result in dummy_data]
+        dashboards['total_results'] = dummy_data.get('total_results')
+
+        """
+        TODO ttannis: This is the real code
+        url_base = app.config['SEARCHSERVICE_BASE'] + SEARCH_DASHBOARD_ENDPOINT
+        # TODO ttannis: Request consistency for the non-filter endpoint
+        url = f'{url_base}{search_term}&page_index={page_index}'
+        response = request_search(url=url)
+
+        status_code = response.status_code
+        if status_code == HTTPStatus.OK:
+            results_dict['msg'] = 'Success'
+            results = response.json().get('results')
+            dashboards['results'] = [map_dashboard_result(result) for result in results]
+            dashboards['total_results'] = response.json().get('total_results')
+        else:
+            message = 'Encountered error: Search request failed'
+            results_dict['msg'] = message
+            logging.error(message)
+
+        results_dict['status_code'] = status_code
+        """
+        return results_dict
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        results_dict['msg'] = message
+        logging.exception(message)
+        return results_dict
