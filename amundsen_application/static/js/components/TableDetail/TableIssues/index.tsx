@@ -9,7 +9,7 @@ import { logClick } from 'ducks/utilMethods';
 import { GetIssuesRequest } from 'ducks/issue/types';
 import './styles.scss';
 import { issueTrackingEnabled } from 'config/config-utils';
-import { ReportTableIssue } from '../ReportTableIssue';
+import ReportTableIssue from 'components/TableDetail/ReportTableIssue';
 
 export interface StateFromProps {
   issues: Issue[]; 
