@@ -20,7 +20,7 @@ class NotificationType(str, Enum):
     OWNER_REMOVED = 'owner_removed'
     METADATA_EDITED = 'metadata_edited'
     METADATA_REQUESTED = 'metadata_requested'
-    DATA_ISSUE_CREATED = 'data_issue_created'
+    DATA_ISSUE_CREATED = 'data_issue_reported'
 
     @classmethod
     def has_value(cls, value: str) -> bool:
@@ -54,10 +54,10 @@ NOTIFICATION_STRINGS = {
         'notification': '<br/>{sender} is trying to use <a href="{resource_url}">{resource_name}</a>, ',
     },
     NotificationType.DATA_ISSUE_CREATED.value: {
-        'comment': '',
+        'comment': '<br/>Link to the issue: {data_issue_url}<br/>',
         'end_note': '<br/>Please visit the provided issue link for more information. You are getting this email '
                     'because you are listed as an owner of the resource. Please do not reply to this email.<br/>',
-        'notification': '<br/>{sender} has created a data issue for <a href="{resource_url}">{resource_name}</a>, ',
+        'notification': '<br/>{sender} has reported a data issue for <a href="{resource_url}">{resource_name}</a>, ',
     }
 }
 
@@ -132,7 +132,7 @@ def get_notification_html(*, notification_type: str, options: Dict, sender: str)
     if notification_type == NotificationType.DATA_ISSUE_CREATED:
         greeting = 'Hello data owner,<br>'
         data_issue_url = options.get('data_issue_url')
-        comment = ('<br/>Link to the issue: {data_issue_url}<br/>').format(data_issue_url=data_issue_url)
+        comment = comment.format(data_issue_url=data_issue_url)
 
     return '{greeting}{notification}{comment}{end_note}{salutation}'.format(greeting=greeting,
                                                                             notification=notification,

@@ -24,7 +24,6 @@ import {
 import { Issue, NotificationType } from 'interfaces';
 import { getIssuesWatcher, getIssuesWorker, createIssueWatcher, createIssueWorker } from '../sagas';
 import { throwError } from 'redux-saga-test-plan/providers';
-import { submitNotification } from 'ducks/notification/reducer';
 
 describe('issue ducks', () => {
   let tableKey: string; 
@@ -78,15 +77,30 @@ describe('issue ducks', () => {
     });
 
     it('createIssue - returns the action to create items', () => {
-      const action = createIssue(key, title, description, resourceName, resourcePath, owners, sender);
+      const createIssuePayload = {
+        key: key, 
+        title: title, 
+        description: description
+      };
+      const notificationPayload = {
+        recipients: owners, 
+        sender, 
+        notificationType: NotificationType.DATA_ISSUE_REPORTED, 
+        options: {
+          resource_name: resourceName, 
+          resource_path: resourcePath
+        }
+      }; 
+
+      const action = createIssue(createIssuePayload, notificationPayload);
       const { payload } = action;
       expect(action.type).toBe(CreateIssue.REQUEST);
-      expect(payload.key).toBe(key);
-      expect(payload.title).toBe(title); 
-      expect(payload.description).toBe(description); 
-      expect(payload.resourceName).toBe(resourceName); 
-      expect(payload.resourcePath).toBe(resourcePath); 
-      expect(payload.owners).toBe(owners); 
+      expect(payload.createIssuePayload.key).toBe(key);
+      expect(payload.createIssuePayload.title).toBe(title); 
+      expect(payload.createIssuePayload.description).toBe(description); 
+      expect(payload.notificationPayload.options.resource_name).toBe(resourceName); 
+      expect(payload.notificationPayload.options.resource_path).toBe(resourcePath); 
+      expect(payload.notificationPayload.recipients).toBe(owners); 
     });
 
     it('createIssueFailure - returns the action to process failure', () => {
@@ -153,7 +167,21 @@ describe('issue ducks', () => {
     });
 
     it('should handle CreateIssue.REQUEST', () => {
-      expect(reducer(testState, createIssue(key, title, description, resourceName, resourcePath, owners, sender))).toEqual({ 
+      const createIssuePayload = {
+        key: key, 
+        title: title, 
+        description: description
+      };
+      const notificationPayload = {
+        recipients: owners, 
+        sender, 
+        notificationType: NotificationType.DATA_ISSUE_REPORTED, 
+        options: {
+          resource_name: resourceName, 
+          resource_path: resourcePath
+        }
+      }; 
+      expect(reducer(testState, createIssue(createIssuePayload, notificationPayload))).toEqual({ 
         issues: [], 
         isLoading: true, 
         remainingIssuesUrl: remainingUrl,
@@ -225,7 +253,21 @@ describe('issue ducks', () => {
     describe('createIssuesWorker', () => {
       let action: CreateIssueRequest;
       beforeAll(() => {
-        action = createIssue(key, title, description, resourceName, resourcePath, owners, sender);
+        const createIssuePayload = {
+          key: key, 
+          title: title, 
+          description: description
+        };
+        const notificationPayload = {
+          recipients: owners, 
+          sender, 
+          notificationType: NotificationType.DATA_ISSUE_REPORTED, 
+          options: {
+            resource_name: resourceName, 
+            resource_path: resourcePath
+          }
+        }; 
+        action = createIssue(createIssuePayload, notificationPayload);
         issues = [issue];
       });
 
@@ -244,16 +286,6 @@ describe('issue ducks', () => {
             [matchers.call.fn(API.createIssue), issue],
           ])
           .put(createIssueSuccess(issue))
-          .put(submitNotification(action.payload.owners, 
-            action.payload.sender, 
-            NotificationType.DATA_ISSUE_CREATED, 
-            {
-              resource_name: resourceName, 
-              resource_path: resourcePath, 
-              description_requested: false, 
-              fields_requested: false, 
-              data_issue_url: issue.url
-            }))
           .run();
       });
 

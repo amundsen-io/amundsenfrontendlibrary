@@ -10,7 +10,7 @@ import './styles.scss';
 import { REPORT_DATA_ISSUE_TEXT } from './constants'; 
 import { logClick } from 'ducks/utilMethods';
 import { notificationsEnabled, issueTrackingEnabled } from 'config/config-utils';
-import { TableMetadata } from 'interfaces';
+import { TableMetadata, CreateIssuePayload, NotificationPayload, NotificationType } from 'interfaces';
 
 export interface ComponentProps {
   tableKey: string;
@@ -19,13 +19,8 @@ export interface ComponentProps {
 
 export interface DispatchFromProps {
   createIssue: (
-    key: string, 
-    title: string, 
-    description: string, 
-    resourceName: string, 
-    resourcePath: string, 
-    owners: string[], 
-    sender: string
+    createIssuePayload: CreateIssuePayload, 
+    notificationPayload: NotificationPayload
     ) => CreateIssueRequest;
 }
 
@@ -45,7 +40,7 @@ export type ReportTableIssueProps = StateFromProps & DispatchFromProps & Compone
 export class ReportTableIssue extends React.Component<ReportTableIssueProps, ReportTableIssueState> {
   constructor(props) {
     super(props);
-    this.state = { isOpen: false, ...this.state };
+    this.state = { isOpen: false};
   }
 
   submitForm = (event) => {
@@ -53,19 +48,39 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     event.preventDefault();
     const form = document.getElementById("report-table-issue-form") as HTMLFormElement;
     const formData = new FormData(form);
-    const key = formData.get('key') as string;
-    const ownersString = formData.get('owners') as string;  
-    let owners; 
-    if (ownersString) {
-      owners = ownersString.split(','); 
-    }
-    const resourceName = formData.get('resource_name') as string;  
-    const resourcePath = formData.get('resource_path') as string;  
-    const title = formData.get('title') as string;  
-    const description = formData.get('description') as string;
-    this.props.createIssue(key, title, description, resourceName, resourcePath, owners, this.props.userEmail);
+   
+    const createIssuePayload = this.getCreateIssuePayload(formData); 
+    const notificationPayload = this.getNotificationPayload(); 
+    this.props.createIssue(createIssuePayload, notificationPayload);
     this.setState({isOpen: false}); 
   };
+
+  getCreateIssuePayload = (formData: FormData): CreateIssuePayload => {
+    const title = formData.get('title') as string;  
+    const description = formData.get('description') as string;
+
+    return {
+      key: this.props.tableKey, 
+      title: title, 
+      description: description
+    }
+  }
+
+  getNotificationPayload  = (): NotificationPayload => {
+    const { cluster, database, schema, name } = this.props.tableMetadata;
+    const owners = this.props.tableOwners;
+    const resourceName = `${schema}.${name}`;  
+    const resourcePath = `/table_detail/${cluster}/${database}/${schema}/${name}`;  
+    return {
+      recipients: owners, 
+      sender: this.props.userEmail, 
+      notificationType: NotificationType.DATA_ISSUE_REPORTED, 
+      options: {
+        resource_name: resourceName, 
+        resource_path: resourcePath, 
+      }
+    };
+  }
 
   toggle = () => {
     this.setState({ isOpen: !this.state.isOpen });
@@ -86,7 +101,6 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     if (this.props.isLoading) {
       return <LoadingSpinner />;
     }
-    const { cluster, database, schema, name } = this.props.tableMetadata;
     return (
         <>
          {this.renderPipe()}
@@ -104,10 +118,6 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
               </h3>
               <button type="button" className="btn btn-close" aria-label={"close"} onClick={this.toggle} />
               <form id="report-table-issue-form" onSubmit={ this.submitForm }>
-                <input type="hidden" name="key" value={ this.props.tableKey }/>
-                <input type="hidden" name="owners" value={ this.props.tableOwners}/>
-                <input type='hidden' name='resource_name' value={`${schema}.${name}`}/>
-                <input type='hidden' name='resource_path' value={`/table_detail/${cluster}/${database}/${schema}/${name}`}/>
                 <div className="form-group">
                   <label>Title</label>
                   <input name="title" className="form-control" required={true} maxLength={200} />
@@ -118,6 +128,9 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
                 </div>
                 <button className="btn btn-primary submit" type="submit" >Submit</button>
               </form>
+              <div className="data-owner-notification">
+                Please note: Table owners will also be notified via email when an issue is reported.
+              </div>
             </div>
           }
       </>
@@ -126,11 +139,7 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
 }
 export const mapStateToProps = (state: GlobalState) => {
   const ownerObj = state.tableMetadata.tableOwners.owners; 
-  const tableOwnersEmails = []; 
-  Object.keys(ownerObj).map((ownerId) => {
-    const { email } = ownerObj[ownerId]
-    tableOwnersEmails.push(email); 
-  });
+  const tableOwnersEmails = Object.keys(ownerObj); 
   const userEmail = state.user.loggedInUser.email;
   return {
     userEmail,

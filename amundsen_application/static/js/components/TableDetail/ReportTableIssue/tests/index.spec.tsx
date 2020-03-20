@@ -24,6 +24,21 @@ const mockFormData = {
   }
  };
 
+const mockCreateIssuePayload = {
+  key: 'key', 
+  title: 'title', 
+  description: 'description'
+}
+
+const mockNotificationPayload = {
+  notificationType: 'data_issue_reported',
+  options: {
+    resource_name: 'schema.table_name',
+    resource_path: '/table_detail/cluster/database/schema/table_name',
+  },
+  recipients: ['owner@email'],
+  sender: 'user@email'
+}
   
 // @ts-ignore: How to mock FormData without TypeScript error?
 
@@ -38,7 +53,11 @@ describe('ReportTableIssue', () => {
       tableKey: 'key', 
       tableName: 'name',
       tableOwners: ['owner@email'], 
-      tableMetadata: null,
+      tableMetadata: {...globalState.tableMetadata.tableData, 
+        schema: 'schema', 
+        name: 'table_name',
+        cluster: 'cluster', 
+        database: 'database'},
       userEmail: 'user@email', 
       ...propOverrides
     };
@@ -85,13 +104,8 @@ describe('ReportTableIssue', () => {
         wrapper.instance().submitForm({ preventDefault: jest.fn(), 
         currentTarget: {id: 'id', nodeName: 'button'} });
         expect(props.createIssue).toHaveBeenCalledWith(
-          "val1", 
-          "title", 
-          "description", 
-          "resource name", 
-          "path", 
-          ["test@test.com"], 
-          props.userEmail);
+          mockCreateIssuePayload,
+          mockNotificationPayload);
         expect(wrapper.state().isOpen).toBe(false); 
       });
 

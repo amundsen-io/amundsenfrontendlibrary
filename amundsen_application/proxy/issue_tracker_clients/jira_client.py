@@ -67,6 +67,7 @@ class JiraClient(BaseIssueTrackerClient):
         :param description: Description of the Jira issue
         :param table_uri: Table Uri ie databasetype://database/table
         :param title: Title of the Jira ticket
+        :return: Metadata about the newly created issue
         """
         try:
             if app.config['AUTH_USER_METHOD']:
