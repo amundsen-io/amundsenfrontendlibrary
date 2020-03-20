@@ -64,3 +64,10 @@ class SearchUtilsTest(unittest.TestCase):
         self.assertFalse(has_filters(filters={'fake_category': ['db1']}))
         self.assertFalse(has_filters(filters={'tag': []}))
         self.assertFalse(has_filters())
+
+    # TODO ttannis: Write test when we understand what logic this is supposed to have
+    # def test_map_dashboard_result(self) -> None:
+    #     """
+    #     Verifies that the given dashboard results are correctly transformed
+    #     :return:
+    #     """

@@ -21,8 +21,8 @@ REQUEST_SESSION_TIMEOUT_SEC = 3
 
 search_blueprint = Blueprint('search', __name__, url_prefix='/api/search/v0')
 
-# TODO ttannis: Request consistency for the non-filter endpoint
-SEARCH_DASHBOARD_ENDPOINT = '/search_dashboard/query/'
+# TODO ttannis: Understand if there is a plan for endpoint consistency
+SEARCH_DASHBOARD_ENDPOINT = '/search_dashboard/query'
 SEARCH_TABLE_ENDPOINT = '/search'
 SEARCH_TABLE_FILTER_ENDPOINT = '/search_table'
 SEARCH_USER_ENDPOINT = '/search_user'
@@ -121,7 +121,7 @@ def search_user() -> Response:
         page_index = get_query_param(request.args, 'page_index', 'Endpoint takes a "page_index" parameter')
         search_type = request.args.get('search_type')
 
-        results_dict = _search_user(search_term=search_term, page_index=page_index, search_type=search_type)
+        results_dict = _search_user(search_term=search_term, page_index=int(page_index), search_type=search_type)
 
         return make_response(jsonify(results_dict), results_dict.get('status_code', HTTPStatus.INTERNAL_SERVER_ERROR))
     except Exception as e:
@@ -146,7 +146,7 @@ def _search_user(*, search_term: str, page_index: int, search_type: str) -> Dict
         return user_result
 
     users = {
-        'page_index': int(page_index),
+        'page_index': page_index,
         'results': [],
         'total_results': 0,
     }
@@ -159,9 +159,8 @@ def _search_user(*, search_term: str, page_index: int, search_type: str) -> Dict
     }
 
     try:
-        url = '{0}?query_term={1}&page_index={2}'.format(app.config['SEARCHSERVICE_BASE'] + SEARCH_USER_ENDPOINT,
-                                                         search_term,
-                                                         page_index)
+        url_base = app.config['SEARCHSERVICE_BASE'] + SEARCH_USER_ENDPOINT
+        url = f'{url_base}?query_term={search_term}&page_index={page_index}'
 
         response = request_search(url=url)
         status_code = response.status_code
@@ -197,7 +196,7 @@ def search_dashboard() -> Response:
         page_index = get_query_param(request.args, 'page_index', 'Endpoint takes a "page_index" parameter')
         search_type = request.args.get('search_type')
 
-        results_dict = _search_dashboard(search_term=search_term, page_index=page_index, search_type=search_type)
+        results_dict = _search_dashboard(search_term=search_term, page_index=int(page_index), search_type=search_type)
 
         return make_response(jsonify(results_dict), results_dict.get('status_code', HTTPStatus.INTERNAL_SERVER_ERROR))
     except Exception as e:
@@ -209,11 +208,15 @@ def search_dashboard() -> Response:
 @action_logging
 def _search_dashboard(*, search_term: str, page_index: int, search_type: str) -> Dict[str, Any]:
     """
-    TODO ttannis: Add docstring
+    Call the search service endpoint and return matching results
+    Search service logic defined here:
+    TODO ttannis: Update link when amundsensearchlibrary work is merged
+
+    :return: a json output containing search results array as 'results'
     """
     # Default results
     dashboards = {
-        'page_index': int(page_index),
+        'page_index': page_index,
         'results': [],
         'total_results': 0,
     }
@@ -226,8 +229,8 @@ def _search_dashboard(*, search_term: str, page_index: int, search_type: str) ->
 
     try:
         url_base = app.config['SEARCHSERVICE_BASE'] + SEARCH_DASHBOARD_ENDPOINT
-        # TODO ttannis: Request consistency for url of the non-filter endpoint.
-        url = f'{url_base}{search_term}&page_index={page_index}'
+        # TODO ttannis: Request consistency to use f'{url_base}?query_term={search_term}&page_index={page_index}'
+        url = f'{url_base}/{search_term}&page_index={page_index}'
         response = request_search(url=url)
 
         status_code = response.status_code
