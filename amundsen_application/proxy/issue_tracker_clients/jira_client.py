@@ -56,7 +56,7 @@ class JiraClient(BaseIssueTrackerClient):
             returned_issues = [self._get_issue_properties(issue=issue) for issue in issues]
             return IssueResults(issues=returned_issues,
                                 total=issues.total,
-                                all_issues_url=self._generate_remaining_issues_url(table_uri, returned_issues))
+                                all_issues_url=self._generate_all_issues_url(table_uri, returned_issues))
         except JIRAError as e:
             logging.exception(str(e))
             raise e
@@ -129,7 +129,7 @@ class JiraClient(BaseIssueTrackerClient):
                          status=issue.fields.status.name,
                          priority=issue.fields.priority.name)
 
-    def _generate_remaining_issues_url(self, table_uri: str, issues: List[DataIssue]) -> str:
+    def _generate_all_issues_url(self, table_uri: str, issues: List[DataIssue]) -> str:
         """
         Way to get the full list of jira tickets
         SDK doesn't return a query
