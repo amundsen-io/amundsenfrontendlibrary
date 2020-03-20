@@ -7,9 +7,10 @@ import { Issue } from 'interfaces';
 import { getIssues } from 'ducks/issue/reducer'; 
 import { logClick } from 'ducks/utilMethods';
 import { GetIssuesRequest } from 'ducks/issue/types';
-import './styles.scss';
 import { issueTrackingEnabled } from 'config/config-utils';
 import ReportTableIssue from 'components/TableDetail/ReportTableIssue';
+import { NO_DATA_ISSUES_TEXT } from './constants';
+import './styles.scss';
 
 export interface StateFromProps {
   issues: Issue[]; 
@@ -64,7 +65,7 @@ export class TableIssues extends React.Component<TableIssueProps> {
 
   renderMoreIssuesMessage = (count: number, url: string) => {
     if (!count || count === 0) {
-      return this.renderReportIssueLink(count); 
+      return this.renderReportIssueLink(); 
      }
 
     return (
@@ -73,22 +74,27 @@ export class TableIssues extends React.Component<TableIssueProps> {
          View all {count} issues
         </a> 
         | 
-        <div className="table-report-new-issue"> { this.renderReportIssueLink(count) } </div>
+        { this.renderReportIssueLink() } 
       </span>
     );
   }
 
-  renderReportIssueLink = (count: number) => {
-    if (count && count === 0) {
-      return (
-        <ReportTableIssue tableKey={ this.props.tableKey } tableName={ this.props.tableName }/>
-      );
-    }
+  renderReportIssueLink = () => {
     return (
-      <ReportTableIssue tableKey={ this.props.tableKey } tableName={ this.props.tableName }></ReportTableIssue>
+      <div className="table-report-new-issue"> 
+        <ReportTableIssue tableKey={ this.props.tableKey } tableName={ this.props.tableName }/>
+      </div>
     ); 
   }
   
+  renderIssueTitle = () => {
+    return (
+      <div className="section-title title-3">
+        Issues
+      </div>
+    );
+  }
+
   render() {
     if (!issueTrackingEnabled()) {
       return ''; 
@@ -97,27 +103,24 @@ export class TableIssues extends React.Component<TableIssueProps> {
     if (this.props.issues.length === 0) {
       return (
         <div>
-          <div className="section-title title-3">
-            Issues
-          </div>
+          {this.renderIssueTitle()}
           <div className="table-issues">
             <div className="issue-banner">
-              No associated issues
+              {NO_DATA_ISSUES_TEXT}
             </div>
           </div>
+          { this.renderMoreIssuesMessage(this.props.total, this.props.allIssuesUrl)}
         </div>
       );
     }
 
     return (
       <div>
-          <div className="section-title title-3">
-            Issues
-          </div>
-          <div className="table-issues">
-            { this.props.issues.map(this.renderIssue)}
-          </div>
-          { this.renderMoreIssuesMessage(this.props.total, this.props.allIssuesUrl)}
+        {this.renderIssueTitle()}
+        <div className="table-issues">
+          { this.props.issues.map(this.renderIssue)}
+        </div>
+        { this.renderMoreIssuesMessage(this.props.total, this.props.allIssuesUrl)}
       </div>
     );
   }

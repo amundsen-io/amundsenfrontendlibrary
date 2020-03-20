@@ -150,13 +150,6 @@ interface BadgeConfig {
   [badge: string]: BadgeStyleConfig;
 }
 
-export enum PriorityStyle {
-  P0 = 'blocker', 
-  P1 = 'critical', 
-  P2 = 'major', 
-  P3 = 'minor'
-}
-
 /**
  * DateConfig - Configure various date formats
  *

@@ -1,1 +1,1 @@
-export const REPORT_DATA_ISSUE_TEXT = "Report an issue"; 
+export const NO_DATA_ISSUES_TEXT = "No associated issues"; 

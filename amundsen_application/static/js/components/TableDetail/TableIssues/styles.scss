@@ -10,10 +10,6 @@
     padding: 8px 16px;
     display: flex; 
     flex-direction: row;
-
-    &:first-child {
-      margin-top: 24px;
-    }
   }
   .icon-red-triangle-warning  {
     background: $red-triangle-warning;

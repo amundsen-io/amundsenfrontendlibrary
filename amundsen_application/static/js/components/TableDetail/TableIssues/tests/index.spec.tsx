@@ -12,6 +12,9 @@ import {
   mapDispatchToProps
 } from '..';
 
+import { NO_DATA_ISSUES_TEXT } from "components/TableDetail/TableIssues/constants";
+import ReportTableIssue from 'components/TableDetail/ReportTableIssue';
+
 
 describe ('TableIssues', ()=> {
   const setStateSpy = jest.spyOn(TableIssues.prototype, 'setState');
@@ -35,9 +38,9 @@ describe ('TableIssues', ()=> {
       AppConfig.issueTracking.enabled = true;
     }); 
 
-    it('renders nothing if no issues', () => {
+    it('renders text if no issues', () => {
       const { props, wrapper } = setup({ issues: [] });
-      expect(wrapper.html()).toBeFalsy(); 
+      expect(wrapper.find('.issue-banner').text()).toEqual(NO_DATA_ISSUES_TEXT);
     }); 
 
     it('renders issues if they exist', () => {
@@ -48,27 +51,21 @@ describe ('TableIssues', ()=> {
         url: 'http://url', 
         status: 'Open', 
         priority_display_name: 'P2', 
-        priority_name: 'Major'
+        priority_name: 'major'
       }]}); 
       expect(wrapper.find('.table-issue-link').text()).toEqual('issue_key'); 
       expect(wrapper.find('.issue-title-name').text()).toContain('title');
     }); 
 
-    it('renders no extra notice if no remaining issues', () => {
-      const { props, wrapper } = setup({ issues: [{
-          issue_key: 'issue_key', 
-          title: 'title',
-          url: 'http://url',
-          status: 'Open', 
-          priority_display_name: 'P2', 
-          priority_name: 'Major'
-        }],
+    it('renders no link to issues if no issues', () => {
+      const { props, wrapper } = setup({ issues: [],
         total: 0, 
         allIssuesUrl: null
       });
       expect(wrapper.find('.table-issue-more-issues').length).toEqual(0); 
     }); 
-    it('renders extra notice if remaining issues', () => {
+
+    it('renders link if there are issues', () => {
       const { props, wrapper } = setup({ issues: [{
           issue_key: 'issue_key', 
           title: 'title',
@@ -82,6 +79,15 @@ describe ('TableIssues', ()=> {
       });
       expect(wrapper.find('.table-issue-more-issues').text()).toEqual('View all 1 issues'); 
     }); 
+
+    it('renders Report data issue if no issues ', ()=> {
+      const { props, wrapper } = setup({ issues: [],
+      total: 0, 
+      allIssuesUrl: null
+    });
+    expect(wrapper.find(ReportTableIssue)).toBeTruthy(); 
+    });
+    
   });
 
   describe('mapDispatchToProps', () => {

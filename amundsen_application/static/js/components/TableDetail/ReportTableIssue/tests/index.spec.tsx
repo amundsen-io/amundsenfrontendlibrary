@@ -31,16 +31,6 @@ describe('ReportTableIssue', () => {
   }
 
   describe('render', () => {
-    beforeAll(() => {
-      AppConfig.issueTracking.enabled = true;
-    }); 
-
-    it('renders nothing if issueTracking not enabled', () => {
-      AppConfig.issueTracking.enabled = false;
-      const { props, wrapper } = setup({ isLoading: false });
-      expect(wrapper.html()).toBeFalsy(); 
-    }); 
-
     it('Renders loading spinner if not ready', () => {
       const { props, wrapper } = setup();
       expect(wrapper.find('.loading-spinner')).toBeTruthy();

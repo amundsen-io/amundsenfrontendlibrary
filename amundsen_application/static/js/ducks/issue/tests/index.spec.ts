@@ -102,13 +102,13 @@ describe('issue ducks', () => {
     let total: number; 
     beforeAll(() => {
       const stateIssues: Issue[]=[];
-      total = 1; 
+      total = 0; 
       allIssuesUrl = 'testUrl'; 
       testState = { 
-        isLoading: false, 
-        issues: stateIssues, 
-        total: total, 
-        allIssuesUrl: allIssuesUrl
+        total,
+        allIssuesUrl,
+        isLoading: false,
+        issues: stateIssues
       };
      
     });
@@ -122,34 +122,34 @@ describe('issue ducks', () => {
         issues: [], 
         isLoading: true, 
         allIssuesUrl: null, 
-        total: 1
+        total: 0
       });
     });
 
     it('should handle GetIssues.SUCCESS', () => {
       expect(reducer(testState, getIssuesSuccess(issues, total, allIssuesUrl))).toEqual({ 
-        issues, 
-        isLoading: false,
-        total: total, 
-        allIssuesUrl: allIssuesUrl
+        issues,
+        total,
+        allIssuesUrl,
+        isLoading: false
       });
     });
 
     it('should handle GetIssues.FAILURE', () => {
       expect(reducer(testState, getIssuesFailure([], 0, null))).toEqual({ 
-        issues: [], 
+        total,
+        issues: [],
         isLoading: false, 
-        allIssuesUrl: null,
-        total: total 
+        allIssuesUrl: null
       });
     });
 
     it('should handle CreateIssue.REQUEST', () => {
-      expect(reducer(testState, createIssue(formData))).toEqual({ 
+      expect(reducer(testState, createIssue(formData))).toEqual({
+        total,
+        allIssuesUrl,
         issues: [], 
-        isLoading: true, 
-        allIssuesUrl: allIssuesUrl,
-        total: total 
+        isLoading: true
        });
     });
 
@@ -159,10 +159,11 @@ describe('issue ducks', () => {
     });
 
     it('should handle CreateIssue.FAILURE', () => {
-      expect(reducer(testState, createIssueFailure(null))).toEqual({ issues: [], 
-        isLoading: false, 
-        allIssuesUrl: allIssuesUrl,
-        total: total 
+      expect(reducer(testState, createIssueFailure(null))).toEqual({
+        total,
+        allIssuesUrl,
+        issues: [],
+        isLoading: false
       });
     });
   });
@@ -192,7 +193,7 @@ describe('issue ducks', () => {
           .provide([
             [matchers.call.fn(API.getIssues), {issues, total, allIssuesUrl}],
           ])
-          .put(getIssuesSuccess(issues))
+          .put(getIssuesSuccess(issues, total))
           .run();
       });
 
