@@ -79,8 +79,14 @@ describe('feedbackEnabled', () => {
   });
 });
 
+describe('indexDashboardsEnabled', () => {
+  it('returns whether or not the indexDashboards feature is enabled', () => {
+    expect(ConfigUtils.indexDashboardsEnabled()).toBe(AppConfig.indexDashboards.enabled);
+  });
+});
+
 describe('indexUsersEnabled', () => {
-  it('returns whether or not the notifications feature is enabled', () => {
+  it('returns whether or not the indexUsers feature is enabled', () => {
     expect(ConfigUtils.indexUsersEnabled()).toBe(AppConfig.indexUsers.enabled);
   });
 });
