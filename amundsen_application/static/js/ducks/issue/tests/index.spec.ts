@@ -78,13 +78,13 @@ describe('issue ducks', () => {
 
     it('createIssue - returns the action to create items', () => {
       const createIssuePayload = {
-        key: key, 
-        title: title, 
-        description: description
+        key, 
+        title, 
+        description
       };
       const notificationPayload = {
-        recipients: owners, 
         sender, 
+        recipients: owners, 
         notificationType: NotificationType.DATA_ISSUE_REPORTED, 
         options: {
           resource_name: resourceName, 
@@ -168,13 +168,13 @@ describe('issue ducks', () => {
 
     it('should handle CreateIssue.REQUEST', () => {
       const createIssuePayload = {
-        key: key, 
-        title: title, 
-        description: description
+        key, 
+        title, 
+        description
       };
       const notificationPayload = {
-        recipients: owners, 
         sender, 
+        recipients: owners, 
         notificationType: NotificationType.DATA_ISSUE_REPORTED, 
         options: {
           resource_name: resourceName, 
@@ -254,13 +254,13 @@ describe('issue ducks', () => {
       let action: CreateIssueRequest;
       beforeAll(() => {
         const createIssuePayload = {
-          key: key, 
-          title: title, 
-          description: description
+          key, 
+          title, 
+          description
         };
         const notificationPayload = {
-          recipients: owners, 
           sender, 
+          recipients: owners, 
           notificationType: NotificationType.DATA_ISSUE_REPORTED, 
           options: {
             resource_name: resourceName, 

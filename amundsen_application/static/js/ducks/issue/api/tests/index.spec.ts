@@ -2,8 +2,6 @@ import axios, { AxiosResponse } from 'axios';
 import * as API from '../v0';
 import { NotificationType } from 'interfaces';
 import AppConfig from 'config/config';
-import { API_PATH } from '../v0';
-import {NOTIFICATION_API_PATH} from "../v0";
 
 
 jest.mock('axios');
@@ -85,7 +83,7 @@ describe('createIssue', () => {
     expect.assertions(3);
     await API.createIssue(createIssuePayload, sendNotificationPayload).then(data => {
       expect(data).toEqual(issueResult);
-      expect(axiosMock).toHaveBeenCalledWith(`${API_PATH}/issue`, createIssuePayload);
+      expect(axiosMock).toHaveBeenCalledWith(`${API.API_PATH}/issue`, createIssuePayload);
       expect(axiosMock).toHaveBeenCalledTimes(1);
     });
   });
@@ -95,8 +93,8 @@ describe('createIssue', () => {
     expect.assertions(3);
     await API.createIssue(createIssuePayload, sendNotificationPayload).then(data => {
       expect(data).toEqual(issueResult);
-      expect(axiosMock).toHaveBeenCalledWith(`${API_PATH}/issue`, createIssuePayload);
-      expect(axiosMock).toHaveBeenCalledWith(NOTIFICATION_API_PATH, sendNotificationPayload);
+      expect(axiosMock).toHaveBeenCalledWith(`${API.API_PATH}/issue`, createIssuePayload);
+      expect(axiosMock).toHaveBeenCalledWith(API.NOTIFICATION_API_PATH, sendNotificationPayload);
     });
   });
 

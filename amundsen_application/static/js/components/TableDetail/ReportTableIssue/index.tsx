@@ -60,9 +60,9 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     const description = formData.get('description') as string;
 
     return {
+      title, 
+      description, 
       key: this.props.tableKey, 
-      title: title, 
-      description: description
     }
   }
 
@@ -70,7 +70,8 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     const { cluster, database, schema, name } = this.props.tableMetadata;
     const owners = this.props.tableOwners;
     const resourceName = `${schema}.${name}`;  
-    const resourcePath = `/table_detail/${cluster}/${database}/${schema}/${name}`;  
+    const resourcePath = `/table_detail/${cluster}/${database}/${schema}/${name}`; 
+     
     return {
       recipients: owners, 
       sender: this.props.userEmail, 
