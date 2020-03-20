@@ -10,8 +10,8 @@ class IssueResults:
         """
         Returns an object representing results from an issue tracker.
         :param issues: Issues in the issue tracker matching the requested table
-        :param remaining: How many issues remain in the issue tracker and are not displayed
-        :param remaining_url: url to the remaining issues in the issue tracker
+        :param total: How many issues in all are associated with this table
+        :param all_issues_url: url to the all issues in the issue tracker
         """
         self.issues = issues
         self.total = total

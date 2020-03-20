@@ -8,7 +8,6 @@ PRIORITY_MAP = {
 
 
 class DataIssue:
-
     def __init__(self,
                  issue_key: str,
                  title: str,
