@@ -98,12 +98,12 @@ describe('issue ducks', () => {
 
   describe('reducer', () => {
     let testState: IssueReducerState;
-    let remainingUrl: string; 
-    let remaining: number; 
+    let allIssuesUrl: string; 
+    let total: number; 
     beforeAll(() => {
       const stateIssues: Issue[]=[];
-      remaining = 0; 
-      remainingUrl = 'testUrl'; 
+      total = 1; 
+      allIssuesUrl = 'testUrl'; 
       testState = { 
         isLoading: false, 
         issues: stateIssues, 
@@ -131,7 +131,7 @@ describe('issue ducks', () => {
         issues, 
         isLoading: false,
         total: total, 
-        totalUrl: allIssuesUrl
+        allIssuesUrl: allIssuesUrl
       });
     });
 
@@ -139,8 +139,8 @@ describe('issue ducks', () => {
       expect(reducer(testState, getIssuesFailure([], 0, null))).toEqual({ 
         issues: [], 
         isLoading: false, 
-        totalUrl: null,
-        total: remaining 
+        allIssuesUrl: null,
+        total: total 
       });
     });
 
@@ -148,8 +148,8 @@ describe('issue ducks', () => {
       expect(reducer(testState, createIssue(formData))).toEqual({ 
         issues: [], 
         isLoading: true, 
-        totalUrl: remainingUrl,
-        total: remaining 
+        allIssuesUrl: allIssuesUrl,
+        total: total 
        });
     });
 
@@ -161,8 +161,8 @@ describe('issue ducks', () => {
     it('should handle CreateIssue.FAILURE', () => {
       expect(reducer(testState, createIssueFailure(null))).toEqual({ issues: [], 
         isLoading: false, 
-        totalUrl: remainingUrl,
-        total: remaining 
+        allIssuesUrl: allIssuesUrl,
+        total: total 
       });
     });
   });

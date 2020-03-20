@@ -40,12 +40,6 @@ describe ('TableIssues', ()=> {
       expect(wrapper.html()).toBeFalsy(); 
     }); 
 
-    it('renders nothing if issueTracking not enabled', () => {
-      AppConfig.issueTracking.enabled = false;
-      const { props, wrapper } = setup({ issues: [] });
-      expect(wrapper.html()).toBeFalsy(); 
-    }); 
-
     it('renders issues if they exist', () => {
       AppConfig.issueTracking.enabled = true;
       const { props, wrapper } = setup({ issues: [{
