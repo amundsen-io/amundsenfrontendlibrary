@@ -154,7 +154,7 @@ def get_notification_subject(*, notification_type: str, options: Dict) -> str:
         NotificationType.OWNER_REMOVED.value: 'You have been removed as an owner of {}'.format(resource_name),
         NotificationType.METADATA_EDITED.value: 'Your dataset {}\'s metadata has been edited'.format(resource_name),
         NotificationType.METADATA_REQUESTED.value: 'Request for metadata on {}'.format(resource_name),
-        NotificationType.DATA_ISSUE_CREATED.value: 'A data issue has been created for {}'.format(resource_name)
+        NotificationType.DATA_ISSUE_CREATED.value: 'A data issue has been reported for {}'.format(resource_name)
     }
     subject = notification_subject_dict.get(notification_type)
     if subject is None:
