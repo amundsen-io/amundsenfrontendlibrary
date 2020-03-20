@@ -91,7 +91,7 @@ describe('ResourceSelector', () => {
       };
       tableOptionConfig = {
         type: ResourceType.table,
-        label: getDisplayNameByResource(ResourceType.table)
+        label: getDisplayNameByResource(ResourceType.table),
         count: props.tables.total_results,
       };
       userOptionConfig = {

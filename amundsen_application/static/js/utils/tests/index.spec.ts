@@ -177,5 +177,5 @@ describe('dateUtils', () => {
 describe('stringUtils', () => {
   describe('toTitleCase', () => {
     expect(StringUtils.toTitleCase('tHIs iS a TITLE')).toBe('This Is A Title');
-  })
+  });
 });
