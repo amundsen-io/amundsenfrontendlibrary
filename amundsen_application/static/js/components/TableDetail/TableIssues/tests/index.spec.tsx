@@ -20,8 +20,9 @@ describe ('TableIssues', ()=> {
     const props: TableIssueProps = {
       issues: [], 
       tableKey: 'key',
-      remainingIssues: 0, 
-      remainingIssuesUrl: 'testUrl', 
+      tableName: 'tableName',
+      total: 0, 
+      allIssuesUrl: 'testUrl', 
       getIssues: jest.fn(),
       ...propOverrides
     };
@@ -68,8 +69,8 @@ describe ('TableIssues', ()=> {
           priority_display_name: 'P2', 
           priority_name: 'Major'
         }],
-        remainingIssues: 0, 
-        remainingIssuesUrl: null
+        total: 0, 
+        allIssuesUrl: null
       });
       expect(wrapper.find('.table-issue-more-issues').length).toEqual(0); 
     }); 
@@ -82,8 +83,8 @@ describe ('TableIssues', ()=> {
           priority_display_name: 'P2', 
           priority_name: 'Major'
         }],
-        remainingIssues: 1, 
-        remainingIssuesUrl: 'url'
+        total: 1, 
+        allIssuesUrl: 'url'
       });
       expect(wrapper.find('.table-issue-more-issues').text()).toEqual('View all 1 issues'); 
     }); 

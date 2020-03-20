@@ -15,7 +15,7 @@ class IssueResults:
         """
         self.issues = issues
         self.total = total
-        self.remaining_url = all_issues_url
+        self.all_issues_url = all_issues_url
 
     def serialize(self) -> Dict:
         return {'issues': [issue.serialize() for issue in self.issues],

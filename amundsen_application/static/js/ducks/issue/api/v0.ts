@@ -6,8 +6,8 @@ export const API_PATH = '/api/issue';
 export type IssuesAPI = {
   issues: {
     issues: Issue[]; 
-    remaining: number;  
-    remaining_url: string; 
+    total: number;  
+    all_issues_url: string; 
   }
 }
 

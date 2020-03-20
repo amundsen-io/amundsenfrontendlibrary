@@ -30,8 +30,8 @@ describe('issue ducks', () => {
   let tableKey: string; 
   let issue: Issue; 
   let issues: Issue[]; 
-  let remaining: number; 
-  let remainingUrl: string; 
+  let total: number; 
+  let allIssuesUrl: string; 
   beforeAll(() => {
     tableKey = 'key'; 
     const testData = { 
@@ -52,8 +52,8 @@ describe('issue ducks', () => {
     }; 
 
     issues = [issue];
-    remaining = 0; 
-    remainingUrl = 'testurl'; 
+    total = 0; 
+    allIssuesUrl = 'testurl'; 
   }); 
 
   describe('actions', () => {
@@ -65,7 +65,7 @@ describe('issue ducks', () => {
     });
 
     it('getIssuesSuccess - returns the action to process success', () => {
-      const action = getIssuesSuccess(issues, remaining, remainingUrl);
+      const action = getIssuesSuccess(issues, total, allIssuesUrl);
       expect(action.type).toBe(GetIssues.SUCCESS);
     });
 
@@ -107,8 +107,8 @@ describe('issue ducks', () => {
       testState = { 
         isLoading: false, 
         issues: stateIssues, 
-        remainingIssues: remaining, 
-        remainingIssuesUrl: remainingUrl
+        total: total, 
+        allIssuesUrl: allIssuesUrl
       };
      
     });
@@ -121,17 +121,17 @@ describe('issue ducks', () => {
       expect(reducer(testState, getIssues(tableKey))).toEqual({ 
         issues: [], 
         isLoading: true, 
-        remainingIssuesUrl: null, 
-        remainingIssues: 0
+        allIssuesUrl: null, 
+        total: 1
       });
     });
 
     it('should handle GetIssues.SUCCESS', () => {
-      expect(reducer(testState, getIssuesSuccess(issues, remaining, remainingUrl))).toEqual({ 
+      expect(reducer(testState, getIssuesSuccess(issues, total, allIssuesUrl))).toEqual({ 
         issues, 
         isLoading: false,
-        remainingIssues: remaining, 
-        remainingIssuesUrl: remainingUrl
+        total: total, 
+        totalUrl: allIssuesUrl
       });
     });
 
@@ -139,8 +139,8 @@ describe('issue ducks', () => {
       expect(reducer(testState, getIssuesFailure([], 0, null))).toEqual({ 
         issues: [], 
         isLoading: false, 
-        remainingIssuesUrl: null,
-        remainingIssues: remaining 
+        totalUrl: null,
+        total: remaining 
       });
     });
 
@@ -148,8 +148,8 @@ describe('issue ducks', () => {
       expect(reducer(testState, createIssue(formData))).toEqual({ 
         issues: [], 
         isLoading: true, 
-        remainingIssuesUrl: remainingUrl,
-        remainingIssues: remaining 
+        totalUrl: remainingUrl,
+        total: remaining 
        });
     });
 
@@ -161,8 +161,8 @@ describe('issue ducks', () => {
     it('should handle CreateIssue.FAILURE', () => {
       expect(reducer(testState, createIssueFailure(null))).toEqual({ issues: [], 
         isLoading: false, 
-        remainingIssuesUrl: remainingUrl,
-        remainingIssues: remaining 
+        totalUrl: remainingUrl,
+        total: remaining 
       });
     });
   });
@@ -178,19 +178,19 @@ describe('issue ducks', () => {
 
     describe('getIssuesWorker', () => {
       let action: GetIssuesRequest;
-      let remainingIssuesUrl: string;
-      let remainingIssues: number; 
+      let allIssuesUrl: string;
+      let total: number; 
       beforeAll(() => {
         action = getIssues(tableKey);
         issues = globalState.issue.issues;
-        remainingIssues = globalState.issue.remainingIssues; 
-        remainingIssuesUrl = globalState.issue.remainingIssuesUrl;
+        total = globalState.issue.total; 
+        allIssuesUrl = globalState.issue.allIssuesUrl;
       });
 
       it('gets issues', () => {
         return expectSaga(getIssuesWorker, action)
           .provide([
-            [matchers.call.fn(API.getIssues), {issues, remainingIssues, remainingIssuesUrl}],
+            [matchers.call.fn(API.getIssues), {issues, total, allIssuesUrl}],
           ])
           .put(getIssuesSuccess(issues))
           .run();

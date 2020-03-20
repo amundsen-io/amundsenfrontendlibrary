@@ -11,7 +11,7 @@ from amundsen_application.models.issue_results import IssueResults
 import urllib.parse
 import logging
 
-SEARCH_STUB = 'text ~ "{table_key}" AND resolution = Unresolved order by createdDate DESC'
+SEARCH_STUB = 'text ~ "{table_key}" order by createdDate DESC'
 # this is provided by jira as the type of a bug
 ISSUE_TYPE_ID = 1
 ISSUE_TYPE_NAME = 'Bug'

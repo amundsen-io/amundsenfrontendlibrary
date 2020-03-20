@@ -9,7 +9,7 @@
     margin: 8px 0;
     padding: 8px 16px;
     display: flex; 
-    overflow: hidden;
+    flex-direction: row;
 
     &:first-child {
       margin-top: 24px;
@@ -24,30 +24,54 @@
     min-width: fit-content;
   }
   .issue-title-name {
-<<<<<<< HEAD
-    max-width: 320px; 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: inline-block;
-=======
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
->>>>>>> master
+    max-width: fit-content;
   }
   .issue-title-display-text {
     display: flex;
     max-width: fit-content;
   }
-  .table-issue-more-issues {
-    margin: 0px 2px 0px 2px; 
+  .table-issue-status {
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1.1;
+    min-width: fit-content;
+    margin: 0px 0px 0px 5px;
   }
   .table-issue-priority {
-    margin: 0px 2px 0px 2px; 
+    margin: 0px 5px 0px 0px;
+    border: 1px solid $rose80; 
+    border-radius: 5px;
+    padding: 1px 2px;
+    flex: none; 
   }
-  .table-issue-status {
-    display: inline-flex; 
-    float: right; 
+  .blocker {
+    color: $white; 
+    // default is $rose80 
+    background-color: rgba(139, 0, 64, 1);
   }
+  .critical {
+    background-color: rgba(139, 0, 64, .6);
+  }
+
+  .major {
+    background-color: rgba(139, 0, 64, .3);
+
+  }
+  .minor {
+    background-color: rgba(139, 0, 64, .1);
+
+  }
+}
+.table-issue-more-issues {
+  margin: 0px 5px 0px 5px
+}
+.table-more-issues {
+  display: flex; 
+  font-size: 16px; 
+}
+.table-report-new-issue {
+  margin: 0px 5px 0px 5px
 }

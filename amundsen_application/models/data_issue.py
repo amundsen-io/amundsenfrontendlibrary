@@ -19,7 +19,7 @@ class DataIssue:
         self.title = title
         self.url = url
         self.status = status
-        self.priority_name = priority.upper() if priority else None
+        self.priority_name = priority.lower() if priority else None
         if priority in PRIORITY_MAP:
             self.priority_display_name = PRIORITY_MAP[priority]
 
