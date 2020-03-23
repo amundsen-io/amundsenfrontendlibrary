@@ -44,7 +44,10 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     this.setState({isOpen: false}); 
   };
 
-  toggle = () => {
+  toggle = (event) => {
+    if (!this.state.isOpen) {
+      logClick(event); 
+    }
     this.setState({ isOpen: !this.state.isOpen });
   };
 

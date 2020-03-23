@@ -47,7 +47,8 @@ describe('ReportTableIssue', () => {
         setStateSpy.mockClear();
         const { props, wrapper } = setup();
         const previsOpenState = wrapper.state().isOpen;
-        wrapper.instance().toggle();
+        wrapper.instance().toggle({currentTarget: {id: 'id',
+            nodeName: 'button' } });
         expect(setStateSpy).toHaveBeenCalledWith({ isOpen: !previsOpenState });
       });
     });
