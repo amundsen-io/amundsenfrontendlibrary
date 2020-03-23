@@ -79,13 +79,17 @@ class JiraClientTest(unittest.TestCase):
                          'JiraClient._get_issue_properties')
     @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.'
                          'jira_client.JiraClient._generate_all_issues_url')
+    @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.'
+                         'jira_client.JiraClient._sort_issues')
     def test_get_issues_returns_issues(self,
+                                       mock_sort_issues: Mock,
                                        mock_get_url: Mock,
                                        mock_get_issue_properties: Mock,
                                        mock_JIRA_client: Mock) -> None:
         mock_JIRA_client.return_value.search_issues.return_value = self.mock_jira_issues
         mock_get_issue_properties.return_value = self.mock_issue
         mock_get_url.return_value = 'url'
+        mock_sort_issues.return_value = [self.mock_issue]
         with app.test_request_context():
             jira_client = JiraClient(issue_tracker_url=app.config['ISSUE_TRACKER_URL'],
                                      issue_tracker_user=app.config['ISSUE_TRACKER_USER'],

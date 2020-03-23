@@ -11,7 +11,7 @@ from amundsen_application.models.issue_results import IssueResults
 import urllib.parse
 import logging
 
-SEARCH_STUB = 'text ~ "{table_key}" order by createdDate DESC'
+SEARCH_STUB_ALL_ISSUES = 'text ~ "{table_key}" order by createdDate DESC'
 # this is provided by jira as the type of a bug
 ISSUE_TYPE_ID = 1
 ISSUE_TYPE_NAME = 'Bug'
@@ -50,10 +50,10 @@ class JiraClient(BaseIssueTrackerClient):
         :return: Metadata of matching issues
         """
         try:
-            issues = self.jira_client.search_issues(SEARCH_STUB.format(
+            issues = self.jira_client.search_issues(SEARCH_STUB_ALL_ISSUES.format(
                 table_key=table_uri),
                 maxResults=self.jira_max_results)
-            returned_issues = [self._get_issue_properties(issue=issue) for issue in issues]
+            returned_issues = self._sort_issues(issues)
             return IssueResults(issues=returned_issues,
                                 total=issues.total,
                                 all_issues_url=self._generate_all_issues_url(table_uri, returned_issues))
@@ -141,5 +141,22 @@ class JiraClient(BaseIssueTrackerClient):
             return ''
         # jira expects a ticket key in the query to default to, so pick the first one
         first_issue_key = issues[0].issue_key
-        search_query = urllib.parse.quote(SEARCH_STUB.format(table_key=table_uri))
+        search_query = urllib.parse.quote(SEARCH_STUB_ALL_ISSUES.format(table_key=table_uri))
         return f'{self.jira_url}/browse/{first_issue_key}?jql={search_query}'
+
+    def _sort_issues(self, issues: List[Issue]) -> List[DataIssue]:
+        """
+        Sorts issues by resolution, first by unresolved and then by resolved. Also maps the issues to
+        the object used by the front end.
+        :param issues: Issues returned from the JIRA API
+        :return: List of data issues
+        """
+        open = []
+        closed = []
+        for issue in issues:
+            data_issue = self._get_issue_properties(issue)
+            if not issue.fields.resolution:
+                open.append(data_issue)
+            else:
+                closed.append(data_issue)
+        return open + closed
