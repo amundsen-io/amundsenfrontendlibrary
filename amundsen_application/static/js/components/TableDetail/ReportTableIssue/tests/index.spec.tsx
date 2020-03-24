@@ -11,6 +11,7 @@ import {
   mapDispatchToProps,
   mapStateToProps, 
 } from '..';
+import { NotificationType } from 'interfaces';
 
 const mockFormData = { 
   'key': 'val1', 
@@ -31,7 +32,7 @@ const mockCreateIssuePayload = {
 }
 
 const mockNotificationPayload = {
-  notificationType: 'data_issue_reported',
+  notificationType: NotificationType.DATA_ISSUE_REPORTED,
   options: {
     resource_name: 'schema.table_name',
     resource_path: '/table_detail/cluster/database/schema/table_name',
