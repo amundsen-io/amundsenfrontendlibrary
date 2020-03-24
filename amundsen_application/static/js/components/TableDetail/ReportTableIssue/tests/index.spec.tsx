@@ -41,7 +41,6 @@ const mockNotificationPayload = {
 }
   
 // @ts-ignore: How to mock FormData without TypeScript error?
-
 global.FormData = () => (mockFormData);
 
 describe('ReportTableIssue', () => {

@@ -4,7 +4,6 @@ import { call, put, takeEvery } from 'redux-saga/effects';
 import { getIssuesSuccess, getIssuesFailure, createIssueSuccess, createIssueFailure } from './reducer'; 
 
 import { GetIssues, GetIssuesRequest, CreateIssue, CreateIssueRequest } from './types'; 
-import { NotificationType } from 'interfaces';
 
 import * as API from './api/v0';
 

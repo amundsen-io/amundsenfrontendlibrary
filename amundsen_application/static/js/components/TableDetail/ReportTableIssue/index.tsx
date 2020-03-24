@@ -7,7 +7,7 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import { createIssue } from 'ducks/issue/reducer'; 
 import { CreateIssueRequest } from 'ducks/issue/types';
 import './styles.scss';
-import { REPORT_DATA_ISSUE_TEXT } from './constants'; 
+import { REPORT_DATA_ISSUE_TEXT, TABLE_OWNERS_NOTE } from './constants'; 
 import { logClick } from 'ducks/utilMethods';
 import { notificationsEnabled, issueTrackingEnabled } from 'config/config-utils';
 import { TableMetadata, CreateIssuePayload, NotificationPayload, NotificationType } from 'interfaces';
@@ -40,7 +40,7 @@ export type ReportTableIssueProps = StateFromProps & DispatchFromProps & Compone
 export class ReportTableIssue extends React.Component<ReportTableIssueProps, ReportTableIssueState> {
   constructor(props) {
     super(props);
-    this.state = { isOpen: false};
+    this.state = { isOpen: false };
   }
 
   submitForm = (event) => {
@@ -52,7 +52,7 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     const createIssuePayload = this.getCreateIssuePayload(formData); 
     const notificationPayload = this.getNotificationPayload(); 
     this.props.createIssue(createIssuePayload, notificationPayload);
-    this.setState({isOpen: false}); 
+    this.setState({isOpen: false }); 
   };
 
   getCreateIssuePayload = (formData: FormData): CreateIssuePayload => {
@@ -130,7 +130,7 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
                 <button className="btn btn-primary submit" type="submit" >Submit</button>
               </form>
               <div className="data-owner-notification">
-                Please note: Table owners will also be notified via email when an issue is reported.
+                {TABLE_OWNERS_NOTE}
               </div>
             </div>
           }

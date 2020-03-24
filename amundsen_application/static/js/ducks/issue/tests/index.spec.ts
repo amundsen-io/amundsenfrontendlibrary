@@ -280,24 +280,6 @@ describe('issue ducks', () => {
           .run();
       });
 
-      it('creates notifications', () => {
-        return expectSaga(createIssueWorker, action)
-          .provide([
-            [matchers.call.fn(API.createIssue), issue],
-          ])
-          .put(createIssueSuccess(issue))
-          .run();
-      });
-
-      it('creates notifications', () => {
-        return expectSaga(createIssueWorker, action)
-          .provide([
-            [matchers.call.fn(API.createIssue), issue],
-          ])
-          .put(createIssueSuccess(issue))
-          .run();
-      });
-
       it('handles request error', () => {
         return expectSaga(createIssueWorker, action)
           .provide([

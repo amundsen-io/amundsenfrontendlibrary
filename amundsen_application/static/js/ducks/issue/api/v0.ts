@@ -31,13 +31,11 @@ export function createIssue(payload: CreateIssuePayload, notificationPayload: No
     description: payload.description
   })
   .then((response: AxiosResponse<IssueApi>) => {
-      return response.data.issue; 
-  }).then((response) => {
     if (notificationsEnabled()) {
-      notificationPayload.options.data_issue_url = response.url; 
+      notificationPayload.options.data_issue_url = response.data.issue.url; 
       axios.post(NOTIFICATION_API_PATH, notificationPayload);
     }
-    return response;
-  });
+    return response.data.issue;
+});
 }
 
