@@ -54,12 +54,6 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
     this.setState({isOpen: false }); 
   };
 
-  toggle = (event) => {
-    if (!this.state.isOpen) {
-      logClick(event); 
-    }
-  this.setState({isOpen: !this.state.isOpen}); 
-  }
 
   getCreateIssuePayload = (formData: FormData): CreateIssuePayload => {
     const title = formData.get('title') as string;  
@@ -88,6 +82,13 @@ export class ReportTableIssue extends React.Component<ReportTableIssueProps, Rep
       }
     };
   }
+
+  toggle = (event) => {
+    if (!this.state.isOpen) {
+      logClick(event); 
+    }
+    this.setState({ isOpen: !this.state.isOpen });
+  };
 
   render() {
     if (this.props.isLoading) {
