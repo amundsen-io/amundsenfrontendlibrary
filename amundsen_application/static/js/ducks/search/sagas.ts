@@ -146,11 +146,11 @@ export function* urlDidUpdateWorker(action: UrlDidUpdateRequest): SagaIterator {
         searchTerm: term,
         resourceFilters: parsedFilters,
         pageIndex: parsedIndex,
-        searchType: SearchType.FILTER
+        searchType: SearchType.LOAD_URL
       }));
     }
     else if (!isNaN(parsedIndex) && parsedIndex !== getPageIndex(state, resource)) {
-      yield put(submitSearchResource({ pageIndex: parsedIndex, searchType: SearchType.PAGINATION }));
+      yield put(submitSearchResource({ pageIndex: parsedIndex, searchType: SearchType.LOAD_URL }));
     }
   }
 };

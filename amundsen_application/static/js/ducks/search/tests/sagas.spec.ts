@@ -284,7 +284,7 @@ describe('search sagas', () => {
           searchTerm: term,
           resourceFilters: { 'database': { 'bigquery' : true }},
           pageIndex: index,
-          searchType: SearchType.FILTER
+          searchType: SearchType.LOAD_URL
         }))
         .next().isDone();
     });
@@ -292,7 +292,7 @@ describe('search sagas', () => {
     it('calls submitSearchResource when the index changes', () => {
       index = 10;
       sagaTest(urlDidUpdate(`term=${term}&resource=${resource}&index=${index}`))
-        .put(submitSearchResource({ pageIndex: index, searchType: SearchType.PAGINATION }))
+        .put(submitSearchResource({ pageIndex: index, searchType: SearchType.LOAD_URL }))
         .next().isDone();
     });
   });
