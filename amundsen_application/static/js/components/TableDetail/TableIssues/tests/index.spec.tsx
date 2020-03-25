@@ -55,6 +55,8 @@ describe ('TableIssues', ()=> {
       }]}); 
       expect(wrapper.find('.table-issue-link').text()).toEqual('issue_key'); 
       expect(wrapper.find('.issue-title-name').text()).toContain('title');
+      expect(wrapper.find('.table-issue-status').text()).toContain('Open');
+      expect(wrapper.find('.table-issue-priority').text()).toContain('P2');
     }); 
 
     it('renders no link to issues if no issues', () => {
@@ -79,15 +81,6 @@ describe ('TableIssues', ()=> {
       });
       expect(wrapper.find('.table-issue-more-issues').text()).toEqual('View all 1 issues'); 
     }); 
-
-    it('renders Report data issue if no issues ', ()=> {
-      const { props, wrapper } = setup({ issues: [],
-      total: 0, 
-      allIssuesUrl: null
-    });
-    expect(wrapper.find(ReportTableIssue)).toBeTruthy(); 
-    });
-    
   });
 
   describe('mapDispatchToProps', () => {

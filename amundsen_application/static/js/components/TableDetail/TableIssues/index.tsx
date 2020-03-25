@@ -7,7 +7,6 @@ import { Issue } from 'interfaces';
 import { getIssues } from 'ducks/issue/reducer'; 
 import { logClick } from 'ducks/utilMethods';
 import { GetIssuesRequest } from 'ducks/issue/types';
-import { issueTrackingEnabled } from 'config/config-utils';
 import ReportTableIssue from 'components/TableDetail/ReportTableIssue';
 import { NO_DATA_ISSUES_TEXT } from './constants';
 import './styles.scss';
@@ -35,9 +34,7 @@ export class TableIssues extends React.Component<TableIssueProps> {
   }
 
   componentDidMount() {
-    if (issueTrackingEnabled()) {
-      this.props.getIssues(this.props.tableKey);
-    }
+    this.props.getIssues(this.props.tableKey);
   }
 
   renderIssue = (issue: Issue, index: number) => {
@@ -64,10 +61,6 @@ export class TableIssues extends React.Component<TableIssueProps> {
   }
 
   renderMoreIssuesMessage = (count: number, url: string) => {
-    if (!count || count === 0) {
-      return this.renderReportIssueLink(); 
-     }
-
     return (
       <span className="table-more-issues" key="more-issue-link">
         <a id="more-issues-link" className="table-issue-more-issues" target="_blank" href={url} onClick={logClick}>
@@ -96,10 +89,6 @@ export class TableIssues extends React.Component<TableIssueProps> {
   }
 
   render() {
-    if (!issueTrackingEnabled()) {
-      return ''; 
-    }
-    
     if (this.props.issues.length === 0) {
       return (
         <div>
@@ -109,7 +98,7 @@ export class TableIssues extends React.Component<TableIssueProps> {
               {NO_DATA_ISSUES_TEXT}
             </div>
           </div>
-          { this.renderMoreIssuesMessage(this.props.total, this.props.allIssuesUrl)}
+          { this.renderReportIssueLink()}
         </div>
       );
     }
