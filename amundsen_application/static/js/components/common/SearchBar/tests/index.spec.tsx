@@ -96,6 +96,15 @@ describe('SearchBar', () => {
       wrapper = setupResult.wrapper;
     });
 
+    it('does nothing if user enters a colon', () => {
+      setStateSpy.mockClear();
+      props.onInputChange.mockClear();
+      // @ts-ignore: mocked events throw type errors
+      wrapper.instance().handleValueChange({ target: { value: 'dont:dothis' } });
+      expect(setStateSpy).not.toHaveBeenCalled();
+      expect(props.onInputChange).not.toHaveBeenCalled();
+    });
+
     describe('if searchTerm has length', () => {
       const mockSearchTerm = 'I have Length';
       const expectedSearchTerm = 'i have length';

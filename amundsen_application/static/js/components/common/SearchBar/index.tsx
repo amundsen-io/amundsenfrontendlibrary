@@ -92,12 +92,14 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   handleValueChange = (event: React.SyntheticEvent<HTMLInputElement>) : void => {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
 
-    if (searchTerm.length > 0) {
-      this.props.onInputChange(searchTerm);
-      this.setState({ searchTerm, showTypeAhead: true });
-    }
-    else {
-      this.clearSearchTerm();
+    if (searchTerm.indexOf(':') < 0) {
+      if (searchTerm.length > 0) {
+        this.props.onInputChange(searchTerm);
+        this.setState({ searchTerm, showTypeAhead: true });
+      }
+      else {
+        this.clearSearchTerm();
+      }
     }
   };
 
