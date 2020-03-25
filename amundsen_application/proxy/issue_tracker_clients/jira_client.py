@@ -138,10 +138,8 @@ class JiraClient(BaseIssueTrackerClient):
         """
         if not issues or len(issues) == 0:
             return ''
-        # jira expects a ticket key in the query to default to, so pick the first one
-        first_issue_key = issues[0].issue_key
         search_query = urllib.parse.quote(SEARCH_STUB_ALL_ISSUES.format(table_key=table_uri))
-        return f'{self.jira_url}/browse/{first_issue_key}?jql={search_query}'
+        return f'{self.jira_url}/issues/?jql={search_query}'
 
     def _sort_issues(self, issues: List[Issue]) -> List[DataIssue]:
         """

@@ -116,7 +116,7 @@ class JiraClientTest(unittest.TestCase):
                                      issue_tracker_max_results=app.config['ISSUE_TRACKER_MAX_RESULTS'])
             issues = [DataIssue(issue_key='key', title='title', url='url', status='open', priority='Major')]
             url = jira_client._generate_all_issues_url(table_uri="table", issues=issues)
-            self.assertEqual(url, 'test_url/browse/key?jql=test')
+            self.assertEqual(url, 'test_url/issues/?jql=test')
 
     @unittest.mock.patch('amundsen_application.proxy.issue_tracker_clients.jira_client.JIRA')
     def test__generate_all_issues_url_no_issues(self, mock_JIRA_client: Mock) -> None:
