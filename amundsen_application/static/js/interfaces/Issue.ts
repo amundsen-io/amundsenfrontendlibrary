@@ -6,3 +6,9 @@ export interface Issue {
     priority_name: string; 
     priority_display_name: string; 
 };
+
+export interface CreateIssuePayload {
+  key: string; 
+  title: string; 
+  description: string; 
+}
