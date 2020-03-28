@@ -7,14 +7,12 @@ import { GetIssues, GetIssuesRequest, CreateIssue, CreateIssueRequest } from './
 
 import * as API from './api/v0';
 
-/** maybe just reload the issues content when there is a new issue created?*/
-
 export function* getIssuesWorker(action: GetIssuesRequest): SagaIterator {
     const { key } = action.payload; 
     let response;
     try {
         response = yield call(API.getIssues, key); 
-        yield put(getIssuesSuccess(response.issues, response.remaining, response.remaining_url)); 
+        yield put(getIssuesSuccess(response.issues, response.total, response.all_issues_url)); 
     } catch(e) {
         yield put(getIssuesFailure([], 0, null)); 
     }
@@ -27,7 +25,7 @@ export function* getIssuesWatcher(): SagaIterator {
 export function* createIssueWorker(action: CreateIssueRequest): SagaIterator {
   try { 
     let response;
-    response = yield call(API.createIssue, action.payload.data);
+    response = yield call(API.createIssue, action.payload.createIssuePayload, action.payload.notificationPayload);
     yield put((createIssueSuccess(response)));
   } catch(error) {
     yield put(createIssueFailure(null));
