@@ -1,4 +1,4 @@
-import { Issue } from "interfaces";
+import { Issue, CreateIssuePayload, NotificationPayload } from "interfaces";
 
 export enum GetIssues {
     REQUEST = 'amundsen/issue/GET_ISSUES_REQUEST',
@@ -21,7 +21,8 @@ export interface GetIssuesRequest {
 export interface CreateIssueRequest {
     type: CreateIssue.REQUEST;
     payload: {
-        data: FormData
+        createIssuePayload: CreateIssuePayload,
+        notificationPayload: NotificationPayload
     }
 };
 
@@ -29,8 +30,8 @@ export interface GetIssuesResponse {
     type: GetIssues.SUCCESS | GetIssues.FAILURE; 
     payload: {
         issues: Issue[]; 
-        remainingIssues: number; 
-        remainingIssuesUrl: string; 
+        total: number; 
+        allIssuesUrl: string; 
     }
 }; 
 

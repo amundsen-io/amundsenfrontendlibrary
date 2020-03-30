@@ -59,8 +59,8 @@ const globalState: GlobalState = {
   },
   issue: {
     issues: [],
-    remainingIssuesUrl: null,
-    remainingIssues: 0,
+    allIssuesUrl: null,
+    total: 0,
     isLoading: true
   },
   notification: {
@@ -89,7 +89,7 @@ const globalState: GlobalState = {
   ],
   search: {
     search_term: 'testName',
-    selectedTab: ResourceType.table,
+    resource: ResourceType.table,
     isLoading: false,
     dashboards: {
       page_index: 0,

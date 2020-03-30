@@ -5,8 +5,8 @@ import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import { GlobalState } from 'ducks/rootReducer';
-import { clearSearch, submitSearch, getInlineResultsDebounce, selectInlineResult } from 'ducks/search/reducer';
-import { ClearSearchRequest, SubmitSearchRequest, InlineSearchRequest, InlineSearchSelect } from 'ducks/search/types';
+import { submitSearch, getInlineResultsDebounce, selectInlineResult } from 'ducks/search/reducer';
+import { SubmitSearchRequest, InlineSearchRequest, InlineSearchSelect } from 'ducks/search/types';
 
 import { ResourceType } from 'interfaces';
 
@@ -16,6 +16,7 @@ import './styles.scss';
 
 import {
   BUTTON_CLOSE_TEXT,
+  INVALID_SYNTAX_MESSAGE,
   PLACEHOLDER_DEFAULT,
   SIZE_SMALL
 } from './constants';
@@ -25,7 +26,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  clearSearch?: () => ClearSearchRequest;
+  clearSearch?: () => SubmitSearchRequest;
   submitSearch: (searchTerm: string) => SubmitSearchRequest;
   onInputChange: (term: string) => InlineSearchRequest;
   onSelectInlineResult: (resourceType: ResourceType, searchTerm: string, updateUrl: boolean) => InlineSearchSelect;
@@ -92,19 +93,23 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   handleValueChange = (event: React.SyntheticEvent<HTMLInputElement>) : void => {
     const searchTerm = (event.target as HTMLInputElement).value.toLowerCase();
 
-    if (searchTerm.length > 0) {
-      this.props.onInputChange(searchTerm);
-      this.setState({ searchTerm, showTypeAhead: true });
-    }
-    else {
-      this.clearSearchTerm();
+    if (this.isFormValid(searchTerm)) {
+      if (searchTerm.length > 0) {
+        this.props.onInputChange(searchTerm);
+        this.setState({ searchTerm, showTypeAhead: true });
+      }
+      else {
+        this.clearSearchTerm();
+      }
+    } else {
+      this.setState({ searchTerm, showTypeAhead: false });
     }
   };
 
   handleValueSubmit = (event: React.FormEvent<HTMLFormElement>) : void => {
     const searchTerm = this.state.searchTerm.trim();
     event.preventDefault();
-    if (this.isFormValid()) {
+    if (this.isFormValid(searchTerm)) {
       this.props.submitSearch(searchTerm);
       this.hideTypeAhead();
     }
@@ -114,9 +119,20 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     this.setState({ showTypeAhead: false });
   };
 
-  isFormValid = () : boolean => {
+  isFormValid = (searchTerm: string) : boolean => {
     const form = document.getElementById("search-bar-form") as HTMLFormElement;
-    return form.checkValidity();
+    const input = document.getElementById("search-input") as HTMLInputElement;
+    const isValid = searchTerm.indexOf(':') < 0;
+
+    /* This will set the error message, it must be explicitly set or cleared each time */
+    input.setCustomValidity(isValid ? "": INVALID_SYNTAX_MESSAGE)
+
+    if (searchTerm.length > 0) {
+      /* This will show the error message */
+      form.reportValidity();
+    }
+
+    return isValid;
   };
 
   onSelectInlineResult = (resourceType: ResourceType, updateUrl: boolean = false) : void => {
@@ -190,8 +206,8 @@ export const mapDispatchToProps = (dispatch: any, ownProps) => {
   const updateStateOnClear = ownProps.history.location.pathname === '/search';
 
   return bindActionCreators({
-    clearSearch: updateStateOnClear ? clearSearch : null,
-    submitSearch: (searchTerm: string) => { return submitSearch(searchTerm, useFilters) },
+    clearSearch: updateStateOnClear ? () => submitSearch({ useFilters, searchTerm: '' }) : null,
+    submitSearch: (searchTerm: string) => submitSearch({ searchTerm, useFilters }),
     onInputChange: getInlineResultsDebounce,
     onSelectInlineResult: selectInlineResult
   }, dispatch);

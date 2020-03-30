@@ -36,12 +36,11 @@ describe('SearchPage', () => {
     const props: SearchPageProps = {
       hasFilters: false,
       searchTerm: globalState.search.search_term,
-      selectedTab: ResourceType.table,
+      resource: ResourceType.table,
       isLoading: false,
       dashboards: globalState.search.dashboards,
       tables: globalState.search.tables,
       users: globalState.search.users,
-      setResource: jest.fn(),
       setPageIndex: jest.fn(),
       urlDidUpdate: jest.fn(),
       ...routerProps,
@@ -56,7 +55,7 @@ describe('SearchPage', () => {
     let wrapper;
     beforeAll(() => {
       const setupResult = setup(null, {
-        search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1',
+        search: '/search?searchTerm=testName&resource=table&pageIndex=1',
       });
       props = setupResult.props;
       wrapper = setupResult.wrapper;
@@ -75,7 +74,7 @@ describe('SearchPage', () => {
     let mockPrevProps;
     beforeAll(() => {
       const setupResult = setup(null, {
-        search: '/search?searchTerm=testName&selectedTab=table&pageIndex=1',
+        search: '/search?searchTerm=testName&resource=table&pageIndex=1',
       });
       props = setupResult.props;
       wrapper = setupResult.wrapper;
@@ -83,7 +82,7 @@ describe('SearchPage', () => {
       mockPrevProps = {
         searchTerm: 'previous',
         location: {
-          search: '/search?searchTerm=previous&selectedTab=table&pageIndex=0',
+          search: '/search?searchTerm=previous&resource=table&pageIndex=0',
           pathname: 'mockstr',
           state: jest.fn(),
           hash: 'mockstr',
@@ -231,7 +230,7 @@ describe('SearchPage', () => {
   describe('renderSearchResults', () => {
     it('renders the correct content for table resources', () => {
       const { props, wrapper } = setup({
-        selectedTab: ResourceType.table
+        resource: ResourceType.table
       });
       const getTabContentSpy = jest.spyOn(wrapper.instance(), 'getTabContent');
       shallow(wrapper.instance().renderSearchResults());
@@ -240,7 +239,7 @@ describe('SearchPage', () => {
 
     it('renders the correct content for user resources', () => {
       const { props, wrapper } = setup({
-        selectedTab: ResourceType.user
+        resource: ResourceType.user
       });
       const getTabContentSpy = jest.spyOn(wrapper.instance(), 'getTabContent');
       shallow(wrapper.instance().renderSearchResults());
@@ -249,16 +248,16 @@ describe('SearchPage', () => {
 
     it('renders the correct content for dashboard resources', () => {
       const { props, wrapper } = setup({
-        selectedTab: ResourceType.dashboard
+        resource: ResourceType.dashboard
       });
       const getTabContentSpy = jest.spyOn(wrapper.instance(), 'getTabContent');
       shallow(wrapper.instance().renderSearchResults());
       expect(getTabContentSpy).toHaveBeenCalledWith(props.dashboards, ResourceType.dashboard);
     });
 
-    it('renders null for an invalid selectedTab', () => {
+    it('renders null for an invalid resource', () => {
       const { props, wrapper } = setup({
-        selectedTab: null
+        resource: null
       });
       const renderedSearchResults = wrapper.instance().renderSearchResults();
       expect(renderedSearchResults).toBe(null);
@@ -320,10 +319,6 @@ describe('mapDispatchToProps', () => {
     result = mapDispatchToProps(dispatch);
   });
 
-  it('sets setResource on the props', () => {
-    expect(result.setResource).toBeInstanceOf(Function);
-  });
-
   it('sets setPageIndex on the props', () => {
     expect(result.setPageIndex).toBeInstanceOf(Function);
   });
@@ -343,8 +338,8 @@ describe('mapStateToProps', () => {
     expect(result.searchTerm).toEqual(globalState.search.search_term);
   });
 
-  it('sets selectedTab on the props', () => {
-    expect(result.selectedTab).toEqual(globalState.search.selectedTab);
+  it('sets resource on the props', () => {
+    expect(result.resource).toEqual(globalState.search.resource);
   });
 
   it('sets isLoading on the props', () => {
@@ -368,7 +363,7 @@ describe('mapStateToProps', () => {
       const testState = {
         ...globalState
       };
-      testState.search.selectedTab = ResourceType.user;
+      testState.search.resource = ResourceType.user;
       testState.search.filters = defaultEmptyFilters;
       result = mapStateToProps(testState);
       expect(result.hasFilters).toBeFalsy();
@@ -378,7 +373,7 @@ describe('mapStateToProps', () => {
       const testState = {
         ...globalState
       };
-      testState.search.selectedTab = ResourceType.table;
+      testState.search.resource = ResourceType.table;
       testState.search.filters = datasetFilterExample;
       result = mapStateToProps(testState);
       expect(result.hasFilters).toBe(true);
