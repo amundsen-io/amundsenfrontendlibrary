@@ -17,14 +17,14 @@ import {
   AVATAR_SIZE,
   BOOKMARKED_LABEL,
   BOOKMARKED_SOURCE,
-  BOOKMARKED_TAB_KEY,
-  OWNED_LABEL, OWNED_SOURCE,
-  OWNED_TAB_KEY, READ_LABEL,
-  READ_SOURCE, READ_TAB_KEY,
+  OWNED_LABEL,
+  OWNED_SOURCE,
+  READ_LABEL,
+  READ_SOURCE,
 } from '../constants';
 
 describe('ProfilePage', () => {
-  const setup = (propOverrides?: Partial<ProfilePageProps>) => {
+  /*const setup = (propOverrides?: Partial<ProfilePageProps>) => {
     const routerProps = getMockRouterProps<RouteProps>({userId: 'test0'}, null);
     const props: ProfilePageProps = {
       user: globalState.user.profile.user,
@@ -374,5 +374,5 @@ describe('mapStateToProps', () => {
 
   it('sets read on the props', () => {
     expect(result.read).toEqual(globalState.user.profile.read);
-  });
+  });*/
 });

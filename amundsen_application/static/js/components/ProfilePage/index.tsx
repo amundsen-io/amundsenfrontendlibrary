@@ -12,7 +12,7 @@ import TabsComponent from 'components/common/TabsComponent';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { getUser, getUserOwn, getUserRead } from 'ducks/user/reducer';
-import { PeopleUser, Resource } from 'interfaces';
+import { PeopleUser, Resource, ResourceType } from 'interfaces';
 import { GetUserRequest, GetUserOwnRequest, GetUserReadRequest } from 'ducks/user/types';
 
 import './styles.scss';
@@ -20,24 +20,34 @@ import ResourceList from 'components/common/ResourceList';
 import { GetBookmarksForUserRequest } from 'ducks/bookmark/types';
 import { getBookmarksForUser } from 'ducks/bookmark/reducer';
 
+import { getDisplayNameByResource, indexDashboardsEnabled } from 'config/config-utils';
 import {
   AVATAR_SIZE,
   BOOKMARKED_LABEL,
   BOOKMARKED_SOURCE,
-  BOOKMARKED_TAB_KEY,
-  BOOKMARKED_TAB_TITLE,
-  ITEMS_PER_PAGE, OWNED_LABEL,
-  OWNED_SOURCE, OWNED_TAB_KEY,
-  OWNED_TAB_TITLE, READ_LABEL,
-  READ_SOURCE, READ_TAB_KEY,
-  READ_TAB_TITLE,
+  BOOKMARKED_TITLE_PREFIX,
+  EMPTY_TEXT_PREFIX,
+  FOOTER_TEXT_PREFIX,
+  ITEMS_PER_PAGE,
+  OWNED_LABEL,
+  OWNED_SOURCE,
+  OWNED_TITLE_PREFIX,
+  READ_LABEL,
+  READ_SOURCE,
+  READ_TITLE_PREFIX
 } from './constants';
 
-interface StateFromProps {
+interface ResourceRelation {
   bookmarks: Resource[];
-  user: PeopleUser;
   own: Resource[];
   read: Resource[];
+}
+interface StateFromProps {
+  user: PeopleUser;
+  resourceRelations: {
+    [ResourceType.table]: ResourceRelation;
+    [ResourceType.dashboard]: ResourceRelation;
+  }
 }
 
 interface DispatchFromProps {
@@ -96,43 +106,68 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
   };
 
 
-  getTabContent = (resource: Resource[], source: string, label: string) => {
-    // TODO: consider moving logic for empty content into Tab component
-    if (resource.length === 0) {
-      return (
-        <div className="empty-tab-message body-placeholder">
-          User has no { label } resources.
-        </div>
-      );
-    }
+  generateTabContent = (resource: ResourceType) => {
+    const { bookmarks = [], own = [], read = [] } = this.props.resourceRelations[resource];
+    const resourceLabel = getDisplayNameByResource(resource);
     return (
-      <ResourceList
-        allItems={ resource }
-        source={ source }
-        itemsPerPage={ ITEMS_PER_PAGE }
-      />
+      <>
+        <ResourceList
+          allItems={ own }
+          itemsPerPage={ ITEMS_PER_PAGE }
+          paginate={ false }
+          source={ OWNED_SOURCE }
+          title={`${OWNED_TITLE_PREFIX} (${own.length})`}
+          customFooterText={`${FOOTER_TEXT_PREFIX} ${own.length} ${OWNED_LABEL} ${resourceLabel}`}
+          customEmptyText={`${EMPTY_TEXT_PREFIX} ${OWNED_LABEL} ${resourceLabel}.`}
+        />
+        <ResourceList
+          allItems={ bookmarks }
+          itemsPerPage={ ITEMS_PER_PAGE }
+          paginate={ false }
+          source={ BOOKMARKED_SOURCE }
+          title={`${BOOKMARKED_TITLE_PREFIX} (${bookmarks.length})`}
+          customFooterText={`${FOOTER_TEXT_PREFIX} ${bookmarks.length} ${BOOKMARKED_LABEL} ${resourceLabel}`}
+          customEmptyText={`${EMPTY_TEXT_PREFIX} ${BOOKMARKED_LABEL} ${resourceLabel}.`}
+        />
+        <ResourceList
+          allItems={ read }
+          itemsPerPage={ ITEMS_PER_PAGE }
+          paginate={ false }
+          source={ READ_SOURCE }
+          title={`${READ_TITLE_PREFIX}  (${read.length})`}
+          customFooterText={`${FOOTER_TEXT_PREFIX} ${read.length} ${READ_LABEL} ${resourceLabel}`}
+          customEmptyText={`${EMPTY_TEXT_PREFIX} ${READ_LABEL} ${resourceLabel}.`}
+        />
+      </>
     )
+  };
+
+  generateTabKey = (resource: ResourceType) => {
+    return `tab:${resource}`;
+  };
+
+  generateTabTitle = (resource: ResourceType) => {
+    const { bookmarks = [], own = [], read = [] } = this.props.resourceRelations[resource];
+    const totalCount = bookmarks.length + own.length + read.length;
+    return `${getDisplayNameByResource(resource)} (${totalCount})`;
   };
 
   generateTabInfo = () => {
     const tabInfo = [];
-    const { bookmarks, read, own } = this.props;
 
     tabInfo.push({
-      content: this.getTabContent(bookmarks, BOOKMARKED_SOURCE, BOOKMARKED_LABEL),
-      key: BOOKMARKED_TAB_KEY,
-      title: `${BOOKMARKED_TAB_TITLE} (${bookmarks.length})`,
-    });
-    tabInfo.push({
-      content: this.getTabContent(read, READ_SOURCE, READ_LABEL),
-      key: READ_TAB_KEY,
-      title: `${READ_TAB_TITLE} (${read.length})`,
-    });
-    tabInfo.push({
-      content: this.getTabContent(own, OWNED_SOURCE, OWNED_LABEL),
-      key: OWNED_TAB_KEY,
-      title: `${OWNED_TAB_TITLE} (${own.length})`,
-    });
+      content: this.generateTabContent(ResourceType.table),
+      key: this.generateTabKey(ResourceType.table),
+      title: this.generateTabTitle(ResourceType.table)
+    })
+
+    if (indexDashboardsEnabled()) {
+      tabInfo.push({
+        content: this.generateTabContent(ResourceType.dashboard),
+        key: this.generateTabKey(ResourceType.dashboard),
+        title: this.generateTabTitle(ResourceType.dashboard)
+      })
+    }
 
     return tabInfo;
   };
@@ -213,7 +248,7 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
             </div>
           </header>
           <main className="profile-body">
-            <TabsComponent tabs={ this.generateTabInfo() } defaultTab={ BOOKMARKED_TAB_KEY } />
+            <TabsComponent tabs={ this.generateTabInfo() } defaultTab={ this.generateTabKey(ResourceType.table) } />
           </main>
         </div>
       </DocumentTitle>
@@ -224,9 +259,18 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
 export const mapStateToProps = (state: GlobalState) => {
   return {
     user: state.user.profile.user,
-    own: state.user.profile.own,
-    read: state.user.profile.read,
-    bookmarks: state.bookmarks.bookmarksForUser,
+    resourceRelations: {
+      [ResourceType.table]: {
+        bookmarks: state.bookmarks.bookmarksForUser,
+        own: state.user.profile.own,
+        read: state.user.profile.read,
+      },
+      [ResourceType.dashboard]: {
+        bookmarks: [],
+        own: [],
+        read: [],
+      }
+    }
   }
 };
 
