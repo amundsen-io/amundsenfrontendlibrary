@@ -11,6 +11,17 @@ valid_search_fields = {
 }
 
 
+def map_dashboard_result(result: Dict) -> Dict:
+    # TODO ttannis: Need the dashboard_uri/key. Update when we know what this is supposed to be
+    return {
+        'type': 'dashboard',
+        'dashboard_group': result.get('dashboard_group', None),
+        'dashboard_name': result.get('dashboard_name', None),
+        'dashboard_group_description': result.get('dashboard_group_description', None),
+        'product': result.get('product', None),
+    }
+
+
 def map_table_result(result: Dict) -> Dict:
     return {
         'type': 'table',

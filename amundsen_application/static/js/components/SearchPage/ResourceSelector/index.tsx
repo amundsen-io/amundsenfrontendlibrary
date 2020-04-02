@@ -2,8 +2,8 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { TABLE_RESOURCE_TITLE, USER_RESOURCE_TITLE } from 'components/SearchPage/constants';
-import AppConfig from 'config/config';
+import { DASHBOARD_RESOURCE_TITLE, TABLE_RESOURCE_TITLE, USER_RESOURCE_TITLE } from 'components/SearchPage/constants';
+import { indexDashboardsEnabled, indexUsersEnabled } from 'config/config-utils';
 import { GlobalState } from 'ducks/rootReducer';
 import { updateSearchState } from 'ducks/search/reducer';
 import {
@@ -67,11 +67,19 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
       count: this.props.tables.total_results,
     }];
 
-    if (AppConfig.indexUsers.enabled) {
+    if (indexUsersEnabled()) {
       resourceOptions.push({
         type: ResourceType.user,
         label: USER_RESOURCE_TITLE,
         count: this.props.users.total_results,
+      });
+    }
+
+    if (indexDashboardsEnabled()) {
+      resourceOptions.push({
+        type: ResourceType.dashboard,
+        label: DASHBOARD_RESOURCE_TITLE,
+        count: this.props.dashboards.total_results,
       });
     }
 

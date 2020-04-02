@@ -1,5 +1,6 @@
 import * as DateUtils from 'utils/dateUtils';
 import * as NavigationUtils from 'utils/navigationUtils';
+import * as StringUtils from 'utils/stringUtils';
 import * as qs from 'simple-query-string';
 import { ResourceType } from 'interfaces/Resources';
 
@@ -171,4 +172,10 @@ describe('dateUtils', () => {
       const dateString = DateUtils.formatDateTimeLong(config);
       expect(dateString).toEqual('January 30th 2020 at 10:06:04 pm')
   })
+});
+
+describe('stringUtils', () => {
+  describe('toTitleCase', () => {
+    expect(StringUtils.toTitleCase('tHIs iS a TITLE')).toBe('This Is A Title');
+  });
 });

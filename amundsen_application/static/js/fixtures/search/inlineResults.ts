@@ -2,6 +2,11 @@ import { ResourceType } from 'interfaces';
 
 export const isLoadingExample = {
   isLoading: true,
+  dashboards: {
+    page_index: 0,
+    results: [],
+    total_results: 0,
+  },
   tables: {
     page_index: 0,
     results: [],
@@ -16,6 +21,11 @@ export const isLoadingExample = {
 
 export const noResultsExample = {
   isLoading: false,
+  dashboards: {
+    page_index: 0,
+    results: [],
+    total_results: 0,
+  },
   tables: {
     page_index: 0,
     results: [],
@@ -30,6 +40,19 @@ export const noResultsExample = {
 
 export const allResourcesExample = {
   isLoading: false,
+  dashboards: {
+    page_index: 0,
+    results: [ // TODO ttannis: Update example when we know what this looks like
+      {
+        dashboard_group: 'Amundsen Team',
+        dashboard_name: 'Amundsen Metrics Dashboard1',
+        dashboard_group_description: 'I am a dashboard1',
+        product: 'mode',
+        type: 'dashoard',
+      },
+    ],
+    total_results: 1,
+  },
   tables: {
     page_index: 0,
     results: [
