@@ -45,7 +45,7 @@ Create a custom implementation of [base_preview_client](https://github.com/lyft/
 
 For those who use [Apache Superset](https://github.com/apache/incubator-superset) for data exploration, see [this doc](https://github.com/lyft/amundsenfrontendlibrary/blob/master/docs/examples/superset_preview_client.md) for how to implement a preview client for Superset.
 
-### AnnouncementClient
+### Announcement Client
 Create a custom implementation of [base_announcement_client](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/base/base_announcement_client.py). Under the `[announcement_client]` group, point the `announcement_client_class` entry point in your local `setup.py` to that class.
 
 Currently Amundsen does not own the input and storage of announcements. Consider having the client fetch announcement information from an external web feed.
