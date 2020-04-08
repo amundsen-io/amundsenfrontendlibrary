@@ -23,12 +23,16 @@ CMD [ "python3",  "amundsen_application/wsgi.py" ]
 
 FROM base as oidc-release
 
+RUN pip3 install https://github.com/jornh/flaskoidc/archive/b08f659a98886070d60c9d8fef869a09476de47e.zip
+
 RUN pip3 install .[oidc]
 ENV FRONTEND_SVC_CONFIG_MODULE_CLASS amundsen_application.oidc_config.OidcConfig
 ENV APP_WRAPPER flaskoidc
 ENV APP_WRAPPER_CLASS FlaskOIDC
 ENV FLASK_OIDC_WHITELISTED_ENDPOINTS status,healthcheck,health
 ENV FLASK_OIDC_SQLALCHEMY_DATABASE_URI sqlite:///sessions.db
+ENV FLASK_OIDC_CLOCK_SKEW 3000
+ENV FLASK_OIDC_RESOURCE_SERVER_VALIDATION_MODE offline
 
 # You will need to set these environment variables in order to use the oidc image
 # FLASK_OIDC_CLIENT_SECRETS - a path to a client_secrets.json file

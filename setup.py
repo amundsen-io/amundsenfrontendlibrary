@@ -19,13 +19,14 @@ def is_npm_installed() -> bool:
 def build_js() -> None:
     if not is_npm_installed():
         logging.error('npm must be available')
+        return
 
     try:
         subprocess.check_call(['npm install'], cwd=PACKAGE_DIR, shell=True)
         subprocess.check_call(['npm run build'], cwd=PACKAGE_DIR, shell=True)
     except Exception as e:
-        logging.warn('Installation of npm dependencies failed')
-        logging.warn(str(e))
+        logging.warning('Installation of npm dependencies failed')
+        logging.warning(str(e))
 
 
 build_js()
@@ -49,7 +50,7 @@ setup(
     dependency_links=[],
     install_requires=requirements,
     extras_require={
-        'oidc': ['flaskoidc==0.0.2']
+        'oidc': ['flaskoidc==0.1.0b4']
     },
     python_requires=">=3.6",
     entry_points="""
