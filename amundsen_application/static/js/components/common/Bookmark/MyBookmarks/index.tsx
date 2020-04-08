@@ -30,7 +30,10 @@ export class MyBookmarks extends React.Component<MyBookmarksProps> {
   }
 
   generateTabContent = (resource: ResourceType) => {
-    const bookmarks = this.props.myBookmarks[resource] || [];
+    const bookmarks = this.props.myBookmarks[resource];
+    if (!bookmarks) {
+      return null;
+    }
     return (
       <ResourceList
         allItems={ bookmarks }
@@ -45,8 +48,11 @@ export class MyBookmarks extends React.Component<MyBookmarksProps> {
     return `bookmarktab:${resource}`;
   };
 
-  generateTabTitle = (resource: ResourceType) => {
-    const bookmarks = this.props.myBookmarks[resource] || [];
+  generateTabTitle = (resource: ResourceType): string  => {
+    const bookmarks = this.props.myBookmarks[resource];
+    if (!bookmarks) {
+      return '';
+    }
     return `${getDisplayNameByResource(resource)} (${bookmarks.length})`;
   };
 

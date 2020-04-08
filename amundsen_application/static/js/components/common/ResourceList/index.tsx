@@ -63,6 +63,7 @@ class ResourceList extends React.Component<ResourceListProps, ResourceListState>
   };
 
   render() {
+    /* TODO ttannis: create render helpers */
     const { allItems, customEmptyText, customFooterText, slicedItems, itemsPerPage, paginate, source, title } = this.props;
     const activePage = this.props.activePage !== undefined ? this.props.activePage : this.state.activePage;
     const itemsCount = this.props.slicedItemsCount || allItems.length;
