@@ -71,6 +71,8 @@ class Config:
     AUTH_USER_METHOD: Optional[Callable[[Flask], User]] = None
     GET_PROFILE_URL = None
 
+    DASHBOARD_PREVIEW_FACTORY = None
+
 
 class LocalConfig(Config):
     DEBUG = False
