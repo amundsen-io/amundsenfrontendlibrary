@@ -16,7 +16,7 @@ dashboard_preview_blueprint = Blueprint('dashboard_preview', __name__, url_prefi
 
 def initialize_preview_factory_class() -> None:
     """
-    # Instantiate Preview factory class and assign it to PREVIEW_FACTORY
+    Instantiates Preview factory class and assign it to PREVIEW_FACTORY
     :return: None
     """
     global PREVIEW_FACTORY

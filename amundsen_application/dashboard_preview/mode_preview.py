@@ -11,12 +11,6 @@ from amundsen_application.dashboard_preview.base_preview import BasePreview
 LOGGER = logging.getLogger(__name__)
 DEFAULT_REPORT_URL_TEMPLATE = 'https://app.mode.com/api/{organization}/reports/{dashboard_id}'
 
-# Environment variables
-MODE_ACCESS_TOKEN = 'CREDENTIALS_MODE_ADMIN_TOKEN'
-MODE_PASSWORD = 'CREDENTIALS_MODE_ADMIN_PASSWORD'
-MODE_ORGANIZATION = 'MODE_ORGANIZATION'
-MODE_REPORT_URL_TEMPLATE = 'MODE_REPORT_URL_TEMPLATE'
-
 
 def _validate_not_none(var: Any, var_name: str) -> Any:
     if not var:
@@ -43,7 +37,7 @@ class ModePreview(BasePreview):
 
         self._report_url_template = report_url_template if report_url_template else DEFAULT_REPORT_URL_TEMPLATE
 
-        if has_app_context() and not app.config['MODE_REPORT_URL_TEMPLATE']:
+        if has_app_context() and app.config['MODE_REPORT_URL_TEMPLATE'] is not None:
             self._report_url_template = app.config['MODE_REPORT_URL_TEMPLATE']
 
     @retry(stop_max_attempt_number=3, wait_random_min=500, wait_random_max=1000)
@@ -75,4 +69,4 @@ class ModePreview(BasePreview):
         if web_preview_image_key not in result:
             raise FileNotFoundError('No preview image available on {}'.format(uri))
 
-        return result['web_preview_image']
+        return result[web_preview_image_key]
