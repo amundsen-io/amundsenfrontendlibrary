@@ -10,6 +10,7 @@ valid_search_fields = {
     'tag'
 }
 
+
 def map_dashboard_result(result: Dict) -> Dict:
     # TODO ttannis: Still need to update based on search library PR
     return {
