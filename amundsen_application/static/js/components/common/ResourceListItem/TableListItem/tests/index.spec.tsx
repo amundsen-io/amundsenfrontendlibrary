@@ -58,8 +58,9 @@ describe('TableListItem', () => {
     });
     it('calls getSourceIconClass with given database id', () => {
       const testValue = 'noEffectOnTest';
-      const iconClass = wrapper.instance().generateResourceIconClass(testValue, ResourceType.table);
-      expect(getDBIconClassSpy).toHaveBeenCalledWith(testValue, ResourceType.table);
+      const givenResource = ResourceType.table;
+      const iconClass = wrapper.instance().generateResourceIconClass(testValue, givenResource);
+      expect(getDBIconClassSpy).toHaveBeenCalledWith(testValue, givenResource);
     });
 
     it('returns the default classes with the correct icon class appended', () => {

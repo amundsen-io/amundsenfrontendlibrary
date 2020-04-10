@@ -100,7 +100,7 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
     switch (resourceType) {
       case ResourceType.dashboard:
         const dashboard = result as DashboardResource;
-        return `/dashboard/${dashboard.uri}`;
+        return `/dashboard/${dashboard.uri}?${logParams}`;
       case ResourceType.table:
         const table = result as TableResource;
         return `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}?${logParams}`;
@@ -164,7 +164,7 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
           <div className="title-2 truncated">{user.display_name}</div>
         );
       default:
-        return (<div className="title-2 truncated"></div>);
+        return (<div className="title-2 truncated" />);
     }
   };
 

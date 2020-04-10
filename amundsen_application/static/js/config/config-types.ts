@@ -110,6 +110,16 @@ interface SingleFilterCategory extends BaseFilterCategory {
 export type FilterConfig = (MultiSelectFilterCategory|SingleFilterCategory)[];
 
 /**
+ * Configures the UI for a given entity source
+ */
+type SourcesConfig = {
+  [id: string]: {
+    displayName?: string;
+    iconClass?: string;
+  }
+}
+
+/**
  * Base interface for all possible ResourceConfig objects
  *
  * displayName - The name displayed throughout the application to refer to this resource type
@@ -118,12 +128,7 @@ export type FilterConfig = (MultiSelectFilterCategory|SingleFilterCategory)[];
 interface BaseResourceConfig {
   displayName: string;
   filterCategories?: FilterConfig;
-  supportedSources?: {
-    [id: string]: {
-      displayName?: string;
-      iconClass?: string;
-    }
-  };
+  supportedSources?: SourcesConfig;
 }
 
 export enum BadgeStyle {

@@ -184,6 +184,12 @@ describe('InlineSearchResults', () => {
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
+    it('returns the correct href for ResourceType.dashboard', () => {
+      const index = 0;
+      const givenDashboard = props.dashboards.results[index];
+      const output = wrapper.instance().getSuggestedResultHref(ResourceType.dashboard, givenDashboard, index);
+      expect(output).toEqual(`/dashboard/${givenDashboard.uri}?source=inline_search&index=${index}`);
+    });
     it('returns the correct href for ResourceType.table', () => {
       const index = 0;
       const givenTable = props.tables.results[index];
@@ -211,6 +217,14 @@ describe('InlineSearchResults', () => {
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
+    it('returns the results of getSourceIconClass for ResourceType.dashboard', () => {
+      const mockClass = 'test-class';
+      mocked(getSourceIconClass).mockImplementation(() => mockClass);
+      const givenDashboard = props.dashboards.results[0];
+      const output = wrapper.instance().getSuggestedResultIconClass(ResourceType.dashboard, givenDashboard);
+      expect(output).toEqual(mockClass);
+      expect(getSourceIconClass).toHaveBeenCalledWith(givenDashboard.product, ResourceType.dashboard);
+    });
     it('returns the results of getSourceIconClass for ResourceType.table', () => {
       const mockClass = 'test-class';
       mocked(getSourceIconClass).mockImplementation(() => mockClass);
@@ -237,6 +251,11 @@ describe('InlineSearchResults', () => {
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
+    it('returns the table description for ResourceType.dashboard', () => {
+      const givenDashboard = props.dashboards.results[0];
+      const output = wrapper.instance().getSuggestedResultSubTitle(ResourceType.dashboard, givenDashboard);
+      expect(output).toEqual(givenDashboard.description);
+    });
     it('returns the table description for ResourceType.table', () => {
       const givenTable = props.tables.results[0];
       const output = wrapper.instance().getSuggestedResultSubTitle(ResourceType.table, givenTable);
@@ -256,24 +275,30 @@ describe('InlineSearchResults', () => {
   describe('getSuggestedResultTitle', () => {
     let props;
     let wrapper;
+    let output;
     beforeAll(() => {
       const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
+    it('returns the group and name for ResourceType.dashboard', () => {
+      const givenDashboard = props.dashboards.results[0];
+      output = shallow(wrapper.instance().getSuggestedResultTitle(ResourceType.dashboard, givenDashboard));
+      expect(output.text()).toEqual(`${givenDashboard.dashboard_group}${givenDashboard.dashboard_name}`);
+    });
     it('returns the schema.name for ResourceType.table', () => {
       const givenTable = props.tables.results[0];
-      const output = wrapper.instance().getSuggestedResultTitle(ResourceType.table, givenTable);
-      expect(output).toEqual(`${givenTable.schema}.${givenTable.name}`);
+      output = shallow(wrapper.instance().getSuggestedResultTitle(ResourceType.table, givenTable));
+      expect(output.text()).toEqual(`${givenTable.schema}.${givenTable.name}`);
     });
     it('returns the display_name ResourceType.user', () => {
       const givenUser = props.users.results[0];
-      const output = wrapper.instance().getSuggestedResultTitle(ResourceType.user, givenUser);
-      expect(output).toEqual(givenUser.display_name);
+      output = shallow(wrapper.instance().getSuggestedResultTitle(ResourceType.user, givenUser));
+      expect(output.text()).toEqual(givenUser.display_name);
     });
     it('returns empty string as the default', () => {
-      const output = wrapper.instance().getSuggestedResultTitle('unsupported');
-      expect(output).toEqual('');
+      output = shallow(wrapper.instance().getSuggestedResultTitle('unsupported'));
+      expect(output.text()).toEqual('');
     });
   });
 
@@ -285,13 +310,21 @@ describe('InlineSearchResults', () => {
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
+    it('returns the results of getSourceDisplayName for ResourceType.dashboard', () => {
+      const mockName = 'Mode';
+      mocked(getSourceDisplayName).mockImplementation(() => mockName);
+      const givenDashboard = props.dashboards.results[0];
+      const output = wrapper.instance().getSuggestedResultType(ResourceType.dashboard, givenDashboard);
+      expect(output).toEqual(mockName);
+      expect(getSourceDisplayName).toHaveBeenCalledWith(givenDashboard.product, ResourceType.dashboard);
+    });
     it('returns the results of getSourceDisplayName for ResourceType.table', () => {
       const mockName = 'Hive';
       mocked(getSourceDisplayName).mockImplementation(() => mockName);
       const givenTable = props.tables.results[0];
       const output = wrapper.instance().getSuggestedResultType(ResourceType.table, givenTable);
       expect(output).toEqual(mockName);
-      expect(getSourceDisplayName).toHaveBeenCalledWith(givenTable.database, givenTable.type);
+      expect(getSourceDisplayName).toHaveBeenCalledWith(givenTable.database, ResourceType.table);
     });
     it('returns the correct type for ResourceType.user', () => {
       const output = wrapper.instance().getSuggestedResultType(ResourceType.user, props.users.results[0]);

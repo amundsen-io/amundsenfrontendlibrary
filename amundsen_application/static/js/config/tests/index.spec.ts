@@ -18,9 +18,20 @@ describe('getSourceDisplayName', () => {
 });
 
 describe('getSourceIconClass', () => {
-  it('returns default class no config for that id exists', () => {
-    const testId = 'fakeName';
-    expect(ConfigUtils.getSourceIconClass(testId, ResourceType.table)).toBe(ConfigUtils.DEFAULT_DATABASE_ICON_CLASS);
+  describe('if not config for the given id exists', () => {
+    it('returns default class for dashboard', () => {
+      const testId = 'fakeName';
+      expect(ConfigUtils.getSourceIconClass(testId, ResourceType.dashboard)).toBe(ConfigUtils.DEFAULT_DASHBOARD_ICON_CLASS);
+    });
+
+    it('returns default class for tables', () => {
+      const testId = 'fakeName';
+      expect(ConfigUtils.getSourceIconClass(testId, ResourceType.table)).toBe(ConfigUtils.DEFAULT_DATABASE_ICON_CLASS);
+    });
+  })
+
+  it('returns empty string for unconfigured resource', () => {
+    expect(ConfigUtils.getSourceIconClass('fakeName', ResourceType.user)).toBe('');
   });
 
   it('returns given icon class for a configured database id', () => {
@@ -76,6 +87,12 @@ describe('getBadgeConfig', () => {
 describe('feedbackEnabled', () => {
   it('returns whether or not the feaadback feature is enabled', () => {
     expect(ConfigUtils.feedbackEnabled()).toBe(AppConfig.mailClientFeatures.feedbackEnabled);
+  });
+});
+
+describe('issueTrackingEnabled', () => {
+  it('returns whether or not the issueTracking feature is enabled', () => {
+    expect(ConfigUtils.issueTrackingEnabled()).toBe(AppConfig.issueTracking.enabled);
   });
 });
 

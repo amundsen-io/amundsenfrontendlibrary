@@ -13,6 +13,7 @@ export interface Resource {
   type: ResourceType;
 };
 
+// TODO ttannis: Still need to update after search endpoint fixed 
 export interface DashboardResource extends Resource  {
   type: ResourceType.dashboard;
   dashboard_group: string;

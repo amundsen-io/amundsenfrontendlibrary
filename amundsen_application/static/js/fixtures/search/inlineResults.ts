@@ -42,7 +42,7 @@ export const allResourcesExample = {
   isLoading: false,
   dashboards: {
     page_index: 0,
-    results: [
+    results: [  // TODO ttannis: Still will need to update
       {
         dashboard_group: 'Amundsen Team',
         dashboard_name: 'Amundsen Metrics Dashboard1',

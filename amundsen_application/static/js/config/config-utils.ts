@@ -15,12 +15,12 @@ export const DEFAULT_DASHBOARD_ICON_CLASS = 'icon-dashboard icon-color';
  * is returned.
  */
 export function getSourceDisplayName(sourceId: string, resource: ResourceType): string {
-  const config = AppConfig.resourceConfig[resource].supportedSources[sourceId];
-  if (!config || !config.displayName) {
+  const config = AppConfig.resourceConfig[resource];
+  if (!config || !config.supportedSources || !config.supportedSources[sourceId]) {
     return sourceId;
   }
 
-  return config.displayName;
+  return config.supportedSources[sourceId].displayName;
 }
 
 /**
@@ -30,19 +30,18 @@ export function getSourceDisplayName(sourceId: string, resource: ResourceType): 
  * icon class for the given resource type is returned.
  */
 export function getSourceIconClass(sourceId: string, resource: ResourceType): string {
-  const config = AppConfig.resourceConfig[resource].supportedSources[sourceId];
-  if (!config || !config.iconClass) {
-    switch (resource) {
-      case ResourceType.dashboard:
-        return DEFAULT_DASHBOARD_ICON_CLASS;
-      case ResourceType.table:
-        return DEFAULT_DATABASE_ICON_CLASS;
-      default:
-        return '';
+  const config = AppConfig.resourceConfig[resource];
+  if (!config || !config.supportedSources || !config.supportedSources[sourceId]) {
+    if (resource === ResourceType.dashboard) {
+      return DEFAULT_DASHBOARD_ICON_CLASS;
     }
+    if (resource === ResourceType.table) {
+      return DEFAULT_DATABASE_ICON_CLASS;
+    }
+    return '';
   }
 
-  return config.iconClass;
+  return config.supportedSources[sourceId].iconClass;
 }
 
 /**
