@@ -4,17 +4,12 @@ import { connect } from 'react-redux'
 import SearchItemList from './SearchItemList';
 import ResultItemList from './ResultItemList';
 
-import { getDatabaseDisplayName, getDatabaseIconClass, indexDashboardsEnabled, indexUsersEnabled } from 'config/config-utils';
+import { getSourceDisplayName, getSourceIconClass, indexDashboardsEnabled, indexUsersEnabled } from 'config/config-utils';
 
 import { GlobalState } from 'ducks/rootReducer'
 import { SearchResults, DashboardSearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
 
-import { Resource, ResourceType, TableResource, UserResource } from 'interfaces';
-
-import { toTitleCase } from 'utils/stringUtils';
-
-// TODO ttannis: Import actual type when ready
-type DashboardResource = any;
+import { Resource, ResourceType, DashboardResource, TableResource, UserResource } from 'interfaces';
 
 import './styles.scss';
 
@@ -39,7 +34,7 @@ export interface SuggestedResult {
   href: string;
   iconClass: string;
   subtitle: string;
-  title: string;
+  title: React.ReactNode;
   type: string;
 }
 
@@ -104,8 +99,8 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
     const logParams = `source=inline_search&index=${index}`;
     switch (resourceType) {
       case ResourceType.dashboard:
-        const dashboard = result as TableResource;
-        return `/dashboard`; // TODO ttannis: Update to real route
+        const dashboard = result as DashboardResource;
+        return `/dashboard/${dashboard.uri}`;
       case ResourceType.table:
         const table = result as TableResource;
         return `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}?${logParams}`;
@@ -120,10 +115,11 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
   getSuggestedResultIconClass = (resourceType: ResourceType, result: Resource): string => {
     switch (resourceType) {
       case ResourceType.dashboard:
-        return CONSTANTS.DASHBOARD_ICON_CLASS;
+        const dashboard = result as DashboardResource;
+        return getSourceIconClass(dashboard.product, resourceType);
       case ResourceType.table:
         const table = result as TableResource;
-        return getDatabaseIconClass(table.database);
+        return getSourceIconClass(table.database, resourceType);
       case ResourceType.user:
         return CONSTANTS.USER_ICON_CLASS;
       default:
@@ -135,7 +131,7 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
     switch (resourceType) {
       case ResourceType.dashboard:
         const dashboard = result as DashboardResource;
-        return dashboard.dashboard_group_description; // TODO ttannis: Update when we know what this should be
+        return dashboard.description;
       case ResourceType.table:
         const table = result as TableResource;
         return table.description;
@@ -147,30 +143,39 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
     }
   };
 
-  getSuggestedResultTitle = (resourceType: ResourceType, result: Resource): string => {
+  getSuggestedResultTitle = (resourceType: ResourceType, result: Resource): React.ReactNode => {
     switch (resourceType) {
       case ResourceType.dashboard:
         const dashboard = result as DashboardResource;
-        return `${dashboard.dashboard_group} - ${dashboard.dashboard_name}`; // TODO ttannis: Update when we know what this should be
+        return (
+          <div className="dashboard-title">
+            <div className="title-2 dashboard-group">{dashboard.dashboard_group}</div>
+            <div className="title-2 truncated">{dashboard.dashboard_name}</div>
+          </div>
+        )
       case ResourceType.table:
         const table = result as TableResource;
-        return `${table.schema}.${table.name}`;
+        return (
+          <div className="title-2 truncated">{`${table.schema}.${table.name}`}</div>
+        );
       case ResourceType.user:
         const user = result as UserResource;
-        return user.display_name;
+        return (
+          <div className="title-2 truncated">{user.display_name}</div>
+        );
       default:
-        return '';
+        return (<div className="title-2 truncated"></div>);
     }
   };
 
   getSuggestedResultType = (resourceType: ResourceType, result: Resource): string => {
     switch (resourceType) {
       case ResourceType.dashboard:
-        const dashboard = result as any; // TODO ttannis: Add proper type
-        return toTitleCase(dashboard.product);
+        const dashboard = result as DashboardResource;
+        return getSourceDisplayName(dashboard.product, resourceType);
       case ResourceType.table:
         const table = result as TableResource;
-        return getDatabaseDisplayName(table.database);
+        return getSourceDisplayName(table.database, resourceType);
       case ResourceType.user:
         return CONSTANTS.PEOPLE_USER_TYPE;
       default:

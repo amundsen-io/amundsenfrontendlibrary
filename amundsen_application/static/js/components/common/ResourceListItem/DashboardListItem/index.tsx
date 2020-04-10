@@ -6,10 +6,16 @@ import { LoggingParams } from '../types';
 
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 
-import { toTitleCase } from 'utils/stringUtils';
+import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
+
+import { DashboardResource } from 'interfaces';
+
+import { formatDate } from 'utils/dateUtils';
+
+import * as Constants from './constants';
 
 export interface DashboardListItemProps {
-  dashboard: any; // TODO ttannis: Add DashboardResource type when we know what it is
+  dashboard: DashboardResource;
   logging: LoggingParams;
 }
 
@@ -20,34 +26,42 @@ class DashboardListItem extends React.Component<DashboardListItemProps, {}> {
 
   getLink = () => {
     const { dashboard, logging } = this.props;
-    // TODO ttannis: Update when we know url
-    return `/dashboard`;
+    return `/dashboard/${dashboard.uri}`;
   };
 
   render() {
     const { dashboard } = this.props;
-
     return (
       <li className="list-group-item clickable">
         <Link className="resource-list-item table-list-item" to={ this.getLink() }>
           <div className="resource-info">
-            <img className="icon resource-icon icon-dashboard" />
+            <img className={`icon resource-icon ${getSourceIconClass(dashboard.product, dashboard.type)}`} />
             <div className="resource-info-text">
               <div className="resource-name title-2">
-                <div className="truncated">
-                  { // TODO ttannis: Update when we know what this is supposed to be
-                    `${dashboard.dashboard_group} - ${dashboard.dashboard_name}`
-                  }
+                <div className="dashboard-group">
+                  { dashboard.dashboard_group }
+                </div>
+                <div className="dashboard-name truncated">
+                  { dashboard.dashboard_name }
                 </div>
                 <BookmarkIcon bookmarkKey={ 'TODO ttannis: Add bookmarkKey' }/>
               </div>
-              <div className="body-secondary-3 truncated">{ dashboard.dashboard_group_description }</div>
+              <div className="body-secondary-3 truncated">{ dashboard.description }</div>
             </div>
           </div>
           <div className="resource-type">
-            { toTitleCase(dashboard.product) }
+            { getSourceDisplayName(dashboard.product, dashboard.type) }
           </div>
           <div className="resource-badges">
+            {
+               dashboard.last_successful_run_timestamp &&
+               <div>
+                 <div className="title-3">{ Constants.LAST_RUN_TITLE }</div>
+                 <div className="body-secondary-3">
+                   { formatDate({ epochTimestamp: dashboard.last_successful_run_timestamp }) }
+                 </div>
+               </div>
+             }
             <img className="icon icon-right" />
           </div>
         </Link>

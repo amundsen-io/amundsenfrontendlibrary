@@ -13,10 +13,19 @@ export interface Resource {
   type: ResourceType;
 };
 
-// Placeholder until the schema is defined.
 export interface DashboardResource extends Resource  {
   type: ResourceType.dashboard;
-  title: string;
+  dashboard_group: string;
+  dashboard_name: string;
+  dashboard_group_description: string;
+  product: string;
+  description: string;
+  uri: string;
+  url: string;
+  group_url: string;
+  query_names: string[];
+  cluster: string;
+  last_successful_run_timestamp: number | undefined;
 }
 
 export interface TableResource extends Resource {
@@ -29,7 +38,7 @@ export interface TableResource extends Resource {
   last_updated_timestamp?: number;
   name: string;
   schema: string;
-  badges?: Badge[];  
+  badges?: Badge[];
 };
 
 export interface UserResource extends Resource, PeopleUser {

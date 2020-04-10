@@ -4,29 +4,29 @@ import { BadgeStyle } from 'config/config-types';
 
 import { ResourceType } from 'interfaces';
 
-describe('getDatabaseDisplayName', () => {
+describe('getSourceDisplayName', () => {
   it('returns given id if no config for that id exists', () => {
     const testId = 'fakeName';
-    expect(ConfigUtils.getDatabaseDisplayName(testId)).toBe(testId);
+    expect(ConfigUtils.getSourceDisplayName(testId, ResourceType.table)).toBe(testId);
   });
 
-  it('returns given id for a configured database id', () => {
+  it('returns given id for a configured source id', () => {
     const testId = 'hive';
-    const expectedName = AppConfig.resourceConfig[ResourceType.table].supportedDatabases[testId].displayName;
-    expect(ConfigUtils.getDatabaseDisplayName(testId)).toBe(expectedName);
+    const expectedName = AppConfig.resourceConfig[ResourceType.table].supportedSources[testId].displayName;
+    expect(ConfigUtils.getSourceDisplayName(testId, ResourceType.table)).toBe(expectedName);
   })
 });
 
-describe('getDatabaseIconClass', () => {
+describe('getSourceIconClass', () => {
   it('returns default class no config for that id exists', () => {
     const testId = 'fakeName';
-    expect(ConfigUtils.getDatabaseIconClass(testId)).toBe(ConfigUtils.DEFAULT_DATABASE_ICON_CLASS);
+    expect(ConfigUtils.getSourceIconClass(testId, ResourceType.table)).toBe(ConfigUtils.DEFAULT_DATABASE_ICON_CLASS);
   });
 
   it('returns given icon class for a configured database id', () => {
     const testId = 'hive';
-    const expectedClass = AppConfig.resourceConfig[ResourceType.table].supportedDatabases[testId].iconClass;
-    expect(ConfigUtils.getDatabaseIconClass(testId)).toBe(expectedClass);
+    const expectedClass = AppConfig.resourceConfig[ResourceType.table].supportedSources[testId].iconClass;
+    expect(ConfigUtils.getSourceIconClass(testId, ResourceType.table)).toBe(expectedClass);
   })
 });
 

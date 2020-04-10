@@ -42,14 +42,21 @@ export const allResourcesExample = {
   isLoading: false,
   dashboards: {
     page_index: 0,
-    results: [ // TODO ttannis: Update example when we know what this looks like
+    results: [
       {
         dashboard_group: 'Amundsen Team',
         dashboard_name: 'Amundsen Metrics Dashboard1',
         dashboard_group_description: 'I am a dashboard1',
         product: 'mode',
         type: 'dashoard',
-      },
+        description: 'I am a dashboard',
+        uri: 'product_dashboard://cluster.group/name',
+        url: 'product/name',
+        group_url: 'product/group_name',
+        query_names: ["Query 1", "Query 2", "Query 3"],
+        cluster: 'cluster',
+        last_successful_run_timestamp: 1585062593
+      }
     ],
     total_results: 1,
   },

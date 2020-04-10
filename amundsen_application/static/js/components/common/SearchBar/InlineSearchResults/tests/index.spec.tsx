@@ -10,18 +10,18 @@ import ResultItemList from '../ResultItemList';
 import SearchItemList from '../SearchItemList';
 
 import { SearchResults } from 'ducks/search/types';
-import { ResourceType, TableResource, UserResource } from 'interfaces';
+import { ResourceType, DashboardResource, TableResource, UserResource } from 'interfaces';
 
 import * as CONSTANTS from '../constants';
 
 jest.mock('config/config-utils', () => ({
   getDisplayNameByResource: jest.fn(),
-  getDatabaseDisplayName: jest.fn(),
-  getDatabaseIconClass: jest.fn(),
+  getSourceDisplayName: jest.fn(),
+  getSourceIconClass: jest.fn(),
   indexUsersEnabled: jest.fn(),
   indexDashboardsEnabled: jest.fn(),
 }));
-import { getDatabaseDisplayName, getDatabaseIconClass, indexUsersEnabled } from 'config/config-utils';
+import { getSourceDisplayName, getSourceIconClass, indexUsersEnabled } from 'config/config-utils';
 
 import globalState from 'fixtures/globalState';
 import { allResourcesExample } from 'fixtures/search/inlineResults';
@@ -30,7 +30,7 @@ describe('InlineSearchResults', () => {
   const setup = (propOverrides?: Partial<InlineSearchResultsProps>) => {
     const props: InlineSearchResultsProps = {
       isLoading: false,
-      dashboards: allResourcesExample.dashboards as any, // TODO ttannis: Update type
+      dashboards: allResourcesExample.dashboards as SearchResults<DashboardResource>,
       tables: allResourcesExample.tables as SearchResults<TableResource>,
       users: allResourcesExample.users as SearchResults<UserResource>,
       className: 'testClass',
@@ -211,13 +211,13 @@ describe('InlineSearchResults', () => {
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
-    it('returns the results of getDatabaseIconClass for ResourceType.table', () => {
+    it('returns the results of getSourceIconClass for ResourceType.table', () => {
       const mockClass = 'test-class';
-      mocked(getDatabaseIconClass).mockImplementation(() => mockClass);
+      mocked(getSourceIconClass).mockImplementation(() => mockClass);
       const givenTable = props.tables.results[0];
       const output = wrapper.instance().getSuggestedResultIconClass(ResourceType.table, givenTable);
       expect(output).toEqual(mockClass);
-      expect(getDatabaseIconClass).toHaveBeenCalledWith(givenTable.database);
+      expect(getSourceIconClass).toHaveBeenCalledWith(givenTable.database, ResourceType.table);
     });
     it('returns the correct class for ResourceType.user', () => {
       const output = wrapper.instance().getSuggestedResultIconClass(ResourceType.user, props.users.results[0]);
@@ -285,13 +285,13 @@ describe('InlineSearchResults', () => {
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
-    it('returns the results of getDatabaseDisplayName for ResourceType.table', () => {
+    it('returns the results of getSourceDisplayName for ResourceType.table', () => {
       const mockName = 'Hive';
-      mocked(getDatabaseDisplayName).mockImplementation(() => mockName);
+      mocked(getSourceDisplayName).mockImplementation(() => mockName);
       const givenTable = props.tables.results[0];
       const output = wrapper.instance().getSuggestedResultType(ResourceType.table, givenTable);
       expect(output).toEqual(mockName);
-      expect(getDatabaseDisplayName).toHaveBeenCalledWith(givenTable.database);
+      expect(getSourceDisplayName).toHaveBeenCalledWith(givenTable.database, givenTable.type);
     });
     it('returns the correct type for ResourceType.user', () => {
       const output = wrapper.instance().getSuggestedResultType(ResourceType.user, props.users.results[0]);

@@ -22,7 +22,7 @@ REQUEST_SESSION_TIMEOUT_SEC = 3
 search_blueprint = Blueprint('search', __name__, url_prefix='/api/search/v0')
 
 # TODO ttannis: Understand if there is a plan for endpoint consistency
-SEARCH_DASHBOARD_ENDPOINT = '/search_dashboard/query'
+SEARCH_DASHBOARD_ENDPOINT = '/search_dashboard'
 SEARCH_TABLE_ENDPOINT = '/search'
 SEARCH_TABLE_FILTER_ENDPOINT = '/search_table'
 SEARCH_USER_ENDPOINT = '/search_user'

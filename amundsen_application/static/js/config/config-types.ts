@@ -118,14 +118,11 @@ export type FilterConfig = (MultiSelectFilterCategory|SingleFilterCategory)[];
 interface BaseResourceConfig {
   displayName: string;
   filterCategories?: FilterConfig;
-}
-
-/**
- * Interface for table resource types
- */
-interface TableResourceConfig extends BaseResourceConfig {
-  supportedDatabases: {
-    [id: string]: DatabaseConfig
+  supportedSources?: {
+    [id: string]: {
+      displayName?: string;
+      iconClass?: string;
+    }
   };
 }
 
@@ -169,20 +166,8 @@ interface DateFormatConfig {
  */
 interface ResourceConfig {
   [ResourceType.dashboard]: BaseResourceConfig;
-  [ResourceType.table]: TableResourceConfig;
+  [ResourceType.table]: BaseResourceConfig;
   [ResourceType.user]: BaseResourceConfig;
-}
-
-/** DatabaseConfig - For customizing values related to how each database resource
- *                  is displayed in the UI.
- *
- * displayName - An optional display name for this database source
- * iconClass - An option icon class to be used for this database source. This
- *             value should be defined in static/css/_icons.scss
- */
-interface DatabaseConfig {
-  displayName?: string;
-  iconClass?: string;
 }
 
 /**

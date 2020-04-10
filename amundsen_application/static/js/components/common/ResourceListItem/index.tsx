@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { Resource, ResourceType, TableResource, UserResource } from 'interfaces';
+import { Resource, ResourceType, DashboardResource, TableResource, UserResource } from 'interfaces';
 
 import { LoggingParams } from './types';
 import DashboardListItem from './DashboardListItem';
@@ -21,9 +21,8 @@ export default class ResourceListItem extends React.Component<ListItemProps> {
 
   render() {
     switch(this.props.item.type) {
-      // TODO ttannis: Add DashboardResource type when we know what it is
       case ResourceType.dashboard:
-        return (<DashboardListItem dashboard={ this.props.item as any } logging={ this.props.logging } />);
+        return (<DashboardListItem dashboard={ this.props.item as DashboardResource } logging={ this.props.logging } />);
       case ResourceType.table:
         return (<TableListItem table={ this.props.item as TableResource } logging={ this.props.logging } />);
       case ResourceType.user:

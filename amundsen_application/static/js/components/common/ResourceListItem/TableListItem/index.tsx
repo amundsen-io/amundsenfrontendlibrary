@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 
 import { LoggingParams } from '../types';
 
-import { TableResource } from 'interfaces';
+import { ResourceType, TableResource } from 'interfaces';
 
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 
-import { getDatabaseDisplayName, getDatabaseIconClass } from 'config/config-utils';
+import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
 import { formatDate } from 'utils/dateUtils';
 import BadgeList from 'components/common/BadgeList';
 
@@ -27,8 +27,8 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
       + `?index=${logging.index}&source=${logging.source}`;
   };
 
-  generateResourceIconClass = (databaseId: string): string => {
-    return `icon resource-icon ${getDatabaseIconClass(databaseId)}`;
+  generateResourceIconClass = (databaseId: string, resource: ResourceType): string => {
+    return `icon resource-icon ${getSourceIconClass(databaseId, resource)}`;
   };
 
   render() {
@@ -38,7 +38,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
       <li className="list-group-item clickable">
         <Link className="resource-list-item table-list-item" to={ this.getLink() }>
           <div className="resource-info">
-            <img className={this.generateResourceIconClass(table.database)} />
+            <img className={this.generateResourceIconClass(table.database, table.type)} />
             <div className="resource-info-text">
               <div className="resource-name title-2">
                 <div className="truncated">
@@ -50,7 +50,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
             </div>
           </div>
           <div className="resource-type">
-            { getDatabaseDisplayName(table.database) }
+            { getSourceDisplayName(table.database, table.type) }
           </div>
           <div className="resource-badges">
             {

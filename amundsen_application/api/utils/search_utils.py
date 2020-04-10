@@ -10,15 +10,21 @@ valid_search_fields = {
     'tag'
 }
 
-
 def map_dashboard_result(result: Dict) -> Dict:
-    # TODO ttannis: Need the dashboard_uri/key. Update when we know what this is supposed to be
+    # TODO ttannis: Still need to update based on search library PR
     return {
         'type': 'dashboard',
-        'dashboard_group': result.get('dashboard_group', None),
-        'dashboard_name': result.get('dashboard_name', None),
-        'dashboard_group_description': result.get('dashboard_group_description', None),
-        'product': result.get('product', None),
+        'dashboard_group': result.get('dashboard_group', ''),
+        'dashboard_name': result.get('dashboard_name', ''),
+        'dashboard_group_description': result.get('dashboard_group_description', ''),
+        'product': result.get('product', ''),
+        'description': result.get('description', ''),
+        'uri': result.get('uri', ''),
+        'url': result.get('url', ''),
+        'group_url': result.get('group_url', ''),
+        'query_names': result.get('query_names', []),
+        'cluster': result.get('cluster', ''),
+        'last_successful_run_timestamp': result.get('last_successful_run_timestamp', None)
     }
 
 
