@@ -1,8 +1,8 @@
 import logging
-import os
 from typing import Optional, Any
 
 import requests
+from flask import current_app as app
 from requests.auth import HTTPBasicAuth
 from retrying import retry
 
@@ -15,28 +15,42 @@ DEFAULT_REPORT_URL_TEMPLATE = 'https://app.mode.com/api/{organization}/reports/{
 MODE_ACCESS_TOKEN = 'CREDENTIALS_MODE_ADMIN_TOKEN'
 MODE_PASSWORD = 'CREDENTIALS_MODE_ADMIN_PASSWORD'
 MODE_ORGANIZATION = 'MODE_ORGANIZATION'
-REPORT_URL_TEMPLATE = 'REPORT_URL_TEMPLATE'
+MODE_REPORT_URL_TEMPLATE = 'MODE_REPORT_URL_TEMPLATE'
 
 
-def _validate_not_none(var: Any) -> Any:
+def _validate_not_none(var: Any, var_name) -> Any:
     if not var:
-        raise ValueError
+        raise ValueError('{} is missing'.format(var_name))
     return var
 
 
 class ModePreview(BasePreview):
+    """
+    A class to get Mode Dashboard preview image
+    """
     def __init__(self, *,
-                 access_token: Optional[str] = os.getenv(MODE_ACCESS_TOKEN),
-                 password: Optional[str] = os.getenv(MODE_PASSWORD),
-                 organization: Optional[str] = os.getenv(MODE_ORGANIZATION),
-                 report_url_template: Optional[str] = os.getenv(REPORT_URL_TEMPLATE, DEFAULT_REPORT_URL_TEMPLATE)):
-        self._access_token = _validate_not_none(access_token)
-        self._password = _validate_not_none(password)
-        self._organization = _validate_not_none(organization)
-        self._report_url_template = _validate_not_none(report_url_template)
+                 access_token: Optional[str] = None,
+                 password: Optional[str] = None,
+                 organization: Optional[str] = None,
+                 report_url_template: Optional[str] = None):
+        self._access_token = access_token if access_token else app.config['CREDENTIALS_MODE_ADMIN_TOKEN']
+        _validate_not_none(self._access_token, 'access_token')
+        self._password = password if password else app.config['CREDENTIALS_MODE_ADMIN_PASSWORD']
+        _validate_not_none(self._password, 'password')
+        self._organization = organization if organization else app.config['MODE_ORGANIZATION']
+        _validate_not_none(self._organization, 'organization')
+        self._report_url_template = report_url_template if report_url_template else \
+            app.config['MODE_REPORT_URL_TEMPLATE']
+        if not self._report_url_template:
+            self._report_url_template = DEFAULT_REPORT_URL_TEMPLATE
 
     @retry(stop_max_attempt_number=3, wait_random_min=500, wait_random_max=1000)
     def get_preview_image(self, *, uri) -> bytes:
+        """
+        Retrieves short lived URL that provides Mode report preview, downloads it and returns it's bytes
+        :param uri:
+        :return: image bytes
+        """
         url = self._get_preview_image_url(uri=uri)
         r = requests.get(url, allow_redirects=True)
         r.raise_for_status()
@@ -48,6 +62,15 @@ class ModePreview(BasePreview):
 
         LOGGER.info('Calling URL {} to fetch preview image URL'.format(url))
         response = requests.get(url, auth=HTTPBasicAuth(self._access_token, self._password))
+        if response.status_code == 404:
+            raise FileNotFoundError('Dashboard {} not found. Possibly has been deleted.'.format(uri))
+
         response.raise_for_status()
 
-        return response.json()['web_preview_image']
+        web_preview_image_key = 'web_preview_image'
+        result = response.json()
+
+        if web_preview_image_key not in result:
+            raise FileNotFoundError('No preview image available on {}'.format(uri))
+
+        return result['web_preview_image']

@@ -71,7 +71,13 @@ class Config:
     AUTH_USER_METHOD: Optional[Callable[[Flask], User]] = None
     GET_PROFILE_URL = None
 
-    DASHBOARD_PREVIEW_FACTORY = None
+    DASHBOARD_PREVIEW_FACTORY = None  # By default DefaultPreviewMethodFactory will be used.
+    DASHBOARD_PREVIEW_IMAGE_CACHE_MAX_AGE_SECONDS = 60 * 60 * 24 * 1  # 1 day
+
+    CREDENTIALS_MODE_ADMIN_TOKEN = os.getenv('CREDENTIALS_MODE_ADMIN_TOKEN', None)
+    CREDENTIALS_MODE_ADMIN_PASSWORD = os.getenv('CREDENTIALS_MODE_ADMIN_PASSWORD', None)
+    MODE_ORGANIZATION = None
+    MODE_REPORT_URL_TEMPLATE = None
 
 
 class LocalConfig(Config):

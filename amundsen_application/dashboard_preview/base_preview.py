@@ -12,5 +12,6 @@ class BasePreview(metaclass=ABCMeta):
         Returns image bytes given URI
         :param uri:
         :return:
+        :raises: FileNotFound when either Report is not available or Preview image is not available
         """
         pass

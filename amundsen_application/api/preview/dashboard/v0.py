@@ -1,10 +1,10 @@
 import io
 import logging
+from http import HTTPStatus
 
-from flask import send_file, request, Response, current_app as app
+from flask import send_file, jsonify, make_response, Response, current_app as app
 from flask.blueprints import Blueprint
 
-from amundsen_application.api.utils.request_utils import get_query_param
 from amundsen_application.dashboard_preview.preview_factory_method import DefaultPreviewMethodFactory, \
     BasePreviewMethodFactory
 
@@ -14,10 +14,10 @@ PREVIEW_FACTORY: BasePreviewMethodFactory = None
 dashboard_preview_blueprint = Blueprint('dashboard_preview', __name__, url_prefix='/api/dashboard_preview/v0')
 
 
-def initialize_preview_factory_class():
+def initialize_preview_factory_class() -> None:
     """
-    # get the Dashboard preview_factory_class from the python entry point
-    :return:
+    # Instantiate Preview factory class and assign it to PREVIEW_FACTORY
+    :return: None
     """
     global PREVIEW_FACTORY
 
@@ -28,10 +28,10 @@ def initialize_preview_factory_class():
     LOGGER.info('Using {} for Dashboard'.format(PREVIEW_FACTORY))
 
 
-@dashboard_preview_blueprint.route('/image', methods=['GET'])
-def get_preview_image() -> Response:
+@dashboard_preview_blueprint.route('/dashboard/<path:uri>/preview.jpg', methods=['GET'])
+def get_preview_image(uri: str) -> Response:
     """
-    Provides preview image of Dashboard which can be cached for a day.
+    Provides preview image of Dashboard which can be cached for a day (by default).
     :return:
     """
 
@@ -39,9 +39,13 @@ def get_preview_image() -> Response:
         LOGGER.info('Initializing Dashboard PREVIEW_FACTORY')
         initialize_preview_factory_class()
 
-    uri = get_query_param(request.args, 'uri')
-
     preview_client = PREVIEW_FACTORY.get_instance(uri=uri)
-    return send_file(io.BytesIO(preview_client.get_preview_image(uri=uri)),
-                     mimetype='image/jpeg',
-                     cache_timeout=60 * 60 * 24 * 1)
+    try:
+        return send_file(io.BytesIO(preview_client.get_preview_image(uri=uri)),
+                         mimetype='image/jpeg',
+                         cache_timeout=app.config['DASHBOARD_PREVIEW_IMAGE_CACHE_MAX_AGE_SECONDS'])
+    except FileNotFoundError:
+        return make_response(jsonify({'msg': 'Either report or image is not available'}), HTTPStatus.NOT_FOUND)
+    except Exception as e:
+        LOGGER.exception('Unexpected failure on get_preview_image')
+        return make_response(jsonify({'msg': 'Encountered exception: ' + str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR)
