@@ -2,7 +2,7 @@ import logging
 from typing import Optional, Any
 
 import requests
-from flask import current_app as app
+from flask import has_app_context, current_app as app
 from requests.auth import HTTPBasicAuth
 from retrying import retry
 
@@ -28,6 +28,7 @@ class ModePreview(BasePreview):
     """
     A class to get Mode Dashboard preview image
     """
+
     def __init__(self, *,
                  access_token: Optional[str] = None,
                  password: Optional[str] = None,
@@ -39,8 +40,10 @@ class ModePreview(BasePreview):
         _validate_not_none(self._password, 'password')
         self._organization = organization if organization else app.config['MODE_ORGANIZATION']
         _validate_not_none(self._organization, 'organization')
-        self._report_url_template = report_url_template if report_url_template else \
-            app.config['MODE_REPORT_URL_TEMPLATE']
+
+        self._report_url_template = report_url_template
+        if not self._report_url_template and has_app_context():
+            self._report_url_template = app.config['MODE_REPORT_URL_TEMPLATE']
         if not self._report_url_template:
             self._report_url_template = DEFAULT_REPORT_URL_TEMPLATE
 
