@@ -21,7 +21,7 @@ class BasePreviewMethodFactory(metaclass=ABCMeta):
 
 class DefaultPreviewMethodFactory(BasePreviewMethodFactory):
 
-    def __init__(self):
+    def __init__(self) -> None:
         # Register preview clients here. Key: product, Value: BasePreview implementation
         self._object_map = {
             'mode': ModePreview()

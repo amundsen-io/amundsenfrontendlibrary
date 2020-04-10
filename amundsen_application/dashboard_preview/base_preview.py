@@ -7,7 +7,7 @@ class BasePreview(metaclass=ABCMeta):
     """
 
     @abstractmethod
-    def get_preview_image(self, *, uri) -> bytes:
+    def get_preview_image(self, *, uri: str) -> bytes:
         """
         Returns image bytes given URI
         :param uri:

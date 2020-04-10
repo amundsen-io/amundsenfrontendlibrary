@@ -9,7 +9,7 @@ from amundsen_application.dashboard_preview.preview_factory_method import Defaul
     BasePreviewMethodFactory
 
 LOGGER = logging.getLogger(__name__)
-PREVIEW_FACTORY: BasePreviewMethodFactory = None
+PREVIEW_FACTORY: BasePreviewMethodFactory = None  # type: ignore
 
 dashboard_preview_blueprint = Blueprint('dashboard_preview', __name__, url_prefix='/api/dashboard_preview/v0')
 

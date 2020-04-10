@@ -18,7 +18,7 @@ MODE_ORGANIZATION = 'MODE_ORGANIZATION'
 MODE_REPORT_URL_TEMPLATE = 'MODE_REPORT_URL_TEMPLATE'
 
 
-def _validate_not_none(var: Any, var_name) -> Any:
+def _validate_not_none(var: Any, var_name: str) -> Any:
     if not var:
         raise ValueError('{} is missing'.format(var_name))
     return var
@@ -41,14 +41,13 @@ class ModePreview(BasePreview):
         self._organization = organization if organization else app.config['MODE_ORGANIZATION']
         _validate_not_none(self._organization, 'organization')
 
-        self._report_url_template = report_url_template
-        if not self._report_url_template and has_app_context():
+        self._report_url_template = report_url_template if report_url_template else DEFAULT_REPORT_URL_TEMPLATE
+
+        if has_app_context() and not app.config['MODE_REPORT_URL_TEMPLATE']:
             self._report_url_template = app.config['MODE_REPORT_URL_TEMPLATE']
-        if not self._report_url_template:
-            self._report_url_template = DEFAULT_REPORT_URL_TEMPLATE
 
     @retry(stop_max_attempt_number=3, wait_random_min=500, wait_random_max=1000)
-    def get_preview_image(self, *, uri) -> bytes:
+    def get_preview_image(self, *, uri: str) -> bytes:
         """
         Retrieves short lived URL that provides Mode report preview, downloads it and returns it's bytes
         :param uri:
@@ -60,7 +59,7 @@ class ModePreview(BasePreview):
 
         return r.content
 
-    def _get_preview_image_url(self, *, uri) -> str:
+    def _get_preview_image_url(self, *, uri: str) -> str:
         url = self._report_url_template.format(organization=self._organization, dashboard_id=uri.split('/')[-1])
 
         LOGGER.info('Calling URL {} to fetch preview image URL'.format(url))

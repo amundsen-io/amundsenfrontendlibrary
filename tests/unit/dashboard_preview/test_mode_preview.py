@@ -14,7 +14,7 @@ ORGANIZATION = 'foo'
 
 class TestModePreview(unittest.TestCase):
 
-    def test_get_preview_image(self):
+    def test_get_preview_image(self) -> None:
         with patch.object(ModePreview, '_get_preview_image_url') as mock_get_preview_image_url,\
              patch.object(requests, 'get') as mock_get:
             mock_get_preview_image_url.return_value = 'http://foo.bar/image.jpeg'
@@ -28,7 +28,7 @@ class TestModePreview(unittest.TestCase):
             self.assertEqual(b'bar', actual)
             mock_get.assert_called_with('http://foo.bar/image.jpeg', allow_redirects=True)
 
-    def test_get_preview_image_url(self):
+    def test_get_preview_image_url(self) -> None:
         with patch.object(requests, 'get') as mock_get:
             mock_get.return_value.json.return_value = {'web_preview_image': 'http://foo.bar/image.jpeg'}
 
