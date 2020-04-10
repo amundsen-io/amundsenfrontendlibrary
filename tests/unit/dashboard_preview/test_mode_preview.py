@@ -1,3 +1,4 @@
+# flake8: noqa
 import unittest
 from unittest.mock import patch
 
@@ -14,8 +15,8 @@ ORGANIZATION = 'foo'
 class TestModePreview(unittest.TestCase):
 
     def test_get_preview_image(self):
-        with patch.object(ModePreview, '_get_preview_image_url') as mock_get_preview_image_url, \
-            patch.object(requests, 'get') as mock_get:
+        with patch.object(ModePreview, '_get_preview_image_url') as mock_get_preview_image_url,\
+             patch.object(requests, 'get') as mock_get:
             mock_get_preview_image_url.return_value = 'http://foo.bar/image.jpeg'
             mock_get.return_value.content = b'bar'
 

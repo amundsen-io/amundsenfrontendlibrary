@@ -1,10 +1,8 @@
 import io
 import logging
-import sys
 
 from flask import send_file, request, Response, current_app as app
 from flask.blueprints import Blueprint
-from pkg_resources import iter_entry_points
 
 from amundsen_application.api.utils.request_utils import get_query_param
 from amundsen_application.dashboard_preview.preview_factory_method import DefaultPreviewMethodFactory, \
