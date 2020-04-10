@@ -71,6 +71,8 @@ class Config:
     AUTH_USER_METHOD: Optional[Callable[[Flask], User]] = None
     GET_PROFILE_URL = None
 
+    # For additional preview client, register more at DefaultPreviewMethodFactory.__init__()
+    # For any private preview client, use custom factory that implements BasePreviewMethodFactory
     DASHBOARD_PREVIEW_FACTORY = None  # By default DefaultPreviewMethodFactory will be used.
     DASHBOARD_PREVIEW_IMAGE_CACHE_MAX_AGE_SECONDS = 60 * 60 * 24 * 1  # 1 day
 
