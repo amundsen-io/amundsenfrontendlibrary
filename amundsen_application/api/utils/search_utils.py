@@ -10,22 +10,19 @@ valid_search_fields = {
     'tag'
 }
 
-
+# TODO: use common
 def map_dashboard_result(result: Dict) -> Dict:
-    # TODO ttannis: Still need to update based on search library PR
     return {
         'type': 'dashboard',
-        'dashboard_group': result.get('dashboard_group', ''),
-        'dashboard_name': result.get('dashboard_name', ''),
-        'dashboard_group_description': result.get('dashboard_group_description', ''),
-        'product': result.get('product', ''),
+        'cluster': result.get('cluster', ''),
         'description': result.get('description', ''),
+        'group_name': result.get('group_name', ''),
+        'group_url': result.get('group_url', ''),
+        'last_successful_run_timestamp': result.get('last_successful_run_timestamp', None),
+        'name': result.get('name', ''),
+        'product': result.get('product', ''),
         'uri': result.get('uri', ''),
         'url': result.get('url', ''),
-        'group_url': result.get('group_url', ''),
-        'query_names': result.get('query_names', []),
-        'cluster': result.get('cluster', ''),
-        'last_successful_run_timestamp': result.get('last_successful_run_timestamp', None)
     }
 
 

@@ -21,7 +21,6 @@ REQUEST_SESSION_TIMEOUT_SEC = 3
 
 search_blueprint = Blueprint('search', __name__, url_prefix='/api/search/v0')
 
-# TODO ttannis: Understand if there is a plan for endpoint consistency
 SEARCH_DASHBOARD_ENDPOINT = '/search_dashboard'
 SEARCH_TABLE_ENDPOINT = '/search'
 SEARCH_TABLE_FILTER_ENDPOINT = '/search_table'
@@ -210,7 +209,7 @@ def _search_dashboard(*, search_term: str, page_index: int, search_type: str) ->
     """
     Call the search service endpoint and return matching results
     Search service logic defined here:
-    TODO ttannis: Update link when amundsensearchlibrary work is merged
+    https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/api/dashboard.py
 
     :return: a json output containing search results array as 'results'
     """
@@ -229,8 +228,7 @@ def _search_dashboard(*, search_term: str, page_index: int, search_type: str) ->
 
     try:
         url_base = app.config['SEARCHSERVICE_BASE'] + SEARCH_DASHBOARD_ENDPOINT
-        # TODO ttannis: Request consistency to use f'{url_base}?query_term={search_term}&page_index={page_index}'
-        url = f'{url_base}/{search_term}&page_index={page_index}'
+        url = f'{url_base}?query_term={search_term}&page_index={page_index}'
         response = request_search(url=url)
 
         status_code = response.status_code

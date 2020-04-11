@@ -149,8 +149,8 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
         const dashboard = result as DashboardResource;
         return (
           <div className="dashboard-title">
-            <div className="title-2 dashboard-group">{dashboard.dashboard_group}</div>
-            <div className="title-2 truncated">{dashboard.dashboard_name}</div>
+            <div className="title-2 dashboard-group">{dashboard.group_name}</div>
+            <div className="title-2 truncated">{dashboard.name}</div>
           </div>
         )
       case ResourceType.table:

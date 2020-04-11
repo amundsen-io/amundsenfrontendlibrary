@@ -13,20 +13,17 @@ export interface Resource {
   type: ResourceType;
 };
 
-// TODO ttannis: Still need to update after search endpoint fixed 
 export interface DashboardResource extends Resource  {
   type: ResourceType.dashboard;
-  dashboard_group: string;
-  dashboard_name: string;
-  dashboard_group_description: string;
-  product: string;
+  cluster: string;
   description: string;
+  group_name: string;
+  group_url: string;
+  last_successful_run_timestamp: number;
+  name: string;
+  product: string;
   uri: string;
   url: string;
-  group_url: string;
-  query_names: string[];
-  cluster: string;
-  last_successful_run_timestamp: number | undefined;
 }
 
 export interface TableResource extends Resource {

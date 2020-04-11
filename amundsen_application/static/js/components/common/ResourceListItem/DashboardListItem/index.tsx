@@ -39,12 +39,12 @@ class DashboardListItem extends React.Component<DashboardListItemProps, {}> {
             <div className="resource-info-text">
               <div className="resource-name title-2">
                 <div className="dashboard-group">
-                  { dashboard.dashboard_group }
+                  { dashboard.group_name }
                 </div>
                 <div className="dashboard-name truncated">
-                  { dashboard.dashboard_name }
+                  { dashboard.name }
                 </div>
-                <BookmarkIcon bookmarkKey={ 'TODO ttannis: Add bookmarkKey' }/>
+                <BookmarkIcon bookmarkKey={ dashboard.uri }/>
               </div>
               <div className="body-secondary-3 truncated">{ dashboard.description }</div>
             </div>
