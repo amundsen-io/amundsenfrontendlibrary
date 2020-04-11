@@ -10,6 +10,7 @@ valid_search_fields = {
     'tag'
 }
 
+
 # TODO: use common
 def map_dashboard_result(result: Dict) -> Dict:
     return {
