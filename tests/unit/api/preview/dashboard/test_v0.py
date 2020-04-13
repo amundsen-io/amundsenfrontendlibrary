@@ -6,7 +6,7 @@ from http import HTTPStatus
 
 from amundsen_application import create_app
 from amundsen_application.api.preview.dashboard import v0
-from amundsen_application.dashboard_preview.base_preview import BasePreview
+from amundsen_application.base.base_preview import BasePreview
 from amundsen_application.dashboard_preview.preview_factory_method import DefaultPreviewMethodFactory,\
     BasePreviewMethodFactory
 
@@ -41,7 +41,7 @@ class TestV0(unittest.TestCase):
 
     def test_get_preview_image_not_available(self) -> None:
         mock_factory = MagicMock()
-        mock_factory.get_instance.return_value.get_preview_image.side_effect = FileNotFoundError()
+        mock_factory.get_instance.return_value.get_preview_image.side_effect = FileNotFoundError('foo')
 
         self.app.config['DASHBOARD_PREVIEW_FACTORY'] = mock_factory
         v0.initialize_preview_factory_class()

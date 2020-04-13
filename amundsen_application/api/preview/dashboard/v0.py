@@ -44,8 +44,8 @@ def get_preview_image(uri: str) -> Response:
         return send_file(io.BytesIO(preview_client.get_preview_image(uri=uri)),
                          mimetype='image/jpeg',
                          cache_timeout=app.config['DASHBOARD_PREVIEW_IMAGE_CACHE_MAX_AGE_SECONDS'])
-    except FileNotFoundError:
-        return make_response(jsonify({'msg': 'Either report or image is not available'}), HTTPStatus.NOT_FOUND)
+    except FileNotFoundError as fne:
+        return make_response(jsonify({'msg': fne.args[0]}), HTTPStatus.NOT_FOUND)
     except Exception as e:
         LOGGER.exception('Unexpected failure on get_preview_image')
         return make_response(jsonify({'msg': 'Encountered exception: ' + str(e)}), HTTPStatus.INTERNAL_SERVER_ERROR)

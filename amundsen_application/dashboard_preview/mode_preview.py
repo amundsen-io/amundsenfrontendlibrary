@@ -6,7 +6,7 @@ from flask import has_app_context, current_app as app
 from requests.auth import HTTPBasicAuth
 from retrying import retry
 
-from amundsen_application.dashboard_preview.base_preview import BasePreview
+from amundsen_application.base.base_preview import BasePreview
 
 LOGGER = logging.getLogger(__name__)
 DEFAULT_REPORT_URL_TEMPLATE = 'https://app.mode.com/api/{organization}/reports/{dashboard_id}'

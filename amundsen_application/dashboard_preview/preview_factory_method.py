@@ -1,7 +1,7 @@
 import logging
 from abc import ABCMeta, abstractmethod
 
-from amundsen_application.dashboard_preview.base_preview import BasePreview
+from amundsen_application.base.base_preview import BasePreview
 from amundsen_application.dashboard_preview.mode_preview import ModePreview
 
 LOGGER = logging.getLogger(__name__)
