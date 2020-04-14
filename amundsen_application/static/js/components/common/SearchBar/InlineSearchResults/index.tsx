@@ -100,7 +100,7 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
     switch (resourceType) {
       case ResourceType.dashboard:
         const dashboard = result as DashboardResource;
-        return `/dashboard/${dashboard.uri}?${logParams}`;
+        return `/dashboard?uri=${dashboard.uri}&${logParams}`;
       case ResourceType.table:
         const table = result as TableResource;
         return `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}?${logParams}`;

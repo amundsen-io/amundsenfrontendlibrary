@@ -188,7 +188,7 @@ describe('InlineSearchResults', () => {
       const index = 0;
       const givenDashboard = props.dashboards.results[index];
       const output = wrapper.instance().getSuggestedResultHref(ResourceType.dashboard, givenDashboard, index);
-      expect(output).toEqual(`/dashboard/${givenDashboard.uri}?source=inline_search&index=${index}`);
+      expect(output).toEqual(`/dashboard?uri=${givenDashboard.uri}&source=inline_search&index=${index}`);
     });
     it('returns the correct href for ResourceType.table', () => {
       const index = 0;

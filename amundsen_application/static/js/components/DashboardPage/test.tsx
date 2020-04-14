@@ -45,7 +45,7 @@ describe('DashboardPage', () => {
         query_names: [],
         tables: [],
         tags: [],
-        },
+      },
       getDashboard: jest.fn(),
       ...routerProps,
       ...propOverrides,

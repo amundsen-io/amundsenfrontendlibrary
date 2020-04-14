@@ -26,12 +26,32 @@ export function getDashboardSuccess(dashboard) {
   }
 }
 
+export function getDashboardPreview(payload: { uri: string }): any {
+  return {
+    payload,
+    type: 'GETPREVIEW',
+  }
+}
+
+export function setDashboardPreview(payload: any): any {
+  return {
+    payload,
+    type: 'SETPREVIEW',
+  }
+}
+
 
 /* Reducer */
 
 export interface DashboardReducerState {
   isLoading: boolean;
   dashboard: Dashboard;
+  preview: {
+    url: string;
+    errorMessage?: string;
+    errorCode?: number;
+    isLoading: boolean;
+  }
 }
 
 export const initialDashboardState: Dashboard = {
@@ -57,6 +77,10 @@ export const initialDashboardState: Dashboard = {
 export const initialState: DashboardReducerState = {
   isLoading: true,
   dashboard: initialDashboardState,
+  preview: {
+    url: '',
+    isLoading: true,
+  }
 };
 
 export default function reducer(state: DashboardReducerState = initialState, action): DashboardReducerState {
@@ -77,6 +101,22 @@ export default function reducer(state: DashboardReducerState = initialState, act
         ...state,
         isLoading: false,
         dashboard: action.payload.dashboard,
+      };
+    case 'GETPREVIEW':
+      return {
+        ...state,
+        preview: {
+          url: '',
+          isLoading: true,
+        }
+      };
+    case 'SETPREVIEW':
+      return {
+        ...state,
+        preview: {
+          ...action.payload,
+          isLoading: false,
+        }
       };
     default:
       return state;
