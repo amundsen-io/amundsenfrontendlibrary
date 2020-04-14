@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { RouteComponentProps } from 'react-router';
 import * as qs from 'simple-query-string';
 
@@ -18,6 +19,8 @@ import { logClick } from 'ducks/utilMethods';
 import { Dashboard } from 'interfaces/Dashboard';
 import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
+import { formatDateTimeShort } from '../../utils/dateUtils';
+import ResourceList from 'components/common/ResourceList';
 
 export interface RouteProps {
   uri: string;
@@ -57,6 +60,18 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
   renderTabs() {
     const tabInfo = [
       {
+        content:
+          (
+            <ResourceList
+              allItems={ this.props.dashboard.tables }
+              paginate={ false }
+              source={ "dashboard" }
+            />
+          ),
+        key: 'tables',
+        title: 'Tables',
+      },
+      {
         content: <ChartList charts={ this.props.dashboard.chart_names }/>,
         key: 'charts',
         title: 'Charts',
@@ -66,13 +81,8 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
         key: 'queries',
         title: 'Queries',
       },
-      {
-        content: <span>Tables</span>,
-        key: 'tables',
-        title: 'Tables',
-      }
     ];
-    return <TabsComponent tabs={ tabInfo } defaultTab={ "charts" } />;
+    return <TabsComponent tabs={ tabInfo } defaultTab={ "tables" } />;
   }
 
   render() {
@@ -113,28 +123,44 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
         </header>
         <main className="column-layout-1">
           <section className="left-panel">
-            <EditableSection title="Description">
+            <div className="section-title title-3">Description</div>
+            <div>
               { dashboard.description }
-            </EditableSection>
+            </div>
             <section className="column-layout-2">
-                <section className="left-panel">
-                  <div className="section-title title-3">Frequent Users</div>
-                  <FrequentUsers readers={ dashboard.frequent_users }/>
-                </section>
-                <section className="right-panel">
-                  <div className="section-title title-3">Owners</div>
-                  <div>
-                    {
-                      // TODO - OwnerEditor only supports tables
-                      dashboard.owners.map(owner =>
+              <section className="left-panel">
+                <div className="section-title title-3">Created</div>
+                <div>
+                  { formatDateTimeShort({ epochTimestamp: dashboard.created_timestamp}) }
+                </div>
+                <div className="section-title title-3">Owners</div>
+                <div>
+                  {
+                    dashboard.owners.map(owner =>
+                      <Link
+                        key={owner.user_id}
+                        to={`/user/${owner.user_id}`}>
                         <AvatarLabel
-                          key={owner.user_id}
-                          label={owner.display_name}
-                          src={`/user/${owner.user_id}`} />
-                      )
-                    }
-                  </div>
-                </section>
+                          label={owner.display_name}/>
+                      </Link>
+                    )
+                  }
+                </div>
+              </section>
+              <section className="right-panel">
+
+                <div className="section-title title-3">Last Run</div>
+                <div>
+                  { formatDateTimeShort({ epochTimestamp: dashboard.last_run_timestamp }) }
+                  <br/>
+                  { dashboard.last_run_state }
+                </div>
+
+                <div className="section-title title-3">Last Successful Run</div>
+                <div>
+                  { formatDateTimeShort({ epochTimestamp: dashboard.last_successful_run_timestamp }) }
+                </div>
+              </section>
             </section>
           </section>
           <section className="right-panel">

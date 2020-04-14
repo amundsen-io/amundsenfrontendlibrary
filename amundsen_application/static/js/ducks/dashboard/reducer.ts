@@ -35,23 +35,25 @@ export interface DashboardReducerState {
 }
 
 export const initialDashboardState: Dashboard = {
-  uri: '',
-  cluster: '',
-  group_name: '',
-  group_url: '',
-  name: '',
-  url: '',
-  description: '',
-  created_timestamp: null,
-  updated_timestamp: null,
-  last_run_timestamp: null,
-  last_run_state: '',
-  owners: [],
-  frequent_users: [],
+  badges: [],
   chart_names: [],
+  cluster: "",
+  created_timestamp: null,
+  description: "",
+  frequent_users: [],
+  group_name: "",
+  group_url: "",
+  last_run_state: "",
+  last_run_timestamp: null,
+  last_successful_run_timestamp: null,
+  name: "",
+  owners: [],
   query_names: [],
   tables: [],
   tags: [],
+  updated_timestamp: null,
+  uri: "",
+  url: "",
 };
 
 export const initialState: DashboardReducerState = {

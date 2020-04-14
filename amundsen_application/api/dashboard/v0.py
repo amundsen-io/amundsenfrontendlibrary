@@ -1,11 +1,12 @@
 import logging
-import time
-from http import HTTPStatus
 
 from flask import Response, jsonify, make_response, request
+from flask import current_app as app
 from flask.blueprints import Blueprint
 
 from amundsen_application.log.action_log import action_logging
+from amundsen_application.api.utils.request_utils import get_query_param, request_metadata
+from amundsen_application.api.utils.metadata_utils import marshall_dashboard_full
 
 LOGGER = logging.getLogger(__name__)
 
@@ -28,40 +29,11 @@ def get_dashboard() -> Response:
     source = request.args.get('source', None)
     _get_dashboard(uri=uri, index=index, source=source)
 
-    results_dict = {
-        'dashboard': {
-            'uri': uri or 'hello',
-            'cluster': 'cluster',
-            'group_name': 'google group',
-            'group_url': 'https://google.com',
-            'name': 'lmgtfy dashboard',
-            'url': 'https://lmgtfy.com/?q=dashboard',
-            'description': 'test description',
-            'created_timestamp': 1582153297,
-            'updated_timestamp': 1582153297,
-            'last_run_timestamp': 1582153297,
-            'last_run_state': 'state',
-            'owners': [{
-                    'email': 'dwon@lyft.com',
-                    'display_name': 'Daniel Won',
-                    'profile_url': '',
-                    'user_id': 'dwon@lyft.com',
-            }],
-            'frequent_users': [{
-                'read_count': 10,
-                'user': {
-                    'email': 'dwon@lyft.com',
-                    'display_name': 'Daniel Won',
-                    'profile_url': '',
-                    'user_id': 'dwon@lyft.com',
-                }
-            }],
-            'chart_names': ['chart name 1', 'chart number 2', 'chart three'],
-            'query_names': ['query number 1', 'query number 2', 'query three'],
-            'tables': [],
-            'tags': [],
-        },
-        'msg': '',
-    }
-    time.sleep(1)
-    return make_response(jsonify(results_dict), HTTPStatus.OK)
+    url = '{0}{1}/{2}'.format(app.config['METADATASERVICE_BASE'],
+                                   DASHBOARD_ENDPOINT,
+                                   uri)
+
+    response = request_metadata(url=url, method=request.method)
+    dashboards = marshall_dashboard_full(response.json())
+    status_code = response.status_code
+    return make_response(jsonify({'msg': 'success', 'dashboard': dashboards}), status_code)
