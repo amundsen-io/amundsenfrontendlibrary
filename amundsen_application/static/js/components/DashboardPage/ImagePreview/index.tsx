@@ -7,6 +7,7 @@ import { GlobalState } from 'ducks/rootReducer';
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
 
+import * as Constants from './constants';
 import './styles.scss';
 
 export interface OwnProps {
@@ -59,7 +60,7 @@ export class ImagePreview extends React.Component<ImagePreviewProps, {}> {
 export const mapStateToProps = (state: GlobalState) => {
   return {
     url: state.dashboard.preview.url,
-    errorMessage: state.dashboard.preview.errorMessage || '',
+    errorMessage: state.dashboard.preview.errorMessage || Constants.DEFAULT_ERROR_MESSAGE,
     errorCode: state.dashboard.preview.errorCode || undefined,
     isLoading: state.dashboard.preview.isLoading,
   };

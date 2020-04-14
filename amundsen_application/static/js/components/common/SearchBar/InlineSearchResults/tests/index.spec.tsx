@@ -170,7 +170,7 @@ describe('InlineSearchResults', () => {
         expect(result.href).toEqual(mockHref);
         expect(result.iconClass).toEqual(mockClass);
         expect(result.subtitle).toEqual(mockSubtitle);
-        expect(result.title).toEqual(mockTitle);
+        expect(result.titleNode).toEqual(mockTitle);
         expect(result.type).toEqual(mockType);
       });
     });
