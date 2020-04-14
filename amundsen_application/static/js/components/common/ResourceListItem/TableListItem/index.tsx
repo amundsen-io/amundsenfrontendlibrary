@@ -8,7 +8,6 @@ import { TableResource } from 'interfaces';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 
 import { getDatabaseDisplayName, getDatabaseIconClass } from 'config/config-utils';
-import { formatDate } from 'utils/dateUtils';
 import BadgeList from 'components/common/BadgeList';
 
 export interface TableListItemProps {
