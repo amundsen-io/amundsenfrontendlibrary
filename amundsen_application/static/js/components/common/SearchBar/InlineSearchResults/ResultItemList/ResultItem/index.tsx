@@ -7,7 +7,7 @@ export interface ResultItemProps {
   iconClass: string;
   onItemSelect: (event: MouseEvent) => void;
   subtitle: string;
-  title: string;
+  title: React.ReactNode;
   type: string;
 }
 
@@ -19,7 +19,7 @@ const ResultItem: React.SFC<ResultItemProps> = ({ href, iconClass, id, onItemSel
 
         <div className="result-info">
           <div className="truncated">
-            <div className="title-2 truncated">{ title }</div>
+            { title }
             <div className="body-secondary-3 truncated">{ subtitle }</div>
           </div>
         </div>

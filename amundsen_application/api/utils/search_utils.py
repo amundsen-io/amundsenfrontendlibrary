@@ -12,14 +12,19 @@ valid_search_fields = {
 }
 
 
+# TODO: use common
 def map_dashboard_result(result: Dict) -> Dict:
-    # TODO ttannis: Need the dashboard_uri/key. Update when we know what this is supposed to be
     return {
         'type': 'dashboard',
-        'dashboard_group': result.get('dashboard_group', None),
-        'dashboard_name': result.get('dashboard_name', None),
-        'dashboard_group_description': result.get('dashboard_group_description', None),
-        'product': result.get('product', None),
+        'cluster': result.get('cluster', ''),
+        'description': result.get('description', ''),
+        'group_name': result.get('group_name', ''),
+        'group_url': result.get('group_url', ''),
+        'last_successful_run_timestamp': result.get('last_successful_run_timestamp', None),
+        'name': result.get('name', ''),
+        'product': result.get('product', ''),
+        'uri': result.get('uri', ''),
+        'url': result.get('url', ''),
     }
 
 

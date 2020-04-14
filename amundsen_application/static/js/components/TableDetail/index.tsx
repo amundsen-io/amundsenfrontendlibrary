@@ -29,11 +29,11 @@ import TableIssues from 'components/TableDetail/TableIssues';
 import WatermarkLabel from 'components/TableDetail/WatermarkLabel';
 import WriterLink from 'components/TableDetail/WriterLink';
 import TagInput from 'components/Tags/TagInput';
-import {TableMetadata} from 'interfaces/TableMetadata';
+import { ResourceType, TableMetadata} from 'interfaces';
 
 import { EditableSection } from 'components/TableDetail/EditableSection';
 
-import { getDatabaseIconClass, issueTrackingEnabled, notificationsEnabled } from 'config/config-utils';
+import { getSourceIconClass, issueTrackingEnabled, notificationsEnabled } from 'config/config-utils';
 
 import { formatDateTimeShort } from 'utils/dateUtils';
 
@@ -136,7 +136,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
           <header className="resource-header">
             <div className="header-section">
               <Breadcrumb />
-              <img className={"icon icon-header " + getDatabaseIconClass(data.database)} />
+              <img className={"icon icon-header " + getSourceIconClass(data.database, ResourceType.table)} />
             </div>
             <div className="header-section header-title">
               <h3 className="header-title-text truncated">

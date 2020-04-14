@@ -318,35 +318,55 @@ class SearchDashboard(unittest.TestCase):
             'total_results': 2,
             'results': [
                 {
-                    'dashboard_group': 'Amundsen Team',
-                    'dashboard_name': 'Amundsen Metrics Dashboard1',
-                    'dashboard_group_description': 'I am a dashboard1',
+                    'group_name': 'Amundsen Team',
+                    'group_url': 'product_dashboard://cluster.group',
+                    'name': 'Amundsen Metrics Dashboard',
                     'product': 'mode',
+                    'description': 'I am a dashboard',
+                    'uri': 'product_dashboard://cluster.group/name',
+                    'url': 'product/name',
+                    'cluster': 'cluster',
+                    'last_successful_run_timestamp': 1585062593,
                     'total_usage': 1
                 },
                 {
-                    'dashboard_group': 'Amundsen Team',
-                    'dashboard_name': 'Amundsen Metrics Dashboard2',
-                    'dashboard_group_description': 'I am a dashboard2',
+                    'group_name': 'Amundsen Team',
+                    'group_url': 'product_dashboard://cluster.group',
+                    'name': 'Amundsen Metrics Dashboard1',
                     'product': 'mode',
+                    'description': 'I am a second dashboard',
+                    'uri': 'product_dashboard://cluster.group/name2',
+                    'url': 'product/name',
+                    'cluster': 'cluster',
+                    'last_successful_run_timestamp': 1585062593,
                     'total_usage': 1
                 },
             ]
         }
         self.expected_parsed_results = [
             {
-                'dashboard_group': 'Amundsen Team',
-                'dashboard_name': 'Amundsen Metrics Dashboard1',
-                'dashboard_group_description': 'I am a dashboard1',
+                'cluster': 'cluster',
+                'description': 'I am a dashboard',
+                'group_name': 'Amundsen Team',
+                'group_url': 'product_dashboard://cluster.group',
+                'last_successful_run_timestamp': 1585062593,
+                'name': 'Amundsen Metrics Dashboard',
                 'product': 'mode',
                 'type': 'dashboard',
+                'uri': 'product_dashboard://cluster.group/name',
+                'url': 'product/name'
             },
             {
-                'dashboard_group': 'Amundsen Team',
-                'dashboard_name': 'Amundsen Metrics Dashboard2',
-                'dashboard_group_description': 'I am a dashboard2',
+                'cluster': 'cluster',
+                'description': 'I am a second dashboard',
+                'group_name': 'Amundsen Team',
+                'group_url': 'product_dashboard://cluster.group',
+                'last_successful_run_timestamp': 1585062593,
+                'name': 'Amundsen Metrics Dashboard1',
                 'product': 'mode',
                 'type': 'dashboard',
+                'uri': 'product_dashboard://cluster.group/name2',
+                'url': 'product/name'
             },
         ]
         self.search_service_url = local_app.config['SEARCHSERVICE_BASE'] + SEARCH_DASHBOARD_ENDPOINT
@@ -393,41 +413,40 @@ class SearchDashboard(unittest.TestCase):
                                                      search_term=test_term,
                                                      search_type=test_search_type)
 
-    # TODO ttannis: Update tests after endpoint modified, trailing slash could be causing problem mocking connection
-    # @responses.activate
-    # def test_request_success(self) -> None:
-    #     """
-    #     Test that the response contains the expected data and status code on success
-    #     :return:
-    #     """
-    #     print(self.search_service_url)
-    #     responses.add(responses.GET,
-    #                   self.search_service_url,
-    #                   json=self.mock_results,
-    #                   status=HTTPStatus.OK)
-    #
-    #     with local_app.test_client() as test:
-    #         response = test.get(self.fe_flask_endpoint, query_string=dict(query='hello', page_index='0'))
-    #         data = json.loads(response.data)
-    #         self.assertEqual(response.status_code, HTTPStatus.OK)
-    #
-    #         results = data.get('dashboards')
-    #         self.assertEqual(results.get('total_results'), self.mock_results.get('total_results'))
-    #         self.assertEqual(results.get('results'), self.expected_parsed_results)
-    #
-    # @responses.activate
-    # def test_request_fail(self) -> None:
-    #     """
-    #     Test that the response containes the failure status code from the search service on failure
-    #     :return:
-    #     """
-    #     responses.add(responses.GET,
-    #                   self.search_service_url,
-    #                   json=self.mock_results,
-    #                   status=HTTPStatus.BAD_REQUEST)
-    #
-    #     with local_app.test_client() as test:
-    #         response = test.get(self.fe_flask_endpoint, query_string=dict(query='hello', page_index='1'))
-    #         data = json.loads(response.data)
-    #         self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
-    #         self.assertEqual(data.get('msg'), 'Encountered error: Search request failed')
+    @responses.activate
+    def test_request_success(self) -> None:
+        """
+        Test that the response contains the expected data and status code on success
+        :return:
+        """
+        responses.add(responses.GET,
+                      self.search_service_url,
+                      json=self.mock_results,
+                      status=HTTPStatus.OK)
+
+        with local_app.test_client() as test:
+            response = test.get(self.fe_flask_endpoint, query_string=dict(query='hello', page_index='0'))
+            data = json.loads(response.data)
+            self.assertEqual(response.status_code, HTTPStatus.OK)
+
+            results = data.get('dashboards')
+            print(results.get('results'))
+            self.assertEqual(results.get('total_results'), self.mock_results.get('total_results'))
+            self.assertEqual(results.get('results'), self.expected_parsed_results)
+
+    @responses.activate
+    def test_request_fail(self) -> None:
+        """
+        Test that the response containes the failure status code from the search service on failure
+        :return:
+        """
+        responses.add(responses.GET,
+                      self.search_service_url,
+                      json=self.mock_results,
+                      status=HTTPStatus.BAD_REQUEST)
+
+        with local_app.test_client() as test:
+            response = test.get(self.fe_flask_endpoint, query_string=dict(query='hello', page_index='1'))
+            data = json.loads(response.data)
+            self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+            self.assertEqual(data.get('msg'), 'Encountered error: Search request failed')

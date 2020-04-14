@@ -65,7 +65,7 @@ img.icon {
     -webkit-mask-image: url('/static/images/icons/DataQualityWarning.svg');
     mask-image: url('/static/images/icons/DataQualityWarning.svg');
   }
-  
+
   &.icon-dashboard {
     -webkit-mask-image: url('/static/images/icons/dashboard.svg');
     mask-image: url('/static/images/icons/dashboard.svg');
@@ -109,6 +109,11 @@ img.icon {
   &.icon-mail {
     -webkit-mask-image: url('/static/images/icons/mail.svg');
     mask-image: url('/static/images/icons/mail.svg');
+  }
+
+  &.icon-mode {
+    content: url('/static/images/icons/logo-mode.svg');
+    background-color: transparent;
   }
 
   &.icon-plus {

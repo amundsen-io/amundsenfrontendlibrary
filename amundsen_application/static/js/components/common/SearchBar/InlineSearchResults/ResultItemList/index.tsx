@@ -12,7 +12,7 @@ export interface ResultItemListProps {
   resourceType: ResourceType;
   searchTerm: string;
   suggestedResults: SuggestedResult[];
-  title: string;
+  title: React.ReactNode;
   totalResults: number;
 }
 
