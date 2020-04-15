@@ -61,7 +61,7 @@ export const mapStateToProps = (state: GlobalState) => {
   return {
     url: state.dashboard.preview.url,
     errorMessage: state.dashboard.preview.errorMessage || Constants.DEFAULT_ERROR_MESSAGE,
-    errorCode: state.dashboard.preview.errorCode || undefined,
+    errorCode: state.dashboard.preview.errorCode,
     isLoading: state.dashboard.preview.isLoading,
   };
 };
