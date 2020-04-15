@@ -1,4 +1,11 @@
-import { GetDashboard, GetDashboardRequest } from 'ducks/dashboard/types';
+import {
+  GetDashboard,
+  GetDashboardRequest,
+  GetDashboardPreview,
+  GetDashboardPreviewRequest,
+  GetDashboardPreviewResponse,
+  DashboardPreviewResponse,
+} from 'ducks/dashboard/types';
 import { Dashboard } from 'interfaces/Dashboard';
 
 
@@ -26,32 +33,29 @@ export function getDashboardSuccess(dashboard) {
   }
 }
 
-export function getDashboardPreview(payload: { uri: string }): any {
+export function getDashboardPreview(payload: { uri: string }): GetDashboardPreviewRequest {
   return {
     payload,
-    type: 'GETPREVIEW',
+    type: GetDashboardPreview.REQUEST,
   }
 }
 
-export function setDashboardPreview(payload: any): any {
+export function setDashboardPreview(payload: DashboardPreviewResponse): GetDashboardPreviewResponse {
   return {
     payload,
-    type: 'SETPREVIEW',
+    type: GetDashboardPreview.RESPONSE,
   }
 }
 
 
 /* Reducer */
-
+interface DashboardPreviewState extends DashboardPreviewResponse {
+  isLoading: boolean;
+}
 export interface DashboardReducerState {
   isLoading: boolean;
   dashboard: Dashboard;
-  preview: {
-    url: string;
-    errorMessage?: string;
-    errorCode?: number;
-    isLoading: boolean;
-  }
+  preview: DashboardPreviewState;
 }
 
 export const initialDashboardState: Dashboard = {
@@ -102,7 +106,7 @@ export default function reducer(state: DashboardReducerState = initialState, act
         isLoading: false,
         dashboard: action.payload.dashboard,
       };
-    case 'GETPREVIEW':
+    case GetDashboardPreview.REQUEST:
       return {
         ...state,
         preview: {
@@ -110,7 +114,7 @@ export default function reducer(state: DashboardReducerState = initialState, act
           isLoading: true,
         }
       };
-    case 'SETPREVIEW':
+    case GetDashboardPreview.RESPONSE:
       return {
         ...state,
         preview: {

@@ -4,5 +4,9 @@
   .image-preview {
     margin-top: $spacer-3;
     min-height: -webkit-fill-available;
+
+    img {
+      margin-bottom: $spacer-3;
+    }
   }
 }

@@ -1,5 +1,6 @@
-import axios, { AxiosResponse, AxiosPromise } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
+import { DashboardPreviewResponse } from 'ducks/dashboard/types';
 import { Dashboard } from 'interfaces/Dashboard';
 
 export type GetDashboardAPI = {
@@ -7,11 +8,6 @@ export type GetDashboardAPI = {
   dashboard: Dashboard;
 }
 
-export type DashboardPreviewResponse = {
-  url: string;
-  errorMessage?: string;
-  errorCode?: number;
-}
 
 const DASHBOARD_BASE = '/api/dashboard/v0';
 const DASHBOARD_PREVIEW_BASE = '/api/dashboard_preview/v0/dashboard'
@@ -33,7 +29,7 @@ export function getDashboardPreview(uri: string): Promise<DashboardPreviewRespon
   })
   .catch((e) => {
     const response = e.response;
-    const errorMessage = response ? (response.data ? response.data.msg : '') : '';
+    const errorMessage = response ? (response.data ? response.data.msg : undefined) : undefined;
     const errorCode = response ? (response.status || 500) : 500;
     return Promise.reject({
       errorCode,
