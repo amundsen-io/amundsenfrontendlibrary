@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { getDashboardPreview } from 'ducks/dashboard/reducer';
+import { GetDashboardPreviewRequest } from 'ducks/dashboard/types';
 import { GlobalState } from 'ducks/rootReducer';
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
@@ -22,7 +23,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  getPreviewImage: (payload: { uri: string }) => any; // TODO ttannis: Update this
+  getPreviewImage: (payload: { uri: string }) => GetDashboardPreviewRequest
 }
 
 export type ImagePreviewProps = StateFromProps & DispatchFromProps & OwnProps;

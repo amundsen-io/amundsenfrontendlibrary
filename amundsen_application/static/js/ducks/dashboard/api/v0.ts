@@ -8,9 +8,8 @@ export type GetDashboardAPI = {
   dashboard: Dashboard;
 }
 
-
 const DASHBOARD_BASE = '/api/dashboard/v0';
-const DASHBOARD_PREVIEW_BASE = '/api/dashboard_preview/v0/dashboard'
+export const DASHBOARD_PREVIEW_BASE = '/api/dashboard_preview/v0/dashboard'
 
 export function getDashboard(uri: string) {
   return axios.get(`${DASHBOARD_BASE}/dashboard?uri=${uri}`)
