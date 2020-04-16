@@ -54,6 +54,7 @@ const globalState: GlobalState = {
   // TODO - move dashboard to separate fixture
   dashboard: {
     isLoading: false,
+    statusCode: 200,
     dashboard: {
       badges: [],
       chart_names: [],
@@ -69,6 +70,7 @@ const globalState: GlobalState = {
       name: "",
       owners: [],
       query_names: [],
+      recent_view_count: 10,
       tables: [],
       tags: [],
       updated_timestamp: null,

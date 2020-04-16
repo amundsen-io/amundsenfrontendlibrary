@@ -123,7 +123,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
       innerContent = (
         <div className="container error-label">
           <Breadcrumb />
-          <label className="d-block m-auto">Something went wrong...</label>
+          <label>Something went wrong...</label>
         </div>
       );
     } else {

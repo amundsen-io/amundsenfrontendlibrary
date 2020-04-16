@@ -1,5 +1,5 @@
 import logging
-
+from http import HTTPStatus
 from flask import Response, jsonify, make_response, request
 from flask import current_app as app
 from flask.blueprints import Blueprint
@@ -24,16 +24,21 @@ def get_dashboard() -> Response:
     def _get_dashboard(*, uri: str, index: int, source: str) -> None:
         pass  # pragma: no cover
 
-    uri = request.args.get('uri', None)
-    index = request.args.get('index', None)
-    source = request.args.get('source', None)
-    _get_dashboard(uri=uri, index=index, source=source)
+    try:
+        uri = get_query_param(request.args, 'uri')
+        index = request.args.get('index', None)
+        source = request.args.get('source', None)
+        _get_dashboard(uri=uri, index=index, source=source)
 
-    url = '{0}{1}/{2}'.format(app.config['METADATASERVICE_BASE'],
-                                   DASHBOARD_ENDPOINT,
-                                   uri)
+        url = '{0}{1}/{2}'.format(app.config['METADATASERVICE_BASE'],
+                                  DASHBOARD_ENDPOINT,
+                                  uri)
 
-    response = request_metadata(url=url, method=request.method)
-    dashboards = marshall_dashboard_full(response.json())
-    status_code = response.status_code
-    return make_response(jsonify({'msg': 'success', 'dashboard': dashboards}), status_code)
+        response = request_metadata(url=url, method=request.method)
+        dashboards = marshall_dashboard_full(response.json())
+        status_code = response.status_code
+        return make_response(jsonify({'msg': 'success', 'dashboard': dashboards}), status_code)
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        return make_response(jsonify({'tableData': {}, 'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)

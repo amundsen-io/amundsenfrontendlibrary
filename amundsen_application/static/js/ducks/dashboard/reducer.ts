@@ -21,14 +21,20 @@ export function getDashboard(payload: { uri: string, searchIndex?: string, sourc
 export function getDashboardFailure() {
   return {
     type: GetDashboard.FAILURE,
-    payload: {}
+    payload: {
+      isLoading: false,
+      statusCode: 500,
+      dashboard: initialDashboardState,
+    }
   }
 }
-export function getDashboardSuccess(dashboard) {
+export function getDashboardSuccess(dashboard, statusCode: number) {
   return {
     type: GetDashboard.SUCCESS,
     payload: {
+      statusCode,
       dashboard,
+      isLoading: false,
     }
   }
 }
@@ -54,6 +60,7 @@ interface DashboardPreviewState extends DashboardPreviewResponse {
 }
 export interface DashboardReducerState {
   isLoading: boolean;
+  statusCode: number;
   dashboard: Dashboard;
   preview: DashboardPreviewState;
 }
@@ -73,6 +80,7 @@ export const initialDashboardState: Dashboard = {
   name: "",
   owners: [],
   query_names: [],
+  recent_view_count: null,
   tables: [],
   tags: [],
   updated_timestamp: null,
@@ -82,6 +90,7 @@ export const initialDashboardState: Dashboard = {
 
 export const initialState: DashboardReducerState = {
   isLoading: true,
+  statusCode: null,
   dashboard: initialDashboardState,
   preview: {
     url: '',
@@ -94,18 +103,21 @@ export default function reducer(state: DashboardReducerState = initialState, act
     case GetDashboard.REQUEST:
       return {
         ...state,
+        statusCode: null,
         isLoading: true,
       };
     case GetDashboard.FAILURE:
       return {
         ...state,
         isLoading: false,
-        dashboard: initialDashboardState,
+        statusCode: action.payload.statusCode,
+        dashboard: action.payload.dashboard,
       };
     case GetDashboard.SUCCESS:
       return {
         ...state,
         isLoading: false,
+        statusCode: action.payload.statusCode,
         dashboard: action.payload.dashboard,
       };
     case GetDashboardPreview.REQUEST:

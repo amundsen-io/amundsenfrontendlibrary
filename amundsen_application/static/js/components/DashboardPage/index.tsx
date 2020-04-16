@@ -9,8 +9,6 @@ import AvatarLabel from 'components/common/AvatarLabel';
 import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import { EditableSection } from 'components/TableDetail/EditableSection';
-import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import TabsComponent from 'components/common/TabsComponent';
 import { getDashboard } from 'ducks/dashboard/reducer';
 import { GetDashboardRequest } from 'ducks/dashboard/types';
@@ -22,6 +20,7 @@ import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
 import { formatDateTimeShort } from '../../utils/dateUtils';
 import ResourceList from 'components/common/ResourceList';
+import { DASHBOARD_SOURCE, TABLES_PER_PAGE } from 'components/DashboardPage/constants';
 
 import { ResourceType } from 'interfaces';
 
@@ -37,6 +36,7 @@ interface DashboardPageState {
 
 export interface StateFromProps {
   isLoading: boolean;
+  statusCode: number;
   dashboard: Dashboard;
 }
 
@@ -69,8 +69,9 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
           (
             <ResourceList
               allItems={ this.props.dashboard.tables }
+              itemsPerPage={ TABLES_PER_PAGE }
               paginate={ false }
-              source={ "dashboard" }
+              source={ DASHBOARD_SOURCE }
             />
           ),
         key: 'tables',
@@ -95,6 +96,14 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
 
     if (isLoading) {
       return <LoadingSpinner/>;
+    }
+    if (this.props.statusCode === 500) {
+      return (
+        <div className="container error-label">
+          <Breadcrumb />
+          <label>Something went wrong...</label>
+        </div>
+      );
     }
 
     return (
@@ -151,6 +160,10 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                     )
                   }
                 </div>
+                <div className="section-title title-3">Recent View Count</div>
+                <div>
+                  { dashboard.recent_view_count }
+                </div>
               </section>
               <section className="right-panel">
 
@@ -181,6 +194,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
 export const mapStateToProps = (state: GlobalState) => {
   return {
     isLoading: state.dashboard.isLoading,
+    statusCode: state.dashboard.statusCode,
     dashboard: state.dashboard.dashboard,
   };
 };
