@@ -17,19 +17,39 @@ const globalState: GlobalState = {
       }],
   },
   bookmarks: {
-    myBookmarks: [
-      {
-        key: 'bookmarked_key',
-        type: ResourceType.table,
-        cluster: 'cluster',
-        database: 'database',
-        description: 'description',
-        name: 'name',
-        schema: 'schema',
-      },
-    ],
+    myBookmarks: {
+      [ResourceType.table]: [
+        {
+          key: 'bookmarked_key',
+          type: ResourceType.table,
+          cluster: 'cluster',
+          database: 'database',
+          description: 'description',
+          name: 'name',
+          schema: 'schema',
+        },
+      ],
+      [ResourceType.dashboard]: [
+        {
+          key: 'product_dashboard://cluster.group/name',
+          group_name: 'Amundsen Team',
+          group_url: 'product/group',
+          name: 'Amundsen Metrics Dashboard1',
+          product: 'mode',
+          type: ResourceType.dashboard,
+          description: 'I am a dashboard',
+          uri: 'product_dashboard://cluster.group/name',
+          url: 'product/name',
+          cluster: 'cluster',
+          last_successful_run_timestamp: 1585062593
+        },
+      ],
+    },
     myBookmarksIsLoaded: false,
-    bookmarksForUser: [],
+    bookmarksForUser: {
+      [ResourceType.table]: [],
+      [ResourceType.dashboard]: [],
+    },
   },
   // TODO - move dashboard to separate fixture
   dashboard: {

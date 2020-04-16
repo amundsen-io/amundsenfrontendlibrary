@@ -44,10 +44,11 @@ interface ResourceRelation {
 }
 interface StateFromProps {
   user: PeopleUser;
-  resourceRelations: {
-    [ResourceType.table]: ResourceRelation;
-    [ResourceType.dashboard]: ResourceRelation;
-  }
+  resourceRelations: any; // TODO ttannis: FIX THIS
+  // resourceRelations: {
+  //   [ResourceType.table]: ResourceRelation;
+  //   [ResourceType.dashboard]: ResourceRelation;
+  // }
 }
 
 interface DispatchFromProps {
@@ -261,12 +262,12 @@ export const mapStateToProps = (state: GlobalState) => {
     user: state.user.profile.user,
     resourceRelations: {
       [ResourceType.table]: {
-        bookmarks: state.bookmarks.bookmarksForUser,
+        bookmarks: state.bookmarks.bookmarksForUser[ResourceType.table],
         own: state.user.profile.own,
         read: state.user.profile.read,
       },
       [ResourceType.dashboard]: {
-        bookmarks: [],
+        bookmarks: state.bookmarks.bookmarksForUser[ResourceType.dashboard],
         own: [],
         read: [],
       }

@@ -93,10 +93,11 @@ export class MyBookmarks extends React.Component<MyBookmarksProps> {
 
 export const mapStateToProps = (state: GlobalState) => {
   return {
-    myBookmarks: {
+    /*myBookmarks: {
       [ResourceType.table]: state.bookmarks.myBookmarks,
       [ResourceType.dashboard]: [],
-    },
+    },*/
+    myBookmarks: state.bookmarks.myBookmarks,
     isLoaded: state.bookmarks.myBookmarksIsLoaded,
   };
 };

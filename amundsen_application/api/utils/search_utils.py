@@ -25,6 +25,9 @@ def map_dashboard_result(result: Dict) -> Dict:
         'product': result.get('product', ''),
         'uri': result.get('uri', ''),
         'url': result.get('url', ''),
+        # TODO: Bookmark logic relies on key, opting to add this here to avoid messy logic in
+        # React app and we have to clean up later.
+        'key': result.get('uri', ''),
     }
 
 

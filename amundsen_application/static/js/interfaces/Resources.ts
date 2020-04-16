@@ -24,6 +24,8 @@ export interface DashboardResource extends Resource  {
   product: string;
   uri: string;
   url: string;
+  // Bookmark logic is cleaner if all resources can settle on either "key" or "uri"
+  key?: string;
 }
 
 export interface TableResource extends Resource {
@@ -44,4 +46,4 @@ export interface UserResource extends Resource, PeopleUser {
 }
 
 // TODO - Consider just using the 'Resource' type instead
-export type Bookmark = TableResource & {};
+export type Bookmark = TableResource | DashboardResource;

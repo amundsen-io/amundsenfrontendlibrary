@@ -44,7 +44,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
                 <div className="truncated">
                   { `${table.schema}.${table.name}`}
                 </div>
-                <BookmarkIcon bookmarkKey={ this.props.table.key }/>
+                <BookmarkIcon bookmarkKey={ table.key } resourceType={ table.type } />
               </div>
               <div className="body-secondary-3 truncated">{ table.description }</div>
             </div>

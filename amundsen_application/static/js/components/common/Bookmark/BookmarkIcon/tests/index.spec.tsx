@@ -1,4 +1,4 @@
-import * as React from 'react';
+/*import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
@@ -111,4 +111,4 @@ describe('mapStateToProps', () => {
     const result = mapStateToProps(globalState, ownProps);
     expect(result.isBookmarked).toBe(true);
   });
-});
+});*/

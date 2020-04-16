@@ -19,6 +19,8 @@ import { Dashboard } from 'interfaces/Dashboard';
 import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
 
+import { ResourceType } from 'interfaces';
+
 export interface RouteProps {
   uri: string;
 }
@@ -93,7 +95,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
             <h3 className="header-title-text truncated">
               { dashboard.name }
             </h3>
-            <BookmarkIcon bookmarkKey={ '' }/>
+            <BookmarkIcon bookmarkKey={ dashboard.uri } resourceType={ ResourceType.dashboard } />
             <div className="body-2">
               Dashboard in&nbsp;
               <a id="dashboard-group-link"
