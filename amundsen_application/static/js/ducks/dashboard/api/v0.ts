@@ -12,6 +12,6 @@ const DASHBOARD_BASE = '/api/dashboard/v0';
 export function getDashboard(uri: string) {
   return axios.get(`${DASHBOARD_BASE}/dashboard?uri=${uri}`)
   .then((response: AxiosResponse<GetDashboardAPI>) => {
-    return response.data.dashboard;
+    return response.data;
   });
 }

@@ -18,6 +18,7 @@ export interface Dashboard {
   name: string;
   owners: User[];
   query_names: string[];
+  recent_view_count: number;
   tables: TableResource[];
   tags: Tag[];
   updated_timestamp: number;

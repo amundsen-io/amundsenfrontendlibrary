@@ -14,6 +14,7 @@ describe('DashboardPage', () => {
     const routerProps = getMockRouterProps<RouteProps>({ uri: 'test:uri/value' }, null);
     const props = {
       isLoading: false,
+      statusCode: 200,
       dashboard: {
         badges: [],
         chart_names: ["chart 1", "chart 2"],
@@ -47,6 +48,7 @@ describe('DashboardPage', () => {
           }
         ],
         query_names: ["query 1", "query 2"],
+        recent_view_count: 10,
         tables: [],
         tags: [],
         updated_timestamp: 1586672811,
