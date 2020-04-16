@@ -256,30 +256,34 @@ class MetadataTest(unittest.TestCase):
                     'name': 'table_name_1',
                     'description': 'description',
                 },
-            ]
+            ],
+            'dashboard': [],
         }
-        self.expected_parsed_user_resources = [
-            {
-                'cluster': 'cluster',
-                'database': 'database',
-                'description': 'description',
-                'last_updated_timestamp': None,
-                'name': 'table_name_0',
-                'schema': 'schema',
-                'type': 'table',
-                'key': 'database://cluster.schema/table_name_0',
-            },
-            {
-                'cluster': 'cluster',
-                'database': 'database',
-                'description': 'description',
-                'last_updated_timestamp': None,
-                'name': 'table_name_1',
-                'schema': 'schema',
-                'type': 'table',
-                'key': 'database://cluster.schema/table_name_1',
-            },
-        ]
+        self.expected_parsed_user_resources = {
+            'table': [
+                {
+                    'cluster': 'cluster',
+                    'database': 'database',
+                    'description': 'description',
+                    'last_updated_timestamp': None,
+                    'name': 'table_name_0',
+                    'schema': 'schema',
+                    'type': 'table',
+                    'key': 'database://cluster.schema/table_name_0',
+                },
+                {
+                    'cluster': 'cluster',
+                    'database': 'database',
+                    'description': 'description',
+                    'last_updated_timestamp': None,
+                    'name': 'table_name_1',
+                    'schema': 'schema',
+                    'type': 'table',
+                    'key': 'database://cluster.schema/table_name_1',
+                },
+            ],
+            'dashboard': [],
+        }
 
     @responses.activate
     def test_popular_tables_success(self) -> None:
@@ -639,7 +643,10 @@ class MetadataTest(unittest.TestCase):
         with local_app.test_client() as test:
             response = test.get('/api/metadata/v0/user/bookmark')
             self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
-            expected = {'bookmarks': [], 'msg': 'Encountered error: failed to get bookmark for user_id: test_user_id'}
+            expected = {
+                'bookmarks': {'table': [], 'dashboard': []},
+                'msg': 'Encountered error: failed to get bookmark for user_id: test_user_id',
+            }
             self.assertEqual(response.json, expected)
 
     @responses.activate
@@ -718,7 +725,7 @@ class MetadataTest(unittest.TestCase):
             response = test.get('/api/metadata/v0/user/read', query_string=dict(user_id=test_user))
             data = json.loads(response.data)
             self.assertEquals(response.status_code, HTTPStatus.OK)
-            self.assertCountEqual(data.get('read'), self.expected_parsed_user_resources)
+            self.assertCountEqual(data.get('read'), self.expected_parsed_user_resources.get('table'))
 
     @responses.activate
     def test_get_user_own(self) -> None:
@@ -733,4 +740,4 @@ class MetadataTest(unittest.TestCase):
             response = test.get('/api/metadata/v0/user/own', query_string=dict(user_id=test_user))
             data = json.loads(response.data)
             self.assertEquals(response.status_code, HTTPStatus.OK)
-            self.assertCountEqual(data.get('own'), self.expected_parsed_user_resources)
+            self.assertCountEqual(data.get('own'), self.expected_parsed_user_resources.get('table'))

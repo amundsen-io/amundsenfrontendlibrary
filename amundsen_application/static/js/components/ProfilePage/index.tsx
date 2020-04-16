@@ -44,11 +44,10 @@ interface ResourceRelation {
 }
 interface StateFromProps {
   user: PeopleUser;
-  resourceRelations: any; // TODO ttannis: FIX THIS
-  // resourceRelations: {
-  //   [ResourceType.table]: ResourceRelation;
-  //   [ResourceType.dashboard]: ResourceRelation;
-  // }
+  resourceRelations: {
+     [ResourceType.table]: ResourceRelation;
+     [ResourceType.dashboard]: ResourceRelation;
+  }
 }
 
 interface DispatchFromProps {
@@ -130,15 +129,19 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
           customFooterText={`${FOOTER_TEXT_PREFIX} ${bookmarks.length} ${BOOKMARKED_LABEL} ${resourceLabel}`}
           customEmptyText={`${EMPTY_TEXT_PREFIX} ${BOOKMARKED_LABEL} ${resourceLabel}.`}
         />
-        <ResourceList
-          allItems={ read }
-          itemsPerPage={ ITEMS_PER_PAGE }
-          paginate={ false }
-          source={ READ_SOURCE }
-          title={`${READ_TITLE_PREFIX}  (${read.length})`}
-          customFooterText={`${FOOTER_TEXT_PREFIX} ${read.length} ${READ_LABEL} ${resourceLabel}`}
-          customEmptyText={`${EMPTY_TEXT_PREFIX} ${READ_LABEL} ${resourceLabel}.`}
-        />
+        {
+          /* Frequently Used currently not supported for dashboards */
+          resource === ResourceType.table &&
+          <ResourceList
+            allItems={ read }
+            itemsPerPage={ ITEMS_PER_PAGE }
+            paginate={ false }
+            source={ READ_SOURCE }
+            title={`${READ_TITLE_PREFIX}  (${read.length})`}
+            customFooterText={`${FOOTER_TEXT_PREFIX} ${read.length} ${READ_LABEL} ${resourceLabel}`}
+            customEmptyText={`${EMPTY_TEXT_PREFIX} ${READ_LABEL} ${resourceLabel}.`}
+          />
+        }
       </>
     )
   };
@@ -263,12 +266,12 @@ export const mapStateToProps = (state: GlobalState) => {
     resourceRelations: {
       [ResourceType.table]: {
         bookmarks: state.bookmarks.bookmarksForUser[ResourceType.table],
-        own: state.user.profile.own,
+        own: state.user.profile.own[ResourceType.table],
         read: state.user.profile.read,
       },
       [ResourceType.dashboard]: {
         bookmarks: state.bookmarks.bookmarksForUser[ResourceType.dashboard],
-        own: [],
+        own: state.user.profile.own[ResourceType.dashboard],
         read: [],
       }
     }

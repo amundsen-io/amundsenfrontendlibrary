@@ -94,8 +94,10 @@ describe('DashboardListItem', () => {
         expect(resourceInfo.find('.dashboard-name').text()).toEqual(props.dashboard.name);
       });
 
-      it('renders a bookmark icon in the resource name', () => {
-        expect(resourceInfo.find('.resource-name').find(BookmarkIcon).exists()).toBe(true);
+      it('renders a bookmark icon in the resource name with correct props', () => {
+        const elementProps = resourceInfo.find('.resource-name').find(BookmarkIcon).props();
+        expect(elementProps.bookmarkKey).toBe(props.dashboard.uri);
+        expect(elementProps.resourceType).toBe(props.dashboard.type);
       });
 
       it('renders dashboard description', () => {

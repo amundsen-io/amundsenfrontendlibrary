@@ -87,6 +87,7 @@ class SearchUtilsTest(unittest.TestCase):
             'group_name': 'Amundsen Team',
             'group_url': 'product_dashboard://cluster.group',
             'name': 'Amundsen Metrics Dashboard',
+            'key': 'product_dashboard://cluster.group/name',
             'product': 'mode',
             'description': 'I am a dashboard',
             'uri': 'product_dashboard://cluster.group/name',

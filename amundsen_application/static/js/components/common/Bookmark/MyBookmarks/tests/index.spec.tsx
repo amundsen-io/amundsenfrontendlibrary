@@ -255,8 +255,8 @@ describe('mapStateToProps', () => {
     result = mapStateToProps(globalState);
   });
 
-  it('sets table bookmarks on the props', () => {
-    expect(result.myBookmarks[ResourceType.table]).toEqual(globalState.bookmarks.myBookmarks);
+  it('sets bookmarks on the props', () => {
+    expect(result.myBookmarks).toEqual(globalState.bookmarks.myBookmarks);
   });
 
   it('sets myBookmarksIsLoaded on the props', () => {

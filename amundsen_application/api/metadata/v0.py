@@ -552,8 +552,14 @@ def get_user_own() -> Response:
         status_code = response.status_code
         owned_tables_raw = response.json().get('table')
         owned_tables = [marshall_table_partial(table) for table in owned_tables_raw]
-        return make_response(jsonify({'msg': 'success', 'own': owned_tables}), status_code)
-
+        # TODO: use common to create marshall_dashboard_partial
+        dashboards = response.json().get('dashboard', [])
+        owned_dashboards = [map_dashboard_result(dashboard) for dashboard in dashboards]
+        all_owned = {
+            'table': owned_tables,
+            'dashboard': owned_dashboards
+        }
+        return make_response(jsonify({'msg': 'success', 'own': all_owned}), status_code)
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)

@@ -1,4 +1,4 @@
-import { LoggedInUser, PeopleUser, Resource } from 'interfaces';
+import { LoggedInUser, PeopleUser, Resource, ResourceType } from 'interfaces';
 
 import {
   GetLoggedInUser, GetLoggedInUserRequest, GetLoggedInUserResponse,
@@ -34,7 +34,7 @@ export function getUserOwn(userId: string): GetUserOwnRequest {
 export function getUserOwnFailure(): GetUserOwnResponse {
   return { type: GetUserOwn.FAILURE };
 };
-export function getUserOwnSuccess(own: Resource[]): GetUserOwnResponse {
+export function getUserOwnSuccess(own: any): GetUserOwnResponse {
   return { type: GetUserOwn.SUCCESS, payload: { own } };
 };
 
@@ -52,7 +52,10 @@ export function getUserReadSuccess(read: Resource[]): GetUserReadResponse {
 export interface UserReducerState {
   loggedInUser: LoggedInUser;
   profile: {
-    own: Resource[],
+    own: {
+      [ResourceType.table]: Resource[];
+      [ResourceType.dashboard]: Resource[];
+    },
     read: Resource[],
     user: PeopleUser,
   };
@@ -74,10 +77,14 @@ export const defaultUser = {
   team_name: '',
   user_id: '',
 };
+const initialOwnState = {
+  [ResourceType.table]: [],
+  [ResourceType.dashboard]: [],
+};
 export const initialState: UserReducerState = {
   loggedInUser: defaultUser,
   profile: {
-    own: [],
+    own: initialOwnState,
     read: [],
     user: defaultUser,
   },
@@ -113,7 +120,9 @@ export default function reducer(state: UserReducerState = initialState, action):
         ...state,
         profile: {
           ...state.profile,
-          own: [],
+          own: {
+            ...initialOwnState
+          },
         }
       };
     case GetUserOwn.SUCCESS:
