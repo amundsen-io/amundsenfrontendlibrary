@@ -26,7 +26,7 @@ class DashboardListItem extends React.Component<DashboardListItemProps, {}> {
 
   getLink = () => {
     const { dashboard, logging } = this.props;
-    return `/dashboard/${dashboard.uri}?index=${logging.index}&source=${logging.source}`;
+    return `/dashboard?uri=${dashboard.uri}&index=${logging.index}&source=${logging.source}`;
   };
 
   render() {

@@ -8,6 +8,7 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import TabsComponent from 'components/common/TabsComponent';
+import ImagePreview from './ImagePreview';
 
 import { ResourceType } from 'interfaces';
 
@@ -47,7 +48,7 @@ describe('DashboardPage', () => {
         query_names: [],
         tables: [],
         tags: [],
-        },
+      },
       getDashboard: jest.fn(),
       ...routerProps,
       ...propOverrides,
@@ -80,6 +81,9 @@ describe('DashboardPage', () => {
       expect(elementProps.resourceType).toBe(ResourceType.dashboard);
     });
 
+    it('renders an ImagePreview with correct props', () => {
+      expect(wrapper.find(ImagePreview).props().uri).toBe(wrapper.state().uri);
+    })
   });
 
   describe('renderTabs', () => {

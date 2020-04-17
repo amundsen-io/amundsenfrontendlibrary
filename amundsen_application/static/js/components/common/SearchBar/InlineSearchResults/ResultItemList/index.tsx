@@ -12,7 +12,7 @@ export interface ResultItemListProps {
   resourceType: ResourceType;
   searchTerm: string;
   suggestedResults: SuggestedResult[];
-  title: React.ReactNode;
+  title: string;
   totalResults: number;
 }
 
@@ -38,7 +38,7 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
     }
 
     return results.map((item, index) => {
-      const { href, iconClass, subtitle, title, type } = item;
+      const { href, iconClass, subtitle, titleNode, type } = item;
       const id = `inline-resultitem-${this.props.resourceType}:${index}`;
       return (
         <ResultItem
@@ -48,7 +48,7 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
           onItemSelect={onResultItemSelect}
           iconClass={`icon icon-dark ${iconClass}`}
           subtitle={subtitle}
-          title={title}
+          titleNode={titleNode}
           type={type}
         />
       )
