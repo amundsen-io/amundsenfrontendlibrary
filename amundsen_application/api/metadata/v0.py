@@ -37,6 +37,12 @@ def _get_table_endpoint() -> str:
     return table_endpoint
 
 
+def _get_dashboard_endpoint() -> str:
+    dashboard_endpoint = app.config['METADATASERVICE_BASE'] + DASHBOARD_ENDPOINT
+    if dashboard_endpoint is None:
+        raise Exception('An request endpoint for table resources must be configured')
+    return dashboard_endpoint
+
 @metadata_blueprint.route('/popular_tables', methods=['GET'])
 def popular_tables() -> Response:
     """
@@ -369,7 +375,7 @@ def update_table_tags() -> Response:
 
         tag = get_query_param(args, 'tag')
 
-        url = '{0}/{1}/tag/{2}'.format(table_endpoint, table_key, tag)
+        url = f'{table_endpoint}/{table_key}/tag/{tag}'
 
         _log_update_table_tags(table_key=table_key, method=method, tag=tag)
 
@@ -379,7 +385,43 @@ def update_table_tags() -> Response:
         if status_code == HTTPStatus.OK:
             message = 'Success'
         else:
-            message = 'Encountered error: {0} tag failed'.format(method)
+            message = f'Encountered error: {method} table tag failed'
+            logging.error(message)
+
+        payload = jsonify({'msg': message})
+        return make_response(payload, status_code)
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        payload = jsonify({'msg': message})
+        return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
+@metadata_blueprint.route('/update_dashboard_tags', methods=['PUT', 'DELETE'])
+def update_dashboard_tags() -> Response:
+
+    @action_logging
+    def _log_update_dashboard_tags(*, uri_key: str, method: str, tag: str) -> None:
+        pass  # pragma: no cover
+
+    try:
+        args = request.get_json()
+        method = request.method
+
+        dashboard_endpoint = _get_dashboard_endpoint()
+        uri_key = get_query_param(args, 'key')
+        tag = get_query_param(args, 'tag')
+        url = f'{dashboard_endpoint}/{uri_key}/tag/{tag}'
+
+        _log_update_dashboard_tags(uri_key=uri_key, method=method, tag=tag)
+
+        response = request_metadata(url=url, method=method)
+        status_code = response.status_code
+
+        if status_code == HTTPStatus.OK:
+            message = 'Success'
+        else:
+            message = f'Encountered error: {method} dashboard tag failed'
             logging.error(message)
 
         payload = jsonify({'msg': message})

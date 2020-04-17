@@ -21,6 +21,9 @@ import ChartList from 'components/DashboardPage/ChartList';
 import { formatDateTimeShort } from '../../utils/dateUtils';
 import ResourceList from 'components/common/ResourceList';
 import { DASHBOARD_OWNER_SOURCE, DASHBOARD_SOURCE, TABLES_PER_PAGE } from 'components/DashboardPage/constants';
+import TagInput from 'components/Tags/TagInput';
+import { ResourceType } from 'interfaces/Resources';
+import { EditableSection } from 'components/TableDetail/EditableSection';
 
 import { ResourceType } from 'interfaces';
 
@@ -166,7 +169,12 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                 </div>
               </section>
               <section className="right-panel">
-
+                <EditableSection title="Tags">
+                  <TagInput
+                    resourceType={ ResourceType.dashboard }
+                    uriKey={ this.props.dashboard.uri }
+                  />
+                </EditableSection>
                 <div className="section-title title-3">Last Run</div>
                 <div>
                   { formatDateTimeShort({ epochTimestamp: dashboard.last_run_timestamp }) }

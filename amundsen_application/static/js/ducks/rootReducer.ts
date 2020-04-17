@@ -5,7 +5,7 @@ import feedback, { FeedbackReducerState } from './feedback/reducer';
 import popularTables, { PopularTablesReducerState } from './popularTables/reducer';
 import search, { SearchReducerState } from './search/reducer';
 import tableMetadata, { TableMetadataReducerState } from './tableMetadata/reducer';
-import allTags, { AllTagsReducerState } from './allTags/reducer';
+import tags, { TagsReducerState } from './tags/reducer';
 import user, { UserReducerState } from './user/reducer';
 import bookmarks, { BookmarkReducerState } from "./bookmark/reducer";
 import notification, { NotificationReducerState } from './notification/reducer';
@@ -22,7 +22,7 @@ export interface GlobalState {
   popularTables: PopularTablesReducerState;
   search: SearchReducerState;
   tableMetadata: TableMetadataReducerState;
-  allTags: AllTagsReducerState;
+  tags: TagsReducerState ;
   user: UserReducerState;
 }
 
@@ -36,6 +36,6 @@ export default combineReducers<GlobalState>({
   popularTables,
   search,
   tableMetadata,
-  allTags,
+  tags,
   user,
 });

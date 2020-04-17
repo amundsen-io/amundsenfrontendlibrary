@@ -42,6 +42,7 @@ import RequestDescriptionText from './RequestDescriptionText';
 import RequestMetadataForm from './RequestMetadataForm';
 
 import { PROGRMMATIC_DESC_HEADER } from './constants';
+import { ResourceType } from 'interfaces/Resources';
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -203,7 +204,10 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 </section>
                 <section className="right-panel">
                   <EditableSection title="Tags">
-                    <TagInput/>
+                    <TagInput
+                      resourceType={ ResourceType.table }
+                      uriKey={ this.props.tableData.key }
+                    />
                   </EditableSection>
                   <EditableSection title="Owners">
                     <OwnerEditor />
