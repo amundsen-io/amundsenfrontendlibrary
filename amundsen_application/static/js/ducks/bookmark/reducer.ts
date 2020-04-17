@@ -1,4 +1,4 @@
-import { Bookmark, ResourceType } from 'interfaces';
+import { Bookmark, ResourceType, ResourceDict } from 'interfaces';
 
 import {
   AddBookmark,
@@ -28,7 +28,7 @@ export function addBookmark(resourceKey: string, resourceType: ResourceType): Ad
 export function addBookmarkFailure(): AddBookmarkResponse {
   return { type: AddBookmark.FAILURE };
 }
-export function addBookmarkSuccess(bookmarks: BookmarkState): AddBookmarkResponse {
+export function addBookmarkSuccess(bookmarks: ResourceDict<Bookmark[]>): AddBookmarkResponse {
   return { type: AddBookmark.SUCCESS, payload: { bookmarks } };
 }
 
@@ -56,7 +56,7 @@ export function getBookmarks(): GetBookmarksRequest {
 export function getBookmarksFailure(): GetBookmarksResponse {
   return { type: GetBookmarks.FAILURE };
 }
-export function getBookmarksSuccess(bookmarks: BookmarkState): GetBookmarksResponse {
+export function getBookmarksSuccess(bookmarks: ResourceDict<Bookmark[]>): GetBookmarksResponse {
   return { type: GetBookmarks.SUCCESS, payload: { bookmarks } };
 }
 
@@ -71,19 +71,15 @@ export function getBookmarksForUser(userId: string): GetBookmarksForUserRequest 
 export function getBookmarksForUserFailure(): GetBookmarksForUserResponse {
   return { type: GetBookmarksForUser.FAILURE };
 }
-export function getBookmarksForUserSuccess(bookmarks: BookmarkState): GetBookmarksForUserResponse {
+export function getBookmarksForUserSuccess(bookmarks: ResourceDict<Bookmark[]>): GetBookmarksForUserResponse {
   return { type: GetBookmarksForUser.SUCCESS, payload: { bookmarks } };
 }
 
 /* REDUCER */
-export interface BookmarkState {
-  [ResourceType.table]: Bookmark[],
-  [ResourceType.dashboard]: Bookmark[],
-}
 export interface BookmarkReducerState {
-  myBookmarks: BookmarkState;
+  myBookmarks: ResourceDict<Bookmark[]>;
   myBookmarksIsLoaded: boolean;
-  bookmarksForUser: BookmarkState;
+  bookmarksForUser: ResourceDict<Bookmark[]>;
 }
 export const initialBookmarkState = {
   [ResourceType.table]: [],

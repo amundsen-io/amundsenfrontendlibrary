@@ -200,7 +200,7 @@ describe('ProfilePage', () => {
 
     describe('for dashboard resource', () => {
       it('does not return a ResourceList for the read resourceRelations', () => {
-        content = shallow(<div>{wrapper.instance().generateTabContent(ResourceType.table)}</div>);
+        content = shallow(<div>{wrapper.instance().generateTabContent(ResourceType.dashboard)}</div>);
         expect(content.find(ResourceList).at(2).exists()).toBe(false);
       });
     });
@@ -455,13 +455,14 @@ describe('mapStateToProps', () => {
     it('sets relations for tables', () => {
       const tables = result.resourceRelations[ResourceType.table];
       expect(tables.bookmarks).toBe(globalState.bookmarks.bookmarksForUser[ResourceType.table]);
-      expect(tables.own).toBe(globalState.user.profile.own);
+      expect(tables.own).toBe(globalState.user.profile.own[ResourceType.table]);
       expect(tables.read).toBe(globalState.user.profile.read);
     });
 
     it('sets relations for dashboards', () => {
       const dashboards = result.resourceRelations[ResourceType.dashboard];
       expect(dashboards.bookmarks).toBe(globalState.bookmarks.bookmarksForUser[ResourceType.dashboard]);
+      expect(dashboards.own).toBe(globalState.user.profile.own[ResourceType.dashboard]);
     });
   });
 });

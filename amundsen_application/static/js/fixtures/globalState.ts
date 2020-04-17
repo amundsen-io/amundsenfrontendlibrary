@@ -224,11 +224,14 @@ const globalState: GlobalState = {
       user_id: 'test0',
     },
     profile: {
-      own: [
-        { type: ResourceType.table },
-        { type: ResourceType.table },
-        { type: ResourceType.table },
-      ],
+      own: {
+        [ResourceType.table]: [
+          { type: ResourceType.table },
+          { type: ResourceType.table },
+          { type: ResourceType.table },
+        ],
+        [ResourceType.dashboard]: []
+      },
       read: [
         { type: ResourceType.table },
         { type: ResourceType.table },

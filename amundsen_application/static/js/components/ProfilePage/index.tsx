@@ -12,7 +12,7 @@ import TabsComponent from 'components/common/TabsComponent';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { getUser, getUserOwn, getUserRead } from 'ducks/user/reducer';
-import { PeopleUser, Resource, ResourceType } from 'interfaces';
+import { PeopleUser, Resource, ResourceType, ResourceDict } from 'interfaces';
 import { GetUserRequest, GetUserOwnRequest, GetUserReadRequest } from 'ducks/user/types';
 
 import './styles.scss';
@@ -44,10 +44,7 @@ interface ResourceRelation {
 }
 interface StateFromProps {
   user: PeopleUser;
-  resourceRelations: {
-     [ResourceType.table]: ResourceRelation;
-     [ResourceType.dashboard]: ResourceRelation;
-  }
+  resourceRelations: ResourceDict<ResourceRelation>;
 }
 
 interface DispatchFromProps {

@@ -740,4 +740,4 @@ class MetadataTest(unittest.TestCase):
             response = test.get('/api/metadata/v0/user/own', query_string=dict(user_id=test_user))
             data = json.loads(response.data)
             self.assertEquals(response.status_code, HTTPStatus.OK)
-            self.assertCountEqual(data.get('own'), self.expected_parsed_user_resources.get('table'))
+            self.assertCountEqual(data.get('own'), self.expected_parsed_user_resources)

@@ -45,5 +45,10 @@ export interface UserResource extends Resource, PeopleUser {
   type: ResourceType.user;
 }
 
+export interface ResourceDict<T> {
+  [ResourceType.table]: T;
+  [ResourceType.dashboard]?: T;
+}
+
 // TODO - Consider just using the 'Resource' type instead
 export type Bookmark = TableResource | DashboardResource;

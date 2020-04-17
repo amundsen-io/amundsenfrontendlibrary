@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { GlobalState } from 'ducks/rootReducer';
 
 import './styles.scss'
-import { Bookmark, ResourceType } from 'interfaces';
+import { Bookmark, ResourceType, ResourceDict } from 'interfaces';
 import { getDisplayNameByResource, indexDashboardsEnabled } from 'config/config-utils';
 import {
   BOOKMARK_TITLE,
@@ -15,10 +15,7 @@ import ResourceList from 'components/common/ResourceList';
 import TabsComponent from 'components/common/TabsComponent';
 
 interface StateFromProps {
-  myBookmarks: {
-    [ResourceType.table]: Bookmark[];
-    [ResourceType.dashboard]: Bookmark[];
-  },
+  myBookmarks: ResourceDict<Bookmark[]>;
   isLoaded: boolean;
 }
 

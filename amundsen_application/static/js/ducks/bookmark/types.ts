@@ -1,4 +1,4 @@
-import { Bookmark, ResourceType } from 'interfaces';
+import { Bookmark, ResourceType, ResourceDict } from 'interfaces';
 
 export enum AddBookmark {
   REQUEST = 'amundsen/bookmark/ADD_REQUEST',
@@ -15,10 +15,7 @@ export interface AddBookmarkRequest {
 export interface AddBookmarkResponse {
   type: AddBookmark.SUCCESS | AddBookmark.FAILURE;
   payload?: {
-    bookmarks: {
-      [ResourceType.table]: Bookmark[];
-      [ResourceType.dashboard]: Bookmark[];
-    };
+    bookmarks: ResourceDict<Bookmark[]>;
   }
 }
 
@@ -54,10 +51,7 @@ export interface GetBookmarksRequest {
 export interface GetBookmarksResponse {
   type: GetBookmarks.SUCCESS | GetBookmarks.FAILURE;
   payload?: {
-    bookmarks: {
-      [ResourceType.table]: Bookmark[];
-      [ResourceType.dashboard]: Bookmark[];
-    };
+    bookmarks: ResourceDict<Bookmark[]>;
   };
 }
 
@@ -76,9 +70,6 @@ export interface GetBookmarksForUserRequest {
 export interface GetBookmarksForUserResponse {
   type: GetBookmarksForUser.SUCCESS | GetBookmarksForUser.FAILURE;
   payload?: {
-    bookmarks: {
-      [ResourceType.table]: Bookmark[];
-      [ResourceType.dashboard]: Bookmark[];
-    };
+    bookmarks: ResourceDict<Bookmark[]>;
   };
 }
