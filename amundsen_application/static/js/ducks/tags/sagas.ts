@@ -28,8 +28,8 @@ export function* updateTableTagsWorker(action: UpdateTagsRequest): SagaIterator 
     const { tagArray, resourceType, uriKey } = action.payload;
 
 
-    yield all(API.updateTableTags(tagArray, uriKey));
-    const newTags = yield call(API.getTableTags, uriKey);
+    yield all(API.updateTableTags(tagArray, resourceType, uriKey));
+    const newTags = yield call(API.getTags, resourceType, uriKey);
     yield put(updateTagsSuccess(newTags));
   } catch (e) {
     yield put(updateTagsFailure());
