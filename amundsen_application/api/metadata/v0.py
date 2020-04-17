@@ -43,6 +43,7 @@ def _get_dashboard_endpoint() -> str:
         raise Exception('An request endpoint for table resources must be configured')
     return dashboard_endpoint
 
+
 @metadata_blueprint.route('/popular_tables', methods=['GET'])
 def popular_tables() -> Response:
     """
