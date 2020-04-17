@@ -98,8 +98,10 @@ describe('TableListItem', () => {
         expect(resourceInfo.find('.resource-name').children().at(0).text()).toEqual('tableSchema.tableName');
       });
 
-      it('renders a bookmark icon in the resource name', () => {
-        expect(resourceInfo.find('.resource-name').find(BookmarkIcon).exists()).toBe(true);
+      it('renders a bookmark icon in the resource name with correct props', () => {
+        const elementProps = resourceInfo.find('.resource-name').find(BookmarkIcon).props();
+        expect(elementProps.bookmarkKey).toBe(props.table.key);
+        expect(elementProps.resourceType).toBe(props.table.type);
       });
 
       it('renders table description', () => {

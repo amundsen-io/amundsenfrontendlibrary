@@ -354,6 +354,7 @@ class SearchDashboard(unittest.TestCase):
                 'product': 'mode',
                 'type': 'dashboard',
                 'uri': 'product_dashboard://cluster.group/name',
+                'key': 'product_dashboard://cluster.group/name',
                 'url': 'product/name'
             },
             {
@@ -366,6 +367,7 @@ class SearchDashboard(unittest.TestCase):
                 'product': 'mode',
                 'type': 'dashboard',
                 'uri': 'product_dashboard://cluster.group/name2',
+                'key': 'product_dashboard://cluster.group/name2',
                 'url': 'product/name'
             },
         ]

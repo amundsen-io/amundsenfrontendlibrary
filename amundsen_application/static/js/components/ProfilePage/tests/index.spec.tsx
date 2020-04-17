@@ -184,16 +184,25 @@ describe('ProfilePage', () => {
       content = shallow(<div>{wrapper.instance().generateTabContent(givenResource)}</div>);
     });
 
-    it('returns a ResourceList for the own resourceRelations', () => {
-      expect(content.find(ResourceList).at(0).props().allItems).toBe(props.resourceRelations[givenResource].own);
+    describe('for a resource', () => {
+      it('returns a ResourceList for the own resourceRelations', () => {
+        expect(content.find(ResourceList).at(0).props().allItems).toBe(props.resourceRelations[givenResource].own);
+      });
+
+      it('returns a ResourceList for the bookmarked resourceRelations', () => {
+        expect(content.find(ResourceList).at(1).props().allItems).toBe(props.resourceRelations[givenResource].bookmarks);
+      });
+
+      it('returns a ResourceList for the read resourceRelations', () => {
+        expect(content.find(ResourceList).at(2).props().allItems).toBe(props.resourceRelations[givenResource].read);
+      });
     });
 
-    it('returns a ResourceList for the bookmarked resourceRelations', () => {
-      expect(content.find(ResourceList).at(1).props().allItems).toBe(props.resourceRelations[givenResource].bookmarks);
-    });
-
-    it('returns a ResourceList for the read resourceRelations', () => {
-      expect(content.find(ResourceList).at(2).props().allItems).toBe(props.resourceRelations[givenResource].read);
+    describe('for dashboard resource', () => {
+      it('does not return a ResourceList for the read resourceRelations', () => {
+        content = shallow(<div>{wrapper.instance().generateTabContent(ResourceType.dashboard)}</div>);
+        expect(content.find(ResourceList).at(2).exists()).toBe(false);
+      });
     });
   });
 
@@ -445,9 +454,15 @@ describe('mapStateToProps', () => {
   describe('sets resourceRelations on the props', () => {
     it('sets relations for tables', () => {
       const tables = result.resourceRelations[ResourceType.table];
-      expect(tables.bookmarks).toEqual(globalState.bookmarks.bookmarksForUser);
-      expect(tables.own).toEqual(globalState.user.profile.own);
-      expect(tables.read).toEqual(globalState.user.profile.read);
-    })
+      expect(tables.bookmarks).toBe(globalState.bookmarks.bookmarksForUser[ResourceType.table]);
+      expect(tables.own).toBe(globalState.user.profile.own[ResourceType.table]);
+      expect(tables.read).toBe(globalState.user.profile.read);
+    });
+
+    it('sets relations for dashboards', () => {
+      const dashboards = result.resourceRelations[ResourceType.dashboard];
+      expect(dashboards.bookmarks).toBe(globalState.bookmarks.bookmarksForUser[ResourceType.dashboard]);
+      expect(dashboards.own).toBe(globalState.user.profile.own[ResourceType.dashboard]);
+    });
   });
 });

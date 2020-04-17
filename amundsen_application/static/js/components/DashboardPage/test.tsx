@@ -10,6 +10,8 @@ import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import TabsComponent from 'components/common/TabsComponent';
 import ImagePreview from './ImagePreview';
 
+import { ResourceType } from 'interfaces';
+
 describe('DashboardPage', () => {
   const setup = (propOverrides?: Partial<DashboardPageProps>) => {
     const routerProps = getMockRouterProps<RouteProps>({ uri: 'test:uri/value' }, null);
@@ -73,8 +75,10 @@ describe('DashboardPage', () => {
       expect(headerText).toEqual(props.dashboard.name);
     });
 
-    it('renders a bookmark icon', () => {
-      expect(wrapper.find(BookmarkIcon).exists()).toBeTruthy();
+    it('renders a bookmark icon with correct props', () => {
+      const elementProps = wrapper.find(BookmarkIcon).props();
+      expect(elementProps.bookmarkKey).toBe(props.dashboard.uri);
+      expect(elementProps.resourceType).toBe(ResourceType.dashboard);
     });
 
     it('renders an ImagePreview with correct props', () => {

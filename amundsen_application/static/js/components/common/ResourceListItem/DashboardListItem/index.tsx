@@ -44,7 +44,7 @@ class DashboardListItem extends React.Component<DashboardListItemProps, {}> {
                 <div className="dashboard-name truncated">
                   { dashboard.name }
                 </div>
-                <BookmarkIcon bookmarkKey={ dashboard.uri }/>
+                <BookmarkIcon bookmarkKey={ dashboard.uri } resourceType={ dashboard.type } />
               </div>
               <div className="body-secondary-3 truncated">{ dashboard.description }</div>
             </div>

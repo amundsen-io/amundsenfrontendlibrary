@@ -12,6 +12,7 @@ from amundsen_application.log.action_log import action_logging
 from amundsen_application.models.user import load_user, dump_user
 
 from amundsen_application.api.utils.metadata_utils import marshall_table_partial, marshall_table_full
+from amundsen_application.api.utils.search_utils import map_dashboard_result
 from amundsen_application.api.utils.request_utils import get_query_param, request_metadata
 
 
@@ -449,12 +450,20 @@ def get_bookmark() -> Response:
             message = 'Success'
             tables = response.json().get('table')
             table_bookmarks = [marshall_table_partial(table) for table in tables]
+            # TODO: use common to create marshall_dashboard_partial
+            dashboards = response.json().get('dashboard', [])
+            dashboard_bookmarks = [map_dashboard_result(dashboard) for dashboard in dashboards]
         else:
             message = f'Encountered error: failed to get bookmark for user_id: {user_id}'
             logging.error(message)
             table_bookmarks = []
+            dashboard_bookmarks = []
 
-        return make_response(jsonify({'msg': message, 'bookmarks': table_bookmarks}), status_code)
+        all_bookmarks = {
+            'table': table_bookmarks,
+            'dashboard': dashboard_bookmarks
+        }
+        return make_response(jsonify({'msg': message, 'bookmarks': all_bookmarks}), status_code)
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
@@ -543,8 +552,14 @@ def get_user_own() -> Response:
         status_code = response.status_code
         owned_tables_raw = response.json().get('table')
         owned_tables = [marshall_table_partial(table) for table in owned_tables_raw]
-        return make_response(jsonify({'msg': 'success', 'own': owned_tables}), status_code)
-
+        # TODO: use common to create marshall_dashboard_partial
+        dashboards = response.json().get('dashboard', [])
+        owned_dashboards = [map_dashboard_result(dashboard) for dashboard in dashboards]
+        all_owned = {
+            'table': owned_tables,
+            'dashboard': owned_dashboards
+        }
+        return make_response(jsonify({'msg': 'success', 'own': all_owned}), status_code)
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)

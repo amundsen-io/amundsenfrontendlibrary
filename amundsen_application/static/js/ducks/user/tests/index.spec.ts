@@ -1,6 +1,6 @@
 import { testSaga } from 'redux-saga-test-plan';
 
-import { LoggedInUser, PeopleUser, Resource } from 'interfaces';
+import { LoggedInUser, PeopleUser, Resource, ResourceDict } from 'interfaces';
 
 import globalState from 'fixtures/globalState';
 
@@ -10,7 +10,7 @@ import reducer, {
   getUser, getUserFailure, getUserSuccess,
   getUserOwn, getUserOwnFailure, getUserOwnSuccess,
   getUserRead, getUserReadFailure, getUserReadSuccess,
-  defaultUser, initialState, UserReducerState,
+  defaultUser, initialState, initialOwnState, UserReducerState,
 } from '../reducer';
 import {
   getLoggedInUserWorker, getLoggedInUserWatcher,
@@ -28,7 +28,7 @@ import {
 describe('user ducks', () => {
   let currentUser: LoggedInUser;
   let otherUser: {
-    own: Resource[],
+    own: ResourceDict<Resource[]>,
     read: Resource[],
     user: PeopleUser,
   };
@@ -170,7 +170,7 @@ describe('user ducks', () => {
         ...testState,
         profile: {
           ...testState.profile,
-          own: [],
+          own: initialOwnState,
         },
       });
     });
@@ -180,7 +180,7 @@ describe('user ducks', () => {
         ...testState,
         profile: {
           ...testState.profile,
-          own: [],
+          own: initialOwnState,
         },
       });
     });

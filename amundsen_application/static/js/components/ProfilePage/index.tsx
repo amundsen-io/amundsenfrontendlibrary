@@ -12,7 +12,7 @@ import TabsComponent from 'components/common/TabsComponent';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { getUser, getUserOwn, getUserRead } from 'ducks/user/reducer';
-import { PeopleUser, Resource, ResourceType } from 'interfaces';
+import { PeopleUser, Resource, ResourceType, ResourceDict } from 'interfaces';
 import { GetUserRequest, GetUserOwnRequest, GetUserReadRequest } from 'ducks/user/types';
 
 import './styles.scss';
@@ -44,10 +44,7 @@ interface ResourceRelation {
 }
 interface StateFromProps {
   user: PeopleUser;
-  resourceRelations: {
-    [ResourceType.table]: ResourceRelation;
-    [ResourceType.dashboard]: ResourceRelation;
-  }
+  resourceRelations: ResourceDict<ResourceRelation>;
 }
 
 interface DispatchFromProps {
@@ -129,15 +126,19 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
           customFooterText={`${FOOTER_TEXT_PREFIX} ${bookmarks.length} ${BOOKMARKED_LABEL} ${resourceLabel}`}
           customEmptyText={`${EMPTY_TEXT_PREFIX} ${BOOKMARKED_LABEL} ${resourceLabel}.`}
         />
-        <ResourceList
-          allItems={ read }
-          itemsPerPage={ ITEMS_PER_PAGE }
-          paginate={ false }
-          source={ READ_SOURCE }
-          title={`${READ_TITLE_PREFIX}  (${read.length})`}
-          customFooterText={`${FOOTER_TEXT_PREFIX} ${read.length} ${READ_LABEL} ${resourceLabel}`}
-          customEmptyText={`${EMPTY_TEXT_PREFIX} ${READ_LABEL} ${resourceLabel}.`}
-        />
+        {
+          /* Frequently Used currently not supported for dashboards */
+          resource === ResourceType.table &&
+          <ResourceList
+            allItems={ read }
+            itemsPerPage={ ITEMS_PER_PAGE }
+            paginate={ false }
+            source={ READ_SOURCE }
+            title={`${READ_TITLE_PREFIX}  (${read.length})`}
+            customFooterText={`${FOOTER_TEXT_PREFIX} ${read.length} ${READ_LABEL} ${resourceLabel}`}
+            customEmptyText={`${EMPTY_TEXT_PREFIX} ${READ_LABEL} ${resourceLabel}.`}
+          />
+        }
       </>
     )
   };
@@ -261,13 +262,13 @@ export const mapStateToProps = (state: GlobalState) => {
     user: state.user.profile.user,
     resourceRelations: {
       [ResourceType.table]: {
-        bookmarks: state.bookmarks.bookmarksForUser,
-        own: state.user.profile.own,
+        bookmarks: state.bookmarks.bookmarksForUser[ResourceType.table],
+        own: state.user.profile.own[ResourceType.table],
         read: state.user.profile.read,
       },
       [ResourceType.dashboard]: {
-        bookmarks: [],
-        own: [],
+        bookmarks: state.bookmarks.bookmarksForUser[ResourceType.dashboard],
+        own: state.user.profile.own[ResourceType.dashboard],
         read: [],
       }
     }

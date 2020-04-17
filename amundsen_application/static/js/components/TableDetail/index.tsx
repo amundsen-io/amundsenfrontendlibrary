@@ -142,7 +142,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               <h3 className="header-title-text truncated">
                   { this.getDisplayName() }
               </h3>
-              <BookmarkIcon bookmarkKey={ this.props.tableData.key }/>
+              <BookmarkIcon bookmarkKey={ data.key } resourceType={ ResourceType.table } />
               <div className="body-2">
                 <TableHeaderBullets
                   database={ data.database }
