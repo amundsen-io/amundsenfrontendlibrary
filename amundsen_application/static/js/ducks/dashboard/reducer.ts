@@ -28,12 +28,12 @@ export function getDashboardFailure() {
     }
   }
 }
-export function getDashboardSuccess(dashboard, statusCode: number) {
+export function getDashboardSuccess(dashboard) {
   return {
     type: GetDashboard.SUCCESS,
     payload: {
-      statusCode,
       dashboard,
+      statusCode: 200,
       isLoading: false,
     }
   }
@@ -52,7 +52,6 @@ export function setDashboardPreview(payload: DashboardPreviewResponse): GetDashb
     type: GetDashboardPreview.RESPONSE,
   }
 }
-
 
 /* Reducer */
 interface DashboardPreviewState extends DashboardPreviewResponse {

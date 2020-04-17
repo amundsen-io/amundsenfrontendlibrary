@@ -11,8 +11,9 @@ from amundsen_application.log.action_log import action_logging
 
 from amundsen_application.models.user import load_user, dump_user
 
-from amundsen_application.api.utils.metadata_utils import marshall_table_partial, marshall_table_full
 from amundsen_application.api.utils.search_utils import map_dashboard_result
+from amundsen_application.api.utils.metadata_utils import marshall_table_partial, marshall_table_full,\
+    marshall_dashboard_full
 from amundsen_application.api.utils.request_utils import get_query_param, request_metadata
 
 
@@ -26,6 +27,7 @@ LAST_INDEXED_ENDPOINT = '/latest_updated_ts'
 POPULAR_TABLES_ENDPOINT = '/popular_tables/'
 TAGS_ENDPOINT = '/tags/'
 USER_ENDPOINT = '/user'
+DASHBOARD_ENDPOINT = '/dashboard'
 
 
 def _get_table_endpoint() -> str:
@@ -564,3 +566,31 @@ def get_user_own() -> Response:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
         return make_response(jsonify({'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
+@metadata_blueprint.route('/dashboard', methods=['GET'])
+def get_dashboard() -> Response:
+    """
+    Call metadata service endpoint to fet specified dashboard
+    :return:
+    """
+    @action_logging
+    def _get_dashboard(*, uri: str, index: int, source: str) -> None:
+        pass  # pragma: no cover
+
+    try:
+        uri = get_query_param(request.args, 'uri')
+        index = request.args.get('index', None)
+        source = request.args.get('source', None)
+        _get_dashboard(uri=uri, index=index, source=source)
+
+        url = f'{app.config["METADATASERVICE_BASE"]}{DASHBOARD_ENDPOINT}/{uri}'
+
+        response = request_metadata(url=url, method=request.method)
+        dashboard = marshall_dashboard_full(response.json())
+        status_code = response.status_code
+        return make_response(jsonify({'msg': 'success', 'dashboard': dashboard}), status_code)
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        return make_response(jsonify({'dashboard': {}, 'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)

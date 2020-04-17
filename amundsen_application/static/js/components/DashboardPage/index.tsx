@@ -20,7 +20,7 @@ import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
 import { formatDateTimeShort } from '../../utils/dateUtils';
 import ResourceList from 'components/common/ResourceList';
-import { DASHBOARD_SOURCE, TABLES_PER_PAGE } from 'components/DashboardPage/constants';
+import { DASHBOARD_OWNER_SOURCE, DASHBOARD_SOURCE, TABLES_PER_PAGE } from 'components/DashboardPage/constants';
 
 import { ResourceType } from 'interfaces';
 
@@ -153,7 +153,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                     dashboard.owners.map(owner =>
                       <Link
                         key={owner.user_id}
-                        to={`/user/${owner.user_id}`}>
+                        to={`/user/${owner.user_id}?source=${DASHBOARD_OWNER_SOURCE}`}>
                         <AvatarLabel
                           label={owner.display_name}/>
                       </Link>
