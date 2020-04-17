@@ -34,7 +34,7 @@ export interface SuggestedResult {
   href: string;
   iconClass: string;
   subtitle: string;
-  title: React.ReactNode;
+  titleNode: React.ReactNode;
   type: string;
 }
 
@@ -89,7 +89,7 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
         href: this.getSuggestedResultHref(resourceType, result, index),
         iconClass: this.getSuggestedResultIconClass(resourceType, result),
         subtitle: this.getSuggestedResultSubTitle(resourceType, result),
-        title: this.getSuggestedResultTitle(resourceType, result),
+        titleNode: this.getSuggestedResultTitle(resourceType, result),
         type: this.getSuggestedResultType(resourceType, result)
       }
     });
@@ -100,7 +100,7 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
     switch (resourceType) {
       case ResourceType.dashboard:
         const dashboard = result as DashboardResource;
-        return `/dashboard/${dashboard.uri}?${logParams}`;
+        return `/dashboard?uri=${dashboard.uri}&${logParams}`;
       case ResourceType.table:
         const table = result as TableResource;
         return `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}?${logParams}`;

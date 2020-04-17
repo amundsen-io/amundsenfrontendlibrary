@@ -16,7 +16,7 @@ describe('ResultItem', () => {
       iconClass: 'test-icon',
       onItemSelect: jest.fn(),
       subtitle: 'subtitle',
-      title: (<div>Hello</div>),
+      titleNode: (<div>Hello</div>),
       type: 'User',
     };
     subject = shallow(<ResultItem {...props} />);
@@ -52,7 +52,7 @@ describe('ResultItem', () => {
 
       it('renders the title', () => {
         // @ts-ignore: assertion passes but throws a TS error
-        expect(contentWrapper.children().at(0).text()).toEqual(shallow(props.title).text());
+        expect(contentWrapper.children().at(0).text()).toEqual(shallow(props.titleNode).text());
       });
 
       it('renders the subtitle', () => {

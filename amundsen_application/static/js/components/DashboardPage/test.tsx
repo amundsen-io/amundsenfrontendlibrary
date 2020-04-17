@@ -8,6 +8,7 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import TabsComponent from 'components/common/TabsComponent';
+import ImagePreview from './ImagePreview';
 
 describe('DashboardPage', () => {
   const setup = (propOverrides?: Partial<DashboardPageProps>) => {
@@ -45,7 +46,7 @@ describe('DashboardPage', () => {
         query_names: [],
         tables: [],
         tags: [],
-        },
+      },
       getDashboard: jest.fn(),
       ...routerProps,
       ...propOverrides,
@@ -76,6 +77,9 @@ describe('DashboardPage', () => {
       expect(wrapper.find(BookmarkIcon).exists()).toBeTruthy();
     });
 
+    it('renders an ImagePreview with correct props', () => {
+      expect(wrapper.find(ImagePreview).props().uri).toBe(wrapper.state().uri);
+    })
   });
 
   describe('renderTabs', () => {

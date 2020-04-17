@@ -13,6 +13,7 @@ import {
 // Dashboard
 import {
   getDashboardWatcher,
+  getDashboardPreviewWatcher,
 } from "ducks/dashboard/sagas";
 
 // Notifications
@@ -73,6 +74,7 @@ export default function* rootSaga() {
     removeBookmarkWatcher(),
     // Dashboard
     getDashboardWatcher(),
+    getDashboardPreviewWatcher(),
     // Notification
     submitNotificationWatcher(),
     // FeedbackForm

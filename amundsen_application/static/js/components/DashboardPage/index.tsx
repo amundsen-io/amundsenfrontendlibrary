@@ -16,8 +16,11 @@ import { GetDashboardRequest } from 'ducks/dashboard/types';
 import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
 import { Dashboard } from 'interfaces/Dashboard';
+import ImagePreview from './ImagePreview';
 import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
+
+import './styles.scss';
 
 export interface RouteProps {
   uri: string;
@@ -136,6 +139,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                   </div>
                 </section>
             </section>
+            <ImagePreview uri={this.state.uri} />
           </section>
           <section className="right-panel">
             { this.renderTabs() }

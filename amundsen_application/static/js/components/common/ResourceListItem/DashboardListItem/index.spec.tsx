@@ -53,7 +53,7 @@ describe('DashboardListItem', () => {
     it('getLink returns correct string', () => {
       const { props, wrapper } = setup();
       const { dashboard, logging } = props;
-      expect(wrapper.instance().getLink()).toEqual(`/dashboard/${dashboard.uri}?index=${logging.index}&source=${logging.source}`);
+      expect(wrapper.instance().getLink()).toEqual(`/dashboard?uri=${dashboard.uri}&index=${logging.index}&source=${logging.source}`);
     });
   });
 
