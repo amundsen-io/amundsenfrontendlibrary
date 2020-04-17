@@ -172,12 +172,8 @@ const globalState: GlobalState = {
       isLoading: true,
       owners: {},
     },
-    tableTags: {
-      isLoading: true,
-      tags: [],
-    },
   },
-  allTags: {
+  tags: {
     allTags: [
       {
         tag_name: 'curated_tag_1',
@@ -188,7 +184,9 @@ const globalState: GlobalState = {
         tag_count: 15,
       }
     ],
-    isLoading: false,
+    isLoadingAllTags: false,
+    isLoadingTags: false,
+    tags: [],
   },
   user:  {
     loggedInUser: {

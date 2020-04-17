@@ -29,7 +29,7 @@ import TableIssues from 'components/TableDetail/TableIssues';
 import WatermarkLabel from 'components/TableDetail/WatermarkLabel';
 import WriterLink from 'components/TableDetail/WriterLink';
 import TagInput from 'components/Tags/TagInput';
-import {TableMetadata} from 'interfaces/TableMetadata';
+import { TableMetadata } from 'interfaces/TableMetadata';
 
 import { EditableSection } from 'components/TableDetail/EditableSection';
 
@@ -42,6 +42,8 @@ import RequestDescriptionText from './RequestDescriptionText';
 import RequestMetadataForm from './RequestMetadataForm';
 
 import { PROGRMMATIC_DESC_HEADER } from './constants';
+import { Tag } from 'interfaces/Tags';
+import { ResourceType } from 'interfaces/Resources';
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -203,7 +205,10 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
                 </section>
                 <section className="right-panel">
                   <EditableSection title="Tags">
-                    <TagInput/>
+                    <TagInput
+                      resourceType={ ResourceType.table }
+                      uriKey={ this.props.tableData.key }
+                    />
                   </EditableSection>
                   <EditableSection title="Owners">
                     <OwnerEditor />
