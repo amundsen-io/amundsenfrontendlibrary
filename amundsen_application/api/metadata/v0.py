@@ -374,7 +374,7 @@ def update_table_tags() -> Response:
 
         tag = get_query_param(args, 'tag')
 
-        url = '{0}/{1}/tag/{2}'.format(table_endpoint, table_key, tag)
+        url = f'{table_endpoint}/{table_key}/tag/{tag}'
 
         _log_update_table_tags(table_key=table_key, method=method, tag=tag)
 
@@ -384,7 +384,7 @@ def update_table_tags() -> Response:
         if status_code == HTTPStatus.OK:
             message = 'Success'
         else:
-            message = 'Encountered error: {0} tag failed'.format(method)
+            message = f'Encountered error: {method} table tag failed'
             logging.error(message)
 
         payload = jsonify({'msg': message})
@@ -394,6 +394,7 @@ def update_table_tags() -> Response:
         logging.exception(message)
         payload = jsonify({'msg': message})
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
+
 
 @metadata_blueprint.route('/update_dashboard_tags', methods=['PUT', 'DELETE'])
 def update_dashboard_tags() -> Response:
@@ -408,10 +409,8 @@ def update_dashboard_tags() -> Response:
 
         dashboard_endpoint = _get_dashboard_endpoint()
         uri_key = get_query_param(args, 'key')
-
         tag = get_query_param(args, 'tag')
-
-        url = '{0}/{1}/tag/{2}'.format(dashboard_endpoint, uri_key, tag)
+        url = f'{dashboard_endpoint}/{uri_key}/tag/{tag}'
 
         _log_update_dashboard_tags(uri_key=uri_key, method=method, tag=tag)
 
@@ -421,7 +420,7 @@ def update_dashboard_tags() -> Response:
         if status_code == HTTPStatus.OK:
             message = 'Success'
         else:
-            message = 'Encountered error: {0} tag failed'.format(method)
+            message = f'Encountered error: {method} dashboard tag failed'
             logging.error(message)
 
         payload = jsonify({'msg': message})
