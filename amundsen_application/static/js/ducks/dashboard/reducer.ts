@@ -21,17 +21,16 @@ export function getDashboardFailure() {
     }
   }
 }
-export function getDashboardSuccess(dashboard, statusCode: number) {
+export function getDashboardSuccess(dashboard) {
   return {
     type: GetDashboard.SUCCESS,
     payload: {
-      statusCode,
       dashboard,
+      statusCode: 200,
       isLoading: false,
     }
   }
 }
-
 
 /* Reducer */
 

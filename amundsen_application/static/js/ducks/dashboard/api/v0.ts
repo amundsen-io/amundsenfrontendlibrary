@@ -7,11 +7,11 @@ export type GetDashboardAPI = {
   dashboard: Dashboard;
 }
 
-const DASHBOARD_BASE = '/api/dashboard/v0';
+const DASHBOARD_BASE = '/api/metadata/v0';
 
 export function getDashboard(uri: string) {
   return axios.get(`${DASHBOARD_BASE}/dashboard?uri=${uri}`)
   .then((response: AxiosResponse<GetDashboardAPI>) => {
-    return response.data;
+    return response.data.dashboard;
   });
 }
