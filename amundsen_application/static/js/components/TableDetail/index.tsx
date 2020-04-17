@@ -42,7 +42,6 @@ import RequestDescriptionText from './RequestDescriptionText';
 import RequestMetadataForm from './RequestMetadataForm';
 
 import { PROGRMMATIC_DESC_HEADER } from './constants';
-import { ResourceType } from 'interfaces/Resources';
 
 export interface StateFromProps {
   isLoading: boolean;

@@ -4,11 +4,30 @@ import { throwError } from 'redux-saga-test-plan/providers';
 
 import * as API from '../api/v0';
 import reducer, {
-  getAllTags, getAllTagsFailure, getAllTagsSuccess,
-  initialState, AllTagsReducerState
+  getAllTags,
+  getAllTagsFailure,
+  getAllTagsSuccess,
+  initialState,
+  TagsReducerState,
+  updateTags,
+  updateTagsFailure,
+  updateTagsSuccess,
 } from '../reducer';
-import { getAllTagsWatcher, getAllTagsWorker } from '../sagas';
-import { GetAllTags } from '../types';
+
+
+import { getAllTagsWatcher, getAllTagsWorker, updateTableTagsWatcher, updateTableTagsWorker } from '../sagas';
+import { GetAllTags, UpdateTags } from '../types';
+
+
+import { ResourceType, Tag, UpdateMethod, UpdateTagData } from 'interfaces';
+
+import globalState from 'fixtures/globalState';
+
+
+import { getTableData, getTableDataFailure, getTableDataSuccess } from 'ducks/tableMetadata/reducer';
+
+const updateTableTagSpy = jest.spyOn(API, 'updateTableTag').mockImplementation((payload, type, key) => null);
+
 
 describe('allTags ducks', () => {
   describe('actions', () => {
@@ -34,11 +53,13 @@ describe('allTags ducks', () => {
   });
 
   describe('reducer', () => {
-    let testState: AllTagsReducerState;
+    let testState: TagsReducerState;
     beforeAll(() => {
       testState = {
         allTags: [],
-        isLoading: true,
+        isLoadingAllTags: true,
+        isLoadingTags: false,
+        tags: [],
       };
     });
     it('should return the existing state if action is not handled', () => {
@@ -92,6 +113,124 @@ describe('allTags ducks', () => {
           ])
           .put(getAllTagsFailure())
           .run();
+      });
+    });
+  });
+});
+
+
+describe('tags ducks', () => {
+  let expectedTags: Tag[];
+  let updatePayload: UpdateTagData[];
+  beforeAll(() => {
+    expectedTags = [{tag_count: 2, tag_name: 'test'}, {tag_count: 1, tag_name: 'test2'}];
+    updatePayload = [{methodName: UpdateMethod.PUT, tagName: 'test'}];
+  });
+
+  describe('actions', () => {
+    it('updateTags - returns the action to updateTags', () => {
+      const action = updateTags(updatePayload, ResourceType.table, "test");
+      const { payload } = action;
+      expect(action.type).toBe(UpdateTags.REQUEST);
+      expect(payload.tagArray).toBe(updatePayload);
+    });
+
+    it('updateTagsFailure - returns the action to process failure', () => {
+      const action = updateTagsFailure();
+      const { payload } = action;
+      expect(action.type).toBe(UpdateTags.FAILURE);
+      expect(payload.tags).toEqual([]);
+    });
+
+    it('updateTagsSuccess - returns the action to process success', () => {
+      const action = updateTagsSuccess(expectedTags);
+      const { payload } = action;
+      expect(action.type).toBe(UpdateTags.SUCCESS);
+      expect(payload.tags).toBe(expectedTags);
+    });
+  });
+
+  describe('reducer', () => {
+    let testState: TagsReducerState;
+    beforeAll(() => {
+      testState = initialState;
+    });
+    it('should return the existing state if action is not handled', () => {
+      expect(reducer(testState, { type: 'INVALID.ACTION' })).toEqual(testState);
+    });
+
+    it('should handle UpdateTags.REQUEST', () => {
+      expect(reducer(testState, updateTags(updatePayload, ResourceType.table, "test"))).toEqual({
+        ...testState,
+        isLoading: true,
+      });
+    });
+
+    it('should handle UpdateTags.FAILURE', () => {
+      expect(reducer(testState, updateTagsFailure())).toEqual({
+        ...testState,
+        isLoading: false,
+      });
+    });
+
+    it('should handle UpdateTags.SUCCESS', () => {
+      expect(reducer(testState, updateTagsSuccess(expectedTags))).toEqual({
+        ...testState,
+        isLoading: false,
+        tags: expectedTags,
+      });
+    });
+
+    it('should handle GetTableData.REQUEST', () => {
+      expect(reducer(testState, getTableData('testKey'))).toEqual({
+        ...testState,
+        isLoading: true,
+        tags: [],
+      });
+    });
+
+    it('should handle GetTableData.FAILURE', () => {
+      const action = getTableDataFailure();
+      expect(reducer(testState, action)).toEqual({
+        ...testState,
+        isLoading: false,
+        tags: action.payload.tags,
+      });
+    });
+
+    it('should handle GetTableData.SUCCESS', () => {
+      const mockTableData = globalState.tableMetadata.tableData;
+      expect(reducer(testState, getTableDataSuccess(mockTableData, {}, 200, expectedTags))).toEqual({
+        ...testState,
+        isLoading: false,
+        tags: expectedTags,
+      });
+    });
+  });
+
+  describe('sagas', () => {
+    describe('updateTableTagsWatcher', () => {
+      it('takes every UpdateTags.REQUEST with updateTableTagsWorker', () => {
+        testSaga(updateTableTagsWatcher)
+          .next().takeEvery(UpdateTags.REQUEST, updateTableTagsWorker);
+      });
+    });
+
+    describe('updateTableTagsWorker', () => {
+      it('executes flow for updating tags and returning up to date tag array', () => {
+        testSaga(updateTableTagsWorker, updateTags(updatePayload, ResourceType.table, "test"))
+          .next().select()
+          .next(globalState).call(API.updateTableTag, updatePayload, ResourceType.table, "test")
+          .next().call(API.getTags, ResourceType.table, "test")
+          .next(expectedTags).put(updateTagsSuccess(expectedTags))
+          .next().isDone();
+      });
+
+      it('handles request error', () => {
+        testSaga(updateTableTagsWorker, updateTags(updatePayload, ResourceType.table, "test"))
+          .next().select()
+          .next(globalState).throw(new Error()).put(updateTagsFailure())
+          .next().isDone();
       });
     });
   });

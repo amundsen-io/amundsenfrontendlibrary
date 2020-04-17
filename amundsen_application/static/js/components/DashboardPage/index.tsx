@@ -22,10 +22,9 @@ import { formatDateTimeShort } from '../../utils/dateUtils';
 import ResourceList from 'components/common/ResourceList';
 import { DASHBOARD_OWNER_SOURCE, DASHBOARD_SOURCE, TABLES_PER_PAGE } from 'components/DashboardPage/constants';
 import TagInput from 'components/Tags/TagInput';
-import { ResourceType } from 'interfaces/Resources';
 import { EditableSection } from 'components/TableDetail/EditableSection';
-
 import { ResourceType } from 'interfaces';
+
 
 import './styles.scss';
 
