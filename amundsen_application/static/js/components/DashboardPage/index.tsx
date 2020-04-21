@@ -25,7 +25,6 @@ import TagInput from 'components/Tags/TagInput';
 import { EditableSection } from 'components/TableDetail/EditableSection';
 import { ResourceType } from 'interfaces';
 
-
 import './styles.scss';
 
 export interface RouteProps {

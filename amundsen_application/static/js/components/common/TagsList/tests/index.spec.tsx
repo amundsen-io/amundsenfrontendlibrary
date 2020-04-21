@@ -114,7 +114,7 @@ describe('mapStateToProps', () => {
   let expectedOtherTags;
   beforeEach(() => {
     result = mapStateToProps(globalState);
-    const allTags = globalState.tags.allTags;
+    const allTags = globalState.tags.allTags.tags;
     const curatedTagsList = getCuratedTags();
     expectedCuratedTags = allTags.filter((tag) => curatedTagsList.indexOf(tag.tag_name) !== -1);
     expectedOtherTags = allTags.filter((tag) => curatedTagsList.indexOf(tag.tag_name) === -1);
@@ -129,6 +129,7 @@ describe('mapStateToProps', () => {
   });
 
   it('sets isLoading on the props', () => {
-    expect(result.isLoading).toEqual(globalState.tags.isLoadingAllTags);
+    const expectedResult = globalState.tags.allTags.isLoading || globalState.tags.resourceTags.isLoading;
+    expect(result.isLoading).toEqual(expectedResult);
   });
 });

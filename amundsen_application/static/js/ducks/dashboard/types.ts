@@ -18,7 +18,8 @@ export interface GetDashboardRequest {
 export interface GetDashboardResponse {
   type: GetDashboard.SUCCESS | GetDashboard.FAILURE;
   payload: {
-    dashboard: Dashboard;
+    dashboard?: Dashboard;
+    statusCode: number;
   }
 }
 

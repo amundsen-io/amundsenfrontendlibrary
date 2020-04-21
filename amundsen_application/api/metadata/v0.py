@@ -40,7 +40,7 @@ def _get_table_endpoint() -> str:
 def _get_dashboard_endpoint() -> str:
     dashboard_endpoint = app.config['METADATASERVICE_BASE'] + DASHBOARD_ENDPOINT
     if dashboard_endpoint is None:
-        raise Exception('An request endpoint for table resources must be configured')
+        raise Exception('An request endpoint for dashboard resources must be configured')
     return dashboard_endpoint
 
 

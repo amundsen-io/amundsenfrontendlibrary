@@ -18,7 +18,7 @@ export function getAllTags() {
   })
 };
 
-export function getTags(resourceType, uriKey: string) {
+export function getResourceTags(resourceType, uriKey: string) {
   if (resourceType === ResourceType.table) {
     return axios.get(`${API_PATH}/table?key=${uriKey}`)
     .then((response: AxiosResponse<TableDataAPI>) => {

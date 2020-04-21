@@ -57,7 +57,7 @@ import {
 } from './tableMetadata/sagas';
 
 // Tags
-import { getAllTagsWatcher, updateTableTagsWatcher } from './tags/sagas';
+import { getAllTagsWatcher, updateResourceTagsWatcher } from './tags/sagas';
 
 // User
 import { getLoggedInUserWatcher, getUserOwnWatcher, getUserReadWatcher, getUserWatcher } from "./user/sagas";
@@ -97,7 +97,7 @@ export default function* rootSaga() {
     getPopularTablesWatcher(),
     // Tags
     getAllTagsWatcher(),
-    updateTableTagsWatcher(),
+    updateResourceTagsWatcher(),
     // TableDetail
     getTableDataWatcher(),
     getColumnDescriptionWatcher(),

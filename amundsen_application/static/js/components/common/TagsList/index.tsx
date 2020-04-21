@@ -61,14 +61,14 @@ export class TagsList extends React.Component<TagsListProps> {
 
 export const mapStateToProps = (state: GlobalState) => {
   const curatedTagsList = getCuratedTags();
-  const allTags = state.tags.allTags;
+  const allTags = state.tags.allTags.tags;
   const curatedTags = allTags.filter((tag) => curatedTagsList.indexOf(tag.tag_name) !== -1);
   const otherTags = allTags.filter((tag) => curatedTagsList.indexOf(tag.tag_name) === -1);
 
   return {
     curatedTags,
     otherTags,
-    isLoading: state.tags.isLoadingAllTags,
+    isLoading: state.tags.allTags.isLoading,
   };
 };
 

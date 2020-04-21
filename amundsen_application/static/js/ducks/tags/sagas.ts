@@ -20,18 +20,18 @@ export function* getAllTagsWatcher(): SagaIterator {
   yield takeEvery(GetAllTags.REQUEST, getAllTagsWorker);
 }
 
-export function* updateTableTagsWorker(action: UpdateTagsRequest): SagaIterator {
+export function* updateResourceTagsWorker(action: UpdateTagsRequest): SagaIterator {
   try {
     const { tagArray, resourceType, uriKey } = action.payload;
     yield all(tagArray.map(tagObject =>
       call(API.updateTableTag, tagObject, resourceType, uriKey)
     ));
-    const newTags = yield call(API.getTags, resourceType, uriKey);
+    const newTags = yield call(API.getResourceTags, resourceType, uriKey);
     yield put(updateTagsSuccess(newTags));
   } catch (e) {
     yield put(updateTagsFailure());
   }
 };
-export function* updateTableTagsWatcher(): SagaIterator {
-  yield takeEvery(UpdateTags.REQUEST, updateTableTagsWorker);
+export function* updateResourceTagsWatcher(): SagaIterator {
+  yield takeEvery(UpdateTags.REQUEST, updateResourceTagsWorker);
 };

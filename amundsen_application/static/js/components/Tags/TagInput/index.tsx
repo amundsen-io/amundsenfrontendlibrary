@@ -299,9 +299,9 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
 
 export const mapStateToProps = (state: GlobalState) => {
   return {
-    allTags: state.tags.allTags,
-    isLoading: state.tags.isLoadingAllTags || state.tags.isLoadingTags,
-    tags: state.tags.tags,
+    allTags: state.tags.allTags.tags,
+    isLoading: state.tags.allTags.isLoading || state.tags.resourceTags.isLoading,
+    tags: state.tags.resourceTags.tags,
   };
 };
 

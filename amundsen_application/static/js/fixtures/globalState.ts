@@ -198,19 +198,23 @@ const globalState: GlobalState = {
     },
   },
   tags: {
-    allTags: [
-      {
-        tag_name: 'curated_tag_1',
-        tag_count: 20,
-      },
-      {
-        tag_name: 'other_tag_1',
-        tag_count: 15,
-      }
-    ],
-    isLoadingAllTags: false,
-    isLoadingTags: false,
-    tags: [],
+    allTags: {
+      isLoading: false,
+      tags: [
+        {
+          tag_name: 'curated_tag_1',
+          tag_count: 20,
+        },
+        {
+          tag_name: 'other_tag_1',
+          tag_count: 15,
+        }
+      ],
+    },
+    resourceTags: {
+      isLoading: false,
+      tags: [],
+    },
   },
   user:  {
     loggedInUser: {

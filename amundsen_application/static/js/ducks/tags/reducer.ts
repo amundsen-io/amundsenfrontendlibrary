@@ -52,64 +52,105 @@ export function updateTagsSuccess(tags: Tag[]): UpdateTagsResponse  {
 
 /* REDUCER */
 export interface TagsReducerState {
-  allTags: Tag[];
-  isLoadingAllTags: boolean;
-  isLoadingTags: boolean;
-  tags: Tag[];
+  allTags: TagState;
+  resourceTags: TagState;
 };
 
+interface TagState {
+  isLoading: boolean;
+  tags: Tag[];
+}
+
 export const initialState: TagsReducerState = {
-  allTags: [],
-  isLoadingAllTags: false,
-  isLoadingTags: false,
-  tags: [],
+  allTags: {
+    isLoading: false,
+    tags: [],
+  },
+  resourceTags: {
+    isLoading: false,
+    tags: [],
+  },
 };
 
 export default function reducer(state: TagsReducerState = initialState, action): TagsReducerState {
   switch (action.type) {
     case GetAllTags.REQUEST:
-      return { ...state, isLoadingAllTags: true };
+      return {
+        ...state,
+        allTags: {
+          ...state.allTags,
+          isLoading: true,
+          tags: [],
+        }
+      };
     case GetAllTags.FAILURE:
       return initialState;
     case GetAllTags.SUCCESS:
       return {
         ...state,
-        allTags: (<GetAllTagsResponse>action).payload.allTags,
-        isLoadingAllTags: false,
+        allTags: {
+          ...state.allTags,
+          isLoading: false,
+          tags: (<GetAllTagsResponse>action).payload.allTags,
+        }
       };
 
     case GetTableData.REQUEST:
-      return { ...state, isLoadingTags: true, tags: [] };
+    case GetDashboard.REQUEST:
+      return {
+        ...state,
+        resourceTags: {
+          ...state.resourceTags,
+          isLoading: true,
+          tags: [],
+        }
+      };
     case GetTableData.FAILURE:
     case GetTableData.SUCCESS:
       return {
         ...state,
-        isLoadingTags: false,
-        tags: (<GetTableDataResponse>action).payload.tags,
+        resourceTags: {
+          ...state.resourceTags,
+          isLoading: false,
+          tags: (<GetTableDataResponse>action).payload.tags,
+        },
       };
-
-    case GetDashboard.REQUEST:
-      return { ...state, isLoadingTags: true, tags: [] };
     case GetDashboard.FAILURE:
     case GetDashboard.SUCCESS:
       return {
         ...state,
-        isLoadingTags: false,
-        tags: (<GetDashboardResponse>action).payload.dashboard.tags
+        resourceTags: {
+          ...state.resourceTags,
+          isLoading: false,
+          tags: (<GetDashboardResponse>action).payload.dashboard.tags,
+        }
       };
 
-
     case UpdateTags.REQUEST:
-      return { ...state, isLoadingTags: true };
+      return {
+        ...state,
+        resourceTags: {
+          ...state.resourceTags,
+          isLoading: true,
+        }
+      };
     case UpdateTags.FAILURE:
-      return { ...state, isLoadingTags: false };
+      return {
+        ...state,
+        resourceTags: {
+          ...state.resourceTags,
+          isLoading: false
+        },
+      };
     case UpdateTags.SUCCESS:
       return {
         ...state,
-        isLoadingTags: false,
-        tags: (<UpdateTagsResponse>action).payload.tags
+        resourceTags: {
+          ...state.resourceTags,
+          isLoading: false,
+          tags: (<UpdateTagsResponse>action).payload.tags,
+        },
       };
-
     default:
       return state;
   }

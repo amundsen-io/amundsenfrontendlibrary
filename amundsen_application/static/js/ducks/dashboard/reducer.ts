@@ -4,7 +4,7 @@ import {
   GetDashboardPreview,
   GetDashboardPreviewRequest,
   GetDashboardPreviewResponse,
-  DashboardPreviewResponse,
+  DashboardPreviewResponse, GetDashboardResponse,
 } from 'ducks/dashboard/types';
 import { Dashboard } from 'interfaces/Dashboard';
 
@@ -18,23 +18,21 @@ export function getDashboard(payload: { uri: string, searchIndex?: string, sourc
   }
 }
 
-export function getDashboardFailure() {
-  return {
-    type: GetDashboard.FAILURE,
-    payload: {
-      isLoading: false,
-      statusCode: 500,
-      dashboard: initialDashboardState,
-    }
-  }
-}
-export function getDashboardSuccess(dashboard) {
+export function getDashboardSuccess(dashboard, statusCode) {
   return {
     type: GetDashboard.SUCCESS,
     payload: {
       dashboard,
-      statusCode: 200,
-      isLoading: false,
+      statusCode,
+    }
+  }
+}
+
+export function getDashboardFailure(statusCode): GetDashboardResponse {
+  return {
+    type: GetDashboard.FAILURE,
+    payload: {
+      statusCode,
     }
   }
 }
@@ -64,7 +62,7 @@ export interface DashboardReducerState {
   preview: DashboardPreviewState;
 }
 
-export const initialDashboardState: Dashboard = {
+export const InitialDashboardState: Dashboard = {
   badges: [],
   chart_names: [],
   cluster: "",
@@ -90,7 +88,7 @@ export const initialDashboardState: Dashboard = {
 export const initialState: DashboardReducerState = {
   isLoading: true,
   statusCode: null,
-  dashboard: initialDashboardState,
+  dashboard: InitialDashboardState,
   preview: {
     url: '',
     isLoading: true,
@@ -110,7 +108,7 @@ export default function reducer(state: DashboardReducerState = initialState, act
         ...state,
         isLoading: false,
         statusCode: action.payload.statusCode,
-        dashboard: action.payload.dashboard,
+        dashboard: InitialDashboardState,
       };
     case GetDashboard.SUCCESS:
       return {
