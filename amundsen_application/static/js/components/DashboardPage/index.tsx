@@ -144,10 +144,6 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
             </div>
             <section className="column-layout-2">
               <section className="left-panel">
-                <div className="section-title title-3">Created</div>
-                <div>
-                  { formatDateTimeShort({ epochTimestamp: dashboard.created_timestamp}) }
-                </div>
                 <div className="section-title title-3">Owners</div>
                 <div>
                   {
@@ -161,6 +157,14 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                     )
                   }
                 </div>
+                <div className="section-title title-3">Created</div>
+                <div>
+                  { formatDateTimeShort({ epochTimestamp: dashboard.created_timestamp}) }
+                </div>
+                <div className="section-title title-3">Last Updated</div>
+                <div>
+                  { formatDateTimeShort({ epochTimestamp: dashboard.updated_timestamp }) }
+                </div>
                 <div className="section-title title-3">Recent View Count</div>
                 <div>
                   { dashboard.recent_view_count }
@@ -173,16 +177,16 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                     uriKey={ this.props.dashboard.uri }
                   />
                 </EditableSection>
-                <div className="section-title title-3">Last Run</div>
-                <div>
-                  { formatDateTimeShort({ epochTimestamp: dashboard.last_run_timestamp }) }
-                  <br/>
-                  { dashboard.last_run_state }
-                </div>
-
                 <div className="section-title title-3">Last Successful Run</div>
                 <div>
                   { formatDateTimeShort({ epochTimestamp: dashboard.last_successful_run_timestamp }) }
+                </div>
+                <div className="section-title title-3">Last Run</div>
+                <div>
+                  { formatDateTimeShort({ epochTimestamp: dashboard.last_run_timestamp }) }
+                  <div className="last-run-state title-3">
+                    { dashboard.last_run_state }
+                  </div>
                 </div>
               </section>
             </section>

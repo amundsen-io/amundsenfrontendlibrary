@@ -1,6 +1,11 @@
 @import 'variables';
 
 .dashboard-page {
+
+  .last-run-state {
+    text-transform: uppercase;
+  }
+
   .image-preview {
     margin-top: $spacer-3;
     min-height: -webkit-fill-available;
