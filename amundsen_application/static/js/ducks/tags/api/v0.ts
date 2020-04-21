@@ -2,10 +2,8 @@ import axios, { AxiosResponse } from 'axios';
 
 import { sortTagsAlphabetical } from 'ducks/utilMethods';
 import { ResourceType, Tag } from 'interfaces';
-import { getTableTagsFromResponseData } from 'ducks/tableMetadata/api/helpers';
 import { API_PATH, TableDataAPI } from 'ducks/tableMetadata/api/v0';
 import { GetDashboardAPI } from 'ducks/dashboard/api/v0';
-import { getDashboardTagsFromResponseData } from 'ducks/dashboard/api/helpers';
 
 export type AllTagsAPI = {
   msg: string;
@@ -22,18 +20,19 @@ export function getResourceTags(resourceType, uriKey: string) {
   if (resourceType === ResourceType.table) {
     return axios.get(`${API_PATH}/table?key=${uriKey}`)
     .then((response: AxiosResponse<TableDataAPI>) => {
-      return getTableTagsFromResponseData(response.data);
+      return response.data.tableData.tags.sort(sortTagsAlphabetical);
     });
   }
   if (resourceType === ResourceType.dashboard) {
     return axios.get(`${API_PATH}/dashboard?uri=${uriKey}`)
     .then((response: AxiosResponse<GetDashboardAPI>) => {
-      return getDashboardTagsFromResponseData(response.data)
+      response.data.dashboard.tags.sort(sortTagsAlphabetical);
     });
   }
 }
 
 /* TODO: Typing this method generates redux-saga related type errors that needs more dedicated debugging */
+// TODO - Unify this API and split the logic in the Flask layer.
 export function updateTableTag(tagObject, resourceType: ResourceType, uriKey: string) {
   let url = "";
   if (resourceType === ResourceType.table) {

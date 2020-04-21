@@ -18,7 +18,7 @@ export type TableDataAPI= { tableData: TableData; } & MessageAPI;
 
 /** HELPERS **/
 import {
-  getTableQueryParams, getTableDataFromResponseData, getTableOwnersFromResponseData, getTableTagsFromResponseData,
+  getTableQueryParams, getTableDataFromResponseData, getTableOwnersFromResponseData,
   createOwnerUpdatePayload, createOwnerNotificationData, shouldSendNotification
 } from './helpers';
 
@@ -31,7 +31,7 @@ export function getTableData(tableKey: string, index?: string, source?: string )
     return {
       data: getTableDataFromResponseData(response.data),
       owners: getTableOwnersFromResponseData(response.data),
-      tags: getTableTagsFromResponseData(response.data),
+      tags: response.data.tableData.tags,
       statusCode: response.status,
     };
   });
