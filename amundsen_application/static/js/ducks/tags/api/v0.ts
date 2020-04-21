@@ -20,13 +20,13 @@ export function getResourceTags(resourceType, uriKey: string) {
   if (resourceType === ResourceType.table) {
     return axios.get(`${API_PATH}/table?key=${uriKey}`)
     .then((response: AxiosResponse<TableDataAPI>) => {
-      return response.data.tableData.tags.sort(sortTagsAlphabetical);
+      return (response.data.tableData.tags || []).sort(sortTagsAlphabetical);
     });
   }
   if (resourceType === ResourceType.dashboard) {
     return axios.get(`${API_PATH}/dashboard?uri=${uriKey}`)
     .then((response: AxiosResponse<GetDashboardAPI>) => {
-      response.data.dashboard.tags.sort(sortTagsAlphabetical);
+      return (response.data.dashboard.tags || []).sort(sortTagsAlphabetical);
     });
   }
 }
