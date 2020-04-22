@@ -54,19 +54,8 @@ describe('ImagePreview', () => {
   });
 
   describe('render', () => {
-    let props;
-    let wrapper;
-    let element;
-    beforeAll(() => {
-      const setupResult = setup();
-      props = setupResult.props;
-      wrapper = setupResult.wrapper;
-      element = wrapper.find('.image-preview');
-    })
-
     describe('if no error', () => {
       describe('when loading', () => {
-        let props;
         let wrapper;
         beforeAll(() => {
           wrapper = setup().wrapper;
