@@ -66,6 +66,9 @@ class ModePreview(BasePreview):
         web_preview_image_key = 'web_preview_image'
         result = response.json()
 
+        if web_preview_image_key not in result:
+            raise FileNotFoundError('No preview image available on {}'.format(uri))
+        LOGGER.info(result)
         image_url = result[web_preview_image_key]
         if image_url is None:
             raise FileNotFoundError('No preview image available on {}'.format(uri))

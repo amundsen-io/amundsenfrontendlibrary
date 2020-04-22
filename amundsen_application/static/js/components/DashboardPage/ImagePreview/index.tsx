@@ -28,7 +28,7 @@ export class ImagePreview extends React.Component<ImagePreviewProps, ImagePrevie
   }
 
   onSuccess = () => {
-    this.setState({ isLoading: false });
+    this.setState({ isLoading: false, hasError: false });
   }
 
   onError = (e: React.SyntheticEvent<HTMLImageElement>) => {
