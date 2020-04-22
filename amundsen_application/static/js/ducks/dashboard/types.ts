@@ -21,23 +21,3 @@ export interface GetDashboardResponse {
     dashboard: Dashboard;
   }
 }
-
-export enum GetDashboardPreview {
-  REQUEST = 'amundsen/dashboard/GET_DASHBOARD_PREVIEW_REQUEST',
-  RESPONSE = 'amundsen/dashboard/GET_DASHBOARD_PREVIEW_RESPONSE',
-}
-export interface GetDashboardPreviewRequest {
-  type: GetDashboardPreview.REQUEST;
-  payload: {
-    uri: string;
-  }
-}
-export interface GetDashboardPreviewResponse {
-  type: GetDashboardPreview.RESPONSE;
-  payload: DashboardPreviewResponse;
-}
-export interface DashboardPreviewResponse {
-  url: string;
-  errorMessage?: string | undefined;
-  errorCode?: number;
-}

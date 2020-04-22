@@ -73,10 +73,6 @@ const globalState: GlobalState = {
       tables: [],
       tags: [],
     },
-    preview: {
-      url: '',
-      isLoading: false,
-    }
   },
   feedback: {
     sendState: SendingState.IDLE,
