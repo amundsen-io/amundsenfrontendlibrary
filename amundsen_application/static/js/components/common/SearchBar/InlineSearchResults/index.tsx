@@ -210,12 +210,12 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
       <>
         { this.renderResultsByResource(ResourceType.table) }
         {
-          indexUsersEnabled() &&
-          this.renderResultsByResource(ResourceType.user)
-        }
-        {
           indexDashboardsEnabled() &&
           this.renderResultsByResource(ResourceType.dashboard)
+        }
+        {
+          indexUsersEnabled() &&
+          this.renderResultsByResource(ResourceType.user)
         }
       </>
     );
