@@ -9,7 +9,7 @@ import './styles.scss';
 
 export interface ImagePreviewProps {
   uri: string;
-  dashboard_url?: string; // TODO ttannis: Pass dashboard url after picking up connect_dashboard changes
+  redirectUrl: string;
 }
 
 interface ImagePreviewState {
@@ -36,7 +36,7 @@ export class ImagePreview extends React.Component<ImagePreviewProps, ImagePrevie
   }
 
   render = () =>  {
-    const { uri, dashboard_url = 'TODO: ttannis' } = this.props;
+    const { uri, redirectUrl } = this.props;
     return (
       <div className='image-preview'>
         { this.state.isLoading && <LoadingSpinner /> }
@@ -54,7 +54,7 @@ export class ImagePreview extends React.Component<ImagePreviewProps, ImagePrevie
         }
         {
           this.state.hasError &&
-          <Linkify>{`${Constants.ERROR_MESSAGE} ${dashboard_url}.`}</Linkify>
+          <Linkify className='body-placeholder'>{`${Constants.ERROR_MESSAGE} ${redirectUrl}`}</Linkify>
         }
       </div>
     );

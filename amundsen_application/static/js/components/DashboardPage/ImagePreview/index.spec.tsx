@@ -14,7 +14,7 @@ describe('ImagePreview', () => {
   const setup = (propOverrides?: Partial<ImagePreviewProps>) => {
     const props = {
       uri: 'test:uri/value',
-      dashboard_url: 'someUrl',
+      redirectUrl: 'someUrl',
       ...propOverrides,
     };
 
