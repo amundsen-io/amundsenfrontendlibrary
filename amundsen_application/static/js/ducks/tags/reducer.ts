@@ -105,7 +105,6 @@ export default function reducer(state: TagsReducerState = initialState, action):
           tags: [],
         }
       };
-    case GetTableData.FAILURE:
     case GetTableData.SUCCESS:
       return {
         ...state,
@@ -115,7 +114,6 @@ export default function reducer(state: TagsReducerState = initialState, action):
           tags: (<GetTableDataResponse>action).payload.tags,
         },
       };
-    case GetDashboard.FAILURE:
     case GetDashboard.SUCCESS:
       return {
         ...state,
@@ -123,6 +121,16 @@ export default function reducer(state: TagsReducerState = initialState, action):
           ...state.resourceTags,
           isLoading: false,
           tags: (<GetDashboardResponse>action).payload.dashboard.tags,
+        }
+      };
+    case GetTableData.FAILURE:
+    case GetDashboard.FAILURE:
+      return {
+        ...state,
+        resourceTags: {
+          ...state.resourceTags,
+          isLoading: false,
+          tags: [],
         }
       };
 

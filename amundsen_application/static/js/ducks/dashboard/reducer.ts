@@ -4,7 +4,7 @@ import {
   GetDashboardPreview,
   GetDashboardPreviewRequest,
   GetDashboardPreviewResponse,
-  DashboardPreviewResponse, GetDashboardResponse,
+  DashboardPreviewResponse, GetDashboardResponse, GetDashboardPayload,
 } from 'ducks/dashboard/types';
 import { Dashboard } from 'interfaces/Dashboard';
 
@@ -18,22 +18,17 @@ export function getDashboard(payload: { uri: string, searchIndex?: string, sourc
   }
 }
 
-export function getDashboardSuccess(dashboard, statusCode) {
+export function getDashboardSuccess(payload: GetDashboardPayload) {
   return {
+    payload,
     type: GetDashboard.SUCCESS,
-    payload: {
-      dashboard,
-      statusCode,
-    }
   }
 }
 
-export function getDashboardFailure(statusCode): GetDashboardResponse {
+export function getDashboardFailure(payload: GetDashboardPayload): GetDashboardResponse {
   return {
+    payload,
     type: GetDashboard.FAILURE,
-    payload: {
-      statusCode,
-    }
   }
 }
 

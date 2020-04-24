@@ -8,11 +8,10 @@ import { GetDashboard, GetDashboardPreview, GetDashboardPreviewRequest } from '.
 export function* getDashboardWorker(action): SagaIterator {
   try {
     const uri = action.payload.uri;
-    const { data, status } = yield call(API.getDashboard, uri);
-    yield put(getDashboardSuccess(data.dashboard, status));
+    const response = yield call(API.getDashboard, uri);
+    yield put(getDashboardSuccess(response));
   } catch (error) {
-    const { status } = error;
-    yield put(getDashboardFailure(status));
+    yield put(getDashboardFailure(error));
   }
 }
 
