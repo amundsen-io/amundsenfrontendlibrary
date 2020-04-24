@@ -77,10 +77,6 @@ const globalState: GlobalState = {
       uri: "",
       url: "",
     },
-    preview: {
-      url: '',
-      isLoading: false,
-    }
   },
   feedback: {
     sendState: SendingState.IDLE,

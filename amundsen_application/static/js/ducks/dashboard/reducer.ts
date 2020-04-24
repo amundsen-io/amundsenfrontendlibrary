@@ -1,10 +1,8 @@
 import {
   GetDashboard,
   GetDashboardRequest,
-  GetDashboardPreview,
-  GetDashboardPreviewRequest,
-  GetDashboardPreviewResponse,
-  DashboardPreviewResponse, GetDashboardResponse, GetDashboardPayload,
+  GetDashboardResponse,
+  GetDashboardPayload,
 } from 'ducks/dashboard/types';
 import { Dashboard } from 'interfaces/Dashboard';
 
@@ -32,29 +30,13 @@ export function getDashboardFailure(payload: GetDashboardPayload): GetDashboardR
   }
 }
 
-export function getDashboardPreview(payload: { uri: string }): GetDashboardPreviewRequest {
-  return {
-    payload,
-    type: GetDashboardPreview.REQUEST,
-  }
-}
-
-export function setDashboardPreview(payload: DashboardPreviewResponse): GetDashboardPreviewResponse {
-  return {
-    payload,
-    type: GetDashboardPreview.RESPONSE,
-  }
-}
 
 /* Reducer */
-interface DashboardPreviewState extends DashboardPreviewResponse {
-  isLoading: boolean;
-}
+
 export interface DashboardReducerState {
   isLoading: boolean;
   statusCode: number;
   dashboard: Dashboard;
-  preview: DashboardPreviewState;
 }
 
 export const InitialDashboardState: Dashboard = {
@@ -84,10 +66,6 @@ export const initialState: DashboardReducerState = {
   isLoading: true,
   statusCode: null,
   dashboard: InitialDashboardState,
-  preview: {
-    url: '',
-    isLoading: true,
-  }
 };
 
 export default function reducer(state: DashboardReducerState = initialState, action): DashboardReducerState {
@@ -111,22 +89,6 @@ export default function reducer(state: DashboardReducerState = initialState, act
         isLoading: false,
         statusCode: action.payload.statusCode,
         dashboard: action.payload.dashboard,
-      };
-    case GetDashboardPreview.REQUEST:
-      return {
-        ...state,
-        preview: {
-          url: '',
-          isLoading: true,
-        }
-      };
-    case GetDashboardPreview.RESPONSE:
-      return {
-        ...state,
-        preview: {
-          ...action.payload,
-          isLoading: false,
-        }
       };
     default:
       return state;

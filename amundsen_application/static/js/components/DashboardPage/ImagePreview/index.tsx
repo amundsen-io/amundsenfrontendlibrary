@@ -1,76 +1,64 @@
 import * as React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 
-import { getDashboardPreview } from 'ducks/dashboard/reducer';
-import { GetDashboardPreviewRequest } from 'ducks/dashboard/types';
-import { GlobalState } from 'ducks/rootReducer';
+import Linkify from 'react-linkify'
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
 
 import * as Constants from './constants';
 import './styles.scss';
 
-export interface OwnProps {
+export interface ImagePreviewProps {
   uri: string;
+  redirectUrl: string;
 }
 
-export interface StateFromProps {
-  url: string;
-  errorMessage: string;
-  errorCode: number | undefined;
+interface ImagePreviewState {
   isLoading: boolean;
+  hasError: boolean;
 }
 
-export interface DispatchFromProps {
-  getPreviewImage: (payload: { uri: string }) => GetDashboardPreviewRequest
-}
-
-export type ImagePreviewProps = StateFromProps & DispatchFromProps & OwnProps;
-
-export class ImagePreview extends React.Component<ImagePreviewProps, {}> {
+export class ImagePreview extends React.Component<ImagePreviewProps, ImagePreviewState> {
   constructor(props) {
     super(props);
+
+    this.state = {
+      isLoading: true,
+      hasError: false,
+    }
   }
 
-  componentDidMount = () =>  {
-    this.props.getPreviewImage({ uri: this.props.uri });
+  onSuccess = () => {
+    this.setState({ isLoading: false, hasError: false });
+  }
+
+  onError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    this.setState({ isLoading: false, hasError: true });
   }
 
   render = () =>  {
-    const { errorCode, errorMessage, isLoading, url } = this.props;
-    let content;
-    if (isLoading) {
-      content = <LoadingSpinner/>;
-    }
-    else if (errorCode) {
-      content =  <div className="loading-error-text body-placeholder">{ errorMessage }</div>;
-    }
-    else {
-      content = <img src={this.props.url} height="auto" width="100%" />;
-    }
-
+    const { uri, redirectUrl } = this.props;
     return (
       <div className='image-preview'>
-        { content }
+        { this.state.isLoading && <LoadingSpinner /> }
+        {
+          !this.state.hasError &&
+          <img
+            className='preview'
+            style={this.state.isLoading ? { visibility: 'hidden' } : { visibility: 'visible' }}
+            src={`${Constants.PREVIEW_BASE}/${this.props.uri}/${Constants.PREVIEW_END}`}
+            onLoad={this.onSuccess}
+            onError={this.onError}
+            height="auto"
+            width="100%"
+          />
+        }
+        {
+          this.state.hasError &&
+          <Linkify className='body-placeholder'>{`${Constants.ERROR_MESSAGE} ${redirectUrl}`}</Linkify>
+        }
       </div>
     );
   }
 }
 
-export const mapStateToProps = (state: GlobalState) => {
-  return {
-    url: state.dashboard.preview.url,
-    errorMessage: state.dashboard.preview.errorMessage || Constants.DEFAULT_ERROR_MESSAGE,
-    errorCode: state.dashboard.preview.errorCode,
-    isLoading: state.dashboard.preview.isLoading,
-  };
-};
-
-export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({
-    getPreviewImage: getDashboardPreview,
-  } , dispatch);
-};
-
-export default connect<StateFromProps, DispatchFromProps, OwnProps>(mapStateToProps, mapDispatchToProps)(ImagePreview);
+export default ImagePreview;

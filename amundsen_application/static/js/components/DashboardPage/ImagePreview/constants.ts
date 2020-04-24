@@ -1,1 +1,5 @@
-export const DEFAULT_ERROR_MESSAGE = 'An error ocurred loading the image preview, please refresh the page';
+export const ERROR_MESSAGE = 'Unable to load the dashboard preview image. \
+Please view the dashboard at';
+
+export const PREVIEW_BASE = '/api/dashboard_preview/v0/dashboard';
+export const PREVIEW_END = 'preview.jpg';

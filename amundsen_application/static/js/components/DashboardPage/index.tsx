@@ -190,7 +190,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                 </div>
               </section>
             </section>
-            <ImagePreview uri={this.state.uri} />
+            <ImagePreview uri={this.state.uri} redirectUrl={dashboard.url} />
           </section>
           <section className="right-panel">
             { this.renderTabs() }
