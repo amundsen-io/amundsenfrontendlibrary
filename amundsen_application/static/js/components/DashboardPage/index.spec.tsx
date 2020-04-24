@@ -7,6 +7,7 @@ import { getMockRouterProps } from '../../fixtures/mockRouter';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
+import Flag from 'components/common/Flag';
 import TabsComponent from 'components/common/TabsComponent';
 import ImagePreview from './ImagePreview';
 
@@ -89,6 +90,11 @@ describe('DashboardPage', () => {
       expect(elementProps.bookmarkKey).toBe(props.dashboard.uri);
       expect(elementProps.resourceType).toBe(ResourceType.dashboard);
     });
+
+    it('renders a Flag for last run state', () => {
+      const element = wrapper.find('.last-run-state').find(Flag);
+      expect(element.props().text).toBe(props.dashboard.last_run_state);
+    })
 
     it('renders an ImagePreview with correct props', () => {
       expect(wrapper.find(ImagePreview).props().uri).toBe(wrapper.state().uri);

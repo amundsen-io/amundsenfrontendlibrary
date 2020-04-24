@@ -8,6 +8,7 @@ import * as qs from 'simple-query-string';
 import AvatarLabel from 'components/common/AvatarLabel';
 import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
+import Flag from 'components/common/Flag';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import TabsComponent from 'components/common/TabsComponent';
 import { getDashboard } from 'ducks/dashboard/reducer';
@@ -184,8 +185,12 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                 <div className="section-title title-3">Last Run</div>
                 <div>
                   { formatDateTimeShort({ epochTimestamp: dashboard.last_run_timestamp }) }
-                  <div className="last-run-state title-3">
-                    { dashboard.last_run_state }
+                  <div className="last-run-state">
+                    <Flag
+                      caseType='sentenceCase'
+                      text={ dashboard.last_run_state }
+                      labelStyle={ dashboard.last_run_state === 'succeeded' ? 'success' : 'danger' }
+                    />
                   </div>
                 </div>
               </section>

@@ -3,7 +3,9 @@
 .dashboard-page {
 
   .last-run-state {
-    text-transform: uppercase;
+    .flag {
+      margin: $spacer-1 0 0 0;
+    }
   }
 
   .image-preview {
