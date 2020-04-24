@@ -74,6 +74,20 @@ def marshall_table_full(table_dict: Dict) -> Dict:
     return results
 
 
+def marshall_dashboard_full(dashboard_dict: Dict) -> Dict:
+    """
+    Cleanup some fields in the dashboard response
+    :param dashboard_dict: Dashboard response from metadata service.
+    :return: Dashboard dictionary with sanitized fields, particularly the tables and owners.
+    """
+    # TODO - Cleanup https://github.com/lyft/amundsen/issues/296
+    #  This code will try to supplement some missing data since the data here is incomplete.
+    #  Once the metadata service response provides complete user objects we can remove this.
+    dashboard_dict['owners'] = [_map_user_object_to_schema(owner) for owner in dashboard_dict['owners']]
+    dashboard_dict['tables'] = [marshall_table_partial(table) for table in dashboard_dict['tables']]
+    return dashboard_dict
+
+
 def _update_prog_descriptions(prog_descriptions: List) -> None:
     # We want to make sure there is a display title that is just source
     for desc in prog_descriptions:

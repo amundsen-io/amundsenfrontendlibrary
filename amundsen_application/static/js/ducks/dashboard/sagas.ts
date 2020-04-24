@@ -8,10 +8,10 @@ import { GetDashboard } from './types';
 export function* getDashboardWorker(action): SagaIterator {
   try {
     const uri = action.payload.uri;
-    const dashboard = yield call(API.getDashboard, uri);
-    yield put(getDashboardSuccess(dashboard));
-  } catch (e) {
-    yield put(getDashboardFailure());
+    const response = yield call(API.getDashboard, uri);
+    yield put(getDashboardSuccess(response));
+  } catch (error) {
+    yield put(getDashboardFailure(error));
   }
 }
 

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { RouteComponentProps } from 'react-router';
 import * as qs from 'simple-query-string';
 
@@ -8,8 +9,6 @@ import AvatarLabel from 'components/common/AvatarLabel';
 import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import { EditableSection } from 'components/TableDetail/EditableSection';
-import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import TabsComponent from 'components/common/TabsComponent';
 import { getDashboard } from 'ducks/dashboard/reducer';
 import { GetDashboardRequest } from 'ducks/dashboard/types';
@@ -19,7 +18,11 @@ import { Dashboard } from 'interfaces/Dashboard';
 import ImagePreview from './ImagePreview';
 import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
-
+import { formatDateTimeShort } from '../../utils/dateUtils';
+import ResourceList from 'components/common/ResourceList';
+import { DASHBOARD_OWNER_SOURCE, DASHBOARD_SOURCE, TABLES_PER_PAGE } from 'components/DashboardPage/constants';
+import TagInput from 'components/Tags/TagInput';
+import { EditableSection } from 'components/TableDetail/EditableSection';
 import { ResourceType } from 'interfaces';
 
 import './styles.scss';
@@ -34,6 +37,7 @@ interface DashboardPageState {
 
 export interface StateFromProps {
   isLoading: boolean;
+  statusCode: number;
   dashboard: Dashboard;
 }
 
@@ -62,6 +66,19 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
   renderTabs() {
     const tabInfo = [
       {
+        content:
+          (
+            <ResourceList
+              allItems={ this.props.dashboard.tables }
+              itemsPerPage={ TABLES_PER_PAGE }
+              paginate={ false }
+              source={ DASHBOARD_SOURCE }
+            />
+          ),
+        key: 'tables',
+        title: 'Tables',
+      },
+      {
         content: <ChartList charts={ this.props.dashboard.chart_names }/>,
         key: 'charts',
         title: 'Charts',
@@ -71,13 +88,8 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
         key: 'queries',
         title: 'Queries',
       },
-      {
-        content: <span>Tables</span>,
-        key: 'tables',
-        title: 'Tables',
-      }
     ];
-    return <TabsComponent tabs={ tabInfo } defaultTab={ "charts" } />;
+    return <TabsComponent tabs={ tabInfo } defaultTab={ "tables" } />;
   }
 
   render() {
@@ -85,6 +97,14 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
 
     if (isLoading) {
       return <LoadingSpinner/>;
+    }
+    if (this.props.statusCode === 500) {
+      return (
+        <div className="container error-label">
+          <Breadcrumb />
+          <label>Something went wrong...</label>
+        </div>
+      );
     }
 
     return (
@@ -118,28 +138,57 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
         </header>
         <main className="column-layout-1">
           <section className="left-panel">
-            <EditableSection title="Description">
+            <div className="section-title title-3">Description</div>
+            <div>
               { dashboard.description }
-            </EditableSection>
+            </div>
             <section className="column-layout-2">
-                <section className="left-panel">
-                  <div className="section-title title-3">Frequent Users</div>
-                  <FrequentUsers readers={ dashboard.frequent_users }/>
-                </section>
-                <section className="right-panel">
-                  <div className="section-title title-3">Owners</div>
-                  <div>
-                    {
-                      // TODO - OwnerEditor only supports tables
-                      dashboard.owners.map(owner =>
+              <section className="left-panel">
+                <div className="section-title title-3">Owners</div>
+                <div>
+                  {
+                    dashboard.owners.map(owner =>
+                      <Link
+                        key={owner.user_id}
+                        to={`/user/${owner.user_id}?source=${DASHBOARD_OWNER_SOURCE}`}>
                         <AvatarLabel
-                          key={owner.user_id}
-                          label={owner.display_name}
-                          src={`/user/${owner.user_id}`} />
-                      )
-                    }
+                          label={owner.display_name}/>
+                      </Link>
+                    )
+                  }
+                </div>
+                <div className="section-title title-3">Created</div>
+                <div>
+                  { formatDateTimeShort({ epochTimestamp: dashboard.created_timestamp}) }
+                </div>
+                <div className="section-title title-3">Last Updated</div>
+                <div>
+                  { formatDateTimeShort({ epochTimestamp: dashboard.updated_timestamp }) }
+                </div>
+                <div className="section-title title-3">Recent View Count</div>
+                <div>
+                  { dashboard.recent_view_count }
+                </div>
+              </section>
+              <section className="right-panel">
+                <EditableSection title="Tags">
+                  <TagInput
+                    resourceType={ ResourceType.dashboard }
+                    uriKey={ this.props.dashboard.uri }
+                  />
+                </EditableSection>
+                <div className="section-title title-3">Last Successful Run</div>
+                <div>
+                  { formatDateTimeShort({ epochTimestamp: dashboard.last_successful_run_timestamp }) }
+                </div>
+                <div className="section-title title-3">Last Run</div>
+                <div>
+                  { formatDateTimeShort({ epochTimestamp: dashboard.last_run_timestamp }) }
+                  <div className="last-run-state title-3">
+                    { dashboard.last_run_state }
                   </div>
-                </section>
+                </div>
+              </section>
             </section>
             <ImagePreview uri={this.state.uri} />
           </section>
@@ -155,6 +204,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
 export const mapStateToProps = (state: GlobalState) => {
   return {
     isLoading: state.dashboard.isLoading,
+    statusCode: state.dashboard.statusCode,
     dashboard: state.dashboard.dashboard,
   };
 };
