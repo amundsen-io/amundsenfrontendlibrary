@@ -54,24 +54,28 @@ const globalState: GlobalState = {
   // TODO - move dashboard to separate fixture
   dashboard: {
     isLoading: false,
+    statusCode: 200,
     dashboard: {
-      uri: '',
-      cluster: '',
-      group_name: '',
-      group_url: '',
-      name: '',
-      url: '',
-      description: '',
-      created_timestamp: null,
-      updated_timestamp: null,
-      last_run_timestamp: null,
-      last_run_state: '',
-      owners: [],
-      frequent_users: [],
+      badges: [],
       chart_names: [],
+      cluster: "",
+      created_timestamp: null,
+      description: "",
+      frequent_users: [],
+      group_name: "",
+      group_url: "",
+      last_run_state: "",
+      last_run_timestamp: null,
+      last_successful_run_timestamp: null,
+      name: "",
+      owners: [],
       query_names: [],
+      recent_view_count: 10,
       tables: [],
       tags: [],
+      updated_timestamp: null,
+      uri: "",
+      url: "",
     },
     preview: {
       url: '',
@@ -192,23 +196,25 @@ const globalState: GlobalState = {
       isLoading: true,
       owners: {},
     },
-    tableTags: {
-      isLoading: true,
+  },
+  tags: {
+    allTags: {
+      isLoading: false,
+      tags: [
+        {
+          tag_name: 'curated_tag_1',
+          tag_count: 20,
+        },
+        {
+          tag_name: 'other_tag_1',
+          tag_count: 15,
+        }
+      ],
+    },
+    resourceTags: {
+      isLoading: false,
       tags: [],
     },
-  },
-  allTags: {
-    allTags: [
-      {
-        tag_name: 'curated_tag_1',
-        tag_count: 20,
-      },
-      {
-        tag_name: 'other_tag_1',
-        tag_count: 15,
-      }
-    ],
-    isLoading: false,
   },
   user:  {
     loggedInUser: {

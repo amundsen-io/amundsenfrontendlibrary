@@ -94,13 +94,6 @@ export interface TableMetadata {
   programmatic_descriptions: ProgrammaticDescription[];
 }
 
-export interface TableSummary {
-  database: string;
-  cluster: string;
-  schema: string;
-  name: string;
-}
-
 export interface UpdateOwnerPayload {
   method: UpdateMethod;
   id: string;

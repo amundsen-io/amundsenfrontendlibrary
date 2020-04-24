@@ -20,9 +20,9 @@ class QueryList extends React.Component<QueryListProps> {
     return (
       <ul className="query-list list-group">
         {
-          queries.map(query =>
+          queries.map((query, index)=>
             (
-              <li className="query-list-item list-group-item">
+              <li key={index} className="query-list-item list-group-item">
                 <div className="title-2 truncated">
                   { query }
                 </div>

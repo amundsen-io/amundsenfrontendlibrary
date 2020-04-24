@@ -4,7 +4,7 @@ import {
   GetDashboardPreview,
   GetDashboardPreviewRequest,
   GetDashboardPreviewResponse,
-  DashboardPreviewResponse,
+  DashboardPreviewResponse, GetDashboardResponse, GetDashboardPayload,
 } from 'ducks/dashboard/types';
 import { Dashboard } from 'interfaces/Dashboard';
 
@@ -18,18 +18,17 @@ export function getDashboard(payload: { uri: string, searchIndex?: string, sourc
   }
 }
 
-export function getDashboardFailure() {
+export function getDashboardSuccess(payload: GetDashboardPayload) {
   return {
-    type: GetDashboard.FAILURE,
-    payload: {}
+    payload,
+    type: GetDashboard.SUCCESS,
   }
 }
-export function getDashboardSuccess(dashboard) {
+
+export function getDashboardFailure(payload: GetDashboardPayload): GetDashboardResponse {
   return {
-    type: GetDashboard.SUCCESS,
-    payload: {
-      dashboard,
-    }
+    payload,
+    type: GetDashboard.FAILURE,
   }
 }
 
@@ -47,40 +46,44 @@ export function setDashboardPreview(payload: DashboardPreviewResponse): GetDashb
   }
 }
 
-
 /* Reducer */
 interface DashboardPreviewState extends DashboardPreviewResponse {
   isLoading: boolean;
 }
 export interface DashboardReducerState {
   isLoading: boolean;
+  statusCode: number;
   dashboard: Dashboard;
   preview: DashboardPreviewState;
 }
 
-export const initialDashboardState: Dashboard = {
-  uri: '',
-  cluster: '',
-  group_name: '',
-  group_url: '',
-  name: '',
-  url: '',
-  description: '',
-  created_timestamp: null,
-  updated_timestamp: null,
-  last_run_timestamp: null,
-  last_run_state: '',
-  owners: [],
-  frequent_users: [],
+export const InitialDashboardState: Dashboard = {
+  badges: [],
   chart_names: [],
+  cluster: "",
+  created_timestamp: null,
+  description: "",
+  frequent_users: [],
+  group_name: "",
+  group_url: "",
+  last_run_state: "",
+  last_run_timestamp: null,
+  last_successful_run_timestamp: null,
+  name: "",
+  owners: [],
   query_names: [],
+  recent_view_count: null,
   tables: [],
   tags: [],
+  updated_timestamp: null,
+  uri: "",
+  url: "",
 };
 
 export const initialState: DashboardReducerState = {
   isLoading: true,
-  dashboard: initialDashboardState,
+  statusCode: null,
+  dashboard: InitialDashboardState,
   preview: {
     url: '',
     isLoading: true,
@@ -92,18 +95,21 @@ export default function reducer(state: DashboardReducerState = initialState, act
     case GetDashboard.REQUEST:
       return {
         ...state,
+        statusCode: null,
         isLoading: true,
       };
     case GetDashboard.FAILURE:
       return {
         ...state,
         isLoading: false,
-        dashboard: initialDashboardState,
+        statusCode: action.payload.statusCode,
+        dashboard: InitialDashboardState,
       };
     case GetDashboard.SUCCESS:
       return {
         ...state,
         isLoading: false,
+        statusCode: action.payload.statusCode,
         dashboard: action.payload.dashboard,
       };
     case GetDashboardPreview.REQUEST:
