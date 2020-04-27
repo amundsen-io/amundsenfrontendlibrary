@@ -5,20 +5,31 @@ import * as Avatar from 'react-avatar';
 import './styles.scss';
 
 export interface AvatarLabelProps {
+  avatarColor?: string;
+  avatarTextColor?: string;
+  labelClass?: string;
   label?: string;
   src?: string;
 }
 
-const AvatarLabel: React.SFC<AvatarLabelProps> = ({ label, src }) => {
+const AvatarLabel: React.SFC<AvatarLabelProps> = ({ avatarColor, avatarTextColor, labelClass, label, src }) => {
   return (
     <div className="avatar-label-component">
-      <Avatar name={label} src={src} size={24} round={true} />
-      <span className="avatar-label body-2">{ label }</span>
+      <Avatar
+        color={avatarColor}
+        fgColor={avatarTextColor}
+        name={label}
+        src={src}
+        size={24}
+        round={true}
+      />
+      <span className={`avatar-label body-2 ${labelClass}`}>{ label }</span>
     </div>
   );
 };
 
 AvatarLabel.defaultProps = {
+  labelClass: 'text-secondary',
   label: '',
   src: ''
 };

@@ -21,7 +21,7 @@ import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
 import { formatDateTimeShort } from '../../utils/dateUtils';
 import ResourceList from 'components/common/ResourceList';
-import { DASHBOARD_OWNER_SOURCE, DASHBOARD_SOURCE, TABLES_PER_PAGE } from 'components/DashboardPage/constants';
+import { DASHBOARD_OWNER_SOURCE, DASHBOARD_SOURCE, NO_OWNER_TEXT, TABLES_PER_PAGE } from 'components/DashboardPage/constants';
 import TagInput from 'components/Tags/TagInput';
 import { EditableSection } from 'components/TableDetail/EditableSection';
 import { ResourceType } from 'interfaces';
@@ -148,6 +148,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                 <div className="section-title title-3">Owners</div>
                 <div>
                   {
+                    dashboard.owners.length > 0 &&
                     dashboard.owners.map(owner =>
                       <Link
                         key={owner.user_id}
@@ -156,6 +157,15 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                           label={owner.display_name}/>
                       </Link>
                     )
+                  }
+                  {
+                    dashboard.owners.length === 0 &&
+                    <AvatarLabel
+                      avatarColor='#CACAD9'
+                      avatarTextColor='#CACAD9'
+                      labelClass='text-placeholder'
+                      label={NO_OWNER_TEXT}
+                    />
                   }
                 </div>
                 <div className="section-title title-3">Created</div>

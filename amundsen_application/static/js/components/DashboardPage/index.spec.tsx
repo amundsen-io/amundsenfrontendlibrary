@@ -4,6 +4,7 @@ import { shallow } from 'enzyme';
 
 import { DashboardPage, DashboardPageProps, RouteProps } from './';
 import { getMockRouterProps } from '../../fixtures/mockRouter';
+import AvatarLabel from 'components/common/AvatarLabel';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
@@ -13,52 +14,17 @@ import ImagePreview from './ImagePreview';
 
 import { ResourceType } from 'interfaces';
 
+import { dashboardMetadata } from 'fixtures/metadata/dashboard';
+
+import * as Constants from './constants';
+
 describe('DashboardPage', () => {
   const setup = (propOverrides?: Partial<DashboardPageProps>) => {
     const routerProps = getMockRouterProps<RouteProps>({ uri: 'test:uri/value' }, null);
     const props = {
       isLoading: false,
       statusCode: 200,
-      dashboard: {
-        badges: [],
-        chart_names: ["chart 1", "chart 2"],
-        cluster: "gold",
-        created_timestamp: 1581023497,
-        description: "TEST description name",
-        frequent_users: [],
-        group_name: "test_group_name",
-        group_url: "test_group_url",
-        last_run_state: "succeeded",
-        last_run_timestamp: 1586812894,
-        last_successful_run_timestamp: 1586812894,
-        name: "Test Dashboard Name",
-        owners: [
-          {
-            display_name: "test",
-            email: "test@email.com",
-            employee_type: "teamMember",
-            first_name: "first",
-            full_name: "first last",
-            github_username: "",
-            is_active: true,
-            last_name: "last",
-            manager_email: null,
-            manager_fullname: "",
-            profile_url: "profile_url",
-            role_name: "SWE",
-            slack_id: "",
-            team_name: "team name",
-            user_id: "user_id",
-          }
-        ],
-        query_names: ["query 1", "query 2"],
-        recent_view_count: 10,
-        tables: [],
-        tags: [],
-        updated_timestamp: 1586672811,
-        uri: "test_uri",
-        url: "test_url",
-      },
+      dashboard: dashboardMetadata,
       getDashboard: jest.fn(),
       ...routerProps,
       ...propOverrides,
@@ -89,6 +55,18 @@ describe('DashboardPage', () => {
       const elementProps = wrapper.find(BookmarkIcon).props();
       expect(elementProps.bookmarkKey).toBe(props.dashboard.uri);
       expect(elementProps.resourceType).toBe(ResourceType.dashboard);
+    });
+
+    describe('renders owners', () => {
+      it('with correct AvatarLabel if no owners exist', () => {
+        const wrapper = setup({
+          dashboard: {
+            ...dashboardMetadata,
+            owners: [],
+          }
+        }).wrapper;
+        expect(wrapper.find(AvatarLabel).props().label).toBe(Constants.NO_OWNER_TEXT)
+      });
     });
 
     it('renders a Flag for last run state', () => {
