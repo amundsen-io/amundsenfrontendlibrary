@@ -25,7 +25,6 @@ import {
   ADD_DESC_TEXT,
   DASHBOARD_OWNER_SOURCE,
   DASHBOARD_SOURCE,
-  EDIT_DESC_TEXT,
   NO_OWNER_TEXT,
   TABLES_PER_PAGE
 } from 'components/DashboardPage/constants';
@@ -73,13 +72,6 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
     this.props.getDashboard({ uri: this.state.uri });
   }
 
-  generateUpdateDescriptionText = () : string => {
-    /* TODO ttannis: Need to get confirmation from design */
-    const { dashboard } = this.props;
-    const hasDescription = dashboard.description && dashboard.description.length > 0;
-    return `${hasDescription ? EDIT_DESC_TEXT : ADD_DESC_TEXT} ${getSourceDisplayName(dashboard.product, ResourceType.dashboard)}`;
-  };
-
   renderTabs() {
     const tabInfo = [
       {
@@ -111,6 +103,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
 
   render() {
     const { dashboard, isLoading } = this.props;
+    const hasDescription = dashboard.description && dashboard.description.length > 0;
 
     if (isLoading) {
       return <LoadingSpinner/>;
@@ -156,18 +149,24 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
         <main className="column-layout-1">
           <section className="left-panel">
             <div className="section-title title-3">Description</div>
-            <div>
-              { dashboard.description }
-            </div>
-            <span>
-              <a
-               className="edit-link body-2"
-               target="_blank"
-               href={ dashboard.url }
-              >
-               { this.generateUpdateDescriptionText() }
-              </a>
-            </span>
+            {
+              hasDescription &&
+              <div>
+                { dashboard.description }
+              </div>
+            }
+            {
+              !hasDescription &&
+              <span>
+                <a
+                 className="edit-link body-2"
+                 target="_blank"
+                 href={ dashboard.url }
+                >
+                 {`${ADD_DESC_TEXT} ${getSourceDisplayName(dashboard.product, ResourceType.dashboard)}`}
+                </a>
+              </span>
+            }
             <section className="column-layout-2">
               <section className="left-panel">
                 <div className="section-title title-3">Owners</div>

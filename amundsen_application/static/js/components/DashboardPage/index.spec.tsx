@@ -12,11 +12,22 @@ import Flag from 'components/common/Flag';
 import TabsComponent from 'components/common/TabsComponent';
 import ImagePreview from './ImagePreview';
 
-import { ResourceType } from 'interfaces';
+import * as Constants from './constants';
 
+import * as ConfigUtils from 'config/config-utils';
 import { dashboardMetadata } from 'fixtures/metadata/dashboard';
 
-import * as Constants from './constants';
+import { ResourceType } from 'interfaces';
+
+const MOCK_DISPLAY_NAME = 'displayName';
+const MOCK_ICON_CLASS = 'dashboard-icon';
+
+jest.mock('config/config-utils', () => (
+  {
+    getSourceDisplayName: jest.fn(() => { return MOCK_DISPLAY_NAME }),
+    getSourceIconClass: jest.fn(() => { return MOCK_ICON_CLASS }),
+  }
+));
 
 describe('DashboardPage', () => {
   const setup = (propOverrides?: Partial<DashboardPageProps>) => {
@@ -33,10 +44,6 @@ describe('DashboardPage', () => {
     const wrapper = shallow<DashboardPage>(<DashboardPage {...props} />)
     return { props, wrapper };
   };
-
-  describe('generateUpdateDescriptionText', () => {
-     /* TODO ttannis: Need to get confirmation from design */
-  });
 
   describe('render', () => {
     const { props, wrapper } = setup();
@@ -62,10 +69,16 @@ describe('DashboardPage', () => {
     });
 
     describe('renders description', () => {
-      it('with link to update decsription', () => {
+      it('with link to add description if none exists', () => {
+        const wrapper = setup({
+          dashboard: {
+            ...dashboardMetadata,
+            description: '',
+          }
+        }).wrapper;
         const link = wrapper.find('a.edit-link');
         expect(link.props().href).toBe(props.dashboard.url);
-        expect(link.text()).toBe(wrapper.instance().generateUpdateDescriptionText());
+        expect(link.text()).toBe(`${Constants.ADD_DESC_TEXT} ${MOCK_DISPLAY_NAME}`);
       });
     });
 
