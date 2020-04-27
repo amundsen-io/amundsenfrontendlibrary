@@ -17,6 +17,7 @@ export interface Dashboard {
   last_successful_run_timestamp: number;
   name: string;
   owners: User[];
+  product: string;
   query_names: string[];
   recent_view_count: number;
   tables: TableResource[];
@@ -25,4 +26,3 @@ export interface Dashboard {
   uri: string;
   url: string;
 }
-

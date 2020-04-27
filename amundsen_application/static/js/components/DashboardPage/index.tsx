@@ -21,10 +21,19 @@ import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
 import { formatDateTimeShort } from '../../utils/dateUtils';
 import ResourceList from 'components/common/ResourceList';
-import { DASHBOARD_OWNER_SOURCE, DASHBOARD_SOURCE, NO_OWNER_TEXT, TABLES_PER_PAGE } from 'components/DashboardPage/constants';
+import {
+  ADD_DESC_TEXT,
+  DASHBOARD_OWNER_SOURCE,
+  DASHBOARD_SOURCE,
+  EDIT_DESC_TEXT,
+  NO_OWNER_TEXT,
+  TABLES_PER_PAGE
+} from 'components/DashboardPage/constants';
 import TagInput from 'components/Tags/TagInput';
 import { EditableSection } from 'components/TableDetail/EditableSection';
 import { ResourceType } from 'interfaces';
+
+import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
 
 import './styles.scss';
 
@@ -63,6 +72,13 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
   loadDashboard() {
     this.props.getDashboard({ uri: this.state.uri });
   }
+
+  generateUpdateDescriptionText = () : string => {
+    /* TODO ttannis: Need to get confirmation from design */
+    const { dashboard } = this.props;
+    const hasDescription = dashboard.description && dashboard.description.length > 0;
+    return `${hasDescription ? EDIT_DESC_TEXT : ADD_DESC_TEXT} ${getSourceDisplayName(dashboard.product, ResourceType.dashboard)}`;
+  };
 
   renderTabs() {
     const tabInfo = [
@@ -113,7 +129,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
         <header className="resource-header">
           <div className="header-section">
             <Breadcrumb />
-            <img className="icon icon-header icon-dashboard"/>
+            <img className={`icon icon-header ${getSourceIconClass(dashboard.product, ResourceType.dashboard)}`}/>
           </div>
           <div className="header-section header-title">
             <h3 className="header-title-text truncated">
@@ -143,6 +159,15 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
             <div>
               { dashboard.description }
             </div>
+            <span>
+              <a
+               className="edit-link body-2"
+               target="_blank"
+               href={ dashboard.url }
+              >
+               { this.generateUpdateDescriptionText() }
+              </a>
+            </span>
             <section className="column-layout-2">
               <section className="left-panel">
                 <div className="section-title title-3">Owners</div>

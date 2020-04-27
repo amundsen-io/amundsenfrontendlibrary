@@ -2,6 +2,10 @@
 
 .dashboard-page {
 
+  .edit-link {
+    text-decoration: none;
+  }
+
   .last-run-state {
     .flag {
       margin: $spacer-1 0 0 0;

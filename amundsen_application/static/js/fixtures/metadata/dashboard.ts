@@ -30,6 +30,7 @@ export const dashboardMetadata = {
       user_id: "user_id",
     }
   ],
+  product: 'mode',
   query_names: ["query 1", "query 2"],
   recent_view_count: 10,
   tables: [],

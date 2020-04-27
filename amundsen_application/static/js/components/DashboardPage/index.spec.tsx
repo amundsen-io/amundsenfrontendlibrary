@@ -34,6 +34,10 @@ describe('DashboardPage', () => {
     return { props, wrapper };
   };
 
+  describe('generateUpdateDescriptionText', () => {
+     /* TODO ttannis: Need to get confirmation from design */
+  });
+
   describe('render', () => {
     const { props, wrapper } = setup();
 
@@ -55,6 +59,14 @@ describe('DashboardPage', () => {
       const elementProps = wrapper.find(BookmarkIcon).props();
       expect(elementProps.bookmarkKey).toBe(props.dashboard.uri);
       expect(elementProps.resourceType).toBe(ResourceType.dashboard);
+    });
+
+    describe('renders description', () => {
+      it('with link to update decsription', () => {
+        const link = wrapper.find('a.edit-link');
+        expect(link.props().href).toBe(props.dashboard.url);
+        expect(link.text()).toBe(wrapper.instance().generateUpdateDescriptionText());
+      });
     });
 
     describe('renders owners', () => {
