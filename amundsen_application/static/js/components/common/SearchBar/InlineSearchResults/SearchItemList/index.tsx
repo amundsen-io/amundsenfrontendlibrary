@@ -42,21 +42,21 @@ class SearchItemList extends React.Component<SearchItemListProps, {}> {
           resourceType={ResourceType.table}
         />
         {
-          indexUsersEnabled() &&
-          <SearchItem
-            listItemText={this.getListItemText(ResourceType.user)}
-            onItemSelect={onItemSelect}
-            searchTerm={searchTerm}
-            resourceType={ResourceType.user}
-          />
-        }
-        {
           indexDashboardsEnabled() &&
           <SearchItem
             listItemText={this.getListItemText(ResourceType.dashboard)}
             onItemSelect={onItemSelect}
             searchTerm={searchTerm}
             resourceType={ResourceType.dashboard}
+          />
+        }
+        {
+          indexUsersEnabled() &&
+          <SearchItem
+            listItemText={this.getListItemText(ResourceType.user)}
+            onItemSelect={onItemSelect}
+            searchTerm={searchTerm}
+            resourceType={ResourceType.user}
           />
         }
       </ul>

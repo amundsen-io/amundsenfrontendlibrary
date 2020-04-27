@@ -67,19 +67,19 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
       count: this.props.tables.total_results,
     }];
 
-    if (indexUsersEnabled()) {
-      resourceOptions.push({
-        type: ResourceType.user,
-        label: USER_RESOURCE_TITLE,
-        count: this.props.users.total_results,
-      });
-    }
-
     if (indexDashboardsEnabled()) {
       resourceOptions.push({
         type: ResourceType.dashboard,
         label: DASHBOARD_RESOURCE_TITLE,
         count: this.props.dashboards.total_results,
+      });
+    }
+
+    if (indexUsersEnabled()) {
+      resourceOptions.push({
+        type: ResourceType.user,
+        label: USER_RESOURCE_TITLE,
+        count: this.props.users.total_results,
       });
     }
 
