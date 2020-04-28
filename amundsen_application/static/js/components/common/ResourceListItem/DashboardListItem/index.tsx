@@ -36,7 +36,7 @@ class DashboardListItem extends React.Component<DashboardListItemProps, {}> {
         <Link className="resource-list-item table-list-item" to={ this.getLink() }>
           <div className="resource-info">
             <img className={`icon resource-icon ${getSourceIconClass(dashboard.product, dashboard.type)}`} />
-            <div className="resource-info-text">
+            <div className="resource-info-text my-auto">
               <div className="resource-name title-2">
                 <div className="dashboard-group">
                   { dashboard.group_name }

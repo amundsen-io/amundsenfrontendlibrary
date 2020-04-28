@@ -20,9 +20,9 @@ class ChartList extends React.Component<ChartListProps> {
     return (
       <ul className="chart-list list-group">
         {
-          charts.map(chart =>
+          charts.map((chart, index) =>
             (
-              <li className="chart-list-item list-group-item">
+              <li key={index} className="chart-list-item list-group-item">
                 <div className="title-2 truncated">
                   { chart }
                 </div>
