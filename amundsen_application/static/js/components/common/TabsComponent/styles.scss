@@ -2,9 +2,9 @@
 
 .tabs-component {
   .nav.nav-tabs {
-
-    border: none;
-    margin: 20px 12px 0;
+    border-bottom: 1px solid $stroke;
+    margin-top: 20px;
+    padding: 0 12px;
 
     > li {
       margin: 0 12px;
