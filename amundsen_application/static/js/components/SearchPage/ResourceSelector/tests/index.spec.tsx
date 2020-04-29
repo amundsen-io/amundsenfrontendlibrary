@@ -127,15 +127,13 @@ describe('ResourceSelector', () => {
 
     describe('dashboard resource', () => {
       it('renders when enabled', () => {
-        mocked(indexUsersEnabled).mockImplementationOnce(() => true);
         mocked(indexDashboardsEnabled).mockImplementationOnce(() => true);
         renderRadioOptionSpy.mockClear();
         wrapper.instance().render();
-        expect(renderRadioOptionSpy).toHaveBeenCalledWith(dashboardOptionConfig, 2);
+        expect(renderRadioOptionSpy).toHaveBeenCalledWith(dashboardOptionConfig, 1);
       });
 
       it('does not render when disabled', () => {
-        mocked(indexUsersEnabled).mockImplementationOnce(() => true);
         mocked(indexDashboardsEnabled).mockImplementationOnce(() => false);
         renderRadioOptionSpy.mockClear();
         wrapper.instance().render();
