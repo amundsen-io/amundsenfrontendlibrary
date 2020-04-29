@@ -45,6 +45,19 @@ describe('DashboardPage', () => {
     return { props, wrapper };
   };
 
+  describe('mapStatusToStyle', () => {
+    let wrapper;
+    beforeAll(() => {
+      wrapper = setup().wrapper
+    });
+    it('returns success if status === LAST_RUN_SUCCEEDED', () => {
+      expect(wrapper.instance().mapStatusToStyle(Constants.LAST_RUN_SUCCEEDED)).toBe('success');
+    });
+    it('returns danger if status !== LAST_RUN_SUCCEEDED', () => {
+      expect(wrapper.instance().mapStatusToStyle('anythingelse')).toBe('danger');
+    });
+  });
+
   describe('render', () => {
     const { props, wrapper } = setup();
 
@@ -95,8 +108,12 @@ describe('DashboardPage', () => {
     });
 
     it('renders a Flag for last run state', () => {
+      const mapStatusToStyleSpy = jest.spyOn(wrapper.instance(), 'mapStatusToStyle').mockImplementationOnce(() => 'testStyle');
+      wrapper.instance().forceUpdate();
       const element = wrapper.find('.last-run-state').find(Flag);
       expect(element.props().text).toBe(props.dashboard.last_run_state);
+      expect(mapStatusToStyleSpy).toHaveBeenCalledWith(props.dashboard.last_run_state);
+      expect(element.props().labelStyle).toBe('testStyle');
     })
 
     it('renders an ImagePreview with correct props', () => {

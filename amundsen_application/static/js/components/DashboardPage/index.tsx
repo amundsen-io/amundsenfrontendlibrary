@@ -25,6 +25,7 @@ import {
   ADD_DESC_TEXT,
   DASHBOARD_OWNER_SOURCE,
   DASHBOARD_SOURCE,
+  LAST_RUN_SUCCEEDED,
   NO_OWNER_TEXT,
   TABLES_PER_PAGE
 } from 'components/DashboardPage/constants';
@@ -71,6 +72,13 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
   loadDashboard() {
     this.props.getDashboard({ uri: this.state.uri });
   }
+
+  mapStatusToStyle = (status: string): string => {
+    if (status === LAST_RUN_SUCCEEDED) {
+      return 'success';
+    }
+    return 'danger';
+  };
 
   renderTabs() {
     const tabInfo = [
@@ -157,15 +165,13 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
             }
             {
               !hasDescription &&
-              <span>
-                <a
-                 className="edit-link body-2"
-                 target="_blank"
-                 href={ dashboard.url }
-                >
-                 {`${ADD_DESC_TEXT} ${getSourceDisplayName(dashboard.product, ResourceType.dashboard)}`}
-                </a>
-              </span>
+              <a
+               className="edit-link body-2"
+               target="_blank"
+               href={ dashboard.url }
+              >
+               {`${ADD_DESC_TEXT} ${getSourceDisplayName(dashboard.product, ResourceType.dashboard)}`}
+              </a>
             }
             <section className="column-layout-2">
               <section className="left-panel">
@@ -185,8 +191,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                   {
                     dashboard.owners.length === 0 &&
                     <AvatarLabel
-                      avatarColor='#CACAD9'
-                      avatarTextColor='#CACAD9'
+                      avatarClass='gray-avatar'
                       labelClass='text-placeholder'
                       label={NO_OWNER_TEXT}
                     />
@@ -223,7 +228,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                     <Flag
                       caseType='sentenceCase'
                       text={ dashboard.last_run_state }
-                      labelStyle={ dashboard.last_run_state === 'succeeded' ? 'success' : 'danger' }
+                      labelStyle={this.mapStatusToStyle(dashboard.last_run_state)}
                     />
                   </div>
                 </div>

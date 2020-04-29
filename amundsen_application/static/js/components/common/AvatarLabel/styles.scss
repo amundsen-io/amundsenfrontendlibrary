@@ -9,6 +9,13 @@
     min-width: 0;
     vertical-align: middle;
   }
+
+  .gray-avatar {
+    div {
+      background: $gray20 !important;
+      color: $gray20 !important;
+    }
+  }
 }
 
 .avatar-overlap {

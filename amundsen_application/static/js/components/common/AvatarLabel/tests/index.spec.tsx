@@ -19,8 +19,7 @@ describe('AvatarLabel', () => {
     let wrapper;
     beforeAll(() => {
       const setupResult = setup({
-        avatarColor: 'red',
-        avatarTextColor: 'red',
+        avatarClass: 'test',
         label: 'testLabel',
         labelClass: 'test',
         src: 'testSrc',
@@ -30,8 +29,7 @@ describe('AvatarLabel', () => {
     });
     it('renders Avatar with correct props', () => {
       expect(wrapper.find(Avatar).props()).toMatchObject({
-        color: props.avatarColor,
-        fgColor: props.avatarTextColor,
+        className: props.avatarClass,
         name: props.label,
         src: props.src,
         size: 24,
