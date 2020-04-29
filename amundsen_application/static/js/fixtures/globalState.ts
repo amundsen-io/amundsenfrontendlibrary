@@ -3,6 +3,8 @@ import { ResourceType, SendingState } from 'interfaces';
 
 import { defaultEmptyFilters } from './search/filters';
 
+import { dashboardMetadata } from './metadata/dashboard';
+
 const globalState: GlobalState = {
   announcements: {
       posts: [{
@@ -51,32 +53,10 @@ const globalState: GlobalState = {
       [ResourceType.dashboard]: [],
     },
   },
-  // TODO - move dashboard to separate fixture
   dashboard: {
     isLoading: false,
     statusCode: 200,
-    dashboard: {
-      badges: [],
-      chart_names: [],
-      cluster: "",
-      created_timestamp: null,
-      description: "",
-      frequent_users: [],
-      group_name: "",
-      group_url: "",
-      last_run_state: "",
-      last_run_timestamp: null,
-      last_successful_run_timestamp: null,
-      name: "",
-      owners: [],
-      query_names: [],
-      recent_view_count: 10,
-      tables: [],
-      tags: [],
-      updated_timestamp: null,
-      uri: "",
-      url: "",
-    },
+    dashboard: dashboardMetadata
   },
   feedback: {
     sendState: SendingState.IDLE,

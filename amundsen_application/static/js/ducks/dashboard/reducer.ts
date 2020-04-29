@@ -53,6 +53,7 @@ export const InitialDashboardState: Dashboard = {
   last_successful_run_timestamp: null,
   name: "",
   owners: [],
+  product: '',
   query_names: [],
   recent_view_count: null,
   tables: [],

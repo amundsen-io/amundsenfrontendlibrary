@@ -8,6 +8,7 @@ import * as qs from 'simple-query-string';
 import AvatarLabel from 'components/common/AvatarLabel';
 import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
+import Flag from 'components/common/Flag';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import TabsComponent from 'components/common/TabsComponent';
 import { getDashboard } from 'ducks/dashboard/reducer';
@@ -20,10 +21,19 @@ import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
 import { formatDateTimeShort } from '../../utils/dateUtils';
 import ResourceList from 'components/common/ResourceList';
-import { DASHBOARD_OWNER_SOURCE, DASHBOARD_SOURCE, TABLES_PER_PAGE } from 'components/DashboardPage/constants';
+import {
+  ADD_DESC_TEXT,
+  DASHBOARD_OWNER_SOURCE,
+  DASHBOARD_SOURCE,
+  LAST_RUN_SUCCEEDED,
+  NO_OWNER_TEXT,
+  TABLES_PER_PAGE
+} from 'components/DashboardPage/constants';
 import TagInput from 'components/Tags/TagInput';
 import { EditableSection } from 'components/TableDetail/EditableSection';
 import { ResourceType } from 'interfaces';
+
+import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
 
 import './styles.scss';
 
@@ -63,6 +73,13 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
     this.props.getDashboard({ uri: this.state.uri });
   }
 
+  mapStatusToStyle = (status: string): string => {
+    if (status === LAST_RUN_SUCCEEDED) {
+      return 'success';
+    }
+    return 'danger';
+  };
+
   renderTabs() {
     const tabInfo = [
       {
@@ -94,6 +111,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
 
   render() {
     const { dashboard, isLoading } = this.props;
+    const hasDescription = dashboard.description && dashboard.description.length > 0;
 
     if (isLoading) {
       return <LoadingSpinner/>;
@@ -112,7 +130,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
         <header className="resource-header">
           <div className="header-section">
             <Breadcrumb />
-            <img className="icon icon-header icon-dashboard"/>
+            <img className={`icon icon-header ${getSourceIconClass(dashboard.product, ResourceType.dashboard)}`}/>
           </div>
           <div className="header-section header-title">
             <h3 className="header-title-text truncated">
@@ -139,14 +157,28 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
         <main className="column-layout-1">
           <section className="left-panel">
             <div className="section-title title-3">Description</div>
-            <div>
-              { dashboard.description }
-            </div>
+            {
+              hasDescription &&
+              <div>
+                { dashboard.description }
+              </div>
+            }
+            {
+              !hasDescription &&
+              <a
+               className="edit-link body-2"
+               target="_blank"
+               href={ dashboard.url }
+              >
+               {`${ADD_DESC_TEXT} ${getSourceDisplayName(dashboard.product, ResourceType.dashboard)}`}
+              </a>
+            }
             <section className="column-layout-2">
               <section className="left-panel">
                 <div className="section-title title-3">Owners</div>
                 <div>
                   {
+                    dashboard.owners.length > 0 &&
                     dashboard.owners.map(owner =>
                       <Link
                         key={owner.user_id}
@@ -155,6 +187,14 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                           label={owner.display_name}/>
                       </Link>
                     )
+                  }
+                  {
+                    dashboard.owners.length === 0 &&
+                    <AvatarLabel
+                      avatarClass='gray-avatar'
+                      labelClass='text-placeholder'
+                      label={NO_OWNER_TEXT}
+                    />
                   }
                 </div>
                 <div className="section-title title-3">Created</div>
@@ -184,8 +224,12 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                 <div className="section-title title-3">Last Run</div>
                 <div>
                   { formatDateTimeShort({ epochTimestamp: dashboard.last_run_timestamp }) }
-                  <div className="last-run-state title-3">
-                    { dashboard.last_run_state }
+                  <div className="last-run-state">
+                    <Flag
+                      caseType='sentenceCase'
+                      text={ dashboard.last_run_state }
+                      labelStyle={this.mapStatusToStyle(dashboard.last_run_state)}
+                    />
                   </div>
                 </div>
               </section>

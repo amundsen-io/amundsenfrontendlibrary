@@ -2,8 +2,14 @@
 
 .dashboard-page {
 
+  .edit-link {
+    text-decoration: none;
+  }
+
   .last-run-state {
-    text-transform: uppercase;
+    .flag {
+      margin: $spacer-1 0 0 0;
+    }
   }
 
   .image-preview {
