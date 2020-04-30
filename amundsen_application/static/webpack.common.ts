@@ -23,7 +23,7 @@ const htmlWebpackPluginConfig = templatesList.map(file => {
       inject: false,
     });
 });
-const publicPath = process.env.BASE_URL || '/';
+const publicPath = (process.env.BASE_URL || '').replace(/\/$/, '');
 const config: webpack.Configuration = {
     entry: {
       main: ['@babel/polyfill', path.join(__dirname, '/css/styles.scss'), path.join(__dirname, '/js/index.tsx')],

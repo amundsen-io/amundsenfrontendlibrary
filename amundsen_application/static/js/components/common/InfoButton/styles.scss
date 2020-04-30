@@ -8,8 +8,8 @@ button.info-button {
 
   background-color: $stroke;
   border: none;
-  mask-image: url('/static/images/icons/Info.svg');
-  -webkit-mask-image: url('/static/images/icons/Info.svg');
+  mask-image: url($public-path + '/static/images/icons/Info.svg');
+  -webkit-mask-image: url($public-path + '/static/images/icons/Info.svg');
   mask-size: contain;
   -webkit-mask-size: contain;
   mask-position: center;
