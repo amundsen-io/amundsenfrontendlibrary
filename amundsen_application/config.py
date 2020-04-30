@@ -62,6 +62,9 @@ class Config:
     # Programmatic Description configuration. Please see docs/flask_config.md
     PROGRAMMATIC_DISPLAY = None  # type: Optional[Dict]
 
+    # If your application is placed outside the URL root, for example, in /myapplication instead of /
+    APPLICATION_ROOT = os.environ.get('APPLICATION_ROOT', '')
+
     # If specified, will be used to generate headers for service-to-service communication
     # Please note that if specified, this will ignore following config properties:
     # 1. METADATASERVICE_REQUEST_HEADERS
