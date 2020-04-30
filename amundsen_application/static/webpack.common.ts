@@ -4,7 +4,7 @@ import * as webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
-import appConfig from './js/config/config';
+import appConfig, { publicPath } from './js/config/config';
 
 const walkSync = (dir, filelist = []) => {
   fs.readdirSync(dir).forEach(file => {
@@ -23,7 +23,7 @@ const htmlWebpackPluginConfig = templatesList.map(file => {
       inject: false,
     });
 });
-const publicPath = (process.env.BASE_URL || '').replace(/\/$/, '');
+
 const config: webpack.Configuration = {
     entry: {
       main: ['@babel/polyfill', path.join(__dirname, '/css/styles.scss'), path.join(__dirname, '/js/index.tsx')],
@@ -41,6 +41,8 @@ const config: webpack.Configuration = {
             ducks: path.join(__dirname, '/js/ducks'),
             interfaces: path.join(__dirname, '/js/interfaces'),
             utils: path.join(__dirname, '/js/utils'),
+            axiosInstance: path.join(__dirname, '/js/axiosInstance'),
+
         },
         extensions: ['.tsx', '.ts', '.js', '.jsx', '.css', '.scss'],
     },

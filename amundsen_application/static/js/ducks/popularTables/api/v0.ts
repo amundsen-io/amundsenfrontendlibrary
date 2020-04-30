@@ -1,5 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
-
+import { AxiosResponse } from 'axios';
+import axiosInstance from 'axiosInstance/instance';
 import { TableResource } from 'interfaces';
 
 export type PopularTablesAPI = {
@@ -8,7 +8,7 @@ export type PopularTablesAPI = {
 }
 
 export function getPopularTables() {
-  return axios.get('/api/metadata/v0/popular_tables')
+  return axiosInstance.get('/amundsen/api/metadata/v0/popular_tables')
   .then((response: AxiosResponse<PopularTablesAPI>) => {
     return response.data.results;
   });

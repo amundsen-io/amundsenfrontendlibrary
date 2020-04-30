@@ -22,7 +22,7 @@ def build_js() -> None:
 
     try:
         subprocess.check_call(['npm install'], cwd=PACKAGE_DIR, shell=True)
-        subprocess.check_call(['npm run build'], cwd=PACKAGE_DIR, shell=True)
+        subprocess.check_call(['npm run dev-build'], cwd=PACKAGE_DIR, shell=True)
     except Exception as e:
         logging.warn('Installation of npm dependencies failed')
         logging.warn(str(e))
