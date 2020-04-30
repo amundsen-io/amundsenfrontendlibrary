@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import axiosInstance from 'axiosInstance/instance';
 
 import { DashboardSearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
 

@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import axiosInstance from 'axiosInstance/instance';
 
 export const API_PATH = '/api/metadata/v0';
 // TODO - Consider moving 'Bookmarks' under 'User'

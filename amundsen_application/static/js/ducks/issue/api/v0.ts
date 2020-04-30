@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import axiosInstance from 'axiosInstance/instance';
 import { Issue, CreateIssuePayload, NotificationPayload } from 'interfaces';
 import { notificationsEnabled } from 'config/config-utils';
 

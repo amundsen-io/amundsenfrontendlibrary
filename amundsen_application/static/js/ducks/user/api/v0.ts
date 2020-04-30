@@ -1,4 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import axiosInstance from 'axiosInstance/instance';
 import * as qs from 'simple-query-string';
 
 import { LoggedInUser, PeopleUser, Resource } from 'interfaces';
