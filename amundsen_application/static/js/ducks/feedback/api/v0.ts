@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axiosInstance from 'axiosInstance/instance';
 
 export function submitFeedback(data: FormData) {
-  return axios({
+  return axiosInstance({
     data,
     method: 'post',
     url: '/api/mail/v0/feedback',

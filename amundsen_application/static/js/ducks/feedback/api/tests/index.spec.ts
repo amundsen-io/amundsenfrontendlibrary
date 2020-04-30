@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axiosInstance from 'axiosInstance/instance';
 
 import * as API from '../v0';
 
-jest.mock('axios');
+jest.mock('axiosInstance');
 
 describe('submitFeedback', () => {
   let formData: FormData;
@@ -12,7 +12,7 @@ describe('submitFeedback', () => {
   });
 
   it('calls axios with expected payload', () => {
-    expect(axios).toHaveBeenCalledWith({
+    expect(axiosInstance).toHaveBeenCalledWith({
       data: formData,
       method: 'post',
       url: '/api/mail/v0/feedback',

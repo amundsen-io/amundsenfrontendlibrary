@@ -9,7 +9,7 @@ export type AnnouncementsAPI = {
 };
 
 export function getAnnouncements() {
-  return axios({
+  return axiosInstance({
       method: 'get',
       url: '/api/announcements/v0/',
     })

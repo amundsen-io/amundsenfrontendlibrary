@@ -38,13 +38,13 @@ export function searchResource(pageIndex: number, resource: ResourceType, term: 
 
   /* Note: This logic must exist until query string endpoints are created for all resources */
   if (resource === ResourceType.table) {
-    return axios.post(`${BASE_URL}/${resource}`, {
+    return axiosInstance.post(`${BASE_URL}/${resource}`, {
       filters,
       pageIndex,
       term,
       searchType,
     }).then(searchResourceHelper);
   }
-  return axios.get(`${BASE_URL}/${resource}?query=${term}&page_index=${pageIndex}&search_type=${searchType}`)
+  return axiosInstance.get(`${BASE_URL}/${resource}?query=${term}&page_index=${pageIndex}&search_type=${searchType}`)
     .then(searchResourceHelper);
 };

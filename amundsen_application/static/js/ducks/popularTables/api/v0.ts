@@ -8,7 +8,7 @@ export type PopularTablesAPI = {
 }
 
 export function getPopularTables() {
-  return axiosInstance.get('/amundsen/api/metadata/v0/popular_tables')
+  return axiosInstance.get('/api/metadata/v0/popular_tables')
   .then((response: AxiosResponse<PopularTablesAPI>) => {
     return response.data.results;
   });

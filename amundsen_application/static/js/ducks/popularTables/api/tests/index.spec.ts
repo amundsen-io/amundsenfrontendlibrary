@@ -7,7 +7,7 @@ import { TableResource } from 'interfaces';
 
 import * as API from '../v0';
 
-jest.mock('axios');
+jest.mock('axiosInstance');
 
 describe('getPopularTables', () => {
   let axiosMock;
@@ -25,7 +25,7 @@ describe('getPopularTables', () => {
       headers: {},
       config: {}
     };
-    axiosMock = jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
+    axiosMock = jest.spyOn(axiosInstance, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
   });
 
   it('resolves with array of table resources from response.data on success', async () => {

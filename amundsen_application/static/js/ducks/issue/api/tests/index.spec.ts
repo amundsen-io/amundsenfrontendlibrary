@@ -5,7 +5,7 @@ import { NotificationType } from 'interfaces';
 import AppConfig from 'config/config';
 
 
-jest.mock('axios');
+jest.mock('axiosInstance');
 
 describe('getIssues', () => {
   let mockGetResponse;
@@ -21,7 +21,7 @@ describe('getIssues', () => {
       headers: {},
       config: {}
     };
-    axiosMock = jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
+    axiosMock = jest.spyOn(axiosInstance, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
   });
 
   it('calls axios with correct parameters if tableKey provided', async () => {
@@ -76,7 +76,7 @@ describe('createIssue', () => {
         data_issue_url: 'url'
       }
     }
-    axiosMock = jest.spyOn(axios, 'post').mockImplementation(() => Promise.resolve(mockGetResponse));
+    axiosMock = jest.spyOn(axiosInstance, 'post').mockImplementation(() => Promise.resolve(mockGetResponse));
   });
 
   it('returns response data', async () => {

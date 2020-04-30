@@ -1,8 +1,8 @@
-import axios from 'axios';
+import axiosInstance from 'axiosInstance/instance';
 import { NotificationType, SendNotificationOptions } from 'interfaces'
 
 export function sendNotification(recipients: Array<string>, sender: string, notificationType: NotificationType, options?: SendNotificationOptions) {
-  return axios({
+  return axiosInstance({
     data: {
       notificationType,
       options,

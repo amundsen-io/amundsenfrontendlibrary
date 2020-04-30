@@ -9,7 +9,7 @@ import { ResourceType, SearchType } from 'interfaces';
 
 import * as API from '../v0';
 
-jest.mock('axios');
+jest.mock('axiosInstance');
 
 import * as ConfigUtils from 'config/config-utils';
 
@@ -32,8 +32,8 @@ describe('searchResource', () => {
       headers: {},
       config: {},
     };
-    axiosMockGet = jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(mockSearchResponse));
-    axiosMockPost = jest.spyOn(axios, 'post').mockImplementation(() => Promise.resolve(mockSearchResponse));
+    axiosMockGet = jest.spyOn(axiosInstance, 'get').mockImplementation(() => Promise.resolve(mockSearchResponse));
+    axiosMockPost = jest.spyOn(axiosInstance, 'post').mockImplementation(() => Promise.resolve(mockSearchResponse));
     userEnabledMock = jest.spyOn(ConfigUtils, 'indexUsersEnabled').mockImplementation(() => true);
   });
 

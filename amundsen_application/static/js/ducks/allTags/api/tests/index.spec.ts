@@ -26,7 +26,7 @@ describe('getAllTags', () => {
       config: {}
     };
 
-    const axiosMock = jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(mockResponse));
+    const axiosMock = jest.spyOn(axiosInstance, 'get').mockImplementation(() => Promise.resolve(mockResponse));
     expect.assertions(1);
     await API.getAllTags().then(sortedTags => {
       expect(sortedTags).toEqual(expectedTags);

@@ -1,9 +1,9 @@
-import axios from 'axios';
+import axiosInstance from 'axiosInstance/instance';
 
 import * as API from '../v0';
 import { NotificationType } from 'interfaces';
 
-jest.mock('axios');
+jest.mock('axiosInstance');
 
 describe('sendNotification', () => {
   it('calls axios with the correct params', async () => {
@@ -22,7 +22,7 @@ describe('sendNotification', () => {
       testNotificationType,
       testOptions,
     )
-    expect(axios).toHaveBeenCalledWith({
+    expect(axiosInstance).toHaveBeenCalledWith({
       data: {
         notificationType: testNotificationType,
         options: testOptions,

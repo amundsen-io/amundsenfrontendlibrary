@@ -7,7 +7,7 @@ import { LoggedInUser, PeopleUser, Resource } from 'interfaces';
 
 import * as API from '../v0';
 
-jest.mock('axios');
+jest.mock('axiosInstance');
 
 describe('getLoggedInUser', () => {
   let axiosMock;
@@ -25,7 +25,7 @@ describe('getLoggedInUser', () => {
       headers: {},
       config: {}
     };
-    axiosMock = jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
+    axiosMock = jest.spyOn(axiosInstance, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
   });
 
   it('calls axios with correct parameters', async () => {
@@ -65,7 +65,7 @@ describe('getUser', () => {
       headers: {},
       config: {}
     };
-    axiosMock = jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
+    axiosMock = jest.spyOn(axiosInstance, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
   });
 
   it('calls axios with correct parameters', async () => {
@@ -105,7 +105,7 @@ describe('getUserOwn', () => {
       headers: {},
       config: {}
     };
-    axiosMock = jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
+    axiosMock = jest.spyOn(axiosInstance, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
   });
 
   it('calls axios with correct parameters', async () => {
@@ -145,7 +145,7 @@ describe('getUserRead', () => {
       headers: {},
       config: {}
     };
-    axiosMock = jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
+    axiosMock = jest.spyOn(axiosInstance, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
   });
 
   it('calls axios with correct parameters', async () => {

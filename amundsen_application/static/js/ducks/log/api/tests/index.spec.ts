@@ -1,14 +1,14 @@
-import axios from 'axios';
+import axiosInstance from 'axiosInstance/instance';
 
 import * as API from '../v0';
 
-jest.mock('axios');
+jest.mock('axiosInstance');
 
 describe('postActionLog', () => {
   let axiosMock;
   let params: API.ActionLogParams;
   beforeAll(() => {
-    axiosMock = jest.spyOn(axios, 'post').mockImplementation(() => Promise.resolve());
+    axiosMock = jest.spyOn(axiosInstance, 'post').mockImplementation(() => Promise.resolve());
     params = {};
     API.postActionLog(params);
   });

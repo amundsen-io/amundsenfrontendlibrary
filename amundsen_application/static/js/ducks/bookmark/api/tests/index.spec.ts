@@ -5,7 +5,7 @@ import { Bookmark } from 'interfaces';
 
 import * as API from '../v0';
 
-jest.mock('axios');
+jest.mock('axiosInstance');
 
 describe('addBookmark', () => {
   let mockPutResponse;
@@ -21,7 +21,7 @@ describe('addBookmark', () => {
       headers: {},
       config: {}
     };
-    axiosMock = jest.spyOn(axios, 'put').mockImplementation(() => Promise.resolve(mockPutResponse));
+    axiosMock = jest.spyOn(axiosInstance, 'put').mockImplementation(() => Promise.resolve(mockPutResponse));
   });
 
   it('calls axios with correct parameters', async () => {
@@ -57,7 +57,7 @@ describe('getBookmarks', () => {
       headers: {},
       config: {}
     };
-    axiosMock = jest.spyOn(axios, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
+    axiosMock = jest.spyOn(axiosInstance, 'get').mockImplementation(() => Promise.resolve(mockGetResponse));
   });
 
   it('calls axios with correct parameters if userId provided', async () => {
@@ -101,7 +101,7 @@ describe('removeBookmark', () => {
       headers: {},
       config: {}
     };
-    axiosMock = jest.spyOn(axios, 'delete').mockImplementation(() => Promise.resolve(mockDeleteResponse));
+    axiosMock = jest.spyOn(axiosInstance, 'delete').mockImplementation(() => Promise.resolve(mockDeleteResponse));
   });
 
   it('calls axios with correct parameters', async () => {

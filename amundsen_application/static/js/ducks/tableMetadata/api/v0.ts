@@ -1,4 +1,5 @@
-import axios, { AxiosResponse, AxiosError } from 'axios';
+import { AxiosResponse, AxiosError } from 'axios';
+import axiosInstance from 'axiosInstance/instance';
 
 import { PreviewData, PreviewQueryParams, TableMetadata, UpdateOwnerPayload, User, Tag } from 'interfaces';
 
@@ -24,7 +25,7 @@ import {
 
 export function getTableTags(tableKey: string) {
   const tableParams = getTableQueryParams(tableKey);
-  return axios.get(`${API_PATH}/table?${tableParams}`)
+  return axiosInstance.get(`${API_PATH}/table?${tableParams}`)
   .then((response: AxiosResponse<TableDataAPI>) => {
     return getTableTagsFromResponseData(response.data);
   });
@@ -42,12 +43,12 @@ export function updateTableTags(tagArray, tableKey: string) {
       },
     }
   });
-  return updatePayloads.map(payload => { axios(payload) });
+  return updatePayloads.map(payload => { axiosInstance(payload) });
 }
 
 export function getTableData(tableKey: string, index?: string, source?: string ) {
   const queryParams = getTableQueryParams(tableKey, index, source);
-  return axios.get(`${API_PATH}/table?${queryParams}`)
+  return axiosInstance.get(`${API_PATH}/table?${queryParams}`)
   .then((response: AxiosResponse<TableDataAPI>) => {
     return {
       data: getTableDataFromResponseData(response.data),
@@ -60,7 +61,7 @@ export function getTableData(tableKey: string, index?: string, source?: string )
 
 export function getTableDescription(tableData: TableMetadata) {
   const tableParams = getTableQueryParams(tableData.key);
-  return axios.get(`${API_PATH}/get_table_description?${tableParams}`)
+  return axiosInstance.get(`${API_PATH}/get_table_description?${tableParams}`)
   .then((response: AxiosResponse<DescriptionAPI>) => {
     tableData.description = response.data.description;
     return tableData;
@@ -68,7 +69,7 @@ export function getTableDescription(tableData: TableMetadata) {
 }
 
 export function updateTableDescription(description: string, tableData: TableMetadata) {
-  return axios.put(`${API_PATH}/put_table_description`, {
+  return axiosInstance.put(`${API_PATH}/put_table_description`, {
     description,
     key: tableData.key,
     source: 'user',
@@ -77,7 +78,7 @@ export function updateTableDescription(description: string, tableData: TableMeta
 
 export function getTableOwners(tableKey: string) {
   const tableParams = getTableQueryParams(tableKey);
-  return axios.get(`${API_PATH}/table?${tableParams}`)
+  return axiosInstance.get(`${API_PATH}/table?${tableParams}`)
   .then((response: AxiosResponse<TableDataAPI>) => {
     return getTableOwnersFromResponseData(response.data);
   });
@@ -94,13 +95,13 @@ export function generateOwnerUpdateRequests(updateArray: UpdateOwnerPayload[], t
 
     /* Chain requests to send notification on success to desired users */
     const request =
-      axios(updatePayload)
+      axiosInstance(updatePayload)
       .then((response) => {
-        return axios.get(`/api/metadata/v0/user?user_id=${item.id}`)
+        return axiosInstance.get(`/api/metadata/v0/user?user_id=${item.id}`)
       })
       .then((response) => {
         if(shouldSendNotification(response.data.user)) {
-          return axios.post('/api/mail/v0/notification', notificationData);
+          return axiosInstance.post('/api/mail/v0/notification', notificationData);
         }
       });
 
@@ -114,7 +115,7 @@ export function generateOwnerUpdateRequests(updateArray: UpdateOwnerPayload[], t
 export function getColumnDescription(columnIndex: number, tableData: TableMetadata) {
   const tableParams = getTableQueryParams(tableData.key);
   const columnName = tableData.columns[columnIndex].name;
-  return axios.get(`${API_PATH}/get_column_description?${tableParams}&column_name=${columnName}`)
+  return axiosInstance.get(`${API_PATH}/get_column_description?${tableParams}&column_name=${columnName}`)
   .then((response: AxiosResponse<DescriptionAPI>) => {
     tableData.columns[columnIndex].description = response.data.description;
     return tableData;
@@ -123,7 +124,7 @@ export function getColumnDescription(columnIndex: number, tableData: TableMetada
 
 export function updateColumnDescription(description: string, columnIndex: number, tableData: TableMetadata) {
   const columnName = tableData.columns[columnIndex].name;
-  return axios.put(`${API_PATH}/put_column_description`, {
+  return axiosInstance.put(`${API_PATH}/put_column_description`, {
     description,
     column_name: columnName,
     key: tableData.key,
@@ -132,14 +133,14 @@ export function updateColumnDescription(description: string, columnIndex: number
 }
 
 export function getLastIndexed() {
-  return axios.get(`${API_PATH}/get_last_indexed`)
+  return axiosInstance.get(`${API_PATH}/get_last_indexed`)
   .then((response: AxiosResponse<LastIndexedAPI>) => {
     return response.data.timestamp;
   });
 }
 
 export function getPreviewData(queryParams: PreviewQueryParams) {
-  return axios({
+  return axiosInstance({
     url: '/api/preview/v0/',
     method: 'POST',
     data: queryParams,

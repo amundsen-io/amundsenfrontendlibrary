@@ -5,7 +5,7 @@ import { AnnouncementPost } from 'interfaces';
 
 import * as API from '../v0';
 
-jest.mock('axios');
+jest.mock('axiosInstance');
 
 describe('getAnnouncements', () => {
   let expectedPosts: AnnouncementPost[];
@@ -23,7 +23,7 @@ describe('getAnnouncements', () => {
       config: {}
     };
     // @ts-ignore: TypeScript errors on Jest mock methods unless we extend AxiosStatic for tests
-    axios.mockResolvedValue(mockResponse);
+    axiosInstance.mockResolvedValue(mockResponse);
   });
 
   it('resolves with array of posts from response.data on success', async () => {
@@ -35,6 +35,6 @@ describe('getAnnouncements', () => {
 
   afterAll(() => {
     // @ts-ignore: TypeScript errors on Jest mock methods unless we extend AxiosStatic for tests
-    axios.mockClear();
+    axiosInstance.mockClear();
   })
 });

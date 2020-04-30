@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axiosInstance from 'axiosInstance/instance';
 import * as qs from 'simple-query-string';
 
 import * as Helpers from '../helpers';
@@ -13,7 +13,7 @@ import * as API from '../v0';
 
 const filterFromObjSpy = jest.spyOn(Utils, 'filterFromObj').mockImplementation((initialObject, rejectedKeys) => { return initialObject; });
 
-jest.mock('axios');
+jest.mock('axiosInstance');
 
 describe('helpers', () => {
   let mockResponseData: API.TableDataAPI;
