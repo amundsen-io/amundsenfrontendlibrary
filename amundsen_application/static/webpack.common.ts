@@ -23,7 +23,7 @@ const htmlWebpackPluginConfig = templatesList.map(file => {
       inject: false,
     });
 });
-
+const publicPath = process.env.BASE_URL || '/';
 const config: webpack.Configuration = {
     entry: {
       main: ['@babel/polyfill', path.join(__dirname, '/css/styles.scss'), path.join(__dirname, '/js/index.tsx')],
@@ -31,6 +31,7 @@ const config: webpack.Configuration = {
     output: {
         path: path.join(__dirname, '/dist'),
         filename: '[name].js',
+        publicPath: publicPath,
     },
     devtool: 'source-map',
     resolve: {
@@ -59,7 +60,8 @@ const config: webpack.Configuration = {
           use: [MiniCssExtractPlugin.loader, 'css-loader', {
             loader: 'sass-loader',
             options: {
-              includePaths: [path.join(__dirname, '/css/')]
+              includePaths: [path.join(__dirname, '/css/')],
+              data: "$public-path : " + publicPath + ";",
             }
           }],
         },
