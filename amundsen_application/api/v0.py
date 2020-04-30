@@ -1,8 +1,10 @@
 import logging
+from typing import Any, Tuple, Optional
+
 
 from http import HTTPStatus
 
-from flask import Response, jsonify, make_response
+from flask import Response, jsonify, make_response, render_template
 from flask import current_app as app
 from flask.blueprints import Blueprint
 
@@ -13,10 +15,21 @@ from amundsen_application.models.user import load_user, dump_user
 
 LOGGER = logging.getLogger(__name__)
 
-blueprint = Blueprint('main', __name__, url_prefix='/api')
+blueprint = Blueprint('main', __name__, url_prefix='/')
 
 
-@blueprint.route('/auth_user', methods=['GET'])
+@blueprint.route('/', defaults={'path': None}, methods=['GET'])
+@blueprint.route('/<path:path>', methods=['GET'])
+def index(path: Optional[str]) -> Any:
+    return render_template("index.html")  # pragma: no cover
+
+
+@blueprint.route('/healthcheck', methods=['GET'])
+def healthcheck() -> Tuple[str, int]:
+    return '', 200  # pragma: no cover
+
+
+@blueprint.route('/api/auth_user', methods=['GET'])
 def current_user() -> Response:
     try:
         if app.config['AUTH_USER_METHOD']:
