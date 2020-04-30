@@ -7,7 +7,6 @@ import os
 from flask import Flask, Blueprint
 from flask_restful import Api
 
-from amundsen_application.api import init_routes
 from amundsen_application.api.v0 import blueprint
 from amundsen_application.api.announcements.v0 import announcements_blueprint
 from amundsen_application.api.log.v0 import log_blueprint
@@ -17,6 +16,7 @@ from amundsen_application.api.preview.v0 import preview_blueprint
 from amundsen_application.api.search.v0 import search_blueprint
 from amundsen_application.api.preview.dashboard.v0 import dashboard_preview_blueprint
 from amundsen_application.api.issue.issue import IssueAPI, IssuesAPI
+from amundsen_application.middleware import PrefixMiddleware
 
 
 app_wrapper_class = Flask
@@ -73,10 +73,11 @@ def create_app(config_module_class: str, template_folder: str = None) -> Flask:
     app.register_blueprint(search_blueprint)
     app.register_blueprint(api_bp)
     app.register_blueprint(dashboard_preview_blueprint)
-    init_routes(app)
 
     init_custom_routes = app.config.get('INIT_CUSTOM_ROUTES')
     if init_custom_routes:
         init_custom_routes(app)
+
+    app.wsgi_app = PrefixMiddleware(app.wsgi_app, prefix=app.config.get('BASE_URL', '/'))
 
     return app
