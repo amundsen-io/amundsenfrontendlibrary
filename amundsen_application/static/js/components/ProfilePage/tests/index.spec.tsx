@@ -29,6 +29,9 @@ jest.mock('config/config-utils', () => ({
   getDisplayNameByResource: jest.fn(() => 'Resource'),
   indexDashboardsEnabled: jest.fn(),
 }));
+
+import * as LogUtils from 'utils/logUtils';
+
 import { indexDashboardsEnabled } from 'config/config-utils';
 
 describe('ProfilePage', () => {
@@ -110,7 +113,7 @@ describe('ProfilePage', () => {
   describe('loadUserInfo', () => {
     it('calls getLoggingParams', () => {
       const { props, wrapper } = setup();
-      const getLoggingParamsSpy = jest.spyOn(wrapper.instance(), 'getLoggingParams');
+      const getLoggingParamsSpy = jest.spyOn(LogUtils, 'getLoggingParams');
       wrapper.instance().loadUserInfo('test')
       expect(getLoggingParamsSpy).toHaveBeenCalledWith(props.location.search);
     });
@@ -136,40 +139,6 @@ describe('ProfilePage', () => {
     });
   });
 
-  describe('getLoggingParams', () => {
-    let searchString;
-    let props;
-    let wrapper;
-    let replaceStateSpy;
-
-    beforeAll(() => {
-      const setupResult = setup();
-      props = setupResult.props;
-      wrapper = setupResult.wrapper;
-      replaceStateSpy = jest.spyOn(window.history, 'replaceState');
-    });
-
-    it('returns the parsed source and index in an object', () => {
-      searchString = 'source=test_source&index=10';
-      const params = wrapper.instance().getLoggingParams(searchString);
-      expect(params.source).toEqual('test_source');
-      expect(params.index).toEqual('10');
-    });
-
-    it('clears the logging params from the URL, if present', () => {
-      searchString = 'source=test_source&index=10';
-      replaceStateSpy.mockClear();
-      wrapper.instance().getLoggingParams(searchString);
-      expect(replaceStateSpy).toHaveBeenCalledWith({}, '', `${window.location.origin}${window.location.pathname}`);
-    });
-
-    it('does not clear the logging params if they do not exist', () => {
-      searchString = '';
-      replaceStateSpy.mockClear();
-      wrapper.instance().getLoggingParams(searchString);
-      expect(replaceStateSpy).not.toHaveBeenCalled()
-    });
-  });
 
   describe('generateTabContent', () => {
     let props;

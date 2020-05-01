@@ -26,7 +26,7 @@ export interface GetUserRequest {
   payload: {
     userId: string;
     source?: string;
-    index?: number;
+    index?: string;
   };
 };
 export interface GetUserResponse {

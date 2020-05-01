@@ -36,6 +36,7 @@ import { EditableSection } from 'components/TableDetail/EditableSection';
 import { getSourceIconClass, issueTrackingEnabled, notificationsEnabled } from 'config/config-utils';
 
 import { formatDateTimeShort } from 'utils/dateUtils';
+import { getLoggingParams } from 'utils/logUtils';
 
 import './styles';
 import RequestDescriptionText from './RequestDescriptionText';
@@ -71,7 +72,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
   }
 
   componentDidMount() {
-    const { index, source } = this.getLoggingParams();
+    const { index, source } = getLoggingParams(this.props.location.search);
 
     this.key = this.getTableKey();
     this.props.getTableData(this.key, index, source);
@@ -82,21 +83,10 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
     const newKey = this.getTableKey();
 
     if (this.key !== newKey) {
-      const { index, source } = this.getLoggingParams();
+      const { index, source } = getLoggingParams(this.props.location.search);
       this.key = newKey;
       this.props.getTableData(this.key, index, source);
     }
-  }
-
-  getLoggingParams() {
-    const params = qs.parse(this.props.location.search);
-    const index = params['index'];
-    const source = params['source'];
-    /* update the url stored in the browser history to remove params used for logging purposes */
-    if (index !== undefined || source !== undefined) {
-      window.history.replaceState({}, '', `${window.location.origin}${window.location.pathname}`);
-    }
-    return { index, source };
   }
 
   getDisplayName() {

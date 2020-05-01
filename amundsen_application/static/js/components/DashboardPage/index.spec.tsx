@@ -16,6 +16,7 @@ import * as Constants from './constants';
 
 import * as ConfigUtils from 'config/config-utils';
 import { dashboardMetadata } from 'fixtures/metadata/dashboard';
+import * as LogUtils from 'utils/logUtils';
 
 import { ResourceType } from 'interfaces';
 
@@ -44,6 +45,25 @@ describe('DashboardPage', () => {
     const wrapper = shallow<DashboardPage>(<DashboardPage {...props} />)
     return { props, wrapper };
   };
+
+  describe('componentDidMount', () => {
+    let getLoggingParamsSpy;
+    let props;
+    let wrapper;
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+      getLoggingParamsSpy = jest.spyOn(LogUtils, 'getLoggingParams');
+      wrapper.instance().componentDidMount();
+    })
+    it('calls getLoggingParams', () => {
+      expect(getLoggingParamsSpy).toHaveBeenCalledWith(props.location.search);
+    });
+    it('calls props.getDashboard', () => {
+      expect(props.getDashboard).toHaveBeenCalled();
+    });
+  });
 
   describe('mapStatusToStyle', () => {
     let wrapper;

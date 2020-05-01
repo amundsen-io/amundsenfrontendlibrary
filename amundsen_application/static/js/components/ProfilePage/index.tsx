@@ -4,7 +4,6 @@ import * as Avatar from 'react-avatar';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
-import * as qs from 'simple-query-string';
 
 import Breadcrumb from 'components/common/Breadcrumb';
 import Flag from 'components/common/Flag';
@@ -21,6 +20,9 @@ import { GetBookmarksForUserRequest } from 'ducks/bookmark/types';
 import { getBookmarksForUser } from 'ducks/bookmark/reducer';
 
 import { getDisplayNameByResource, indexDashboardsEnabled } from 'config/config-utils';
+
+import { getLoggingParams } from 'utils/logUtils';
+
 import {
   AVATAR_SIZE,
   BOOKMARKED_LABEL,
@@ -48,7 +50,7 @@ interface StateFromProps {
 }
 
 interface DispatchFromProps {
-  getUserById: (userId: string, index?: number, source?: string) => GetUserRequest;
+  getUserById: (userId: string, index?: string, source?: string) => GetUserRequest;
   getUserOwn: (userId: string) => GetUserOwnRequest;
   getUserRead: (userId: string) => GetUserReadRequest;
   getBookmarksForUser: (userId: string) => GetBookmarksForUserRequest;
@@ -84,24 +86,12 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
   }
 
   loadUserInfo = (userId: string) => {
-    const { index, source } = this.getLoggingParams(this.props.location.search);
+    const { index, source } = getLoggingParams(this.props.location.search);
     this.props.getUserById(userId, index, source);
     this.props.getUserOwn(userId);
     this.props.getUserRead(userId);
     this.props.getBookmarksForUser(userId);
   };
-
-  getLoggingParams = (search: string) => {
-    const params = qs.parse(search);
-    const index = params['index'];
-    const source = params['source'];
-    // Remove logging params from URL
-    if (source !== undefined || index !== undefined) {
-      window.history.replaceState({}, '', `${window.location.origin}${window.location.pathname}`);
-    }
-    return { index, source };
-  };
-
 
   generateTabContent = (resource: ResourceType) => {
     const { bookmarks = [], own = [], read = [] } = this.props.resourceRelations[resource];
