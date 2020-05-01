@@ -68,16 +68,19 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
   }
 
   componentDidMount() {
+    this.loadDashboard(this.state.uri);
+  }
+
+  loadDashboard(uri: string) {
     const { index, source } = getLoggingParams(this.props.location.search);
-    this.props.getDashboard({ source, uri: this.state.uri, searchIndex: index });
+    this.props.getDashboard({ source, uri, searchIndex: index });
   }
 
   componentDidUpdate() {
-    const newUri = qs.parse(this.props.location.search).uri;
-    if (this.state.uri !== newUri) {
-      const { index, source } = getLoggingParams(this.props.location.search);
-      this.setState({ uri: newUri });
-      this.props.getDashboard({ source, uri: this.state.uri, searchIndex: index });
+    const { uri } = qs.parse(this.props.location.search);
+    if (this.state.uri !== uri) {
+      this.setState({ uri });
+      this.loadDashboard(uri);
     }
   };
 

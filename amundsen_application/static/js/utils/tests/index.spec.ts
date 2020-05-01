@@ -198,10 +198,12 @@ describe('logUtils', () => {
     });
 
     it('clears the logging params from the URL, if present', () => {
-      searchString = 'source=test_source&index=10';
+      const uri = 'testUri';
+      const mockFilter = '{"tag":"tagName"}';
+      searchString = `uri=${uri}&filters=${mockFilter}&source=test_source&index=10`;
       replaceStateSpy.mockClear();
       LogUtils.getLoggingParams(searchString);
-      expect(replaceStateSpy).toHaveBeenCalledWith({}, '', `${window.location.origin}${window.location.pathname}`);
+      expect(replaceStateSpy).toHaveBeenCalledWith({}, '', `${window.location.origin}${window.location.pathname}?uri=${uri}&filters=${mockFilter}`);
     });
 
     it('does not clear the logging params if they do not exist', () => {
