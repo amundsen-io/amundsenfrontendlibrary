@@ -174,9 +174,11 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
             {
               !hasDescription &&
               <a
+               id="dashboard-description-edit-link"
                className="edit-link body-2"
                target="_blank"
                href={ dashboard.url }
+               onClick={ logClick }
               >
                {`${ADD_DESC_TEXT} ${getSourceDisplayName(dashboard.product, ResourceType.dashboard)}`}
               </a>
