@@ -612,20 +612,20 @@ def get_user_own() -> Response:
 
 
 @metadata_blueprint.route('/dashboard', methods=['GET'])
-def get_dashboard() -> Response:
+def get_dashboard_metadata() -> Response:
     """
-    Call metadata service endpoint to fet specified dashboard
+    Call metadata service endpoint to fetch specified dashboard metadata
     :return:
     """
     @action_logging
-    def _get_dashboard(*, uri: str, index: int, source: str) -> None:
+    def _get_dashboard_metadata(*, uri: str, index: int, source: str) -> None:
         pass  # pragma: no cover
 
     try:
         uri = get_query_param(request.args, 'uri')
         index = request.args.get('index', None)
         source = request.args.get('source', None)
-        _get_dashboard(uri=uri, index=index, source=source)
+        _get_dashboard_metadata(uri=uri, index=index, source=source)
 
         url = f'{app.config["METADATASERVICE_BASE"]}{DASHBOARD_ENDPOINT}/{uri}'
 
