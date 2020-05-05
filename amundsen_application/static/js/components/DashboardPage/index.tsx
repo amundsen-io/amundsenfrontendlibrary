@@ -81,31 +81,35 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
   };
 
   renderTabs() {
-    const tabInfo = [
-      {
-        content:
-          (
-            <ResourceList
-              allItems={ this.props.dashboard.tables }
-              itemsPerPage={ TABLES_PER_PAGE }
-              paginate={ false }
-              source={ DASHBOARD_SOURCE }
-            />
-          ),
-        key: 'tables',
-        title: 'Tables',
-      },
-      {
+    const tabInfo = [];
+    tabInfo.push({
+      content:
+        (
+          <ResourceList
+            allItems={ this.props.dashboard.tables }
+            itemsPerPage={ TABLES_PER_PAGE }
+            paginate={ false }
+            source={ DASHBOARD_SOURCE }
+          />
+        ),
+      key: 'tables',
+      title: 'Tables',
+    });
+
+    if (this.props.dashboard.chart_names.length > 0 ) {
+      tabInfo.push({
         content: <ChartList charts={ this.props.dashboard.chart_names }/>,
         key: 'charts',
         title: 'Charts',
-      },
-      {
-        content: <QueryList queries={ this.props.dashboard.query_names }/>,
-        key: 'queries',
-        title: 'Queries',
-      },
-    ];
+      });
+    };
+
+    tabInfo.push({
+      content: <QueryList queries={ this.props.dashboard.query_names }/>,
+      key: 'queries',
+      title: 'Queries',
+    });
+
     return <TabsComponent tabs={ tabInfo } defaultTab={ "tables" } />;
   }
 

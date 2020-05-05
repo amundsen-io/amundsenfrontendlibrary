@@ -46,7 +46,7 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
         <Link className="resource-list-item user-list-item" to={ this.getLink() }>
           <div className="resource-info">
             <Avatar name={ user.display_name } size={ 24 } round={ true } />
-            <div className="resource-info-text">
+            <div className="resource-info-text my-auto">
               <div className="resource-name title-2">
                 { user.display_name }
               </div>

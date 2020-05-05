@@ -10,6 +10,7 @@ import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import Flag from 'components/common/Flag';
 import TabsComponent from 'components/common/TabsComponent';
+import ChartList from './ChartList';
 import ImagePreview from './ImagePreview';
 
 import * as Constants from './constants';
@@ -126,6 +127,17 @@ describe('DashboardPage', () => {
     it('returns a Tabs component', () => {
       const result = wrapper.instance().renderTabs();
       expect(result.type).toEqual(TabsComponent);
+    });
+
+    it('does not render ChartList if no charts', () => {
+      const wrapper = setup({
+        dashboard: {
+          ...dashboardMetadata,
+          chart_names: [],
+        }
+      }).wrapper;
+      const result = shallow(wrapper.instance().renderTabs());
+      expect(result.find(ChartList).exists()).toBe(false);
     });
   });
 });

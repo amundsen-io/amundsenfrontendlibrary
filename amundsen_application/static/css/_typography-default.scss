@@ -124,8 +124,10 @@ body {
 
 .column-name {
   color: $column-name-color;
-  font-size: 13px;
-  font-family: $font-family-monospace;
+  font-size: 14px;
+  font-family: $font-family-body;
+  font-weight: $font-weight-body-bold;
+  line-height: 18px;
 }
 
 .resource-type {

@@ -17,7 +17,7 @@ const ResultItem: React.SFC<ResultItemProps> = ({ href, iconClass, id, onItemSel
       <Link id={id} className="result-item-link" onClick={onItemSelect} to={ href }>
         <img className={`result-icon ${iconClass}`} />
 
-        <div className="result-info">
+        <div className="result-info my-auto">
           <div className="truncated">
             { titleNode }
             <div className="body-secondary-3 truncated">{ subtitle }</div>
