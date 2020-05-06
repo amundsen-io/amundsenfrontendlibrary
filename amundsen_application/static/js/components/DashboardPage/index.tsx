@@ -93,21 +93,21 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
           />
         ),
       key: 'tables',
-      title: 'Tables',
+      title: `Tables (${this.props.dashboard.tables.length})`,
     });
 
     if (this.props.dashboard.chart_names.length > 0 ) {
       tabInfo.push({
         content: <ChartList charts={ this.props.dashboard.chart_names }/>,
         key: 'charts',
-        title: 'Charts',
+        title: `Charts (${this.props.dashboard.chart_names.length})`,
       });
     };
 
     tabInfo.push({
       content: <QueryList queries={ this.props.dashboard.query_names }/>,
       key: 'queries',
-      title: 'Queries',
+      title: `Queries (${this.props.dashboard.query_names.length})`,
     });
 
     return <TabsComponent tabs={ tabInfo } defaultTab={ "tables" } />;
