@@ -1,6 +1,5 @@
 import * as DateUtils from 'utils/dateUtils';
 import * as NavigationUtils from 'utils/navigationUtils';
-import * as StringUtils from 'utils/stringUtils';
 import * as qs from 'simple-query-string';
 import { ResourceType } from 'interfaces/Resources';
 
