@@ -173,9 +173,3 @@ describe('dateUtils', () => {
       expect(dateString).toEqual('January 30th 2020 at 10:06:04 pm')
   })
 });
-
-describe('stringUtils', () => {
-  describe('toTitleCase', () => {
-    expect(StringUtils.toTitleCase('tHIs iS a TITLE')).toBe('This Is A Title');
-  });
-});
