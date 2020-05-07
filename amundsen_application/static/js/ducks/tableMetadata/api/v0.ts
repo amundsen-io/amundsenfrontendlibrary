@@ -23,7 +23,6 @@ import {
 } from './helpers';
 
 
-// TODO - Revisit the necessity of filtering out tags from main metadata
 export function getTableData(tableKey: string, index?: string, source?: string ) {
   const queryParams = getTableQueryParams(tableKey, index, source);
   return axios.get(`${API_PATH}/table?${queryParams}`)
