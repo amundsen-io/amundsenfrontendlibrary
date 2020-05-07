@@ -77,14 +77,14 @@ export function feedbackEnabled(): boolean {
  * Returns whether or not user features should be shown
  */
 export function indexUsersEnabled(): boolean {
-  return AppConfig.indexUsers.enabled;
+  return AppConfig.users.indexUsersEnabled;
 }
 
 /**
  * Returns whether or not the issue tracking feature should be shown
  */
 export function issueTrackingEnabled(): boolean {
-  return AppConfig.issueTracking.enabled; 
+  return AppConfig.issueTracking.enabled;
 }
 
 /**

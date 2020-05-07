@@ -16,9 +16,10 @@ const configCustom: AppConfigCustom = {
     feedbackEnabled: false,
     notificationsEnabled: false,
   },
-  indexUsers: {
-    enabled: false,
-  }, 
+  users: {
+    indexUsersEnabled: true,
+    idLabel: 'CK'
+  },
   issueTracking: {
     enabled: false
   }

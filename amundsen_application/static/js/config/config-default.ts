@@ -22,8 +22,9 @@ const configDefault: AppConfig = {
     key: 'default-key',
     sampleRate: 100,
   },
-  indexUsers: {
-    enabled: false,
+  users: {
+    indexUsersEnabled: false,
+    idLabel: 'email address'
   },
   issueTracking: {
     enabled: false

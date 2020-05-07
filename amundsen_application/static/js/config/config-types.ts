@@ -12,7 +12,7 @@ export interface AppConfig {
   date: DateFormatConfig;
   editableText: EditableTextConfig;
   google: GoogleAnalyticsConfig;
-  indexUsers: IndexUsersConfig;
+  users: UsersConfig;
   issueTracking: IssueTrackingConfig;
   logoPath: string | null;
   mailClientFeatures: MailClientFeaturesConfig;
@@ -27,9 +27,9 @@ export interface AppConfigCustom {
   browse?: BrowseConfig;
   date?: DateFormatConfig;
   editableText?: EditableTextConfig;
-  google?: GoogleAnalyticsConfig
-  indexUsers?: IndexUsersConfig;
-  issueTracking?: IssueTrackingConfig; 
+  google?: GoogleAnalyticsConfig;
+  users?: UsersConfig;
+  issueTracking?: IssueTrackingConfig;
   logoPath?: string;
   mailClientFeatures?: MailClientFeaturesConfig;
   navLinks?: Array<LinkConfig>;
@@ -230,13 +230,16 @@ export interface LinkConfig {
 }
 
 /**
- * IndexUsersConfig - When enabled, the IndexUsers feature will index users as searchable resources. This requires
- * user objects are ingested via Databuilder
+ * UsersConfig - Configurations related to Users.
+ *    indexUsersEnabled:  When enabled, the IndexUsers feature will index users as searchable resources. This requires
+ *                        user objects are ingested via Databuilder
+ *    idLabel:            Custom Label for the User ID Attribute
  *
  * enabled - Enables/disables this feature in the frontend only
  */
-interface IndexUsersConfig {
-  enabled: boolean;
+interface UsersConfig {
+  indexUsersEnabled: boolean;
+  idLabel: string;
 }
 
 /**
@@ -251,9 +254,9 @@ interface EditableTextConfig {
 }
 /**
  * IssueTrackingConfig - configures whether to display the issue tracking feature
- * that allows users to display tickets associated with a table and create ones 
+ * that allows users to display tickets associated with a table and create ones
  * linked to a table
  */
 interface IssueTrackingConfig {
-  enabled: boolean; 
+  enabled: boolean;
 }

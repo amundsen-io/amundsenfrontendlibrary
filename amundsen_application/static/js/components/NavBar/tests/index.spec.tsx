@@ -37,7 +37,7 @@ AppConfig.navLinks = [
     use_router: false,
   }
 ];
-AppConfig.indexUsers.enabled = true;
+AppConfig.users.indexUsersEnabled = true;
 AppConfig.mailClientFeatures.feedbackEnabled = true;
 
 import globalState from 'fixtures/globalState';
@@ -174,7 +174,7 @@ describe('NavBar', () => {
 
     describe('if indexUsers is disabled', () => {
       it('does not render a Link to the user profile', () => {
-        AppConfig.indexUsers.enabled = false;
+        AppConfig.users.indexUsersEnabled = false;
         const { wrapper } = setup();
         expect(wrapper.find('#nav-bar-avatar-link').exists()).toBe(false)
       });

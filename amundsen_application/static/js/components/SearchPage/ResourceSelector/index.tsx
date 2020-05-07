@@ -67,7 +67,7 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
       count: this.props.tables.total_results,
     }];
 
-    if (AppConfig.indexUsers.enabled) {
+    if (AppConfig.users.indexUsersEnabled) {
       resourceOptions.push({
         type: ResourceType.user,
         label: USER_RESOURCE_TITLE,

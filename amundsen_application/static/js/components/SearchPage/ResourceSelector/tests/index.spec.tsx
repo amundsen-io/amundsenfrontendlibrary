@@ -50,7 +50,7 @@ describe('ResourceSelector', () => {
       expect(content.text()).toEqual(`${radioConfig.label}${radioConfig.count}`)
     });
   });
-  
+
   describe('onChange', () => {
     it('calls setResource with the appropriate resource type', () => {
       const mockEvent = {
@@ -99,14 +99,14 @@ describe('ResourceSelector', () => {
     });
 
     it('renders the user resource option when enabled', () => {
-      AppConfig.indexUsers.enabled = true;
+      AppConfig.users.indexUsersEnabled = true;
       renderRadioOptionSpy.mockClear();
       wrapper.instance().render();
       expect(renderRadioOptionSpy).toHaveBeenCalledWith(userOptionConfig, 1);
     });
 
     it('does not render user resource option when disabled', () => {
-      AppConfig.indexUsers.enabled = false;
+      AppConfig.users.indexUsersEnabled = false;
       renderRadioOptionSpy.mockClear();
       wrapper.instance().render();
       expect(renderRadioOptionSpy).not.toHaveBeenCalledWith(userOptionConfig);
