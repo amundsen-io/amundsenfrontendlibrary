@@ -35,6 +35,8 @@ import { ResourceType } from 'interfaces';
 
 import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
 
+import { getLoggingParams } from 'utils/logUtils';
+
 import './styles.scss';
 
 export interface RouteProps {
@@ -52,7 +54,7 @@ export interface StateFromProps {
 }
 
 export interface DispatchFromProps {
-  getDashboard: (payload: { uri: string, index?: string, source?: string }) => GetDashboardRequest;
+  getDashboard: (payload: { uri: string, searchIndex?: string, source?: string }) => GetDashboardRequest;
 }
 
 export type DashboardPageProps = RouteComponentProps<RouteProps> & StateFromProps & DispatchFromProps;
@@ -66,12 +68,21 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
   }
 
   componentDidMount() {
-    this.loadDashboard();
+    this.loadDashboard(this.state.uri);
   }
 
-  loadDashboard() {
-    this.props.getDashboard({ uri: this.state.uri });
+  loadDashboard(uri: string) {
+    const { index, source } = getLoggingParams(this.props.location.search);
+    this.props.getDashboard({ source, uri, searchIndex: index });
   }
+
+  componentDidUpdate() {
+    const { uri } = qs.parse(this.props.location.search);
+    if (this.state.uri !== uri) {
+      this.setState({ uri });
+      this.loadDashboard(uri);
+    }
+  };
 
   mapStatusToStyle = (status: string): string => {
     if (status === LAST_RUN_SUCCEEDED) {

@@ -1,5 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
+import * as qs from 'simple-query-string';
+
 import { Dashboard } from 'interfaces/Dashboard';
 
 export type GetDashboardAPI = {
@@ -9,8 +11,9 @@ export type GetDashboardAPI = {
 
 const DASHBOARD_BASE = '/api/metadata/v0';
 
-export function getDashboard(uri: string) {
-  return axios.get(`${DASHBOARD_BASE}/dashboard?uri=${uri}`)
+export function getDashboard(uri: string, index?: string, source?: string) {
+  const queryParams = qs.stringify({ index, source, uri });
+  return axios.get(`${DASHBOARD_BASE}/dashboard?${queryParams}`)
   .then((response: AxiosResponse<GetDashboardAPI>) => {
     const { data, status } = response;
     return {

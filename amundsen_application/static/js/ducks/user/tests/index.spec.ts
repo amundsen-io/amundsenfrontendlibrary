@@ -34,13 +34,13 @@ describe('user ducks', () => {
   };
   let userId: string;
   let source: string;
-  let index: number;
+  let index: string;
   beforeAll(() => {
     currentUser = globalState.user.loggedInUser;
     otherUser = globalState.user.profile;
     userId = 'testId';
     source = 'test';
-    index = 0;
+    index = '0';
   });
 
   describe('actions', () => {

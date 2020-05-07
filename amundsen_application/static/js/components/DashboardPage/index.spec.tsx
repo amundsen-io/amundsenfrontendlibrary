@@ -1,4 +1,5 @@
 import * as React from 'react';
+import * as History from 'history';
 
 import { shallow } from 'enzyme';
 
@@ -17,6 +18,7 @@ import * as Constants from './constants';
 
 import * as ConfigUtils from 'config/config-utils';
 import { dashboardMetadata } from 'fixtures/metadata/dashboard';
+import * as LogUtils from 'utils/logUtils';
 
 import { ResourceType } from 'interfaces';
 
@@ -31,8 +33,9 @@ jest.mock('config/config-utils', () => (
 ));
 
 describe('DashboardPage', () => {
-  const setup = (propOverrides?: Partial<DashboardPageProps>) => {
-    const routerProps = getMockRouterProps<RouteProps>({ uri: 'test:uri/value' }, null);
+  const setStateSpy = jest.spyOn(DashboardPage.prototype, 'setState');
+  const setup = (propOverrides?: Partial<DashboardPageProps>, location?: Partial<History.Location>) => {
+    const routerProps = getMockRouterProps<RouteProps>(null, location);
     const props = {
       isLoading: false,
       statusCode: 200,
@@ -45,6 +48,66 @@ describe('DashboardPage', () => {
     const wrapper = shallow<DashboardPage>(<DashboardPage {...props} />)
     return { props, wrapper };
   };
+
+  describe('componentDidMount', () => {
+    it('calls loadDashboard with uri from state', () => {
+      const wrapper = setup().wrapper;
+      const loadDashboardSpy = jest.spyOn(wrapper.instance(), 'loadDashboard');
+      wrapper.instance().componentDidMount();
+      expect(loadDashboardSpy).toHaveBeenCalledWith(wrapper.state().uri);
+    });
+  });
+
+  describe('componentDidUpdate', () => {
+    let props;
+    let wrapper;
+    let loadDashboardSpy;
+
+    beforeEach(() => {
+      const setupResult = setup(null, {
+        search: '/dashboard?uri=testUri',
+      });
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+      loadDashboardSpy = jest.spyOn(wrapper.instance(), 'loadDashboard');
+    });
+
+    it('calls loadDashboard when uri has changes', () => {
+      loadDashboardSpy.mockClear();
+      setStateSpy.mockClear();
+      wrapper.setProps({ location: { search: '/dashboard?uri=newUri'}});
+      expect(loadDashboardSpy).toHaveBeenCalledWith('newUri');
+      expect(setStateSpy).toHaveBeenCalledWith({ uri: 'newUri'});
+    });
+
+    it('does not call loadDashboard when uri has not changed', () => {
+      loadDashboardSpy.mockClear();
+      setStateSpy.mockClear();
+      wrapper.instance().componentDidUpdate();
+      expect(loadDashboardSpy).not.toHaveBeenCalled();
+      expect(setStateSpy).not.toHaveBeenCalled();
+    });
+  });
+
+
+  describe('loadDashboard', () => {
+    let getLoggingParamsSpy;
+    let props;
+    let wrapper;
+    beforeAll(() => {
+      const setupResult = setup();
+      props = setupResult.props;
+      wrapper = setupResult.wrapper;
+      getLoggingParamsSpy = jest.spyOn(LogUtils, 'getLoggingParams');
+      wrapper.instance().loadDashboard('testUri');
+    })
+    it('calls getLoggingParams', () => {
+      expect(getLoggingParamsSpy).toHaveBeenCalledWith(props.location.search);
+    });
+    it('calls props.getDashboard', () => {
+      expect(props.getDashboard).toHaveBeenCalled();
+    });
+  });
 
   describe('mapStatusToStyle', () => {
     let wrapper;
