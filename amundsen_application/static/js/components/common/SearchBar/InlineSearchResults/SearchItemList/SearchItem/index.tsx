@@ -11,6 +11,7 @@ import { GlobalState } from 'ducks/rootReducer'
 import {
   SEARCH_ITEM_NO_RESULTS
 } from 'components/common/SearchBar/InlineSearchResults/constants';
+import Flag from 'components/common/Flag';
 
 export interface StateFromProps {
   isLoading: boolean;
@@ -22,6 +23,7 @@ export interface OwnProps {
   onItemSelect: (resourceType: ResourceType, updateUrl: boolean) => void;
   searchTerm: string;
   resourceType: ResourceType;
+  showBetaFlag?: boolean;
 }
 
 export type SearchItemProps = StateFromProps & OwnProps;
@@ -51,7 +53,7 @@ export class SearchItem extends React.Component<SearchItemProps, {}> {
   }
 
   render = () => {
-    const { searchTerm, listItemText, resourceType } = this.props;
+    const { searchTerm, listItemText, resourceType, showBetaFlag } = this.props;
     return (
       <li className="list-group-item">
         <a
@@ -64,6 +66,7 @@ export class SearchItem extends React.Component<SearchItemProps, {}> {
           <div className="title-2 search-item-info">
             <div className="search-term">{`${searchTerm}\u00a0`}</div>
             <div className="search-item-text">{listItemText}</div>
+            { showBetaFlag && <Flag text="beta" labelStyle="default"/> }
           </div>
           { this.renderIndicator() }
         </a>

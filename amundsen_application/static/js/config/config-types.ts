@@ -230,6 +230,7 @@ export interface LinkConfig {
  */
 interface IndexDashboardsConfig {
   enabled: boolean;
+  isBeta: boolean;
 }
 
 /**

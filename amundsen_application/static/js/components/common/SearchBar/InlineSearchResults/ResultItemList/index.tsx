@@ -6,6 +6,7 @@ import { SuggestedResult } from '../../InlineSearchResults'
 import ResultItem from './ResultItem';
 
 import { RESULT_LIST_FOOTER_PREFIX, RESULT_LIST_FOOTER_SUFFIX } from '../constants';
+import Flag from 'components/common/Flag';
 
 export interface ResultItemListProps {
   onItemSelect: (resourceType: ResourceType, updateUrl?: boolean) => void;
@@ -14,6 +15,7 @@ export interface ResultItemListProps {
   suggestedResults: SuggestedResult[];
   title: string;
   totalResults: number;
+  showBetaFlag?: boolean;
 }
 
 class ResultItemList extends React.Component<ResultItemListProps, {}> {
@@ -56,10 +58,13 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
   }
 
   render = () => {
-    const { resourceType, suggestedResults, title } = this.props;
+    const { resourceType, suggestedResults, title, showBetaFlag } = this.props;
     return (
       <>
-        <div className="section-title title-3">{title}</div>
+        <div className="section-title title-3">
+          { title }
+          { showBetaFlag && <Flag text="beta" labelStyle="default"/> }
+        </div>
         <ul className="list-group">
           { this.renderResultItems(suggestedResults) }
         </ul>

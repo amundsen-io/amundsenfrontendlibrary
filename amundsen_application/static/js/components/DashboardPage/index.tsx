@@ -33,7 +33,7 @@ import TagInput from 'components/Tags/TagInput';
 import { EditableSection } from 'components/TableDetail/EditableSection';
 import { ResourceType } from 'interfaces';
 
-import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
+import { getSourceDisplayName, getSourceIconClass, indexDashboardsIsBeta } from 'config/config-utils';
 
 import { getLoggingParams } from 'utils/logUtils';
 
@@ -154,6 +154,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
             <BookmarkIcon bookmarkKey={ dashboard.uri } resourceType={ ResourceType.dashboard } />
             <div className="body-2">
               Dashboard in&nbsp;
+              { indexDashboardsIsBeta() && <Flag text="beta" labelStyle="default"/> }
               <a id="dashboard-group-link"
                  onClick={ logClick }
                  href={ dashboard.group_url }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { indexDashboardsEnabled, indexUsersEnabled } from 'config/config-utils';
+import { indexDashboardsEnabled, indexDashboardsIsBeta, indexUsersEnabled } from 'config/config-utils';
 
 import { ResourceType } from 'interfaces';
 
@@ -48,6 +48,7 @@ class SearchItemList extends React.Component<SearchItemListProps, {}> {
             onItemSelect={onItemSelect}
             searchTerm={searchTerm}
             resourceType={ResourceType.dashboard}
+            showBetaFlag={indexDashboardsIsBeta()}
           />
         }
         {

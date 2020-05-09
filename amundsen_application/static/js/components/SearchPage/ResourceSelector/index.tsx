@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { DASHBOARD_RESOURCE_TITLE, TABLE_RESOURCE_TITLE, USER_RESOURCE_TITLE } from 'components/SearchPage/constants';
-import { indexDashboardsEnabled, indexUsersEnabled } from 'config/config-utils';
+import { indexDashboardsEnabled, indexDashboardsIsBeta, indexUsersEnabled } from 'config/config-utils';
 import { GlobalState } from 'ducks/rootReducer';
 import { updateSearchState } from 'ducks/search/reducer';
 import {
@@ -13,6 +13,7 @@ import {
   UserSearchResults
 } from 'ducks/search/types';
 import { ResourceType } from 'interfaces/Resources';
+import Flag from 'components/common/Flag';
 
 export interface StateFromProps {
   resource: ResourceType,
@@ -31,6 +32,7 @@ interface ResourceOptionConfig {
   type: ResourceType;
   label: string;
   count: number;
+  showBetaFlag?: boolean;
 }
 
 export class ResourceSelector extends React.Component<ResourceSelectorProps > {
@@ -54,6 +56,7 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
             onChange={ this.onChange }
           />
           <span className="subtitle-2">{ option.label }</span>
+          { option.showBetaFlag && <Flag text="beta" labelStyle="default"/> }
           <span className="body-secondary-3 pull-right">{ option.count }</span>
         </label>
       </div>
@@ -61,7 +64,7 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
   };
 
   render = () => {
-    const resourceOptions = [{
+    const resourceOptions: ResourceOptionConfig[] = [{
       type: ResourceType.table,
       label: TABLE_RESOURCE_TITLE,
       count: this.props.tables.total_results,
@@ -72,6 +75,7 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
         type: ResourceType.dashboard,
         label: DASHBOARD_RESOURCE_TITLE,
         count: this.props.dashboards.total_results,
+        showBetaFlag: indexDashboardsIsBeta(),
       });
     }
 
