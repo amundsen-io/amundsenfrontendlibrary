@@ -2,6 +2,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import Flag from 'components/common/Flag';
 import { DASHBOARD_RESOURCE_TITLE, TABLE_RESOURCE_TITLE, USER_RESOURCE_TITLE } from 'components/SearchPage/constants';
 import { indexDashboardsEnabled, indexDashboardsIsBeta, indexUsersEnabled } from 'config/config-utils';
 import { GlobalState } from 'ducks/rootReducer';
@@ -13,7 +14,6 @@ import {
   UserSearchResults
 } from 'ducks/search/types';
 import { ResourceType } from 'interfaces/Resources';
-import Flag from 'components/common/Flag';
 
 export interface StateFromProps {
   resource: ResourceType,

@@ -3,10 +3,10 @@ import { logClick } from 'ducks/utilMethods';
 import { ResourceType } from 'interfaces';
 
 import { SuggestedResult } from '../../InlineSearchResults'
+import Flag from 'components/common/Flag';
 import ResultItem from './ResultItem';
 
 import { RESULT_LIST_FOOTER_PREFIX, RESULT_LIST_FOOTER_SUFFIX } from '../constants';
-import Flag from 'components/common/Flag';
 
 export interface ResultItemListProps {
   onItemSelect: (resourceType: ResourceType, updateUrl?: boolean) => void;

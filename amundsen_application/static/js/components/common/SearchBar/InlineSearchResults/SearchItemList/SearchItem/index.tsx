@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { logClick } from 'ducks/utilMethods';
 import { ResourceType } from 'interfaces';
 
+import Flag from 'components/common/Flag';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 
 import { GlobalState } from 'ducks/rootReducer'
@@ -11,7 +12,6 @@ import { GlobalState } from 'ducks/rootReducer'
 import {
   SEARCH_ITEM_NO_RESULTS
 } from 'components/common/SearchBar/InlineSearchResults/constants';
-import Flag from 'components/common/Flag';
 
 export interface StateFromProps {
   isLoading: boolean;
