@@ -68,6 +68,10 @@ describe('ImagePreview', () => {
         it('renders hidden img', () => {
           expect(wrapper.find('img').props().style).toEqual({ visibility: 'hidden' });
         });
+
+        it('renders loading text', () => {
+          expect(wrapper.text()).toContain(Constants.LOADING_TEXT);
+        });
       });
 
       describe('when not loading', () => {

@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import "./styles.scss";
 
-interface QueryListProps {
+export interface QueryListProps {
   queries: string[];
 }
 

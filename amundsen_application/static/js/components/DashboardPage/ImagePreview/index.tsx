@@ -39,7 +39,13 @@ export class ImagePreview extends React.Component<ImagePreviewProps, ImagePrevie
     const { uri, redirectUrl } = this.props;
     return (
       <div className='image-preview'>
-        { this.state.isLoading && <LoadingSpinner /> }
+        {
+          this.state.isLoading &&
+          <div className="text-placeholder">
+            <LoadingSpinner />
+            { Constants.LOADING_TEXT }
+          </div>
+        }
         {
           !this.state.hasError &&
           <img
