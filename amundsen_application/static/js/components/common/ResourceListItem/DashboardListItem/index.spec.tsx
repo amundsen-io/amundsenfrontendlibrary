@@ -15,6 +15,8 @@ const MOCK_DISPLAY_NAME = 'displayName';
 const MOCK_ICON_CLASS = 'test-class';
 const MOCK_DATE = 'Jan 1, 2000';
 
+import { dashboardSummary } from 'fixtures/metadata/dashboard';
+
 jest.mock('config/config-utils', () => (
   {
     getSourceDisplayName: jest.fn(() => { return MOCK_DISPLAY_NAME }),
@@ -31,18 +33,7 @@ describe('DashboardListItem', () => {
   const setup = (propOverrides?: Partial<DashboardListItemProps>) => {
     const props: DashboardListItemProps = {
       logging: { source: 'src', index: 0 },
-      dashboard: {
-        group_name: 'Amundsen Team',
-        group_url: 'product/group',
-        name: 'Amundsen Metrics Dashboard1',
-        product: 'mode',
-        type: ResourceType.dashboard,
-        description: 'I am a dashboard',
-        uri: 'product_dashboard://cluster.group/name',
-        url: 'product/name',
-        cluster: 'cluster',
-        last_successful_run_timestamp: 1585062593
-      },
+      dashboard: dashboardSummary,
       ...propOverrides
     };
     const wrapper = shallow<DashboardListItem>(<DashboardListItem {...props} />);

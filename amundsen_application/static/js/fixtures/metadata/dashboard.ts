@@ -1,3 +1,18 @@
+import { DashboardResource, ResourceType } from 'interfaces';
+
+export const dashboardSummary: DashboardResource = {
+  group_name: 'Amundsen Team',
+  group_url: 'product/group',
+  name: 'Amundsen Metrics Dashboard1',
+  product: 'mode',
+  type: ResourceType.dashboard,
+  description: 'I am a dashboard',
+  uri: 'product_dashboard://cluster.group/name',
+  url: 'product/name',
+  cluster: 'cluster',
+  last_successful_run_timestamp: 1585062593
+};
+
 export const dashboardMetadata = {
   badges: [],
   chart_names: ["chart 1", "chart 2"],

@@ -83,10 +83,10 @@ export function* submitSearchResourceWorker(action: SubmitSearchResourceRequest)
 
  if (updateUrl) {
   updateSearchUrl({
-  filters,
-  resource,
-  term: search_term,
-  index: pageIndex,
+    filters,
+    resource,
+    term: search_term,
+    index: pageIndex,
   });
  }
 };
