@@ -39,7 +39,7 @@ export interface DashboardReducerState {
   dashboard: Dashboard;
 }
 
-export const InitialDashboardState: Dashboard = {
+export const initialDashboardState: Dashboard = {
   badges: [],
   chart_names: [],
   cluster: "",
@@ -66,7 +66,7 @@ export const InitialDashboardState: Dashboard = {
 export const initialState: DashboardReducerState = {
   isLoading: true,
   statusCode: null,
-  dashboard: InitialDashboardState,
+  dashboard: initialDashboardState,
 };
 
 export default function reducer(state: DashboardReducerState = initialState, action): DashboardReducerState {
@@ -82,7 +82,7 @@ export default function reducer(state: DashboardReducerState = initialState, act
         ...state,
         isLoading: false,
         statusCode: action.payload.statusCode,
-        dashboard: InitialDashboardState,
+        dashboard: initialDashboardState,
       };
     case GetDashboard.SUCCESS:
       return {
