@@ -32,10 +32,18 @@ Reference for formatting: https://devhints.io/datetime#momentjs-format
 
 _TODO: Please add doc_
 
-## Index Users
-In Amundsen, users themselves are data resources and user metadata helps to facilitate network based discovery. When users are indexed they will show up in search results, and selecting a user surfaces a profile page that displays that user's relationships with different data resources.
+## Indexing Optional Resources
+In Amundsen, we currently support indexing other optional resources beyond tables.
+
+### Index Users
+Users themselves are data resources and user metadata helps to facilitate network based discovery. When users are indexed they will show up in search results, and selecting a user surfaces a profile page that displays that user's relationships with different data resources.
 
 After ingesting user metadata into the search and metadata services, set `IndexUsersConfig.enabled` to `true` on the application configuration to display the UI for the aforementioned features.
+
+### Index Dashboards
+Introducing dashboards into Amundsen allows users to discovery data analysis that has been already done. When dashboards are indexed they will show up in search results, and selecting a dashboard surfaces a page where users can explore dashboard metadata.
+
+After ingesting dashboard metadata into the search and metadata services, set `IndexDashboardsConfig.enabled` to `true` on the application configuration to display the UI for the aforementioned features.
 
 ## Mail Client Features
 Amundsen has two features that leverage the custom mail client -- the feedback tool and notifications.
