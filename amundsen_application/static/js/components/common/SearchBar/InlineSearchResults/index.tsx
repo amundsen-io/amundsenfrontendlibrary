@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import SearchItemList from './SearchItemList';
 import ResultItemList from './ResultItemList';
 
-import { getSourceDisplayName, getSourceIconClass, indexDashboardsEnabled, indexDashboardsIsBeta, indexUsersEnabled } from 'config/config-utils';
+import { getSourceDisplayName, getSourceIconClass, indexDashboardsEnabled, indexUsersEnabled } from 'config/config-utils';
 
 import { GlobalState } from 'ducks/rootReducer'
 import { DashboardSearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
@@ -197,7 +197,6 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
           suggestedResults={suggestedResults}
           totalResults={this.getTotalResultsForResource(resourceType)}
           title={this.getTitleForResource(resourceType)}
-          showBetaFlag={isBeta}
         />
       </div>
     )
@@ -212,7 +211,7 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
         { this.renderResultsByResource(ResourceType.table) }
         {
           indexDashboardsEnabled() &&
-          this.renderResultsByResource(ResourceType.dashboard, indexDashboardsIsBeta())
+          this.renderResultsByResource(ResourceType.dashboard, true)
         }
         {
           indexUsersEnabled() &&

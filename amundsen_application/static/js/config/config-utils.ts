@@ -88,13 +88,6 @@ export function indexDashboardsEnabled(): boolean {
 }
 
 /**
- * Returns whether or not dashboards is in beta mode
- */
-export function indexDashboardsIsBeta(): boolean {
-  return AppConfig.indexDashboards.isBeta;
-}
-
-/**
  * Returns whether or not user features should be shown
  */
 export function indexUsersEnabled(): boolean {

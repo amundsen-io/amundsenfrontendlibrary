@@ -24,7 +24,6 @@ const configDefault: AppConfig = {
   },
   indexDashboards: {
     enabled: false,
-    isBeta: false,
   },
   indexUsers: {
     enabled: false,

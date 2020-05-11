@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import Flag from 'components/common/Flag';
 import { DASHBOARD_RESOURCE_TITLE, TABLE_RESOURCE_TITLE, USER_RESOURCE_TITLE } from 'components/SearchPage/constants';
-import { indexDashboardsEnabled, indexDashboardsIsBeta, indexUsersEnabled } from 'config/config-utils';
+import { indexDashboardsEnabled, indexUsersEnabled } from 'config/config-utils';
 import { GlobalState } from 'ducks/rootReducer';
 import { updateSearchState } from 'ducks/search/reducer';
 import {
@@ -32,7 +32,6 @@ interface ResourceOptionConfig {
   type: ResourceType;
   label: string;
   count: number;
-  showBetaFlag?: boolean;
 }
 
 export class ResourceSelector extends React.Component<ResourceSelectorProps > {
@@ -56,7 +55,7 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
             onChange={ this.onChange }
           />
           <span className="subtitle-2">{ option.label }</span>
-          { option.showBetaFlag && <Flag text="beta" labelStyle="default"/> }
+          { option.type === ResourceType.dashboard && <Flag text="beta" labelStyle="default"/> }
           <span className="body-secondary-3 pull-right">{ option.count }</span>
         </label>
       </div>
@@ -75,7 +74,6 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
         type: ResourceType.dashboard,
         label: DASHBOARD_RESOURCE_TITLE,
         count: this.props.dashboards.total_results,
-        showBetaFlag: indexDashboardsIsBeta(),
       });
     }
 

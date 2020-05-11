@@ -15,7 +15,6 @@ export interface ResultItemListProps {
   suggestedResults: SuggestedResult[];
   title: string;
   totalResults: number;
-  showBetaFlag?: boolean;
 }
 
 class ResultItemList extends React.Component<ResultItemListProps, {}> {
@@ -58,12 +57,12 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
   }
 
   render = () => {
-    const { resourceType, suggestedResults, title, showBetaFlag } = this.props;
+    const { resourceType, suggestedResults, title } = this.props;
     return (
       <>
         <div className="section-title title-3">
           { title }
-          { showBetaFlag && <Flag text="beta" labelStyle="default"/> }
+          { resourceType === ResourceType.dashboard && <Flag text="beta" labelStyle="default"/> }
         </div>
         <ul className="list-group">
           { this.renderResultItems(suggestedResults) }
