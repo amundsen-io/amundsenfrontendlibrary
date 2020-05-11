@@ -3,6 +3,7 @@ import { logClick } from 'ducks/utilMethods';
 import { ResourceType } from 'interfaces';
 
 import { SuggestedResult } from '../../InlineSearchResults'
+import Flag from 'components/common/Flag';
 import ResultItem from './ResultItem';
 
 import { RESULT_LIST_FOOTER_PREFIX, RESULT_LIST_FOOTER_SUFFIX } from '../constants';
@@ -59,7 +60,10 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
     const { resourceType, suggestedResults, title } = this.props;
     return (
       <>
-        <div className="section-title title-3">{title}</div>
+        <div className="section-title title-3">
+          { title }
+          { resourceType === ResourceType.dashboard && <Flag text="beta" labelStyle="default"/> }
+        </div>
         <ul className="list-group">
           { this.renderResultItems(suggestedResults) }
         </ul>

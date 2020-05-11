@@ -2,6 +2,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import Flag from 'components/common/Flag';
 import { DASHBOARD_RESOURCE_TITLE, TABLE_RESOURCE_TITLE, USER_RESOURCE_TITLE } from 'components/SearchPage/constants';
 import { indexDashboardsEnabled, indexUsersEnabled } from 'config/config-utils';
 import { GlobalState } from 'ducks/rootReducer';
@@ -54,6 +55,7 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
             onChange={ this.onChange }
           />
           <span className="subtitle-2">{ option.label }</span>
+          { option.type === ResourceType.dashboard && <Flag text="beta" labelStyle="default"/> }
           <span className="body-secondary-3 pull-right">{ option.count }</span>
         </label>
       </div>

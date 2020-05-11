@@ -7,7 +7,7 @@ import ResultItemList from './ResultItemList';
 import { getSourceDisplayName, getSourceIconClass, indexDashboardsEnabled, indexUsersEnabled } from 'config/config-utils';
 
 import { GlobalState } from 'ducks/rootReducer'
-import { SearchResults, DashboardSearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
+import { DashboardSearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
 
 import { Resource, ResourceType, DashboardResource, TableResource, UserResource } from 'interfaces';
 
