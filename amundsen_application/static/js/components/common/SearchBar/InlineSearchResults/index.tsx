@@ -183,7 +183,7 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
     }
   };
 
-  renderResultsByResource = (resourceType: ResourceType, isBeta: boolean = false) => {
+  renderResultsByResource = (resourceType: ResourceType) => {
     const suggestedResults = this.getSuggestedResultsForResource(resourceType);
     if (suggestedResults.length === 0) {
       return null;
@@ -211,7 +211,7 @@ export class InlineSearchResults extends React.Component<InlineSearchResultsProp
         { this.renderResultsByResource(ResourceType.table) }
         {
           indexDashboardsEnabled() &&
-          this.renderResultsByResource(ResourceType.dashboard, true)
+          this.renderResultsByResource(ResourceType.dashboard)
         }
         {
           indexUsersEnabled() &&

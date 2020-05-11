@@ -63,7 +63,7 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps > {
   };
 
   render = () => {
-    const resourceOptions: ResourceOptionConfig[] = [{
+    const resourceOptions = [{
       type: ResourceType.table,
       label: TABLE_RESOURCE_TITLE,
       count: this.props.tables.total_results,
