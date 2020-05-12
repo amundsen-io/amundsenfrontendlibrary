@@ -10,9 +10,10 @@ from flask import current_app as app
 from flask.blueprints import Blueprint
 
 from amundsen_application.log.action_log import action_logging
+from amundsen_application.api.utils.metadata_utils import marshall_dashboard_partial
 from amundsen_application.api.utils.request_utils import get_query_param, request_search
 from amundsen_application.api.utils.search_utils import generate_query_json, has_filters, \
-    map_dashboard_result, map_table_result, transform_filters
+    map_table_result, transform_filters
 from amundsen_application.models.user import load_user, dump_user
 
 LOGGER = logging.getLogger(__name__)
@@ -235,7 +236,7 @@ def _search_dashboard(*, search_term: str, page_index: int, search_type: str) ->
         if status_code == HTTPStatus.OK:
             results_dict['msg'] = 'Success'
             results = response.json().get('results')
-            dashboards['results'] = [map_dashboard_result(result) for result in results]
+            dashboards['results'] = [marshall_dashboard_partial(result) for result in results]
             dashboards['total_results'] = response.json().get('total_results')
         else:
             message = 'Encountered error: Search request failed'

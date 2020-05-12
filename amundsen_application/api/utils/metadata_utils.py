@@ -2,6 +2,7 @@ import logging
 
 from typing import Any, Dict, List
 
+from amundsen_common.models.dashboard import DashboardSummary, DashboardSummarySchema
 from amundsen_common.models.popular_table import PopularTable, PopularTableSchema
 from amundsen_common.models.table import Table, TableSchema
 from amundsen_application.models.user import load_user, dump_user
@@ -71,6 +72,22 @@ def marshall_table_full(table_dict: Dict) -> Dict:
     if prog_descriptions:
         _update_prog_descriptions(prog_descriptions)
 
+    return results
+
+def marshall_dashboard_partial(dashboard_dict: Dict) -> Dict:
+    """
+    Forms a short version of dashboard metadata, with selected fields and an added 'key'
+    and 'type'
+    :param dashboard_dict: Dict of partial dashboard metadata
+    :return: partial dashboard Dict
+    """
+    schema = DashboardSummarySchema(strict=True)
+    dashboard: DashboardSummary = schema.load(dashboard_dict).data
+    results = schema.dump(dashboard).data
+    results['type'] = 'dashboard'
+    # TODO: Bookmark logic relies on key, opting to add this here to avoid messy logic in
+    # React app and we have to clean up later.
+    results['key'] = results.get('uri', '')
     return results
 
 

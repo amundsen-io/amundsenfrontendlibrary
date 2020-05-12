@@ -28,9 +28,6 @@ img.icon {
     background-color: $icon-bg-dark;
   }
 
-  // TODO - Add other icons here
-
-
   &.icon-alert {
     -webkit-mask-image: url('/static/images/icons/Alert-Triangle.svg');
     mask-image: url('/static/images/icons/Alert-Triangle.svg');

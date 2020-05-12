@@ -12,25 +12,6 @@ valid_search_fields = {
 }
 
 
-# TODO: use common
-def map_dashboard_result(result: Dict) -> Dict:
-    return {
-        'type': 'dashboard',
-        'cluster': result.get('cluster', ''),
-        'description': result.get('description', ''),
-        'group_name': result.get('group_name', ''),
-        'group_url': result.get('group_url', ''),
-        'last_successful_run_timestamp': result.get('last_successful_run_timestamp', None),
-        'name': result.get('name', ''),
-        'product': result.get('product', ''),
-        'uri': result.get('uri', ''),
-        'url': result.get('url', ''),
-        # TODO: Bookmark logic relies on key, opting to add this here to avoid messy logic in
-        # React app and we have to clean up later.
-        'key': result.get('uri', ''),
-    }
-
-
 def map_table_result(result: Dict) -> Dict:
     return {
         'type': 'table',

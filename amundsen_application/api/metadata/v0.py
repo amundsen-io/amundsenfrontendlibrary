@@ -11,9 +11,8 @@ from amundsen_application.log.action_log import action_logging
 
 from amundsen_application.models.user import load_user, dump_user
 
-from amundsen_application.api.utils.search_utils import map_dashboard_result
 from amundsen_application.api.utils.metadata_utils import marshall_table_partial, marshall_table_full,\
-    marshall_dashboard_full
+    marshall_dashboard_partial, marshall_dashboard_full
 from amundsen_application.api.utils.request_utils import get_query_param, request_metadata
 
 
@@ -497,7 +496,7 @@ def get_bookmark() -> Response:
             table_bookmarks = [marshall_table_partial(table) for table in tables]
             # TODO: use common to create marshall_dashboard_partial
             dashboards = response.json().get('dashboard', [])
-            dashboard_bookmarks = [map_dashboard_result(dashboard) for dashboard in dashboards]
+            dashboard_bookmarks = [marshall_dashboard_partial(dashboard) for dashboard in dashboards]
         else:
             message = f'Encountered error: failed to get bookmark for user_id: {user_id}'
             logging.error(message)
@@ -599,7 +598,7 @@ def get_user_own() -> Response:
         owned_tables = [marshall_table_partial(table) for table in owned_tables_raw]
         # TODO: use common to create marshall_dashboard_partial
         dashboards = response.json().get('dashboard', [])
-        owned_dashboards = [map_dashboard_result(dashboard) for dashboard in dashboards]
+        owned_dashboards = [marshall_dashboard_partial(dashboard) for dashboard in dashboards]
         all_owned = {
             'table': owned_tables,
             'dashboard': owned_dashboards
