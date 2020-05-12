@@ -494,7 +494,6 @@ def get_bookmark() -> Response:
             message = 'Success'
             tables = response.json().get('table')
             table_bookmarks = [marshall_table_partial(table) for table in tables]
-            # TODO: use common to create marshall_dashboard_partial
             dashboards = response.json().get('dashboard', [])
             dashboard_bookmarks = [marshall_dashboard_partial(dashboard) for dashboard in dashboards]
         else:
@@ -596,7 +595,6 @@ def get_user_own() -> Response:
         status_code = response.status_code
         owned_tables_raw = response.json().get('table')
         owned_tables = [marshall_table_partial(table) for table in owned_tables_raw]
-        # TODO: use common to create marshall_dashboard_partial
         dashboards = response.json().get('dashboard', [])
         owned_dashboards = [marshall_dashboard_partial(dashboard) for dashboard in dashboards]
         all_owned = {
