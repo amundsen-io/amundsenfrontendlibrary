@@ -10,6 +10,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="/static/images/favicon.png">
 
+    {% if <%= htmlWebpackPlugin.options.environment %> == development %}
+      <link rel="shortcut icon" href="/static/images/favicon-orange.svg">
+    {% else %}
+      <link rel="shortcut icon" href="/static/images/favicon.png">
+    {% endif %}
     <link href="/static/dist/main.css" type="text/css" rel="stylesheet"/>
 
     <meta name="theme-color" content="#2B1B81">
