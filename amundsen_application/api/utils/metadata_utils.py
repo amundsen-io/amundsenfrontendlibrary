@@ -74,6 +74,7 @@ def marshall_table_full(table_dict: Dict) -> Dict:
 
     return results
 
+
 def marshall_dashboard_partial(dashboard_dict: Dict) -> Dict:
     """
     Forms a short version of dashboard metadata, with selected fields and an added 'key'

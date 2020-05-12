@@ -1,7 +1,6 @@
 import unittest
 
-from amundsen_application.api.utils.search_utils import generate_query_json, has_filters, transform_filters, \
-    map_dashboard_result
+from amundsen_application.api.utils.search_utils import generate_query_json, has_filters, transform_filters
 
 
 class SearchUtilsTest(unittest.TestCase):
@@ -65,35 +64,3 @@ class SearchUtilsTest(unittest.TestCase):
         self.assertFalse(has_filters(filters={'fake_category': ['db1']}))
         self.assertFalse(has_filters(filters={'tag': []}))
         self.assertFalse(has_filters())
-
-    def test_map_dashboard_result(self) -> None:
-        """
-        Verifies that the given dashboard results are correctly transformed
-        :return:
-        """
-        given = {
-            'group_name': 'Amundsen Team',
-            'group_url': 'product_dashboard://cluster.group',
-            'name': 'Amundsen Metrics Dashboard',
-            'product': 'mode',
-            'description': 'I am a dashboard',
-            'uri': 'product_dashboard://cluster.group/name',
-            'url': 'product/name',
-            'cluster': 'cluster',
-            'last_successful_run_timestamp': 1585062593,
-            'total_usage': 1,
-        }
-        expected = {
-            'group_name': 'Amundsen Team',
-            'group_url': 'product_dashboard://cluster.group',
-            'name': 'Amundsen Metrics Dashboard',
-            'key': 'product_dashboard://cluster.group/name',
-            'product': 'mode',
-            'description': 'I am a dashboard',
-            'uri': 'product_dashboard://cluster.group/name',
-            'url': 'product/name',
-            'cluster': 'cluster',
-            'last_successful_run_timestamp': 1585062593,
-            'type': 'dashboard'
-        }
-        self.assertEqual(map_dashboard_result(given), expected)
