@@ -3,7 +3,7 @@ import { Tag } from 'interfaces/Tags';
 import { TableReader } from 'interfaces/TableMetadata';
 import { TableResource } from 'interfaces/Resources';
 
-export interface Dashboard {
+export interface DashboardMetadata {
   badges: Tag[]
   chart_names: string[]
   cluster: string;

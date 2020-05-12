@@ -15,7 +15,7 @@ import { getDashboard } from 'ducks/dashboard/reducer';
 import { GetDashboardRequest } from 'ducks/dashboard/types';
 import { GlobalState } from 'ducks/rootReducer';
 import { logClick } from 'ducks/utilMethods';
-import { Dashboard } from 'interfaces/Dashboard';
+import { DashboardMetadata } from 'interfaces/Dashboard';
 import ImagePreview from './ImagePreview';
 import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
@@ -50,7 +50,7 @@ interface DashboardPageState {
 export interface StateFromProps {
   isLoading: boolean;
   statusCode: number;
-  dashboard: Dashboard;
+  dashboard: DashboardMetadata;
 }
 
 export interface DispatchFromProps {

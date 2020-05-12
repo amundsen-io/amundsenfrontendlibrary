@@ -4,7 +4,7 @@ import {
   GetDashboardResponse,
   GetDashboardPayload,
 } from 'ducks/dashboard/types';
-import { Dashboard } from 'interfaces/Dashboard';
+import { DashboardMetadata } from 'interfaces/Dashboard';
 
 
 /* Actions */
@@ -36,10 +36,10 @@ export function getDashboardFailure(payload: GetDashboardPayload): GetDashboardR
 export interface DashboardReducerState {
   isLoading: boolean;
   statusCode: number;
-  dashboard: Dashboard;
+  dashboard: DashboardMetadata;
 }
 
-export const initialDashboardState: Dashboard = {
+export const initialDashboardState: DashboardMetadata = {
   badges: [],
   chart_names: [],
   cluster: "",

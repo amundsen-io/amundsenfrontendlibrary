@@ -2,11 +2,11 @@ import axios, { AxiosResponse } from 'axios';
 
 import * as qs from 'simple-query-string';
 
-import { Dashboard } from 'interfaces/Dashboard';
+import { DashboardMetadata } from 'interfaces/Dashboard';
 
 export type GetDashboardAPI = {
   msg: string;
-  dashboard: Dashboard;
+  dashboard: DashboardMetadata;
 }
 
 const DASHBOARD_BASE = '/api/metadata/v0';

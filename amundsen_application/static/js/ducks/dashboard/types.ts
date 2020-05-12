@@ -1,4 +1,4 @@
-import { Dashboard } from 'interfaces/Dashboard';
+import { DashboardMetadata } from 'interfaces/Dashboard';
 
 export enum GetDashboard {
   REQUEST = 'amundsen/dashboard/GET_DASHBOARD_REQUEST',
@@ -21,7 +21,7 @@ export interface GetDashboardResponse {
 }
 
 export interface GetDashboardPayload {
-  dashboard?: Dashboard;
+  dashboard?: DashboardMetadata;
   statusCode?: number;
   statusMessage?: string;
 }
