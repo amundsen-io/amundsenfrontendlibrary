@@ -104,7 +104,7 @@ describe('indexDashboardsEnabled', () => {
 
 describe('indexUsersEnabled', () => {
   it('returns whether or not the indexUsers feature is enabled', () => {
-    expect(ConfigUtils.indexUsersEnabled()).toBe(AppConfig.indexUsers.enabled);
+    expect(ConfigUtils.indexUsersEnabled()).toBe(AppConfig.users.indexUsersEnabled);
   });
 });
 
