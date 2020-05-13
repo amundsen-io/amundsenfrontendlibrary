@@ -3,78 +3,52 @@
 $icon-size: 24px;
 $icon-small-size: 16px;
 
-$default-db-logo-path: "/static/images/icons/Database.svg";
-$default-dashboard-logo-path: "/static/images/icons/dashboard.svg";
+// Map of Database names and icon paths
+$data-stores: (
+  database: "/static/images/icons/Database.svg",  // Default
+  hive: "/static/images/icons/logo-hive.svg",
+  bigquery: "/static/images/icons/logo-bigquery.svg",
+  druid: "/static/images/icons/logo-druid.svg",
+  presto: "/static/images/icons/logo-presto.svg",
+  postgres: "/static/images/icons/logo-postgres.svg",
+  redshift: "/static/images/icons/logo-redshift.svg"
+);
 
-// DBs
-$hive-logo-path: "/static/images/icons/logo-hive.svg";
-$bigquery-logo-path: "/static/images/icons/logo-bigquery.svg";
-$druid-logo-path: "/static/images/icons/logo-druid.svg";
-$hive-logo-path: "/static/images/icons/logo-hive.svg";
-$presto-logo-path: "/static/images/icons/logo-presto.svg";
-$postgres-logo-path: "/static/images/icons/logo-postgres.svg";
-$redshift-logo-path: "/static/images/icons/logo-redshift.svg";
+// Map of Dashboard names and icon paths
+$dashboards: (
+  dashboard: "/static/images/icons/dashboard.svg",  //Default
+  mode: "/static/images/icons/logo-mode.svg"
+);
 
-// Dashboards
-$mode-logo-path: "/static/images/icons/logo-mode.svg";
-
+// Given a Map of key/value pairs, generates a new class
+@mixin iconBackgrounds($map){
+  @each $name, $url in $map {
+    &.icon-#{$name} {
+      background: transparent url($url) center center / contain no-repeat;
+    }
+  }
+}
 
 span.icon {
   background-color: $icon-bg;
   border: none;
   height: $icon-size;
-  margin: auto 16px auto 0px;
+  margin: auto 16px auto 0;
   min-width: $icon-size;
   width: $icon-size;
   display: inline-block;
   vertical-align: middle;
 
-  // Default DB icon
-  &.icon-database {
-    background: transparent url($default-db-logo-path) center center / contain no-repeat;
-  }
-
-  // Default Dashboard icon
-  &.icon-dashboard {
-    background: transparent url($default-dashboard-logo-path) center center / contain no-repeat;
-  }
-
-  // Database Icons
-  &.icon-bigquery {
-    background: transparent url($bigquery-logo-path) center center / contain no-repeat;
-  }
-
-  &.icon-druid {
-    background: transparent url($druid-logo-path) center center / contain no-repeat;
-  }
-
-  &.icon-hive {
-    background: transparent url($hive-logo-path) center center / contain no-repeat;
-  }
-
-  &.icon-presto {
-    background: transparent url($presto-logo-path) center center / contain no-repeat;
-  }
-
-  &.icon-postgres {
-    background: transparent url($postgres-logo-path) center center / contain no-repeat;
-  }
-
-  &.icon-redshift {
-    background: transparent url($redshift-logo-path) center center / contain no-repeat;
-  }
-
-  // Dashboard Icons
-  &.icon-mode {
-    background: transparent url($mode-logo-path) center center / contain no-repeat;
-  }
+  // Generate Icons
+  @include iconBackgrounds($data-stores);
+  @include iconBackgrounds($dashboards);
 }
 
 img.icon {
   background-color: $icon-bg;
   border: none;
   height: $icon-size;
-  margin: -3px 4px -3px 0px;
+  margin: -3px 4px -3px 0;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   min-width: $icon-size;
