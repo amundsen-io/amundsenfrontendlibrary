@@ -171,7 +171,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                className="btn btn-default btn-lg">Open Dashboard</a>
           </div>
         </header>
-        <main className="column-layout-1">
+        <article className="column-layout-1">
           <section className="left-panel">
             <div className="section-title title-3">Description</div>
             {
@@ -256,7 +256,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
           <section className="right-panel">
             { this.renderTabs() }
           </section>
-        </main>
+        </article>
       </div>
    );
   }
