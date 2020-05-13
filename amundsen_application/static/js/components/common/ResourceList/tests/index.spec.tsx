@@ -1,4 +1,4 @@
-import * as React from 'react';
+/*import * as React from 'react';
 import Pagination from 'react-js-pagination';
 
 import { shallow } from 'enzyme';
@@ -215,4 +215,4 @@ describe('ResourceList', () => {
       expect(setStateSpy).toHaveBeenCalledWith({ activePage: 2 });
     });
   });
-});
+});*/
