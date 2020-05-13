@@ -13,6 +13,7 @@ export interface AppConfig {
   editableText: EditableTextConfig;
   google: GoogleAnalyticsConfig;
   users: UsersConfig;
+  indexDashboards: IndexDashboardsConfig;
   issueTracking: IssueTrackingConfig;
   logoPath: string | null;
   mailClientFeatures: MailClientFeaturesConfig;
@@ -29,6 +30,7 @@ export interface AppConfigCustom {
   editableText?: EditableTextConfig;
   google?: GoogleAnalyticsConfig;
   users?: UsersConfig;
+  indexDashboards?: IndexDashboardsConfig;
   issueTracking?: IssueTrackingConfig;
   logoPath?: string;
   mailClientFeatures?: MailClientFeaturesConfig;
@@ -108,6 +110,16 @@ interface SingleFilterCategory extends BaseFilterCategory {
 export type FilterConfig = (MultiSelectFilterCategory|SingleFilterCategory)[];
 
 /**
+ * Configures the UI for a given entity source
+ */
+type SourcesConfig = {
+  [id: string]: {
+    displayName?: string;
+    iconClass?: string;
+  }
+}
+
+/**
  * Base interface for all possible ResourceConfig objects
  *
  * displayName - The name displayed throughout the application to refer to this resource type
@@ -116,15 +128,7 @@ export type FilterConfig = (MultiSelectFilterCategory|SingleFilterCategory)[];
 interface BaseResourceConfig {
   displayName: string;
   filterCategories?: FilterConfig;
-}
-
-/**
- * Interface for table resource types
- */
-interface TableResourceConfig extends BaseResourceConfig {
-  supportedDatabases: {
-    [id: string]: DatabaseConfig
-  };
+  supportedSources?: SourcesConfig;
 }
 
 export enum BadgeStyle {
@@ -166,20 +170,9 @@ interface DateFormatConfig {
  * A map of each resource type to its configuration
  */
 interface ResourceConfig {
-  [ResourceType.table]: TableResourceConfig;
+  [ResourceType.dashboard]: BaseResourceConfig;
+  [ResourceType.table]: BaseResourceConfig;
   [ResourceType.user]: BaseResourceConfig;
-}
-
-/** DatabaseConfig - For customizing values related to how each database resource
- *                  is displayed in the UI.
- *
- * displayName - An optional display name for this database source
- * iconClass - An option icon class to be used for this database source. This
- *             value should be defined in static/css/_icons.scss
- */
-interface DatabaseConfig {
-  displayName?: string;
-  iconClass?: string;
 }
 
 /**
@@ -227,6 +220,16 @@ export interface LinkConfig {
   label: string;
   target?: string;
   use_router: boolean;
+}
+
+/**
+ * IndexDashboardsConfig - When enabled, dashboards will be avaialable as searchable resources. This requires
+ * dashboards objects to be ingested via Databuilder and made available in the metadata and serch services.
+ *
+ * enabled - Enables/disables this feature in the frontend only
+ */
+interface IndexDashboardsConfig {
+  enabled: boolean;
 }
 
 /**

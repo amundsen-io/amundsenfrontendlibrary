@@ -26,6 +26,9 @@ const configDefault: AppConfig = {
     indexUsersEnabled: false,
     idLabel: 'email address'
   },
+  indexDashboards: {
+    enabled: false,
+  },
   issueTracking: {
     enabled: false
   },
@@ -49,12 +52,25 @@ const configDefault: AppConfig = {
     }
   ],
   resourceConfig: {
+    [ResourceType.dashboard]: {
+      displayName: 'Dashboards',
+      supportedSources: {
+        'mode': {
+          displayName: 'Mode',
+          iconClass: 'icon-mode',
+        },
+      },
+    },
     [ResourceType.table]: {
       displayName: 'Datasets',
-      supportedDatabases: {
+      supportedSources: {
         'bigquery': {
           displayName: 'BigQuery',
           iconClass: 'icon-bigquery',
+        },
+        'druid': {
+          displayName: 'Druid',
+          iconClass: 'icon-druid',
         },
         'hive': {
           displayName: 'Hive',

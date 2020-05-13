@@ -9,8 +9,8 @@ img.icon {
   mask-repeat: no-repeat;
   min-width: 24px;
   width: 24px;
-  -webkit-mask-size: 24px 24px;
-  mask-size: 24px 24px;
+  -webkit-mask-size: contain;
+  mask-size: contain;
 
   &.icon-small {
     height: 16px;
@@ -27,9 +27,6 @@ img.icon {
   &.icon-dark {
     background-color: $icon-bg-dark;
   }
-
-  // TODO - Add other icons here
-
 
   &.icon-alert {
     -webkit-mask-image: url('/static/images/icons/Alert-Triangle.svg');
@@ -66,6 +63,11 @@ img.icon {
     mask-image: url('/static/images/icons/DataQualityWarning.svg');
   }
 
+  &.icon-dashboard {
+    -webkit-mask-image: url('/static/images/icons/dashboard.svg');
+    mask-image: url('/static/images/icons/dashboard.svg');
+  }
+
   &.icon-down {
     -webkit-mask-image: url('/static/images/icons/Down.svg');
     mask-image: url('/static/images/icons/Down.svg');
@@ -83,6 +85,11 @@ img.icon {
 
   &.icon-hive {
     content: url('/static/images/icons/logo-hive.svg');
+    background-color: transparent;
+  }
+
+  &.icon-druid {
+    content: url('/static/images/icons/logo-druid.svg');
     background-color: transparent;
   }
 
@@ -104,6 +111,11 @@ img.icon {
   &.icon-mail {
     -webkit-mask-image: url('/static/images/icons/mail.svg');
     mask-image: url('/static/images/icons/mail.svg');
+  }
+
+  &.icon-mode {
+    content: url('/static/images/icons/logo-mode.svg');
+    background-color: transparent;
   }
 
   &.icon-plus {
