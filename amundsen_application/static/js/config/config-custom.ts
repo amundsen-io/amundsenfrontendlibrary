@@ -18,7 +18,7 @@ const configCustom: AppConfigCustom = {
   },
   users: {
     indexUsersEnabled: true,
-    idLabel: 'CK'
+    idLabel: 'email address'
   },
   indexDashboards: {
     enabled: false,
