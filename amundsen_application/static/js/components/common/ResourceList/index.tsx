@@ -47,6 +47,13 @@ class ResourceList extends React.Component<ResourceListProps, ResourceListState>
     };
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const currentPage = this.state.activePage;
+    if (this.props.itemsPerPage * currentPage >= this.props.allItems.length) {
+      this.setState({ activePage: currentPage - 1 });
+    }
+  }
+
   onPagination = (rawPageNum: number) => {
     const activePage = rawPageNum - 1;
     if (this.props.onPagination !== undefined) {
