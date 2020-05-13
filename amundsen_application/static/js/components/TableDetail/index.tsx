@@ -157,7 +157,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               <ExploreButton tableData={ data }/>
             </div>
           </header>
-          <main className="column-layout-1">
+          <article className="column-layout-1">
             <section className="left-panel">
               {}
               <EditableSection title="Description">
@@ -228,7 +228,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
             <section className="right-panel">
               <ColumnList columns={ data.columns }/>
             </section>
-          </main>
+          </article>
         </div>
       );
     }
