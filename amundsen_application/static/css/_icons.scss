@@ -19,14 +19,15 @@ $redshift-logo-path: "/static/images/icons/logo-redshift.svg";
 $mode-logo-path: "/static/images/icons/logo-mode.svg";
 
 
-.icon.resource-icon {
+span.icon {
   background-color: $icon-bg;
   border: none;
   height: $icon-size;
-  // margin: -3px 4px -3px 0px;
   margin: auto 16px auto 0px;
   min-width: $icon-size;
   width: $icon-size;
+  display: inline-block;
+  vertical-align: middle;
 
   // Default DB icon
   &.icon-database {

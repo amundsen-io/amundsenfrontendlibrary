@@ -145,7 +145,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
         <header className="resource-header">
           <div className="header-section">
             <Breadcrumb />
-            <img className={`icon icon-header ${getSourceIconClass(dashboard.product, ResourceType.dashboard)}`}/>
+            <span className={`icon icon-header ${getSourceIconClass(dashboard.product, ResourceType.dashboard)}`}/>
           </div>
           <div className="header-section header-title">
             <h3 className="header-title-text truncated">

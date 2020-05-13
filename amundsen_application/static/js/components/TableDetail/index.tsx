@@ -125,7 +125,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
           <header className="resource-header">
             <div className="header-section">
               <Breadcrumb />
-              <img className={"icon icon-header " + getSourceIconClass(data.database, ResourceType.table)} />
+              <span className={"icon icon-header " + getSourceIconClass(data.database, ResourceType.table)} />
             </div>
             <div className="header-section header-title">
               <h3 className="header-title-text truncated">
