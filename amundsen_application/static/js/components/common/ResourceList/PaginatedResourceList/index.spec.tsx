@@ -30,26 +30,48 @@ describe('PaginatedResourceList', () => {
   };
 
   describe('componentDidUpdate', () => {
-    it('updates activePage state if the activePage is out of bounds of the new item count', () => {
-      const wrapper = setup({
+    it('updates activePage state if the activePage is out of bounds by multiple pages', () => {
+      const wrapper = setup({ itemsPerPage: 2 }).wrapper;
+      wrapper.setState({ activePage: 2 });
+      const componentDidUpdateSpy = jest.spyOn(wrapper.instance(), 'componentDidUpdate');
+      wrapper.setProps({
+        allItems: [
+          { type: ResourceType.table },
+          { type: ResourceType.table },
+        ]
+      });
+      expect(componentDidUpdateSpy).toHaveBeenCalled();
+      expect(wrapper.state().activePage).toEqual(0);
+    })
+
+    it('updates activePage state if the activePage is out of bounds by one page', () => {
+      const wrapper = setup({ itemsPerPage: 2 }).wrapper;
+      wrapper.setState({ activePage: 2 });
+      const componentDidUpdateSpy = jest.spyOn(wrapper.instance(), 'componentDidUpdate');
+      wrapper.setProps({
         allItems: [
           { type: ResourceType.table },
           { type: ResourceType.table },
           { type: ResourceType.table },
-          { type: ResourceType.table },
-          { type: ResourceType.table }
-      }).wrapper;
-      const componentDidUpdateSpy = jest.spyOn(wrapper.instance(), 'componentDidUpdate');
-      wrapper.setState({activePage: 1})
+        ]
+      })
+      expect(componentDidUpdateSpy).toHaveBeenCalled();
+      expect(wrapper.state().activePage).toEqual(1);
+    })
+
+    it('does not update activePage if new values are not out of bounds', () => {
+      const wrapper = setup({ itemsPerPage: 2 }).wrapper;
+      wrapper.setState({ activePage: 2 });
       wrapper.setProps({
         allItems: [
           { type: ResourceType.table },
           { type: ResourceType.table },
           { type: ResourceType.table },
           { type: ResourceType.table },
+          { type: ResourceType.table },
+        ]
       })
-      expect(componentDidUpdateSpy).toHaveBeenCalled();
-      expect(wrapper.state().activePage).toEqual(0);
+      expect(wrapper.state().activePage).toEqual(2);
     })
   });
 

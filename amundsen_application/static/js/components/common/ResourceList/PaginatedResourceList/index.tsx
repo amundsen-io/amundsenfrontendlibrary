@@ -30,9 +30,12 @@ class PaginatedResourceList extends React.Component<PaginatedResourceListProps, 
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const currentPage = this.state.activePage;
-    if (this.props.itemsPerPage * currentPage >= this.props.allItems.length) {
-      this.setState({ activePage: currentPage - 1 });
+    //  Resets the activePage to the maximum possible value if page is out of bounds for the new length of allItems
+    const effectivePageNum = this.state.activePage + 1;
+    const { itemsPerPage, allItems } = this.props;
+    const newPage = Math.ceil(allItems.length / itemsPerPage) - 1;
+    if (itemsPerPage * effectivePageNum > allItems.length && newPage !== this.state.activePage) {
+      this.setState({ activePage: newPage });
     }
   }
 
