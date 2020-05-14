@@ -30,7 +30,7 @@ import {
   TABLES_PER_PAGE
 } from 'components/DashboardPage/constants';
 import TagInput from 'components/Tags/TagInput';
-import { EditableSection } from 'components/TableDetail/EditableSection';
+import { EditableSection } from 'components/common/EditableSection';
 import { ResourceType } from 'interfaces';
 
 import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
