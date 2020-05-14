@@ -10,7 +10,7 @@ import * as CONSTANTS from './constants';
 
 describe('ResourceList', () => {
   const setStateSpy = jest.spyOn(ResourceList.prototype, 'setState');
-  const setupAllItems = (propOverrides?: Partial<ResourceListProps>) => {
+  const setup = (propOverrides?: Partial<ResourceListProps>) => {
     const props: ResourceListProps = {
       allItems: [
         { type: ResourceType.table },
@@ -30,7 +30,7 @@ describe('ResourceList', () => {
 
   describe('onViewAllToggle', () => {
     it('negates state.Expanded', () => {
-      const wrapper = setupAllItems().wrapper;
+      const wrapper = setup().wrapper;
       const initialState = wrapper.state().isExpanded;
       wrapper.instance().onViewAllToggle();
       expect(wrapper.state().isExpanded).toEqual(!initialState);
@@ -43,18 +43,18 @@ describe('ResourceList', () => {
     let props;
     let wrapper;
     beforeAll(() => {
-      const setupResult = setupAllItems();
+      const setupResult = setup();
       props = setupResult.props;
       wrapper = setupResult.wrapper;
     });
 
     it('renders title if it exists', () => {
-      const { props, wrapper } = setupAllItems({ title: 'I am a title'});
+      const { props, wrapper } = setup({ title: 'I am a title'});
       expect(wrapper.find('.resource-list-title').text()).toBe(props.title);
     });
 
     it('renders empty messages if it exists and there are no items', () => {
-      const { props, wrapper } = setupAllItems({ allItems: [], emptyText: 'Nothing Here'});
+      const { props, wrapper } = setup({ allItems: [], emptyText: 'Nothing Here'});
       expect(wrapper.find('.empty-message').text()).toBe(props.emptyText);
     });
 
@@ -99,7 +99,7 @@ describe('ResourceList', () => {
       });
 
       it('renders props.footerTextCollapsed if it exists and not expanded', () => {
-        const wrapper = setupAllItems({ footerTextCollapsed: 'Hello' }).wrapper;
+        const wrapper = setup({ footerTextCollapsed: 'Hello' }).wrapper;
         expect(wrapper.find('.resource-list-footer').find('a').text()).toEqual('Hello');
       })
 
