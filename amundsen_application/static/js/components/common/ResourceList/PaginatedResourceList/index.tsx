@@ -53,7 +53,7 @@ class PaginatedResourceList extends React.Component<PaginatedResourceListProps, 
     const itemsToRender = this.props.allItems.slice(startIndex, startIndex + itemsPerPage);
 
     return (
-      <div className="resource-list">
+      <div className="paginated-resource-list">
         {
           allItemsCount === 0 && emptyText &&
           <div className="empty-message body-placeholder">
@@ -83,7 +83,6 @@ class PaginatedResourceList extends React.Component<PaginatedResourceListProps, 
             }
           </>
         }
-        <div className="resource-list-footer" />
       </div>
     );
   }

@@ -68,9 +68,5 @@ describe('PaginatedApiResourceList', () => {
       const { props, wrapper } = setup({ totalItemsCount: 2, itemsPerPage: 3 });
       expect(wrapper.find(Pagination).exists()).toBe(false);
     });
-
-    it('renders footer', () => {
-      expect(wrapper.find('.resource-list-footer').children().length).toBe(0);
-    });
   });
 });

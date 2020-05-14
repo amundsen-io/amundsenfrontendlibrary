@@ -33,21 +33,18 @@ describe('PaginatedResourceList', () => {
     it('updates activePage state if the activePage is out of bounds by multiple pages', () => {
       const wrapper = setup({ itemsPerPage: 2 }).wrapper;
       wrapper.setState({ activePage: 2 });
-      const componentDidUpdateSpy = jest.spyOn(wrapper.instance(), 'componentDidUpdate');
       wrapper.setProps({
         allItems: [
           { type: ResourceType.table },
           { type: ResourceType.table },
         ]
       });
-      expect(componentDidUpdateSpy).toHaveBeenCalled();
       expect(wrapper.state().activePage).toEqual(0);
     })
 
     it('updates activePage state if the activePage is out of bounds by one page', () => {
       const wrapper = setup({ itemsPerPage: 2 }).wrapper;
       wrapper.setState({ activePage: 2 });
-      const componentDidUpdateSpy = jest.spyOn(wrapper.instance(), 'componentDidUpdate');
       wrapper.setProps({
         allItems: [
           { type: ResourceType.table },
@@ -55,7 +52,6 @@ describe('PaginatedResourceList', () => {
           { type: ResourceType.table },
         ]
       })
-      expect(componentDidUpdateSpy).toHaveBeenCalled();
       expect(wrapper.state().activePage).toEqual(1);
     })
 
@@ -110,10 +106,6 @@ describe('PaginatedResourceList', () => {
     it('hides a pagination widget when there are fewer than itemsPerPage items', () => {
       const { props, wrapper } = setup({ itemsPerPage: 20 });
       expect(wrapper.find(Pagination).exists()).toBe(false)
-    });
-
-    it('renders footer', () => {
-      expect(wrapper.find('.resource-list-footer').children().length).toBe(0);
     });
   });
 });

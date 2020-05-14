@@ -21,10 +21,6 @@ class PaginatedApiResourceList extends React.Component<PaginatedApiResourceListP
     emptyText: Constants.DEFAULT_EMPTY_TEXT,
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   onPagination = (rawPageNum: number) => {
     const activePage = rawPageNum - 1;
     this.props.onPagination(activePage);
@@ -35,7 +31,7 @@ class PaginatedApiResourceList extends React.Component<PaginatedApiResourceListP
     const startIndex = itemsPerPage * activePage;
 
     return (
-      <div className="resource-list">
+      <div className="paginated-resource-list">
         {
           totalItemsCount === 0 && emptyText &&
           <div className="empty-message body-placeholder">
@@ -65,7 +61,6 @@ class PaginatedApiResourceList extends React.Component<PaginatedApiResourceListP
             }
           </>
         }
-        <div className="resource-list-footer" />
       </div>
     );
   }
