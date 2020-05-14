@@ -287,7 +287,6 @@ class SearchUser(unittest.TestCase):
         Test request success
         :return:
         """
-        self.maxDiff = None
         responses.add(responses.GET, local_app.config['SEARCHSERVICE_BASE'] + SEARCH_USER_ENDPOINT,
                       json=self.mock_search_user_results, status=HTTPStatus.OK)
 
