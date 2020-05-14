@@ -58,7 +58,7 @@ export class ImagePreview extends React.Component<ImagePreviewProps, ImagePrevie
         }
         {
           this.state.hasError &&
-          <Linkify className='body-placeholder'>{`${Constants.ERROR_MESSAGE} ${redirectUrl}`}</Linkify>
+          <Linkify className='body-placeholder' properties={{ target: '_blank' }}>{`${Constants.ERROR_MESSAGE} ${redirectUrl}`}</Linkify>
         }
       </div>
     );
