@@ -370,7 +370,7 @@ describe('ProfilePage', () => {
       });
 
       it('renders email link with correct text', () => {
-        expect(wrapper.find('#email-link').find('span').text()).toEqual('test@test.com');
+        expect(wrapper.find('#email-link').find('.email-link-label').text()).toEqual('test@test.com');
       });
 
       it('renders profile link with correct href', () => {
@@ -378,7 +378,7 @@ describe('ProfilePage', () => {
       });
 
       it('renders profile link with correct text', () => {
-        expect(wrapper.find('#profile-link').find('span').text()).toEqual('Employee Profile');
+        expect(wrapper.find('#profile-link').find('.profile-link-label').text()).toEqual('Employee Profile');
       });
     });
   });
