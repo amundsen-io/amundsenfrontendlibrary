@@ -12,8 +12,9 @@ export interface AppConfig {
   date: DateFormatConfig;
   editableText: EditableTextConfig;
   google: GoogleAnalyticsConfig;
-  users: UsersConfig;
   indexDashboards: IndexDashboardsConfig;
+  indexUsers: IndexUsersConfig;
+  userIdLabel: string;
   issueTracking: IssueTrackingConfig;
   logoPath: string | null;
   mailClientFeatures: MailClientFeaturesConfig;
@@ -29,8 +30,9 @@ export interface AppConfigCustom {
   date?: DateFormatConfig;
   editableText?: EditableTextConfig;
   google?: GoogleAnalyticsConfig;
-  users?: UsersConfig;
   indexDashboards?: IndexDashboardsConfig;
+  indexUsers?: IndexUsersConfig;
+  userIdLabel: string;
   issueTracking?: IssueTrackingConfig;
   logoPath?: string;
   mailClientFeatures?: MailClientFeaturesConfig;
@@ -233,16 +235,13 @@ interface IndexDashboardsConfig {
 }
 
 /**
- * UsersConfig - Configurations related to Users.
- *    indexUsersEnabled:  When enabled, the IndexUsers feature will index users as searchable resources. This requires
- *                        user objects are ingested via Databuilder
- *    idLabel:            Custom Label for the User ID Attribute
+ * IndexUsersConfig - When enabled, users will be avaialable as searchable resources. This requires
+ * user objects to bed ingested via Databuilder and made available in the metadata and serch services.
  *
  * enabled - Enables/disables this feature in the frontend only
  */
-interface UsersConfig {
-  indexUsersEnabled: boolean;
-  idLabel: string;
+interface IndexUsersConfig {
+  enabled: boolean;
 }
 
 /**

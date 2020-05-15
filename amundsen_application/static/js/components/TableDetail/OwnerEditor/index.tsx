@@ -152,7 +152,7 @@ export class OwnerEditor extends React.Component<OwnerEditorProps, OwnerEditorSt
           <input
             id='add-item-input'
             autoFocus={true}
-            placeholder={`Please enter ${AppConfig.users.idLabel}`}
+            placeholder={`Please enter ${AppConfig.userIdLabel}`}
             ref={ this.inputRef }
           />
           <button className="btn btn-default add-button" type="submit" aria-label="Add Item">
@@ -266,7 +266,7 @@ export const mapStateToProps = (state: GlobalState) => {
     const { profile_url, user_id, display_name } = ownerObj[ownerId];
     let profileLink = profile_url;
     let isExternalLink = true;
-    if (AppConfig.users.indexUsersEnabled) {
+    if (AppConfig.indexUsers.enabled) {
       isExternalLink = false;
       profileLink = `/user/${user_id}?source=owned_by`;
     }

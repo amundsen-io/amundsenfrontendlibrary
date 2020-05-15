@@ -22,13 +22,13 @@ const configDefault: AppConfig = {
     key: 'default-key',
     sampleRate: 100,
   },
-  users: {
-    indexUsersEnabled: false,
-    idLabel: 'email address'
-  },
   indexDashboards: {
     enabled: false,
   },
+  indexUsers: {
+    enabled: false,
+  },
+  userIdLabel: "email address",
   issueTracking: {
     enabled: false
   },

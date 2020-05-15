@@ -15,7 +15,7 @@ export function renderReader(reader: TableReader, index: number, readers: TableR
   const user = reader.user;
   let link = user.profile_url;
   let target = '_blank';
-  if (AppConfig.users.indexUsersEnabled) {
+  if (AppConfig.indexUsers.enabled) {
     link = `/user/${user.user_id}?source=frequent_users`;
     target = '';
   }

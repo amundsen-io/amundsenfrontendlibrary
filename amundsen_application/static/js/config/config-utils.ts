@@ -91,7 +91,7 @@ export function indexDashboardsEnabled(): boolean {
  * Returns whether or not user features should be shown
  */
 export function indexUsersEnabled(): boolean {
-  return AppConfig.users.indexUsersEnabled;
+  return AppConfig.indexUsers.enabled;
 }
 
 /**
