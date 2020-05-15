@@ -1,9 +1,10 @@
+@import 'variables';
 
 $loading-duration: 2s;
-$gradient-start-color: #f4f4f4;
-$gradient-end-color: #e2e2e2;
+$gradient-start-color: $gray5;
+$gradient-end-color: $gray15;
 $shimmer-border-radius: 4px;
-$shimmer-border-color: #CACAD9;
+$shimmer-border-color: $gray20;
 $shimmer-height: 22vh;
 $shimmer-block-spacing: 16px;
 
