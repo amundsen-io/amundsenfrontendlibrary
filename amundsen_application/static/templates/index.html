@@ -8,18 +8,16 @@
     <title>Amundsen - Data Discovery Portal</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="/static/images/favicon.png">
 
     {% if <%= htmlWebpackPlugin.options.environment %> == development %}
-      <link rel="shortcut icon" href="/static/images/favicon-orange.svg">
+      {% include 'fragments/icons-dev.html' %}
     {% else %}
-      <link rel="shortcut icon" href="/static/images/favicon.png">
+      {% include 'fragments/icons-prod.html' %}
     {% endif %}
-    <link href="/static/dist/main.css" type="text/css" rel="stylesheet"/>
 
-    <meta name="theme-color" content="#2B1B81">
+    <link href="/static/dist/main.css" type="text/css" rel="stylesheet"/>
   </head>
-  <body class="<%= htmlWebpackPlugin.options.environment %>">
+  <body>
     <div id="content"/>
     <script src="/static/dist/vendors.js" type="text/javascript"></script>
     <script src="/static/dist/main.js" type="text/javascript"></script>
