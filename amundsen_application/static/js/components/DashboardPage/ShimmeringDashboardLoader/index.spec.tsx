@@ -16,15 +16,15 @@ describe('ShimmeringDashboardLoader', () => {
     });
 
     it('should render three rows', () => {
-      let expected = 3;
-      let actual = setup().find('.shimmer-loader-row').length;
+      const expected = 3;
+      const actual = setup().find('.shimmer-loader-row').length;
 
       expect(actual).toEqual(expected);
     });
 
     it('should render six cells', () => {
-      let expected = 6;
-      let actual = setup().find('.shimmer-loader-cell').length;
+      const expected = 6;
+      const actual = setup().find('.shimmer-loader-cell').length;
 
       expect(actual).toEqual(expected);
     });
