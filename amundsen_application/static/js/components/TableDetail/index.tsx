@@ -66,10 +66,6 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
   private key: string;
   private didComponentMount: boolean = false;
 
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     const { index, source } = getLoggingParams(this.props.location.search);
 
@@ -125,7 +121,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
           <header className="resource-header">
             <div className="header-section">
               <Breadcrumb />
-              <img className={"icon icon-header " + getSourceIconClass(data.database, ResourceType.table)} />
+              <span className={"icon icon-header " + getSourceIconClass(data.database, ResourceType.table)} />
             </div>
             <div className="header-section header-title">
               <h3 className="header-title-text truncated">
@@ -157,7 +153,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
               <ExploreButton tableData={ data }/>
             </div>
           </header>
-          <main className="column-layout-1">
+          <article className="column-layout-1">
             <section className="left-panel">
               {}
               <EditableSection title="Description">
@@ -228,7 +224,7 @@ class TableDetail extends React.Component<TableDetailProps & RouteComponentProps
             <section className="right-panel">
               <ColumnList columns={ data.columns }/>
             </section>
-          </main>
+          </article>
         </div>
       );
     }

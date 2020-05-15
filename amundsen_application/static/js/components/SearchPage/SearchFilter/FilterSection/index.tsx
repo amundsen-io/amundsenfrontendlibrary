@@ -34,16 +34,13 @@ export interface DispatchFromProps {
 export type FilterSectionProps = OwnProps & DispatchFromProps & StateFromProps;
 
 export class FilterSection extends React.Component<FilterSectionProps> {
-  constructor(props) {
-    super(props);
-  }
-
   onClearFilter = () => {
     this.props.clearFilter(this.props.categoryId);
   }
 
   renderFilterComponent = () => {
     const { categoryId, options, type } = this.props;
+
     if (type === FilterType.INPUT_SELECT) {
       return (
         <InputFilter
@@ -63,11 +60,12 @@ export class FilterSection extends React.Component<FilterSectionProps> {
 
   render = () => {
     const { categoryId, hasValue, helpText, title } = this.props;
+
     return (
       <div className="search-filter-section">
         <div className="search-filter-section-header">
           <div className="search-filter-section-title">
-            <div className="title-2">{ title }</div>
+            <label className="title-2" htmlFor={categoryId}>{ title }</label>
             {
               helpText &&
               <InfoButton

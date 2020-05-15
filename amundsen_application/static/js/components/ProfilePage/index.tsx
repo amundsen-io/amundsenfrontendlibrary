@@ -100,33 +100,30 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
       <>
         <ResourceList
           allItems={ own }
+          emptyText={`${EMPTY_TEXT_PREFIX} ${OWNED_LABEL} ${resourceLabel}.`}
+          footerTextCollapsed={`${FOOTER_TEXT_PREFIX} ${own.length} ${OWNED_LABEL} ${resourceLabel}`}
           itemsPerPage={ ITEMS_PER_PAGE }
-          paginate={ false }
           source={ OWNED_SOURCE }
           title={`${OWNED_TITLE_PREFIX} (${own.length})`}
-          customFooterText={`${FOOTER_TEXT_PREFIX} ${own.length} ${OWNED_LABEL} ${resourceLabel}`}
-          customEmptyText={`${EMPTY_TEXT_PREFIX} ${OWNED_LABEL} ${resourceLabel}.`}
         />
         <ResourceList
           allItems={ bookmarks }
+          emptyText={`${EMPTY_TEXT_PREFIX} ${BOOKMARKED_LABEL} ${resourceLabel}.`}
+          footerTextCollapsed={`${FOOTER_TEXT_PREFIX} ${bookmarks.length} ${BOOKMARKED_LABEL} ${resourceLabel}`}
           itemsPerPage={ ITEMS_PER_PAGE }
-          paginate={ false }
           source={ BOOKMARKED_SOURCE }
           title={`${BOOKMARKED_TITLE_PREFIX} (${bookmarks.length})`}
-          customFooterText={`${FOOTER_TEXT_PREFIX} ${bookmarks.length} ${BOOKMARKED_LABEL} ${resourceLabel}`}
-          customEmptyText={`${EMPTY_TEXT_PREFIX} ${BOOKMARKED_LABEL} ${resourceLabel}.`}
         />
         {
           /* Frequently Used currently not supported for dashboards */
           resource === ResourceType.table &&
           <ResourceList
             allItems={ read }
+            emptyText={`${EMPTY_TEXT_PREFIX} ${READ_LABEL} ${resourceLabel}.`}
+            footerTextCollapsed={`${FOOTER_TEXT_PREFIX} ${read.length} ${READ_LABEL} ${resourceLabel}`}
             itemsPerPage={ ITEMS_PER_PAGE }
-            paginate={ false }
             source={ READ_SOURCE }
             title={`${READ_TITLE_PREFIX}  (${read.length})`}
-            customFooterText={`${FOOTER_TEXT_PREFIX} ${read.length} ${READ_LABEL} ${resourceLabel}`}
-            customEmptyText={`${EMPTY_TEXT_PREFIX} ${READ_LABEL} ${resourceLabel}.`}
           />
         }
       </>
@@ -219,21 +216,21 @@ export class ProfilePage extends React.Component<ProfilePageProps, ProfilePageSt
                 user.is_active &&
                 <a id="email-link" href={`mailto:${user.email}`} className='btn btn-flat-icon header-link' target='_blank'>
                   <img className='icon icon-dark icon-mail'/>
-                  <span className="body-2">{ user.email }</span>
+                  <span className="email-link-label body-2">{ user.email }</span>
                 </a>
               }
               {
                 user.is_active && user.profile_url &&
                 <a id="profile-link" href={user.profile_url} className='btn btn-flat-icon header-link' target='_blank'>
-                  <img className='icon icon-dark icon-users'/>
-                  <span className="body-2">Employee Profile</span>
+                  <span className='icon icon-dark icon-users'/>
+                  <span className="profile-link-label body-2">Employee Profile</span>
                 </a>
               }
               {
                 user.github_username &&
                 <a id="github-link" href={`https://github.com/${user.github_username}`} className='btn btn-flat-icon header-link' target='_blank'>
                   <img className='icon icon-dark icon-github'/>
-                  <span className="body-2">Github</span>
+                  <span className="github-link-label body-2">Github</span>
                 </a>
               }
             </div>

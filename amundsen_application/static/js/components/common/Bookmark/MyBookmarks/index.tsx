@@ -11,7 +11,7 @@ import {
   EMPTY_BOOKMARK_MESSAGE,
   MY_BOOKMARKS_SOURCE_NAME,
 } from './constants';
-import ResourceList from 'components/common/ResourceList';
+import PaginatedResourceList from 'components/common/ResourceList/PaginatedResourceList';
 import TabsComponent from 'components/common/TabsComponent';
 
 interface StateFromProps {
@@ -22,21 +22,17 @@ interface StateFromProps {
 export type MyBookmarksProps = StateFromProps;
 
 export class MyBookmarks extends React.Component<MyBookmarksProps> {
-  constructor(props) {
-    super(props);
-  }
-
   generateTabContent = (resource: ResourceType) => {
     const bookmarks = this.props.myBookmarks[resource];
     if (!bookmarks) {
       return null;
     }
     return (
-      <ResourceList
+      <PaginatedResourceList
         allItems={ bookmarks }
-        source={ MY_BOOKMARKS_SOURCE_NAME }
+        emptyText={ EMPTY_BOOKMARK_MESSAGE }
         itemsPerPage={ BOOKMARKS_PER_PAGE }
-        customEmptyText={ EMPTY_BOOKMARK_MESSAGE }
+        source={ MY_BOOKMARKS_SOURCE_NAME }
       />
     )
   };
