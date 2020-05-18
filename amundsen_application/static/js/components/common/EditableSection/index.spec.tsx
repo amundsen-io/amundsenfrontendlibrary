@@ -1,9 +1,13 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
+<<<<<<< HEAD:amundsen_application/static/js/components/common/EditableSection/index.spec.tsx
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import EditableSection, { EditableSectionProps } from './';
+=======
+import { EditableSection, EditableSectionProps } from '.';
+>>>>>>> origin:amundsen_application/static/js/components/TableDetail/EditableSection/index.spec.tsx
 import TagInput from 'components/Tags/TagInput';
 import { ResourceType } from 'interfaces/Resources';
 

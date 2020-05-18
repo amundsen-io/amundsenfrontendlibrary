@@ -1,8 +1,7 @@
 import * as React from 'react';
-
 import Linkify from 'react-linkify'
 
-import LoadingSpinner from 'components/common/LoadingSpinner';
+import ShimmeringDashboardLoader from '../ShimmeringDashboardLoader';
 
 import * as Constants from './constants';
 import './styles.scss';
@@ -42,8 +41,7 @@ export class ImagePreview extends React.Component<ImagePreviewProps, ImagePrevie
         {
           this.state.isLoading &&
           <div className="text-placeholder">
-            <LoadingSpinner />
-            { Constants.LOADING_TEXT }
+            <ShimmeringDashboardLoader />
           </div>
         }
         {
@@ -60,7 +58,7 @@ export class ImagePreview extends React.Component<ImagePreviewProps, ImagePrevie
         }
         {
           this.state.hasError &&
-          <Linkify className='body-placeholder'>{`${Constants.ERROR_MESSAGE} ${redirectUrl}`}</Linkify>
+          <Linkify className='body-placeholder' properties={{ target: '_blank', rel:'noopener noreferrer' }}  >{`${Constants.ERROR_MESSAGE} ${redirectUrl}`}</Linkify>
         }
       </div>
     );
@@ -68,3 +66,4 @@ export class ImagePreview extends React.Component<ImagePreviewProps, ImagePrevie
 }
 
 export default ImagePreview;
+
