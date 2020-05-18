@@ -21,7 +21,6 @@ const htmlWebpackPluginConfig = templatesList.map(file => {
       template: file,
       config: appConfig,
       inject: false,
-      environment: process.env.NODE_ENV,
     });
 });
 
