@@ -5,6 +5,7 @@ import os
 
 ENVIRONMENT = os.getenv('APPLICATION_ENV', 'development')
 
+
 def init_routes(app: Flask) -> None:
     app.add_url_rule('/healthcheck', 'healthcheck', healthcheck)
     app.add_url_rule('/', 'index', index, defaults={'path': ''})  # also functions as catch_all
