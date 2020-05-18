@@ -1,7 +1,9 @@
 from typing import Any, Tuple
 
 from flask import Flask, render_template
+import os
 
+ENVIRONMENT = os.getenv('APPLICATION_ENV', 'development')
 
 def init_routes(app: Flask) -> None:
     app.add_url_rule('/healthcheck', 'healthcheck', healthcheck)
@@ -10,7 +12,7 @@ def init_routes(app: Flask) -> None:
 
 
 def index(path: str) -> Any:
-    return render_template("index.html")  # pragma: no cover
+    return render_template("index.html", env=ENVIRONMENT)  # pragma: no cover
 
 
 def healthcheck() -> Tuple[str, int]:
