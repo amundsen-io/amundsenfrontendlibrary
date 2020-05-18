@@ -159,7 +159,11 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
               <a id="dashboard-group-link"
                  onClick={ logClick }
                  href={ dashboard.group_url }
-                 target="_blank">{ dashboard.group_name }</a>
+                 target="_blank"
+                 rel="noopener noreferrer"
+              >
+                 { dashboard.group_name }
+              </a>
             </div>
           </div>
           {/* <div className="header-section header-links">links here</div> */}
@@ -168,7 +172,11 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                target="_blank"
                href={ dashboard.url }
                onClick={ logClick }
-               className="btn btn-default btn-lg">Open Dashboard</a>
+               className="btn btn-default btn-lg"
+               rel="noopener noreferrer"
+            >
+              Open Dashboard
+            </a>
           </div>
         </header>
         <article className="column-layout-1">
@@ -191,6 +199,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                  className="edit-link body-2"
                  target="_blank"
                  href={ dashboard.url }
+                 rel="noopener noreferrer"
                 >
                  {`${ADD_DESC_TEXT} ${getSourceDisplayName(dashboard.product, ResourceType.dashboard)}`}
                 </a>

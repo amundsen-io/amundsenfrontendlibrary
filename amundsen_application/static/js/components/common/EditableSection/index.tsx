@@ -59,7 +59,7 @@ export class EditableSection extends React.Component<EditableSectionProps, Edita
        placement="top"
        overlay={popoverHoverFocus}
       >
-        <a className="btn btn-flat-icon-dark edit-button" href={ editUrl } target="_blank">
+        <a className="btn btn-flat-icon-dark edit-button" href={ editUrl } target="_blank" rel="noopener noreferrer">
           <img className="icon icon-small icon-edit" />
         </a>
       </OverlayTrigger>
