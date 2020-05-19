@@ -1,19 +1,29 @@
-from typing import Dict
+from typing import Dict, Optional
 
 from amundsen_common.models.user import UserSchema, User
 from flask import current_app as app
 from marshmallow import ValidationError
 
+def _str_no_value(self, s: Optional[str]) -> bool:
+    # Returns True if the given string is None or empty
+    if not s:
+        return True
+    if len(s.strip()) == 0:
+        return True
+    return False
+
 
 def load_user(user_data: Dict) -> User:
     try:
         schema = UserSchema()
-        data, errors = schema.load(user_data)
         # Add in the profile_url from the optional 'GET_PROFILE_URL' configuration method
         # This methods currently exists for the case where the 'profile_url' is not included
         # in the user metadata.
-        if not data['profile_url'] and app.config['GET_PROFILE_URL']:
-            data['profile_url'] = app.config['GET_PROFILE_URL'](data['user_id'])
+        if _str_no_value(user_data.get('user_id')):
+            user_data['user_id'] = user_data.get('email')
+        if _str_no_value(user_data.get('profile_url')) and app.config['GET_PROFILE_URL']:
+            user_data['profile_url'] = app.config['GET_PROFILE_URL'](user_data['user_id'])
+        data, errors = schema.load(user_data)
         return data
     except ValidationError as err:
         return err.messages
