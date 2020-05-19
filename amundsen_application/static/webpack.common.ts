@@ -30,7 +30,6 @@ const htmlWebpackPluginConfig = templatesList.map(file => {
 const config: webpack.Configuration = {
     entry: {
       main: [
-        '@babel/polyfill',
         path.join(__dirname, '/css/styles.scss'),
         path.join(__dirname, '/js/index.tsx')
       ],
