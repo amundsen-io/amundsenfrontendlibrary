@@ -4,7 +4,7 @@ from amundsen_common.models.user import UserSchema, User
 from flask import current_app as app
 from marshmallow import ValidationError
 
-def _str_no_value(self, s: Optional[str]) -> bool:
+def _str_no_value(s: Optional[str]) -> bool:
     # Returns True if the given string is None or empty
     if not s:
         return True
