@@ -12,7 +12,7 @@
 
     {% if env == development %}
       {% include 'fragments/icons-dev.html' %}
-    {% else if env == staging %}
+    {% elif env == staging %}
       {% include 'fragments/icons-staging.html' %}
     {% else %}
       {% include 'fragments/icons-prod.html' %}
