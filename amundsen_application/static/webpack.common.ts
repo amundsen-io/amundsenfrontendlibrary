@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 
 import appConfig from './js/config/config';
 
@@ -72,6 +73,7 @@ const config: webpack.Configuration = {
     plugins: [
       new MiniCssExtractPlugin(),
       ...htmlWebpackPluginConfig,
+      new BundleAnalyzerPlugin(),
     ],
     optimization: {
       splitChunks: {
