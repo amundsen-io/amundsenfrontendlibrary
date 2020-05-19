@@ -1,12 +1,9 @@
 from typing import Any, Tuple
 
 from flask import Flask, render_template
-<<<<<<< HEAD
 import os
 
 ENVIRONMENT = os.getenv('APPLICATION_ENV', 'development')
-=======
->>>>>>> Testing a lot of stuff
 
 
 def init_routes(app: Flask) -> None:
