@@ -5,6 +5,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import MomentLocalesPlugin from 'moment-locales-webpack-plugin';
+import {CleanWebpackPlugin} from 'clean-webpack-plugin';
 
 import appConfig from './js/config/config';
 
@@ -72,6 +73,7 @@ const config: webpack.Configuration = {
       ],
     },
     plugins: [
+      new CleanWebpackPlugin(),
       new MomentLocalesPlugin(),    // To strip all locales except “en”
       new MiniCssExtractPlugin(),
       ...htmlWebpackPluginConfig,
