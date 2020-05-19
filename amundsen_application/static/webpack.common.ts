@@ -17,15 +17,41 @@ const walkSync = (dir, filelist = []) => {
   });
   return filelist;
 };
-const templatesList = walkSync('templates');
-const htmlWebpackPluginConfig = templatesList.map(file => {
-  return new HtmlWebpackPlugin({
-      filename: file,
-      template: file,
-      config: appConfig,
-      inject: false,
-    });
-});
+// const templatesList = walkSync('templates');
+// const htmlWebpackPluginConfig = templatesList.map(file => {
+//   return new HtmlWebpackPlugin({
+//       filename: file,
+//       template: file,
+//       config: appConfig,
+//       inject: false,
+//     });
+// });
+const htmlWebpackPluginConfig = [
+  new HtmlWebpackPlugin({
+    filename: 'templates/index.html',
+    template: 'templates/index.html',
+    config: appConfig,
+    inject: false,
+  }),
+  new HtmlWebpackPlugin({
+    filename: 'templates/fragments/google-analytics-loader.html',
+    template: 'templates/fragments/google-analytics-loader.html',
+    config: appConfig,
+    inject: false,
+  }),
+  new HtmlWebpackPlugin({
+    filename: 'templates/fragments/google-analytics-post-loader.html',
+    template: 'templates/fragments/google-analytics-post-loader.html',
+    config: appConfig,
+    inject: false,
+  })
+];
+
+const TSX_PATTERN = /\.ts|\.tsx$/;
+const JSX_PATTERN = /\.jsx?$/;
+// const JSX_PATTERN = /\.(js|jsx)$/;
+const CSS_PATTERN = /\.(sa|sc|c)ss$/;
+const IMAGE_PATTERN = /\.(png|svg|jpg|gif)$/;
 
 const config: webpack.Configuration = {
     entry: {
@@ -52,25 +78,29 @@ const config: webpack.Configuration = {
     module: {
       rules: [
         {
-          test: /\.ts|\.tsx$/,
+          test: TSX_PATTERN,
           loader: 'ts-loader',
         },
         {
-          test: /\.jsx?$/,
+          test: JSX_PATTERN,
           exclude: /node_modules/,
           use: 'babel-loader',
         },
         {
-          test: /\.(sa|sc|c)ss$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader', {
-            loader: 'sass-loader',
-            options: {
-              includePaths: [path.join(__dirname, '/css/')]
+          test: CSS_PATTERN,
+          use: [
+            MiniCssExtractPlugin.loader,
+            'css-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                includePaths: [path.join(__dirname, '/css/')]
+              }
             }
-          }],
+          ],
         },
         {
-          test: /\.(png|svg|jpg|gif)$/,
+          test: IMAGE_PATTERN,
           use: 'file-loader',
         },
       ],
@@ -83,6 +113,7 @@ const config: webpack.Configuration = {
       // new BundleAnalyzerPlugin()   // Uncomment to analyze the production bundle on local
     ],
     optimization: {
+      moduleIds: 'hashed',
       splitChunks: {
         cacheGroups: {
           default: false,
@@ -96,3 +127,8 @@ const config: webpack.Configuration = {
     },
 };
 export default config;
+
+
+// {
+//   filename: '[name].[contenthash].css',
+// }
