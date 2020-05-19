@@ -8,9 +8,12 @@ from marshmallow import ValidationError
 def load_user(user_data: Dict) -> User:
     try:
         schema = UserSchema()
-        # To make sure we pass frontend configuration to amundsen common models
-        user_data['GET_PROFILE_URL'] = app.config['GET_PROFILE_URL']
         data, errors = schema.load(user_data)
+        # Add in the profile_url from the optional 'GET_PROFILE_URL' configuration method
+        # This methods currently exists for the case where the 'profile_url' is not included
+        # in the user metadata.
+        if not data['profile_url'] and app.config['GET_PROFILE_URL']:
+            data['profile_url'] = app.config['GET_PROFILE_URL'](data['user_id'])
         return data
     except ValidationError as err:
         return err.messages
