@@ -58,6 +58,7 @@
     "jest": "^25.5.4",
     "jest-css-modules": "^2.1.0",
     "mini-css-extract-plugin": "^0.4.5",
+    "moment-locales-webpack-plugin": "^1.2.0",
     "node-sass": "^4.14.1",
     "postcss": "^7.0.30",
     "prettier": "^1.19.1",
