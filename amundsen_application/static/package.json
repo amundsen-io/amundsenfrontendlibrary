@@ -113,6 +113,20 @@
   "optionalDependencies": {
     "fsevents": "*"
   },
+  "browserslist": [
+    "defaults",
+    "not IE 11"
+  ],
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "debug":true
+        }
+      ]
+    ]
+  },
   "jest": {
     "moduleFileExtensions": [
       "ts",
