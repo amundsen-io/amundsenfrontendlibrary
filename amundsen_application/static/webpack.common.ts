@@ -36,7 +36,7 @@ const config: webpack.Configuration = {
     },
     output: {
         path: path.join(__dirname, '/dist'),
-        filename: '[name].js',
+        filename: '[name].[contenthash].js',
     },
     devtool: 'source-map',
     resolve: {

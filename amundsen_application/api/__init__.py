@@ -6,10 +6,14 @@ import os
 ENVIRONMENT = os.getenv('APPLICATION_ENV', 'development')
 
 
+# Register Extension
+manage_webpack = FlaskManageWebpack()
+
 def init_routes(app: Flask) -> None:
     app.add_url_rule('/healthcheck', 'healthcheck', healthcheck)
     app.add_url_rule('/', 'index', index, defaults={'path': ''})  # also functions as catch_all
     app.add_url_rule('/<path:path>', 'index', index)  # catch_all
+    manage_webpack.init_app(app)
 
 
 def index(path: str) -> Any:
