@@ -10,9 +10,9 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {% if env == development %}
+    {% if env == "development" %}
       {% include 'fragments/icons-dev.html' %}
-    {% elif env == staging %}
+    {% elif env == "staging" %}
       {% include 'fragments/icons-staging.html' %}
     {% else %}
       {% include 'fragments/icons-prod.html' %}
