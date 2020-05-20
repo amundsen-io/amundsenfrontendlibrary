@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import * as webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
+// import {BundleAnalyzerPlugin} from 'webpack-bundle-analyzer';
 import MomentLocalesPlugin from 'moment-locales-webpack-plugin';
 import {CleanWebpackPlugin} from 'clean-webpack-plugin';
 
@@ -80,7 +80,7 @@ const config: webpack.Configuration = {
       new MomentLocalesPlugin(),    // To strip all locales except “en”
       new MiniCssExtractPlugin(),
       ...htmlWebpackPluginConfig,
-      new BundleAnalyzerPlugin()   // Uncomment to analyze the production bundle on local
+      // new BundleAnalyzerPlugin()   // Uncomment to analyze the production bundle on local
     ],
     optimization: {
       splitChunks: {
