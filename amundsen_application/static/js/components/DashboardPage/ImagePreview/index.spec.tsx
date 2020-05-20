@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 import { mount } from 'enzyme';
 
@@ -86,7 +86,6 @@ describe('ImagePreview', () => {
         it('renders visible img with correct props', () => {
           const elementProps = wrapper.find('img').props();
 
-          // expect(elementProps.style).toEqual({ visibility: 'visible' });
           expect(elementProps.src).toEqual(`${Constants.PREVIEW_BASE}/${props.uri}/${Constants.PREVIEW_END}`);
           expect(elementProps.onLoad).toBe(wrapper.instance().onSuccess);
           expect(elementProps.onError).toBe(wrapper.instance().onError);
@@ -97,29 +96,6 @@ describe('ImagePreview', () => {
           const actual = wrapper.find('.preview-button').length;
 
           expect(actual).toEqual(expected);
-        });
-
-        describe('tooltip', () => {
-          it('renders an overlay trigger', () => {
-            const expected = 1;
-            const actual = wrapper.find(OverlayTrigger).length;
-
-            expect(actual).toEqual(expected);
-          });
-
-          it('renders an overlay trigger placed top', () => {
-            const expected = "top";
-            const actual = wrapper.find(OverlayTrigger).props().placement;
-
-            expect(actual).toEqual(expected);
-          });
-
-          it('renders an tooltip insde the overlay trigger', () => {
-            const expected = Popover;
-            const actual = wrapper.find(OverlayTrigger).props().overlay.type;
-
-            expect(actual).toEqual(expected);
-          });
         });
       })
     });

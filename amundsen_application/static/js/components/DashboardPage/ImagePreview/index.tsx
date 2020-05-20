@@ -1,6 +1,6 @@
 import * as React from "react";
 import Linkify from "react-linkify";
-import { Modal, OverlayTrigger, Popover } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 import ShimmeringDashboardLoader from "../ShimmeringDashboardLoader";
 
@@ -31,13 +31,12 @@ const PreviewModal = ({ imageSrc, onClose }: PreviewModalProps) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose}>
-      <Modal.Header closeButton="true">
+    <Modal show={show} onHide={handleClose} scrollable="true" className="dashboard-preview-modal">
+      <Modal.Header closeButton={true}>
         <Modal.Title className="text-center">Dashboard Preview</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <img
-          className="modal-preview-image"
           src={imageSrc}
           height="auto"
           width="100%"
@@ -73,7 +72,6 @@ export class ImagePreview extends React.Component< ImagePreviewProps, ImagePrevi
   render = () => {
     const { uri, redirectUrl } = this.props;
     const { isLoading, hasError, isModalVisible } = this.state;
-    const popoverHoverFocus = (<Popover id="popover-trigger-hover-focus">Click to enlarge</Popover>);
     const imageSrc = `${Constants.PREVIEW_BASE}/${uri}/${Constants.PREVIEW_END}`;
 
     return (
@@ -84,27 +82,21 @@ export class ImagePreview extends React.Component< ImagePreviewProps, ImagePrevi
           </div>
         )}
         {!hasError && (
-          <OverlayTrigger
-            trigger={["hover", "focus"]}
-            placement="top"
-            overlay={popoverHoverFocus}
-          >
-            <button className="preview-button" type="button" onClick={this.handlePreviewButton}>
-              <img
-                className="preview"
-                style={
-                  isLoading
-                    ? { visibility: "hidden" }
-                    : { visibility: "visible" }
-                }
-                src={imageSrc}
-                onLoad={this.onSuccess}
-                onError={this.onError}
-                height="auto"
-                width="100%"
-              />
-            </button>
-          </OverlayTrigger>
+          <button className="preview-button" type="button" onClick={this.handlePreviewButton}>
+            <img
+              className="preview"
+              style={
+                isLoading
+                  ? { visibility: "hidden" }
+                  : { visibility: "visible" }
+              }
+              src={imageSrc}
+              onLoad={this.onSuccess}
+              onError={this.onError}
+              height="auto"
+              width="100%"
+            />
+          </button>
         )}
         {hasError && (
           <Linkify
