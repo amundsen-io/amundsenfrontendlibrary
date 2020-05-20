@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import Linkify from 'react-linkify'
 
@@ -19,7 +19,7 @@ describe('ImagePreview', () => {
       ...propOverrides,
     };
 
-    const wrapper = shallow<ImagePreview>(<ImagePreview {...props} />)
+    const wrapper = mount<ImagePreview>(<ImagePreview {...props} />)
     return { props, wrapper };
   };
 
@@ -55,7 +55,7 @@ describe('ImagePreview', () => {
   });
 
   describe('render', () => {
-    describe('if no error', () => {
+    describe('when no error', () => {
       describe('when loading', () => {
         let wrapper;
         beforeAll(() => {
@@ -80,15 +80,23 @@ describe('ImagePreview', () => {
           const setupResult = setup();
           props = setupResult.props
           wrapper = setupResult.wrapper;
-          wrapper.instance().setState({ isLoading: false, hasError:false });
+          wrapper.instance().setState({ isLoading: false, hasError: false });
         });
 
         it('renders visible img with correct props', () => {
           const elementProps = wrapper.find('img').props();
-          expect(elementProps.style).toEqual({ visibility: 'visible' });
+
+          // expect(elementProps.style).toEqual({ visibility: 'visible' });
           expect(elementProps.src).toEqual(`${Constants.PREVIEW_BASE}/${props.uri}/${Constants.PREVIEW_END}`);
           expect(elementProps.onLoad).toBe(wrapper.instance().onSuccess);
           expect(elementProps.onError).toBe(wrapper.instance().onError);
+        });
+
+        it('renders a button', () => {
+          const expected = 1;
+          const actual = wrapper.find('.preview-button').length;
+
+          expect(actual).toEqual(expected);
         });
 
         describe('tooltip', () => {
@@ -116,28 +124,51 @@ describe('ImagePreview', () => {
       })
     });
 
-    it('renders link if hasError', () => {
-      const { props, wrapper } = setup();
-      wrapper.instance().setState({ hasError: true });
-      expect(wrapper.find(Linkify).exists()).toBeTruthy();
+    describe('when there is an error', () => {
+      it('renders a link', () => {
+        const { props, wrapper } = setup();
+
+        wrapper.instance().setState({ hasError: true });
+        wrapper.update();
+
+        expect(wrapper.find(Linkify).exists()).toBeTruthy();
+      });
     });
   });
 
   describe('lifecycle', () => {
     let wrapper;
-    let props;
 
-    describe('when clicking on the dashboard preview image', () => {
+    describe('when clicking on the dashboard preview button', () => {
 
       beforeAll(() => {
         const setupResult = setup();
-        props = setupResult.props
+
         wrapper = setupResult.wrapper;
         wrapper.instance().setState({ isLoading: false, hasError:false });
       });
 
       it('should open a modal', () => {
+        const expected = 1;
+        let actual;
 
+        wrapper.find('.preview-button').simulate('click');
+
+        actual = wrapper.find(Modal).length;
+        expect(actual).toEqual(expected);
+      });
+
+      describe('when closing the modal', () => {
+        it('should remove the modal markup', () => {
+          const expected = 0;
+          let actual;
+
+          wrapper.find('.preview-button').simulate('click');
+          wrapper.find('.modal-header .close').simulate('click');
+
+          actual = wrapper.find(Modal).length;
+          expect(actual).toEqual(expected);
+        });
       });
     });
   });

@@ -1,5 +1,9 @@
 @import 'variables';
 
+.preview-button {
+  border: none;
+  padding: 0;
+}
 .image-preview {
   text-align: center;
   .loading-spinner {

@@ -1,6 +1,6 @@
 import * as React from "react";
 import Linkify from "react-linkify";
-import { OverlayTrigger, Popover } from "react-bootstrap";
+import { Modal, OverlayTrigger, Popover } from "react-bootstrap";
 
 import ShimmeringDashboardLoader from "../ShimmeringDashboardLoader";
 
@@ -15,17 +15,44 @@ export interface ImagePreviewProps {
 interface ImagePreviewState {
   isLoading: boolean;
   hasError: boolean;
+  isModalVisible: boolean;
 }
 
-export class ImagePreview extends React.Component< ImagePreviewProps, ImagePreviewState > {
-  constructor(props) {
-    super(props);
+type PreviewModalProps = {
+  imageSrc: string,
+  onClose(): void,
+}
 
-    this.state = {
-      isLoading: true,
-      hasError: false
-    };
-  }
+const PreviewModal = ({ imageSrc, onClose }: PreviewModalProps) => {
+  const [show, setShow] = React.useState(true);
+  const handleClose = () => {
+    setShow(false);
+    onClose();
+  };
+
+  return (
+    <Modal show={show} onHide={handleClose}>
+      <Modal.Header closeButton="true">
+        <Modal.Title className="text-center">Dashboard Preview</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <img
+          className="modal-preview-image"
+          src={imageSrc}
+          height="auto"
+          width="100%"
+        />
+      </Modal.Body>
+    </Modal>
+  );
+};
+
+export class ImagePreview extends React.Component< ImagePreviewProps, ImagePreviewState > {
+  state = {
+    isLoading: true,
+    hasError: false,
+    isModalVisible: false,
+  };
 
   onSuccess = () => {
     this.setState({ isLoading: false, hasError: false });
@@ -35,43 +62,61 @@ export class ImagePreview extends React.Component< ImagePreviewProps, ImagePrevi
     this.setState({ isLoading: false, hasError: true });
   }
 
+  handlePreviewButton = () => {
+    this.setState({ isModalVisible: true });
+  }
+
+  handlePreviewModalClose = () => {
+    this.setState({ isModalVisible: false });
+  }
+
   render = () => {
     const { uri, redirectUrl } = this.props;
+    const { isLoading, hasError, isModalVisible } = this.state;
     const popoverHoverFocus = (<Popover id="popover-trigger-hover-focus">Click to enlarge</Popover>);
+    const imageSrc = `${Constants.PREVIEW_BASE}/${uri}/${Constants.PREVIEW_END}`;
 
     return (
       <div className="image-preview">
-        {this.state.isLoading && (
+        {isLoading && (
           <div className="text-placeholder">
             <ShimmeringDashboardLoader />
           </div>
         )}
-        {!this.state.hasError && (
+        {!hasError && (
           <OverlayTrigger
             trigger={["hover", "focus"]}
             placement="top"
             overlay={popoverHoverFocus}
           >
-            <img
-              className="preview"
-              style={
-                this.state.isLoading
-                  ? { visibility: "hidden" }
-                  : { visibility: "visible" }
-              }
-              src={`${Constants.PREVIEW_BASE}/${this.props.uri}/${Constants.PREVIEW_END}`}
-              onLoad={this.onSuccess}
-              onError={this.onError}
-              height="auto"
-              width="100%"
-            />
+            <button className="preview-button" type="button" onClick={this.handlePreviewButton}>
+              <img
+                className="preview"
+                style={
+                  isLoading
+                    ? { visibility: "hidden" }
+                    : { visibility: "visible" }
+                }
+                src={imageSrc}
+                onLoad={this.onSuccess}
+                onError={this.onError}
+                height="auto"
+                width="100%"
+              />
+            </button>
           </OverlayTrigger>
         )}
-        {this.state.hasError && (
+        {hasError && (
           <Linkify
             className="body-placeholder"
             properties={{ target: "_blank", rel: "noopener noreferrer" }}
           >{`${Constants.ERROR_MESSAGE} ${redirectUrl}`}</Linkify>
+        )}
+        {isModalVisible && (
+          <PreviewModal
+            imageSrc={imageSrc}
+            onClose={this.handlePreviewModalClose}
+          />
         )}
       </div>
     );
