@@ -254,7 +254,7 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                   { formatDateTimeShort({ epochTimestamp: dashboard.last_successful_run_timestamp }) }
                 </div>
                 <div className="section-title title-3">Last Run</div>
-                <div className="body-2 text-primary">
+                <div>
                   <div className="body-2 text-primary">
                     { formatDateTimeShort({ epochTimestamp: dashboard.last_run_timestamp }) }
                   </div>
