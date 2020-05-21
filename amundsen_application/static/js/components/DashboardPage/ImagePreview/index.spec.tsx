@@ -81,11 +81,13 @@ describe('ImagePreview', () => {
           props = setupResult.props
           wrapper = setupResult.wrapper;
           wrapper.instance().setState({ isLoading: false, hasError: false });
+          wrapper.update();
         });
 
         it('renders visible img with correct props', () => {
           const elementProps = wrapper.find('img').props();
 
+          expect(elementProps.style).toEqual({ visibility: 'visible' });
           expect(elementProps.src).toEqual(`${Constants.PREVIEW_BASE}/${props.uri}/${Constants.PREVIEW_END}`);
           expect(elementProps.onLoad).toBe(wrapper.instance().onSuccess);
           expect(elementProps.onError).toBe(wrapper.instance().onError);
