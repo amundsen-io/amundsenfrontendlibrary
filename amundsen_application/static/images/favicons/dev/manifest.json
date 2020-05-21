@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "Amundsen Dev",
+    "short_name": "Amundsen Dev",
     "icons": [
         {
             "src": "/static/images/favicons/dev/android-chrome-192x192.png",

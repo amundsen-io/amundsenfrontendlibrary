@@ -1,7 +1,7 @@
 {
-    "name": "Amundsen",
-    "short_name": "Amundsen",
-    "icons": [
+  "name": "Amundsen",
+  "short_name": "Amundsen",
+  "icons": [
         {
             "src": "/static/images/favicons/prod/android-chrome-192x192.png",
             "sizes": "192x192",
