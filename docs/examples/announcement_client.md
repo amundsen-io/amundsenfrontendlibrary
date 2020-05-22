@@ -37,7 +37,7 @@ else:
 
 This method will contain whatever custom logic is needed to collect announcements. The system within which they are stored can be anything that has programmatic access.
 
-Announcements could be collected from database (as in exemplary MySQLAnnouncementClient), kafka persistent topic, web rss feed, etc.
+Announcements could be collected from database (as in exemplary SQLAlchemyAnnouncementClient), kafka persistent topic, web rss feed, etc.
 
 See the following [`example_announcement_client`](https://github.com/lyft/amundsenfrontendlibrary/tree/master/amundsen_application/base/examples/example_announcement_client.py) for an example implementation of `base_announcement_client` and `get_posts()`. This example assumes a temporary sqlite database with no security, authentication, persistence or authorization configured.
 
@@ -50,7 +50,7 @@ entry_points="""
     ...
 
     [announcement_client]
-    announcement_client_class = amundsen_application.base.examples.example_announcement_client:MySQLAnnouncementClient
+    announcement_client_class = amundsen_application.base.examples.example_announcement_client:SQLAlchemyAnnouncementClient
 """
 ```
 ### What do I need to run exemplary announcement_client ?

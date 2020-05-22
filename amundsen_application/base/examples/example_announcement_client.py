@@ -11,7 +11,7 @@ from amundsen_application.base.base_announcement_client import BaseAnnouncementC
 Base = declarative_base()
 
 
-class MySQLAnnouncement(Base):  # type: ignore
+class DBAnnouncement(Base):  # type: ignore
     __tablename__ = 'announcements'
 
     id = Column(Integer, primary_key=True)
@@ -21,7 +21,7 @@ class MySQLAnnouncement(Base):  # type: ignore
     content = Column(String)
 
 
-class MySQLAnnouncementClient(BaseAnnouncementClient):
+class SQLAlchemyAnnouncementClient(BaseAnnouncementClient):
     def __init__(self) -> None:
         self._setup_mysql()
 
@@ -31,7 +31,7 @@ class MySQLAnnouncementClient(BaseAnnouncementClient):
         session = sessionmaker(bind=self.engine)()
 
         # add dummy announcements to preview
-        if not self.engine.dialect.has_table(self.engine, MySQLAnnouncement.__tablename__):
+        if not self.engine.dialect.has_table(self.engine, DBAnnouncement.__tablename__):
             Base.metadata.create_all(self.engine)
 
             announcements = []
@@ -44,10 +44,10 @@ class MySQLAnnouncementClient(BaseAnnouncementClient):
             """
 
             for i in range(randint(5, 9)):
-                announcement = MySQLAnnouncement(id=i + 1,
-                                                 date=datetime.now() + timedelta(days=i + 1),
-                                                 title=f'Test announcement title {i + 1}',
-                                                 content=dummy_announcement)
+                announcement = DBAnnouncement(id=i + 1,
+                                              date=datetime.now() + timedelta(days=i + 1),
+                                              title=f'Test announcement title {i + 1}',
+                                              content=dummy_announcement)
 
                 announcements.append(announcement)
 
@@ -63,7 +63,7 @@ class MySQLAnnouncementClient(BaseAnnouncementClient):
 
         posts = []
 
-        for row in session.query(MySQLAnnouncement).order_by(MySQLAnnouncement.date.desc()):
+        for row in session.query(DBAnnouncement).order_by(DBAnnouncement.date.desc()):
             post = Post(title=row.title,
                         date=row.date.strftime('%b %d %Y %H:%M:%S'),
                         html_content=row.content)
