@@ -1,12 +1,15 @@
 from random import randint
 from datetime import datetime, timedelta
 
-from sqlalchemy import Column, Integer, String, DateTime, create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
-
 from amundsen_application.models.announcements import Announcements, Post
 from amundsen_application.base.base_announcement_client import BaseAnnouncementClient
+
+try:
+    from sqlalchemy import Column, Integer, String, DateTime, create_engine
+    from sqlalchemy.ext.declarative import declarative_base
+    from sqlalchemy.orm import sessionmaker
+except ModuleNotFoundError:
+    pass
 
 Base = declarative_base()
 
