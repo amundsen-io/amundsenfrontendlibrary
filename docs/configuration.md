@@ -33,7 +33,7 @@ entry_points="""
     table_preview_client_class = amundsen_application.base.examples.example_superset_preview_client:SupersetPreviewClient
 
     [announcement_client]
-    announcement_client_class = path.to.file:CustomAnnouncementClient
+    announcement_client_class = amundsen_application.base.examples.example_announcement_client:MySQLAnnouncementClient
 """
 ```
 
