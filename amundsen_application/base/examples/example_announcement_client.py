@@ -11,7 +11,7 @@ from amundsen_application.base.base_announcement_client import BaseAnnouncementC
 Base = declarative_base()
 
 
-class MySQLAnnouncement(Base):
+class MySQLAnnouncement(Base):  # type: ignore
     __tablename__ = 'announcements'
 
     id = Column(Integer, primary_key=True)
@@ -23,11 +23,9 @@ class MySQLAnnouncement(Base):
 
 class MySQLAnnouncementClient(BaseAnnouncementClient):
     def __init__(self) -> None:
-        self.engine = None
-
         self._setup_mysql()
 
-    def _setup_mysql(self):
+    def _setup_mysql(self) -> None:
         self.engine = create_engine('sqlite:////tmp/amundsen.db', echo=True)
 
         session = sessionmaker(bind=self.engine)()
@@ -46,9 +44,9 @@ class MySQLAnnouncementClient(BaseAnnouncementClient):
             """
 
             for i in range(randint(5, 9)):
-                announcement = MySQLAnnouncement(id=i+1,
-                                                 date=datetime.now()+timedelta(days=i+1),
-                                                 title=f'Test announcement title {i+1}',
+                announcement = MySQLAnnouncement(id=i + 1,
+                                                 date=datetime.now() + timedelta(days=i + 1),
+                                                 title=f'Test announcement title {i + 1}',
                                                  content=dummy_announcement)
 
                 announcements.append(announcement)
