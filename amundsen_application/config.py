@@ -1,5 +1,5 @@
 import os
-from typing import Callable, Dict, Optional, Set  # noqa: F401
+from typing import Callable, Dict, List, Optional, Set  # noqa: F401
 from amundsen_application.models.user import User
 
 from flask import Flask  # noqa: F401
