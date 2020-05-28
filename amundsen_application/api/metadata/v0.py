@@ -634,3 +634,70 @@ def get_dashboard_metadata() -> Response:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
         return make_response(jsonify({'dashboard': {}, 'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
+@metadata_blueprint.route('/table/<table_key>/dashboards', methods=['GET'])
+def get_related_dashboard_metadata(table_key) -> Response:
+    """
+    Call metadata service endpoint to fetch related dashboard metadata
+    :return:
+    """
+    try:
+        # import ipdb; ipdb.set_trace()
+        # table_key = get_query_param(request.args, 'key')
+        import logging
+        logging.basicConfig(level=logging.DEBUG)
+        logging.info(table_key)
+
+        url = f'{app.config["METADATASERVICE_BASE"]}{TABLE_ENDPOINT}/{table_key}/dashboard/'
+        results_dict = _get_related_dashboards_metadata(table_key=table_key, url=url)
+        # response = request_metadata(url=url, method=request.method)
+        # dashboard = marshall_dashboard_full(response.json())
+        # status_code = response.status_code
+        return make_response(jsonify(results_dict), results_dict.get('status_code', HTTPStatus.INTERNAL_SERVER_ERROR))
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        logging.exception(message)
+        return make_response(jsonify({'dashboards': {}, 'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
+@action_logging
+def _get_related_dashboards_metadata(*, table_key: str, url: str) -> Dict[str, Any]:
+
+    results_dict = {
+        'dashboards': {},
+        'msg': '',
+    }
+
+    try:
+        table_endpoint = _get_table_endpoint()
+        response = request_metadata(url=url)
+    except ValueError as e:
+        # envoy client BadResponse is a subclass of ValueError
+        message = 'Encountered exception: ' + str(e)
+        results_dict['msg'] = message
+        results_dict['status_code'] = getattr(e, 'code', HTTPStatus.INTERNAL_SERVER_ERROR)
+        logging.exception(message)
+        return results_dict
+
+    status_code = response.status_code
+    results_dict['status_code'] = status_code
+
+    if status_code != HTTPStatus.OK:
+        message = 'Encountered error: Related Dashboard Metadata request failed'
+        results_dict['msg'] = message
+        logging.error(message)
+        return results_dict
+
+    try:
+        dashboard_data_raw: dict = response.json()
+        results_dict['dashboards'] = marshall_table_full(dashboard_data_raw)
+        results_dict['msg'] = 'Success'
+        return results_dict
+    except Exception as e:
+        message = 'Encountered exception: ' + str(e)
+        results_dict['msg'] = message
+        logging.exception(message)
+        # explicitly raise the exception which will trigger 500 api response
+        results_dict['status_code'] = getattr(e, 'code', HTTPStatus.INTERNAL_SERVER_ERROR)
+        return results_dict

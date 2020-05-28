@@ -150,6 +150,39 @@ class MetadataTest(unittest.TestCase):
             'is_editable': True,
             'last_updated_timestamp': None
         }
+        self.expected_related_dashboard_response = {
+            "dashboards": [{
+                "group_name": "Group Test One",
+                "description": None,
+                "cluster": "gold",
+                "group_url": "https://app.mode.com/companyName/spaces/123",
+                "uri": "mode_dashboard://gold.123/234rt78",
+                "last_successful_run_timestamp": 1590505846,
+                "name": "Test Dashboard One",
+                "product": "mode",
+                "url": "https://app.mode.com/companyName/reports/234rt78"
+            }, {
+                "group_name": "Group Test Two",
+                "description": None,
+                "cluster": "gold",
+                "group_url": "https://app.mode.com/companyName/spaces/334",
+                "uri": "mode_dashboard://gold.334/34thyu56",
+                "last_successful_run_timestamp": 1590519704,
+                "name": "Test Dashboard Two",
+                "product": "mode",
+                "url": "https://app.mode.com/companyName/reports/34thyu56"
+            }, {
+                "group_name": "Group Test Three",
+                "description": None,
+                "cluster": "gold",
+                "group_url": "https://app.mode.com/companyName/spaces/789",
+                "uri": "mode_dashboard://gold.789/12ed34",
+                "last_successful_run_timestamp": 1590538191,
+                "name": "Test Dashboard Three",
+                "product": "mode",
+                "url": "https://app.mode.com/companyName/reports/12ed34"
+            }]
+        }
 
         self.expected_programmatic_descriptions_with_config = {
             "programmatic_descriptions": [
@@ -964,3 +997,49 @@ class MetadataTest(unittest.TestCase):
             data = json.loads(response.data)
             self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
             self.assertCountEqual(data.get('dashboard'), {})
+
+    @responses.activate
+    def test_get_related_dashboards_success(self) -> None:
+        """
+        Test get_related_dashboards API success
+        :return:
+        """
+        test_table = 'db://cluster.schema/table'
+        url = local_app.config['METADATASERVICE_BASE'] + TABLE_ENDPOINT + '/' + test_table + '/dashboard/'
+        responses.add(responses.GET, url, json=self.expected_related_dashboard_response, status=HTTPStatus.OK)
+
+        with local_app.test_client() as test:
+            response = test.get(
+                '/api/metadata/v0/table/{0}/dashboards'.format(test_table)
+            )
+            data = json.loads(response.data)
+            self.assertEqual(response.status_code, HTTPStatus.OK)
+            self.assertCountEqual(data.get('dashboards'), self.expected_related_dashboard_response)
+
+
+        # import ipdb; ipdb.set_trace()
+        # import logging
+        # logging.basicConfig(level=logging.DEBUG)
+        # logging.info(str(response.data, 'utf-8'))
+
+
+    # @responses.activate
+    # def test_get_related_dashboards_bad_parameters(self) -> None:
+    #     """
+    #     Test get_related_dashboards API failure with missing table value
+    #     :return:
+    #     """
+    #     test_table = 'wrong'
+    #     url = local_app.config['METADATASERVICE_BASE'] + TABLE_ENDPOINT + '/' + test_table + '/dashboard/'
+    #     responses.add(responses.GET, url, json=self.expected_related_dashboard_response, status=HTTPStatus.OK)
+
+    #     with local_app.test_client() as test:
+    #         response = test.get(
+    #             '/api/metadata/v0/table',
+    #             query_string=dict()
+    #         )
+    #         data = json.loads(response.data)
+    #         self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
+    #         self.assertCountEqual(data.get('dashboards'), {})
+
+
