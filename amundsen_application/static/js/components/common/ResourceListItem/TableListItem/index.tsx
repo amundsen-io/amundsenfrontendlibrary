@@ -10,6 +10,7 @@ import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
 
 import BadgeList from 'components/common/BadgeList';
+import SchemaInfo from 'components/common/ResourceListItem/SchemaInfo';
 
 export interface TableListItemProps {
   table: TableResource;
@@ -38,7 +39,8 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
             <div className="resource-info-text my-auto">
               <div className="resource-name title-2">
                 <div className="truncated">
-                  { `${table.schema}.${table.name}`}
+                  <SchemaInfo schema={ table.schema } placement="bottom"/>.{ table.name }
+                  {/*{`${table.schema}.${table.name}`}*/}
                 </div>
                 <BookmarkIcon bookmarkKey={ table.key } resourceType={ table.type } />
               </div>
