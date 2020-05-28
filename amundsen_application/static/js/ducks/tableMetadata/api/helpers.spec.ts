@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as qs from 'simple-query-string';
 
-import * as Helpers from '../helpers';
+import * as Helpers from './helpers';
 
 import * as Utils from 'ducks/utilMethods';
 
@@ -9,7 +9,7 @@ import globalState from 'fixtures/globalState';
 
 import { NotificationType, UpdateMethod, UpdateOwnerPayload } from 'interfaces';
 
-import * as API from '../v0';
+import * as API from './v0';
 
 const filterFromObjSpy = jest.spyOn(Utils, 'filterFromObj').mockImplementation((initialObject, rejectedKeys) => { return initialObject; });
 
@@ -51,6 +51,16 @@ describe('helpers', () => {
       expect(params.key).toEqual(tableKey);
       expect(params.index).toEqual(index);
       expect(params.source).toEqual(source);
+    });
+  });
+
+  describe('getRelatedDashboardQueryParams', () => {
+    it('generates related dashboard params', () => {
+      const tableKey = 'hive://gold.base/rides';
+      const actual = Helpers.getRelatedDashboardQueryParams(tableKey);
+      const expected = 'hive%3A%2F%2Fgold.base%2Frides';
+
+      expect(actual).toEqual(expected);
     });
   });
 

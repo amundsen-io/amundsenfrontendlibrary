@@ -89,6 +89,7 @@ export const tableMetadata:TableMetadata = {
       ]
     }
   ],
+  dashboards: [],
   database: "hive",
   description:
     "One row per ride request, showing all stages of the ride funnel. ",

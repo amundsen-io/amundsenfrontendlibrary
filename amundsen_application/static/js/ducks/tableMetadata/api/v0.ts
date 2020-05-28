@@ -18,22 +18,41 @@ export type TableDataAPI= { tableData: TableData; } & MessageAPI;
 
 /** HELPERS **/
 import {
-  getTableQueryParams, getTableDataFromResponseData, getTableOwnersFromResponseData,
+  getTableQueryParams, getRelatedDashboardQueryParams, getTableDataFromResponseData, getTableOwnersFromResponseData,
   createOwnerUpdatePayload, createOwnerNotificationData, shouldSendNotification
 } from './helpers';
 
 
-export function getTableData(tableKey: string, index?: string, source?: string ) {
-  const queryParams = getTableQueryParams(tableKey, index, source);
-  return axios.get(`${API_PATH}/table?${queryParams}`)
-  .then((response: AxiosResponse<TableDataAPI>) => {
-    return {
-      data: getTableDataFromResponseData(response.data),
-      owners: getTableOwnersFromResponseData(response.data),
-      tags: response.data.tableData.tags,
-      statusCode: response.status,
-    };
-  });
+export function getTableData(
+  tableKey: string,
+  index?: string,
+  source?: string
+) {
+  const dashboardQueryParams = getRelatedDashboardQueryParams(tableKey);
+  let relatedDashboardsRequest = axios.get(`${API_PATH}/table/${dashboardQueryParams}/dashboards`)
+    .then((response: AxiosResponse<TableDataAPI>) => {
+      debugger
+
+      return {
+        data: getTableDataFromResponseData(response.data),
+        owners: getTableOwnersFromResponseData(response.data),
+        tags: response.data.tableData.tags,
+        statusCode: response.status
+      };
+    });
+
+  const tableQueryParams = getTableQueryParams(tableKey, index, source);
+
+  return axios
+    .get(`${API_PATH}/table?${tableQueryParams}`)
+    .then((response: AxiosResponse<TableDataAPI>) => {
+      return {
+        data: getTableDataFromResponseData(response.data),
+        owners: getTableOwnersFromResponseData(response.data),
+        tags: response.data.tableData.tags,
+        statusCode: response.status
+      };
+    });
 }
 
 export function getTableDescription(tableData: TableMetadata) {

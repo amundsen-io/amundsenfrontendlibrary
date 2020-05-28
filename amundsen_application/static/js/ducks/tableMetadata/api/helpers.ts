@@ -13,6 +13,13 @@ export function getTableQueryParams(key: string, index?: string, source?: string
 }
 
 /**
+ * Generates the query string parameters needed for the request for the related dashboards to a table
+ */
+export function getRelatedDashboardQueryParams(key: string): string {
+  return encodeURIComponent(key);
+}
+
+/**
  * Parses the response for table metadata to create a TableMetadata object
  */
 export function getTableDataFromResponseData(responseData: API.TableDataAPI): TableMetadata {
