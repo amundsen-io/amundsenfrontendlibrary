@@ -8,7 +8,7 @@ $resource-header-height: 84px;
     display: flex;
     height: $resource-header-height;
     border-bottom: 2px solid $divider;
-    padding: 16px 24px 0;
+    padding: 16px 24px;
 
 
     .icon-header {
@@ -20,11 +20,13 @@ $resource-header-height: 84px;
     .header-section {
       &.header-title {
         flex-grow: 1;
-        overflow: hidden;
 
         .header-title-text {
           display: inline-block;
           max-width: calc(100% - 100px);
+          // Better align the header-title-text
+          // (84px header height - 32px vertical padding - 2px border - 20px subtitle line-height) = 30px
+          line-height: 30px;
         }
       }
 
