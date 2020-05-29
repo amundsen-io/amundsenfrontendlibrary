@@ -1015,7 +1015,10 @@ class MetadataTest(unittest.TestCase):
             data = json.loads(response.data)
 
             self.assertEqual(response.status_code, HTTPStatus.OK)
-            self.assertEqual(len(data.get('dashboards')), len(self.expected_related_dashboard_response.get('dashboards')))
+            self.assertEqual(
+                len(data.get('dashboards')),
+                len(self.expected_related_dashboard_response.get('dashboards'))
+            )
 
     @responses.activate
     def test_get_related_dashboards_failure(self) -> None:
