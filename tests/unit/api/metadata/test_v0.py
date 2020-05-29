@@ -1013,33 +1013,28 @@ class MetadataTest(unittest.TestCase):
                 '/api/metadata/v0/table/{0}/dashboards'.format(test_table)
             )
             data = json.loads(response.data)
+
             self.assertEqual(response.status_code, HTTPStatus.OK)
-            self.assertCountEqual(data.get('dashboards'), self.expected_related_dashboard_response)
+            self.assertEqual(len(data.get('dashboards')), len(self.expected_related_dashboard_response.get('dashboards')))
 
+    @responses.activate
+    def test_get_related_dashboards_failure(self) -> None:
+        """
+        Test get_related_dashboards API failure
+        :return:
+        """
+        test_table = 'db://cluster.schema/table'
+        url = local_app.config['METADATASERVICE_BASE'] + TABLE_ENDPOINT + '/' + test_table + '/dashboard/'
+        responses.add(responses.GET, url, json=self.expected_related_dashboard_response, status=HTTPStatus.BAD_REQUEST)
 
-        # import ipdb; ipdb.set_trace()
-        # import logging
-        # logging.basicConfig(level=logging.DEBUG)
-        # logging.info(str(response.data, 'utf-8'))
-
-
-    # @responses.activate
-    # def test_get_related_dashboards_bad_parameters(self) -> None:
-    #     """
-    #     Test get_related_dashboards API failure with missing table value
-    #     :return:
-    #     """
-    #     test_table = 'wrong'
-    #     url = local_app.config['METADATASERVICE_BASE'] + TABLE_ENDPOINT + '/' + test_table + '/dashboard/'
-    #     responses.add(responses.GET, url, json=self.expected_related_dashboard_response, status=HTTPStatus.OK)
-
-    #     with local_app.test_client() as test:
-    #         response = test.get(
-    #             '/api/metadata/v0/table',
-    #             query_string=dict()
-    #         )
-    #         data = json.loads(response.data)
-    #         self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
-    #         self.assertCountEqual(data.get('dashboards'), {})
-
-
+        with local_app.test_client() as test:
+            response = test.get(
+                '/api/metadata/v0/table/{0}/dashboards'.format(test_table)
+            )
+            self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
+            expected = {
+                'dashboards': {},
+                'msg': 'Encountered error: Related Dashboard Metadata request failed',
+                'status_code': 400
+            }
+            self.assertEqual(response.json, expected)

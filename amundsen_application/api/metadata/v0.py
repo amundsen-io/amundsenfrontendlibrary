@@ -636,33 +636,24 @@ def get_dashboard_metadata() -> Response:
         return make_response(jsonify({'dashboard': {}, 'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-@metadata_blueprint.route('/table/<table_key>/dashboards', methods=['GET'])
+@metadata_blueprint.route('/table/<path:table_key>/dashboards', methods=['GET'])
 def get_related_dashboard_metadata(table_key) -> Response:
     """
     Call metadata service endpoint to fetch related dashboard metadata
     :return:
     """
     try:
-        # import ipdb; ipdb.set_trace()
-        # table_key = get_query_param(request.args, 'key')
-        import logging
-        logging.basicConfig(level=logging.DEBUG)
-        logging.info(table_key)
-
         url = f'{app.config["METADATASERVICE_BASE"]}{TABLE_ENDPOINT}/{table_key}/dashboard/'
-        results_dict = _get_related_dashboards_metadata(table_key=table_key, url=url)
-        # response = request_metadata(url=url, method=request.method)
-        # dashboard = marshall_dashboard_full(response.json())
-        # status_code = response.status_code
+        results_dict = _get_related_dashboards_metadata(url=url)
         return make_response(jsonify(results_dict), results_dict.get('status_code', HTTPStatus.INTERNAL_SERVER_ERROR))
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
-        return make_response(jsonify({'dashboards': {}, 'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
+        return make_response(jsonify({'dashboards': [], 'msg': message}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
 @action_logging
-def _get_related_dashboards_metadata(*, table_key: str, url: str) -> Dict[str, Any]:
+def _get_related_dashboards_metadata(*, url: str) -> Dict[str, Any]:
 
     results_dict = {
         'dashboards': {},
@@ -670,7 +661,6 @@ def _get_related_dashboards_metadata(*, table_key: str, url: str) -> Dict[str, A
     }
 
     try:
-        table_endpoint = _get_table_endpoint()
         response = request_metadata(url=url)
     except ValueError as e:
         # envoy client BadResponse is a subclass of ValueError
@@ -690,8 +680,8 @@ def _get_related_dashboards_metadata(*, table_key: str, url: str) -> Dict[str, A
         return results_dict
 
     try:
-        dashboard_data_raw: dict = response.json()
-        results_dict['dashboards'] = marshall_table_full(dashboard_data_raw)
+        dashboard_data_raw: dict = response.json().get('dashboards', [])
+        results_dict['dashboards'] = [marshall_dashboard_partial(dashboard) for dashboard in dashboard_data_raw]
         results_dict['msg'] = 'Success'
         return results_dict
     except Exception as e:
