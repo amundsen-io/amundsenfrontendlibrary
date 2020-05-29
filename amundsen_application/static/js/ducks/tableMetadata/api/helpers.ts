@@ -15,15 +15,20 @@ export function getTableQueryParams(key: string, index?: string, source?: string
 /**
  * Generates the query string parameters needed for the request for the related dashboards to a table
  */
-export function getRelatedDashboardQueryParams(key: string): string {
+export function getRelatedDashboardSlug(key: string): string {
   return encodeURIComponent(key);
 }
 
 /**
- * Parses the response for table metadata to create a TableMetadata object
+ * Parses the response for table metadata and the related dashboard information to create a TableMetadata object
  */
-export function getTableDataFromResponseData(responseData: API.TableDataAPI): TableMetadata {
-  return filterFromObj(responseData.tableData, ['owners', 'tags']) as TableMetadata;
+export function getTableDataFromResponseData(responseData: API.TableDataAPI, relatedDashboardsData: API.RelatedDashboardDataAPI ): TableMetadata {
+  const mergedTableData = {
+    ...filterFromObj(responseData.tableData, ['owners', 'tags']),
+    ...relatedDashboardsData
+  };
+
+  return (mergedTableData) as TableMetadata;
 }
 
 /**

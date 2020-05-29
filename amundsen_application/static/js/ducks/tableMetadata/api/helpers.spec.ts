@@ -6,23 +6,28 @@ import * as Helpers from './helpers';
 import * as Utils from 'ducks/utilMethods';
 
 import globalState from 'fixtures/globalState';
+import {relatedDashboard} from 'fixtures/metadata/table';
 
 import { NotificationType, UpdateMethod, UpdateOwnerPayload } from 'interfaces';
 
 import * as API from './v0';
 
-const filterFromObjSpy = jest.spyOn(Utils, 'filterFromObj').mockImplementation((initialObject, rejectedKeys) => { return initialObject; });
+const filterFromObjSpy = jest.spyOn(Utils, 'filterFromObj');
 
 jest.mock('axios');
 
 describe('helpers', () => {
   let mockResponseData: API.TableDataAPI;
+  let mockRelatedDashboardsResponseData: API.RelatedDashboardDataAPI;
   let tableResponseData: API.TableData;
   beforeAll(() => {
     tableResponseData = {
       ...globalState.tableMetadata.tableData,
       owners: [{display_name: 'test', profile_url: 'test.io', email: 'test@test.com', user_id: 'test'}],
       tags: [{tag_count: 2, tag_name: 'zname'}, {tag_count: 1, tag_name: 'aname'}],
+    };
+    mockRelatedDashboardsResponseData = {
+      dashboards: relatedDashboard
     };
     mockResponseData = {
      tableData: tableResponseData,
@@ -54,20 +59,54 @@ describe('helpers', () => {
     });
   });
 
-  describe('getRelatedDashboardQueryParams', () => {
-    it('generates related dashboard params', () => {
+  describe('getRelatedDashboardSlug', () => {
+    it('generates related dashboard slug section for the URL', () => {
       const tableKey = 'hive://gold.base/rides';
-      const actual = Helpers.getRelatedDashboardQueryParams(tableKey);
+      const actual = Helpers.getRelatedDashboardSlug(tableKey);
       const expected = 'hive%3A%2F%2Fgold.base%2Frides';
 
       expect(actual).toEqual(expected);
     });
   });
 
-  it('getTableDataFromResponseData', () => {
-    Helpers.getTableDataFromResponseData(mockResponseData);
-    expect(filterFromObjSpy).toHaveBeenCalledWith(tableResponseData, ['owners', 'tags']);
+  describe('getTableDataFromResponseData', () => {
+    it('uses the filterFromObj method', () => {
+      Helpers.getTableDataFromResponseData(mockResponseData, mockRelatedDashboardsResponseData);
+
+      expect(filterFromObjSpy).toHaveBeenCalledWith(tableResponseData, ['owners', 'tags']);
+    });
+
+    describe('produces the final TableMetadata information', () => {
+      it('contains the columns key', () => {
+        const expected = 0;
+        const actual = Helpers.getTableDataFromResponseData(mockResponseData, mockRelatedDashboardsResponseData).columns.length;
+
+        expect(actual).toEqual(expected);
+      });
+
+      it('contains the dashboards key', () => {
+        const expected = 3;
+        const actual = Helpers.getTableDataFromResponseData(mockResponseData, mockRelatedDashboardsResponseData).dashboards.length;
+
+        expect(actual).toEqual(expected);
+      });
+
+      it('does not have the owners key', () => {
+        const expected = undefined;
+        const actual = Helpers.getTableDataFromResponseData(mockResponseData, mockRelatedDashboardsResponseData).owners;
+
+        expect(actual).toEqual(expected);
+      });
+
+      it('does not have the tags key', () => {
+        const expected = undefined;
+        const actual = Helpers.getTableDataFromResponseData(mockResponseData, mockRelatedDashboardsResponseData).tags;
+
+        expect(actual).toEqual(expected);
+      });
+    });
   });
+
 
   it('getTableOwnersFromResponseData', () => {
     expect(Helpers.getTableOwnersFromResponseData(mockResponseData)).toEqual({
