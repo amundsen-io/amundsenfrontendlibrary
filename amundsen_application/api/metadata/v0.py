@@ -637,7 +637,7 @@ def get_dashboard_metadata() -> Response:
 
 
 @metadata_blueprint.route('/table/<path:table_key>/dashboards', methods=['GET'])
-def get_related_dashboard_metadata(table_key) -> Response:
+def get_related_dashboard_metadata(table_key: str) -> Response:
     """
     Call metadata service endpoint to fetch related dashboard metadata
     :return:
