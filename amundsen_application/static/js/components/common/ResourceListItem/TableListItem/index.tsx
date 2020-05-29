@@ -40,7 +40,6 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
               <div className="resource-name title-2">
                 <div className="truncated">
                   <SchemaInfo schema={ table.schema } placement="bottom"/>.{ table.name }
-                  {/*{`${table.schema}.${table.name}`}*/}
                 </div>
                 <BookmarkIcon bookmarkKey={ table.key } resourceType={ table.type } />
               </div>
