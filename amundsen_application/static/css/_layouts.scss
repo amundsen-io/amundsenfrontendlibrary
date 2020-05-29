@@ -99,13 +99,19 @@ $resource-header-height: 84px;
 
       .section-title {
         color: $text-tertiary;
-        margin: 40px 0 8px;
+        margin-bottom: 8px;
+      }
+
+      .editable-section,
+      .metadata-section {
+        margin-top: 40px;
+        min-height: 70px;
       }
 
       .editable-text {
         font-size: 16px;
 
-        .markdown-wrapper{
+        .markdown-wrapper {
           font-size: 16px;
         }
       }
