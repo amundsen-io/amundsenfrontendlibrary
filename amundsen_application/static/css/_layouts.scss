@@ -2,7 +2,7 @@
 $resource-header-height: 84px;
 
 .resource-detail-layout {
-  height: calc(100% - #{$nav-bar-height} - #{$footer-height});
+  height: calc(100vh - #{$nav-bar-height} - #{$footer-height});
 
   .resource-header {
     display: flex;
