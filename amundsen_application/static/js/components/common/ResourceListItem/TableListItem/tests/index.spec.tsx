@@ -98,9 +98,16 @@ describe('TableListItem', () => {
         expect(startIcon.exists()).toBe(true);
         expect(startIcon.props().className).toEqual(wrapper.instance().generateResourceIconClass(props.table.database));
       });
+      
+      it('renders table schema and description', () => {
+        const schemaInfo = resourceInfo.find('.resource-name').children().at(0).children().at(0);
+        expect(schemaInfo.exists()).toBe(true);
+        expect(schemaInfo.props().schema).toEqual('tableSchema');
+        expect(schemaInfo.props().desc).toEqual('schemaDescription')
+      });
 
       it('renders table name', () => {
-        expect(resourceInfo.find('.resource-name').children().at(0).text()).toEqual('tableSchema.tableName');
+        expect(resourceInfo.find('.resource-name').children().at(0).children().at(2).text()).toEqual('tableName');
       });
 
       it('renders a bookmark icon in the resource name with correct props', () => {
