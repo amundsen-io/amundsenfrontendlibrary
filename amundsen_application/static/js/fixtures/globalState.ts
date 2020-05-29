@@ -29,6 +29,7 @@ const globalState: GlobalState = {
           description: 'description',
           name: 'name',
           schema: 'schema',
+          schema_description: 'schemaDescription',
         },
       ],
       [ResourceType.dashboard]: [
@@ -79,6 +80,7 @@ const globalState: GlobalState = {
       key: 'testDatabase://testCluster.testSchema/testName',
       name: 'testName',
       schema: 'testSchema',
+      schema_description: 'testSchemaDescription',
       type: ResourceType.table,
     },
     {
@@ -88,6 +90,7 @@ const globalState: GlobalState = {
       key: 'testDatabase://testCluster.testSchema/otherName',
       name: 'otherName',
       schema: 'testSchema',
+      schema_description: 'testSchemaDescription',
       type: ResourceType.table,
     }
   ],
@@ -111,6 +114,7 @@ const globalState: GlobalState = {
           last_updated_timestamp: 946684799,
           name: 'testName',
           schema: 'testSchema',
+          schema_description: 'testSchemaDescription',
           type: ResourceType.table,
         },
       ],

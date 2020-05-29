@@ -36,6 +36,7 @@ describe('TableListItem', () => {
         badges: [ { tag_name: 'badgeName', tag_type: TagType.BADGE } ],
         name: 'tableName',
         schema: 'tableSchema',
+        schema_description: 'schemaDescription',
       },
       ...propOverrides
     };
@@ -151,6 +152,7 @@ describe('TableListItem', () => {
             badges: null,
             name: 'tableName',
             schema: 'tableSchema',
+            schema_description: 'schemaDescription',
           }});
           expect(wrapper.find('.resource-badges').children()).toHaveLength(1);
         });
@@ -165,6 +167,7 @@ describe('TableListItem', () => {
             badges: [],
             name: 'tableName',
             schema: 'tableSchema',
+            schema_description: 'schemaDescription',
           }});
           expect(wrapper.find('.resource-badges').children()).toHaveLength(1);
         });

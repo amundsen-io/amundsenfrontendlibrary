@@ -4,20 +4,23 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 import './styles.scss';
 
 export interface SchemaInfoProps{
-  schema?: string;
+  schema: string;
   placement?: string;
-  desc?: string;
+  desc: string;
 }
 
 const SchemaInfo: React.SFC<SchemaInfoProps>  = ({ schema, placement, desc }) => {
-  if (schema === null || schema === '') {
-    return null;
-  }
   const popoverHoverFocus = (
    <Popover id="popover-trigger-hover-focus">
      <strong>{ schema }:</strong> { desc }
    </Popover>
  );
+
+  if (desc === null || desc === '' ) {
+    return (
+      <span>{ schema }</span>
+    )
+  }
 
   return (
     <OverlayTrigger
@@ -31,10 +34,8 @@ const SchemaInfo: React.SFC<SchemaInfoProps>  = ({ schema, placement, desc }) =>
 };
 
 SchemaInfo.defaultProps = {
-  schema: '',
   placement: 'bottom',
-  desc: 'Main source of all events data, usually recommended for use, Data is usually 24-48 hours delayed.'
-};
+  };
 
 
 export default SchemaInfo;

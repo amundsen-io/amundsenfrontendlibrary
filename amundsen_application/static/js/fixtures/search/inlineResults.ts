@@ -68,6 +68,7 @@ export const allResourcesExample = {
         last_updated_timestamp: 946684799,
         name: 'testName1',
         schema: 'testSchema',
+        schema_description: 'testSchemaDescription',
         type: ResourceType.table,
       },
       {
@@ -78,6 +79,7 @@ export const allResourcesExample = {
         last_updated_timestamp: 946684799,
         name: 'testName2',
         schema: 'testSchema',
+        schema_description: 'testSchemaDescription',
         type: ResourceType.table,
       },
       {
@@ -88,6 +90,7 @@ export const allResourcesExample = {
         last_updated_timestamp: 946684799,
         name: 'testName3',
         schema: 'testSchema',
+        schema_description: 'testSchemaDescription',
         type: ResourceType.table,
       }
     ],
