@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
-import './styles.scss';
-
 export interface SchemaInfoProps{
   schema: string;
   placement?: string;
