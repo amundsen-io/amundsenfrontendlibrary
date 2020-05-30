@@ -6,7 +6,7 @@ import * as Helpers from './helpers';
 import * as Utils from 'ducks/utilMethods';
 
 import globalState from 'fixtures/globalState';
-import {relatedDashboard} from 'fixtures/metadata/table';
+import {relatedDashboards} from 'fixtures/metadata/table';
 
 import { NotificationType, UpdateMethod, UpdateOwnerPayload } from 'interfaces';
 
@@ -27,7 +27,7 @@ describe('helpers', () => {
       tags: [{tag_count: 2, tag_name: 'zname'}, {tag_count: 1, tag_name: 'aname'}],
     };
     mockRelatedDashboardsResponseData = {
-      dashboards: relatedDashboard
+      dashboards: relatedDashboards
     };
     mockResponseData = {
      tableData: tableResponseData,
@@ -87,20 +87,6 @@ describe('helpers', () => {
       it('contains the dashboards key', () => {
         const expected = 3;
         const actual = Helpers.getTableDataFromResponseData(mockResponseData, mockRelatedDashboardsResponseData).dashboards.length;
-
-        expect(actual).toEqual(expected);
-      });
-
-      it('does not have the owners key', () => {
-        const expected = undefined;
-        const actual = Helpers.getTableDataFromResponseData(mockResponseData, mockRelatedDashboardsResponseData).owners;
-
-        expect(actual).toEqual(expected);
-      });
-
-      it('does not have the tags key', () => {
-        const expected = undefined;
-        const actual = Helpers.getTableDataFromResponseData(mockResponseData, mockRelatedDashboardsResponseData).tags;
 
         expect(actual).toEqual(expected);
       });

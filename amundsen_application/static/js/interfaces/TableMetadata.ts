@@ -1,6 +1,7 @@
 import { UpdateMethod } from './Enums';
 import { User } from './User';
 import { Badge } from './Tags';
+import { DashboardResource } from './Resources';
 
 interface PartitionData {
   is_partitioned: boolean;
@@ -78,7 +79,7 @@ export interface TableMetadata {
   badges: Badge[];
   cluster: string;
   columns: TableColumn[];
-  dashboards: RelatedDashboard[];
+  dashboards: DashboardResource[];
   database: string;
   is_editable: boolean;
   is_view: boolean;
@@ -105,16 +106,4 @@ export interface Watermark {
   partition_key: string;
   partition_value: string;
   watermark_type: string;
-}
-
-export interface RelatedDashboard {
-  group_name: string;
-  description: string;
-  cluster: string;
-  group_url: string;
-  uri: string;
-  last_successful_run_timestamp: number;
-  name: string;
-  product: string;
-  url: string;
 }

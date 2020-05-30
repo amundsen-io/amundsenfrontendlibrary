@@ -1,7 +1,6 @@
-
 import axios, { AxiosResponse, AxiosError } from 'axios';
 
-import { PreviewData, PreviewQueryParams, TableMetadata, RelatedDashboard, UpdateOwnerPayload, User, Tag } from 'interfaces';
+import { PreviewData, PreviewQueryParams, TableMetadata, DashboardResource, UpdateOwnerPayload, User, Tag } from 'interfaces';
 
 export const API_PATH = '/api/metadata/v0';
 
@@ -16,7 +15,7 @@ export type DescriptionAPI = { description: string; } & MessageAPI;
 export type LastIndexedAPI = { timestamp: string; } & MessageAPI;
 export type PreviewDataAPI = { previewData: PreviewData; } & MessageAPI;
 export type TableDataAPI = { tableData: TableData; } & MessageAPI;
-export type RelatedDashboardDataAPI = { dashboards: RelatedDashboard[]; };
+export type RelatedDashboardDataAPI = { dashboards: DashboardResource[]; };
 
 /** HELPERS **/
 import {
@@ -42,8 +41,8 @@ export function getTableData(
 
   return Promise.all([tableRequest, relatedDashboardsRequest]).then(
     ([tableResponse, relatedDashboardsResponse]: [
-      TableDataAPI,
-      RelatedDashboardDataAPI
+      AxiosResponse<TableDataAPI>,
+      AxiosResponse<RelatedDashboardDataAPI>
     ]) => ({
       data: getTableDataFromResponseData(
         tableResponse.data,

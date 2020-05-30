@@ -1,4 +1,4 @@
-import { TableMetadata, RelatedDashboard } from '../../interfaces';
+import { TableMetadata, DashboardResource, ResourceType } from '../../interfaces';
 import { TagType } from '../../interfaces/Tags';
 
 export const tableMetadata:TableMetadata = {
@@ -162,7 +162,7 @@ export const tableMetadata:TableMetadata = {
   ]
 };
 
-export const relatedDashboard:RelatedDashboard[] = [
+export const relatedDashboards:DashboardResource[] = [
   {
 		"group_name": "Test Group 1",
 		"description": null,
@@ -171,10 +171,11 @@ export const relatedDashboard:RelatedDashboard[] = [
 		"uri": "mode_dashboard://gold.1234/23445asb",
 		"last_successful_run_timestamp": 1590505846,
 		"name": "Test Dashboard 1",
-		"product": "mode",
+    "product": "mode",
+    "type": ResourceType.dashboard,
 		"url": "https://app.mode.com/testCompany/reports/23445asb"
 	}, {
-		"group_name": "Test Group 2",
+    "group_name": "Test Group 2",
 		"description": null,
 		"cluster": "gold",
 		"group_url": "https://app.mode.com/testCompany/spaces/345asd",
@@ -182,9 +183,10 @@ export const relatedDashboard:RelatedDashboard[] = [
 		"last_successful_run_timestamp": 1590519704,
 		"name": "Test Dashboard 2",
 		"product": "mode",
+    "type": ResourceType.dashboard,
 		"url": "https://app.mode.com/testCompany/reports/asdfas001"
 	}, {
-		"group_name": "Test Group 3",
+    "group_name": "Test Group 3",
 		"description": null,
 		"cluster": "gold",
 		"group_url": "https://app.mode.com/testCompany/spaces/casdg80",
@@ -192,6 +194,7 @@ export const relatedDashboard:RelatedDashboard[] = [
 		"last_successful_run_timestamp": 1590538191,
 		"name": "Test Dashboard 3",
 		"product": "mode",
+    "type": ResourceType.dashboard,
 		"url": "https://app.mode.com/testCompany/reports/123566"
 	}
 ];

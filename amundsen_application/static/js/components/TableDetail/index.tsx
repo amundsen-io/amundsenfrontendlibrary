@@ -128,17 +128,17 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     });
 
     // Dashboard content
-    // tabInfo.push({
-    //   content: (
-    //     <ResourceList
-    //       allItems={this.props.tableData.dashboards}
-    //       itemsPerPage={DASHBOARDS_PER_PAGE}
-    //       source={TABLE_SOURCE}
-    //     />
-    //   ),
-    //   key: "dashboards",
-    //   title: `Dashboards (${this.props.tableData.dashboards.length})`
-    // });
+    tabInfo.push({
+      content: (
+        <ResourceList
+          allItems={this.props.tableData.dashboards}
+          itemsPerPage={DASHBOARDS_PER_PAGE}
+          source={TABLE_SOURCE}
+        />
+      ),
+      key: "dashboards",
+      title: `Dashboards (${this.props.tableData.dashboards.length})`
+    });
 
     return <TabsComponent tabs={ tabInfo } defaultTab={ "columns" } />;
   }
