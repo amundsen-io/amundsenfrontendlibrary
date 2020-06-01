@@ -680,10 +680,12 @@ def _get_related_dashboards_metadata(*, url: str) -> Dict[str, Any]:
         return results_dict
 
     try:
-        dashboard_data_raw: dict = response.json().get('dashboards', [])
-        results_dict['dashboards'] = [marshall_dashboard_partial(dashboard) for dashboard in dashboard_data_raw]
-        results_dict['msg'] = 'Success'
-        return results_dict
+        dashboard_data_raw = response.json().get('dashboards', [])
+        return {
+            'dashboards': [marshall_dashboard_partial(dashboard) for dashboard in dashboard_data_raw],
+            'msg': 'Success',
+            'status_code': status_code
+        }
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         results_dict['msg'] = message
