@@ -25,7 +25,7 @@ export function getRelatedDashboardSlug(key: string): string {
 export function getTableDataFromResponseData(responseData: API.TableDataAPI, relatedDashboardsData: API.RelatedDashboardDataAPI ): TableMetadata {
   const mergedTableData = {
     ...filterFromObj(responseData.tableData, ['owners', 'tags']),
-    ...relatedDashboardsData
+    ...filterFromObj(relatedDashboardsData, ['msg', 'status_code']),
   };
 
   return (mergedTableData) as TableMetadata;
