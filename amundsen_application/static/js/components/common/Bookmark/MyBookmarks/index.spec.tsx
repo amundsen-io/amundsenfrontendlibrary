@@ -36,7 +36,6 @@ describe('MyBookmarks', () => {
             description: 'description',
             name: 'name',
             schema: 'schema',
-            schema_description: 'schemaDescription',
           },
           {
             key: 'bookmark-2',
@@ -46,7 +45,6 @@ describe('MyBookmarks', () => {
             description: 'description',
             name: 'name',
             schema: 'schema',
-            schema_description: 'schemaDescription',
           },
           {
             key: 'bookmark-3',
@@ -56,7 +54,6 @@ describe('MyBookmarks', () => {
             description: 'description',
             name: 'name',
             schema: 'schema',
-            schema_description: 'schemaDescription',
           },
           {
             key: 'bookmark-4',
@@ -66,7 +63,6 @@ describe('MyBookmarks', () => {
             description: 'description',
             name: 'name',
             schema: 'schema',
-            schema_description: 'schemaDescription',
           },
           {
             key: 'bookmark-5',
@@ -76,7 +72,6 @@ describe('MyBookmarks', () => {
             description: 'description',
             name: 'name',
             schema: 'schema',
-            schema_description: 'schemaDescription',
           },
           {
             key: 'bookmark-6',
@@ -86,7 +81,6 @@ describe('MyBookmarks', () => {
             description: 'description',
             name: 'name',
             schema: 'schema',
-            schema_description: 'schemaDescription',
           },
         ],
         [ResourceType.dashboard]: [],

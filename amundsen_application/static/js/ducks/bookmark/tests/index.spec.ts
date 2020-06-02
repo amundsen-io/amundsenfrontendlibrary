@@ -44,7 +44,6 @@ describe('bookmark ducks', () => {
           description: 'description',
           name: 'name',
           schema: 'schema',
-          schema_description: 'schemaDescription',
         },
       ]
     }
@@ -145,7 +144,6 @@ describe('bookmark ducks', () => {
             description: 'description',
             name: 'name',
             schema: 'schema',
-            schema_description: 'schemaDescription',
           },
           {
             key: 'bookmarked_key_1',
@@ -155,7 +153,6 @@ describe('bookmark ducks', () => {
             description: 'description',
             name: 'name',
             schema: 'schema',
-            schema_description: 'schemaDescription',
           },
         ]
       };
@@ -189,7 +186,6 @@ describe('bookmark ducks', () => {
             description: 'description',
             name: 'name',
             schema: 'schema',
-            schema_description: 'schemaDescription',
           }]
         }
       });

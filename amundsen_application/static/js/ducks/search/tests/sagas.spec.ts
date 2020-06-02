@@ -61,7 +61,6 @@ describe('search sagas', () => {
           last_updated_timestamp: 946684799,
           name: 'testName',
           schema: 'testSchema',
-          schema_description: 'testSchemaDescription',
           type: ResourceType.table,
         },
       ],
