@@ -1,33 +1,31 @@
 import * as React from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
+import './styles.scss';
 
 export interface SchemaInfoProps{
   schema: string;
-  placement?: string;
+  table: string;
   desc: string;
+  placement?: string;
 }
 
-const SchemaInfo: React.SFC<SchemaInfoProps>  = ({ schema, placement, desc }) => {
+const SchemaInfo: React.SFC<SchemaInfoProps>  = ({ schema, table, desc, placement}) => {
   const popoverHoverFocus = (
    <Popover id="popover-trigger-hover-focus">
      <strong>{ schema }:</strong> { desc }
    </Popover>
  );
 
-  if (desc === null || desc === '' ) {
-    return (
-      <span>{ schema }</span>
-    )
-  }
-
   return (
+    <div>
     <OverlayTrigger
      trigger={['hover', 'focus']}
      placement={ placement }
      overlay={popoverHoverFocus}
      >
       <span className="underline">{ schema }</span>
-    </OverlayTrigger>
+    </OverlayTrigger>.{ table }
+    </div>
   );
 };
 

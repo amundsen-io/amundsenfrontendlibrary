@@ -98,16 +98,59 @@ describe('TableListItem', () => {
         expect(startIcon.exists()).toBe(true);
         expect(startIcon.props().className).toEqual(wrapper.instance().generateResourceIconClass(props.table.database));
       });
-      
-      it('renders table schema and description', () => {
-        const schemaInfo = resourceInfo.find('.resource-name').children().at(0).children().at(0);
-        expect(schemaInfo.exists()).toBe(true);
-        expect(schemaInfo.props().schema).toEqual('tableSchema');
-        expect(schemaInfo.props().desc).toEqual('schemaDescription')
+
+      describe('if props.table has schema description', () => {
+        let schemaInfo;
+        beforeAll(() => {
+        schemaInfo = resourceInfo.find('.resource-name').children().at(0).children().at(0);
+        });
+
+        it('renders table name schema and description', () => {
+          expect(schemaInfo.props().schema).toEqual('tableSchema');
+          expect(schemaInfo.props().table).toEqual('tableName');
+          expect(schemaInfo.props().desc).toEqual('schemaDescription');
+        });
       });
 
-      it('renders table name', () => {
-        expect(resourceInfo.find('.resource-name').children().at(0).children().at(2).text()).toEqual('tableName');
+      describe('if props.table not have schema description', () => {
+
+        it('if schema description is empty string', () => {
+          const { props, wrapper } = setup({ table: {
+            type: ResourceType.table,
+            cluster: '',
+            database: 'testdb',
+            description: 'I am the description',
+            key: '',
+            last_updated_timestamp: 1553829681,
+            badges: [ { tag_name: 'badgeName', tag_type: TagType.BADGE } ],
+            name: 'tableName',
+            schema: 'tableSchema',
+            schema_description: '',
+          }});
+
+          expect(wrapper.find('.resource-name').children().at(0).children().at(0).text()).toEqual('tableSchema.tableName');
+
+      });
+
+        it('if schema description is null', () => {
+          const { props, wrapper } = setup({ table: {
+            type: ResourceType.table,
+            cluster: '',
+            database: 'testdb',
+            description: 'I am the description',
+            key: '',
+            last_updated_timestamp: 1553829681,
+            badges: [ { tag_name: 'badgeName', tag_type: TagType.BADGE } ],
+            name: 'tableName',
+            schema: 'tableSchema',
+            schema_description: null,
+          }});
+
+          expect(wrapper.find('.resource-name').children().at(0).children().at(0).text()).toEqual('tableSchema.tableName');
+
+
+      });
+
       });
 
       it('renders a bookmark icon in the resource name with correct props', () => {
