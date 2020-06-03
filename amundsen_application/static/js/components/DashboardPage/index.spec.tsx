@@ -188,13 +188,13 @@ describe('DashboardPage', () => {
     })
 
     describe('renders timestamps correctly when unavailable', () => {
-      const wrapper = setup({
+      const { wrapper } = setup({
         dashboard: {
           ...dashboardMetadata,
           last_run_timestamp: null,
           last_successful_run_timestamp: null
         }
-      }).wrapper;
+      });
 
       it('last_run_timestamp', () => {
         expect(wrapper.find('.last-run-timestamp').text()).toEqual(NO_TIMESTAMP_TEXT)

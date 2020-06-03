@@ -54,7 +54,7 @@ class DashboardListItem extends React.Component<DashboardListItemProps, {}> {
             { getSourceDisplayName(dashboard.product, dashboard.type) }
           </div>
           <div className="resource-badges">
-             <div>
+            <div>
                <div className="title-3">{ Constants.LAST_RUN_TITLE }</div>
                <div className="body-secondary-3">
                  {
@@ -63,7 +63,7 @@ class DashboardListItem extends React.Component<DashboardListItemProps, {}> {
                    NO_TIMESTAMP_TEXT
                  }
                </div>
-             </div>
+            </div>
             <img className="icon icon-right" />
           </div>
         </Link>
