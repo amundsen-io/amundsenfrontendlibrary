@@ -13,7 +13,7 @@ import TabsComponent from "components/common/TabsComponent";
 import ChartList from "./ChartList";
 import ImagePreview from "./ImagePreview";
 
-import { DashboardPage, DashboardPageProps, RouteProps, MatchProps } from "./";
+import { DashboardPage, DashboardPageProps, MatchProps } from "./";
 
 import { getMockRouterProps } from "../../fixtures/mockRouter";
 import { dashboardMetadata } from "fixtures/metadata/dashboard";

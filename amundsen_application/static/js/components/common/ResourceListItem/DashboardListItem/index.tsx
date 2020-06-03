@@ -23,7 +23,11 @@ export interface DashboardListItemProps {
 class DashboardListItem extends React.Component<DashboardListItemProps, {}> {
   getLink = () => {
     const { dashboard, logging } = this.props;
-    return `/dashboard?uri=${dashboard.uri}&index=${logging.index}&source=${logging.source}`;
+    const { cluster, product, group_url, uri } = dashboard;
+    const groupID = group_url.split('/').pop();
+    const dashboardName = uri.split('/').pop();
+
+    return `/dashboard/${cluster}/${product}/${groupID}/${dashboardName}?index=${logging.index}&source=${logging.source}`;
   };
 
   generateResourceIconClass = (dashboardId: string, dashboardType: ResourceType): string => {

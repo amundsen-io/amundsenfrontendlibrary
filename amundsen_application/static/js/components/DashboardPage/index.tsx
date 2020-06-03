@@ -45,10 +45,6 @@ import './styles.scss';
 const STATUS_SUCCESS = 'success';
 const STATUS_DANGER = 'danger';
 
-export interface RouteProps {
-  uri: string;
-}
-
 interface DashboardPageState {
   uri: string;
 }

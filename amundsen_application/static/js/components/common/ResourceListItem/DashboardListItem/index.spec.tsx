@@ -46,7 +46,13 @@ describe('DashboardListItem', () => {
     it('getLink returns correct string', () => {
       const { props, wrapper } = setup();
       const { dashboard, logging } = props;
-      expect(wrapper.instance().getLink()).toEqual(`/dashboard?uri=${dashboard.uri}&index=${logging.index}&source=${logging.source}`);
+      const { cluster, product, group_url, uri } = dashboard;
+      const groupID = group_url.split('/').pop();
+      const dashboardName = uri.split('/').pop();
+      const expectedURL = `/dashboard/${cluster}/${product}/${groupID}/${dashboardName}?index=${logging.index}&source=${logging.source}`;
+      const actual = wrapper.instance().getLink();
+
+      expect(actual).toEqual(expectedURL);
     });
   });
 

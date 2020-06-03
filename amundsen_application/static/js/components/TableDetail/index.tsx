@@ -110,8 +110,8 @@ export class TableDetail extends React.Component<TableDetailProps & RouteCompone
     we can't pass it as a single URL parameter without encodeURIComponent which makes ugly URLs.
     DO NOT CHANGE
     */
-   debugger
     const params = this.props.match.params;
+
     return `${params.database}://${params.cluster}.${params.schema}/${params.table}`;
   }
 
