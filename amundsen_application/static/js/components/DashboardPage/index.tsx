@@ -42,6 +42,9 @@ import { NO_TIMESTAMP_TEXT } from 'components/constants';
 
 import './styles.scss';
 
+const STATUS_SUCCESS = 'success';
+const STATUS_DANGER = 'danger';
+
 export interface RouteProps {
   uri: string;
 }
@@ -56,42 +59,58 @@ export interface StateFromProps {
   dashboard: DashboardMetadata;
 }
 
+export interface MatchProps {
+  cluster: string;
+  product: string;
+  group_id: string;
+  dashboard_id: string;
+}
+
 export interface DispatchFromProps {
   getDashboard: (payload: { uri: string, searchIndex?: string, source?: string }) => GetDashboardRequest;
 }
 
-export type DashboardPageProps = RouteComponentProps<RouteProps> & StateFromProps & DispatchFromProps;
+export type DashboardPageProps = RouteComponentProps<MatchProps> & StateFromProps & DispatchFromProps;
 
 export class DashboardPage extends React.Component<DashboardPageProps, DashboardPageState> {
+
   constructor(props) {
     super(props);
 
-    const { uri } = qs.parse(this.props.location.search);
+    const uri = this.getDashboardKey();
+
     this.state = { uri };
   }
 
   componentDidMount() {
-    this.loadDashboard(this.state.uri);
-  }
-
-  loadDashboard(uri: string) {
     const { index, source } = getLoggingParams(this.props.location.search);
+    const uri = this.getDashboardKey();
+
     this.props.getDashboard({ source, uri, searchIndex: index });
+    this.setState({ uri });
   }
 
   componentDidUpdate() {
-    const { uri } = qs.parse(this.props.location.search);
+    const uri = this.getDashboardKey();
+
     if (this.state.uri !== uri) {
+      const { index, source } = getLoggingParams(this.props.location.search);
       this.setState({ uri });
-      this.loadDashboard(uri);
+      this.props.getDashboard({ source, uri, searchIndex: index });
     }
   };
 
+  getDashboardKey() {
+    const { product, cluster, group_id, dashboard_id } = this.props.match.params;
+
+    return `${product}_dashboard://${cluster}.${group_id}/${dashboard_id}`;
+  }
+
   mapStatusToStyle = (status: string): string => {
     if (status === LAST_RUN_SUCCEEDED) {
-      return 'success';
+      return STATUS_SUCCESS;
     }
-    return 'danger';
+    return STATUS_DANGER;
   };
 
   renderTabs() {
