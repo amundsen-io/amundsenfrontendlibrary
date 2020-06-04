@@ -53,8 +53,8 @@ const QueryListItem = ({ name, text, key, url }: QueryListItemProps) => {
                 language={LANGUAGE}
                 theme={atomOneLight}
                 showLineNumbers={false}
-                wrapLines
-                codeBlock
+                wrapLines={true}
+                codeBlock={true}
               />
             </div>
           </label>
