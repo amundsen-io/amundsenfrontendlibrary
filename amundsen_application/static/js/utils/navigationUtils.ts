@@ -59,14 +59,5 @@ export const buildDashboardURL = (URI: string) => {
   const [cluster, groupID] = URI.split('/')[2].split('.');
   const dashboardID = URI.split('/').pop();
 
-  return `/dashboard/${cluster}/${product}/${groupID}/${dashboardID}`;
-}
-
-/**
- * Creates the URI for the dashboard from the dashboard detail page URL
- * @param parameters  Object with URL parameters
- * @return String     Dashboard URI
- */
-export const buildURIfromDashboardParameters = ({ product, cluster, group_id, dashboard_id }: MatchProps) => {
-  return `${product}_dashboard://${cluster}.${group_id}/${dashboard_id}`;
+  return `/dashboard/${encodeURIComponent(URI)}`;
 }

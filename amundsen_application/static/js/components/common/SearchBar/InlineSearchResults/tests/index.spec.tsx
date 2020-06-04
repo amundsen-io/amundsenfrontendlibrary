@@ -187,7 +187,7 @@ describe('InlineSearchResults', () => {
     it('returns the correct href for ResourceType.dashboard', () => {
       const index = 0;
       const givenDashboard = props.dashboards.results[index];
-      const expected = "/dashboard/cluster/product/group/name?source=inline_search&index=0";
+      const expected = "/dashboard/product_dashboard%3A%2F%2Fcluster.group%2Fname?source=inline_search&index=0";
       const output = wrapper.instance().getSuggestedResultHref(ResourceType.dashboard, givenDashboard, index);
 
       expect(output).toEqual(expected);

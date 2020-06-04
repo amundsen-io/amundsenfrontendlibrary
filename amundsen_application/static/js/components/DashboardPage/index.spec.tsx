@@ -49,10 +49,7 @@ const setup = (
 ) => {
   const routerProps = getMockRouterProps<MatchProps>(
     {
-      cluster: TEST_CLUSTER,
-      product: TEST_PRODUCT,
-      group_id: TEST_GROUP,
-      dashboard_id: TEST_DASHBOARD
+      uri: "mode_dashboard://gold.234testGroupID/123DashboardID"
     },
     location
   );
@@ -110,12 +107,9 @@ describe("DashboardPage", () => {
         getDashboardSpy.mockClear();
         setStateSpy.mockClear();
         const newParams = {
-          cluster: "testCluster",
-          product: "testProduct",
-          group_id: "testGroupID",
-          dashboard_id: "testDashboardID"
+          uri: "testProduct_dashboard://testCluster.testGroupID/testDashboardID"
         };
-        const expectedURI = `${newParams.product}_dashboard://${newParams.cluster}.${newParams.group_id}/${newParams.dashboard_id}`;
+        const expectedURI = `testProduct_dashboard://testCluster.testGroupID/testDashboardID`;
         const expectedArguments = {
           searchIndex: undefined,
           source: undefined,

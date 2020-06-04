@@ -21,7 +21,6 @@ import ImagePreview from './ImagePreview';
 import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
 import { formatDateTimeShort } from 'utils/dateUtils';
-import { buildURIfromDashboardParameters } from 'utils/navigationUtils';
 import ResourceList from 'components/common/ResourceList';
 import {
   ADD_DESC_TEXT,
@@ -57,10 +56,7 @@ export interface StateFromProps {
 }
 
 export interface MatchProps {
-  cluster: string;
-  product: string;
-  group_id: string;
-  dashboard_id: string;
+  uri: string;
 }
 
 export interface DispatchFromProps {
@@ -73,22 +69,21 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
 
   constructor(props) {
     super(props);
-
-    const uri = buildURIfromDashboardParameters(this.props.match.params);
+    const { uri } = this.props.match.params;
 
     this.state = { uri };
   }
 
   componentDidMount() {
     const { index, source } = getLoggingParams(this.props.location.search);
-    const uri = buildURIfromDashboardParameters(this.props.match.params);
+    const { uri } = this.props.match.params;
 
     this.props.getDashboard({ source, uri, searchIndex: index });
     this.setState({ uri });
   }
 
   componentDidUpdate() {
-    const uri = buildURIfromDashboardParameters(this.props.match.params);
+    const { uri } = this.props.match.params;
 
     if (this.state.uri !== uri) {
       const { index, source } = getLoggingParams(this.props.location.search);
