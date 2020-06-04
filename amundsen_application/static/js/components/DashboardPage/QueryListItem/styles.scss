@@ -1,0 +1,14 @@
+@import 'variables';
+
+$min-item-height: 54px;
+
+.query-list-item-name {
+  margin: 0;
+  line-height: $min-item-height;
+}
+.query-list-expanded-content {
+  padding-bottom: $spacer-3;
+}
+.query-list-query-label {
+  color: $text-tertiary;
+}

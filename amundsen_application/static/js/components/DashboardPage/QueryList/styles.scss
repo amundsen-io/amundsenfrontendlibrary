@@ -1,10 +1,12 @@
 @import 'variables';
 
+$min-item-height: 54px;
+
 .query-list.list-group {
   margin-bottom: 0;
 }
 
 .query-list-item.list-group-item {
-  min-height: 56px;
-  padding: $spacer-2 $spacer-3;
+  min-height: $min-item-height;
+  padding: 0 $spacer-3;
 }
