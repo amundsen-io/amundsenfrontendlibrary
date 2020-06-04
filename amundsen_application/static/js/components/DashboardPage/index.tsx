@@ -21,6 +21,7 @@ import ImagePreview from './ImagePreview';
 import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
 import { formatDateTimeShort } from 'utils/dateUtils';
+import { buildURIfromDashboardParameters } from 'utils/navigationUtils';
 import ResourceList from 'components/common/ResourceList';
 import {
   ADD_DESC_TEXT,
@@ -73,21 +74,21 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
   constructor(props) {
     super(props);
 
-    const uri = this.getDashboardKey();
+    const uri = buildURIfromDashboardParameters(this.props.match.params);
 
     this.state = { uri };
   }
 
   componentDidMount() {
     const { index, source } = getLoggingParams(this.props.location.search);
-    const uri = this.getDashboardKey();
+    const uri = buildURIfromDashboardParameters(this.props.match.params);
 
     this.props.getDashboard({ source, uri, searchIndex: index });
     this.setState({ uri });
   }
 
   componentDidUpdate() {
-    const uri = this.getDashboardKey();
+    const uri = buildURIfromDashboardParameters(this.props.match.params);
 
     if (this.state.uri !== uri) {
       const { index, source } = getLoggingParams(this.props.location.search);
@@ -95,12 +96,6 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
       this.props.getDashboard({ source, uri, searchIndex: index });
     }
   };
-
-  getDashboardKey() {
-    const { product, cluster, group_id, dashboard_id } = this.props.match.params;
-
-    return `${product}_dashboard://${cluster}.${group_id}/${dashboard_id}`;
-  }
 
   mapStatusToStyle = (status: string): string => {
     if (status === LAST_RUN_SUCCEEDED) {

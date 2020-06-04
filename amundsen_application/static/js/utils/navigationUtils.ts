@@ -47,3 +47,25 @@ export const updateSearchUrl = (searchParams: SearchParams, replace: boolean = f
     BrowserHistory.push(newUrl);
   }
 };
+
+/**
+ * Creates the dashboard detail URL from the URI
+ * @param URI String  URI of the dashboard, it has this shape: uri = "<product>_dashboard://<cluster>.<groupID>/<dashboardID>"
+ * @return String     Dashboard Detail page URL
+ */
+export const buildDashboardURL = (URI) => {
+  const product = URI.split(':')[0].split('_')[0];
+  const [cluster, groupID] = URI.split('/')[2].split('.');
+  const dashboardID = URI.split('/').pop();
+
+  return `/dashboard/${cluster}/${product}/${groupID}/${dashboardID}`;
+}
+
+/**
+ * Creates the URI for the dashboard from the dashboard detail page URL
+ * @param parameters  Object with URL parameters
+ * @return String     Dashboard URI
+ */
+export const buildURIfromDashboardParameters = ({ product, cluster, group_id, dashboard_id }) => {
+  return `${product}_dashboard://${cluster}.${group_id}/${dashboard_id}`;
+}
