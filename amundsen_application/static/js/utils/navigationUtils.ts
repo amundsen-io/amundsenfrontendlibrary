@@ -2,7 +2,6 @@ import * as qs from 'simple-query-string';
 import { createBrowserHistory } from 'history';
 
 import { ResourceType } from 'interfaces/Resources';
-import { MatchProps } from 'components/DashboardPage';
 
 // https://github.com/ReactTraining/react-router/issues/3972#issuecomment-264805667
 export const BrowserHistory = createBrowserHistory();
@@ -55,9 +54,5 @@ export const updateSearchUrl = (searchParams: SearchParams, replace: boolean = f
  * @return String     Dashboard Detail page URL
  */
 export const buildDashboardURL = (URI: string) => {
-  const product = URI.split(':')[0].split('_')[0];
-  const [cluster, groupID] = URI.split('/')[2].split('.');
-  const dashboardID = URI.split('/').pop();
-
   return `/dashboard/${encodeURIComponent(URI)}`;
 }

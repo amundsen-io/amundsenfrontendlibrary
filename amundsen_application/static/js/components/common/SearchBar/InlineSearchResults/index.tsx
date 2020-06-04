@@ -5,7 +5,7 @@ import SearchItemList from './SearchItemList';
 import ResultItemList from './ResultItemList';
 
 import { getSourceDisplayName, getSourceIconClass, indexDashboardsEnabled, indexUsersEnabled } from 'config/config-utils';
-import { buildDashboardURL } from '../../../../utils/navigationUtils';
+import { buildDashboardURL } from 'utils/navigationUtils';
 
 import { GlobalState } from 'ducks/rootReducer'
 import { DashboardSearchResults, TableSearchResults, UserSearchResults } from 'ducks/search/types';
