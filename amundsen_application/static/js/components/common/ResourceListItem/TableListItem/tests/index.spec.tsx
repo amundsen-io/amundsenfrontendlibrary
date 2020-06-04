@@ -4,6 +4,7 @@ import { shallow } from 'enzyme';
 
 import { Link } from 'react-router-dom';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
+import SchemaInfo from 'components/common/ResourceListItem/SchemaInfo';
 import TableListItem, { TableListItemProps } from '../';
 import { ResourceType, Badge, TagType } from 'interfaces';
 
@@ -94,7 +95,6 @@ describe('TableListItem', () => {
 
       it('renders start correct icon', () => {
         const startIcon = resourceInfo.find('.resource-icon');
-
         expect(startIcon.exists()).toBe(true);
         expect(startIcon.props().className).toEqual(wrapper.instance().generateResourceIconClass(props.table.database));
       });
@@ -102,18 +102,19 @@ describe('TableListItem', () => {
       describe('if props.table has schema description', () => {
         let schemaInfo;
         beforeAll(() => {
-        schemaInfo = resourceInfo.find('.resource-name').children().at(0).children().at(0);
+          schemaInfo = resourceInfo.find(SchemaInfo);
         });
 
         it('renders table name schema and description', () => {
-          expect(schemaInfo.props().schema).toEqual('tableSchema');
-          expect(schemaInfo.props().table).toEqual('tableName');
-          expect(schemaInfo.props().desc).toEqual('schemaDescription');
+          expect(schemaInfo.props()).toMatchObject({
+            schema: props.table.schema,
+            table: props.table.name,
+            desc: props.table.schema_description,
+          });
         });
       });
 
       describe('if props.table not have schema description', () => {
-
         it('if schema description is empty string', () => {
           const { props, wrapper } = setup({ table: {
             type: ResourceType.table,
@@ -127,10 +128,8 @@ describe('TableListItem', () => {
             schema: 'tableSchema',
             schema_description: '',
           }});
-
           expect(wrapper.find('.resource-name').children().at(0).children().at(0).text()).toEqual('tableSchema.tableName');
-
-      });
+        });
 
         it('if schema description is null', () => {
           const { props, wrapper } = setup({ table: {
@@ -145,12 +144,8 @@ describe('TableListItem', () => {
             schema: 'tableSchema',
             schema_description: null,
           }});
-
           expect(wrapper.find('.resource-name').children().at(0).children().at(0).text()).toEqual('tableSchema.tableName');
-
-
-      });
-
+        });
       });
 
       it('renders a bookmark icon in the resource name with correct props', () => {

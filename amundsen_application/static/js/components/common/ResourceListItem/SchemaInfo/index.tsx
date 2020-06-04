@@ -17,21 +17,21 @@ const SchemaInfo: React.SFC<SchemaInfoProps>  = ({ schema, table, desc, placemen
  );
 
   return (
-    <div>
-    <OverlayTrigger
-     trigger={['hover', 'focus']}
-     placement={ placement }
-     overlay={popoverHoverFocus}
-     >
-      <span className="underline">{ schema }</span>
-    </OverlayTrigger>.{ table }
-    </div>
+    <>
+      <OverlayTrigger
+       trigger={['hover', 'focus']}
+       placement={ placement }
+       overlay={popoverHoverFocus}
+       >
+        <span className="underline">{ schema }</span>
+      </OverlayTrigger>.{ table }
+    </>
   );
 };
 
 SchemaInfo.defaultProps = {
   placement: 'bottom',
-  };
+};
 
 
 export default SchemaInfo;

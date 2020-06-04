@@ -39,13 +39,11 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
             <div className="resource-info-text my-auto">
               <div className="resource-name title-2">
                 <div className="truncated">
-                  { table.schema_description &&
+                  {
+                    table.schema_description &&
                     <SchemaInfo schema={ table.schema } table = { table.name } desc={ table.schema_description }/>
                   }
-                  { !table.schema_description &&
-                    `${table.schema}.${table.name}`
-                  }
-
+                  { !table.schema_description && `${table.schema}.${table.name}` }
                 </div>
                 <BookmarkIcon bookmarkKey={ table.key } resourceType={ table.type } />
               </div>
