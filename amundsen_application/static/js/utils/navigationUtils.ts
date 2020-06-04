@@ -2,6 +2,7 @@ import * as qs from 'simple-query-string';
 import { createBrowserHistory } from 'history';
 
 import { ResourceType } from 'interfaces/Resources';
+import { MatchProps } from 'components/DashboardPage';
 
 // https://github.com/ReactTraining/react-router/issues/3972#issuecomment-264805667
 export const BrowserHistory = createBrowserHistory();
@@ -53,7 +54,7 @@ export const updateSearchUrl = (searchParams: SearchParams, replace: boolean = f
  * @param URI String  URI of the dashboard, it has this shape: uri = "<product>_dashboard://<cluster>.<groupID>/<dashboardID>"
  * @return String     Dashboard Detail page URL
  */
-export const buildDashboardURL = (URI) => {
+export const buildDashboardURL = (URI: string) => {
   const product = URI.split(':')[0].split('_')[0];
   const [cluster, groupID] = URI.split('/')[2].split('.');
   const dashboardID = URI.split('/').pop();
@@ -66,6 +67,6 @@ export const buildDashboardURL = (URI) => {
  * @param parameters  Object with URL parameters
  * @return String     Dashboard URI
  */
-export const buildURIfromDashboardParameters = ({ product, cluster, group_id, dashboard_id }) => {
+export const buildURIfromDashboardParameters = ({ product, cluster, group_id, dashboard_id }: MatchProps) => {
   return `${product}_dashboard://${cluster}.${group_id}/${dashboard_id}`;
 }

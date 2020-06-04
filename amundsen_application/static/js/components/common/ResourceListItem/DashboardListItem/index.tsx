@@ -24,9 +24,8 @@ class DashboardListItem extends React.Component<DashboardListItemProps, {}> {
 
   getLink = () => {
     const { dashboard, logging } = this.props;
-    const { uri } = dashboard;
 
-    return `${buildDashboardURL(uri)}?index=${logging.index}&source=${logging.source}`;
+    return `${buildDashboardURL(dashboard.uri)}?index=${logging.index}&source=${logging.source}`;
   };
 
   generateResourceIconClass = (dashboardId: string, dashboardType: ResourceType): string => {
