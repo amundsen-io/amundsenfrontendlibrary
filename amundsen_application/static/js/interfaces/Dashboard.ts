@@ -1,7 +1,7 @@
 import { User } from 'interfaces/User';
 import { Tag } from 'interfaces/Tags';
 import { TableReader } from 'interfaces/TableMetadata';
-import { TableResource } from 'interfaces/Resources';
+import { TableResource, QueryResource } from 'interfaces/Resources';
 
 export interface DashboardMetadata {
   badges: Tag[]
@@ -18,6 +18,7 @@ export interface DashboardMetadata {
   name: string;
   owners: User[];
   product: string;
+  queries: QueryResource[];
   query_names: string[];
   recent_view_count: number;
   tables: TableResource[];

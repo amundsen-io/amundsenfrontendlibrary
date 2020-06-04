@@ -54,6 +54,7 @@ export const initialDashboardState: DashboardMetadata = {
   name: "",
   owners: [],
   product: '',
+  queries: [],
   query_names: [],
   recent_view_count: null,
   tables: [],
