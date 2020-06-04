@@ -57,7 +57,7 @@ describe('QueryListItem', () => {
         beforeAll(() => {
           ({ wrapper } = setup());
 
-          wrapper.find('.list-group-item').simulate('click');
+          wrapper.find('.query-list-header').simulate('click');
         });
 
         it('should show the query label', () => {
@@ -73,6 +73,13 @@ describe('QueryListItem', () => {
 
           expect(actual).toEqual(expected);
         });
+
+        it('should show the go to dashboard button', () => {
+          const expected = 1;
+          const actual = wrapper.find('.query-list-query-link').length;
+
+          expect(actual).toEqual(expected);
+        });
       });
   });
 
@@ -84,7 +91,7 @@ describe('QueryListItem', () => {
         const expected = 1;
         let actual;
 
-        wrapper.find('.list-group-item').simulate('click');
+        wrapper.find('.query-list-header').simulate('click');
         actual = wrapper.find('.query-list-expanded-content').length;
 
         expect(actual).toEqual(expected);
@@ -96,8 +103,8 @@ describe('QueryListItem', () => {
           const expected = 0;
           let actual;
 
-          wrapper.find('.list-group-item').simulate('click');
-          wrapper.find('.list-group-item').simulate('click');
+          wrapper.find('.query-list-header').simulate('click');
+          wrapper.find('.query-list-header').simulate('click');
           actual = wrapper.find('.query-list-expanded-content').length;
 
           expect(actual).toEqual(expected);
