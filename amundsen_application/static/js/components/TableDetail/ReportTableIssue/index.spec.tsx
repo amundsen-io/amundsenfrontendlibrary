@@ -27,11 +27,11 @@ const mockFormData = {
  mockFormData.get.mockImplementation((val) => {
   return mockFormData[val];
 });
-function FormDataMock() {
+function formDataMock() {
   this.append = jest.fn();
   return mockFormData;
 }
-globalAny.FormData = FormDataMock;
+globalAny.FormData = formDataMock;
 
 const mockCreateIssuePayload = {
   key: 'key',
