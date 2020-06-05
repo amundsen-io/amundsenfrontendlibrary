@@ -128,7 +128,7 @@ describe('TableListItem', () => {
             schema: 'tableSchema',
             schema_description: '',
           }});
-          expect(wrapper.find('.resource-name').children().at(0).children().at(0).text()).toEqual('tableSchema.tableName');
+          expect(wrapper.find('.resource-name').children().at(0).text()).toEqual('tableSchema.tableName');
         });
 
         it('if schema description is null', () => {
@@ -144,7 +144,7 @@ describe('TableListItem', () => {
             schema: 'tableSchema',
             schema_description: null,
           }});
-          expect(wrapper.find('.resource-name').children().at(0).children().at(0).text()).toEqual('tableSchema.tableName');
+          expect(wrapper.find('.resource-name').children().at(0).text()).toEqual('tableSchema.tableName');
         });
       });
 
