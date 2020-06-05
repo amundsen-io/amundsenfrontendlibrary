@@ -1,7 +1,6 @@
-import * as React from 'react';
-import { CopyBlock, atomOneLight } from 'react-code-blocks';
+import * as React from "react";
 
-import './styles.scss';
+import "./styles.scss";
 
 export interface QueryListItemProps {
   key: string;
@@ -12,14 +11,21 @@ export interface QueryListItemProps {
 
 type GoToDashboardLinkProps = {
   url: string;
-}
+};
 
 const QUERY_LABEL = "Query";
-const LANGUAGE = "sql";
+const LOADING_QUERY_MESSAGE = "Loading Query Component, please wait...";
+
+const LazyComponent = React.lazy(() => import("./CodeBlock"));
 
 const GoToDashboardLink = ({ url }: GoToDashboardLinkProps) => {
   return (
-    <a className="query-list-query-link" href={url} target="_blank" rel="noopener noreferrer">
+    <a
+      className="query-list-query-link"
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <svg className="icon" fill="none" viewBox="0 0 24 24">
         <path
           fillRule="evenodd"
@@ -38,30 +44,39 @@ const QueryListItem = ({ name, text, key, url }: QueryListItemProps) => {
   };
 
   return (
-    <li className="list-group-item query-list-item clickable" key={key} role="tab" id={key}>
-      <a className="query-list-header" aria-expanded={isExpanded} aria-controls={key} role="button" href="#" onClick={toggleExpand}>
-        <p className="query-list-item-name column-name">{ name }</p>
+    <li
+      className="list-group-item query-list-item clickable"
+      key={key}
+      role="tab"
+      id={key}
+    >
+      <a
+        className="query-list-header"
+        aria-expanded={isExpanded}
+        aria-controls={key}
+        role="button"
+        href="#"
+        onClick={toggleExpand}
+      >
+        <p className="query-list-item-name column-name">{name}</p>
       </a>
-      {
-        isExpanded &&
+      {isExpanded && (
         <div className="query-list-expanded-content">
-          <label className="query-list-query-label section-title">{QUERY_LABEL}:
+          <label className="query-list-query-label section-title">
+            {QUERY_LABEL}:
             <div className="query-list-query-content">
               <GoToDashboardLink url={url} />
-              <CopyBlock
-                text={text}
-                language={LANGUAGE}
-                theme={atomOneLight}
-                showLineNumbers={false}
-                wrapLines={true}
-                codeBlock={true}
-              />
+              <React.Suspense
+                fallback={<p className="query-list-loading-message">{LOADING_QUERY_MESSAGE}</p>}
+              >
+                <LazyComponent text={text} />
+              </React.Suspense>
             </div>
           </label>
         </div>
-      }
+      )}
     </li>
   );
-}
+};
 
 export default QueryListItem;
