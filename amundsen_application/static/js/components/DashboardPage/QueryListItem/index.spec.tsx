@@ -7,7 +7,6 @@ import QueryListItem, { QueryListItemProps } from './';
 
 const setup = (propOverrides?: Partial<QueryListItemProps>) => {
   const props: QueryListItemProps = {
-    key: "testKey",
     text: "testQuery",
     url: "http://test.url",
     name: "testName",

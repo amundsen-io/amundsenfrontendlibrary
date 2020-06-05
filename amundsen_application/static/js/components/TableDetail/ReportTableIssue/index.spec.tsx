@@ -13,6 +13,8 @@ import {
 } from '.';
 import { NotificationType } from 'interfaces';
 
+const globalAny:any = global;
+
 const mockFormData = {
   'key': 'val1',
   'title': 'title',
@@ -20,10 +22,16 @@ const mockFormData = {
   'resource_name': 'resource name',
   'resource_path': 'path',
   'owners': 'test@test.com',
-  get: (key: string) => {
-    return mockFormData[key];
-  }
+  get: jest.fn(),
  };
+ mockFormData.get.mockImplementation((val) => {
+  return mockFormData[val];
+});
+function FormDataMock() {
+  this.append = jest.fn();
+  return mockFormData;
+}
+globalAny.FormData = FormDataMock;
 
 const mockCreateIssuePayload = {
   key: 'key',
@@ -41,8 +49,8 @@ const mockNotificationPayload = {
   sender: 'user@email'
 }
 
-// @ts-ignore: How to mock FormData without TypeScript error?
-global.FormData = () => (mockFormData);
+
+
 
 describe('ReportTableIssue', () => {
   const setStateSpy = jest.spyOn(ReportTableIssue.prototype, 'setState');

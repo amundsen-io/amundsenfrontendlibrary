@@ -19,12 +19,12 @@ class QueryList extends React.Component<QueryListProps> {
       return null;
     }
 
-    const queryList = queries.map((query) => (
+    const queryList = queries.map(({name, query_text, url}) => (
       <QueryListItem
-        key={`query:${query.name}`}
-        text={query.query_text}
-        url={query.url}
-        name={query.name}
+        key={`key:${name}`}
+        text={query_text}
+        url={url}
+        name={name}
       />
     ));
 

@@ -4,7 +4,6 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 import "./styles.scss";
 
 export interface QueryListItemProps {
-  key: string;
   text: string;
   url: string;
   name: string;
@@ -47,16 +46,16 @@ const GoToDashboardLink = ({ url }: GoToDashboardLinkProps) => {
   );
 };
 
-const QueryListItem = ({ name, text, key, url }: QueryListItemProps) => {
+const QueryListItem = ({ name, text, url }: QueryListItemProps) => {
   const [isExpanded, setExpanded] = React.useState(false);
   const toggleExpand = () => {
     setExpanded(!isExpanded);
   };
+  const key = `key:${name}`;
 
   return (
     <li
       className="list-group-item query-list-item clickable"
-      key={key}
       role="tab"
       id={key}
     >

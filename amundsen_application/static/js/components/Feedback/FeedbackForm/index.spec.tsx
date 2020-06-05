@@ -12,9 +12,23 @@ import {
   SUBMIT_SUCCESS_MESSAGE,
 } from '../constants';
 
-const mockFormData = { key1: 'val1', key2: 'val2' };
-// @ts-ignore: How to mock FormData without TypeScript error?
-global.FormData = () => (mockFormData);
+const globalAny:any = global;
+
+const mockFormData = {
+  key1: 'val1',
+  key2: 'val2',
+  get: jest.fn(),
+}
+mockFormData.get.mockImplementation((val) => {
+  return mockFormData[val];
+});
+
+function FormDataMock() {
+  this.append = jest.fn();
+  return mockFormData;
+}
+globalAny.FormData = FormDataMock;
+
 
 describe('FeedbackForm', () => {
   const setup = (propOverrides?: Partial<FeedbackFormProps>) => {

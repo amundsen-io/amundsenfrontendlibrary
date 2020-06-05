@@ -23,6 +23,7 @@ import {
   SEND_SUCCESS_MESSAGE,
 } from './constants'
 
+const globalAny:any = global;
 const mockFormData = {
   'recipients': 'test1@test.com,test2@test.com',
   'sender': 'test@test.com',
@@ -34,8 +35,13 @@ const mockFormData = {
 mockFormData.get.mockImplementation((val) => {
   return mockFormData[val];
 })
-// @ts-ignore: How to mock FormData without TypeScript error?
-global.FormData = () => (mockFormData);
+
+function FormDataMock() {
+  this.append = jest.fn();
+
+  return mockFormData;
+}
+globalAny.FormData = FormDataMock;
 
 describe('RequestMetadataForm', () => {
   const setup = (propOverrides?: Partial<RequestMetadataProps>) => {
