@@ -2,12 +2,12 @@
 
 .inline-results {
   background: white;
+  border: 1px solid $stroke;
+  border-radius: 4px;
+  box-shadow: 0 3px 12px 0 rgba(17, 17, 31, 0.04);
+  position: absolute;
   width: 100%;
   z-index: 10; // TODO: Establish levels for cases where we can't avoid z-index. This is a topmost element.
-  position: absolute;
-  border-radius: 4px;
-  border: 1px solid $stroke;
-  box-shadow: 0 3px 12px 0 rgba(17, 17, 31, 0.04);
 
   &.small {
     .search-item-link {
@@ -26,8 +26,8 @@
   }
 
   .search-item-section {
-    padding-top: $spacer-1;
     padding-bottom: $spacer-1;
+    padding-top: $spacer-1;
   }
 
   .inline-results-section {
@@ -57,8 +57,8 @@
         border: none;
 
         &:hover {
-          box-shadow: none !important;
           background-color: $indigo5;
+          box-shadow: none !important;
         }
 
         &:hover + .list-group-item {
@@ -82,8 +82,8 @@
         /* SEARCH ITEM */
         .search-item-link {
           height: 32px;
-          padding: 4px 4px 4px 24px;
           line-height: inherit;
+          padding: 4px 4px 4px 24px;
 
           &:hover {
             .search-item-info .search-item-text {
@@ -100,16 +100,13 @@
           }
 
           .loading-spinner {
-            width: 24px;
             height: 24px;
             margin: auto 0;
+            width: 24px;
           }
 
           .search-item-indicator {
             margin: auto 0 auto $spacer-1;
-          }
-
-          .search-item-indicator {
             font-style: italic;
           }
         }
@@ -122,8 +119,8 @@
           .result-info {
             display: flex;
             flex: 1;
-            min-width: 0;
             margin-right: 8px;
+            min-width: 0;
 
             .dashboard-title {
               display: flex;

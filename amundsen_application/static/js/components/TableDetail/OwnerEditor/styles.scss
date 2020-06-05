@@ -29,10 +29,10 @@
 .owner-editor-modal {
   .component-list li {
     margin: 0;
-    padding-top: 4px;
     padding-bottom: 4px;
-    padding-right: 16px;
     padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 4px;
 
     &:focus,
     &:hover {
@@ -45,9 +45,9 @@
     }
 
     .btn.delete-button {
+      display: none;
       margin: auto;
       margin-right: 0;
-      display: none;
     }
   }
 
@@ -69,21 +69,21 @@
   }
 
   .modal-dialog {
-    min-width: 400px;
     height: fit-content;
+    min-width: 400px;
     width: fit-content;
 
     p {
-      text-align: start;
       margin-left: 4px;
+      text-align: start;
     }
   }
 
   form {
     display: flex;
+    margin-bottom: 16px;
     margin-left: 16px;
     margin-right: 16px;
-    margin-bottom: 16px;
   }
 
   input {
@@ -97,8 +97,8 @@
 
 .component-list {
   list-style-type: none;
-  padding: 0;
   margin: 0;
+  padding: 0;
 
   li {
     display: flex;

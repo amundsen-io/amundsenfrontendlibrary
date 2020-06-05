@@ -38,21 +38,21 @@
 }
 
 .tooltip-inner {
-  padding: 0;
-  border-radius: 3px;
   background-color: $body-bg-dark;
+  border-radius: 3px;
+  padding: 0;
 }
 
 .tooltip-inner button {
-  height: 36px;
-  width: 96px;
-  font-size: 14px;
-  border-radius: 3px;
-  border: none;
   background-color: $body-bg-dark;
+  border: none;
+  border-radius: 3px;
   color: $body-bg;
+  font-size: 14px;
   font-weight: $font-weight-body-bold;
+  height: 36px;
   outline: none;
+  width: 96px;
 }
 
 .tooltip-inner button:hover {
@@ -66,8 +66,8 @@
 
 .error-tooltip button {
   height: 24px;
-  width: 24px;
   margin: auto;
+  width: 24px;
 }
 
 .column-type-popover {

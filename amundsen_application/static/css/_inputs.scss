@@ -1,5 +1,7 @@
 @import 'variables';
 
+$testVAR: 0;
+
 input {
   &::-webkit-input-placeholder,
   &::-moz-placeholder,
@@ -17,11 +19,11 @@ input {
     box-shadow: 0 0 0 1000px $white inset !important;
   }
 
-  &[type="radio"] {
+  &[type='radio'] {
     margin: 5px;
   }
 
-  &[type="text"] {
+  &[type='text'] {
     color: $text-secondary !important;
   }
 
@@ -31,9 +33,9 @@ input {
 }
 
 textarea {
-  width: 100%;
-  color: $text-secondary !important;
   border: 1px solid $stroke;
   border-radius: 5px;
+  color: $text-secondary !important;
   padding: 10px;
+  width: 100%;
 }

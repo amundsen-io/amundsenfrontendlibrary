@@ -7,8 +7,8 @@ $max-modal-height: 87vh;
   padding: 0;
 
   &:hover img.preview {
-    cursor: zoom-in;
     border: 1px solid $gray50;
+    cursor: zoom-in;
   }
 }
 
