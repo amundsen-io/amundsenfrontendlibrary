@@ -1,4 +1,5 @@
 import * as React from "react";
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import "./styles.scss";
 
@@ -14,26 +15,35 @@ type GoToDashboardLinkProps = {
 };
 
 const QUERY_LABEL = "Query";
+const MODE_LINK_TOOLTIP_TEXT = "View in Mode";
 const LOADING_QUERY_MESSAGE = "Loading Query Component, please wait...";
 
 const LazyComponent = React.lazy(() => import("./CodeBlock"));
 
 const GoToDashboardLink = ({ url }: GoToDashboardLinkProps) => {
+  const popoverHoverFocus = (<Popover id="popover-trigger-hover-focus">{MODE_LINK_TOOLTIP_TEXT}</Popover>);
+
   return (
-    <a
-      className="query-list-query-link"
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
+    <OverlayTrigger
+      trigger={["hover", "focus"]}
+      placement="bottom"
+      overlay={popoverHoverFocus}
     >
-      <svg className="icon" fill="none" viewBox="0 0 24 24">
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M9 3v2.75H5.75v12.5h12.5V15H21v6H3V3h6zm12 0v9.75h-2.75V7.892L10.544 15.6 8.4 13.456l7.707-7.707-4.607.001V3H21z"
-        />
-      </svg>
-    </a>
+      <a
+        className="query-list-query-link"
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg className="icon" fill="none" viewBox="0 0 24 24">
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M9 3v2.75H5.75v12.5h12.5V15H21v6H3V3h6zm12 0v9.75h-2.75V7.892L10.544 15.6 8.4 13.456l7.707-7.707-4.607.001V3H21z"
+          />
+        </svg>
+      </a>
+    </OverlayTrigger>
   );
 };
 
