@@ -46,7 +46,7 @@ describe('SchemaInfo', () => {
       expect(wrapper.find(OverlayTrigger).find('.underline').text()).toEqual(props.schema);
     });
 
-    it('renders correct schema and table name', () => {
+    it('renders correct table name', () => {
       expect(wrapper.children().at(1).text()).toEqual('.');
       expect(wrapper.children().at(2).text()).toEqual(props.table);
     });
