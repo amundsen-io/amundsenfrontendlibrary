@@ -7,12 +7,13 @@ import { LoggingParams } from '../types';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 
 import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
+import { buildDashboardURL } from 'utils/navigationUtils';
+import { formatDate } from 'utils/dateUtils';
 
 import { ResourceType, DashboardResource } from 'interfaces';
 
-import { formatDate } from 'utils/dateUtils';
-
 import * as Constants from './constants';
+import { NO_TIMESTAMP_TEXT } from 'components/constants';
 
 export interface DashboardListItemProps {
   dashboard: DashboardResource;
@@ -20,9 +21,11 @@ export interface DashboardListItemProps {
 }
 
 class DashboardListItem extends React.Component<DashboardListItemProps, {}> {
+
   getLink = () => {
     const { dashboard, logging } = this.props;
-    return `/dashboard?uri=${dashboard.uri}&index=${logging.index}&source=${logging.source}`;
+
+    return `${buildDashboardURL(dashboard.uri)}?index=${logging.index}&source=${logging.source}`;
   };
 
   generateResourceIconClass = (dashboardId: string, dashboardType: ResourceType): string => {
@@ -53,15 +56,16 @@ class DashboardListItem extends React.Component<DashboardListItemProps, {}> {
             { getSourceDisplayName(dashboard.product, dashboard.type) }
           </div>
           <div className="resource-badges">
-            {
-               dashboard.last_successful_run_timestamp &&
-               <div>
-                 <div className="title-3">{ Constants.LAST_RUN_TITLE }</div>
-                 <div className="body-secondary-3">
-                   { formatDate({ epochTimestamp: dashboard.last_successful_run_timestamp }) }
-                 </div>
+            <div>
+               <div className="title-3">{ Constants.LAST_RUN_TITLE }</div>
+               <div className="body-secondary-3">
+                 {
+                   dashboard.last_successful_run_timestamp ?
+                   formatDate({ epochTimestamp: dashboard.last_successful_run_timestamp }) :
+                   NO_TIMESTAMP_TEXT
+                 }
                </div>
-             }
+            </div>
             <img className="icon icon-right" />
           </div>
         </Link>

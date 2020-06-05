@@ -15,6 +15,8 @@ const MOCK_DISPLAY_NAME = 'displayName';
 const MOCK_ICON_CLASS = 'test-class';
 const MOCK_DATE = 'Jan 1, 2000';
 
+import { NO_TIMESTAMP_TEXT } from 'components/constants';
+
 import { dashboardSummary } from 'fixtures/metadata/dashboard';
 
 jest.mock('config/config-utils', () => (
@@ -43,8 +45,10 @@ describe('DashboardListItem', () => {
   describe('getLink', () => {
     it('getLink returns correct string', () => {
       const { props, wrapper } = setup();
-      const { dashboard, logging } = props;
-      expect(wrapper.instance().getLink()).toEqual(`/dashboard?uri=${dashboard.uri}&index=${logging.index}&source=${logging.source}`);
+      const expectedURL = "/dashboard/mode_dashboard%3A%2F%2Fcluster.group%2Fname?index=0&source=src";
+      const actual = wrapper.instance().getLink();
+
+      expect(actual).toEqual(expectedURL);
     });
   });
 
@@ -120,7 +124,7 @@ describe('DashboardListItem', () => {
       });
 
       describe('for successful run timestamp', () => {
-        it('does not render timestamp if it doesnt exist', () => {
+        it('renders default text if it doesnt exist', () => {
           const { props, wrapper } = setup({ dashboard: {
             group_name: 'Amundsen Team',
             group_url: 'product/group',
@@ -133,7 +137,8 @@ describe('DashboardListItem', () => {
             cluster: 'cluster',
             last_successful_run_timestamp: null
           }});
-          expect(wrapper.find('.resource-badges').children()).toHaveLength(1);
+          expect(wrapper.find('.resource-badges').find('.title-3').text()).toBe(Constants.LAST_RUN_TITLE);
+          expect(wrapper.find('.resource-badges').find('.body-secondary-3').text()).toBe(NO_TIMESTAMP_TEXT);
         });
 
         it('renders if timestamp exists', () => {

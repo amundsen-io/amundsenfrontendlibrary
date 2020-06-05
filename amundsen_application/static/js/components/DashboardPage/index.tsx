@@ -20,7 +20,7 @@ import { DashboardMetadata } from 'interfaces/Dashboard';
 import ImagePreview from './ImagePreview';
 import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
-import { formatDateTimeShort } from '../../utils/dateUtils';
+import { formatDateTimeShort } from 'utils/dateUtils';
 import ResourceList from 'components/common/ResourceList';
 import {
   ADD_DESC_TEXT,
@@ -38,11 +38,12 @@ import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
 
 import { getLoggingParams } from 'utils/logUtils';
 
+import { NO_TIMESTAMP_TEXT } from 'components/constants';
+
 import './styles.scss';
 
-export interface RouteProps {
-  uri: string;
-}
+const STATUS_SUCCESS = 'success';
+const STATUS_DANGER = 'danger';
 
 interface DashboardPageState {
   uri: string;
@@ -54,42 +55,48 @@ export interface StateFromProps {
   dashboard: DashboardMetadata;
 }
 
+export interface MatchProps {
+  uri: string;
+}
+
 export interface DispatchFromProps {
   getDashboard: (payload: { uri: string, searchIndex?: string, source?: string }) => GetDashboardRequest;
 }
 
-export type DashboardPageProps = RouteComponentProps<RouteProps> & StateFromProps & DispatchFromProps;
+export type DashboardPageProps = RouteComponentProps<MatchProps> & StateFromProps & DispatchFromProps;
 
 export class DashboardPage extends React.Component<DashboardPageProps, DashboardPageState> {
+
   constructor(props) {
     super(props);
+    const { uri } = this.props.match.params;
 
-    const { uri } = qs.parse(this.props.location.search);
     this.state = { uri };
   }
 
   componentDidMount() {
-    this.loadDashboard(this.state.uri);
-  }
-
-  loadDashboard(uri: string) {
     const { index, source } = getLoggingParams(this.props.location.search);
+    const { uri } = this.props.match.params;
+
     this.props.getDashboard({ source, uri, searchIndex: index });
+    this.setState({ uri });
   }
 
   componentDidUpdate() {
-    const { uri } = qs.parse(this.props.location.search);
+    const { uri } = this.props.match.params;
+
     if (this.state.uri !== uri) {
+      const { index, source } = getLoggingParams(this.props.location.search);
       this.setState({ uri });
-      this.loadDashboard(uri);
+      this.props.getDashboard({ source, uri, searchIndex: index });
     }
   };
 
   mapStatusToStyle = (status: string): string => {
     if (status === LAST_RUN_SUCCEEDED) {
-      return 'success';
+      return STATUS_SUCCESS;
     }
-    return 'danger';
+    return STATUS_DANGER;
   };
 
   renderTabs() {
@@ -207,40 +214,48 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
             </EditableSection>
             <section className="column-layout-2">
               <section className="left-panel">
-                <div className="section-title title-3">Owners</div>
-                <div>
-                  {
-                    dashboard.owners.length > 0 &&
-                    dashboard.owners.map(owner =>
-                      <Link
-                        key={owner.user_id}
-                        to={`/user/${owner.user_id}?source=${DASHBOARD_OWNER_SOURCE}`}>
-                        <AvatarLabel
-                          label={owner.display_name}/>
-                      </Link>
-                    )
-                  }
-                  {
-                    dashboard.owners.length === 0 &&
-                    <AvatarLabel
-                      avatarClass='gray-avatar'
-                      labelClass='text-placeholder'
-                      label={NO_OWNER_TEXT}
-                    />
-                  }
-                </div>
-                <div className="section-title title-3">Created</div>
-                <div className="body-2 text-primary">
-                  { formatDateTimeShort({ epochTimestamp: dashboard.created_timestamp}) }
-                </div>
-                <div className="section-title title-3">Last Updated</div>
-                <div className="body-2 text-primary">
-                  { formatDateTimeShort({ epochTimestamp: dashboard.updated_timestamp }) }
-                </div>
-                <div className="section-title title-3">Recent View Count</div>
-                <div className="body-2 text-primary">
-                  { dashboard.recent_view_count }
-                </div>
+                <section className="metadata-section">
+                  <div className="section-title title-3">Owners</div>
+                  <div>
+                    {
+                      dashboard.owners.length > 0 &&
+                      dashboard.owners.map(owner =>
+                        <Link
+                          key={owner.user_id}
+                          to={`/user/${owner.user_id}?source=${DASHBOARD_OWNER_SOURCE}`}>
+                          <AvatarLabel
+                            label={owner.display_name}/>
+                        </Link>
+                      )
+                    }
+                    {
+                      dashboard.owners.length === 0 &&
+                      <AvatarLabel
+                        avatarClass='gray-avatar'
+                        labelClass='text-placeholder'
+                        label={NO_OWNER_TEXT}
+                      />
+                    }
+                  </div>
+                </section>
+                <section className="metadata-section">
+                  <div className="section-title title-3">Created</div>
+                  <div className="body-2 text-primary">
+                    { formatDateTimeShort({ epochTimestamp: dashboard.created_timestamp}) }
+                  </div>
+                </section>
+                <section className="metadata-section">
+                  <div className="section-title title-3">Last Updated</div>
+                  <div className="body-2 text-primary">
+                    { formatDateTimeShort({ epochTimestamp: dashboard.updated_timestamp }) }
+                  </div>
+                </section>
+                <section className="metadata-section">
+                  <div className="section-title title-3">Recent View Count</div>
+                  <div className="body-2 text-primary">
+                    { dashboard.recent_view_count }
+                  </div>
+                </section>
               </section>
               <section className="right-panel">
                 <EditableSection title="Tags">
@@ -249,23 +264,35 @@ export class DashboardPage extends React.Component<DashboardPageProps, Dashboard
                     uriKey={ this.props.dashboard.uri }
                   />
                 </EditableSection>
-                <div className="section-title title-3">Last Successful Run</div>
-                <div className="body-2 text-primary">
-                  { formatDateTimeShort({ epochTimestamp: dashboard.last_successful_run_timestamp }) }
-                </div>
-                <div className="section-title title-3">Last Run</div>
-                <div>
-                  <div className="body-2 text-primary">
-                    { formatDateTimeShort({ epochTimestamp: dashboard.last_run_timestamp }) }
+                <section className="metadata-section">
+                  <div className="section-title title-3">Last Successful Run</div>
+                  <div className="last-successful-run-timestamp body-2 text-primary">
+                    {
+                      dashboard.last_successful_run_timestamp ?
+                      formatDateTimeShort({ epochTimestamp: dashboard.last_successful_run_timestamp }) :
+                      NO_TIMESTAMP_TEXT
+                    }
                   </div>
-                  <div className="last-run-state">
-                    <Flag
-                      caseType='sentenceCase'
-                      text={ dashboard.last_run_state }
-                      labelStyle={this.mapStatusToStyle(dashboard.last_run_state)}
-                    />
+                </section>
+                <section className="metadata-section">
+                  <div className="section-title title-3">Last Run</div>
+                  <div>
+                    <div className="last-run-timestamp body-2 text-primary">
+                      {
+                        dashboard.last_run_timestamp ?
+                        formatDateTimeShort({ epochTimestamp: dashboard.last_run_timestamp }) :
+                        NO_TIMESTAMP_TEXT
+                      }
+                    </div>
+                    <div className="last-run-state">
+                      <Flag
+                        caseType='sentenceCase'
+                        text={ dashboard.last_run_state }
+                        labelStyle={this.mapStatusToStyle(dashboard.last_run_state)}
+                      />
+                    </div>
                   </div>
-                </div>
+                </section>
               </section>
             </section>
             <ImagePreview uri={this.state.uri} redirectUrl={dashboard.url} />
