@@ -5,7 +5,6 @@ button.info-button {
   width: 24px;
   margin: 0 0 0 8px;
   padding: 0;
-
   background-color: $stroke;
   border: none;
   mask-image: url('/static/images/icons/Info.svg');
@@ -25,5 +24,5 @@ button.info-button.small {
 }
 
 button.info-button:hover {
-    background-color: $brand-color-4;
+  background-color: $brand-color-4;
 }

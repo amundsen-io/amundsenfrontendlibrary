@@ -24,11 +24,12 @@
       flex-basis: 100px;
       overflow: hidden;
     }
+
     .badges {
       // placeholder
     }
-    .actions {
 
+    .actions {
       .column-dropdown {
         &.open {
           background-color: $body-bg-tertiary;

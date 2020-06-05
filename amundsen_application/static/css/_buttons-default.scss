@@ -1,7 +1,6 @@
 @import 'variables';
 
 .btn {
-
   &.btn-primary,
   &.btn-default {
     border-width: 2px;
@@ -127,7 +126,6 @@
     width: 18px;
     margin: 4px 0 0 0;
     padding: 0;
-
     background-color: $icon-bg;
     border: none;
     mask-image: url('/static/images/icons/Close.svg');

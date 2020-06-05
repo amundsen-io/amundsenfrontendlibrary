@@ -10,7 +10,6 @@ $resource-header-height: 84px;
     border-bottom: 2px solid $divider;
     padding: 16px 24px;
 
-
     .icon-header {
       height: 32px;
       width: 32px;
@@ -36,7 +35,6 @@ $resource-header-height: 84px;
         padding-top: 17px;
       }
 
-
       .header-bullets {
         display: inline;
         margin: 0;
@@ -44,14 +42,14 @@ $resource-header-height: 84px;
 
         li {
           display: inline;
-          &:after { content: "\00A0\2022\00A0"; }
-          &:last-child:after { content: ""; }
+          &::after { content: "\00A0\2022\00A0"; }
+          &:last-child::after { content: ""; }
         }
       }
 
-
       &.header-links {
         flex-shrink: 0;
+
         > * {
           margin-right: 16px;
         }
@@ -65,16 +63,18 @@ $resource-header-height: 84px;
           }
         }
       }
+
       &.header-buttons {
         flex-shrink: 0;
+
         > * {
           margin-right: 8px;
+
           &:last-child {
             margin-right: 0;
           }
         }
       }
-
     }
   }
 
@@ -132,15 +132,15 @@ $resource-header-height: 84px;
       width: 0; // Required for text truncation
     }
 
-     @media(max-width: 1440px) {
+    @media (max-width: 1440px) {
       > .left-panel {
-       flex-basis: 500px;
+        flex-basis: 500px;
       }
     }
 
-    @media(max-width: 1200px) {
+    @media (max-width: 1200px) {
       > .left-panel {
-       flex-basis: 415px;
+        flex-basis: 415px;
       }
     }
   }

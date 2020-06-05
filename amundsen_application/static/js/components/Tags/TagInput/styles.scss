@@ -1,7 +1,6 @@
 @import 'variables';
 
 .tag-input {
-
   /*
    override default react-select style classes.
    using !important as a temporary workaround in places where a compiled class
@@ -48,7 +47,6 @@
       border-style: none;
     }
   }
-
 
   .amundsen__value-container {
     padding: 0 !important;
@@ -121,6 +119,4 @@
   .multi-value-label:hover {
     cursor: pointer;
   }
-
-
 }

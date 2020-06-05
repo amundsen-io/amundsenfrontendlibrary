@@ -22,7 +22,6 @@ $stroke-light:      $gray10 !default;
 $stroke-focus:      $gray60 !default;
 $stroke-underline:  $gray40 !default;
 
-
 // Typography
 $text-primary:     $gray100 !default;
 $text-secondary:   $gray60 !default;
@@ -44,15 +43,14 @@ $font-family-header:         "Roboto", sans-serif !default;
 $font-weight-header-regular: 500 !default;
 $font-weight-header-bold:    700 !default;
 
-$font-family-monospace:       'Menlo-Bold', Menlo, monospace !default;
-$font-family-serif:           Georgia, "Times New Roman", Times, serif !default;
+$font-family-monospace:       'Menlo-Bold', menlo, monospace !default;
+$font-family-serif:           georgia, "Times New Roman", times, serif !default;
 
 $font-size-small:    12px !default;
 $font-size-base:     14px !default;
 $font-size-large:    16px !default;
 $line-height-small:  1.5 !default;
 $line-height-large:  1.5 !default;
-
 
 // Badges
 $badge-text-color: $text-primary;
@@ -61,7 +59,6 @@ $badge-default-color: $gray20;
 $badge-primary-color: $cyan10;
 $badge-success-color: $mint20;
 $badge-warning-color: $amber30;
-
 
 // Buttons
 $btn-border-radius-base: 4px;
@@ -79,7 +76,6 @@ $btn-default-border:       $gray20 !default;
 $btn-default-border-hover: $gray30 !default;
 $btn-default-color:        $gray100 !default;
 $btn-default-color-hover:  $gray90 !default;
-
 
 // Icons
 $icon-bg:          $gray20 !default;
@@ -103,7 +99,6 @@ $search-panel-border-width: 4px;
 $list-group-border:        $stroke !default;
 $list-group-border-radius: 0 !default;
 
-
 // Labels
 $label-primary-bg: $brand-color-3 !default;
 
@@ -114,7 +109,6 @@ $priority-bg-color: $rose80;
 // Tags
 $tag-bg: $gray5;
 $tag-bg-hover: $gray10;
-
 
 // TODO Temp Colors
 $resource-title-color: $indigo60;

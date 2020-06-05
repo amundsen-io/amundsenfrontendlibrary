@@ -10,7 +10,7 @@
 
   img.icon.resource-icon,
   .sb-avatar {
-    margin: auto 16px auto 0px;
+    margin: auto 16px auto 0;
   }
 
   .icon-right {
@@ -30,7 +30,7 @@
   .resource-info {
     display: flex;
     flex: 7;
-    min-width: 0px;
+    min-width: 0;
     margin-right: 24px;
 
     .resource-info-text {

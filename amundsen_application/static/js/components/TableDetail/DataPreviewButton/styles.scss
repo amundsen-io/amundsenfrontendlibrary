@@ -15,6 +15,7 @@
       font-family: $font-family-header;
       font-weight: $font-weight-header-bold;
     }
+
     .modal-body {
       margin: 15px;
       overflow-y: scroll;
@@ -24,13 +25,16 @@
       .grid {
         display: flex;
       }
+
       .grid-column {
         flex-grow: 1;
       }
+
       .grid-header.grid-cell {
         background-color: $body-bg-secondary;
         height: 40px;
       }
+
       .grid-cell {
         display: flex;
         padding: 8px;
@@ -38,7 +42,7 @@
         justify-content: center;
         align-items: center;
         font-size: 12px;
-        min-width: 0px;
+        min-width: 0;
         height: 32px;
         text-align: center;
         white-space: nowrap;

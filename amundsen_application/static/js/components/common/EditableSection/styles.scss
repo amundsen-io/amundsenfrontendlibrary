@@ -9,9 +9,11 @@
   .edit-button {
     opacity: 0;
     margin-left: 4px;
+
     img {
       margin-bottom: auto;
     }
+
     &.active {
       opacity: 1;
     }

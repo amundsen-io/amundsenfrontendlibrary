@@ -26,7 +26,7 @@ $users: (
 );
 
 // Given a Map of key/value pairs, generates a new class
-@mixin iconBackgrounds($map){
+@mixin iconBackgrounds($map) {
   @each $name, $url in $map {
     &.icon-#{$name} {
       background: transparent url($url) center center / contain no-repeat;

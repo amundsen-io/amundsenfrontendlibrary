@@ -8,26 +8,32 @@
   font-size: 12px;
   padding: 5px;
 }
+
 .popover-title {
   border-bottom: 1px solid $stroke;
   color: $text-inverse;
   font-size: 14px;
   padding: 5px;
 }
+
 .popover-content {
   padding: 2px 5px;
   word-break: break-word;
 }
-.popover.right .arrow:after {
+
+.popover.right .arrow::after {
   border-right-color: $body-bg-dark;
 }
-.popover.bottom .arrow:after {
+
+.popover.bottom .arrow::after {
   border-bottom-color: $body-bg-dark;
 }
-.popover.top .arrow:after {
+
+.popover.top .arrow::after {
   border-top-color: $body-bg-dark;
 }
-.popover.left .arrow:after {
+
+.popover.left .arrow::after {
   border-left-color: $body-bg-dark;
 }
 
@@ -48,6 +54,7 @@
   font-weight: $font-weight-body-bold;
   outline: none;
 }
+
 .tooltip-inner button:hover {
   color: $text-secondary;
 }
@@ -56,6 +63,7 @@
   display: flex;
   padding: 5px;
 }
+
 .error-tooltip button {
   height: 24px;
   width: 24px;
