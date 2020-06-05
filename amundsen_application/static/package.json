@@ -70,8 +70,10 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.20.0",
     "html-webpack-plugin": "4.3.0",
+    "husky": "^4.2.5",
     "jest": "^25.5.4",
     "jest-css-modules": "^2.1.0",
+    "lint-staged": "^10.2.9",
     "mini-css-extract-plugin": "^0.4.5",
     "moment-locales-webpack-plugin": "^1.2.0",
     "node-sass": "^4.14.1",
@@ -205,5 +207,14 @@
         }
       }
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{ts,tsx,css,md}": "prettier --write"
   }
 }
