@@ -11,7 +11,7 @@ $code-block-button-hover-opacity: 1;
 $code-block-max-height: 400px;
 
 
-@mixin button-style {
+@mixin code-block-action-button-style {
   max-width: $code-block-button-size;
   width: $code-block-button-size;
   max-height: $code-block-button-size;
@@ -66,12 +66,21 @@ $code-block-max-height: 400px;
         width: 100%;
         max-height: $code-block-max-height;
         overflow-y: scroll;
+        padding: $query-content-padding !important;
       }
     }
   }
 
   button {
+    @include code-block-action-button-style;
     display: none;
+    padding: 6px;
+    margin: $code-block-button-spacer (2 * $code-block-button-spacer) 0 0;
+  }
+
+  svg.icon {
+    width: $code-block-button-icon-size;
+    height: $code-block-button-icon-size;
   }
 
   &:hover {
@@ -81,23 +90,8 @@ $code-block-max-height: 400px;
     }
   }
 
-  svg.icon {
-    width: $code-block-button-icon-size;
-    height: $code-block-button-icon-size;
-  }
-
-  button {
-    @include button-style;
-    padding: 6px;
-    margin: $code-block-button-spacer (2 * $code-block-button-spacer) 0 0;
-  }
-
-  code {
-    padding: $query-content-padding !important;
-  }
-
   .query-list-query-link {
-    @include button-style;
+    @include code-block-action-button-style;
     display: none;
     line-height: $code-block-button-size;
     text-align: center;
