@@ -126,35 +126,43 @@ describe('TableListItem', () => {
 
       describe('if props.table not have schema description', () => {
         it('if schema description is empty string', () => {
-          const { props, wrapper } = setup({ table: {
-            type: ResourceType.table,
-            cluster: '',
-            database: 'testdb',
-            description: 'I am the description',
-            key: '',
-            last_updated_timestamp: 1553829681,
-            badges: [ { tag_name: 'badgeName', tag_type: TagType.BADGE } ],
-            name: 'tableName',
-            schema: 'tableSchema',
-            schema_description: '',
-          }});
-          expect(wrapper.find('.resource-name').children().at(0).text()).toEqual('tableSchema.tableName');
+          const { props, wrapper } = setup({
+            table: {
+              type: ResourceType.table,
+              cluster: '',
+              database: 'testdb',
+              description: 'I am the description',
+              key: '',
+              last_updated_timestamp: 1553829681,
+              badges: [{ tag_name: 'badgeName', tag_type: TagType.BADGE }],
+              name: 'tableName',
+              schema: 'tableSchema',
+              schema_description: '',
+            },
+          });
+          expect(
+            wrapper.find('.resource-name').children().at(0).text()
+          ).toEqual('tableSchema.tableName');
         });
 
         it('if schema description is null', () => {
-          const { props, wrapper } = setup({ table: {
-            type: ResourceType.table,
-            cluster: '',
-            database: 'testdb',
-            description: 'I am the description',
-            key: '',
-            last_updated_timestamp: 1553829681,
-            badges: [ { tag_name: 'badgeName', tag_type: TagType.BADGE } ],
-            name: 'tableName',
-            schema: 'tableSchema',
-            schema_description: null,
-          }});
-          expect(wrapper.find('.resource-name').children().at(0).text()).toEqual('tableSchema.tableName');
+          const { props, wrapper } = setup({
+            table: {
+              type: ResourceType.table,
+              cluster: '',
+              database: 'testdb',
+              description: 'I am the description',
+              key: '',
+              last_updated_timestamp: 1553829681,
+              badges: [{ tag_name: 'badgeName', tag_type: TagType.BADGE }],
+              name: 'tableName',
+              schema: 'tableSchema',
+              schema_description: null,
+            },
+          });
+          expect(
+            wrapper.find('.resource-name').children().at(0).text()
+          ).toEqual('tableSchema.tableName');
         });
       });
 
@@ -210,19 +218,6 @@ describe('TableListItem', () => {
 
       describe('if props.table does not have badges', () => {
         it('does not render badges section', () => {
-<<<<<<< HEAD
-          const { props, wrapper } = setup({ table: {
-            type: ResourceType.table,
-            cluster: '',
-            database: '',
-            description: 'I am the description',
-            key: '',
-            badges: null,
-            name: 'tableName',
-            schema: 'tableSchema',
-            schema_description: 'schemaDescription',
-          }});
-=======
           const { props, wrapper } = setup({
             table: {
               type: ResourceType.table,
@@ -233,26 +228,13 @@ describe('TableListItem', () => {
               badges: null,
               name: 'tableName',
               schema: 'tableSchema',
+              schema_description: 'schemaDescription',
             },
           });
->>>>>>> Overall Prettier Format run
           expect(wrapper.find('.resource-badges').children()).toHaveLength(1);
         });
 
         it('or if they are empty does not render badges section', () => {
-<<<<<<< HEAD
-          const { props, wrapper } = setup({ table: {
-            type: ResourceType.table,
-            cluster: '',
-            database: '',
-            description: 'I am the description',
-            key: '',
-            badges: [],
-            name: 'tableName',
-            schema: 'tableSchema',
-            schema_description: 'schemaDescription',
-          }});
-=======
           const { props, wrapper } = setup({
             table: {
               type: ResourceType.table,
@@ -263,9 +245,9 @@ describe('TableListItem', () => {
               badges: [],
               name: 'tableName',
               schema: 'tableSchema',
+              schema_description: 'schemaDescription',
             },
           });
->>>>>>> Overall Prettier Format run
           expect(wrapper.find('.resource-badges').children()).toHaveLength(1);
         });
       });
