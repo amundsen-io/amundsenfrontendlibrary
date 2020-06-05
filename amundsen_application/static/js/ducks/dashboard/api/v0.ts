@@ -7,7 +7,7 @@ import { DashboardMetadata } from 'interfaces/Dashboard';
 export type GetDashboardAPI = {
   msg: string;
   dashboard: DashboardMetadata;
-}
+};
 
 const DASHBOARD_BASE = '/api/metadata/v0';
 
@@ -42,6 +42,6 @@ export function getDashboard(uri: string, index?: string, source?: string) {
     return Promise.reject({
       statusCode,
       statusMessage,
-    })
+    });
   });
 }

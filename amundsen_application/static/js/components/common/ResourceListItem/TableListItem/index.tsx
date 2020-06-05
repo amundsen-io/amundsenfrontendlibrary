@@ -25,7 +25,10 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
       + `?index=${logging.index}&source=${logging.source}`;
   };
 
-  generateResourceIconClass = (databaseId: string, resource: ResourceType): string => {
+  generateResourceIconClass = (
+    databaseId: string,
+    resource: ResourceType
+  ): string => {
     return `icon resource-icon ${getSourceIconClass(databaseId, resource)}`;
   };
 
@@ -34,9 +37,17 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
 
     return (
       <li className="list-group-item clickable">
-        <Link className="resource-list-item table-list-item" to={ this.getLink() }>
+        <Link
+          className="resource-list-item table-list-item"
+          to={this.getLink()}
+        >
           <div className="resource-info">
-            <span className={this.generateResourceIconClass(table.database, table.type)} />
+            <span
+              className={this.generateResourceIconClass(
+                table.database,
+                table.type
+              )}
+            />
             <div className="resource-info-text my-auto">
               <div className="resource-name title-2">
                 <div className="truncated">
@@ -46,23 +57,27 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
                   }
                   { !table.schema_description && `${table.schema}.${table.name}` }
                 </div>
-                <BookmarkIcon bookmarkKey={ table.key } resourceType={ table.type } />
+                <BookmarkIcon
+                  bookmarkKey={table.key}
+                  resourceType={table.type}
+                />
               </div>
-              <div className="body-secondary-3 truncated">{ table.description }</div>
+              <div className="body-secondary-3 truncated">
+                {table.description}
+              </div>
             </div>
           </div>
           <div className="resource-type">
-            { getSourceDisplayName(table.database, table.type) }
+            {getSourceDisplayName(table.database, table.type)}
           </div>
           <div className="resource-badges">
-            {
-              !!table.badges && table.badges.length > 0 &&
+            {!!table.badges && table.badges.length > 0 && (
               <div>
                 <div className="body-secondary-3">
-                <BadgeList badges={ table.badges } />
+                  <BadgeList badges={table.badges} />
                 </div>
               </div>
-            }
+            )}
             <img className="icon icon-right" />
           </div>
         </Link>

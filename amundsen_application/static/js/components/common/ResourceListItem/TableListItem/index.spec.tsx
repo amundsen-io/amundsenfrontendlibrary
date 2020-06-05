@@ -14,12 +14,14 @@ import BadgeList from 'components/common/BadgeList';
 const MOCK_DISPLAY_NAME = 'displayName';
 const MOCK_ICON_CLASS = 'test-class';
 
-jest.mock('config/config-utils', () => (
-  {
-    getSourceDisplayName: () => { return MOCK_DISPLAY_NAME },
-    getSourceIconClass: () => { return MOCK_ICON_CLASS }
-  }
-));
+jest.mock('config/config-utils', () => ({
+  getSourceDisplayName: () => {
+    return MOCK_DISPLAY_NAME;
+  },
+  getSourceIconClass: () => {
+    return MOCK_ICON_CLASS;
+  },
+}));
 
 const getDBIconClassSpy = jest.spyOn(ConfigUtils, 'getSourceIconClass');
 
@@ -34,12 +36,12 @@ describe('TableListItem', () => {
         description: 'I am the description',
         key: '',
         last_updated_timestamp: 1553829681,
-        badges: [ { tag_name: 'badgeName', tag_type: TagType.BADGE } ],
+        badges: [{ tag_name: 'badgeName', tag_type: TagType.BADGE }],
         name: 'tableName',
         schema: 'tableSchema',
         schema_description: 'schemaDescription',
       },
-      ...propOverrides
+      ...propOverrides,
     };
     const wrapper = shallow<TableListItem>(<TableListItem {...props} />);
     return { props, wrapper };
@@ -49,7 +51,9 @@ describe('TableListItem', () => {
     it('getLink returns correct string', () => {
       const { props, wrapper } = setup();
       const { table, logging } = props;
-      expect(wrapper.instance().getLink()).toEqual(`/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}?index=${logging.index}&source=${logging.source}`);
+      expect(wrapper.instance().getLink()).toEqual(
+        `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}?index=${logging.index}&source=${logging.source}`
+      );
     });
   });
 
@@ -61,13 +65,17 @@ describe('TableListItem', () => {
     it('calls getSourceIconClass with given database id', () => {
       const testValue = 'noEffectOnTest';
       const givenResource = ResourceType.table;
-      const iconClass = wrapper.instance().generateResourceIconClass(testValue, givenResource);
+      const iconClass = wrapper
+        .instance()
+        .generateResourceIconClass(testValue, givenResource);
 
       expect(getDBIconClassSpy).toHaveBeenCalledWith(testValue, givenResource);
     });
 
     it('returns the default classes with the correct icon class appended', () => {
-      const iconClass = wrapper.instance().generateResourceIconClass('noEffectOnTest');
+      const iconClass = wrapper
+        .instance()
+        .generateResourceIconClass('noEffectOnTest');
 
       expect(iconClass).toEqual(`icon resource-icon test-class`);
     });
@@ -96,7 +104,9 @@ describe('TableListItem', () => {
       it('renders start correct icon', () => {
         const startIcon = resourceInfo.find('.resource-icon');
         expect(startIcon.exists()).toBe(true);
-        expect(startIcon.props().className).toEqual(wrapper.instance().generateResourceIconClass(props.table.database));
+        expect(startIcon.props().className).toEqual(
+          wrapper.instance().generateResourceIconClass(props.table.database)
+        );
       });
 
       describe('if props.table has schema description', () => {
@@ -149,13 +159,18 @@ describe('TableListItem', () => {
       });
 
       it('renders a bookmark icon in the resource name with correct props', () => {
-        const elementProps = resourceInfo.find('.resource-name').find(BookmarkIcon).props();
+        const elementProps = resourceInfo
+          .find('.resource-name')
+          .find(BookmarkIcon)
+          .props();
         expect(elementProps.bookmarkKey).toBe(props.table.key);
         expect(elementProps.resourceType).toBe(props.table.type);
       });
 
       it('renders table description', () => {
-        expect(resourceInfo.children().at(1).children().at(1).text()).toEqual('I am the description');
+        expect(resourceInfo.children().at(1).children().at(1).text()).toEqual(
+          'I am the description'
+        );
       });
     });
 
@@ -166,7 +181,12 @@ describe('TableListItem', () => {
       });
 
       it('renders resource type', () => {
-        expect(resourceType.text()).toEqual(ConfigUtils.getSourceDisplayName(props.table.database, props.table.type));
+        expect(resourceType.text()).toEqual(
+          ConfigUtils.getSourceDisplayName(
+            props.table.database,
+            props.table.type
+          )
+        );
       });
     });
 
@@ -182,12 +202,15 @@ describe('TableListItem', () => {
 
       describe('if props.table has badges', () => {
         it('renders BadgeList for badges', () => {
-          expect(resourceBadges.find(BadgeList).props().badges).toEqual(props.table.badges);
+          expect(resourceBadges.find(BadgeList).props().badges).toEqual(
+            props.table.badges
+          );
         });
       });
 
       describe('if props.table does not have badges', () => {
         it('does not render badges section', () => {
+<<<<<<< HEAD
           const { props, wrapper } = setup({ table: {
             type: ResourceType.table,
             cluster: '',
@@ -199,10 +222,25 @@ describe('TableListItem', () => {
             schema: 'tableSchema',
             schema_description: 'schemaDescription',
           }});
+=======
+          const { props, wrapper } = setup({
+            table: {
+              type: ResourceType.table,
+              cluster: '',
+              database: '',
+              description: 'I am the description',
+              key: '',
+              badges: null,
+              name: 'tableName',
+              schema: 'tableSchema',
+            },
+          });
+>>>>>>> Overall Prettier Format run
           expect(wrapper.find('.resource-badges').children()).toHaveLength(1);
         });
 
         it('or if they are empty does not render badges section', () => {
+<<<<<<< HEAD
           const { props, wrapper } = setup({ table: {
             type: ResourceType.table,
             cluster: '',
@@ -214,13 +252,29 @@ describe('TableListItem', () => {
             schema: 'tableSchema',
             schema_description: 'schemaDescription',
           }});
+=======
+          const { props, wrapper } = setup({
+            table: {
+              type: ResourceType.table,
+              cluster: '',
+              database: '',
+              description: 'I am the description',
+              key: '',
+              badges: [],
+              name: 'tableName',
+              schema: 'tableSchema',
+            },
+          });
+>>>>>>> Overall Prettier Format run
           expect(wrapper.find('.resource-badges').children()).toHaveLength(1);
         });
       });
 
       it('renders correct end icon', () => {
         const expectedClassName = 'icon icon-right';
-        expect(resourceBadges.find('img').props().className).toEqual(expectedClassName);
+        expect(resourceBadges.find('img').props().className).toEqual(
+          expectedClassName
+        );
       });
     });
   });

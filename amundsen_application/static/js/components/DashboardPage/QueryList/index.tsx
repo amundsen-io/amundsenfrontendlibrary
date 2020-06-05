@@ -3,7 +3,7 @@ import QueryListItem from '../QueryListItem';
 
 import { QueryResource } from 'interfaces';
 
-import "./styles.scss";
+import './styles.scss';
 
 
 export interface QueryListProps {

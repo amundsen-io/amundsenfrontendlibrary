@@ -36,8 +36,8 @@ globalAny.FormData = formDataMock;
 const mockCreateIssuePayload = {
   key: 'key',
   title: 'title',
-  description: 'description'
-}
+  description: 'description',
+};
 
 const mockNotificationPayload = {
   notificationType: NotificationType.DATA_ISSUE_REPORTED,
@@ -46,8 +46,8 @@ const mockNotificationPayload = {
     resource_path: '/table_detail/cluster/database/schema/table_name',
   },
   recipients: ['owner@email'],
-  sender: 'user@email'
-}
+  sender: 'user@email',
+};
 
 describe('ReportTableIssue', () => {
   const setStateSpy = jest.spyOn(ReportTableIssue.prototype, 'setState');
@@ -57,17 +57,19 @@ describe('ReportTableIssue', () => {
       tableKey: 'key',
       tableName: 'name',
       tableOwners: ['owner@email'],
-      tableMetadata: {...globalState.tableMetadata.tableData,
+      tableMetadata: {
+        ...globalState.tableMetadata.tableData,
         schema: 'schema',
         name: 'table_name',
         cluster: 'cluster',
-        database: 'database'},
+        database: 'database',
+      },
       userEmail: 'user@email',
-      ...propOverrides
+      ...propOverrides,
     };
     const wrapper = shallow<ReportTableIssue>(<ReportTableIssue {...props} />);
     return { props, wrapper };
-  }
+  };
 
   describe('render', () => {
     it('Renders loading spinner if not ready', () => {
@@ -98,7 +100,7 @@ describe('ReportTableIssue', () => {
     });
 
     describe('submitForm', () => {
-      it ('calls createIssue with mocked form data', () => {
+      it('calls createIssue with mocked form data', () => {
         const { props, wrapper } = setup();
 
         // @ts-ignore: mocked events throw type errors
@@ -107,7 +109,8 @@ describe('ReportTableIssue', () => {
 
         expect(props.createIssue).toHaveBeenCalledWith(
           mockCreateIssuePayload,
-          mockNotificationPayload);
+          mockNotificationPayload
+        );
         expect(wrapper.state().isOpen).toBe(false);
       });
 
