@@ -19,7 +19,6 @@ export interface DashboardMetadata {
   owners: User[];
   product: string;
   queries: QueryResource[];
-  query_names: string[];
   recent_view_count: number;
   tables: TableResource[];
   tags: Tag[];
