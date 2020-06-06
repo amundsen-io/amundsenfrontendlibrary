@@ -55,8 +55,8 @@ describe('ResultItem', () => {
       });
 
       it('renders the title', () => {
-        // @ts-ignore: assertion passes but throws a TS error
         expect(contentWrapper.children().at(0).text()).toEqual(
+          // @ts-ignore: assertion passes but throws a TS error
           shallow(props.titleNode).text()
         );
       });
