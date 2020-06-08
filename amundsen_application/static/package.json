@@ -66,9 +66,9 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.4.4",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.20.2",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb": "^18.1.0",
+    "eslint-plugin-import": "^2.21.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.20.0",
     "html-webpack-plugin": "4.3.0",
@@ -87,8 +87,8 @@
     "sass-loader": "^7.3.1",
     "style-loader": "^0.20.3",
     "stylelint": "^13.6.0",
-    "stylelint-scss": "^3.17.2",
     "stylelint-config-standard": "^20.0.0",
+    "stylelint-scss": "^3.17.2",
     "terser-webpack-plugin": "^2.3.6",
     "ts-jest": "^24.3.0",
     "ts-loader": "^6.2.2",
@@ -220,9 +220,18 @@
     "rules": {
       "scss/dollar-variable-colon-space-after": "always",
       "no-descending-specificity": null,
-      "at-rule-no-unknown": [true, {
-        "ignoreAtRules": ["function", "if", "each", "include", "mixin"]
-      }]
+      "at-rule-no-unknown": [
+        true,
+        {
+          "ignoreAtRules": [
+            "function",
+            "if",
+            "each",
+            "include",
+            "mixin"
+          ]
+        }
+      ]
     },
     "extends": "stylelint-config-standard"
   },
