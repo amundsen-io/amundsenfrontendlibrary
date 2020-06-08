@@ -25,7 +25,7 @@ const GoToDashboardLink = ({ url }: GoToDashboardLinkProps) => {
   return (
     <OverlayTrigger
       trigger={["hover", "focus"]}
-      placement="bottom"
+      placement="top"
       overlay={popoverHoverFocus}
     >
       <a
@@ -45,6 +45,12 @@ const GoToDashboardLink = ({ url }: GoToDashboardLinkProps) => {
     </OverlayTrigger>
   );
 };
+
+const QueryBlockShimmer = () => {
+  return (
+    <div className="shimmer-block is-shimmer-animated" />
+  );
+}
 
 const QueryListItem = ({ name, text, url }: QueryListItemProps) => {
   const [isExpanded, setExpanded] = React.useState(false);
@@ -75,9 +81,7 @@ const QueryListItem = ({ name, text, url }: QueryListItemProps) => {
             {QUERY_LABEL}:
             <div className="query-list-query-content">
               <GoToDashboardLink url={url} />
-              <React.Suspense
-                fallback={<p className="query-list-loading-message">{LOADING_QUERY_MESSAGE}</p>}
-              >
+              <React.Suspense fallback={<QueryBlockShimmer />} >
                 <LazyComponent text={text} />
               </React.Suspense>
             </div>

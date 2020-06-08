@@ -9,7 +9,7 @@ $code-block-button-icon-size: 16px;
 $code-block-button-spacer: 12px;
 $code-block-button-hover-opacity: 1;
 $code-block-max-height: 400px;
-
+$shimmer-loader-height: 200px;
 
 @mixin code-block-action-button-style {
   max-width: $code-block-button-size;
@@ -49,6 +49,7 @@ $code-block-max-height: 400px;
 }
 .query-list-query-label {
   color: $text-tertiary;
+  display: block;
 }
 .query-list-query-content {
   border-radius: $query-content-border-radius;
@@ -104,8 +105,9 @@ $code-block-max-height: 400px;
       margin-top: 6px;
     }
   }
-}
-.query-list-loading-message {
-  padding: $spacer-1;
-  width: 100vh;
+
+  .shimmer-block {
+    height: $shimmer-loader-height;
+    margin: $spacer-1;
+  }
 }
