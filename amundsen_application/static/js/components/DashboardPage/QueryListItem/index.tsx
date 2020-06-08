@@ -54,6 +54,7 @@ const QueryBlockShimmer = () => {
       <div className="shimmer-line shimmer-line--3 is-shimmer-animated" />
       <div className="shimmer-line shimmer-line--4 is-shimmer-animated" />
       <div className="shimmer-line shimmer-line--5 is-shimmer-animated" />
+      <div className="shimmer-line shimmer-line--6 is-shimmer-animated" />
     </div>
   );
 }
