@@ -60,6 +60,23 @@ const configDefault: AppConfig = {
           iconClass: 'icon-mode',
         },
       },
+      filterCategories: [
+        {
+          categoryId: 'group_name',
+          displayName: 'Groups',
+          type: FilterType.INPUT_SELECT,
+        },
+        {
+          categoryId: 'name',
+          displayName: 'Name',
+          type: FilterType.INPUT_SELECT,
+        },
+        {
+          categoryId: 'tags',
+          displayName: 'Tag',
+          type: FilterType.INPUT_SELECT,
+        },
+      ]
     },
     [ResourceType.table]: {
       displayName: 'Datasets',

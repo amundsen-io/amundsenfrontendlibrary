@@ -51,15 +51,13 @@ export function searchResource(
   }
 
   /* Note: This logic must exist until query string endpoints are created for all resources */
-  if (resource === ResourceType.table) {
-    return axios
-      .post(`${BASE_URL}/${resource}`, {
-        filters,
-        pageIndex,
-        term,
-        searchType,
-      })
-      .then(searchResourceHelper);
+  if (resource === ResourceType.table || resource === ResourceType.dashboard) {
+    return axios.post(`${BASE_URL}/${resource}`, {
+      filters,
+      pageIndex,
+      term,
+      searchType,
+    }).then(searchResourceHelper);
   }
   return axios
     .get(
