@@ -13,18 +13,18 @@ import {
 } from '.';
 import { NotificationType } from 'interfaces';
 
-const globalAny:any = global;
+const globalAny: any = global;
 
 const mockFormData = {
-  'key': 'val1',
-  'title': 'title',
-  'description': 'description',
-  'resource_name': 'resource name',
-  'resource_path': 'path',
-  'owners': 'test@test.com',
+  key: 'val1',
+  title: 'title',
+  description: 'description',
+  resource_name: 'resource name',
+  resource_path: 'path',
+  owners: 'test@test.com',
   get: jest.fn(),
- };
- mockFormData.get.mockImplementation((val) => {
+};
+mockFormData.get.mockImplementation((val) => {
   return mockFormData[val];
 });
 function formDataMock() {
@@ -81,7 +81,7 @@ describe('ReportTableIssue', () => {
     it('Renders modal if open', () => {
       const { wrapper } = setup();
 
-      wrapper.setState({isOpen: true});
+      wrapper.setState({ isOpen: true });
 
       expect(wrapper.find('.report-table-issue-modal')).toBeTruthy();
     });
@@ -92,8 +92,9 @@ describe('ReportTableIssue', () => {
         const { wrapper } = setup();
         const previsOpenState = wrapper.state().isOpen;
 
-        wrapper.instance().toggle({currentTarget: {id: 'id',
-            nodeName: 'button' } });
+        wrapper
+          .instance()
+          .toggle({ currentTarget: { id: 'id', nodeName: 'button' } });
 
         expect(setStateSpy).toHaveBeenCalledWith({ isOpen: !previsOpenState });
       });
@@ -104,8 +105,10 @@ describe('ReportTableIssue', () => {
         const { props, wrapper } = setup();
 
         // @ts-ignore: mocked events throw type errors
-        wrapper.instance().submitForm({ preventDefault: jest.fn(),
-        currentTarget: {id: 'id', nodeName: 'button'} });
+        wrapper.instance().submitForm({
+          preventDefault: jest.fn(),
+          currentTarget: { id: 'id', nodeName: 'button' },
+        });
 
         expect(props.createIssue).toHaveBeenCalledWith(
           mockCreateIssuePayload,
@@ -114,12 +117,14 @@ describe('ReportTableIssue', () => {
         expect(wrapper.state().isOpen).toBe(false);
       });
 
-      it ('calls sets isOpen to false', () => {
+      it('calls sets isOpen to false', () => {
         const { wrapper } = setup();
 
         // @ts-ignore: mocked events throw type errors
-        wrapper.instance().submitForm({ preventDefault: jest.fn(),
-        currentTarget: {id: 'id', nodeName: 'button'} });
+        wrapper.instance().submitForm({
+          preventDefault: jest.fn(),
+          currentTarget: { id: 'id', nodeName: 'button' },
+        });
 
         expect(wrapper.state().isOpen).toBe(false);
       });

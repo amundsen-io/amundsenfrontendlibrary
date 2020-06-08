@@ -52,11 +52,7 @@ const config: webpack.Configuration = {
     ],
   },
   output: {
-<<<<<<< HEAD
-    publicPath: "/static/dist/",
-=======
-    publicPath: '/static/dist',
->>>>>>> Overall Prettier Format run
+    publicPath: '/static/dist/',
     path: PATHS.dist,
     filename: '[name].[contenthash].js',
   },
@@ -108,11 +104,7 @@ const config: webpack.Configuration = {
       filename: '[name].[contenthash].css',
     }),
     ...htmlWebpackPluginConfig,
-<<<<<<< HEAD
     // new BundleAnalyzerPlugin(),   // Uncomment to analyze the production bundle on local
-=======
-    // new BundleAnalyzerPlugin()   // Uncomment to analyze the production bundle on local
->>>>>>> Overall Prettier Format run
   ],
   optimization: {
     moduleIds: 'hashed',

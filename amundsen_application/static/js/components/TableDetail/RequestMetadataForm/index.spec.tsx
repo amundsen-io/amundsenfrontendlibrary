@@ -32,7 +32,7 @@ import {
   SEND_SUCCESS_MESSAGE,
 } from './constants';
 
-const globalAny:any = global;
+const globalAny: any = global;
 const mockFormData = {
   recipients: 'test1@test.com,test2@test.com',
   sender: 'test@test.com',
@@ -43,7 +43,7 @@ const mockFormData = {
 };
 mockFormData.get.mockImplementation((val) => {
   return mockFormData[val];
-})
+});
 function formDataMock() {
   this.append = jest.fn();
 
@@ -124,10 +124,12 @@ describe('RequestMetadataForm', () => {
 
     beforeAll(() => {
       wrapper = setup().wrapper;
-      mockString = 'I am the message'
-      jest.spyOn(wrapper.instance(), 'getFlashMessageString').mockImplementation(() => {
-        return mockString;
-      });
+      mockString = 'I am the message';
+      jest
+        .spyOn(wrapper.instance(), 'getFlashMessageString')
+        .mockImplementation(() => {
+          return mockString;
+        });
     });
 
     it('renders a FlashMessage with correct props', () => {
@@ -249,7 +251,9 @@ describe('RequestMetadataForm', () => {
 
       describe('table description requested', () => {
         beforeAll(() => {
-          const setupResult = setup({ requestMetadataType: RequestMetadataType.TABLE_DESCRIPTION });
+          const setupResult = setup({
+            requestMetadataType: RequestMetadataType.TABLE_DESCRIPTION,
+          });
           wrapper = setupResult.wrapper;
         });
         it('renders checked table description checkbox', () => {
@@ -262,7 +266,10 @@ describe('RequestMetadataForm', () => {
 
       describe('column description requested', () => {
         beforeAll(() => {
-          const setupResult = setup({ requestMetadataType: RequestMetadataType.COLUMN_DESCRIPTION, columnName: 'Test' });
+          const setupResult = setup({
+            requestMetadataType: RequestMetadataType.COLUMN_DESCRIPTION,
+            columnName: 'Test',
+          });
           wrapper = setupResult.wrapper;
         });
         it('renders checked column description checkbox', () => {
@@ -276,7 +283,9 @@ describe('RequestMetadataForm', () => {
           element = wrapper.find('#additional-comments-form-group');
           const textArea = element.find('textarea');
 
-          expect(textArea.text()).toEqual(`${COLUMN_REQUESTED_COMMENT_PREFIX}Test`);
+          expect(textArea.text()).toEqual(
+            `${COLUMN_REQUESTED_COMMENT_PREFIX}Test`
+          );
           expect(textArea.props().required).toBe(true);
           expect(textArea.props().placeholder).toBe(COMMENT_PLACEHOLDER_COLUMN);
         });

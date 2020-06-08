@@ -21,8 +21,10 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
   getLink = () => {
     const { table, logging } = this.props;
 
-    return `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}`
-      + `?index=${logging.index}&source=${logging.source}`;
+    return (
+      `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}` +
+      `?index=${logging.index}&source=${logging.source}`
+    );
   };
 
   generateResourceIconClass = (
@@ -51,11 +53,14 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
             <div className="resource-info-text my-auto">
               <div className="resource-name title-2">
                 <div className="truncated">
-                  {
-                    table.schema_description &&
-                    <SchemaInfo schema={ table.schema } table = { table.name } desc={ table.schema_description }/>
-                  }
-                  { !table.schema_description && `${table.schema}.${table.name}` }
+                  {table.schema_description && (
+                    <SchemaInfo
+                      schema={table.schema}
+                      table={table.name}
+                      desc={table.schema_description}
+                    />
+                  )}
+                  {!table.schema_description && `${table.schema}.${table.name}`}
                 </div>
                 <BookmarkIcon
                   bookmarkKey={table.key}
