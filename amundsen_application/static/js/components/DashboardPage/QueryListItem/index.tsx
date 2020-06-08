@@ -48,7 +48,13 @@ const GoToDashboardLink = ({ url }: GoToDashboardLinkProps) => {
 
 const QueryBlockShimmer = () => {
   return (
-    <div className="shimmer-block is-shimmer-animated" />
+    <div className="shimmer-block">
+      <div className="shimmer-line shimmer-line--1 is-shimmer-animated" />
+      <div className="shimmer-line shimmer-line--2 is-shimmer-animated" />
+      <div className="shimmer-line shimmer-line--3 is-shimmer-animated" />
+      <div className="shimmer-line shimmer-line--4 is-shimmer-animated" />
+      <div className="shimmer-line shimmer-line--5 is-shimmer-animated" />
+    </div>
   );
 }
 

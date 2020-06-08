@@ -10,6 +10,7 @@ $code-block-button-spacer: 12px;
 $code-block-button-hover-opacity: 1;
 $code-block-max-height: 400px;
 $shimmer-loader-height: 200px;
+$shimmer-loader-lines: 1, 2, 3, 4, 5;
 
 @mixin code-block-action-button-style {
   max-width: $code-block-button-size;
@@ -105,9 +106,20 @@ $shimmer-loader-height: 200px;
       margin-top: 6px;
     }
   }
+}
 
-  .shimmer-block {
-    height: $shimmer-loader-height;
-    margin: $spacer-1;
+.shimmer-block {
+  height: $shimmer-loader-height;
+  margin: $spacer-1;
+
+  .shimmer-line {
+    margin-bottom: $spacer-1;
+    height: ($shimmer-loader-height/5 - $spacer-1);
+  }
+
+  @each $line in $shimmer-loader-lines {
+    .shimmer-line--#{$line} {
+      width: percentage(random(100) / 100);
+    }
   }
 }
