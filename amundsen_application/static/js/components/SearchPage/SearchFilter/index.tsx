@@ -3,12 +3,10 @@ import { connect } from 'react-redux';
 
 import { GlobalState } from 'ducks/rootReducer';
 
+import { getFilterConfigByResource } from 'config/config-utils';
+import { FilterType, ResourceType } from 'interfaces';
 import { CheckboxFilterProperties } from './CheckBoxFilter';
 import FilterSection from './FilterSection';
-
-import { getFilterConfigByResource } from 'config/config-utils';
-
-import { FilterType, ResourceType } from 'interfaces';
 
 import './styles.scss';
 
@@ -75,7 +73,7 @@ export const mapStateToProps = (state: GlobalState) => {
         type: categoryConfig.type,
       };
       if (categoryConfig.type === FilterType.CHECKBOX_SELECT) {
-        section['options'] = categoryConfig.options.map((option) => {
+        section.options = categoryConfig.options.map((option) => {
           return { value: option.value, label: option.displayName };
         });
       }
