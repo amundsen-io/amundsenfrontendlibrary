@@ -41,17 +41,21 @@ $shimmer-loader-lines: 1, 2, 3, 4, 5, 6;
     text-decoration: none;
   }
 }
+
 .query-list-item-name {
   margin: 0;
   line-height: $min-item-height;
 }
+
 .query-list-expanded-content {
   padding-bottom: $spacer-3;
 }
+
 .query-list-query-label {
   color: $text-tertiary;
   display: block;
 }
+
 .query-list-query-content {
   border-radius: $query-content-border-radius;
   border: 1px solid $stroke;
@@ -75,6 +79,7 @@ $shimmer-loader-lines: 1, 2, 3, 4, 5, 6;
 
   button {
     @include code-block-action-button-style;
+
     display: none;
     padding: 6px;
     margin: $code-block-button-spacer (2 * $code-block-button-spacer) 0 0;
@@ -94,6 +99,7 @@ $shimmer-loader-lines: 1, 2, 3, 4, 5, 6;
 
   .query-list-query-link {
     @include code-block-action-button-style;
+
     display: none;
     line-height: $code-block-button-size;
     text-align: center;
