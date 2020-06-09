@@ -16,7 +16,7 @@
     "watch": "cross-env TS_NODE_PROJECT='tsconfig-for-webpack.json' webpack --progress --config webpack.dev.ts --watch",
     "lint": "npm run eslint",
     "lint-fix": "npm run eslint-fix",
-    "eslint": "eslint --ignore-path=.eslintignore --ext .js,.jsx,.ts,.tsx ./",
+    "eslint": "eslint --ignore-path=.eslintignore --ext .js,.jsx,.ts,.tsx .",
     "eslint-fix": "eslint --fix --ignore-path=.eslintignore --ext .js,.jsx,.ts,.tsx .",
     "test:watch": "cross-env TZ=UTC jest --watch",
     "tsc": "tsc",
@@ -524,8 +524,6 @@
     "*.ts": "eslint --fix",
     "*.tsx": "eslint --fix",
     "*.scss": "npm run stylelint-fix",
-    "*.ts": "prettier --write",
-    "*.tsx": "prettier --write",
-    "*.css": "prettier --write"
+    "*.{ts,tsx,css,scss}": "prettier --write"
   }
 }
