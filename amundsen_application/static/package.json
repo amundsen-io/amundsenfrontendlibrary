@@ -22,7 +22,7 @@
     "tsc": "tsc",
     "stylelint": "stylelint '**/*.scss'",
     "stylelint-fix": "stylelint --fix '**/*.scss'",
-    "format": "prettier --loglevel warn --write \"**/*.{ts,tsx,css,md}\""
+    "format": "prettier --loglevel warn --write \"**/*.{ts,tsx,css,scss}\""
   },
   "author": "",
   "license": "ISC",
