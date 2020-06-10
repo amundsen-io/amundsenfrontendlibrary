@@ -8,14 +8,14 @@ import {
   FilterSectionProps,
   mapDispatchToProps,
   mapStateToProps,
-} from '../';
+} from '.';
 
 import globalState from 'fixtures/globalState';
 
 import { FilterType, ResourceType } from 'interfaces';
 
 import InfoButton from 'components/common/InfoButton';
-import { CLEAR_BTN_TEXT } from '../../constants';
+import { CLEAR_BTN_TEXT } from '../constants';
 
 describe('FilterSection', () => {
   const setup = (propOverrides?: Partial<FilterSectionProps>) => {

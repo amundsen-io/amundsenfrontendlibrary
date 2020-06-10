@@ -6,7 +6,7 @@ import {
   InputFilterProps,
   mapDispatchToProps,
   mapStateToProps,
-} from '../';
+} from '.';
 
 import { APPLY_BTN_TEXT } from '../../constants';
 

@@ -6,7 +6,7 @@ import {
   CheckBoxFilterProps,
   mapDispatchToProps,
   mapStateToProps,
-} from '../';
+} from '.';
 import CheckBoxItem from 'components/common/Inputs/CheckBoxItem';
 
 import globalState from 'fixtures/globalState';
