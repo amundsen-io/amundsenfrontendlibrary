@@ -57,7 +57,10 @@ Whenever you want to run these tasks manually, you can execute:
 
 We also check your changed files and format them when you create a new commit, making it easy for you and for the project to keep a consistent code style. We do this leveraging [Husky][husky] and [Lint-staged][lint-staged].
 
-Looking forward, we aim at setting more strict best practices using ESLint and Stylelint. You can read about our plans to improve our [TypeScript][typescript-issue], [Styles][stylelint-issue] and [general code style][airbnb-issue] on these issues.
+Looking forward, we aim at setting more strict best practices using ESLint and Stylelint. You can read about our plans to improve our TypeScript, Styles and general code style on these issues:
+* [Adopt Typescript Recommended Guidelines on the Frontend library][typescript-issue]
+* [Adopt Stylelint's Sass Guidelines on the Frontend library][stylelint-issue]
+* [Adopt Airbnb-Typescript Code Guidelines on the Frontend library][airbnb-issue]
 
 [eslint]: https://eslint.org/
 [stylelint]: https://stylelint.io/
