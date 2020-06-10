@@ -69,11 +69,7 @@ const QueryListItem = ({ name, text, url }: QueryListItemProps) => {
   const key = `key:${name}`;
 
   return (
-    <li
-      className="list-group-item query-list-item"
-      role="tab"
-      id={key}
-    >
+    <li className="list-group-item query-list-item" role="tab" id={key}>
       <button
         className="query-list-header"
         aria-expanded={isExpanded}
