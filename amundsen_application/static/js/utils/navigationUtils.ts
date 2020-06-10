@@ -32,7 +32,7 @@ export const generateSearchUrl = (searchParams: SearchParams): string => {
     index: searchParams.index,
   };
   if (hasFilters) {
-    queryStringValues.filters = filtersForResource;
+    queryStringValues['filters'] = filtersForResource;
   }
 
   const urlParams = qs.stringify(queryStringValues);

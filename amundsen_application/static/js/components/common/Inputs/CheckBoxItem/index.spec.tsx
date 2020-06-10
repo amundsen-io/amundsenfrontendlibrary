@@ -12,6 +12,7 @@ describe('CheckBoxItem', () => {
       name: 'test',
       value: 'testMethod',
       onChange: jest.fn(),
+      children: <div />,
       ...propOverrides,
     };
     const wrapper = shallow(

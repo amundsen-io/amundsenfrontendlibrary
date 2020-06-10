@@ -117,7 +117,7 @@ export default function reducer(
       };
       const { columnName } = (<OpenRequestAction>action).payload;
       if (columnName) {
-        newState.columnName = columnName;
+        newState['columnName'] = columnName;
       }
       return newState;
     default:

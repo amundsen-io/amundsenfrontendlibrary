@@ -8,12 +8,12 @@
     "url": "https://github.com/lyft/amundsenfrontendlibrary"
   },
   "scripts": {
-    "build": "cross-env TS_NODE_PROJECT='tsconfig-for-webpack.json' webpack --progress --config webpack.prod.ts",
-    "dev-build": "cross-env TS_NODE_PROJECT='tsconfig-for-webpack.json' webpack --progress --config webpack.dev.ts",
+    "build": "cross-env TS_NODE_PROJECT='tsconfig.webpack.json' webpack --progress --config webpack.prod.ts",
+    "dev-build": "cross-env TS_NODE_PROJECT='tsconfig.webpack.json' webpack --progress --config webpack.dev.ts",
     "test": "cross-env TZ=UTC jest --coverage --collectCoverageFrom=js/**/*.{js,jsx,ts,tsx}",
     "posttest": "npm run format",
     "test-nocov": "cross-env TZ=UTC jest",
-    "watch": "cross-env TS_NODE_PROJECT='tsconfig-for-webpack.json' webpack --progress --config webpack.dev.ts --watch",
+    "watch": "cross-env TS_NODE_PROJECT='tsconfig.webpack.json' webpack --progress --config webpack.dev.ts --watch",
     "lint": "npm run eslint",
     "lint-fix": "npm run eslint-fix",
     "eslint": "eslint --ignore-path=.eslintignore --ext .js,.jsx,.ts,.tsx .",

@@ -35,10 +35,17 @@ $shimmer-loader-lines: 1, 2, 3, 4, 5, 6;
 
 .query-list-header {
   display: block;
+  text-align: left;
+  background: $btn-default-bg;
+  border: 0;
+  width: 100%;
+  padding-left: $spacer-3;
+  padding-right: $spacer-3;
 
   &:hover,
   &:focus {
     text-decoration: none;
+    outline: 0;
   }
 }
 
@@ -48,7 +55,7 @@ $shimmer-loader-lines: 1, 2, 3, 4, 5, 6;
 }
 
 .query-list-expanded-content {
-  padding-bottom: $spacer-3;
+  padding: 0 $spacer-3 $spacer-3 $spacer-3;
 }
 
 .query-list-query-label {
