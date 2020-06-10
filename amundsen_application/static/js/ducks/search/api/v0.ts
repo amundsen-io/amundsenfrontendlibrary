@@ -42,8 +42,7 @@ export function searchResource(
 ) {
   /* If resource support is not configured or if there is no search term for non-filter supported resources */
   if (
-    (resource === ResourceType.dashboard &&
-      (!indexDashboardsEnabled() || term.length === 0)) ||
+    (resource === ResourceType.dashboard && !indexDashboardsEnabled()) ||
     (resource === ResourceType.user &&
       (!indexUsersEnabled() || term.length === 0))
   ) {
