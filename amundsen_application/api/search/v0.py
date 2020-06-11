@@ -212,7 +212,7 @@ def search_dashboard() -> Response:
         return make_response(jsonify(results_dict), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-@action_logging
+# @action_logging
 def _search_dashboard(*, search_term: str, page_index: int, filters: Dict, search_type: str) -> Dict[str, Any]:
     """
     Call the search service endpoint and return matching results

@@ -8,7 +8,7 @@ import {
   mapStateToProps,
 } from '.';
 
-import { APPLY_BTN_TEXT } from '../../constants';
+import { APPLY_BTN_TEXT } from '../constants';
 
 import { GlobalState } from 'ducks/rootReducer';
 

@@ -62,6 +62,11 @@ const configDefault: AppConfig = {
       },
       filterCategories: [
         {
+          categoryId: 'product',
+          displayName: 'Product',
+          type: FilterType.INPUT_SELECT,
+        },
+        {
           categoryId: 'group_name',
           displayName: 'Groups',
           type: FilterType.INPUT_SELECT,
@@ -72,7 +77,7 @@ const configDefault: AppConfig = {
           type: FilterType.INPUT_SELECT,
         },
         {
-          categoryId: 'tags',
+          categoryId: 'tag',
           displayName: 'Tag',
           type: FilterType.INPUT_SELECT,
         },

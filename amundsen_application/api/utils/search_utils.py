@@ -14,7 +14,8 @@ valid_search_fields = {
     'dashboard': {
         'group_name',
         'name',
-        'tags'
+        'product',
+        'tag'
     }
 }
 
@@ -51,7 +52,11 @@ def transform_filters(*, filters: Dict = {}, resource: str) -> Dict:
             elif type(values) == dict:
                 value_list = [key for key in values.keys() if values[key] is True]
         if len(value_list) > 0:
-            filter_payload[category] = value_list
+            # TODO
+            if category == 'tag' and resource == 'dashboard':
+                filter_payload['tags'] = value_list
+            else:
+                filter_payload[category] = value_list
 
     return filter_payload
 
