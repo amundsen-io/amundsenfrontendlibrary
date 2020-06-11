@@ -15,11 +15,7 @@ import {
   SearchFilterProps,
   FilterSection,
   CheckboxFilterSection,
-<<<<<<< HEAD:amundsen_application/static/js/components/SearchPage/SearchFilter/index.spec.tsx
 } from '.';
-=======
-} from '..';
->>>>>>> origin:amundsen_application/static/js/components/SearchPage/SearchFilter/tests/index.spec.tsx
 
 describe('SearchFilter', () => {
   const setup = (propOverrides?: Partial<SearchFilterProps>) => {
