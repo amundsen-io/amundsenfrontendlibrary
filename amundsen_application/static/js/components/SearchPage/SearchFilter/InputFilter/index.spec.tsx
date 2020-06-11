@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
+<<<<<<< HEAD:amundsen_application/static/js/components/SearchPage/SearchFilter/InputFilter/index.spec.tsx
 import {
   InputFilter,
   InputFilterProps,
@@ -10,11 +11,20 @@ import {
 
 import { APPLY_BTN_TEXT } from '../constants';
 
+=======
+>>>>>>> origin:amundsen_application/static/js/components/SearchPage/SearchFilter/InputFilter/tests/index.spec.tsx
 import { GlobalState } from 'ducks/rootReducer';
 
 import globalState from 'fixtures/globalState';
 
 import { FilterType, ResourceType } from 'interfaces';
+import { APPLY_BTN_TEXT } from '../../constants';
+import {
+  InputFilter,
+  InputFilterProps,
+  mapDispatchToProps,
+  mapStateToProps,
+} from '..';
 
 describe('InputFilter', () => {
   const setStateSpy = jest.spyOn(InputFilter.prototype, 'setState');
@@ -156,7 +166,7 @@ describe('InputFilter', () => {
 
   describe('mapStateToProps', () => {
     const mockCategoryId = 'schema';
-    const props = setup({ categoryId: mockCategoryId }).props;
+    const { props } = setup({ categoryId: mockCategoryId });
     const mockFilters = 'schema_name';
 
     const mockStateWithFilters: GlobalState = {
@@ -198,7 +208,7 @@ describe('InputFilter', () => {
     });
 
     it('sets value to empty string if no filters exist for the given category', () => {
-      const props = setup({ categoryId: 'fakeCategory' }).props;
+      const { props } = setup({ categoryId: 'fakeCategory' });
       result = mapStateToProps(mockStateWithFilters, props);
       expect(result.value).toEqual('');
     });
@@ -208,7 +218,7 @@ describe('InputFilter', () => {
     let dispatch;
     let result;
     beforeAll(() => {
-      const props = setup().props;
+      const { props } = setup();
       dispatch = jest.fn(() => Promise.resolve());
       result = mapDispatchToProps(dispatch);
     });

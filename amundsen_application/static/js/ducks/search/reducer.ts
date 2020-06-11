@@ -289,7 +289,7 @@ export default function reducer(
         search_term: action.payload.searchTerm || state.search_term,
       };
     case UpdateSearchState.REQUEST:
-      const payload = action.payload;
+      const { payload } = action;
       return {
         ...state,
         filters: payload.filters || state.filters,

@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
+<<<<<<< HEAD:amundsen_application/static/js/components/SearchPage/SearchFilter/CheckBoxFilter/index.spec.tsx
 import {
   CheckBoxFilter,
   CheckBoxFilterProps,
   mapDispatchToProps,
   mapStateToProps,
 } from '.';
+=======
+>>>>>>> origin:amundsen_application/static/js/components/SearchPage/SearchFilter/CheckBoxFilter/tests/index.spec.tsx
 import CheckBoxItem from 'components/common/Inputs/CheckBoxItem';
 
 import globalState from 'fixtures/globalState';
@@ -14,6 +17,12 @@ import globalState from 'fixtures/globalState';
 import { GlobalState } from 'ducks/rootReducer';
 
 import { FilterType, ResourceType } from 'interfaces';
+import {
+  CheckBoxFilter,
+  CheckBoxFilterProps,
+  mapDispatchToProps,
+  mapStateToProps,
+} from '..';
 
 describe('CheckBoxFilter', () => {
   const setup = (propOverrides?: Partial<CheckBoxFilterProps>) => {
@@ -142,7 +151,7 @@ describe('CheckBoxFilter', () => {
 
   describe('mapStateToProps', () => {
     const mockCategoryId = 'database';
-    const props = setup({ categoryId: mockCategoryId }).props;
+    const { props } = setup({ categoryId: mockCategoryId });
     const mockFilters = {
       hive: true,
     };
@@ -186,7 +195,7 @@ describe('CheckBoxFilter', () => {
     });
 
     it('sets checkedValues to empty object if no filters exist for the given category', () => {
-      const props = setup({ categoryId: 'fakeCategory' }).props;
+      const { props } = setup({ categoryId: 'fakeCategory' });
       result = mapStateToProps(mockStateWithFilters, props);
       expect(result.checkedValues).toEqual({});
     });
@@ -196,7 +205,7 @@ describe('CheckBoxFilter', () => {
     let dispatch;
     let result;
     beforeAll(() => {
-      const props = setup().props;
+      const { props } = setup();
       dispatch = jest.fn(() => Promise.resolve());
       result = mapDispatchToProps(dispatch);
     });
