@@ -1,5 +1,7 @@
 @import 'variables';
+
 $resource-header-height: 84px;
+$aside-separation-space: 40px;
 
 .resource-detail-layout {
   height: calc(100vh - #{$nav-bar-height} - #{$footer-height});
@@ -94,11 +96,11 @@ $resource-header-height: 84px;
       flex-basis: 600px;
       flex-shrink: 0;
       overflow-y: scroll;
-      padding: 0 24px;
+      padding: $aside-separation-space 24px;
 
       > .banner {
         border: 1px solid $stroke;
-        height: 40px;
+        height: $aside-separation-space;
         margin: 24px 24px 0;
         padding: 8px;
       }
@@ -111,8 +113,11 @@ $resource-header-height: 84px;
       .editable-section,
       .metadata-section {
         display: inline-table;
-        margin-top: 40px;
         min-height: 70px;
+      }
+
+      .metadata-section {
+        margin-top: $aside-separation-space;
       }
 
       .editable-text {
@@ -154,7 +159,7 @@ $resource-header-height: 84px;
   // Inner column layout
   .column-layout-2 {
     display: flex;
-    flex-basis: 100%;
+    padding-top: $aside-separation-space;
 
     > .left-panel {
       flex-basis: 262px;
