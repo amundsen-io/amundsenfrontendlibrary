@@ -87,7 +87,7 @@ class Config:
 
 
 class LocalConfig(Config):
-    DEBUG = True
+    DEBUG = False
     TESTING = False
     LOG_LEVEL = 'DEBUG'
 
