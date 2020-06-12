@@ -112,12 +112,9 @@ $aside-separation-space: 40px;
 
       .editable-section,
       .metadata-section {
+        margin-top: $aside-separation-space;
         display: inline-table;
         min-height: 70px;
-      }
-
-      .metadata-section {
-        margin-top: $aside-separation-space;
       }
 
       .editable-text {
