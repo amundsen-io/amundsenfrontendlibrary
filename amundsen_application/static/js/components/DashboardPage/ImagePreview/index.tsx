@@ -43,7 +43,7 @@ const PreviewModal = ({ imageSrc, onClose }: PreviewModalProps) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <img src={imageSrc} height="auto" width="100%" />
+        <img src={imageSrc} height="auto" width="100%" alt="" />
       </Modal.Body>
     </Modal>
   );

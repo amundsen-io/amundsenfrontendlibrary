@@ -149,7 +149,7 @@ export class ColumnListItem extends React.Component<
                     className="column-dropdown"
                   >
                     <Dropdown.Toggle noCaret>
-                      <img className="icon icon-more" />
+                      <img className="icon icon-more" alt="" />
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       <MenuItem onClick={this.openRequest}>

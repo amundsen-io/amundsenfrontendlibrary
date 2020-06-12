@@ -81,7 +81,7 @@ export default class Feedback extends React.Component<
           }`}
           onClick={this.toggle}
         >
-          <img className="icon icon-help" />
+          <img className="icon icon-help" alt="" />
         </button>
         {this.state.isOpen && (
           <div className="feedback-component">

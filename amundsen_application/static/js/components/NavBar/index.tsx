@@ -79,6 +79,7 @@ export class NavBar extends React.Component<NavBarProps> {
                     id="logo-icon"
                     className="logo-icon"
                     src={AppConfig.logoPath}
+                    alt=""
                   />
                 )}
                 <span className="title-3">AMUNDSEN</span>

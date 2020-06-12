@@ -232,7 +232,7 @@ export class RequestMetadataForm extends React.Component<
             className="btn btn-primary submit-request-button"
             type="submit"
           >
-            <img className="icon icon-send" />
+            <img className="icon icon-send" alt="" />
             {SEND_BUTTON}
           </button>
         </form>
@@ -258,10 +258,10 @@ export const mapStateToProps = (state: GlobalState) => {
     tableOwners: Object.keys(ownerObj),
   };
   if (columnName) {
-    mappedProps['columnName'] = columnName;
+    mappedProps.columnName = columnName;
   }
   if (requestMetadataType) {
-    mappedProps['requestMetadataType'] = requestMetadataType;
+    mappedProps.requestMetadataType = requestMetadataType;
   }
   return mappedProps;
 };

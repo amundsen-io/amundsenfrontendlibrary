@@ -241,7 +241,7 @@ export class ProfilePage extends React.Component<
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <img className="icon icon-dark icon-mail" />
+                  <img className="icon icon-dark icon-mail" alt="" />
                   <span className="email-link-label body-2">{user.email}</span>
                 </a>
               )}
@@ -267,7 +267,7 @@ export class ProfilePage extends React.Component<
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <img className="icon icon-dark icon-github" />
+                  <img className="icon icon-dark icon-github" alt="" />
                   <span className="github-link-label body-2">Github</span>
                 </a>
               )}

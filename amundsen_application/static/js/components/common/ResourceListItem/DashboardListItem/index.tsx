@@ -81,7 +81,7 @@ class DashboardListItem extends React.Component<DashboardListItemProps, {}> {
                   : NO_TIMESTAMP_TEXT}
               </div>
             </div>
-            <img className="icon icon-right" />
+            <img className="icon icon-right" alt="" />
           </div>
         </Link>
       </li>

@@ -207,7 +207,7 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
             autoComplete="off"
           />
           <button className={searchButtonClass} type="submit">
-            <img className="icon icon-search" />
+            <img className="icon icon-search" alt="" />
           </button>
           {this.props.size === SIZE_SMALL && (
             <button
