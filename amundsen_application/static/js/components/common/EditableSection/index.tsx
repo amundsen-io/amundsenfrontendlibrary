@@ -92,7 +92,7 @@ export class EditableSection extends React.Component<
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img className="icon icon-small icon-edit" />
+          <img className="icon icon-small icon-edit" alt=""/>
         </a>
       </OverlayTrigger>
     );

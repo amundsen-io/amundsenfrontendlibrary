@@ -239,11 +239,11 @@ export class TableDetail extends React.Component<
                   {!!data.last_updated_timestamp && (
                     <section className="metadata-section">
                       <div className="section-title title-3">Last Updated</div>
-                      <div className="body-2">
+                      <time className="body-2">
                         {formatDateTimeShort({
                           epochTimestamp: data.last_updated_timestamp,
                         })}
-                      </div>
+                      </time>
                     </section>
                   )}
                   <section className="metadata-section">

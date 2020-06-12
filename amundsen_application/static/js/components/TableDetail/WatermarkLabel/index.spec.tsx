@@ -83,9 +83,11 @@ describe('WatermarkLabel', () => {
         '2018-08-03',
         '2019-10-15'
       );
-      expect(mount(watermarkInfo).find('.range-dates').text()).toBe(
-        'Aug 03, 2018Oct 15, 2019'
-      );
+      const startTime = mount(watermarkInfo).find('.date-range-value').at(0).text();
+      const endTime = mount(watermarkInfo).find('.date-range-value').at(1).text();
+
+      expect(startTime).toBe('Aug 03, 2018');
+      expect(endTime).toBe('Oct 15, 2019');
     });
   });
 

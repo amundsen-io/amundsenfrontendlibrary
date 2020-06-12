@@ -258,10 +258,10 @@ export const mapStateToProps = (state: GlobalState) => {
     tableOwners: Object.keys(ownerObj),
   };
   if (columnName) {
-    mappedProps.columnName = columnName;
+    mappedProps['columnName'] = columnName;
   }
   if (requestMetadataType) {
-    mappedProps.requestMetadataType = requestMetadataType;
+    mappedProps['requestMetadataType'] = requestMetadataType;
   }
   return mappedProps;
 };

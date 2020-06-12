@@ -8,9 +8,19 @@
     height: 40px;
     margin-right: 8px;
     width: 12px;
+    margin-top: 2px;
   }
 
   .range-labels {
     flex-basis: 42px;
+  }
+
+  .date-range {
+    margin-top: 0;
+    margin-bottom: 6px;
+  }
+
+  .date-range-value {
+    margin-left: $spacer-1/2;
   }
 }
