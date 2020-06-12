@@ -287,7 +287,10 @@ describe('search sagas', () => {
     });
 
     it('it updates filters and executes search', () => {
-      const action = updateSearchState({ filters: {}, submitSearch: true });
+      const action = updateSearchState({
+        filters: { [ResourceType.table]: { database: { bigquery: true } } },
+        submitSearch: true,
+      });
       const { search_term, resource } = searchState;
       testSaga(Sagas.updateSearchStateWorker, action)
         .next()
