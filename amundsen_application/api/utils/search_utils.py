@@ -66,7 +66,7 @@ def generate_query_json(*, filters: Dict = {}, page_index: int, search_term: str
     Transforms the given paramaters to the query json for the search service according to
     the api defined at:
     https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/api/swagger_doc/table/search_table_filter.yml
-    TODO ttannis: Add updated endpoint link for dashboards
+    https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/api/swagger_doc/dashboard/search_dashboard_filter.yml
     """
     return {
         'page_index': int(page_index),
