@@ -84,11 +84,11 @@ const QueryListItem = ({ name, text, url }: QueryListItemProps) => {
           <label className="query-list-query-label section-title">
             {QUERY_LABEL}:
             <div className="query-list-query-content">
-              <GoToDashboardLink url={url} />
-              <React.Suspense fallback={<QueryBlockShimmer />}>
+  <GoToDashboardLink url={url} />
+  <React.Suspense fallback={<QueryBlockShimmer />}>
                 <LazyComponent text={text} />
               </React.Suspense>
-            </div>
+</div>
           </label>
         </div>
       )}

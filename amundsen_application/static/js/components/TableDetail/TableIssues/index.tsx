@@ -96,8 +96,10 @@ export class TableIssues extends React.Component<TableIssueProps> {
           href={this.props.allIssuesUrl}
           onClick={logClick}
         >
-          View all {this.props.total} issues
-        </a>
+          View all {this.props.total}
+{' '}
+issues
+</a>
         |{reportIssueLink}
       </span>
     );

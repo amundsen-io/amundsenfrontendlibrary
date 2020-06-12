@@ -14,7 +14,7 @@ import { RequestMetadataType, TableColumn } from 'interfaces';
 import './styles.scss';
 import EditableSection from 'components/common/EditableSection';
 
-const MORE_BUTTON_TEXT = "More options";
+const MORE_BUTTON_TEXT = 'More options';
 
 interface DispatchFromProps {
   openRequestDescriptionDialog: (

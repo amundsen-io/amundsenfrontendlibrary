@@ -47,13 +47,17 @@ class WatermarkLabel extends React.Component<WatermarkLabelProps> {
         {low && (
           <p className="date-range body-2">
             <span className="date-range-label">{LOW_WATERMARK_LABEL}</span>
-            <time className="date-range-value">{this.formatWatermarkDate(low)}</time>
+            <time className="date-range-value">
+              {this.formatWatermarkDate(low)}
+            </time>
           </p>
         )}
         {high && (
           <p className="date-range body-2">
             <span className="date-range-label">{HIGH_WATERMARK_LABEL}</span>
-            <time className="date-range-value">{this.formatWatermarkDate(high)}</time>
+            <time className="date-range-value">
+              {this.formatWatermarkDate(high)}
+            </time>
           </p>
         )}
       </div>

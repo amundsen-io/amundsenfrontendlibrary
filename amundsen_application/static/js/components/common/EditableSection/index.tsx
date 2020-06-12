@@ -95,7 +95,7 @@ export class EditableSection extends React.Component<
           rel="noopener noreferrer"
         >
           <span className="sr-only">{Constants.EDIT_TEXT}</span>
-          <img className="icon icon-small icon-edit" alt=""/>
+          <img className="icon icon-small icon-edit" alt="" />
         </a>
       </OverlayTrigger>
     );
@@ -120,12 +120,12 @@ export class EditableSection extends React.Component<
       <section className="editable-section">
         <label className="editable-section-label">
           <div className="editable-section-label-wrapper">
-            <span className="section-title title-3">{EditableSection.convertText(title)}</span>
+            <span className="section-title title-3">
+              {EditableSection.convertText(title)}
+            </span>
             {!readOnly ? this.renderButton() : this.renderReadOnlyButton()}
           </div>
-          <div className="editable-section-content">
-            {childrenWithProps}
-          </div>
+          <div className="editable-section-content">{childrenWithProps}</div>
         </label>
       </section>
     );

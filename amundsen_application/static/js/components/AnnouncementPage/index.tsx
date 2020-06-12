@@ -55,7 +55,9 @@ export class AnnouncementPage extends React.Component<AnnouncementPageProps> {
         <main className="container announcement-container">
           <div className="row">
             <div className="col-xs-12">
-              <h1 id="announcement-header" className="h3">Announcements</h1>
+              <h1 id="announcement-header" className="h3">
+                Announcements
+              </h1>
               <hr />
               <div id="announcement-content" className="announcement-content">
                 {this.createPosts()}

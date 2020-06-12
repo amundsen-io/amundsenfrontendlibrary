@@ -258,9 +258,11 @@ export const mapStateToProps = (state: GlobalState) => {
     tableOwners: Object.keys(ownerObj),
   };
   if (columnName) {
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     mappedProps['columnName'] = columnName;
   }
   if (requestMetadataType) {
+    // eslint-disable-next-line @typescript-eslint/dot-notation
     mappedProps['requestMetadataType'] = requestMetadataType;
   }
   return mappedProps;
