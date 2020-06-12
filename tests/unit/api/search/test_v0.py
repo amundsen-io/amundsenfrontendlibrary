@@ -439,10 +439,10 @@ class SearchDashboard(unittest.TestCase):
         with local_app.test_client() as test:
             test.post(self.fe_flask_endpoint,
                       json={
-                        'term': test_term,
-                        'pageIndex': test_index,
-                        'filters': mock_filters,
-                        'searchType': test_search_type})
+                          'term': test_term,
+                          'pageIndex': test_index,
+                          'filters': mock_filters,
+                          'searchType': test_search_type})
             search_dashboard_mock.assert_called_with(filters=mock_filters,
                                                      page_index=test_index,
                                                      search_term=test_term,
