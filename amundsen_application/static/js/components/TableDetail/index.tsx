@@ -180,9 +180,9 @@ export class TableDetail extends React.Component<
               />
             </div>
             <div className="header-section header-title">
-              <h3 className="header-title-text truncated">
+              <h1 className="h3 header-title-text truncated">
                 {this.getDisplayName()}
-              </h3>
+              </h1>
               <BookmarkIcon
                 bookmarkKey={data.key}
                 resourceType={ResourceType.table}
@@ -208,8 +208,8 @@ export class TableDetail extends React.Component<
               <ExploreButton tableData={data} />
             </div>
           </header>
-          <article className="column-layout-1">
-            <section className="left-panel">
+          <div className="column-layout-1">
+            <aside className="left-panel">
               <EditableSection title="Description">
                 <TableDescEditableText
                   maxLength={AppConfig.editableText.tableDescLength}
@@ -283,9 +283,9 @@ export class TableDetail extends React.Component<
                   </EditableSection>
                 </section>
               ))}
-            </section>
-            <section className="right-panel">{this.renderTabs()}</section>
-          </article>
+            </aside>
+            <main className="right-panel">{this.renderTabs()}</main>
+          </div>
         </div>
       );
     }

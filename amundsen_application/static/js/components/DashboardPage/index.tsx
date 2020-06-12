@@ -168,7 +168,7 @@ export class DashboardPage extends React.Component<
             />
           </div>
           <div className="header-section header-title">
-            <h3 className="header-title-text truncated">{dashboard.name}</h3>
+            <h1 className="h3 header-title-text truncated">{dashboard.name}</h1>
             <BookmarkIcon
               bookmarkKey={dashboard.uri}
               resourceType={ResourceType.dashboard}
@@ -203,7 +203,7 @@ export class DashboardPage extends React.Component<
           </div>
         </header>
         <article className="column-layout-1">
-          <section className="left-panel">
+          <aside className="left-panel">
             <EditableSection
               title="Description"
               readOnly
@@ -322,8 +322,8 @@ export class DashboardPage extends React.Component<
               </section>
             </section>
             <ImagePreview uri={this.state.uri} redirectUrl={dashboard.url} />
-          </section>
-          <section className="right-panel">{this.renderTabs()}</section>
+          </aside>
+          <main className="right-panel">{this.renderTabs()}</main>
         </article>
       </div>
     );

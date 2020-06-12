@@ -26,7 +26,7 @@ class QueryList extends React.Component<QueryListProps> {
       />
     ));
 
-    return <ul className="query-list list-group">{queryList}</ul>;
+    return <ul className="query-list list-group" role="tablist">{queryList}</ul>;
   }
 }
 

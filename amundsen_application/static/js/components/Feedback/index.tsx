@@ -7,6 +7,7 @@ import RequestFeedbackForm from './FeedbackForm/RequestFeedbackForm';
 
 import {
   BUG_REPORT_TEXT,
+  FEEDBACK_BUTTON_TEXT,
   BUTTON_CLOSE_TEXT,
   FEEDBACK_TITLE,
   FEEDBACK_TYPE_TEXT,
@@ -81,6 +82,7 @@ export default class Feedback extends React.Component<
           }`}
           onClick={this.toggle}
         >
+          <span className="sr-only">{FEEDBACK_BUTTON_TEXT}</span>
           <img className="icon icon-help" alt="" />
         </button>
         {this.state.isOpen && (
