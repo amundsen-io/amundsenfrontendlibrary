@@ -40,7 +40,7 @@ def transform_filters(*, filters: Dict = {}, resource: str) -> Dict:
     Transforms the data shape of filters from the application to the data
     shape required by the search service according to the api defined at:
     https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/api/swagger_doc/table/search_table_filter.yml
-    TODO ttannis: Add updated endpoint link for dashboards
+    https://github.com/lyft/amundsensearchlibrary/blob/master/search_service/api/swagger_doc/dashboard/search_dashboard_filter.yml
     """
     filter_payload = {}
     for category in valid_search_fields.get(resource, {}):
@@ -52,11 +52,7 @@ def transform_filters(*, filters: Dict = {}, resource: str) -> Dict:
             elif type(values) == dict:
                 value_list = [key for key in values.keys() if values[key] is True]
         if len(value_list) > 0:
-            # TODO
-            if category == 'tag' and resource == 'dashboard':
-                filter_payload['tags'] = value_list
-            else:
-                filter_payload[category] = value_list
+            filter_payload[category] = value_list
 
     return filter_payload
 
@@ -78,7 +74,7 @@ def generate_query_json(*, filters: Dict = {}, page_index: int, search_term: str
     }
 
 
-def has_filters(*, filters: Dict = {}, resource: str) -> bool:
+def has_filters(*, filters: Dict = {}, resource: str = '') -> bool:
     """
     Returns whether or not the filter dictionary passed to the search service
     has at least one filter value for a valid filter category

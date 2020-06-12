@@ -117,17 +117,8 @@ export function* updateSearchStateWorker(
   const { filters, resource, updateUrl, submitSearch } = action.payload;
   const state = yield select(getSearchState);
   if (filters && submitSearch) {
-    yield put(
-      searchAll(
-        SearchType.FILTER,
-        '',
-        undefined,
-        0,
-        true
-      )
-    );
-  }
-  else if (updateUrl) {
+    yield put(searchAll(SearchType.FILTER, '', undefined, 0, true));
+  } else if (updateUrl) {
     updateSearchUrl({
       resource: resource || state.resource,
       term: state.search_term,

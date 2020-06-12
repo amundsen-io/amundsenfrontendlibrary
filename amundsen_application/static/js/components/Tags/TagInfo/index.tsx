@@ -63,7 +63,7 @@ export const mapDispatchToProps = (dispatch: any) => {
             [ResourceType.table]: { tag: tagName },
           },
           submitSearch: true,
-        })
+        }),
     },
     dispatch
   );

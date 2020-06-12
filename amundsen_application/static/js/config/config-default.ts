@@ -81,7 +81,7 @@ const configDefault: AppConfig = {
           displayName: 'Tag',
           type: FilterType.INPUT_SELECT,
         },
-      ]
+      ],
     },
     [ResourceType.table]: {
       displayName: 'Datasets',
