@@ -25,16 +25,6 @@ interface StateFromProps {
 
 export type MyBookmarksProps = StateFromProps;
 
-const ShimmeringBookmarksLoader: React.FC = () => {
-  return (
-    <div className="shimmer-bookmarks-loader">
-      <ShimmeringResourceLoader />
-      <ShimmeringResourceLoader />
-      <ShimmeringResourceLoader />
-    </div>
-  );
-};
-
 export class MyBookmarks extends React.Component<MyBookmarksProps> {
   generateTabContent = (resource: ResourceType) => {
     const bookmarks = this.props.myBookmarks[resource];
@@ -88,7 +78,7 @@ export class MyBookmarks extends React.Component<MyBookmarksProps> {
   };
 
   render() {
-    let content = <ShimmeringBookmarksLoader />;
+    let content = <ShimmeringResourceLoader />;
 
     if (this.props.isLoaded) {
       content = (

@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 import * as DocumentTitle from 'react-document-title';
 import { RouteComponentProps } from 'react-router';
 import { Search as UrlSearch } from 'history';
-import times from 'lodash/times';
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import PaginatedApiResourceList from 'components/common/ResourceList/PaginatedApiResourceList';
@@ -62,16 +61,6 @@ export type SearchPageProps = StateFromProps &
   RouteComponentProps<any>;
 
 const NUMBER_OF_FAKE_RESULTS = 10;
-
-const ShimmeringResultsLoader: React.FC = () => {
-  return (
-    <div className="shimmer-results-loader">
-      {times(NUMBER_OF_FAKE_RESULTS, (idx) => (
-        <ShimmeringResourceLoader key={idx} />
-      ))}
-    </div>
-  );
-};
 
 export class SearchPage extends React.Component<SearchPageProps> {
   public static defaultProps: Partial<SearchPageProps> = {};
@@ -171,7 +160,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
 
   renderContent = () => {
     if (this.props.isLoading) {
-      return <ShimmeringResultsLoader />;
+      return <ShimmeringResourceLoader numItems={NUMBER_OF_FAKE_RESULTS} />;
     }
 
     return this.renderSearchResults();

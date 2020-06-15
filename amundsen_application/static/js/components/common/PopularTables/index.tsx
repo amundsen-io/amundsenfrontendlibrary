@@ -31,16 +31,6 @@ export interface DispatchFromProps {
 
 export type PopularTablesProps = StateFromProps & DispatchFromProps;
 
-const ShimmeringPopularTablesLoader: React.FC = () => {
-  return (
-    <div className="shimmer-popular-tables-loader">
-      <ShimmeringResourceLoader />
-      <ShimmeringResourceLoader />
-      <ShimmeringResourceLoader />
-    </div>
-  );
-};
-
 export class PopularTables extends React.Component<PopularTablesProps> {
   componentDidMount() {
     this.props.getPopularTables();
@@ -48,7 +38,7 @@ export class PopularTables extends React.Component<PopularTablesProps> {
 
   render() {
     const { popularTables, isLoaded } = this.props;
-    let content = <ShimmeringPopularTablesLoader />;
+    let content = <ShimmeringResourceLoader />;
 
     if (isLoaded) {
       content = (

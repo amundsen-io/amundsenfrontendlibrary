@@ -250,7 +250,7 @@ describe('MyBookmarks', () => {
     it('renders a shimmer loader until ready', () => {
       const { wrapper } = setup({ isLoaded: false });
       const expected = 1;
-      const actual = wrapper.find('ShimmeringBookmarksLoader').length;
+      const actual = wrapper.find('ShimmeringResourceLoader').length;
 
       expect(actual).toEqual(expected);
     });

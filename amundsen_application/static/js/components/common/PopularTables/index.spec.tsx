@@ -89,7 +89,7 @@ describe('PopularTables', () => {
 
     describe('when loading', () => {
       it('renders loading state', () => {
-        const actual = wrapper.find('ShimmeringPopularTablesLoader').length;
+        const actual = wrapper.find('ShimmeringResourceLoader').length;
         const expected = 1;
 
         expect(actual).toEqual(expected);

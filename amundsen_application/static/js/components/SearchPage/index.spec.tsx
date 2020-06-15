@@ -252,7 +252,7 @@ describe('SearchPage', () => {
     it('renders shimmering loader when in loading state', () => {
       const { wrapper } = setup({ isLoading: true });
       const expected = 1;
-      const actual = wrapper.find('ShimmeringResultsLoader').length;
+      const actual = wrapper.find('ShimmeringResourceLoader').length;
 
       expect(actual).toEqual(expected);
     });
