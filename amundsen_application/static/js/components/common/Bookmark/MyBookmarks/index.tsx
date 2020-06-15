@@ -10,6 +10,7 @@ import {
 } from 'config/config-utils';
 import PaginatedResourceList from 'components/common/ResourceList/PaginatedResourceList';
 import TabsComponent from 'components/common/TabsComponent';
+import ShimmeringResourceLoader from 'components/common/ShimmeringResourceLoader';
 import {
   BOOKMARK_TITLE,
   BOOKMARKS_PER_PAGE,
@@ -23,20 +24,6 @@ interface StateFromProps {
 }
 
 export type MyBookmarksProps = StateFromProps;
-
-const ShimmeringResourceLoader: React.FC = () => {
-  return (
-    <div className="shimmer-bookmarks-loader-row media">
-      <div className="media-left media-middle">
-        <div className="shimmer-bookmarks-circle is-shimmer-animated" />
-      </div>
-      <div className="media-body">
-        <div className="shimmer-bookmarks-line shimmer-bookmarks-line--1 is-shimmer-animated" />
-        <div className="shimmer-bookmarks-line shimmer-bookmarks-line--2 is-shimmer-animated" />
-      </div>
-    </div>
-  );
-};
 
 const ShimmeringBookmarksLoader: React.FC = () => {
   return (
