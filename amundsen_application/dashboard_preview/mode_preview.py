@@ -63,7 +63,11 @@ class ModePreview(BasePreview):
         :return: image bytes
         :raise: PermissionError when user is not allowed to access the dashboard
         """
-
+        try:
+            LOGGER.info('self._auth_user_method(app).user_id: {}'.format(self._auth_user_method(app).user_id))
+        except Exception as e:
+            LOGGER.exception('Failed self._auth_user_method(app).user_id')
+        
         if self._is_auth_enabled:
             self._authorize_access(user_email=self._auth_user_method(app).email)
 
