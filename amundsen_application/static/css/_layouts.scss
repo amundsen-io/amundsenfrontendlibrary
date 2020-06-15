@@ -95,12 +95,12 @@ $aside-separation-space: 40px;
       border-right: 4px solid $divider;
       flex-basis: 600px;
       flex-shrink: 0;
-      overflow-y: scroll;
-      padding: $aside-separation-space 24px;
+      overflow-y: auto;
+      padding: 0 24px $aside-separation-space;
 
       > .banner {
         border: 1px solid $stroke;
-        height: $aside-separation-space;
+        height: 40px;
         margin: 24px 24px 0;
         padding: 8px;
       }
@@ -156,7 +156,6 @@ $aside-separation-space: 40px;
   // Inner column layout
   .column-layout-2 {
     display: flex;
-    padding-top: $aside-separation-space;
 
     > .left-panel {
       flex-basis: 262px;
