@@ -24,12 +24,38 @@ interface StateFromProps {
 
 export type MyBookmarksProps = StateFromProps;
 
+const ShimmeringResourceLoader: React.FC = () => {
+  return (
+    <div className="shimmer-bookmarks-loader-row media">
+      <div className="media-left media-middle">
+        <div className="shimmer-bookmarks-circle is-shimmer-animated" />
+      </div>
+      <div className="media-body">
+        <div className="shimmer-bookmarks-line shimmer-bookmarks-line--1 is-shimmer-animated" />
+        <div className="shimmer-bookmarks-line shimmer-bookmarks-line--2 is-shimmer-animated" />
+      </div>
+    </div>
+  );
+};
+
+const ShimmeringBookmarksLoader: React.FC = () => {
+  return (
+    <div className="shimmer-bookmarks-loader">
+      <ShimmeringResourceLoader />
+      <ShimmeringResourceLoader />
+      <ShimmeringResourceLoader />
+    </div>
+  );
+};
+
 export class MyBookmarks extends React.Component<MyBookmarksProps> {
   generateTabContent = (resource: ResourceType) => {
     const bookmarks = this.props.myBookmarks[resource];
+
     if (!bookmarks) {
       return null;
     }
+
     return (
       <PaginatedResourceList
         allItems={bookmarks}
@@ -46,9 +72,11 @@ export class MyBookmarks extends React.Component<MyBookmarksProps> {
 
   generateTabTitle = (resource: ResourceType): string => {
     const bookmarks = this.props.myBookmarks[resource];
+
     if (!bookmarks) {
       return '';
     }
+
     return `${getDisplayNameByResource(resource)} (${bookmarks.length})`;
   };
 
@@ -73,17 +101,21 @@ export class MyBookmarks extends React.Component<MyBookmarksProps> {
   };
 
   render() {
-    if (!this.props.isLoaded) {
-      return null;
+    let content = <ShimmeringBookmarksLoader />;
+
+    if (this.props.isLoaded) {
+      content = (
+        <TabsComponent
+          tabs={this.generateTabInfo()}
+          defaultTab={this.generateTabKey(ResourceType.table)}
+        />
+      );
     }
 
     return (
       <div className="bookmark-list">
         <div className="title-1">{BOOKMARK_TITLE}</div>
-        <TabsComponent
-          tabs={this.generateTabInfo()}
-          defaultTab={this.generateTabKey(ResourceType.table)}
-        />
+        {content}
       </div>
     );
   }
