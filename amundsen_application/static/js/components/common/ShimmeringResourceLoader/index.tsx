@@ -1,11 +1,11 @@
 import * as React from 'react';
-import times from 'lodash/times';
+import * as times from 'lodash/times';
 
 import './styles.scss';
 
 const DEFAULT_REPETITION = 3;
 
-const ShimmeringResourceItem: React.SFC = () => {
+export const ShimmeringResourceItem: React.SFC = () => {
   return (
     <div className="shimmer-resource-loader-item media">
       <div className="media-left media-middle">
@@ -19,9 +19,9 @@ const ShimmeringResourceItem: React.SFC = () => {
   );
 };
 
-type ShimmeringResourceLoaderProps = {
+export interface ShimmeringResourceLoaderProps {
   numItems?: number;
-};
+}
 
 const ShimmeringResourceLoader: React.SFC<ShimmeringResourceLoaderProps> = ({
   numItems = DEFAULT_REPETITION,
