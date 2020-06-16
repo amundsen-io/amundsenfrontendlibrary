@@ -1,7 +1,7 @@
 @import 'variables';
 
 $issue-banner-height: 40px;
-$shimmer-loader-height: 90px;
+$shimmer-line-height: 16px;
 $shimmer-loader-lines: 1, 2, 3;
 
 .table-issues {
@@ -77,13 +77,12 @@ $shimmer-loader-lines: 1, 2, 3;
   }
 
   .shimmer-issues {
-    height: $shimmer-loader-height;
     width: 100%;
   }
 
   .shimmer-issues-row {
     margin-bottom: $spacer-1;
-    height: ($shimmer-loader-height/length($shimmer-loader-lines) - $spacer-1);
+    height: $shimmer-line-height;
   }
 
   @each $line in $shimmer-loader-lines {
