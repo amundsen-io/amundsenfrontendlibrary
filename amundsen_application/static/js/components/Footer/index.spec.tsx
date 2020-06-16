@@ -42,7 +42,6 @@ describe('Footer', () => {
     });
 
     describe('when state.lastIndexed is falsy', () => {
-
       it('renders the shimmering loader if this.state.lastIndexed is null', () => {
         const expected = 1;
 
@@ -59,7 +58,6 @@ describe('Footer', () => {
         expect(wrapper.find('ShimmeringFooterLoader').length).toEqual(expected);
       });
     });
-
   });
 });
 

@@ -23,7 +23,7 @@ export type FooterProps = StateFromProps & DispatchFromProps;
 const ShimmeringFooterLoader: React.FC = () => {
   return (
     <div className="shimmer-footer">
-      <div className="shimmer-footer-row is-shimmer-animated"></div>
+      <div className="shimmer-footer-row is-shimmer-animated" />
     </div>
   );
 };
@@ -38,7 +38,7 @@ export class Footer extends React.Component<FooterProps> {
   };
 
   render() {
-    let content = (<ShimmeringFooterLoader />);
+    let content = <ShimmeringFooterLoader />;
 
     if (this.props.lastIndexed) {
       content = (

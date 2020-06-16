@@ -32,7 +32,6 @@ export type TableIssueProps = StateFromProps &
   DispatchFromProps &
   ComponentProps;
 
-
 const ShimmeringIssuesLoader: React.FC = () => {
   return (
     <div className="shimmer-issues">
