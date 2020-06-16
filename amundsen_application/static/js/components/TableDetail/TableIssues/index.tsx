@@ -37,7 +37,6 @@ const ShimmeringIssuesLoader: React.FC = () => {
     <div className="shimmer-issues">
       <div className="shimmer-issues-row shimmer-issues-line--1 is-shimmer-animated"></div>
       <div className="shimmer-issues-row shimmer-issues-line--2 is-shimmer-animated"></div>
-      <div className="shimmer-issues-row shimmer-issues-line--3 is-shimmer-animated"></div>
     </div>
   );
 };
