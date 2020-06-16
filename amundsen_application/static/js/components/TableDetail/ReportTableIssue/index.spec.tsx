@@ -92,9 +92,9 @@ describe('ReportTableIssue', () => {
         const { wrapper } = setup();
         const previsOpenState = wrapper.state().isOpen;
 
-        wrapper
-          .instance()
-          .toggle({ currentTarget: { id: 'id', nodeName: 'button' } });
+        wrapper.instance().toggle({
+          currentTarget: { dataset: { type: 'id' }, nodeName: 'button' },
+        });
 
         expect(setStateSpy).toHaveBeenCalledWith({ isOpen: !previsOpenState });
       });
@@ -107,7 +107,7 @@ describe('ReportTableIssue', () => {
         // @ts-ignore: mocked events throw type errors
         wrapper.instance().submitForm({
           preventDefault: jest.fn(),
-          currentTarget: { id: 'id', nodeName: 'button' },
+          currentTarget: { dataset: { type: 'id' }, nodeName: 'button' },
         });
 
         expect(props.createIssue).toHaveBeenCalledWith(
@@ -123,7 +123,7 @@ describe('ReportTableIssue', () => {
         // @ts-ignore: mocked events throw type errors
         wrapper.instance().submitForm({
           preventDefault: jest.fn(),
-          currentTarget: { id: 'id', nodeName: 'button' },
+          currentTarget: { dataset: { type: 'id' }, nodeName: 'button' },
         });
 
         expect(wrapper.state().isOpen).toBe(false);
