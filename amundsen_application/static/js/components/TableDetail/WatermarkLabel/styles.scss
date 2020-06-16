@@ -1,5 +1,7 @@
 @import 'variables';
 
+$date-range-label-width: 45px;
+
 .watermark-label {
   display: flex;
 
@@ -18,6 +20,11 @@
   .date-range {
     margin-top: 0;
     margin-bottom: 6px;
+  }
+
+  .date-range-label {
+    width: $date-range-label-width;
+    display: inline-block;
   }
 
   .date-range-value {
