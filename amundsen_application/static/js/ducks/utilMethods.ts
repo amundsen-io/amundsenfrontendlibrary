@@ -40,7 +40,7 @@ export function logClick(
   const target = event.currentTarget;
   const inferredProps: ActionLogParams = {
     command: 'click',
-    target_id: target.dataset.type,
+    target_id: target.dataset ? target.dataset.type : target.id,
     label: target.innerText || target.textContent,
   };
 
