@@ -41,7 +41,7 @@ export interface StateFromProps {
   itemProps: { [id: string]: OwnerAvatarLabelProps };
 }
 
-type OwnerEditorProps = ComponentProps &
+export type OwnerEditorProps = ComponentProps &
   DispatchFromProps &
   StateFromProps &
   EditableSectionChildProps;
@@ -219,8 +219,8 @@ export class OwnerEditor extends React.Component<
       );
     }
 
-    if (this.state.itemProps.size === 0) {
-      content = <label className="status-message">No entries exist</label>;
+    if (Object.keys(this.state.itemProps).length === 0) {
+      content = <label className="body-3">No owners exist</label>;
     } else {
       content = (
         <ul className="component-list">
@@ -306,7 +306,10 @@ export class OwnerEditor extends React.Component<
   }
 }
 
-export const mapStateToProps = (state: GlobalState) => {
+export const mapStateToProps = (
+  state: GlobalState,
+  ownProps: ComponentProps & EditableSectionChildProps
+) => {
   const ownerObj = state.tableMetadata.tableOwners.owners;
   const items = Object.keys(ownerObj).reduce((obj, ownerId) => {
     const { profile_url, user_id, display_name } = ownerObj[ownerId];
@@ -327,6 +330,7 @@ export const mapStateToProps = (state: GlobalState) => {
   return {
     isLoading: state.tableMetadata.tableOwners.isLoading,
     itemProps: items,
+    readOnly: ownProps.readOnly,
   };
 };
 
