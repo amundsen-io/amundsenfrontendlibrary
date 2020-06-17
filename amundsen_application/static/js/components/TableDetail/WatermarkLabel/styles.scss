@@ -8,7 +8,7 @@ $date-range-label-width: 45px;
   .range-icon {
     flex-basis: 12px;
     height: 40px;
-    margin-right: 8px;
+    margin-right: $spacer-1;
     width: 12px;
     margin-top: 2px;
   }
@@ -19,7 +19,7 @@ $date-range-label-width: 45px;
 
   .date-range {
     margin-top: 0;
-    margin-bottom: 6px;
+    margin-bottom: $spacer-1/2;
   }
 
   .date-range-label {
