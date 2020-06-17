@@ -60,8 +60,6 @@ export type SearchPageProps = StateFromProps &
   DispatchFromProps &
   RouteComponentProps<any>;
 
-const NUMBER_OF_FAKE_RESULTS = 10;
-
 export class SearchPage extends React.Component<SearchPageProps> {
   public static defaultProps: Partial<SearchPageProps> = {};
 
@@ -160,7 +158,7 @@ export class SearchPage extends React.Component<SearchPageProps> {
 
   renderContent = () => {
     if (this.props.isLoading) {
-      return <ShimmeringResourceLoader numItems={NUMBER_OF_FAKE_RESULTS} />;
+      return <ShimmeringResourceLoader numItems={RESULTS_PER_PAGE} />;
     }
 
     return this.renderSearchResults();
