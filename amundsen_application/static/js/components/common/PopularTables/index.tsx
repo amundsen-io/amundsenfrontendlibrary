@@ -38,7 +38,9 @@ export class PopularTables extends React.Component<PopularTablesProps> {
 
   render() {
     const { popularTables, isLoaded } = this.props;
-    let content = <ShimmeringResourceLoader />;
+    let content = (
+      <ShimmeringResourceLoader numItems={POPULAR_TABLES_PER_PAGE} />
+    );
 
     if (isLoaded) {
       content = (

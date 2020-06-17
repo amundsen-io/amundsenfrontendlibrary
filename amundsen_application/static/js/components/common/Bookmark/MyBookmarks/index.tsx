@@ -78,7 +78,7 @@ export class MyBookmarks extends React.Component<MyBookmarksProps> {
   };
 
   render() {
-    let content = <ShimmeringResourceLoader />;
+    let content = <ShimmeringResourceLoader numItems={BOOKMARKS_PER_PAGE} />;
 
     if (this.props.isLoaded) {
       content = (
