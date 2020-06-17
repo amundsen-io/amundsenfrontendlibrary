@@ -516,7 +516,7 @@
     },
     "extends": "stylelint-config-standard"
   },
-  "__husky": {
+  "husky": {
     "hooks": {
       "pre-commit": "lint-staged"
     }
