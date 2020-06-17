@@ -74,9 +74,11 @@ Looking forward, we aim at setting more strict best practices using ESLint and S
 - [Adopt Stylelint's Sass Guidelines on the Frontend library][stylelint-issue]
 - [Adopt Airbnb-Typescript Code Guidelines on the Frontend library][airbnb-issue]
 
-### Accessibility
+### Accessibility and Semantic Markup
 
 We strive to keep our application accessible. For that, we use the 'airbnb-typescript' preset for ESLint, which includes a bunch of accessibility rules. We also have a set of "jsx-a11y/" prefixed rules, which are currently on a "warn" level, so they don't throw errors. Our goal is to remove that "warn" level and comply with all the accessibility rules we list on [our ESLint configuration][eslintconfig].
+
+We also try to model our application's markup on best practices regarding semantic markup. If you are making large markup changes on one of your PRs, make sure your changes comply with this [HTML semantics checklist][semanticchecklist].
 
 [eslint]: https://eslint.org/
 [eslintconfig]: https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/static/package.json#L242
@@ -87,3 +89,4 @@ We strive to keep our application accessible. For that, we use the 'airbnb-types
 [typescript-issue]: https://github.com/lyft/amundsen/issues/503
 [airbnb-issue]: https://github.com/lyft/amundsen/issues/502
 [stylelint-issue]: https://github.com/lyft/amundsen/issues/501
+[semanticchecklist]: https://learn-the-web.algonquindesign.ca/topics/html-semantics-checklist/
