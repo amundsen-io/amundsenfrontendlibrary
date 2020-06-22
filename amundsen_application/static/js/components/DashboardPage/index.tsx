@@ -174,8 +174,7 @@ export class DashboardPage extends React.Component<
               resourceType={ResourceType.dashboard}
             />
             <div className="body-2">
-              Dashboard
-              in&nbsp;
+              Dashboard in&nbsp;
               <a
                 id="dashboard-group-link"
                 onClick={logClick}

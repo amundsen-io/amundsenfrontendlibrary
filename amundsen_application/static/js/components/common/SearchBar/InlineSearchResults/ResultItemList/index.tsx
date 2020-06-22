@@ -59,9 +59,7 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
     const { resourceType, suggestedResults, title } = this.props;
     return (
       <>
-        <h3 className="section-title title-3">
-          {title}
-        </h3>
+        <h3 className="section-title title-3">{title}</h3>
         <ul className="list-group">
           {this.renderResultItems(suggestedResults)}
         </ul>
