@@ -2,7 +2,6 @@ import * as React from 'react';
 import { logClick } from 'ducks/utilMethods';
 import { ResourceType } from 'interfaces';
 
-import Flag from 'components/common/Flag';
 import { SuggestedResult } from '..';
 import ResultItem from './ResultItem';
 
@@ -62,9 +61,6 @@ class ResultItemList extends React.Component<ResultItemListProps, {}> {
       <>
         <h3 className="section-title title-3">
           {title}
-          {resourceType === ResourceType.dashboard && (
-            <Flag text="beta" labelStyle="default" />
-          )}
         </h3>
         <ul className="list-group">
           {this.renderResultItems(suggestedResults)}
