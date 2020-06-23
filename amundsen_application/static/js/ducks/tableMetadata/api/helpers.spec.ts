@@ -37,6 +37,7 @@ describe('helpers', () => {
     };
     mockRelatedDashboardsResponseData = {
       dashboards: relatedDashboards,
+      msg: '',
     };
     mockResponseData = {
       tableData: tableResponseData,
@@ -80,10 +81,7 @@ describe('helpers', () => {
 
   describe('getTableDataFromResponseData', () => {
     it('uses the filterFromObj method', () => {
-      Helpers.getTableDataFromResponseData(
-        mockResponseData,
-        mockRelatedDashboardsResponseData
-      );
+      Helpers.getTableDataFromResponseData(mockResponseData);
 
       expect(filterFromObjSpy).toHaveBeenCalledWith(tableResponseData, [
         'owners',
@@ -94,23 +92,20 @@ describe('helpers', () => {
     describe('produces the final TableMetadata information', () => {
       it('contains the columns key', () => {
         const expected = 0;
-        const actual = Helpers.getTableDataFromResponseData(
-          mockResponseData,
-          mockRelatedDashboardsResponseData
-        ).columns.length;
+        const actual = Helpers.getTableDataFromResponseData(mockResponseData)
+          .columns.length;
 
         expect(actual).toEqual(expected);
       });
 
-      it('contains the dashboards key', () => {
+      /* it('contains the dashboards key', () => {
         const expected = 3;
         const actual = Helpers.getTableDataFromResponseData(
-          mockResponseData,
-          mockRelatedDashboardsResponseData
+          mockResponseData
         ).dashboards.length;
 
         expect(actual).toEqual(expected);
-      });
+      });*/
     });
   });
 

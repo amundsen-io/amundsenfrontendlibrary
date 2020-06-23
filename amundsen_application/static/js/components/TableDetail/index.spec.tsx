@@ -26,6 +26,7 @@ const setup = (
     isLoading: false,
     statusCode: 200,
     tableData: tableMetadata,
+    numRelatedDashboards: 0,
     getTableData: jest.fn(),
     ...routerProps,
     ...propOverrides,

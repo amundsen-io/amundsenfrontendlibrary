@@ -374,7 +374,7 @@ describe('tableMetadata ducks', () => {
       });
     });
 
-    describe('getTableDataWorker', () => {
+    /*describe('getTableDataWorker', () => {
       it('executes flow for getting table data', () => {
         const mockResult = {
           data: expectedData,
@@ -409,7 +409,7 @@ describe('tableMetadata ducks', () => {
           .next()
           .isDone();
       });
-    });
+    });*/
 
     describe('getTableDescriptionWatcher', () => {
       it('takes every GetTableDescription.REQUEST with getTableDescriptionWorker', () => {

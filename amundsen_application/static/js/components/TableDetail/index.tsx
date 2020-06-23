@@ -16,10 +16,10 @@ import TabsComponent from 'components/common/TabsComponent';
 import EditableText from 'components/common/EditableText';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import Flag from 'components/common/Flag';
-import ResourceList from 'components/common/ResourceList';
 
-import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
 import ColumnList from 'components/TableDetail/ColumnList';
+import TableDashboardResourceList from 'components/TableDetail/TableDashboardResourceList';
+import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
 import ExploreButton from 'components/TableDetail/ExploreButton';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import LineageLink from 'components/TableDetail/LineageLink';
@@ -37,6 +37,7 @@ import EditableSection from 'components/common/EditableSection';
 
 import {
   getSourceIconClass,
+  indexDashboardsEnabled,
   issueTrackingEnabled,
   notificationsEnabled,
 } from 'config/config-utils';
@@ -59,6 +60,7 @@ export interface StateFromProps {
   isLoading: boolean;
   statusCode?: number;
   tableData: TableMetadata;
+  numRelatedDashboards: number;
 }
 export interface DispatchFromProps {
   getTableData: (
@@ -138,18 +140,18 @@ export class TableDetail extends React.Component<
       title: `Columns (${this.props.tableData.columns.length})`,
     });
 
-    // Dashboard content
-    tabInfo.push({
-      content: (
-        <ResourceList
-          allItems={this.props.tableData.dashboards}
-          itemsPerPage={DASHBOARDS_PER_PAGE}
-          source={TABLE_SOURCE}
-        />
-      ),
-      key: 'dashboards',
-      title: `Dashboards (${this.props.tableData.dashboards.length})`,
-    });
+    if (indexDashboardsEnabled()) {
+      tabInfo.push({
+        content: (
+          <TableDashboardResourceList
+            itemsPerPage={DASHBOARDS_PER_PAGE}
+            source={TABLE_SOURCE}
+          />
+        ),
+        key: 'dashboards',
+        title: `Dashboards (${this.props.numRelatedDashboards})`,
+      });
+    }
 
     return <TabsComponent tabs={tabInfo} defaultTab="columns" />;
   }
@@ -305,6 +307,9 @@ export const mapStateToProps = (state: GlobalState) => {
     isLoading: state.tableMetadata.isLoading,
     statusCode: state.tableMetadata.statusCode,
     tableData: state.tableMetadata.tableData,
+    numRelatedDashboards: state.tableMetadata.dashboards
+      ? state.tableMetadata.dashboards.dashboards.length
+      : 0,
   };
 };
 

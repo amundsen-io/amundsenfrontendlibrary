@@ -4,6 +4,7 @@ import { call, put, select, takeEvery, takeLatest } from 'redux-saga/effects';
 import * as API from './api/v0';
 
 import {
+  getTableDashboardsResponse,
   getTableDataFailure,
   getTableDataSuccess,
   getTableDescriptionFailure,
@@ -34,8 +35,8 @@ import {
 } from './types';
 
 export function* getTableDataWorker(action: GetTableDataRequest): SagaIterator {
+  const { key, searchIndex, source } = action.payload;
   try {
-    const { key, searchIndex, source } = action.payload;
     const { data, owners, statusCode, tags } = yield call(
       API.getTableData,
       key,
@@ -45,6 +46,13 @@ export function* getTableDataWorker(action: GetTableDataRequest): SagaIterator {
     yield put(getTableDataSuccess(data, owners, statusCode, tags));
   } catch (e) {
     yield put(getTableDataFailure());
+  }
+
+  try {
+    const { dashboards } = yield call(API.getTableDashboards, key);
+    yield put(getTableDashboardsResponse(dashboards));
+  } catch (error) {
+    yield put(getTableDashboardsResponse([], error.msg));
   }
 }
 export function* getTableDataWatcher(): SagaIterator {
