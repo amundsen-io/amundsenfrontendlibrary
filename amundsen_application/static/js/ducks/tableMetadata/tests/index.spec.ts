@@ -302,14 +302,17 @@ describe('tableMetadata ducks', () => {
       const mockDashboards = [dashboardSummary];
       const mockMessage = 'test';
       expect(
-        reducer(testState, getTableDashboardsResponse(mockDashboards, mockMessage))
+        reducer(
+          testState,
+          getTableDashboardsResponse(mockDashboards, mockMessage)
+        )
       ).toEqual({
         ...testState,
         dashboards: {
           isLoading: false,
           dashboards: mockDashboards,
           errorMessage: mockMessage,
-        }
+        },
       });
     });
 
@@ -400,7 +403,7 @@ describe('tableMetadata ducks', () => {
           tags: expectedTags,
         };
         const mockDashboardsResult = {
-          dashboards: [dashboardSummary]
+          dashboards: [dashboardSummary],
         };
         testSaga(
           getTableDataWorker,
@@ -420,9 +423,7 @@ describe('tableMetadata ducks', () => {
           .next()
           .call(API.getTableDashboards, testKey)
           .next(mockDashboardsResult)
-          .put(
-            getTableDashboardsResponse(mockDashboardsResult.dashboards)
-          )
+          .put(getTableDashboardsResponse(mockDashboardsResult.dashboards))
           .next()
           .isDone();
       });

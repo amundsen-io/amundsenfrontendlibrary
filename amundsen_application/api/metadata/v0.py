@@ -674,7 +674,7 @@ def _get_related_dashboards_metadata(*, url: str) -> Dict[str, Any]:
     results_dict['status_code'] = status_code
 
     if status_code != HTTPStatus.OK:
-        message = response.raise_for_status()
+        message = f'Encountered {status_code} Error: Related dashboard metadata request failed'
         results_dict['msg'] = message
         logging.error(message)
         return results_dict
