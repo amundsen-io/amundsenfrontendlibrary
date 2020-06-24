@@ -44,15 +44,15 @@ export function* getTableDataWorker(action: GetTableDataRequest): SagaIterator {
       source
     );
     yield put(getTableDataSuccess(data, owners, statusCode, tags));
+
+    try {
+      const { dashboards } = yield call(API.getTableDashboards, key);
+      yield put(getTableDashboardsResponse(dashboards));
+    } catch (error) {
+      yield put(getTableDashboardsResponse([], error.msg));
+    }
   } catch (e) {
     yield put(getTableDataFailure());
-  }
-
-  try {
-    const { dashboards } = yield call(API.getTableDashboards, key);
-    yield put(getTableDashboardsResponse(dashboards));
-  } catch (error) {
-    yield put(getTableDashboardsResponse([], error.msg));
   }
 }
 export function* getTableDataWatcher(): SagaIterator {
