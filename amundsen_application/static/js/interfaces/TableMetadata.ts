@@ -75,6 +75,11 @@ export interface ProgrammaticDescription {
   text: string;
 }
 
+export interface ResourceReport {
+  name: string;
+  url: string;
+}
+
 export interface TableMetadata {
   badges: Badge[];
   cluster: string;
@@ -92,6 +97,7 @@ export interface TableMetadata {
   partition: PartitionData;
   table_readers: TableReader[];
   source: TableSource;
+  resource_reports: ResourceReport[];
   watermarks: Watermark[];
   programmatic_descriptions: ProgrammaticDescription[];
 }
