@@ -12,6 +12,8 @@ import {
   GetTableData,
   GetTableDataRequest,
   GetTableDataResponse,
+  GetTableDashboards,
+  GetTableDashboardsResponse,
   GetTableDescription,
   GetTableDescriptionRequest,
   GetTableDescriptionResponse,
@@ -82,9 +84,9 @@ export function getTableDataSuccess(
 export function getTableDashboardsResponse(
   dashboards: DashboardResource[],
   errorMessage: string = ''
-): any {
+): GetTableDashboardsResponse {
   return {
-    type: 'GetTableDashboards.RESPONSE',
+    type: GetTableDashboards.RESPONSE,
     payload: {
       dashboards,
       errorMessage,
@@ -296,7 +298,7 @@ export default function reducer(
   action
 ): TableMetadataReducerState {
   switch (action.type) {
-    case 'GetTableDashboards.RESPONSE':
+    case GetTableDashboards.RESPONSE:
       return {
         ...state,
         dashboards: {

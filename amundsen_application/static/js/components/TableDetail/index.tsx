@@ -18,13 +18,13 @@ import LoadingSpinner from 'components/common/LoadingSpinner';
 import Flag from 'components/common/Flag';
 
 import ColumnList from 'components/TableDetail/ColumnList';
-import TableDashboardResourceList from 'components/TableDetail/TableDashboardResourceList';
 import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
 import ExploreButton from 'components/TableDetail/ExploreButton';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import LineageLink from 'components/TableDetail/LineageLink';
 import OwnerEditor from 'components/TableDetail/OwnerEditor';
 import SourceLink from 'components/TableDetail/SourceLink';
+import TableDashboardResourceList from 'components/TableDetail/TableDashboardResourceList';
 import TableDescEditableText from 'components/TableDetail/TableDescEditableText';
 import TableHeaderBullets from 'components/TableDetail/TableHeaderBullets';
 import TableIssues from 'components/TableDetail/TableIssues';
@@ -58,9 +58,10 @@ const TABLE_SOURCE = 'table_page';
 
 export interface StateFromProps {
   isLoading: boolean;
+  isLoadingDashboards: boolean;
+  numRelatedDashboards: number;
   statusCode?: number;
   tableData: TableMetadata;
-  numRelatedDashboards: number;
 }
 export interface DispatchFromProps {
   getTableData: (
@@ -141,6 +142,11 @@ export class TableDetail extends React.Component<
     });
 
     if (indexDashboardsEnabled()) {
+      const loadingTitle = (
+        <div className="tab-title">
+          Dashboards <LoadingSpinner />
+        </div>
+      );
       tabInfo.push({
         content: (
           <TableDashboardResourceList
@@ -149,7 +155,9 @@ export class TableDetail extends React.Component<
           />
         ),
         key: 'dashboards',
-        title: `Dashboards (${this.props.numRelatedDashboards})`,
+        title: this.props.isLoadingDashboards
+          ? loadingTitle
+          : `Dashboards (${this.props.numRelatedDashboards})`,
       });
     }
 
@@ -310,6 +318,9 @@ export const mapStateToProps = (state: GlobalState) => {
     numRelatedDashboards: state.tableMetadata.dashboards
       ? state.tableMetadata.dashboards.dashboards.length
       : 0,
+    isLoadingDashboards: state.tableMetadata.dashboards
+      ? state.tableMetadata.dashboards.isLoading
+      : true,
   };
 };
 

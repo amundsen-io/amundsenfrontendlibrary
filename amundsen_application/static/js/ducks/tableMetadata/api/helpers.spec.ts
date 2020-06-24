@@ -97,15 +97,6 @@ describe('helpers', () => {
 
         expect(actual).toEqual(expected);
       });
-
-      /* it('contains the dashboards key', () => {
-        const expected = 3;
-        const actual = Helpers.getTableDataFromResponseData(
-          mockResponseData
-        ).dashboards.length;
-
-        expect(actual).toEqual(expected);
-      });*/
     });
   });
 

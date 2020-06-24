@@ -38,7 +38,7 @@ export class TableDashboardResourceList extends React.Component<
       content = (
         <ResourceList
           allItems={dashboards}
-          emptyText={errorText}
+          emptyText={errorText || undefined}
           itemsPerPage={itemsPerPage}
           source={source}
         />

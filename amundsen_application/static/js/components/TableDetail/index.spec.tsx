@@ -24,9 +24,10 @@ const setup = (
   );
   const props = {
     isLoading: false,
+    isLoadingDashboards: false,
+    numRelatedDashboards: 0,
     statusCode: 200,
     tableData: tableMetadata,
-    numRelatedDashboards: 0,
     getTableData: jest.fn(),
     ...routerProps,
     ...propOverrides,
