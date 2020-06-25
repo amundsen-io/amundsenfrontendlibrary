@@ -21,7 +21,7 @@ This service provides an API to download preview image of dashboard resources, w
 The dashboard preview image is cached in user's browser up to a day. In order to adjust this you can change the value of `DASHBOARD_PREVIEW_IMAGE_CACHE_MAX_AGE_SECONDS`
 
 ### How to configure Mode dashboard preview
-Add these three environment variables:
+Add the following environment variables:
 ```bash
     CREDENTIALS_MODE_ADMIN_TOKEN
     CREDENTIALS_MODE_ADMIN_PASSWORD
@@ -33,11 +33,11 @@ By default, Amundsen does not do any authorization on showing preview. By regist
 ```bash
     ACL_ENABLED_DASHBOARD_PREVIEW = {'ModePreview'}
 ```
-This authorization basically validates if current user is registered in Mode which is valid assumption for Amundsen only has Dashboards from shared space. Note that this authorization also assumes that it ingested Mode user information via [ModeDashboardUserExtractor](https://github.com/lyft/amundsendatabuilder/blob/master/README.md#modedashboarduserextractor) and metadata service is at least [v2.5.2](https://github.com/lyft/amundsenmetadatalibrary/releases/tag/v2.5.2).
+Amundsen ingests Mode dashboards only from the shared space, which all registered Mode users are able to view. Therefore our authorization first validates if the current user is registered in Mode. This feature is dependent on Amundsen also ingesting Mode user information via the [ModeDashboardUserExtractor](https://github.com/lyft/amundsendatabuilder/blob/master/README.md#modedashboarduserextractor) and the metadata service version must be at least [v2.5.2](https://github.com/lyft/amundsenmetadatalibrary/releases/tag/v2.5.2).
 
 ### How to support preview of different product?
-You can add preview support of different product by adding its preview class to [DefaultPreviewMethodFactory](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/dashboard_preview/preview_factory_method.py#L27)
-In order to develop new preview class, you need to implement the class that inherits [BasePreview](https://github.com/lyft/amundsenfrontendlibrary/blob/1af81d57f72824525b402f23bd3961daa1d620d2/amundsen_application/base/base_preview.py#L4) class and [ModePreview](https://github.com/lyft/amundsenfrontendlibrary/blob/1af81d57f72824525b402f23bd3961daa1d620d2/amundsen_application/dashboard_preview/mode_preview.py#L28) would be a great example.
+You can add preview support for different products by adding its preview class to [DefaultPreviewMethodFactory](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/api/preview/dashboard/dashboard_preview/preview_factory_method.py#L27)
+In order to develop new preview class, you need to implement the class that inherits [BasePreview](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/base/base_preview.py#L4) class and [ModePreview](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/api/preview/dashboard/dashboard_preview/mode_preview.py#L28) would be a great example.
 
 ## Mail Client Features
 Amundsen has two features that leverage the custom mail client -- the feedback tool and notifications. For these features a custom implementation of [base_mail_client](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/base/base_mail_client.py) must be mapped to the `MAIL_CLIENT` configuration variable.
