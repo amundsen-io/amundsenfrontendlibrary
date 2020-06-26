@@ -144,7 +144,7 @@ class EditableText extends React.Component<
           maxLength={this.props.maxLength}
           ref={this.textAreaRef}
           defaultValue={this.state.value}
-          disabled={this.state.isDisabled}
+          disabled={!this.props.editable}
         />
         <div className="editable-textarea-controls">
           {this.state.isDisabled && (
