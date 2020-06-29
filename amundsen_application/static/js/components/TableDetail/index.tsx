@@ -165,7 +165,6 @@ export class TableDetail extends React.Component<
       innerContent = <ErrorMessage />;
     } else {
       const data = tableData;
-      console.log('isEditable ', data.is_editable);
 
       innerContent = (
         <div className="resource-detail-layout table-detail">

@@ -54,7 +54,6 @@ def marshall_table_full(table_dict: Dict) -> Dict:
         is_editable_table = False
 
     is_editable = is_editable_schema and is_editable_table
-    print("***IS_EDITABLE***", is_editable)
     results['is_editable'] = is_editable
 
     # TODO - Cleanup https://github.com/lyft/amundsen/issues/296
