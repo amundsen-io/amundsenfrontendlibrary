@@ -21,7 +21,7 @@ class Config:
     COLUMN_STAT_ORDER = None  # type: Dict[str, int]
 
     UNEDITABLE_SCHEMAS = set()  # type: Set[str]
-    UNEDITABLE_TABLES_REGEX = r"*"
+    UNEDITABLE_TABLES_REGEX = r"$^"
 
     # Number of popular tables to be displayed on the index/search page
     POPULAR_TABLE_COUNT = 4  # type: int
