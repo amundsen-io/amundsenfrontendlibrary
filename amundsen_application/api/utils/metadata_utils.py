@@ -13,7 +13,7 @@ import re
 def marshall_table_partial(table_dict: Dict) -> Dict:
     """
     Forms a short version of a table Dict, with selected fields and an added 'key'
-    :param table: Dict of partial table object
+    :param table_dict: Dict of partial table object
     :return: partial table Dict
 
     TODO - Unify data format returned by search and metadata.
@@ -34,7 +34,7 @@ def marshall_table_partial(table_dict: Dict) -> Dict:
 def marshall_table_full(table_dict: Dict) -> Dict:
     """
     Forms the full version of a table Dict, with additional and sanitized fields
-    :param table: Table Dict from metadata service
+    :param table_dict: Table Dict from metadata service
     :return: Table Dict with sanitized fields
     """
 
@@ -47,14 +47,14 @@ def marshall_table_full(table_dict: Dict) -> Dict:
     is_editable_schema = results['schema'] not in app.config['UNEDITABLE_SCHEMAS']
 
     # Check if Table is uneditable
-    table_id = results['schema']+"."+results['name']
+    table_id = results['schema'] + "." + results['name']
     is_editable_table = True
     match = re.match(app.config['UNEDITABLE_TABLES_REGEX'], table_id)
     if match:
         is_editable_table = False
 
     is_editable = is_editable_schema and is_editable_table
-    print("***IS_EDITABLE***",is_editable)
+    print("***IS_EDITABLE***", is_editable)
     results['is_editable'] = is_editable
 
     # TODO - Cleanup https://github.com/lyft/amundsen/issues/296
