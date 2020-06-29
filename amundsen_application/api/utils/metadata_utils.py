@@ -7,6 +7,7 @@ from amundsen_common.models.popular_table import PopularTable, PopularTableSchem
 from amundsen_common.models.table import Table, TableSchema
 from amundsen_application.models.user import load_user, dump_user
 from flask import current_app as app
+import re
 
 
 def marshall_table_partial(table_dict: Dict) -> Dict:
@@ -42,7 +43,18 @@ def marshall_table_full(table_dict: Dict) -> Dict:
     table: Table = schema.load(table_dict).data
     results: Dict[str, Any] = schema.dump(table).data
 
-    is_editable = results['schema'] not in app.config['UNEDITABLE_SCHEMAS']
+    # Check if schecma is uneditable
+    is_editable_schema = results['schema'] not in app.config['UNEDITABLE_SCHEMAS']
+
+    # Check if Table is uneditable
+    table_id = results['schema']+"."+results['name']
+    is_editable_table = True
+    match = re.match(app.config['UNEDITABLE_TABLES_REGEX'], table_id)
+    if match:
+        is_editable_table = False
+
+    is_editable = is_editable_schema and is_editable_table
+    print("***IS_EDITABLE***",is_editable)
     results['is_editable'] = is_editable
 
     # TODO - Cleanup https://github.com/lyft/amundsen/issues/296

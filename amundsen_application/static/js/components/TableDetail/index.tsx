@@ -165,6 +165,7 @@ export class TableDetail extends React.Component<
       innerContent = <ErrorMessage />;
     } else {
       const data = tableData;
+      console.log('isEditable ', data.is_editable);
 
       innerContent = (
         <div className="resource-detail-layout table-detail">
@@ -210,7 +211,7 @@ export class TableDetail extends React.Component<
           </header>
           <div className="column-layout-1">
             <aside className="left-panel">
-              <EditableSection title="Description">
+              <EditableSection title="Description" readOnly={!data.is_editable}>
                 <TableDescEditableText
                   maxLength={AppConfig.editableText.tableDescLength}
                   value={data.description}
