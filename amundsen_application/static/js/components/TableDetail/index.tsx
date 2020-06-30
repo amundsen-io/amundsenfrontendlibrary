@@ -50,7 +50,7 @@ import RequestMetadataForm from './RequestMetadataForm';
 import { PROGRMMATIC_DESC_HEADER, ERROR_MESSAGE } from './constants';
 
 import './styles.scss';
-import TableReportsDropdown from "components/TableDetail/ResourceReportsDropdown";
+import TableReportsDropdown from 'components/TableDetail/ResourceReportsDropdown';
 
 const SERVER_ERROR_CODE = 500;
 const DASHBOARDS_PER_PAGE = 10;
