@@ -43,7 +43,7 @@ def marshall_table_full(table_dict: Dict) -> Dict:
     table: Table = schema.load(table_dict).data
     results: Dict[str, Any] = schema.dump(table).data
 
-    # Check if schecma is uneditable
+    # Check if schema is uneditable
     is_editable_schema = results['schema'] not in app.config['UNEDITABLE_SCHEMAS']
 
     # Check if Table is uneditable
