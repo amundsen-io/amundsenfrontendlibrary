@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CopyBlock, atomOneLight } from 'react-code-blocks';
+/* import { CopyBlock, atomOneLight } from 'react-code-blocks'; */
 
 const LANGUAGE = 'sql';
 
@@ -8,7 +8,7 @@ type CodeBlockProps = {
 };
 
 const CodeBlock: React.SFC<CodeBlockProps> = ({ text }: CodeBlockProps) => {
-  return (
+  /* return (
     <CopyBlock
       text={text}
       language={LANGUAGE}
@@ -17,7 +17,8 @@ const CodeBlock: React.SFC<CodeBlockProps> = ({ text }: CodeBlockProps) => {
       wrapLines
       codeBlock
     />
-  );
+  );*/
+  return <div>Sad face</div>;
 };
 
 export default CodeBlock;
