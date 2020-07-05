@@ -94,7 +94,7 @@ def request_wrapper(method: str, url: str, client, headers, timeout_sec: int, da
         if method == 'DELETE':
             return client.delete(url, headers=headers, raw_response=True)
         elif method == 'GET':
-            return client.get(url, headers=headers, raw_response=True)
+            return client.get(url, headers=headers, raw_response=True, data=data)
         elif method == 'POST':
             return client.post(url, headers=headers, raw_response=True, raw_request=True, data=data)
         elif method == 'PUT':
@@ -106,7 +106,7 @@ def request_wrapper(method: str, url: str, client, headers, timeout_sec: int, da
             if method == 'DELETE':
                 return s.delete(url, headers=headers, timeout=timeout_sec)
             elif method == 'GET':
-                return s.get(url, headers=headers, timeout=timeout_sec)
+                return s.get(url, headers=headers, timeout=timeout_sec, data=data)
             elif method == 'POST':
                 return s.post(url, headers=headers, timeout=timeout_sec, data=data)
             elif method == 'PUT':

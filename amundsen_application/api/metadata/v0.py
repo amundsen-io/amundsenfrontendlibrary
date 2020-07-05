@@ -54,15 +54,17 @@ def popular_tables() -> Response:
     """
     try:
         url = app.config['METADATASERVICE_BASE'] + POPULAR_TABLES_ENDPOINT
-        response = request_metadata(url=url)
+        data = {
+            'limit': app.config['POPULAR_TABLE_COUNT'],
+            'readers': app.config['POPULAR_TABLE_MINIMUM_READER_COUNT']
+        }
+        response = request_metadata(url=url, data=data)
         status_code = response.status_code
 
         if status_code == HTTPStatus.OK:
             message = 'Success'
             response_list = response.json().get('popular_tables')
-            top4 = response_list[0:min(len(response_list), app.config['POPULAR_TABLE_COUNT',
-                                                                      'POPULAR_TABLE_MINIMUM_READER_COUNT'])]
-            popular_tables = [marshall_table_partial(result) for result in top4]
+            popular_tables = [marshall_table_partial(result) for result in response_list]
         else:
             message = 'Encountered error: Request to metadata service failed with status code ' + str(status_code)
             logging.error(message)
