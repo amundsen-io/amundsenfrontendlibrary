@@ -60,7 +60,8 @@ def popular_tables() -> Response:
         if status_code == HTTPStatus.OK:
             message = 'Success'
             response_list = response.json().get('popular_tables')
-            top4 = response_list[0:min(len(response_list), app.config['POPULAR_TABLE_COUNT'])]
+            top4 = response_list[0:min(len(response_list), app.config['POPULAR_TABLE_COUNT',
+                                                                      'POPULAR_TABLE_MINIMUM_READER_COUNT'])]
             popular_tables = [marshall_table_partial(result) for result in top4]
         else:
             message = 'Encountered error: Request to metadata service failed with status code ' + str(status_code)
