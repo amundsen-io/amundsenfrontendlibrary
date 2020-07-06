@@ -6,7 +6,7 @@ matrix:
     env:
     - IS_DEPLOYABLE=true
     before_install:
-    - python -c "import fcntl; fcntl.fcntl(1, fcntl.F_SETFL, 0)"
+    - python3 -c "import fcntl; fcntl.fcntl(1, fcntl.F_SETFL, 0)"
     install:
     - pip3 install -r requirements.txt
     - pip3 install codecov
@@ -31,7 +31,7 @@ matrix:
     after_success:
     - codecov
 before_deploy:
-- python -c "import fcntl; fcntl.fcntl(1, fcntl.F_SETFL, 0)"  
+- python3 -c "import fcntl; fcntl.fcntl(1, fcntl.F_SETFL, 0)"
 deploy:
 - provider: pypi
   user: amundsen-dev
