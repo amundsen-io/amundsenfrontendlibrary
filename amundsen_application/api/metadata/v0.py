@@ -54,10 +54,7 @@ def popular_tables() -> Response:
     """
     try:
         url = app.config['METADATASERVICE_BASE'] + POPULAR_TABLES_ENDPOINT
-        data = {
-            'limit': app.config['POPULAR_TABLE_COUNT'],
-            'readers': app.config['POPULAR_TABLE_MINIMUM_READER_COUNT']
-        }
+        data = {'limit': app.config['POPULAR_TABLE_COUNT']}
         response = request_metadata(url=url, data=data)
         status_code = response.status_code
 
