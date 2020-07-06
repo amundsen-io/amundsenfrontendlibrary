@@ -170,7 +170,7 @@ def _search_user(*, search_term: str, page_index: int, search_type: str) -> Dict
             results_dict['msg'] = 'Success'
             results = response.json().get('results', list())
             users['results'] = [_map_user_result(result) for result in results]
-            users['total_results'] = response.json().get('total_results')
+            users['total_results'] = response.json().get('total_results', 0)
         else:
             message = 'Encountered error: Search request failed'
             results_dict['msg'] = message

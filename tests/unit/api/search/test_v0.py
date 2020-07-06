@@ -299,7 +299,7 @@ class SearchUser(unittest.TestCase):
 
             users = data.get('users')
             self.assertEqual(len(users.get('results')), 0)
-            self.assertEqual(len(users.get('total_results')), 0)
+            self.assertEqual(users.get('total_results'), 0)
 
     @responses.activate
     def test_search_user_success(self) -> None:
