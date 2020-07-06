@@ -21,8 +21,8 @@ def build_js() -> None:
         logging.error('npm must be available')
 
     try:
-        subprocess.check_output(['npm install'], cwd=PACKAGE_DIR)
-        subprocess.check_call(['npm run build'], cwd=PACKAGE_DIR)
+        subprocess.check_output(['npm install'], cwd=PACKAGE_DIR, shell=True)
+        subprocess.check_output(['npm run build'], cwd=PACKAGE_DIR, shell=True)
     except Exception as e:
         logging.warn('Installation of npm dependencies failed')
         logging.warn(str(e))
@@ -34,7 +34,7 @@ requirements_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'r
 with open(requirements_path) as requirements_file:
     requirements = requirements_file.readlines()
 
-__version__ = '2.2.0rc1'
+__version__ = '2.2.0rc2'
 
 
 setup(
