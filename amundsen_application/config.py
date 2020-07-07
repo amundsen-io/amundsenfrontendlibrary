@@ -48,7 +48,7 @@ class Config:
         MatchRuleObject(table_name_regex=r"^noedit_([a-zA-Z_0-9]+)")
     ]
     '''
-    UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES = []  # type: list(MatchRuleObject)
+    UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES = []  # type: list[MatchRuleObject]
 
     # Number of popular tables to be displayed on the index/search page
     POPULAR_TABLE_COUNT = 4  # type: int
