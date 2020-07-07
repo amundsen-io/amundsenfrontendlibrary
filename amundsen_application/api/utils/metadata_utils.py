@@ -55,6 +55,7 @@ def parse_editable_rule(rule: MatchRuleObject,
         if match_table:
             is_editable_table = False
         return is_editable_table
+    return is_editable_table
 
 
 def marshall_table_full(table_dict: Dict) -> Dict:
