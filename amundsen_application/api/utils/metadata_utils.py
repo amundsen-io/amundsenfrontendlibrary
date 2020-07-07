@@ -6,6 +6,7 @@ from amundsen_common.models.dashboard import DashboardSummary, DashboardSummaryS
 from amundsen_common.models.popular_table import PopularTable, PopularTableSchema
 from amundsen_common.models.table import Table, TableSchema
 from amundsen_application.models.user import load_user, dump_user
+from amundsen_application.config import MatchRuleObject
 from flask import current_app as app
 import re
 
@@ -24,11 +25,36 @@ def marshall_table_partial(table_dict: Dict) -> Dict:
     results = schema.dump(table).data
     # TODO: fix popular tables to provide these? remove if we're not using them?
     # TODO: Add the 'key' or 'id' to the base PopularTableSchema
-    results['key'] = f'{table.database}://{table.cluster}.{table.schema}/{ table.name}'
+    results['key'] = f'{table.database}://{table.cluster}.{table.schema}/{table.name}'
     results['last_updated_timestamp'] = None
     results['type'] = 'table'
 
     return results
+
+
+def parse_editable_rule(rule: MatchRuleObject,
+                        table: str,
+                        schema: str) -> bool:
+    """
+    Matches table name and schema with corresponding regex in matching rule
+    """
+    is_editable_table = True
+    if rule.schema_regex and rule.table_name_regex:
+        match_schema = re.match(rule.schema_regex, schema)
+        match_table = re.match(rule.table_name_regex, table)
+        if match_schema and match_table:
+            is_editable_table = False
+        return is_editable_table
+    if rule.schema_regex:
+        match_schema = re.match(rule.schema_regex, schema)
+        if match_schema:
+            is_editable_table = False
+        return is_editable_table
+    if rule.table_name_regex:
+        match_table = re.match(rule.table_name_regex, table)
+        if match_table:
+            is_editable_table = False
+        return is_editable_table
 
 
 def marshall_table_full(table_dict: Dict) -> Dict:
@@ -49,21 +75,9 @@ def marshall_table_full(table_dict: Dict) -> Dict:
     # Check if Table Description is uneditable
     # table_id = results['schema'] + "." + results['name']
     is_editable_table = True
-    UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES = app.config['UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES']
-    for rule in UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES:
-        if rule.schema_regex and rule.table_name_regex:
-            match_schema = re.match(rule.schema_regex, results['schema'])
-            match_table = re.match(rule.table_name_regex, results['name'])
-            if match_schema and match_table:
-                is_editable_table = False
-        elif rule.schema_regex:
-            match_schema = re.match(rule.schema_regex, results['schema'])
-            if match_schema:
-                is_editable_table = False
-        elif rule.table_name_regex:
-            match_table = re.match(rule.table_name_regex, results['name'])
-            if match_table:
-                is_editable_table = False
+    uneditable_table_desc_match_rules = app.config['UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES']
+    for rule in uneditable_table_desc_match_rules:
+        is_editable_table = is_editable_table and parse_editable_rule(rule, results['schema'], results['name'])
 
     is_editable = is_editable_schema and is_editable_table
     results['is_editable'] = is_editable
@@ -86,7 +100,7 @@ def marshall_table_full(table_dict: Dict) -> Dict:
             col['is_editable'] = is_editable
 
     # TODO: Add the 'key' or 'id' to the base TableSchema
-    results['key'] = f'{table.database}://{table.cluster}.{table.schema}/{ table.name}'
+    results['key'] = f'{table.database}://{table.cluster}.{table.schema}/{table.name}'
     # Temp code to make 'partition_key' and 'partition_value' part of the table
     results['partition'] = _get_partition_data(results['watermarks'])
 
