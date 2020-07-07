@@ -33,8 +33,8 @@ def marshall_table_partial(table_dict: Dict) -> Dict:
 
 
 def parse_editable_rule(rule: MatchRuleObject,
-                        table: str,
-                        schema: str) -> bool:
+                        schema: str,
+                        table: str) -> bool:
     """
     Matches table name and schema with corresponding regex in matching rule
     """
