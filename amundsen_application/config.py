@@ -7,6 +7,11 @@ from flask import Flask  # noqa: F401
 from amundsen_application.tests.test_utils import get_test_user
 
 
+class MatchRuleObject:
+    def __init__(self, schema_regex=None, table_name_regex=None):
+        self.schema_regex = schema_regex
+        self.table_name_regex = table_name_regex
+
 class Config:
     LOG_FORMAT = '%(asctime)s.%(msecs)03d [%(levelname)s] %(module)s.%(funcName)s:%(lineno)d (%(process)d:' \
                  + '%(threadName)s) - %(message)s'
@@ -21,7 +26,28 @@ class Config:
     COLUMN_STAT_ORDER = None  # type: Dict[str, int]
 
     UNEDITABLE_SCHEMAS = set()  # type: Set[str]
-    UNEDITABLE_TABLES_REGEX = r"$^"  # type: str
+
+    # UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES is list of MatchRules
+    # MatchRule object contain an optional regex for schemas and an optional regex for table patterns
+
+    '''
+        Sample UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES :
+        UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES = [
+        # use case 1 - all tables in schema matching schema_regex are uneditable.
+        # An alternative to `UNEDITABLE_SCHEMAS`, but we could still keep that config for backwards compatibility
+        MatchRuleObject(schema_regex=r"^ (schema1 | schema2)"),
+
+        # use case 2 - all tables matching table_name_regex and in schemas matching schema_regex are uneditable
+        MatchRuleObject(schema_regex=r" ^ (default)", table_name_regex=r" ^ test_([a - zA - Z_0 - 9] +)"),
+
+        # use case 3 - all tables matching table_name_regex in schemas matching schema_regex are uneditable
+        MatchRuleObject(schema_regex=r" ^ (schema3 | schema4)" , table_name_regex=r" ^ other_([a - zA - Z_0 - 9] +)"),
+
+        # use case 3 - all tables matching table_name_regex are uneditable
+        MatchRuleObject(table_name_regex=r"^noedit_([a-zA-Z_0-9]+)")
+    ]
+    '''
+    UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES = []
 
     # Number of popular tables to be displayed on the index/search page
     POPULAR_TABLE_COUNT = 4  # type: int
