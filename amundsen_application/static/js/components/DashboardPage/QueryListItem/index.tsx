@@ -17,7 +17,7 @@ const QUERY_LABEL = 'Query';
 const MODE_LINK_TOOLTIP_TEXT = 'View in Mode';
 const LOADING_QUERY_MESSAGE = 'Loading Query Component, please wait...';
 
-const LazyComponent = React.lazy(() => import('./CodeBlock'));
+// const LazyComponent = React.lazy(() => import('./CodeBlock'));
 
 const GoToDashboardLink = ({ url }: GoToDashboardLinkProps) => {
   const popoverHoverFocus = (
@@ -70,6 +70,11 @@ const QueryListItem = ({ name, text, url }: QueryListItemProps) => {
 
   return (
     <li className="list-group-item query-list-item" role="tab" id={key}>
+      <div className="title-2 truncated">{name}</div>
+    </li>
+  );
+  /* return (
+    <li className="list-group-item query-list-item" role="tab" id={key}>
       <button
         className="query-list-header"
         aria-expanded={isExpanded}
@@ -93,7 +98,7 @@ const QueryListItem = ({ name, text, url }: QueryListItemProps) => {
         </div>
       )}
     </li>
-  );
+  );*/
 };
 
 export default QueryListItem;
