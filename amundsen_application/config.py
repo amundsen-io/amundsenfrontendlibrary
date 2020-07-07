@@ -12,6 +12,7 @@ class MatchRuleObject:
         self.schema_regex = schema_regex
         self.table_name_regex = table_name_regex
 
+
 class Config:
     LOG_FORMAT = '%(asctime)s.%(msecs)03d [%(levelname)s] %(module)s.%(funcName)s:%(lineno)d (%(process)d:' \
                  + '%(threadName)s) - %(message)s'
