@@ -102,8 +102,8 @@ class UneditableTableDescriptionTest(unittest.TestCase):
     def test_table_desc_match_rule_schema_and_table(self) -> None:
         with local_app.app_context():
             # Mock match rule, table name and schema
-            test_match_rule = MatchRuleObject(schema_regex=r"^(schema1|schema2)", table_name_regex=r"^other_([a-zA"
-                                                                                                   r"-Z_0-9] +)")
+            test_match_rule = MatchRuleObject(schema_regex=r"^(schema1|schema2)",
+                                              table_name_regex=r"^other_([a-zA-Z_0-9]+)")
             # assert result for given schema, table name and match rule
             self.assertEqual(_parse_editable_rule(test_match_rule, 'schema1', 'other_test_table'), False)
             self.assertEqual(_parse_editable_rule(test_match_rule, 'schema1', 'test_table'), True)

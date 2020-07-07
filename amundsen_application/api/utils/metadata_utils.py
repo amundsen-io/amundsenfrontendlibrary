@@ -77,7 +77,6 @@ def marshall_table_full(table_dict: Dict) -> Dict:
     is_editable_schema = results['schema'] not in app.config['UNEDITABLE_SCHEMAS']
 
     # Check if Table Description is uneditable
-    # table_id = results['schema'] + "." + results['name']
     is_editable_table = True
     uneditable_table_desc_match_rules = app.config['UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES']
     for rule in uneditable_table_desc_match_rules:
