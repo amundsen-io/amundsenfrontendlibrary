@@ -8,7 +8,10 @@ from amundsen_application.tests.test_utils import get_test_user
 
 
 class MatchRuleObject:
-    def __init__(self, schema_regex=None, table_name_regex=None):
+    def __init__(self,
+                 schema_regex=None,  # type: str
+                 table_name_regex=None,   # type: str
+                 ) -> None:
         self.schema_regex = schema_regex
         self.table_name_regex = table_name_regex
 
@@ -28,7 +31,7 @@ class Config:
 
     UNEDITABLE_SCHEMAS = set()  # type: Set[str]
 
-    # UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES is list of MatchRules
+    # UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES is List of MatchRules
     # MatchRule object contain an optional regex for schemas and an optional regex for table patterns
 
     '''
@@ -44,11 +47,11 @@ class Config:
         # use case 3 - all tables matching table_name_regex in schemas matching schema_regex are uneditable
         MatchRuleObject(schema_regex=r" ^ (schema3 | schema4)" , table_name_regex=r" ^ other_([a - zA - Z_0 - 9] +)"),
 
-        # use case 3 - all tables matching table_name_regex are uneditable
+        # use case 4 - all tables matching table_name_regex are uneditable
         MatchRuleObject(table_name_regex=r"^noedit_([a-zA-Z_0-9]+)")
     ]
     '''
-    UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES = []  # type: list[MatchRuleObject]
+    UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES = []  # type: List[MatchRuleObject]
 
     # Number of popular tables to be displayed on the index/search page
     POPULAR_TABLE_COUNT = 4  # type: int
