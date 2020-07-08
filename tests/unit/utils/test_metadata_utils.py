@@ -72,40 +72,27 @@ class UneditableTableDescriptionTest(unittest.TestCase):
         pass
 
     def test_table_desc_match_rule_schema_only(self) -> None:
-        with local_app.app_context():
-            # Mock match rule, table name and schema
-            test_match_rule = MatchRuleObject(schema_regex=r"^(schema1)")
+        # Mock match rule, table name and schema
+        test_match_rule = MatchRuleObject(schema_regex=r"^(schema1)")
 
-            # assert result for given schema and match rule
-            self.assertEqual(_parse_editable_rule(test_match_rule, 'schema1', 'test_table'), False)
-            self.assertEqual(_parse_editable_rule(test_match_rule, 'schema2', 'test_table'), True)
+        # assert result for given schema and match rule
+        self.assertEqual(_parse_editable_rule(test_match_rule, 'schema1', 'test_table'), False)
+        self.assertEqual(_parse_editable_rule(test_match_rule, 'schema2', 'test_table'), True)
 
     def test_table_desc_match_rule_table_only(self) -> None:
-        with local_app.app_context():
-            # Mock match rule, table name and schema
-            test_match_rule = MatchRuleObject(table_name_regex=r"^noedit_([a-zA-Z_0-9]+)")
+        # Mock match rule, table name and schema
+        test_match_rule = MatchRuleObject(table_name_regex=r"^noedit_([a-zA-Z_0-9]+)")
 
-            # assert result for given table name and match rule
-            self.assertEqual(_parse_editable_rule(test_match_rule, 'schema', 'noedit_test_table'), False)
-            self.assertEqual(_parse_editable_rule(test_match_rule, 'schema', 'editable_test_table'), True)
-
-    def test_table_desc_match_rule_multiple_schemas(self) -> None:
-        with local_app.app_context():
-            # Mock match rule, table name and schema
-            test_match_rule = MatchRuleObject(schema_regex=r"^(schema1|schema2)")
-
-            # assert result for given schema name and match rule
-            self.assertEqual(_parse_editable_rule(test_match_rule, 'schema1', 'test_table'), False)
-            self.assertEqual(_parse_editable_rule(test_match_rule, 'schema2', 'test_table'), False)
-            self.assertEqual(_parse_editable_rule(test_match_rule, 'schema', 'test_table'), True)
+        # assert result for given table name and match rule
+        self.assertEqual(_parse_editable_rule(test_match_rule, 'schema', 'noedit_test_table'), False)
+        self.assertEqual(_parse_editable_rule(test_match_rule, 'schema', 'editable_test_table'), True)
 
     def test_table_desc_match_rule_schema_and_table(self) -> None:
-        with local_app.app_context():
-            # Mock match rule, table name and schema
-            test_match_rule = MatchRuleObject(schema_regex=r"^(schema1|schema2)",
-                                              table_name_regex=r"^other_([a-zA-Z_0-9]+)")
-            # assert result for given schema, table name and match rule
-            self.assertEqual(_parse_editable_rule(test_match_rule, 'schema1', 'other_test_table'), False)
-            self.assertEqual(_parse_editable_rule(test_match_rule, 'schema1', 'test_table'), True)
-            self.assertEqual(_parse_editable_rule(test_match_rule, 'schema2', 'other_test_table'), False)
-            self.assertEqual(_parse_editable_rule(test_match_rule, 'schema3', 'other_test_table'), True)
+        # Mock match rule, table name and schema
+        test_match_rule = MatchRuleObject(schema_regex=r"^(schema1|schema2)",
+                                          table_name_regex=r"^other_([a-zA-Z_0-9]+)")
+        # assert result for given schema, table name and match rule
+        self.assertEqual(_parse_editable_rule(test_match_rule, 'schema1', 'other_test_table'), False)
+        self.assertEqual(_parse_editable_rule(test_match_rule, 'schema1', 'test_table'), True)
+        self.assertEqual(_parse_editable_rule(test_match_rule, 'schema3', 'other_test_table'), True)
+        self.assertEqual(_parse_editable_rule(test_match_rule, 'schema3', 'test_table'), True)
