@@ -85,7 +85,7 @@ be company specific which will not directly integrated with Amundsen.
 You can use different combinations of schema and table name for selecting tables.
 
 Here are some examples when this feature can be used: 
-1. You want to set all tables with a given schema pattern as un-editable.
+1. You want to set all tables with a given schema or schema pattern as un-editable.
 2. You want to set all tables with a specific table name pattern in a given schema pattern as un-editable.
 3. You want to set all tables with a given table name pattern as un-editable.
 
