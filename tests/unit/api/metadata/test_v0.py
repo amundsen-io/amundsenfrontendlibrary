@@ -61,6 +61,7 @@ class MetadataTest(unittest.TestCase):
             'schema': 'test_schema',
             'name': 'test_table',
             'description': 'This is a test',
+            'resource_reports': [],
             'programmatic_descriptions': [
                 {'source': 'c_1', 'text': 'description c'},
                 {'source': 'a_1', 'text': 'description a'},
