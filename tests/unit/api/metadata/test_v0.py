@@ -137,6 +137,7 @@ class MetadataTest(unittest.TestCase):
                     'text': 'description c'
                 },
             ],
+            'resource_reports': [],
             'table_writer': {
                 'application_url': 'https://test-test.test.test',
                 'name': 'test_name',
