@@ -77,10 +77,10 @@ description sources not mentioned in the configuration will be alphabetically pl
 Here is a screenshot of what it would look like in the bottom left here:
 ![programmatic_description](img/programmatic_descriptions.png)
 
-##Uneditable Table Descriptions
+## Uneditable Table Descriptions
 Amundsen supports configuring table and column description to be non-editable for selective tables. You may want to make table 
 descriptions non-editable due to various reasons such as table already has table description from source of truth.
-You can define matching rules in `config file` for selecting tables. This configuration is useful as table selection criteria can 
+You can define matching rules in  [config.py](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/config.py) for selecting tables. This configuration is useful as table selection criteria can 
 be company specific which will not directly integrated with Amundsen. 
 You can use different combinations of schema and table name for selecting tables.
 
@@ -89,7 +89,7 @@ Here are some examples when this feature can be used:
 2. You want to set all tables with a specific table name pattern in a given schema pattern as un-editable.
 3. You want to set all tables with a given table name pattern as un-editable.
 
-Amundsen has two variables in `config` file which can be used to define match rules:
+Amundsen has two variables in `config.py` file which can be used to define match rules:
 1. `UNEDITABLE_SCHEMAS` : Set of schemas where all tables should be un-editable. It takes exact schema name.
 2. `UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES` : List of MatchRuleObject, where each MatchRuleObject consists of regex for 
 schema name or regex for table name or both.
@@ -105,7 +105,7 @@ After above configuration, all tables in 'schema1' and 'schema2' will have non-e
 If you have more complex matching rules you can use `UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES`. It provides you more flexibility 
 and control as you can create multiple match rules and use regex for matching schema nad table names.
 
-You can configure your match rules in `config file` as follow:
+You can configure your match rules in `config.py` as follow:
 ```python
 UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES = [
         # match rule for all table in schema1
@@ -122,4 +122,4 @@ UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES = [
 ```
 
 After configuring this, users will not be able to edit table and column descriptions of any table matching above match rules
-from UI and will be redirected to the source linked to the table (if any) provided by table metadata service.
+from UI.
