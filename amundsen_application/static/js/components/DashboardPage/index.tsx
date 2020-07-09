@@ -217,9 +217,6 @@ export class DashboardPage extends React.Component<
                 <div className="markdown-wrapper">
                   <ReactMarkdown source={dashboard.description} />
                 </div>
-                /*<div className="body-2 and text-primary">
-                  {dashboard.description}
-                </div>*/
               )}
               {!hasDescription && (
                 <a
