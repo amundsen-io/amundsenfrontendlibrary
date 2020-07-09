@@ -481,7 +481,7 @@ class MetadataTest(unittest.TestCase):
         with local_app.test_client() as test:
             response = test.get(
                 '/api/metadata/v0/popular_tables',
-                data={
+                query_string={
                     'limit': 4
                 }
             )
@@ -506,7 +506,7 @@ class MetadataTest(unittest.TestCase):
         with local_app.test_client() as test:
             response = test.get(
                 '/api/metadata/v0/popular_tables',
-                data={
+                query_string={
                     'limit': 4
                 }
             )
