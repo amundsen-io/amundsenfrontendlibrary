@@ -80,6 +80,7 @@ $avatar-container-size: 40px;
   .search-bar {
     flex-grow: 1;
     margin: auto $spacer-2 auto auto;
+    max-width: 560px;
   }
 
   .logo-icon {
