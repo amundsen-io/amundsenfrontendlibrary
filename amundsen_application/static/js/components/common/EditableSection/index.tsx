@@ -118,7 +118,7 @@ export class EditableSection extends React.Component<
 
     return (
       <section className="editable-section">
-        <label className="editable-section-label">
+        <div className="editable-section-label">
           <div className="editable-section-label-wrapper">
             <span className="section-title title-3">
               {EditableSection.convertText(title)}
@@ -126,7 +126,7 @@ export class EditableSection extends React.Component<
             {!readOnly ? this.renderButton() : this.renderReadOnlyButton()}
           </div>
           <div className="editable-section-content">{childrenWithProps}</div>
-        </label>
+        </div>
       </section>
     );
   }
