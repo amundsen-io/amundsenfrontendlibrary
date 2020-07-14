@@ -178,9 +178,7 @@ export class OwnerEditor extends React.Component<
           <button
             className="btn btn-default add-button"
             type="submit"
-          >
-            <span className="sr-only">{Constants.ADD_ITEM}</span>
-          </button>
+          > Add </button>
         </form>
         <ul className="component-list">
           {Object.keys(this.state.tempItemProps).map((key) => {
