@@ -34,6 +34,8 @@ describe('ColumnListItem', () => {
       },
       index: 0,
       openRequestDescriptionDialog: jest.fn(),
+      editText: '',
+      editUrl: '',
       ...propOverrides,
     };
 
