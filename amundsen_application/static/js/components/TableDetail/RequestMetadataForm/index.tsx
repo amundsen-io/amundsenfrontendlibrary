@@ -41,6 +41,7 @@ import {
   SEND_FAILURE_MESSAGE,
   SEND_INPROGRESS_MESSAGE,
   SEND_SUCCESS_MESSAGE,
+  CLOSE
 } from './constants';
 
 interface StateFromProps {
@@ -162,9 +163,10 @@ export class RequestMetadataForm extends React.Component<
           <button
             type="button"
             className="btn btn-close"
-            aria-label="Close"
             onClick={this.closeDialog}
-          />
+          >
+            <span className="sr-only">{CLOSE}</span>
+          </button>
         </div>
         <form onSubmit={this.submitNotification} id="RequestForm">
           <div id="sender-form-group" className="form-group">

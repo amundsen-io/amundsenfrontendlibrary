@@ -178,9 +178,8 @@ export class OwnerEditor extends React.Component<
           <button
             className="btn btn-default add-button"
             type="submit"
-            aria-label="Add Item"
           >
-            <span aria-hidden="true">Add</span>
+            <span className="sr-only">{Constants.ADD_ITEM}</span>
           </button>
         </form>
         <ul className="component-list">
@@ -193,11 +192,11 @@ export class OwnerEditor extends React.Component<
                 )}
                 <button
                   className="btn btn-flat-icon delete-button"
-                  aria-label="Delete Item"
                   /* tslint:disable - TODO: Investigate jsx-no-lambda rule */
                   onClick={() => this.recordDeleteItem(key)}
                   /* tslint:enable */
                 >
+                  <span className="sr-only">{Constants.DELETE_ITEM}</span>
                   <img className="icon icon-delete" alt="" />
                 </button>
               </li>

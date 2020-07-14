@@ -29,6 +29,7 @@ import {
   PLACEHOLDER_DEFAULT,
   SIZE_SMALL,
 } from './constants';
+import { CLOSE } from '../FlashMessage/constants';
 
 export interface StateFromProps {
   searchTerm: string;
@@ -197,13 +198,13 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
           onSubmit={this.handleValueSubmit}
         >
           {/* eslint-disable jsx-a11y/no-autofocus */}
+          <label className="sr-only">{this.props.placeholder}</label>
           <input
             id="search-input"
             required
             className={inputClass}
             value={this.state.searchTerm}
             onChange={this.handleValueChange}
-            aria-label={this.props.placeholder}
             placeholder={this.props.placeholder}
             autoFocus
             autoComplete="off"
@@ -217,9 +218,10 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
             <button
               type="button"
               className="btn btn-close clear-button"
-              aria-label={BUTTON_CLOSE_TEXT}
               onClick={this.clearSearchTerm}
-            />
+            >
+              <span className="sr-only">{BUTTON_CLOSE_TEXT}</span>
+            </button>
           )}
         </form>
         {this.state.showTypeAhead && (

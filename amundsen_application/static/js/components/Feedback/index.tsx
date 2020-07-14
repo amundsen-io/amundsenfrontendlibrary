@@ -92,16 +92,17 @@ export default class Feedback extends React.Component<
               <button
                 type="button"
                 className="btn btn-close"
-                aria-label={BUTTON_CLOSE_TEXT}
                 onClick={this.toggle}
-              />
+              >
+              <span className="sr-only">{BUTTON_CLOSE_TEXT}</span>
+              </button>
             </div>
             <div className="text-center">
               <div
                 className="btn-group"
                 role="group"
-                aria-label={FEEDBACK_TYPE_TEXT}
               >
+                <span className="sr-only">{FEEDBACK_TYPE_TEXT}</span>
                 <button
                   type="button"
                   className={
