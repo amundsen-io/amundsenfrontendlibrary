@@ -115,7 +115,6 @@
     "core-js": "^3.6.5",
     "form-serialize": "^0.7.2",
     "jquery": "^3.5.0",
-    "lint": "^0.7.0",
     "moment-timezone": "^0.5.28",
     "react": "^16.13.1",
     "react-avatar": "^2.5.1",
