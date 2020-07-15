@@ -175,10 +175,9 @@ export class OwnerEditor extends React.Component<
             ref={this.inputRef}
           />
           {/* eslint-enable jsx-a11y/no-autofocus */}
-          <button
-            className="btn btn-default add-button"
-            type="submit"
-          > Add </button>
+          <button className="btn btn-default add-button" type="submit">
+            {Constants.ADD_ITEM}
+          </button>
         </form>
         <ul className="component-list">
           {Object.keys(this.state.tempItemProps).map((key) => {

@@ -320,7 +320,7 @@ describe('SearchBar', () => {
           onSubmit: wrapper.instance().handleValueSubmit,
         });
       });
-      
+
       it('renders input with correct default props', () => {
         expect(wrapper.find('form').find('input').props()).toMatchObject({
           autoFocus: true,

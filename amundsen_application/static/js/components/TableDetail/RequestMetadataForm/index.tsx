@@ -93,7 +93,9 @@ export class RequestMetadataForm extends React.Component<
     const form = document.getElementById('RequestForm') as HTMLFormElement;
     const formData = new FormData(form);
     const recipientString = formData.get('recipients') as string;
-    const recipients = recipientString.split(Constants.RECIPIENT_LIST_DELIMETER.trim());
+    const recipients = recipientString.split(
+      Constants.RECIPIENT_LIST_DELIMETER.trim()
+    );
     const sender = formData.get('sender') as string;
     const descriptionRequested = formData.get('table-description') === 'on';
     const fieldsRequested = formData.get('column-description') === 'on';
@@ -173,7 +175,9 @@ export class RequestMetadataForm extends React.Component<
               className="form-control"
               required
               multiple
-              defaultValue={tableOwners.join(Constants.RECIPIENT_LIST_DELIMETER)}
+              defaultValue={tableOwners.join(
+                Constants.RECIPIENT_LIST_DELIMETER
+              )}
             />
           </div>
           <div id="request-type-form-group" className="form-group">

@@ -86,14 +86,11 @@ export default class Feedback extends React.Component<
                 className="btn btn-close"
                 onClick={this.toggle}
               >
-              <span className="sr-only">{Constants.BUTTON_CLOSE_TEXT}</span>
+                <span className="sr-only">{Constants.BUTTON_CLOSE_TEXT}</span>
               </button>
             </div>
             <div className="text-center">
-              <div
-                className="btn-group"
-                role="group"
-              >
+              <div className="btn-group" role="group">
                 <span className="sr-only">{Constants.FEEDBACK_TYPE_TEXT}</span>
                 <button
                   type="button"

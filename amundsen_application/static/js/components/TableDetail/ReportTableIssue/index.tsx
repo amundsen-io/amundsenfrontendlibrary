@@ -113,7 +113,9 @@ export class ReportTableIssue extends React.Component<
         </a>
         {this.state.isOpen && (
           <div className="report-table-issue-modal">
-            <h3 className="data-issue-header">{Constants.REPORT_DATA_ISSUE_TEXT}</h3>
+            <h3 className="data-issue-header">
+              {Constants.REPORT_DATA_ISSUE_TEXT}
+            </h3>
             <button
               type="button"
               className="btn btn-close"
@@ -145,7 +147,9 @@ export class ReportTableIssue extends React.Component<
                 Submit
               </button>
             </form>
-            <div className="data-owner-notification">{Constants.TABLE_OWNERS_NOTE}</div>
+            <div className="data-owner-notification">
+              {Constants.TABLE_OWNERS_NOTE}
+            </div>
           </div>
         )}
       </>
