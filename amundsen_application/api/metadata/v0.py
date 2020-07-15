@@ -53,9 +53,11 @@ def popular_tables() -> Response:
     https://github.com/lyft/amundsenmetadatalibrary/blob/master/metadata_service/api/popular_tables.py
     """
     try:
-        url = app.config['METADATASERVICE_BASE'] + POPULAR_TABLES_ENDPOINT
-        params = {'limit': app.config['POPULAR_TABLE_COUNT']}
-        response = request_metadata(url=url, params=params)
+        service_base = app.config['METADATASERVICE_BASE']
+        count = app.config['POPULAR_TABLE_COUNT']
+        url = f'{service_base}{POPULAR_TABLES_ENDPOINT}?limit={count}'
+
+        response = request_metadata(url=url)
         status_code = response.status_code
 
         if status_code == HTTPStatus.OK:

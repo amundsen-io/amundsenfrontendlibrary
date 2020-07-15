@@ -478,17 +478,6 @@ class MetadataTest(unittest.TestCase):
             self.assertEqual(response.status_code, HTTPStatus.OK)
             self.assertCountEqual(data.get('results'), self.expected_parsed_popular_tables)
 
-        with local_app.test_client() as test:
-            response = test.get(
-                '/api/metadata/v0/popular_tables',
-                query_string={
-                    'limit': 4
-                }
-            )
-            data = json.loads(response.data)
-            self.assertEqual(response.status_code, HTTPStatus.OK)
-            self.assertCountEqual(data.get('results'), self.expected_parsed_popular_tables)
-
     @responses.activate
     def test_popular_tables_propagate_failure(self) -> None:
         """
@@ -501,15 +490,6 @@ class MetadataTest(unittest.TestCase):
 
         with local_app.test_client() as test:
             response = test.get('/api/metadata/v0/popular_tables')
-            self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
-
-        with local_app.test_client() as test:
-            response = test.get(
-                '/api/metadata/v0/popular_tables',
-                query_string={
-                    'limit': 4
-                }
-            )
             self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
 
     @responses.activate
