@@ -28,10 +28,9 @@ class TestModePreview(unittest.TestCase):
     def tearDown(self) -> None:
         self.app_context.pop()
 
-
     def test_get_preview_image(self) -> None:
         with patch.object(ModePreview, '_get_preview_image_url') as mock_get_preview_image_url,\
-             patch.object(requests, 'get') as mock_get:
+                patch.object(requests, 'get') as mock_get:
             mock_get_preview_image_url.return_value = 'http://foo.bar/image.jpeg'
             mock_get.return_value.content = b'bar'
 
@@ -90,7 +89,6 @@ class TestModePreview(unittest.TestCase):
         preview = ModePreview(access_token='token', password='password', organization='foo')
         self.assertTrue(preview._is_auth_enabled)
 
-
     def test_authorization(self) -> None:
         self.app.config['ACL_ENABLED_DASHBOARD_PREVIEW'] = {'ModePreview'}
         self.app.config['AUTH_USER_METHOD'] = MagicMock()
@@ -113,7 +111,6 @@ class TestModePreview(unittest.TestCase):
 
             preview = ModePreview(access_token='token', password='password', organization='foo')
             preview._authorize_access(user_id='test_email')
-
 
         with patch('amundsen_application.api.preview.dashboard.dashboard_preview.mode_preview.request_metadata') as mock_request_metadata:
             mock_request_metadata.return_value.json.return_value = {

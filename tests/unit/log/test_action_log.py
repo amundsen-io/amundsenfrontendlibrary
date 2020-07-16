@@ -45,7 +45,7 @@ class ActionLogTest(unittest.TestCase):
         :return:
         """
         with app.test_request_context(), self.assertRaises(NotImplementedError):
-                fail_func()
+            fail_func()
 
     def test_success_function(self) -> None:
         """
