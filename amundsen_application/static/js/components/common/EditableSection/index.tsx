@@ -43,7 +43,10 @@ export class EditableSection extends React.Component<
     this.setState({ isEditing });
   };
 
-  toggleEdit = () => {
+  toggleEdit = (event?: any) => {
+    if (!event.nativeEvent) {
+      return;
+    }
     this.setState({ isEditing: !this.state.isEditing });
   };
 
