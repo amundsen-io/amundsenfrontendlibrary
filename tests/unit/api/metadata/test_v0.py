@@ -85,7 +85,6 @@ class MetadataTest(unittest.TestCase):
         self.expected_parsed_metadata = {
             'badges': [],
             'cluster': 'test_cluster',
-            'resource_reports': [],
             'database': 'test_db',
             'schema': 'test_schema',
             'name': 'test_table',
