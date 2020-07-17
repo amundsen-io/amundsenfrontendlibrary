@@ -16,15 +16,15 @@ import TabsComponent from 'components/common/TabsComponent';
 import EditableText from 'components/common/EditableText';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import Flag from 'components/common/Flag';
-import ResourceList from 'components/common/ResourceList';
 
-import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
 import ColumnList from 'components/TableDetail/ColumnList';
+import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
 import ExploreButton from 'components/TableDetail/ExploreButton';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import LineageLink from 'components/TableDetail/LineageLink';
 import OwnerEditor from 'components/TableDetail/OwnerEditor';
 import SourceLink from 'components/TableDetail/SourceLink';
+import TableDashboardResourceList from 'components/TableDetail/TableDashboardResourceList';
 import TableDescEditableText from 'components/TableDetail/TableDescEditableText';
 import TableHeaderBullets from 'components/TableDetail/TableHeaderBullets';
 import TableIssues from 'components/TableDetail/TableIssues';
@@ -37,6 +37,7 @@ import EditableSection from 'components/common/EditableSection';
 
 import {
   getSourceIconClass,
+  indexDashboardsEnabled,
   issueTrackingEnabled,
   notificationsEnabled,
 } from 'config/config-utils';
@@ -47,7 +48,11 @@ import { getLoggingParams } from 'utils/logUtils';
 import RequestDescriptionText from './RequestDescriptionText';
 import RequestMetadataForm from './RequestMetadataForm';
 
-import { PROGRMMATIC_DESC_HEADER, ERROR_MESSAGE } from './constants';
+import {
+  PROGRMMATIC_DESC_HEADER,
+  ERROR_MESSAGE,
+  EDIT_DESC_TEXT,
+} from './constants';
 
 import './styles.scss';
 import TableReportsDropdown from 'components/TableDetail/ResourceReportsDropdown';
@@ -58,6 +63,8 @@ const TABLE_SOURCE = 'table_page';
 
 export interface StateFromProps {
   isLoading: boolean;
+  isLoadingDashboards: boolean;
+  numRelatedDashboards: number;
   statusCode?: number;
   tableData: TableMetadata;
 }
@@ -129,28 +136,41 @@ export class TableDetail extends React.Component<
     return `${params.database}://${params.cluster}.${params.schema}/${params.table}`;
   }
 
-  renderTabs() {
+  renderTabs(editText, editUrl) {
     const tabInfo = [];
 
     // Default Column content
     tabInfo.push({
-      content: <ColumnList columns={this.props.tableData.columns} />,
+      content: (
+        <ColumnList
+          columns={this.props.tableData.columns}
+          editText={editText}
+          editUrl={editUrl}
+        />
+      ),
       key: 'columns',
       title: `Columns (${this.props.tableData.columns.length})`,
     });
 
-    // Dashboard content
-    tabInfo.push({
-      content: (
-        <ResourceList
-          allItems={this.props.tableData.dashboards}
-          itemsPerPage={DASHBOARDS_PER_PAGE}
-          source={TABLE_SOURCE}
-        />
-      ),
-      key: 'dashboards',
-      title: `Dashboards (${this.props.tableData.dashboards.length})`,
-    });
+    if (indexDashboardsEnabled()) {
+      const loadingTitle = (
+        <div className="tab-title">
+          Dashboards <LoadingSpinner />
+        </div>
+      );
+      tabInfo.push({
+        content: (
+          <TableDashboardResourceList
+            itemsPerPage={DASHBOARDS_PER_PAGE}
+            source={TABLE_SOURCE}
+          />
+        ),
+        key: 'dashboards',
+        title: this.props.isLoadingDashboards
+          ? loadingTitle
+          : `Dashboards (${this.props.numRelatedDashboards})`,
+      });
+    }
 
     return <TabsComponent tabs={tabInfo} defaultTab="columns" />;
   }
@@ -166,6 +186,10 @@ export class TableDetail extends React.Component<
       innerContent = <ErrorMessage />;
     } else {
       const data = tableData;
+      const editText = data.source
+        ? `${EDIT_DESC_TEXT} ${data.source.source_type}`
+        : '';
+      const editUrl = data.source ? data.source.source : '';
 
       innerContent = (
         <div className="resource-detail-layout table-detail">
@@ -212,7 +236,12 @@ export class TableDetail extends React.Component<
           </header>
           <div className="column-layout-1">
             <aside className="left-panel">
-              <EditableSection title="Description">
+              <EditableSection
+                title="Description"
+                readOnly={!data.is_editable}
+                editText={editText}
+                editUrl={editUrl}
+              >
                 <TableDescEditableText
                   maxLength={AppConfig.editableText.tableDescLength}
                   value={data.description}
@@ -286,7 +315,9 @@ export class TableDetail extends React.Component<
                 </section>
               ))}
             </aside>
-            <main className="right-panel">{this.renderTabs()}</main>
+            <main className="right-panel">
+              {this.renderTabs(editText, editUrl)}
+            </main>
           </div>
         </div>
       );
@@ -307,6 +338,12 @@ export const mapStateToProps = (state: GlobalState) => {
     isLoading: state.tableMetadata.isLoading,
     statusCode: state.tableMetadata.statusCode,
     tableData: state.tableMetadata.tableData,
+    numRelatedDashboards: state.tableMetadata.dashboards
+      ? state.tableMetadata.dashboards.dashboards.length
+      : 0,
+    isLoadingDashboards: state.tableMetadata.dashboards
+      ? state.tableMetadata.dashboards.isLoading
+      : true,
   };
 };
 

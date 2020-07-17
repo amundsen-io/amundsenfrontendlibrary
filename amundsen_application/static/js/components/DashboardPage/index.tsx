@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { RouteComponentProps } from 'react-router';
 import * as qs from 'simple-query-string';
 
+import * as ReactMarkdown from 'react-markdown';
+
 import AvatarLabel from 'components/common/AvatarLabel';
 import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
@@ -130,7 +132,12 @@ export class DashboardPage extends React.Component<
     }
 
     tabInfo.push({
-      content: <QueryList queries={this.props.dashboard.queries} />,
+      content: (
+        <QueryList
+          product={this.props.dashboard.product}
+          queries={this.props.dashboard.queries}
+        />
+      ),
       key: 'queries',
       title: `Queries (${this.props.dashboard.queries.length})`,
     });
@@ -212,8 +219,8 @@ export class DashboardPage extends React.Component<
               )}`}
             >
               {hasDescription && (
-                <div className="body-2 and text-primary">
-                  {dashboard.description}
+                <div className="markdown-wrapper">
+                  <ReactMarkdown source={dashboard.description} />
                 </div>
               )}
               {!hasDescription && (

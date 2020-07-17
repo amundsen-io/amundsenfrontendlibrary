@@ -61,6 +61,7 @@ class MetadataTest(unittest.TestCase):
             'schema': 'test_schema',
             'name': 'test_table',
             'description': 'This is a test',
+            'resource_reports': [],
             'programmatic_descriptions': [
                 {'source': 'c_1', 'text': 'description c'},
                 {'source': 'a_1', 'text': 'description a'},
@@ -137,6 +138,7 @@ class MetadataTest(unittest.TestCase):
                     'text': 'description c'
                 },
             ],
+            'resource_reports': [],
             'table_writer': {
                 'application_url': 'https://test-test.test.test',
                 'name': 'test_name',
@@ -1037,8 +1039,8 @@ class MetadataTest(unittest.TestCase):
             )
             self.assertEqual(response.status_code, HTTPStatus.BAD_REQUEST)
             expected = {
-                'dashboards': {},
-                'msg': 'Encountered error: Related Dashboard Metadata request failed',
+                'dashboards': [],
+                'msg': 'Encountered 400 Error: Related dashboard metadata request failed',
                 'status_code': 400
             }
             self.assertEqual(response.json, expected)
