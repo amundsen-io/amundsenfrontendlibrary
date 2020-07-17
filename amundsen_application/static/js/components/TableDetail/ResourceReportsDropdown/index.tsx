@@ -12,8 +12,8 @@ const TableReportsDropdown: React.SFC<ResourceReportProps> = ({
 }: ResourceReportProps) => {
   if (resourceReports === null || resourceReports.length < 1) return null;
   return (
-    <Dropdown id="user-dropdown" pullRight>
-      <Dropdown.Toggle noCaret className="btn btn-default btn-lg">
+    <Dropdown id="user-dropdown">
+      <Dropdown.Toggle className="btn btn-default btn-lg">
         Reports
       </Dropdown.Toggle>
       <Dropdown.Menu className="profile-menu">
