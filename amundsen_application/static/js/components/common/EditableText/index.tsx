@@ -86,15 +86,24 @@ class EditableText extends React.Component<
     }
   }
 
-  exitEditMode = () => {
+  exitEditMode = (event?: React.MouseEvent<HTMLElement>) => {
+    if (event) {
+      event.preventDefault();
+    }
     this.props.setEditMode(false);
   };
 
-  enterEditMode = () => {
+  enterEditMode = (event?: React.MouseEvent<HTMLElement>) => {
+    if (event) {
+      event.preventDefault();
+    }
     this.props.setEditMode(true);
   };
 
-  refreshText = () => {
+  refreshText = (event?: React.MouseEvent<HTMLElement>) => {
+    if (event) {
+      event.preventDefault();
+    }
     this.setState({ value: this.props.refreshValue, isDisabled: false });
     const textArea = this.textAreaRef.current;
     if (textArea) {
@@ -103,7 +112,10 @@ class EditableText extends React.Component<
     }
   };
 
-  updateText = () => {
+  updateText = (event?: React.MouseEvent<HTMLElement>) => {
+    if (event) {
+      event.preventDefault();
+    }
     const newValue = this.textAreaRef.current.value;
     const onSuccessCallback = () => {
       this.props.setEditMode(false);

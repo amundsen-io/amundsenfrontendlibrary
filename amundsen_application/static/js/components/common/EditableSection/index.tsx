@@ -43,10 +43,7 @@ export class EditableSection extends React.Component<
     this.setState({ isEditing });
   };
 
-  toggleEdit = (event?: any) => {
-    if (!event.nativeEvent) {
-      return;
-    }
+  toggleEdit = () => {
     this.setState({ isEditing: !this.state.isEditing });
   };
 
@@ -121,7 +118,7 @@ export class EditableSection extends React.Component<
 
     return (
       <section className="editable-section">
-        <div className="editable-section-label">
+        <label className="editable-section-label">
           <div className="editable-section-label-wrapper">
             <span className="section-title title-3">
               {EditableSection.convertText(title)}
@@ -129,7 +126,7 @@ export class EditableSection extends React.Component<
             {!readOnly ? this.renderButton() : this.renderReadOnlyButton()}
           </div>
           <div className="editable-section-content">{childrenWithProps}</div>
-        </div>
+        </label>
       </section>
     );
   }
