@@ -36,7 +36,6 @@
       .grid-header.grid-cell {
         background-color: $body-bg-secondary;
         height: 40px;
-        max-width: 50px;
       }
 
       .grid-cell {
@@ -47,9 +46,9 @@
         font-size: 12px;
         height: 32px;
         justify-content: center;
-        max-width: 50px;
+        max-width: 300px;
         min-width: 0;
-        overflow-wrap: break-word;
+        overflow: hidden;
         padding: 8px;
         text-align: center;
         white-space: nowrap;
