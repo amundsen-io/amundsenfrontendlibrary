@@ -236,7 +236,10 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     );
   }
 
-  startEditing = () => {
+  startEditing = (event?: React.MouseEvent<HTMLElement>) => {
+    if (event) {
+      event.preventDefault();
+    }
     this.props.setEditMode && this.props.setEditMode(true);
   };
 
