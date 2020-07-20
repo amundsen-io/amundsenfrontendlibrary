@@ -247,6 +247,12 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     this.props.setEditMode && this.props.setEditMode(false);
   };
 
+  stopPropagation = (event?: React.MouseEvent<HTMLElement>) => {
+    if (event) {
+      event.stopPropagation();
+    }
+  }
+
   render() {
     // https://react-select.com/props#api
     const componentOverides = !this.props.isEditing
@@ -301,6 +307,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
           isValidNewOption={this.isValidNewOption}
           name="tags"
           noOptionsMessage={this.noOptionsMessage}
+          onClick={this.stopPropagation}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
           options={this.mapOptionsToReactSelectAPI(this.props.allTags)}
