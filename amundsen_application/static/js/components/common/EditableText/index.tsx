@@ -86,6 +86,12 @@ class EditableText extends React.Component<
     }
   }
 
+  stopPropagation = (event?: React.MouseEvent<HTMLElement>) => {
+    if (event) {
+      event.preventDefault();
+    }
+  };
+
   exitEditMode = (event?: React.MouseEvent<HTMLElement>) => {
     if (event) {
       event.preventDefault();
@@ -131,7 +137,7 @@ class EditableText extends React.Component<
   render() {
     if (!this.props.isEditing) {
       return (
-        <div className="editable-text">
+        <div className="editable-text" onClick={this.stopPropagation}>
           <div className="markdown-wrapper">
             <ReactMarkdown source={this.state.value} />
           </div>
@@ -149,7 +155,7 @@ class EditableText extends React.Component<
     }
 
     return (
-      <div className="editable-text">
+      <div className="editable-text" onClick={this.stopPropagation}>
         <textarea
           className="editable-textarea"
           rows={2}

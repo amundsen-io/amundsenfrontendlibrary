@@ -39,6 +39,12 @@ export class EditableSection extends React.Component<
     };
   }
 
+  stopPropagation = (event?: React.MouseEvent<HTMLElement>) => {
+    if (event) {
+      event.preventDefault();
+    }
+  };
+
   setEditMode = (isEditing: boolean) => {
     this.setState({ isEditing });
   };
@@ -117,7 +123,7 @@ export class EditableSection extends React.Component<
       : this.props.children;
 
     return (
-      <section className="editable-section">
+      <section className="editable-section" onClick={this.stopPropagation}>
         <label className="editable-section-label">
           <div className="editable-section-label-wrapper">
             <span className="section-title title-3">
