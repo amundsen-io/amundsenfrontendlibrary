@@ -123,7 +123,7 @@ export class EditableSection extends React.Component<
       : this.props.children;
 
     return (
-      <section className="editable-section" onClick={this.stopPropagation}>
+      <section className="editable-section">
         <label className="editable-section-label">
           <div className="editable-section-label-wrapper">
             <span className="section-title title-3">

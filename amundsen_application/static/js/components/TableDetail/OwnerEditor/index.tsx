@@ -268,7 +268,7 @@ export class OwnerEditor extends React.Component<
     }
 
     return (
-      <div className="owner-editor-component" onClick={this.stopPropagation}>
+      <div className="owner-editor-component">
         {content}
         {!this.state.readOnly &&
           Object.keys(this.state.itemProps).length === 0 && (
