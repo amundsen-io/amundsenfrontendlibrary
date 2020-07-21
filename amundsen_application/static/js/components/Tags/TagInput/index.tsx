@@ -249,9 +249,9 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
 
   stopPropagation = (event?: React.MouseEvent<HTMLElement>) => {
     if (event) {
-      event.stopPropagation();
+      event.preventDefault();
     }
-  }
+  };
 
   render() {
     // https://react-select.com/props#api
@@ -307,7 +307,6 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
           isValidNewOption={this.isValidNewOption}
           name="tags"
           noOptionsMessage={this.noOptionsMessage}
-          onClick={this.stopPropagation}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
           options={this.mapOptionsToReactSelectAPI(this.props.allTags)}
@@ -328,7 +327,7 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     }
 
     return (
-      <div className="tag-input">
+      <div className="tag-input" onClick={this.stopPropagation}>
         {tagBody}
         <Modal
           className="tag-input-modal"
