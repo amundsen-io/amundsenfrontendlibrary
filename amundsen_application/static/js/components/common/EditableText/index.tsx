@@ -86,27 +86,27 @@ class EditableText extends React.Component<
     }
   }
 
-  stopPropagation = (event?: React.MouseEvent<HTMLElement>) => {
+  stopPropagation = (event?: React.MouseEvent<HTMLDivElement>) => {
     if (event) {
       event.preventDefault();
     }
   };
 
-  exitEditMode = (event?: React.MouseEvent<HTMLElement>) => {
+  exitEditMode = (event?: React.MouseEvent<HTMLButtonElement>) => {
     if (event) {
       event.preventDefault();
     }
     this.props.setEditMode(false);
   };
 
-  enterEditMode = (event?: React.MouseEvent<HTMLElement>) => {
+  enterEditMode = (event?: React.MouseEvent<HTMLAnchorElement>) => {
     if (event) {
       event.preventDefault();
     }
     this.props.setEditMode(true);
   };
 
-  refreshText = (event?: React.MouseEvent<HTMLElement>) => {
+  refreshText = (event?: React.MouseEvent<HTMLButtonElement>) => {
     if (event) {
       event.preventDefault();
     }
@@ -118,7 +118,7 @@ class EditableText extends React.Component<
     }
   };
 
-  updateText = (event?: React.MouseEvent<HTMLElement>) => {
+  updateText = (event?: React.MouseEvent<HTMLButtonElement>) => {
     if (event) {
       event.preventDefault();
     }

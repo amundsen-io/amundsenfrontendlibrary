@@ -98,12 +98,6 @@ export class OwnerEditor extends React.Component<
     this.props.setEditMode(false);
   };
 
-  stopPropagation = (event?: React.MouseEvent<HTMLElement>) => {
-    if (event) {
-      event.preventDefault();
-    }
-  };
-
   saveEdit = () => {
     const updateArray = [];
     Object.keys(this.state.itemProps).forEach((key) => {

@@ -236,10 +236,8 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     );
   }
 
-  startEditing = (event?: React.MouseEvent<HTMLElement>) => {
-    if (event) {
-      event.preventDefault();
-    }
+  startEditing = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     this.props.setEditMode && this.props.setEditMode(true);
   };
 
@@ -247,10 +245,8 @@ class TagInput extends React.Component<TagInputProps, TagInputState> {
     this.props.setEditMode && this.props.setEditMode(false);
   };
 
-  stopPropagation = (event?: React.MouseEvent<HTMLElement>) => {
-    if (event) {
-      event.preventDefault();
-    }
+  stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
   };
 
   render() {

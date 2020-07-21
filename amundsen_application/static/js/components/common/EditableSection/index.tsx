@@ -39,12 +39,6 @@ export class EditableSection extends React.Component<
     };
   }
 
-  stopPropagation = (event?: React.MouseEvent<HTMLElement>) => {
-    if (event) {
-      event.preventDefault();
-    }
-  };
-
   setEditMode = (isEditing: boolean) => {
     this.setState({ isEditing });
   };
