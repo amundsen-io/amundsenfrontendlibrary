@@ -74,7 +74,10 @@ describe('EditableText', () => {
       const { props, wrapper } = setup();
       const instance = wrapper.instance();
       const setEditModeSpy = jest.spyOn(props, 'setEditMode');
-      instance.enterEditMode();
+      const mockEvent = { preventDefault: () => {} } as React.MouseEvent<
+        HTMLAnchorElement
+      >;
+      instance.enterEditMode(mockEvent);
       expect(setEditModeSpy).toHaveBeenCalledWith(true);
     });
   });
@@ -82,7 +85,10 @@ describe('EditableText', () => {
   describe('refreshText', () => {
     it('updates the state', () => {
       const setStateSpy = jest.spyOn(instance, 'setState');
-      instance.refreshText();
+      const mockEvent = { preventDefault: () => {} } as React.MouseEvent<
+        HTMLButtonElement
+      >;
+      instance.refreshText(mockEvent);
       expect(setStateSpy).toHaveBeenCalledWith({
         value: props.refreshValue,
         isDisabled: false,
