@@ -145,6 +145,7 @@ describe('Feedback', () => {
           expect(button.props()).toMatchObject({
             type: 'button',
             className: 'btn btn-close',
+            'aria-label': BUTTON_CLOSE_TEXT,
             onClick: wrapper.instance().toggle,
           });
         });
@@ -165,6 +166,7 @@ describe('Feedback', () => {
           expect(buttonGroup.props()).toMatchObject({
             className: 'btn-group',
             role: 'group',
+            'aria-label': FEEDBACK_TYPE_TEXT,
           });
         });
 

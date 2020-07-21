@@ -326,6 +326,7 @@ describe('SearchBar', () => {
 
       it('renders input with correct default props', () => {
         expect(wrapper.find('form').find('input').props()).toMatchObject({
+          'aria-label': SearchBar.defaultProps.placeholder,
           autoFocus: true,
           className: 'h2 large search-bar-input form-control',
           id: 'search-input',
@@ -342,6 +343,7 @@ describe('SearchBar', () => {
           searchTerm: 'data',
         });
         expect(wrapper.find('form').find('input').props()).toMatchObject({
+          'aria-label': props.placeholder,
           autoFocus: true,
           className: 'h2 large search-bar-input form-control',
           id: 'search-input',
