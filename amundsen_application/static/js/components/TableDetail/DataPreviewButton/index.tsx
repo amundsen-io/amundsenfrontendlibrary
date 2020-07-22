@@ -113,9 +113,8 @@ export class DataPreviewButton extends React.Component<
 
     if (sanitizedValue.length > Constants.PREVIEW_COLUMN_MAX_LEN) {
       return Constants.PREVIEW_COLUMN_MSG;
-    } else {
-     return sanitizedValue;
     }
+    return sanitizedValue;
   }
 
   renderModalBody() {
