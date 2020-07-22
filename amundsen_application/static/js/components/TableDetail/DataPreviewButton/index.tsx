@@ -107,6 +107,8 @@ export class DataPreviewButton extends React.Component<
       sanitizedValue = value.toString();
     } else if (typeof value === 'object') {
       sanitizedValue = JSON.stringify(value);
+    } else {
+      sanitizedValue = value;
     }
 
     if (sanitizedValue.length > Constants.PREVIEW_COLUMN_MAX_LEN) {
