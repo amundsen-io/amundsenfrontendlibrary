@@ -36,10 +36,6 @@ export class Footer extends React.Component<FooterProps> {
     this.props.getLastIndexed();
   }
 
-  componentDidUpdate() {
-    this.props.getLastIndexed();
-  }
-
   generateDateTimeString = () => {
     return formatDateTimeLong({ epochTimestamp: this.props.lastIndexed });
   };
