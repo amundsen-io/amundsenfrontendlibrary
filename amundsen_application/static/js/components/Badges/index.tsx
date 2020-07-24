@@ -4,6 +4,7 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { OverlayTrigger } from 'react-bootstrap';
 
 import Flag, { FlagProps } from 'components/common/Flag';
 import { ResourceType } from 'interfaces';
@@ -33,14 +34,22 @@ export class ClickableBadge extends React.Component<ClickableBadgeProps> {
     render() {
         return (
             <span
-            className='clickable-badge'
+            className={`clickable-badge-${this.props.labelStyle}`}
             onClick={this.onClick}
             >
-            <Flag
-                caseType={this.props.caseType}
-                text={this.props.text}
-                labelStyle={this.props.labelStyle}
-          />
+            <OverlayTrigger
+            trigger={['hover', 'focus']}
+            placement='top'
+            overlay={<span>
+                className={`overlay-${this.props.labelStyle}`}
+            </span>
+                    }>
+                <Flag
+                    caseType={this.props.caseType}
+                    text={this.props.text}
+                    labelStyle={this.props.labelStyle}
+            />
+          </OverlayTrigger>
             </span>
         );
     }

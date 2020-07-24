@@ -1,11 +1,18 @@
 // Copyright Contributors to the Amundsen project.
 // SPDX-License-Identifier: Apache-2.0
 
-.clickable-badge {
+@import 'variables';
+
+.clickable-badge-neutral {
     .flag {
-        background-color: greenyellow;
-        &:hover {
-            background-color: hotpink;
-        }
+        background-color: $badge-neutral-color;
+        // &:hover {
+        //     background-color: $badge-neutral-color-hover-overlay;
+        // }
     }
+}
+
+.overlay-neutral{
+    background-color: $badge-neutral-color-hover-overlay;
+    opacity: 0.14;
 }
