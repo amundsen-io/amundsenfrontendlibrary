@@ -17,9 +17,9 @@ export interface DispatchFromProps {
     searchBadge: (badgeText: string) => UpdateSearchStateRequest;
 }
 
-export type ClickableBadgeProps = DispatchFromProps;
+export type ClickableBadgeProps = FlagProps & DispatchFromProps;
 
-export class ClickableBadge extends React.Component<FlagProps> {
+export class ClickableBadge extends React.Component<ClickableBadgeProps> {
 
     onClick = (e) => {
         const badgeText = this.props.text;
