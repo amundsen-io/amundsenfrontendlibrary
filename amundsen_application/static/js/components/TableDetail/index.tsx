@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import * as DocumentTitle from 'react-document-title';
 import { connect } from 'react-redux';
@@ -55,6 +58,7 @@ import {
 } from './constants';
 
 import './styles.scss';
+import TableReportsDropdown from 'components/TableDetail/ResourceReportsDropdown';
 
 const SERVER_ERROR_CODE = 500;
 const DASHBOARDS_PER_PAGE = 10;
@@ -135,12 +139,18 @@ export class TableDetail extends React.Component<
     return `${params.database}://${params.cluster}.${params.schema}/${params.table}`;
   }
 
-  renderTabs() {
+  renderTabs(editText, editUrl) {
     const tabInfo = [];
 
     // Default Column content
     tabInfo.push({
-      content: <ColumnList columns={this.props.tableData.columns} />,
+      content: (
+        <ColumnList
+          columns={this.props.tableData.columns}
+          editText={editText}
+          editUrl={editUrl}
+        />
+      ),
       key: 'columns',
       title: `Columns (${this.props.tableData.columns.length})`,
     });
@@ -222,6 +232,7 @@ export class TableDetail extends React.Component<
               <SourceLink tableSource={data.source} />
             </div>
             <div className="header-section header-buttons">
+              <TableReportsDropdown resourceReports={data.resource_reports} />
               <DataPreviewButton modalTitle={this.getDisplayName()} />
               <ExploreButton tableData={data} />
             </div>
@@ -307,7 +318,9 @@ export class TableDetail extends React.Component<
                 </section>
               ))}
             </aside>
-            <main className="right-panel">{this.renderTabs()}</main>
+            <main className="right-panel">
+              {this.renderTabs(editText, editUrl)}
+            </main>
           </div>
         </div>
       );

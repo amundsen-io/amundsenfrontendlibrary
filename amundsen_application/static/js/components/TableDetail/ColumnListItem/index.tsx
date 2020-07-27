@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import { Dropdown, MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
@@ -26,6 +29,8 @@ interface DispatchFromProps {
 interface OwnProps {
   data: TableColumn;
   index: number;
+  editText: string;
+  editUrl: string;
 }
 
 interface ColumnListItemState {
@@ -170,6 +175,8 @@ export class ColumnListItem extends React.Component<
                 <EditableSection
                   title="Description"
                   readOnly={!metadata.is_editable}
+                  editText={this.props.editText}
+                  editUrl={this.props.editUrl}
                 >
                   <ColumnDescEditableText
                     columnIndex={this.props.index}

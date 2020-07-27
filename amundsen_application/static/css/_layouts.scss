@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 @import 'variables';
 
 $resource-header-height: 84px;
@@ -113,8 +116,6 @@ $aside-separation-space: 40px;
       .editable-section,
       .metadata-section {
         margin-top: $aside-separation-space;
-        display: inline-table;
-        min-height: 70px;
       }
 
       .editable-text {
@@ -129,6 +130,7 @@ $aside-separation-space: 40px;
 
       .markdown-wrapper {
         font-size: 16px;
+
         > p {
           margin: 0;
         }

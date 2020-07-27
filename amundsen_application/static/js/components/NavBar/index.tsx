@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import * as Avatar from 'react-avatar';
 import { RouteComponentProps } from 'react-router';
@@ -62,7 +65,7 @@ export class NavBar extends React.Component<NavBarProps> {
   renderSearchBar = () => {
     if (this.props.location.pathname !== '/') {
       return (
-        <div className="search-bar">
+        <div className="nav-search-bar">
           <SearchBar size="small" />
         </div>
       );
