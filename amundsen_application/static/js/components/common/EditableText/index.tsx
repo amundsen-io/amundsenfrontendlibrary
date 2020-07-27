@@ -86,26 +86,15 @@ class EditableText extends React.Component<
     }
   }
 
-  stopPropagation = (event?: React.MouseEvent<HTMLDivElement>) => {
-    if (event) {
-      event.preventDefault();
-    }
-  };
-
-  exitEditMode = (event?: React.MouseEvent<HTMLButtonElement>) => {
-    if (event) {
-      event.preventDefault();
-    }
+  exitEditMode = () => {
     this.props.setEditMode(false);
   };
 
-  enterEditMode = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
+  enterEditMode = () => {
     this.props.setEditMode(true);
   };
 
-  refreshText = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  refreshText = () => {
     this.setState({ value: this.props.refreshValue, isDisabled: false });
     const textArea = this.textAreaRef.current;
     if (textArea) {
@@ -114,8 +103,7 @@ class EditableText extends React.Component<
     }
   };
 
-  updateText = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  updateText = () => {
     const newValue = this.textAreaRef.current.value;
     const onSuccessCallback = () => {
       this.props.setEditMode(false);
@@ -131,7 +119,7 @@ class EditableText extends React.Component<
   render() {
     if (!this.props.isEditing) {
       return (
-        <div className="editable-text" onClick={this.stopPropagation}>
+        <div className="editable-text">
           <div className="markdown-wrapper">
             <ReactMarkdown source={this.state.value} />
           </div>
@@ -149,7 +137,7 @@ class EditableText extends React.Component<
     }
 
     return (
-      <div className="editable-text" onClick={this.stopPropagation}>
+      <div className="editable-text">
         <textarea
           className="editable-textarea"
           rows={2}
