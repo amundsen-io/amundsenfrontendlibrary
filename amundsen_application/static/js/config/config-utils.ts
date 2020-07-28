@@ -84,7 +84,7 @@ export function getBadgeConfig(badgeName: string): BadgeStyleConfig {
 
   return {
     style: BadgeStyle.PRIMARY,
-    badgeName: badgeName,
+    badgeName,
     ...config,
   };
 }
