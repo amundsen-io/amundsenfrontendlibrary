@@ -5,7 +5,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import Flag from 'components/common/Flag';
-import { ClickableBadgeStyle, BadgeStyle } from 'config/config-types';
+import { BadgeStyle } from 'config/config-types';
 import * as ConfigUtils from 'config/config-utils';
 import { Badge, TagType } from 'interfaces/Tags';
 import BadgeList from '.';

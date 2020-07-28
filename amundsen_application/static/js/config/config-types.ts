@@ -142,13 +142,6 @@ export enum BadgeStyle {
   WARNING = 'warning',
 }
 
-export enum ClickableBadgeStyle {
-  NEGATIVE = 'negative',
-  NEUTRAL = 'neutral',
-  POSITIVE = 'positive',
-  WARNING = 'warning',
-}
-
 export interface BadgeStyleConfig {
   style: BadgeStyle;
   badgeName?: string;
