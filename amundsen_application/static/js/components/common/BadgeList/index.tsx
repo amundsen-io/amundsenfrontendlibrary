@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 
-import ClickableBadge from 'components/Badges';
+import ClickableBadge from 'components/common/Badges';
 import { getBadgeConfig } from 'config/config-utils';
 import { Badge } from 'interfaces/Tags';
 
