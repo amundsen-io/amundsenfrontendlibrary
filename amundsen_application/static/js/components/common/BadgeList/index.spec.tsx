@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import { ClickableBadge } from 'components/Badges';
+// import { ClickableBadge } from 'components/Badges';
 import { BadgeStyle } from 'config/config-types';
 import * as ConfigUtils from 'config/config-utils';
 import { Badge, TagType } from 'interfaces/Tags';
@@ -38,9 +38,9 @@ describe('BadgeList', () => {
       expect(container.exists()).toBe(true);
     });
 
-    it('renders a <ClickableBadge> for each badge in the input', () => {
-      expect(badgeList.find(ClickableBadge).length).toEqual(badges.length);
-    });
+    // it('renders a <ClickableBadge> for each badge in the input', () => {
+    //   expect(badgeList.find(ClickableBadge).length).toEqual(badges.length);
+    // });
 
     it('passes the correct props to the flag', () => {
       badges.forEach((badge, index) => {
