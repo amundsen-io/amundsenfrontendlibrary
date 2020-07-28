@@ -4,12 +4,12 @@
 @import 'variables';
 
 .clickable-badge-primary {
-    .flag {
-        background-color: $badge-primary-color;
-    }
+  .flag {
+    background-color: $badge-primary-color;
+  }
 }
 
-.overlay-primary{
-    // background-color: $badge-primary-color-hover-overlay;
-    opacity: 0.14;
+.overlay-primary {
+  // background-color: $badge-primary-color-hover-overlay;
+  opacity: 0.14;
 }

@@ -82,11 +82,11 @@ describe('getBadgeConfig', () => {
   AppConfig.badges = {
     test_1: {
       style: BadgeStyle.DANGER,
-      badgeName: 'badge display value 1',
+      displayName: 'badge display value 1',
     },
     test_2: {
       style: BadgeStyle.DANGER,
-      badgeName: 'badge display value 2',
+      displayName: 'badge display value 2',
     },
   };
 
@@ -94,14 +94,14 @@ describe('getBadgeConfig', () => {
     const config = ConfigUtils.getBadgeConfig('test_1');
     const expectedConfig = AppConfig.badges.test_1;
     expect(config.style).toEqual(expectedConfig.style);
-    expect(config.badgeName).toEqual(expectedConfig.badgeName);
+    expect(config.displayName).toEqual(expectedConfig.displayName);
   });
 
   it('Returns default badge config for unspecified badges', () => {
     const badgeName = 'not_configured_badge';
     const badgeConfig = ConfigUtils.getBadgeConfig(badgeName);
     expect(badgeConfig.style).toEqual(BadgeStyle.DEFAULT);
-    expect(badgeConfig.badgeName).toEqual('not configured badge');
+    expect(badgeConfig.displayName).toEqual('not configured badge');
   });
 });
 

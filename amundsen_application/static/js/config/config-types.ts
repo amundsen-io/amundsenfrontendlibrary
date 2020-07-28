@@ -144,7 +144,7 @@ export enum BadgeStyle {
 
 export interface BadgeStyleConfig {
   style: BadgeStyle;
-  badgeName?: string;
+  displayName?: string;
 }
 
 /**
