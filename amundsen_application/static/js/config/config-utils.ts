@@ -83,7 +83,7 @@ export function getBadgeConfig(badgeName: string): BadgeStyleConfig {
   const config = AppConfig.badges[badgeName] || {};
 
   return {
-    style: BadgeStyle.PRIMARY,
+    style: BadgeStyle.DEFAULT,
     displayName: badgeName,
     ...config,
   };
