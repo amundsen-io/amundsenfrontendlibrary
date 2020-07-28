@@ -3,7 +3,7 @@
 
 @import 'variables';
 
-.clickable-badge-neutral {
+.clickable-badge-primary {
     .flag {
         background-color: $badge-neutral-color;
         // &:hover {
@@ -12,7 +12,7 @@
     }
 }
 
-.overlay-neutral{
+.overlay-primary{
     background-color: $badge-neutral-color-hover-overlay;
     opacity: 0.14;
 }

@@ -84,7 +84,7 @@ export function getBadgeConfig(badgeName: string): ClickableBadgeStyleConfig {
 
   return {
     style: ClickableBadgeStyle.NEUTRAL,
-    displayName: badgeName.replace(/[-_]/g, ' '),
+    badgeName: badgeName,
     ...config,
   };
 }

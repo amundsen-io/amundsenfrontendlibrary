@@ -47,7 +47,7 @@ describe('BadgeList', () => {
         const flag = badgeList.childAt(index);
         const flagProps = flag.props();
         const badgeConfig = ConfigUtils.getBadgeConfig(badge.tag_name);
-        expect(flagProps.text).toEqual(badgeConfig.displayName);
+        expect(flagProps.text).toEqual(badgeConfig.badgeName);
         expect(flagProps.labelStyle).toEqual(badgeConfig.style);
       });
     });

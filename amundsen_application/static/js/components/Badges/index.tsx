@@ -4,7 +4,6 @@
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { OverlayTrigger } from 'react-bootstrap';
 
 import Flag, { FlagProps } from 'components/common/Flag';
 import { ResourceType } from 'interfaces';
@@ -26,7 +25,7 @@ export class ClickableBadge extends React.Component<ClickableBadgeProps> {
         const badgeText = this.props.text;
         logClick(e, {
           target_type: 'badge',
-          label: name,
+          label: badgeText,
         });
         this.props.searchBadge(badgeText);
     } 
@@ -37,19 +36,11 @@ export class ClickableBadge extends React.Component<ClickableBadgeProps> {
             className={`clickable-badge-${this.props.labelStyle}`}
             onClick={this.onClick}
             >
-            <OverlayTrigger
-            trigger={['hover', 'focus']}
-            placement='top'
-            overlay={<span>
-                className={`overlay-${this.props.labelStyle}`}
-            </span>
-                    }>
                 <Flag
                     caseType={this.props.caseType}
-                    text={this.props.text}
+                    text={this.props.text.replace(/[-_]/g, ' ')}
                     labelStyle={this.props.labelStyle}
-            />
-          </OverlayTrigger>
+                />
             </span>
         );
     }
@@ -61,8 +52,7 @@ export const mapDispatchToProps = (dispatch: any) => {
         searchBadge: (badgeText: string) =>
           updateSearchState({
             filters: {
-              [ResourceType.dashboard]: { badge: badgeText },
-              [ResourceType.table]: { badge: badgeText },
+              [ResourceType.table]: { badges: badgeText },
             },
             submitSearch: true,
           }),

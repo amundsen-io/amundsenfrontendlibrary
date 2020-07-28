@@ -19,7 +19,7 @@ const BadgeList: React.SFC<BadgeListProps> = ({ badges }: BadgeListProps) => {
 
         return (
           <ClickableBadge
-            text={badgeConfig.displayName}
+            text={badgeConfig.badgeName}
             labelStyle={badgeConfig.style}
             key={`badge-${index}`}
           />

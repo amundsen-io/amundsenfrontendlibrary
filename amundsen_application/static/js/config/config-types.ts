@@ -156,7 +156,7 @@ export interface BadgeStyleConfig {
 
 export interface ClickableBadgeStyleConfig {
   style: ClickableBadgeStyle;
-  displayName?: string;
+  badgeName?: string;
 }
 
 /**
