@@ -151,11 +151,6 @@ export enum ClickableBadgeStyle {
 
 export interface BadgeStyleConfig {
   style: BadgeStyle;
-  displayName?: string;
-}
-
-export interface ClickableBadgeStyleConfig {
-  style: ClickableBadgeStyle;
   badgeName?: string;
 }
 

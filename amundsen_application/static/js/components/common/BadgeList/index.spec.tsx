@@ -5,7 +5,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import Flag from 'components/common/Flag';
-import { ClickableBadgeStyle } from 'config/config-types';
+import { ClickableBadgeStyle, BadgeStyle } from 'config/config-types';
 import * as ConfigUtils from 'config/config-utils';
 import { Badge, TagType } from 'interfaces/Tags';
 import BadgeList from '.';
@@ -14,8 +14,8 @@ describe('BadgeList', () => {
   const getBadgeConfigSpy = jest.spyOn(ConfigUtils, 'getBadgeConfig');
   getBadgeConfigSpy.mockImplementation((badgeName: string) => {
     return {
-      displayName: badgeName + ' test name',
-      style: ClickableBadgeStyle.NEUTRAL,
+      badgeName: badgeName + ' test name',
+      style: BadgeStyle.PRIMARY,
     };
   });
 

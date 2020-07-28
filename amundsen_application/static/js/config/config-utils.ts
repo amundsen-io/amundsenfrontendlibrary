@@ -1,5 +1,5 @@
 import AppConfig from 'config/config';
-import { ClickableBadgeStyleConfig, ClickableBadgeStyle } from 'config/config-types';
+import { BadgeStyleConfig, BadgeStyle } from 'config/config-types';
 import { TableMetadata } from 'interfaces/TableMetadata';
 
 import { FilterConfig } from './config-types';
@@ -79,11 +79,11 @@ export function getFilterConfigByResource(
  * If these are not specified by config, it will default to some simple rules:
  * use BadgeStyle.DEFAULT and replace '-' and '_' with spaces for display name.
  */
-export function getBadgeConfig(badgeName: string): ClickableBadgeStyleConfig {
+export function getBadgeConfig(badgeName: string): BadgeStyleConfig {
   const config = AppConfig.badges[badgeName] || {};
 
   return {
-    style: ClickableBadgeStyle.NEUTRAL,
+    style: BadgeStyle.PRIMARY,
     badgeName: badgeName,
     ...config,
   };

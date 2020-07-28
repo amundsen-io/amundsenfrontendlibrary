@@ -5,14 +5,11 @@
 
 .clickable-badge-primary {
     .flag {
-        background-color: $badge-neutral-color;
-        // &:hover {
-        //     background-color: $badge-neutral-color-hover-overlay;
-        // }
+        background-color: $badge-primary-color;
     }
 }
 
 .overlay-primary{
-    background-color: $badge-neutral-color-hover-overlay;
+    // background-color: $badge-primary-color-hover-overlay;
     opacity: 0.14;
 }
