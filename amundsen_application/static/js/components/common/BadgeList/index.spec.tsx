@@ -14,7 +14,7 @@ describe('BadgeList', () => {
   const getBadgeConfigSpy = jest.spyOn(ConfigUtils, 'getBadgeConfig');
   getBadgeConfigSpy.mockImplementation((badgeName: string) => {
     return {
-      badgeName: badgeName + ' test name',
+      displayName: badgeName + ' test name',
       style: BadgeStyle.PRIMARY,
     };
   });
