@@ -38,7 +38,8 @@ export class ClickableBadge extends React.Component<ClickableBadgeProps> {
         <Flag
           caseType={this.props.caseType}
           text={this.props.text}
-          labelStyle={this.props.labelStyle}/>
+          labelStyle={this.props.labelStyle}
+        />
       </span>
     );
   }
