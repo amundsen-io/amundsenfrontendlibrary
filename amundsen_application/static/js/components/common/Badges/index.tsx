@@ -31,10 +31,7 @@ export class ClickableBadge extends React.Component<ClickableBadgeProps> {
 
   render() {
     return (
-      <span
-        className={`clickable-badge`}
-        onClick={this.onClick}
-      >
+      <span className="clickable-badge" onClick={this.onClick}>
         <Flag
           caseType={this.props.caseType}
           text={this.props.text}
