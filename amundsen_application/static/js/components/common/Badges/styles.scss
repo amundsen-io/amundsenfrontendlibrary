@@ -4,9 +4,7 @@
 @import 'variables';
 
 .clickable-badge {
-  .flag {
-    &:hover {
-      cursor: pointer;
-    }
+  &:hover {
+    cursor: pointer;
   }
 }
