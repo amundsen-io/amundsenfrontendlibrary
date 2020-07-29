@@ -57,7 +57,7 @@ export const mapDispatchToProps = (dispatch: any) => {
   );
 };
 
-export default connect<null, DispatchFromProps>(
+export default connect<null, DispatchFromProps, FlagProps>(
   null,
   mapDispatchToProps
 )(ClickableBadge);

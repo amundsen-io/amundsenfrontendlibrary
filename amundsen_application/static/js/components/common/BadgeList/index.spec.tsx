@@ -42,6 +42,7 @@ describe('BadgeList', () => {
       expect(badgeList.find(ClickableBadge).length).toEqual(badges.length);
     });
 
+    // TODO refactor to be clickable badge isntead of flag
     it('passes the correct props to the flag', () => {
       badges.forEach((badge, index) => {
         const flag = badgeList.childAt(index);
