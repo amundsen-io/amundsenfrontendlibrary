@@ -114,7 +114,7 @@ def marshall_table_full(table_dict: Dict) -> Dict:
     # We follow same style as column stat order for arranging the programmatic descriptions
     prog_descriptions = results['programmatic_descriptions']
     if prog_descriptions:
-        _update_prog_descriptions(prog_descriptions)
+        results['programmatic_descriptions'] = _update_prog_descriptions(prog_descriptions)
 
     return results
 
@@ -150,16 +150,75 @@ def marshall_dashboard_full(dashboard_dict: Dict) -> Dict:
     return dashboard_dict
 
 
-def _update_prog_descriptions(prog_descriptions: List) -> None:
+def _update_prog_descriptions(prog_descriptions: List) -> Dict:
     # We want to make sure there is a display title that is just source
     for desc in prog_descriptions:
         source = desc.get('source')
         if not source:
             logging.warning("no source found in: " + str(desc))
     prog_display_config = app.config['PROGRAMMATIC_DISPLAY']
+
+    # TEST DATA
+    """
+    PROGRAMMATIC_DISPLAY = {
+       'RIGHT': {
+         "test8" : {},
+         "test9" : {},
+         "test7" : { "display_order": 0 }
+       },
+       'LEFT': {
+         "test3": {},
+         "test1" : { "display_order": 1 },
+         "test0" : { "display_order": 0 },
+         "test2" : { "display_order": 2 }
+       },
+       'test5': {"display_order": 1},
+       'test4': {"display_order": 0},
+    }
+    """
+    prog_descriptions = []
+    prog_descriptions.append({'source': 'test7', 'text': 'Test'})
+    prog_descriptions.append({'source': 'test8', 'text': 'Test'})
+    prog_descriptions.append({'source': 'test6', 'text': 'Test'})
+    prog_descriptions.append({'source': 'test1', 'text': 'Test'})
+    prog_descriptions.append({
+        'source': 'test2',
+        'text': 'Test this one is intended to be a long long long long long long long long long long long long item'
+    })
+    prog_descriptions.append({'source': 'test0', 'text': 'Test'})
+    prog_descriptions.append({'source': 'test3', 'text': 'Test'})
+    prog_descriptions.append({'source': 'test5', 'text': 'Test'})
+    prog_descriptions.append({
+        'source': 'test4',
+        'text': 'Test this one is intended to be a long long long long long long long long long long long long item'
+    })
+    prog_descriptions.append({'source': 'test9', 'text': 'Test'})
+
+    left = []
+    right = []
+    other = []
+    updated_descriptions = {}
+
+    # TODO ttannis update comments
+    # If config is defined for programmatic disply we look to see what configuration is being used
     if prog_display_config and prog_descriptions:
-        # If config is defined for programmatic disply we look to see what configuration is being used
-        prog_descriptions.sort(key=lambda x: _sort_prog_descriptions(prog_display_config, x))
+        other = [x for x in prog_descriptions if x.get('source') in prog_display_config]
+        other.sort(key=lambda x: _sort_prog_descriptions(prog_display_config, x))
+
+        left_config = prog_display_config.get('LEFT')
+        if left_config:
+            left = [x for x in prog_descriptions if x.get('source') in left_config]
+            left.sort(key=lambda x: _sort_prog_descriptions(left_config, x))
+
+        right_config = prog_display_config.get('RIGHT')
+        if right_config:
+            right = [x for x in prog_descriptions if x.get('source') in right_config]
+            right.sort(key=lambda x: _sort_prog_descriptions(right_config, x))
+
+    updated_descriptions['left'] = left
+    updated_descriptions['right'] = right
+    updated_descriptions['other'] = other
+    return updated_descriptions
 
 
 def _sort_prog_descriptions(base_config: Dict, prog_description: Dict) -> int:

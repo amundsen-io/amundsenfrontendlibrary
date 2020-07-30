@@ -97,7 +97,7 @@ export interface TableMetadata {
   source: TableSource;
   resource_reports: ResourceReport[];
   watermarks: Watermark[];
-  programmatic_descriptions: ProgrammaticDescription[];
+  programmatic_descriptions: any; // TODO (ttannis): Add appropriate type
 }
 
 export interface UpdateOwnerPayload {

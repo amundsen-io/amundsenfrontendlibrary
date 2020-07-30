@@ -96,7 +96,6 @@ def get_table_metadata() -> Response:
         table_key = get_query_param(request.args, 'key')
         list_item_index = request.args.get('index', None)
         list_item_source = request.args.get('source', None)
-
         results_dict = _get_table_metadata(table_key=table_key, index=list_item_index, source=list_item_source)
         return make_response(jsonify(results_dict), results_dict.get('status_code', HTTPStatus.INTERNAL_SERVER_ERROR))
     except Exception as e:

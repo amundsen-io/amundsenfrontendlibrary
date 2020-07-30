@@ -284,6 +284,16 @@ export class TableDetail extends React.Component<
                     <div className="section-title title-3">Frequent Users</div>
                     <FrequentUsers readers={data.table_readers} />
                   </section>
+                  {data.programmatic_descriptions.left.map((d) => (
+                    <EditableSection title={d.source} readOnly>
+                      <EditableText
+                        maxLength={999999}
+                        value={d.text}
+                        editable={false}
+                        onSubmitValue={null}
+                      />
+                    </EditableSection>
+                  ))}
                 </section>
                 <section className="right-panel">
                   <EditableSection title="Tags">
@@ -295,17 +305,19 @@ export class TableDetail extends React.Component<
                   <EditableSection title="Owners">
                     <OwnerEditor />
                   </EditableSection>
+                  {data.programmatic_descriptions.right.map((d) => (
+                    <EditableSection title={d.source} readOnly>
+                      <EditableText
+                        maxLength={999999}
+                        value={d.text}
+                        editable={false}
+                        onSubmitValue={null}
+                      />
+                    </EditableSection>
+                  ))}
                 </section>
               </section>
-              {data.programmatic_descriptions.length > 0 && (
-                <>
-                  <div className="programmatic-title title-4">
-                    {PROGRMMATIC_DESC_HEADER}
-                  </div>
-                  <hr className="programmatic-hr hr1" />
-                </>
-              )}
-              {data.programmatic_descriptions.map((d) => (
+              {data.programmatic_descriptions.other.map((d) => (
                 <section key={d.source} className="column-layout-2">
                   <EditableSection title={d.source} readOnly>
                     <EditableText

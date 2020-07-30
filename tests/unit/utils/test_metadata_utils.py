@@ -17,26 +17,26 @@ class ProgrammaticDescriptionsTest(unittest.TestCase):
     def setUp(self) -> None:
         pass
 
-    @patch('amundsen_application.api.utils.metadata_utils._sort_prog_descriptions')
-    def test_update_prog_descriptions(self, sort_mock) -> None:
-        with local_app.app_context():
-            test_desc = [
-                {'source': 'c_1', 'text': 'description c'},
-                {'source': 'a_1', 'text': 'description a'},
-                {'source': 'b_1', 'text': 'description b'}
-            ]
-            # Pretend config exists
-            local_app.config['PROGRAMMATIC_DISPLAY'] = Mock()
-            # Mock the effects of the sort method
-            sort_mock.side_effect = [1, 0, 1]
-            # Expected order based on mocked side effect
-            expected_programmatic_desc = [
-                {'source': 'a_1', 'text': 'description a'},
-                {'source': 'c_1', 'text': 'description c'},
-                {'source': 'b_1', 'text': 'description b'}
-            ]
-            _update_prog_descriptions(test_desc)
-            self.assertEqual(test_desc, expected_programmatic_desc)
+    # @patch('amundsen_application.api.utils.metadata_utils._sort_prog_descriptions')
+    # def test_update_prog_descriptions(self, sort_mock) -> None:
+    #     with local_app.app_context():
+    #         test_desc = [
+    #             {'source': 'c_1', 'text': 'description c'},
+    #             {'source': 'a_1', 'text': 'description a'},
+    #             {'source': 'b_1', 'text': 'description b'}
+    #         ]
+    #         # Pretend config exists
+    #         local_app.config['PROGRAMMATIC_DISPLAY'] = Mock()
+    #         # Mock the effects of the sort method
+    #         sort_mock.side_effect = [1, 0, 1]
+    #         # Expected order based on mocked side effect
+    #         expected_programmatic_desc = [
+    #             {'source': 'a_1', 'text': 'description a'},
+    #             {'source': 'c_1', 'text': 'description c'},
+    #             {'source': 'b_1', 'text': 'description b'}
+    #         ]
+    #         _update_prog_descriptions(test_desc)
+    #         self.assertEqual(test_desc, expected_programmatic_desc)
 
     def test_sort_prog_descriptions_returns_value_from_config(self) -> None:
         """

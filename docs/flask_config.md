@@ -58,7 +58,7 @@ settings in `config.py` that should be set in order to use this feature.
 Here are the settings and what they should be set to
 ```python
     ISSUE_LABELS = []  # type: List[str] (Optional labels to be set on the created tickets)
-    ISSUE_TRACKER_URL = None  # type: str (Your JIRA environment, IE 'https://jira.net') 
+    ISSUE_TRACKER_URL = None  # type: str (Your JIRA environment, IE 'https://jira.net')
     ISSUE_TRACKER_USER = None  # type: str (Recommended to be a service account)
     ISSUE_TRACKER_PASSWORD = None  # type: str
     ISSUE_TRACKER_PROJECT_ID = None  # type: int (Project ID for the project you would like JIRA tickets to be created in)
@@ -67,7 +67,7 @@ Here are the settings and what they should be set to
     ISSUE_TRACKER_MAX_RESULTS = None  # type: int (Max issues to display at a time)
 
 ```
-
+# TODO (ttannis): UPDATE THIS DOC
 ## Programmatic Descriptions
 Amundsen supports configuring other mark down supported non-editable description boxes on the table page.
 This can be useful if you have multiple writers which want to write different pieces of information to amundsen
@@ -102,23 +102,23 @@ Here is a screenshot of what it would look like in the bottom left here:
 ![programmatic_description](img/programmatic_descriptions.png)
 
 ## Uneditable Table Descriptions
-Amundsen supports configuring table and column description to be non-editable for selective tables. You may want to make table 
+Amundsen supports configuring table and column description to be non-editable for selective tables. You may want to make table
 descriptions non-editable due to various reasons such as table already has table description from source of truth.
-You can define matching rules in  [config.py](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/config.py) for selecting tables. This configuration is useful as table selection criteria can 
-be company specific which will not directly integrated with Amundsen. 
+You can define matching rules in  [config.py](https://github.com/lyft/amundsenfrontendlibrary/blob/master/amundsen_application/config.py) for selecting tables. This configuration is useful as table selection criteria can
+be company specific which will not directly integrated with Amundsen.
 You can use different combinations of schema and table name for selecting tables.
 
-Here are some examples when this feature can be used: 
+Here are some examples when this feature can be used:
 1. You want to set all tables with a given schema or schema pattern as un-editable.
 2. You want to set all tables with a specific table name pattern in a given schema pattern as un-editable.
 3. You want to set all tables with a given table name pattern as un-editable.
 
 Amundsen has two variables in `config.py` file which can be used to define match rules:
 1. `UNEDITABLE_SCHEMAS` : Set of schemas where all tables should be un-editable. It takes exact schema name.
-2. `UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES` : List of MatchRuleObject, where each MatchRuleObject consists of regex for 
+2. `UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES` : List of MatchRuleObject, where each MatchRuleObject consists of regex for
 schema name or regex for table name or both.
 
-Purpose of `UNEDITABLE_SCHEMAS` can be fulfilled by `UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES` but we are keeping both 
+Purpose of `UNEDITABLE_SCHEMAS` can be fulfilled by `UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES` but we are keeping both
 variables for backward compatibility.
 If you want to restrict tables from a given schemas then you can use `UNEDITABLE_SCHEMAS` as follows:
 ```python
@@ -126,7 +126,7 @@ UNEDITABLE_SCHEMAS = set(['schema1', 'schema2'])
 ```
 After above configuration, all tables in 'schema1' and 'schema2' will have non-editable table and column descriptions.
 
-If you have more complex matching rules you can use `UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES`. It provides you more flexibility 
+If you have more complex matching rules you can use `UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES`. It provides you more flexibility
 and control as you can create multiple match rules and use regex for matching schema nad table names.
 
 You can configure your match rules in `config.py` as follow:
