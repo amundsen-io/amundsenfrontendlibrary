@@ -28,10 +28,18 @@
       outline-offset: -2px;
     }
   }
-
+  .badge-overlay-negative,
+  .badge-overlay-neutral,
+  .badge-overlay-positive,
   .badge-overlay-primary {
     &:hover, &:focus {
-      background-color: rgba($color: $badge-overlay, $alpha: .14);
+      background-color: rgba($color: $badge-overlay,
+      $alpha: $opacity-negative-neutral-positive-primary);
+    }
+  }
+  .badge-overlay-warning {
+    &:hover, &:focus {
+      background-color: rgba($color: $badge-overlay, $alpha: $opacity-warning);
     }
   }
 }
