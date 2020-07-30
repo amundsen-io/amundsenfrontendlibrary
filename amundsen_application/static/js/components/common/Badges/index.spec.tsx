@@ -71,13 +71,9 @@ describe('ClickableBadge', () => {
     it('renders with correct text', () => {
       expect(wrapper.find(Flag).props().text).toEqual(props.text);
     });
-    //   TODO look into why no className defined for Flag in this case
-    //   it('renders Flag with correct classes', () => {
-    //     expect(wrapper.find(Flag).props().className).toEqual(
-    //         `flag label label-${props.labelStyle}`
-    //     );
   });
 });
+
 describe('mapDispatchToProps', () => {
   let dispatch;
   let result;
