@@ -3,9 +3,9 @@
 
 import unittest
 
-from unittest.mock import patch, Mock
-
-from amundsen_application.api.utils.metadata_utils import _update_prog_descriptions, _sort_prog_descriptions, \
+# from unittest.mock import patch, Mock
+# _update_prog_descriptions, 
+from amundsen_application.api.utils.metadata_utils import _sort_prog_descriptions, \
     _parse_editable_rule
 from amundsen_application.config import MatchRuleObject
 from amundsen_application import create_app
