@@ -8,25 +8,31 @@
   .label {
     padding: 0 0;
   }
-  .badge-overlay-primary {
-    font-size: 14px;
+  
+  [class^="badge-overlay-"] { 
+    font-size: $font-size-base;
     text-align: center;
     display: inline-block;
     padding: .2em .6em .3em;
-  }
-  .badge-overlay-primary:focus, .badge-overlay-primary:hover {
-    background-color: rgba($color: $badge-overlay, $alpha: .14);
-    color: $text-primary;
-    height: 20px;
-    width: 100%;
-    border-radius: 20px;
+
+    &:hover, &:focus {
+      color: $badge-text-color;
+      height: 20px;
+      width: 100%;
+      border-radius: 20px;
+    }
+
+    &:focus {
+      // TODO verify if this is what it is supposed to look like
+      // more round?
+      outline: 5px auto -webkit-focus-ring-color;
+      outline-offset: -2px;
+    }
   }
 
-  .badge-overlay-primary:focus {
-    // TODO verify if this is what it is supposed to look like
-    // more round?
-    outline: 5px auto -webkit-focus-ring-color;
-    outline-offset: -2px;
+  .badge-overlay-primary {
+    &:hover, &:focus {
+      background-color: rgba($color: $badge-overlay, $alpha: .14);
+    }
   }
-
 }

@@ -56,12 +56,20 @@ $line-height-large: 1.5 !default;
 
 // Badges
 $badge-text-color: $text-primary;
-$badge-overlay: $gray100;
 $badge-danger-color: $sunset20;
 $badge-default-color: $gray20;
 $badge-primary-color: $cyan10;
 $badge-success-color: $mint20;
 $badge-warning-color: $amber30;
+
+$badge-negative-color: $sunset20;
+$badge-neutral-color: $gray20;
+$badge-positive-color: $mint20;
+$badge-warning-color: $amber30;
+
+$badge-overlay: $gray100;
+$opacity-negative-neutral-positive-primary: .14;
+$opacity-warning: .16;
 
 // Buttons
 $btn-border-radius-base: 4px;
