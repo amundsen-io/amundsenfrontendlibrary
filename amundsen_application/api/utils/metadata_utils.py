@@ -194,9 +194,9 @@ def _update_prog_descriptions(prog_descriptions: List) -> Dict:
     })
     prog_descriptions.append({'source': 'test9', 'text': 'Test'})
 
-    left = []
-    right = []
-    other = []
+    left = []  # type: List
+    right = []  # type: List
+    other = []  # type: List
     updated_descriptions = {}
 
     # TODO ttannis update comments
