@@ -6,7 +6,6 @@
     cursor: pointer;
   }
   .label {
-    overflow: hidden;
     padding: 0 0;
   }
   .badge-overlay-primary {
@@ -20,6 +19,14 @@
     color: $text-primary;
     height: 20px;
     width: 100%;
-    border-radius: 15px;
+    border-radius: 20px;
   }
+
+  .badge-overlay-primary:focus {
+    // TODO verify if this is what it is supposed to look like
+    // more round?
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+  }
+
 }
