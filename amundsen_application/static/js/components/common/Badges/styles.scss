@@ -36,10 +36,19 @@
       background-color: rgba($color: $badge-overlay,
       $alpha: $opacity-negative-neutral-positive-primary);
     }
+    &:active {
+      background-color: rgba($color: $badge-overlay,
+      $alpha: $opacity-pressed-negative-neutral-positive-primary);
+    }
   }
   .badge-overlay-warning {
     &:hover, &:focus {
       background-color: rgba($color: $badge-overlay, $alpha: $opacity-warning);
     }
+    &:active {
+      background-color: rgba($color: $badge-overlay,
+      $alpha: $opacity-pressed-warning);
+    }
   }
 }
+
