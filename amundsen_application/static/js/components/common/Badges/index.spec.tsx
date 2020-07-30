@@ -79,7 +79,6 @@ describe('ClickableBadge', () => {
     //     );
       });
     });
-  });
 describe('mapDispatchToProps', () => {
   let dispatch;
   let result;
