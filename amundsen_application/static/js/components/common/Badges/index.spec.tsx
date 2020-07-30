@@ -2,11 +2,10 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import Flag from 'components/common/Flag';
-import { ClickableBadge, ClickableBadgeProps, mapDispatchToProps } from '.';
 import { BadgeStyle } from 'config/config-types';
 import { updateSearchState } from 'ducks/search/reducer';
 import * as UtilMethods from 'ducks/utilMethods';
-
+import { ClickableBadge, ClickableBadgeProps, mapDispatchToProps } from '.';
 
 const logClickSpy = jest.spyOn(UtilMethods, 'logClick');
 logClickSpy.mockImplementation(() => null);
@@ -18,10 +17,10 @@ jest.mock('ducks/search/reducer', () => ({
 describe('ClickableBadge', () => {
   const setup = (propOverrides?: Partial<ClickableBadgeProps>) => {
     const props = {
-        text: 'test_badge',
-        labelStyle: BadgeStyle.PRIMARY,
-        searchBadge: jest.fn(),
-        ...propOverrides,
+      text: 'test_badge',
+      labelStyle: BadgeStyle.PRIMARY,
+      searchBadge: jest.fn(),
+      ...propOverrides,
     };
     const wrapper = shallow(<ClickableBadge {...props} />);
     return { props, wrapper };
@@ -55,30 +54,30 @@ describe('ClickableBadge', () => {
   });
 
   describe('render', () => {
-      let props;
-      let wrapper;
+    let props;
+    let wrapper;
 
-      beforeAll(() => {
-        const setupResult = setup();
-        wrapper = setupResult.wrapper;
-        props = setupResult.props;
-      });
+    beforeAll(() => {
+      const setupResult = setup();
+      wrapper = setupResult.wrapper;
+      props = setupResult.props;
+    });
 
-      it('renders a <Flag> for the ClickableBadge', () => {
-        const flag_per_badge = 1;
-        expect(wrapper.find(Flag).length).toEqual(flag_per_badge);
-      });
+    it('renders a <Flag> for the ClickableBadge', () => {
+      const flagPerBadge = 1;
+      expect(wrapper.find(Flag).length).toEqual(flagPerBadge);
+    });
 
-      it('renders with correct text', () => {
-        expect(wrapper.find(Flag).props().text).toEqual(props.text);
-      });
+    it('renders with correct text', () => {
+      expect(wrapper.find(Flag).props().text).toEqual(props.text);
+    });
     //   TODO look into why no className defined for Flag in this case
     //   it('renders Flag with correct classes', () => {
     //     expect(wrapper.find(Flag).props().className).toEqual(
     //         `flag label label-${props.labelStyle}`
     //     );
-      });
-    });
+  });
+});
 describe('mapDispatchToProps', () => {
   let dispatch;
   let result;
