@@ -4,11 +4,16 @@
 @import 'variables';
 
 .clickable-badge {
+<<<<<<< HEAD
   .flag {
     background-color: $sunset20; // TODO remove, for testing purposes only
     &:hover {
       cursor: pointer;
     }
+=======
+  &:hover {
+    cursor: pointer;
+>>>>>>> dcb8f3c5f0187814d0710189872d497c0153e08c
   }
 
   .badge-overlay-primary:hover {
