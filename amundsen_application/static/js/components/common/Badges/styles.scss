@@ -8,7 +8,7 @@
   .label {
     padding: 0 0;
   }
-  
+
   [class^="badge-overlay-"] { 
     font-size: $font-size-base;
     text-align: center;
@@ -17,7 +17,7 @@
 
     &:hover, &:focus {
       color: $badge-text-color;
-      height: 20px;
+      height: $badge-height;
       width: 100%;
       border-radius: 20px;
     }
