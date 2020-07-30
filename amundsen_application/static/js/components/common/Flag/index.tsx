@@ -41,7 +41,7 @@ const Flag: React.SFC<FlagProps> = ({
   // https://getbootstrap.com/docs/4.1/components/badge/
   return (
     <span className={`flag label label-${labelStyle}`}>
-      <div className={`flag label badge-overlay-${labelStyle}`}>
+      <div className={`badge-overlay-${labelStyle}`}>
       {convertText(text, caseType)}
       </div>
     </span>

@@ -4,14 +4,25 @@
 @import 'variables';
 
 .clickable-badge {
+  
   &:hover {
     cursor: pointer;
   }
-
+  .label {
+    overflow: hidden;
+    padding: 0 0;
+  }
+  .badge-overlay-primary {
+    font-size: 14px;
+    text-align: center;
+    display: inline-block;
+  }
   .badge-overlay-primary:hover {
     background-color: rgba($color: $badge-overlay, $alpha: .14);
     color: $text-primary;
     height: 20px;
     width: 100%;
+    border-radius: 15px;
+
   }
 }
