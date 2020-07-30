@@ -42,7 +42,7 @@ const Flag: React.SFC<FlagProps> = ({
   return (
     <span className={`flag label label-${labelStyle}`}>
       <div className={`badge-overlay-${labelStyle}`}>
-      {convertText(text, caseType)}
+        {convertText(text, caseType)}
       </div>
     </span>
   );
