@@ -33,21 +33,18 @@
   .badge-overlay-positive,
   .badge-overlay-primary {
     &:hover, &:focus {
-      background-color: rgba($color: $badge-overlay,
-      $alpha: $opacity-negative-neutral-positive-primary);
+      background-color: rgba($color: $badge-overlay, $alpha: $badge-opacity-light);
     }
     &:active {
-      background-color: rgba($color: $badge-overlay,
-      $alpha: $opacity-pressed-negative-neutral-positive-primary);
+      background-color: rgba($color: $badge-overlay, $alpha: $badge-pressed-light);
     }
   }
   .badge-overlay-warning {
     &:hover, &:focus {
-      background-color: rgba($color: $badge-overlay, $alpha: $opacity-warning);
+      background-color: rgba($color: $badge-overlay, $alpha: $badge-opacity-dark);
     }
     &:active {
-      background-color: rgba($color: $badge-overlay,
-      $alpha: $opacity-pressed-warning);
+      background-color: rgba($color: $badge-overlay, $alpha: $badge-pressed-dark);
     }
   }
 }
