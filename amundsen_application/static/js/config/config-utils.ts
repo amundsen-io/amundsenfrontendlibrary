@@ -77,14 +77,14 @@ export function getFilterConfigByResource(
 /*
  * Given a badge name, this will return a badge style and a display name.
  * If these are not specified by config, it will default to some simple rules:
- * use BadgeStyle.DEFAULT and replace '-' and '_' with spaces for display name.
+ * use BadgeStyle.DEFAULT and badge name as display name.
  */
 export function getBadgeConfig(badgeName: string): BadgeStyleConfig {
   const config = AppConfig.badges[badgeName] || {};
 
   return {
     style: BadgeStyle.DEFAULT,
-    displayName: badgeName.replace(/[-_]/g, ' '),
+    displayName: badgeName,
     ...config,
   };
 }
@@ -169,4 +169,12 @@ export function generateExploreUrl(tableData: TableMetadata): string {
     tableData.schema,
     tableData.name
   );
+}
+
+/**
+ * Gets the max length for items with a configurable max length.
+ * Currently only applied to `editableText`, but method can be extended for future cases
+ */
+export function getMaxLength(key: string) {
+  return AppConfig.editableText[key];
 }
