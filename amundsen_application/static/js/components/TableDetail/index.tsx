@@ -41,7 +41,11 @@ import TableIssues from 'components/TableDetail/TableIssues';
 import WatermarkLabel from 'components/TableDetail/WatermarkLabel';
 import WriterLink from 'components/TableDetail/WriterLink';
 import TagInput from 'components/Tags/TagInput';
-import { ProgrammaticDescription, ResourceType, TableMetadata } from 'interfaces';
+import {
+  ProgrammaticDescription,
+  ResourceType,
+  TableMetadata,
+} from 'interfaces';
 
 import EditableSection from 'components/common/EditableSection';
 
@@ -153,8 +157,8 @@ export class TableDetail extends React.Component<
           onSubmitValue={null}
         />
       </EditableSection>
-    ))
-  }
+    ));
+  };
 
   renderTabs(editText, editUrl) {
     const tabInfo = [];
@@ -301,7 +305,9 @@ export class TableDetail extends React.Component<
                     <div className="section-title title-3">Frequent Users</div>
                     <FrequentUsers readers={data.table_readers} />
                   </section>
-                  {this.renderProgrammaticDesc(data.programmatic_descriptions.left)}
+                  {this.renderProgrammaticDesc(
+                    data.programmatic_descriptions.left
+                  )}
                 </section>
                 <section className="right-panel">
                   <EditableSection title="Tags">
@@ -313,10 +319,14 @@ export class TableDetail extends React.Component<
                   <EditableSection title="Owners">
                     <OwnerEditor />
                   </EditableSection>
-                  {this.renderProgrammaticDesc(data.programmatic_descriptions.right)}
+                  {this.renderProgrammaticDesc(
+                    data.programmatic_descriptions.right
+                  )}
                 </section>
               </section>
-              {this.renderProgrammaticDesc(data.programmatic_descriptions.other)}
+              {this.renderProgrammaticDesc(
+                data.programmatic_descriptions.other
+              )}
             </aside>
             <main className="right-panel">
               {this.renderTabs(editText, editUrl)}
