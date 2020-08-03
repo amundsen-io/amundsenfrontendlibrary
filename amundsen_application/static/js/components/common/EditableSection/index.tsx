@@ -50,7 +50,7 @@ export class EditableSection extends React.Component<
     this.setState({ isEditing: !this.state.isEditing });
   };
 
-  stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
+  preventDefault = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
   };
 
@@ -128,7 +128,7 @@ export class EditableSection extends React.Component<
         <label className="editable-section-label">
           <div
             className="editable-section-label-wrapper"
-            onClick={this.stopPropagation}
+            onClick={this.preventDefault}
           >
             <span className="section-title title-3">
               {EditableSection.convertText(title)}
