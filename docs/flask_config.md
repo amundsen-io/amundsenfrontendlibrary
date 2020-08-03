@@ -67,11 +67,10 @@ Here are the settings and what they should be set to
     ISSUE_TRACKER_MAX_RESULTS = None  # type: int (Max issues to display at a time)
 
 ```
-# TODO (ttannis): UPDATE THIS DOC
 ## Programmatic Descriptions
 Amundsen supports configuring other mark down supported non-editable description boxes on the table page.
-This can be useful if you have multiple writers which want to write different pieces of information to amundsen
-that are either very company specific and thus would never be directly integrated into amundsen or require long form text
+This can be useful if you have multiple writers which want to write different pieces of information to Amundsen
+that are either very company specific and thus would never be directly integrated into Amundsen or require long form text
 to properly convey the information.
 
 What are some more specific examples of what could be used for this?
@@ -81,22 +80,25 @@ report to provide context.
 - You have extended table information that is applicable to your datastore which you want to scrape and provide in the
 table page
 
-Programmatic Descriptions are referred to by a "description source" which is a unique identifier.
-You can then configure the descriptions to have a custom order in the config.py file like so:
+Programmatic descriptions are referred to by a "description source" which is a unique identifier.
+In the UI, they will appear on the table page under structured metadata.
+
+In config.py you can then configure the descriptions to have a custom order, as well as whether or not they should exist in the
+left column or right column.
 ```    
 PROGRAMMATIC_DISPLAY = {
-           "s3_crawler": {
-               "display_order": 0
-           },
-           "quality_service": {
-               "display_order": 1
-           },
-           "doesnt_exist": {
-               "display_order": 2
-           }
-       }
+    'RIGHT': {
+      "test3" : {},
+      "test2" : { "display_order": 0 }
+    },
+    'LEFT': {
+      "test1" : { "display_order": 1 },
+      "test0" : { "display_order": 0 },
+    },
+    'test4': {"display_order": 0},
+}
 ```
-description sources not mentioned in the configuration will be alphabetically placed at the end of the above list. If `PROGRAMMATIC_DISPLAY` is left at `None` all added fields are still showing up, so that display is entirely dynamically data-driven without configuration. Meaning configuration merely adds the (nice) benefit of setting display order.
+Description sources not mentioned in the configuration will be alphabetically placed at the bottom of the list. If `PROGRAMMATIC_DISPLAY` is left at `None` all added fields will show up in the order in which they were returned from the backend.
 
 Here is a screenshot of what it would look like in the bottom left here:
 ![programmatic_description](img/programmatic_descriptions.png)
