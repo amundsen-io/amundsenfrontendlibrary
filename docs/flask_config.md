@@ -83,8 +83,7 @@ table page
 Programmatic descriptions are referred to by a "description source" which is a unique identifier.
 In the UI, they will appear on the table page under structured metadata.
 
-In config.py you can then configure the descriptions to have a custom order, as well as whether or not they should exist in the
-left column or right column.
+In config.py you can then configure the descriptions to have a custom order, as well as whether or not they should exist in the left column or right column.
 ```    
 PROGRAMMATIC_DISPLAY = {
     'RIGHT': {
@@ -101,7 +100,7 @@ PROGRAMMATIC_DISPLAY = {
 Description sources not mentioned in the configuration will be alphabetically placed at the bottom of the list. If `PROGRAMMATIC_DISPLAY` is left at `None` all added fields will show up in the order in which they were returned from the backend.
 
 Here is a screenshot of what it would look like in the bottom left here:
-![programmatic_description](img/programmatic_descriptions.png)
+![programmatic_description](img/programmatic_descriptions.png =449x)
 
 ## Uneditable Table Descriptions
 Amundsen supports configuring table and column description to be non-editable for selective tables. You may want to make table
@@ -129,7 +128,7 @@ UNEDITABLE_SCHEMAS = set(['schema1', 'schema2'])
 After above configuration, all tables in 'schema1' and 'schema2' will have non-editable table and column descriptions.
 
 If you have more complex matching rules you can use `UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES`. It provides you more flexibility
-and control as you can create multiple match rules and use regex for matching schema nad table names.
+and control as you can create multiple match rules and use regex for matching schema and table names.
 
 You can configure your match rules in `config.py` as follow:
 ```python
