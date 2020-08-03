@@ -14,7 +14,7 @@ export class BrowsePage extends React.Component {
           <div className="row">
             <div className="col-xs-12">
               <h1 className="h3" id="browse-header">
-                Browse Tags
+                Popular Tags
               </h1>
               <hr className="header-hr" />
               <TagsList />

@@ -32,7 +32,7 @@ describe('BrowsePage', () => {
     });
 
     it('renders correct header', () => {
-      expect(wrapper.find('#browse-header').text()).toEqual('Browse Tags');
+      expect(wrapper.find('#browse-header').text()).toEqual('Popular Tags');
     });
 
     it('renders <hr>', () => {
