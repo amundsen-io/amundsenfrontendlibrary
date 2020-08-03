@@ -97,9 +97,8 @@ PROGRAMMATIC_DISPLAY = {
     'test4': {"display_order": 0},
 }
 ```
-Description sources not mentioned in the configuration will be alphabetically placed at the bottom of the list. If `PROGRAMMATIC_DISPLAY` is left at `None` all added fields will show up in the order in which they were returned from the backend.
+Description sources not mentioned in the configuration will be alphabetically placed at the bottom of the list. If `PROGRAMMATIC_DISPLAY` is left at `None` all added fields will show up in the order in which they were returned from the backend. Here is a screenshot of what it would look like in the bottom left:
 
-Here is a screenshot of what it would look like in the bottom left:
 <img src='img/programmatic_descriptions.png' width='50%' />
 
 ## Uneditable Table Descriptions
