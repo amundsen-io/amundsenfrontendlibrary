@@ -5,6 +5,7 @@ import * as React from 'react';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+import { BadgeStyle } from 'config/config-types';
 
 export enum CaseType {
   LOWER_CASE = 'lowerCase',
@@ -51,7 +52,7 @@ const Flag: React.SFC<FlagProps> = ({
 Flag.defaultProps = {
   caseType: null,
   text: '',
-  labelStyle: 'default',
+  labelStyle: BadgeStyle.DEFAULT,
 };
 
 export default Flag;

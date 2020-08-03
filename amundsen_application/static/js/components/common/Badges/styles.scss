@@ -9,12 +9,13 @@
     padding: 0 0;
   }
 
-  [class^="badge-overlay-"] { 
+  [class^='badge-overlay-'] {
     font-size: $font-size-base;
     text-align: center;
-    padding: .2em .6em .3em;
+    padding: 0.2em 0.6em 0.3em;
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       color: $badge-text-color;
       height: $badge-height;
       width: 100%;
@@ -32,20 +33,33 @@
   .badge-overlay-neutral,
   .badge-overlay-positive,
   .badge-overlay-primary {
-    &:hover, &:focus {
-      background-color: rgba($color: $badge-overlay, $alpha: $badge-opacity-light);
+    &:hover,
+    &:focus {
+      background-color: rgba(
+        $color: $badge-overlay,
+        $alpha: $badge-opacity-light
+      );
     }
     &:active {
-      background-color: rgba($color: $badge-overlay, $alpha: $badge-pressed-light);
+      background-color: rgba(
+        $color: $badge-overlay,
+        $alpha: $badge-pressed-light
+      );
     }
   }
   .badge-overlay-warning {
-    &:hover, &:focus {
-      background-color: rgba($color: $badge-overlay, $alpha: $badge-opacity-dark);
+    &:hover,
+    &:focus {
+      background-color: rgba(
+        $color: $badge-overlay,
+        $alpha: $badge-opacity-dark
+      );
     }
     &:active {
-      background-color: rgba($color: $badge-overlay, $alpha: $badge-pressed-dark);
+      background-color: rgba(
+        $color: $badge-overlay,
+        $alpha: $badge-pressed-dark
+      );
     }
   }
 }
-
