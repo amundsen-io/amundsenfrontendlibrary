@@ -3,8 +3,6 @@
 
 import unittest
 
-from unittest.mock import patch
-
 from amundsen_application.api.utils.metadata_utils import _convert_prog_descriptions, _sort_prog_descriptions, \
     _parse_editable_rule
 from amundsen_application.config import MatchRuleObject
@@ -22,14 +20,14 @@ class ProgrammaticDescriptionsTest(unittest.TestCase):
             # mock config
             test_config = {
                 'RIGHT': {
-                  "test3" : {},
-                  "test2" : { "display_order": 0 }
+                    'test3': {},
+                    'test2': {'display_order': 0},
                 },
                 'LEFT': {
-                  "test1" : { "display_order": 1 },
-                  "test0" : { "display_order": 0 },
+                    'test1': {'display_order': 1},
+                    'test0': {'display_order': 0},
                 },
-                'test4': {"display_order": 0},
+                'test4': {'display_order': 0},
             }
             # test data
             test_desc = [
