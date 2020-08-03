@@ -99,8 +99,8 @@ PROGRAMMATIC_DISPLAY = {
 ```
 Description sources not mentioned in the configuration will be alphabetically placed at the bottom of the list. If `PROGRAMMATIC_DISPLAY` is left at `None` all added fields will show up in the order in which they were returned from the backend.
 
-Here is a screenshot of what it would look like in the bottom left here:
-![programmatic_description](img/programmatic_descriptions.png =449x)
+Here is a screenshot of what it would look like in the bottom left:
+<img src='img/programmatic_descriptions.png' width='50%' />
 
 ## Uneditable Table Descriptions
 Amundsen supports configuring table and column description to be non-editable for selective tables. You may want to make table
