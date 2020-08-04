@@ -52,6 +52,7 @@ class EditableText extends React.Component<
 
   public static defaultProps: EditableTextProps = {
     editable: true,
+    isEditing: false,
     maxLength: 250,
     onSubmitValue: null,
     getLatestValue: null,
@@ -120,11 +121,13 @@ class EditableText extends React.Component<
   };
 
   render() {
+    console.log(this.state.value)
+    console.log(this.props)
     if (!this.props.isEditing) {
       return (
         <div className="editable-text">
           <div className="markdown-wrapper">
-            <ReactMarkdown source={this.state.value} />
+            <ReactMarkdown source={this.state.value} escapeHtml={false} />
           </div>
           {this.props.editable && !this.state.value && (
             <a
