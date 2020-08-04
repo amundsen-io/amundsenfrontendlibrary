@@ -121,8 +121,6 @@ class EditableText extends React.Component<
   };
 
   render() {
-    console.log(this.state.value)
-    console.log(this.props)
     if (!this.props.isEditing) {
       return (
         <div className="editable-text">
