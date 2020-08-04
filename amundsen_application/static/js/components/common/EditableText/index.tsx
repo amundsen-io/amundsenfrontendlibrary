@@ -52,7 +52,6 @@ class EditableText extends React.Component<
 
   public static defaultProps: EditableTextProps = {
     editable: true,
-    isEditing: false,
     maxLength: 250,
     onSubmitValue: null,
     getLatestValue: null,
