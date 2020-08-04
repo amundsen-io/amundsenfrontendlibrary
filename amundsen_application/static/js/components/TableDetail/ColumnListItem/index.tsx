@@ -59,7 +59,10 @@ export class ColumnListItem extends React.Component<
         label: `${metadata.name} ${metadata.col_type}`,
       });
     }
-    this.setState({ isExpanded: !this.state.isExpanded });
+    if (this.shouldRenderDescription() || this.props.data.stats.length !== 0) {
+      this.setState({ isExpanded: !this.state.isExpanded });
+    }
+    // this.setState({ isExpanded: !this.state.isExpanded });
   };
 
   openRequest = () => {
@@ -78,7 +81,7 @@ export class ColumnListItem extends React.Component<
     if (data.description) {
       return true;
     }
-    if (!editText && !editUrl) {
+    if (!editText && !editUrl && !data.is_editable) {
       return false;
     }
     return true;

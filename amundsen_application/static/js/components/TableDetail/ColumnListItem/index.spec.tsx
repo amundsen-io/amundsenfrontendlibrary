@@ -145,7 +145,7 @@ describe('ColumnListItem', () => {
       });
     });
 
-    it('renders EditableSection with description and empty editText and editUrl when expanded', () => {
+    it('renders EditableSection with non-empty description, empty edit text and url for editable column description when expanded', () => {
       const { props, wrapper } = setup({
         editText: '',
         editUrl: '',
@@ -163,12 +163,44 @@ describe('ColumnListItem', () => {
       });
     });
 
-    it('does not renders EditableSection with empty description, editText and editUrl when expanded', () => {
-      const { wrapper } = setup({
+    it('renders EditableSection with empty description, editText and editUrl for editable column description when expanded', () => {
+      const { props, wrapper } = setup({
         data: {
           name: 'test_column_name',
           description: '',
           is_editable: true,
+          col_type: 'varchar(32)',
+          stats: [
+            {
+              end_epoch: 1571616000,
+              start_epoch: 1571616000,
+              stat_type: 'count',
+              stat_val: '12345',
+            },
+          ],
+        },
+        editText: '',
+        editUrl: '',
+      });
+      const instance = wrapper.instance();
+      instance.setState({ isExpanded: true });
+      const newWrapper = shallow(instance.render());
+      expect(newWrapper.find(EditableSection).exists()).toBe(true);
+      const editableSection = newWrapper.find(EditableSection);
+      expect(editableSection.props()).toMatchObject({
+        title: 'Description',
+        readOnly: !props.data.is_editable,
+        editText: props.editText,
+        editUrl: props.editUrl,
+      });
+    });
+
+    it('does not renders EditableSection with empty description, editText and editUrl for non-editable column description when expanded', () => {
+      const { wrapper } = setup({
+        data: {
+          name: 'test_column_name',
+          description: '',
+          is_editable: false,
           col_type: 'varchar(32)',
           stats: [
             {
@@ -187,12 +219,12 @@ describe('ColumnListItem', () => {
       const newWrapper = shallow(instance.render());
       expect(newWrapper.find(EditableSection).exists()).toBe(false);
     });
-    it('renders EditableSection with empty description,but non-empty editText and editUrl when expanded', () => {
+    it('renders EditableSection with empty description,but non-empty editText and editUrl for non-editable column description when expanded', () => {
       const { props, wrapper } = setup({
         data: {
           name: 'test_column_name',
           description: '',
-          is_editable: true,
+          is_editable: false,
           col_type: 'varchar(32)',
           stats: [
             {
@@ -203,7 +235,7 @@ describe('ColumnListItem', () => {
             },
           ],
         },
-        editText: 'Click to edit discription in source',
+        editText: 'Click to edit description in source',
         editUrl: 'source/test_column_name',
       });
       const instance = wrapper.instance();
