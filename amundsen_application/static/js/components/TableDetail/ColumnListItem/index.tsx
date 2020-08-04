@@ -73,7 +73,7 @@ export class ColumnListItem extends React.Component<
     e.stopPropagation();
   };
 
-  renderDescription = () => {
+  shouldRenderDescription = (): boolean => {
     const { data, editText, editUrl } = this.props;
     if (data.description) {
       return true;
@@ -183,7 +183,7 @@ export class ColumnListItem extends React.Component<
           {this.state.isExpanded && (
             <section className="expanded-content">
               <div className="stop-propagation" onClick={this.stopPropagation}>
-                {this.renderDescription() && (
+                {this.shouldRenderDescription() && (
                   <EditableSection
                     title="Description"
                     readOnly={!metadata.is_editable}

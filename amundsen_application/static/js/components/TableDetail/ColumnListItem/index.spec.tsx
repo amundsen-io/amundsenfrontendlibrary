@@ -132,7 +132,81 @@ describe('ColumnListItem', () => {
       expect(newWrapper.find(ColumnStats).exists()).toBe(true);
     });
 
-    it('renders EditableSection with correct edit text and Url when expanded', () => {
+    it('renders EditableSection with correct description, edit text and Url when expanded', () => {
+      instance.setState({ isExpanded: true });
+      const newWrapper = shallow(instance.render());
+      expect(newWrapper.find(EditableSection).exists()).toBe(true);
+      const editableSection = newWrapper.find(EditableSection);
+      expect(editableSection.props()).toMatchObject({
+        title: 'Description',
+        readOnly: !props.data.is_editable,
+        editText: props.editText,
+        editUrl: props.editUrl,
+      });
+    });
+
+    it('renders EditableSection with description and empty editText and editUrl when expanded', () => {
+      const { props, wrapper } = setup({
+        editText: '',
+        editUrl: '',
+      });
+      const instance = wrapper.instance();
+      instance.setState({ isExpanded: true });
+      const newWrapper = shallow(instance.render());
+      expect(newWrapper.find(EditableSection).exists()).toBe(true);
+      const editableSection = newWrapper.find(EditableSection);
+      expect(editableSection.props()).toMatchObject({
+        title: 'Description',
+        readOnly: !props.data.is_editable,
+        editText: props.editText,
+        editUrl: props.editUrl,
+      });
+    });
+
+    it('does not renders EditableSection with empty description, editText and editUrl when expanded', () => {
+      const { wrapper } = setup({
+        data: {
+          name: 'test_column_name',
+          description: '',
+          is_editable: true,
+          col_type: 'varchar(32)',
+          stats: [
+            {
+              end_epoch: 1571616000,
+              start_epoch: 1571616000,
+              stat_type: 'count',
+              stat_val: '12345',
+            },
+          ],
+        },
+        editText: '',
+        editUrl: '',
+      });
+      const instance = wrapper.instance();
+      instance.setState({ isExpanded: true });
+      const newWrapper = shallow(instance.render());
+      expect(newWrapper.find(EditableSection).exists()).toBe(false);
+    });
+    it('renders EditableSection with empty description,but non-empty editText and editUrl when expanded', () => {
+      const { props, wrapper } = setup({
+        data: {
+          name: 'test_column_name',
+          description: '',
+          is_editable: true,
+          col_type: 'varchar(32)',
+          stats: [
+            {
+              end_epoch: 1571616000,
+              start_epoch: 1571616000,
+              stat_type: 'count',
+              stat_val: '12345',
+            },
+          ],
+        },
+        editText: 'Click to edit discription in source',
+        editUrl: 'source/test_column_name',
+      });
+      const instance = wrapper.instance();
       instance.setState({ isExpanded: true });
       const newWrapper = shallow(instance.render());
       expect(newWrapper.find(EditableSection).exists()).toBe(true);
