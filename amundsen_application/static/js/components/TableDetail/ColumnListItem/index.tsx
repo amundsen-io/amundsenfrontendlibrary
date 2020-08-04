@@ -74,16 +74,14 @@ export class ColumnListItem extends React.Component<
   };
 
   renderDescription = () => {
-    let expand: boolean = true;
-    if (
-      typeof this.props.data.description != 'undefined' &&
-      this.props.data.description
-    ) {
-      expand = true;
-    } else if (this.props.editText === '' && this.props.editUrl === '') {
-      expand = false;
+    const { data, editText, editUrl } = this.props;
+    if (data.description) {
+      return true;
     }
-    return expand;
+    if (!editText && !editUrl) {
+      return false;
+    }
+    return true;
   };
 
   renderColumnType = (columnIndex: number, type: string) => {
