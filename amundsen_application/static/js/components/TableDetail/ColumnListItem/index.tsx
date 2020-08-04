@@ -62,7 +62,6 @@ export class ColumnListItem extends React.Component<
     if (this.shouldRenderDescription() || this.props.data.stats.length !== 0) {
       this.setState({ isExpanded: !this.state.isExpanded });
     }
-    // this.setState({ isExpanded: !this.state.isExpanded });
   };
 
   openRequest = () => {
