@@ -73,6 +73,19 @@ export class ColumnListItem extends React.Component<
     e.stopPropagation();
   };
 
+  renderDescription = () => {
+    let expand: boolean = true;
+    if (
+      typeof this.props.data.description != 'undefined' &&
+      this.props.data.description
+    ) {
+      expand = true;
+    } else if (this.props.editText === '' && this.props.editUrl === '') {
+      expand = false;
+    }
+    return expand;
+  };
+
   renderColumnType = (columnIndex: number, type: string) => {
     const truncatedTypes: string[] = ['array', 'struct', 'map', 'row'];
     let shouldTrucate = false;
@@ -172,19 +185,21 @@ export class ColumnListItem extends React.Component<
           {this.state.isExpanded && (
             <section className="expanded-content">
               <div className="stop-propagation" onClick={this.stopPropagation}>
-                <EditableSection
-                  title="Description"
-                  readOnly={!metadata.is_editable}
-                  editText={this.props.editText}
-                  editUrl={this.props.editUrl}
-                >
-                  <ColumnDescEditableText
-                    columnIndex={this.props.index}
-                    editable={metadata.is_editable}
-                    maxLength={getMaxLength('columnDescLength')}
-                    value={metadata.description}
-                  />
-                </EditableSection>
+                {this.renderDescription() && (
+                  <EditableSection
+                    title="Description"
+                    readOnly={!metadata.is_editable}
+                    editText={this.props.editText}
+                    editUrl={this.props.editUrl}
+                  >
+                    <ColumnDescEditableText
+                      columnIndex={this.props.index}
+                      editable={metadata.is_editable}
+                      maxLength={getMaxLength('columnDescLength')}
+                      value={metadata.description}
+                    />
+                  </EditableSection>
+                )}
               </div>
               <ColumnStats stats={metadata.stats} />
             </section>
