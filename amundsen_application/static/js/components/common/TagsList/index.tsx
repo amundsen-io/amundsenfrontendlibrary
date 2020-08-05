@@ -52,44 +52,49 @@ export class TagsList extends React.Component<TagsListProps> {
     ));
   }
 
+  generateTagsSectionLabel(labelName: string) {
+    return(
+      <label className="section-label">
+        <span className={'section-title title-2'}>{labelName}</span>
+      </label>
+    );
+  }
+
   render() {
     const { isLoading, curatedTags, otherTags } = this.props;
-
-
 
     if (isLoading) {
       return <ShimmeringTagListLoader />;
     }
-
+    let tagsByUsage = this.getTagsByUsage(otherTags); // TODO add constant here
+    // TODO add test to verify this wroks as expected when there are less than 20 tags
+    let popularTags = tagsByUsage.slice(0, 20);
+    let remainingTags = tagsByUsage.slice(20, tagsByUsage.length);
     // TODO refactor this logic to all be within the return statement
-    // TODO what is the logic in browse page vs home page for geneated TagList? Add an optional prop?
     if (this.props.shortTagList == true) {
-      // If no curated tags, render popular tags
-      if (curatedTags.length == 0) {
-        let popularTags = this.getTagsByUsage(otherTags).slice(0, 20) // TODO add constant here
-        return (
-          <div id="tag-list">
-            {otherTags.length > 0 && this.generateTagInfo(popularTags)}
-          </div>
-        );
-      }
-      else {
-        return (
-          <div id="tags-list" className="tags-list">
-            {this.generateTagInfo(curatedTags)}
-            {showAllTags() && curatedTags.length > 0 && otherTags.length > 0 && (
-              <hr />
-            )}
-            {showAllTags() &&
-              otherTags.length > 0 &&
-              this.generateTagInfo(otherTags)}
-          </div>
-        );
-      } 
+      return (
+        <div id="tags-list" className="tags-list">
+          {curatedTags.length == 0 && popularTags.length > 0 && this.generateTagInfo(popularTags)}
+          {curatedTags.length > 0 && this.generateTagInfo(curatedTags)}
+          {showAllTags() && curatedTags.length > 0 && otherTags.length > 0 && (
+            <hr />
+          )}
+          {showAllTags() &&
+            otherTags.length > 0 &&
+            this.generateTagInfo(otherTags)}
+          <span><a className={'browse-tags-link'} href={'/browse'}>Browse all tags</a></span>
+        </div>
+      );
     }
     else {
       return (
-        <div>NOT SHORT, BROWSE PAGE VIEW</div>
+        <div>
+          {this.generateTagsSectionLabel('Popular Tags')}
+          {curatedTags.length == 0 && popularTags.length > 0 && this.generateTagInfo(popularTags)}
+          {curatedTags.length > 0 && this.generateTagInfo(curatedTags)}
+          {remainingTags.length > 0 && this.generateTagsSectionLabel('Other Tags')}
+          {remainingTags.length > 0 && this.generateTagInfo(remainingTags)}
+        </div>
       );
     }
   }

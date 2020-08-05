@@ -10,3 +10,25 @@ hr.header-hr {
 .tags-list {
   margin: 0 -4px;
 }
+
+@import 'variables';
+
+.browse-tags-link {
+  font-size: 16px;
+  text-decoration: none;
+  display: block;
+
+  &:hover,
+  &:visited,
+  &:active,
+  &:link {
+    text-decoration: none;
+  }
+}
+
+.section-label {
+  display: block;
+  font-weight: 400;
+  margin-top: $spacer-3;
+  margin-bottom: $spacer-2;
+}
