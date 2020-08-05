@@ -18,6 +18,7 @@ import './styles.scss';
 import EditableSection from 'components/common/EditableSection';
 
 const MORE_BUTTON_TEXT = 'More options';
+const EDITABLE_SECTION_TITLE = 'Description';
 
 interface DispatchFromProps {
   openRequestDescriptionDialog: (
@@ -51,15 +52,15 @@ export class ColumnListItem extends React.Component<
   }
 
   toggleExpand = (e) => {
+    const metadata = this.props.data;
     if (!this.state.isExpanded) {
-      const metadata = this.props.data;
       logClick(e, {
         target_id: `column::${metadata.name}`,
         target_type: 'column stats',
         label: `${metadata.name} ${metadata.col_type}`,
       });
     }
-    if (this.shouldRenderDescription() || this.props.data.stats.length !== 0) {
+    if (this.shouldRenderDescription() || metadata.stats.length !== 0) {
       this.setState({ isExpanded: !this.state.isExpanded });
     }
   };
@@ -187,7 +188,7 @@ export class ColumnListItem extends React.Component<
               <div className="stop-propagation" onClick={this.stopPropagation}>
                 {this.shouldRenderDescription() && (
                   <EditableSection
-                    title="Description"
+                    title={EDITABLE_SECTION_TITLE}
                     readOnly={!metadata.is_editable}
                     editText={this.props.editText}
                     editUrl={this.props.editUrl}
