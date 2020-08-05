@@ -40,10 +40,10 @@ export class TagsList extends React.Component<TagsListProps> {
     this.props.getAllTags();
   }
 
-  getPopularTags(tagArray: Tag[]) {
+  getTagsByUsage(tagArray: Tag[]) {
     return tagArray.sort((a, b) => {
       return a.tag_count - b.tag_count;
-    });
+    }).reverse();
   }
 
   generateTagInfo(tagArray: Tag[]) {
@@ -55,41 +55,43 @@ export class TagsList extends React.Component<TagsListProps> {
   render() {
     const { isLoading, curatedTags, otherTags } = this.props;
 
+
+
     if (isLoading) {
       return <ShimmeringTagListLoader />;
     }
+
+    // TODO refactor this logic to all be within the return statement
     // TODO what is the logic in browse page vs home page for geneated TagList? Add an optional prop?
     if (this.props.shortTagList == true) {
-    // If no curated tags, render popular tags
-    if (curatedTags.length == 0) {
-      let popularTags = this.getPopularTags(otherTags)
+      // If no curated tags, render popular tags
+      if (curatedTags.length == 0) {
+        let popularTags = this.getTagsByUsage(otherTags).slice(0, 20) // TODO add constant here
+        return (
+          <div id="tag-list">
+            {otherTags.length > 0 && this.generateTagInfo(popularTags)}
+          </div>
+        );
+      }
+      else {
+        return (
+          <div id="tags-list" className="tags-list">
+            {this.generateTagInfo(curatedTags)}
+            {showAllTags() && curatedTags.length > 0 && otherTags.length > 0 && (
+              <hr />
+            )}
+            {showAllTags() &&
+              otherTags.length > 0 &&
+              this.generateTagInfo(otherTags)}
+          </div>
+        );
+      } 
+    }
+    else {
       return (
-        <div id="tag-list">No curated tags
-        <br/>
-          {}
-          {otherTags.length > 0 && this.generateTagInfo(otherTags)}
-        </div>
+        <div>NOT SHORT, BROWSE PAGE VIEW</div>
       );
     }
-
-    // If there are curated tags defined, return normal behavior
-    return (
-      <div id="tags-list" className="tags-list">
-        {this.generateTagInfo(curatedTags)}
-        {showAllTags() && curatedTags.length > 0 && otherTags.length > 0 && (
-          <hr />
-        )}
-        {showAllTags() &&
-          otherTags.length > 0 &&
-          this.generateTagInfo(otherTags)}
-      </div>
-    );
-    }
-    return (
-      <div>NOT SHORT, BROWSE PAGE VIEW</div>
-    );
-
-
   }
 }
 
