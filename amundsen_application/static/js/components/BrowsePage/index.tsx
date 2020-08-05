@@ -6,6 +6,8 @@ import * as DocumentTitle from 'react-document-title';
 
 import TagsList from 'components/common/TagsList';
 
+import './styles.scss';
+
 export class BrowsePage extends React.Component {
   render() {
     return (
@@ -15,6 +17,15 @@ export class BrowsePage extends React.Component {
             <div className="col-xs-12">
               <h1 className="h3" id="browse-header">
                 Popular Tags
+              </h1>
+              <hr className="header-hr" />
+              <TagsList />
+            </div>
+          </div>
+          <div className="row all-tags">
+            <div className="col-xs-12">
+              <h1 className="h3" id="browse-header-all">
+                All Tags
               </h1>
               <hr className="header-hr" />
               <TagsList />
