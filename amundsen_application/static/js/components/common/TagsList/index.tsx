@@ -23,15 +23,27 @@ export interface StateFromProps {
   isLoading: boolean;
 }
 
+interface OwnProps {
+  /* determine if we only want curated/popular tags with
+  'see more' or the entire tags list */
+  shortTagList: boolean;
+}
+
 export interface DispatchFromProps {
   getAllTags: () => GetAllTagsRequest;
 }
 
-export type TagsListProps = StateFromProps & DispatchFromProps;
+export type TagsListProps = StateFromProps & DispatchFromProps & OwnProps;
 
 export class TagsList extends React.Component<TagsListProps> {
   componentDidMount() {
     this.props.getAllTags();
+  }
+
+  getPopularTags(tagArray: Tag[]) {
+    return tagArray.sort((a, b) => {
+      return a.tag_count - b.tag_count;
+    });
   }
 
   generateTagInfo(tagArray: Tag[]) {
@@ -46,7 +58,21 @@ export class TagsList extends React.Component<TagsListProps> {
     if (isLoading) {
       return <ShimmeringTagListLoader />;
     }
+    // TODO what is the logic in browse page vs home page for geneated TagList? Add an optional prop?
+    if (this.props.shortTagList == true) {
+    // If no curated tags, render popular tags
+    if (curatedTags.length == 0) {
+      let popularTags = this.getPopularTags(otherTags)
+      return (
+        <div id="tag-list">No curated tags
+        <br/>
+          {}
+          {otherTags.length > 0 && this.generateTagInfo(otherTags)}
+        </div>
+      );
+    }
 
+    // If there are curated tags defined, return normal behavior
     return (
       <div id="tags-list" className="tags-list">
         {this.generateTagInfo(curatedTags)}
@@ -58,6 +84,12 @@ export class TagsList extends React.Component<TagsListProps> {
           this.generateTagInfo(otherTags)}
       </div>
     );
+    }
+    return (
+      <div>NOT SHORT, BROWSE PAGE VIEW</div>
+    );
+
+
   }
 }
 
@@ -83,7 +115,7 @@ export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators({ getAllTags }, dispatch);
 };
 
-export default connect<StateFromProps, DispatchFromProps>(
+export default connect<StateFromProps, DispatchFromProps, OwnProps>(
   mapStateToProps,
   mapDispatchToProps
 )(TagsList);

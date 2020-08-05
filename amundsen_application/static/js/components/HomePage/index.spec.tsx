@@ -51,7 +51,7 @@ describe('HomePage', () => {
       expect(wrapper.find('#browse-tags-header').text()).toEqual(
         'Popular Tags'
       );
-      expect(wrapper.contains(<TagsList />));
+      expect(wrapper.contains(<TagsList shortTagList={true}/>));
     });
 
     it('contains MyBookmarks', () => {

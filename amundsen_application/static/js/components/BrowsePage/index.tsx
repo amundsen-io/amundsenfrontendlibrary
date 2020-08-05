@@ -11,6 +11,7 @@ import './styles.scss';
 export class BrowsePage extends React.Component {
   render() {
     return (
+      /* TODO: add expand/collapse behavior */
       <DocumentTitle title="Browse - Amundsen">
         <main className="container">
           <div className="row">
@@ -19,16 +20,7 @@ export class BrowsePage extends React.Component {
                 Popular Tags
               </h1>
               <hr className="header-hr" />
-              <TagsList />
-            </div>
-          </div>
-          <div className="row all-tags">
-            <div className="col-xs-12">
-              <h1 className="h3" id="browse-header-all">
-                All Tags
-              </h1>
-              <hr className="header-hr" />
-              <TagsList />
+              <TagsList shortTagList={false}/>
             </div>
           </div>
         </main>

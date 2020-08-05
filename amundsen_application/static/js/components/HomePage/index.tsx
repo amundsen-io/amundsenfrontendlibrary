@@ -34,6 +34,9 @@ export class HomePage extends React.Component<HomePageProps> {
   }
 
   render() {
+    /* TODO, just display either popular or curated tags,
+    do we want the title to change based on which
+    implementation is being used? probably not */
     return (
       <main className="container home-page">
         <div className="row">
@@ -54,7 +57,7 @@ export class HomePage extends React.Component<HomePageProps> {
               >
                 {TAGS_TITLE}
               </h2>
-              <TagsList />
+              <TagsList shortTagList={true}/>
             </div>
             <div className="home-element-container">
               <MyBookmarks />
