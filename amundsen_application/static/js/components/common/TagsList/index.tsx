@@ -53,10 +53,18 @@ export class TagsList extends React.Component<TagsListProps> {
   }
 
   generateTagsSectionLabel(labelName: string) {
+    // TODO maybe add classes query-list-item-name column-name to label
+    
     return(
-      <label className="section-label">
+      <label className='section-label'>
         <span className={'section-title title-2'}>{labelName}</span>
       </label>
+    );
+  }
+
+  generateBrowseTagLink() {
+    return (
+      <span><a className={'browse-tags-link'} href={'/browse'}>Browse all tags</a></span>
     );
   }
 
@@ -66,9 +74,11 @@ export class TagsList extends React.Component<TagsListProps> {
     if (isLoading) {
       return <ShimmeringTagListLoader />;
     }
-    let tagsByUsage = this.getTagsByUsage(otherTags); // TODO add constant here
-    // TODO add test to verify this wroks as expected when there are less than 20 tags
+    let tagsByUsage = this.getTagsByUsage(otherTags);
+    // TODO add constant here
+    // TODO add test to verify this works as expected when there are less than 20 tags
     let popularTags = tagsByUsage.slice(0, 20);
+    // TODO maybe rename remainingTags to something that differentiates it from otherTags
     let remainingTags = tagsByUsage.slice(20, tagsByUsage.length);
     // TODO refactor this logic to all be within the return statement
     if (this.props.shortTagList == true) {
@@ -82,18 +92,21 @@ export class TagsList extends React.Component<TagsListProps> {
           {showAllTags() &&
             otherTags.length > 0 &&
             this.generateTagInfo(otherTags)}
-          <span><a className={'browse-tags-link'} href={'/browse'}>Browse all tags</a></span>
+          {!showAllTags() && this.generateBrowseTagLink()}
         </div>
       );
     }
     else {
+      // Browse page TagList
       return (
         <div>
           {this.generateTagsSectionLabel('Popular Tags')}
           {curatedTags.length == 0 && popularTags.length > 0 && this.generateTagInfo(popularTags)}
           {curatedTags.length > 0 && this.generateTagInfo(curatedTags)}
-          {remainingTags.length > 0 && this.generateTagsSectionLabel('Other Tags')}
-          {remainingTags.length > 0 && this.generateTagInfo(remainingTags)}
+          
+          {(remainingTags.length > 0 || otherTags.length > 0) && this.generateTagsSectionLabel('Other Tags')}
+          {curatedTags.length > 0 && otherTags.length > 0 && this.generateTagInfo(otherTags)}
+          {curatedTags.length == 0 && remainingTags.length > 0 && this.generateTagInfo(remainingTags)}
         </div>
       );
     }
