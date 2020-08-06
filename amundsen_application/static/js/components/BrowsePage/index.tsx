@@ -20,7 +20,7 @@ export class BrowsePage extends React.Component {
                 Browse Tags
               </h1>
               <hr className="header-hr" />
-              <TagsList shortTagList={false}/>
+              <TagsList shortTagList={false} />
             </div>
           </div>
         </main>

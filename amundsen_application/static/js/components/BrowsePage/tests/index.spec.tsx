@@ -40,7 +40,7 @@ describe('BrowsePage', () => {
     });
 
     it('contains TagsList', () => {
-      expect(wrapper.contains(<TagsList shortTagList={false}/>));
+      expect(wrapper.contains(<TagsList shortTagList={false} />));
     });
   });
 });
