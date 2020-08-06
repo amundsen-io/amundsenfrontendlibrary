@@ -11,8 +11,10 @@ import {
 export function getAnnouncements(): GetAnnouncementsRequest {
   return { type: GetAnnouncements.REQUEST };
 }
-export function getAnnouncementsFailure(): GetAnnouncementsResponse {
-  return { type: GetAnnouncements.FAILURE, payload: { posts: [] } };
+export function getAnnouncementsFailure(
+  payload: GetAnnouncementsPayload
+): GetAnnouncementsResponse {
+  return { type: GetAnnouncements.FAILURE, payload };
 }
 export function getAnnouncementsSuccess(
   payload: GetAnnouncementsPayload
@@ -44,11 +46,15 @@ export default function reducer(
     case GetAnnouncements.REQUEST:
       return {
         ...state,
-        statusCode: null,
         isLoading: true,
+        statusCode: null,
       };
     case GetAnnouncements.FAILURE:
-      return initialState;
+      return {
+        ...state,
+        isLoading: false,
+        statusCode: action.payload.statusCode,
+      };
     case GetAnnouncements.SUCCESS:
       return {
         ...state,

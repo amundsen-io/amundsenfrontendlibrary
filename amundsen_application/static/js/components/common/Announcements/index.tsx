@@ -4,13 +4,15 @@ import { connect } from 'react-redux';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { GetAnnouncementsRequest } from 'ducks/announcements/types';
-import { getAnnouncements } from 'ducks/announcements/reducer';
+import { getAnnouncements } from 'ducks/announcements';
 
 import { AnnouncementPost } from 'interfaces';
 
 import AnnouncementsList from './AnnouncementsList';
 
 export interface StateFromProps {
+  isLoading: boolean;
+  statusCode: number;
   announcements: AnnouncementPost[];
 }
 
@@ -20,9 +22,13 @@ export interface DispatchFromProps {
 
 export type AnnouncementContainerProps = StateFromProps & DispatchFromProps;
 
+const OK_STATUS_CODE = 200;
+
 const AnnouncementsListContainer: React.FC<AnnouncementContainerProps> = ({
   announcements,
   announcementsGet,
+  isLoading,
+  statusCode,
 }: AnnouncementContainerProps) => {
   React.useEffect(() => {
     announcementsGet();
@@ -30,8 +36,8 @@ const AnnouncementsListContainer: React.FC<AnnouncementContainerProps> = ({
 
   return (
     <AnnouncementsList
-      hasError={false}
-      isLoading={false}
+      hasError={statusCode !== OK_STATUS_CODE}
+      isLoading={isLoading}
       announcements={announcements}
     />
   );
@@ -40,6 +46,8 @@ const AnnouncementsListContainer: React.FC<AnnouncementContainerProps> = ({
 export const mapStateToProps = (state: GlobalState) => {
   return {
     announcements: state.announcements.posts,
+    isLoading: state.announcements.isLoading,
+    statusCode: state.announcements.statusCode,
   };
 };
 

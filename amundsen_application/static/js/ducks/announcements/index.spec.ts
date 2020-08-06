@@ -9,7 +9,7 @@ import reducer, {
   getAnnouncementsSuccess,
   initialState,
   AnnouncementsReducerState,
-} from './reducer';
+} from '.';
 import { getAnnouncementsWatcher, getAnnouncementsWorker } from './sagas';
 import { GetAnnouncements } from './types';
 
@@ -21,10 +21,16 @@ describe('Announcements ducks', () => {
     });
 
     it('getAnnouncementsFailure - returns the action to process failure', () => {
-      const action = getAnnouncementsFailure();
+      const expectedPayload = {
+        statusCode: 500,
+        posts: [],
+      };
+      const action = getAnnouncementsFailure(expectedPayload);
       const { payload } = action;
+
       expect(action.type).toBe(GetAnnouncements.FAILURE);
       expect(payload.posts).toEqual([]);
+      expect(payload.statusCode).toEqual(500);
     });
 
     it('getAllTagsSuccess - returns the action to process success', () => {
@@ -39,8 +45,10 @@ describe('Announcements ducks', () => {
         posts: expectedPosts,
         statusCode: 200,
       };
+
       const action = getAnnouncementsSuccess(expectedPayload);
       const { payload } = action;
+
       expect(action.type).toBe(GetAnnouncements.SUCCESS);
       expect(payload.posts).toBe(expectedPosts);
     });
@@ -103,10 +111,17 @@ describe('Announcements ducks', () => {
       });
     });
 
-    xdescribe('when action is FAILURE', () => {
-      it('should return the initialState', () => {
-        const expected = initialState;
-        const actual = reducer(testState, getAnnouncementsFailure());
+    describe('when action is FAILURE', () => {
+      it('should return the initialState with the status code', () => {
+        const expected = {
+          ...initialState,
+          isLoading: false,
+          statusCode: 500,
+        };
+        const actual = reducer(
+          testState,
+          getAnnouncementsFailure({ statusCode: 500 })
+        );
 
         expect(actual).toEqual(expected);
       });
@@ -125,27 +140,41 @@ describe('Announcements ducks', () => {
     });
 
     describe('getAnnouncementsWorker', () => {
-      it('gets posts', () => {
-        const mockPosts = [
-          {
-            date: '12/31/1999',
-            title: 'Test',
-            html_content: '<div>Test content</div>',
-          },
-        ];
-        return expectSaga(getAnnouncementsWorker)
-          .provide([[matchers.call.fn(API.getAnnouncements), mockPosts]])
-          .put(getAnnouncementsSuccess(mockPosts))
-          .run();
+      it('executes flow for successfuly getting announcements', () => {
+        const mockResponse = {
+          posts: [
+            {
+              date: '12/31/1999',
+              title: 'Test',
+              html_content: '<div>Test content</div>',
+            },
+          ],
+          statusCode: 200,
+        };
+
+        testSaga(getAnnouncementsWorker, getAnnouncements())
+          .next()
+          .call(API.getAnnouncements)
+          .next(mockResponse)
+          .put(getAnnouncementsSuccess(mockResponse))
+          .next()
+          .isDone();
       });
 
-      it('handles request error', () => {
-        return expectSaga(getAnnouncementsWorker)
-          .provide([
-            [matchers.call.fn(API.getAnnouncements), throwError(new Error())],
-          ])
-          .put(getAnnouncementsFailure())
-          .run();
+      it('executes flow for a failed request', () => {
+        const mockResponse = {
+          statusCode: 500,
+          statusMessage: 'Error',
+        };
+
+        testSaga(getAnnouncementsWorker, getAnnouncements())
+          .next()
+          .call(API.getAnnouncements)
+          // @ts-ignore
+          .throw(mockResponse)
+          .put(getAnnouncementsFailure(mockResponse))
+          .next()
+          .isDone();
       });
     });
   });
