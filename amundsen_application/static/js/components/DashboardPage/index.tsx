@@ -47,6 +47,8 @@ import { NO_TIMESTAMP_TEXT } from 'components/constants';
 import ImagePreview from './ImagePreview';
 
 import './styles.scss';
+import { UpdateSearchStateRequest } from 'ducks/search/types';
+import { updateSearchState } from 'ducks/search/reducer';
 
 interface DashboardPageState {
   uri: string;
@@ -68,6 +70,7 @@ export interface DispatchFromProps {
     searchIndex?: string;
     source?: string;
   }) => GetDashboardRequest;
+  searchDashboardGroup: (dashboardGroup: string) => UpdateSearchStateRequest;
 }
 
 export type DashboardPageProps = RouteComponentProps<MatchProps> &
@@ -102,6 +105,15 @@ export class DashboardPage extends React.Component<
       this.props.getDashboard({ source, uri, searchIndex: index });
     }
   }
+
+  onClick = (e) => {
+    const dashboardGroup = this.props.dashboard.group_name;
+    logClick(e, {
+      target_type: 'dashboard_group',
+      label: dashboardGroup,
+    });
+    this.props.searchDashboardGroup(dashboardGroup);
+  };
 
   mapStatusToStyle = (status: string): BadgeStyle => {
     if (status === LAST_RUN_SUCCEEDED) {
@@ -344,8 +356,19 @@ export const mapStateToProps = (state: GlobalState) => {
   };
 };
 
+export function searchDashboardGroup(
+  dashboardGroup: string
+): updateSearchState {
+  return {
+    filters: {
+      [ResourceType.dashboard]: { group: dashboardGroup },
+    },
+    submitSearch: true,
+  };
+}
+
 export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ getDashboard }, dispatch);
+  return bindActionCreators({ getDashboard, searchDashboardGroup }, dispatch);
 };
 
 export default connect<StateFromProps, DispatchFromProps>(
