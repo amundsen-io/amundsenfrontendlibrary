@@ -3,9 +3,7 @@ import { Link, BrowserRouter } from 'react-router-dom';
 import SanitizedHTML from 'react-sanitized-html';
 import { mount } from 'enzyme';
 
-import AnnouncementsList, {
-  AnnouncementsListProps,
-} from '.';
+import AnnouncementsList, { AnnouncementsListProps } from '.';
 
 const TWO_FAKE_ANNOUNCEMENTS = [
   {
@@ -57,9 +55,7 @@ const setup = (propOverrides?: Partial<AnnouncementsListProps>) => {
   return { props, wrapper };
 };
 
-
 describe('AnnouncementsList', () => {
-
   describe('render', () => {
     it('renders without issues', () => {
       expect(() => {
@@ -95,14 +91,16 @@ describe('AnnouncementsList', () => {
       it('takes users to the announcements page', () => {
         const { wrapper } = setup();
         const expected = '/announcements';
-        const actual = wrapper.find('a.announcements-list-more-link').getDOMNode().attributes.getNamedItem('href').value;
+        const actual = wrapper
+          .find('a.announcements-list-more-link')
+          .getDOMNode()
+          .attributes.getNamedItem('href').value;
 
         expect(actual).toEqual(expected);
       });
     });
 
     describe('announcements list', () => {
-
       it('should render a list container', () => {
         const { wrapper } = setup();
         const expected = 1;
@@ -113,7 +111,10 @@ describe('AnnouncementsList', () => {
 
       describe('when loading', () => {
         it('should render the loading shimmer', () => {
-          const { wrapper } = setup({ announcements: EMPTY_ANNOUNCEMENTS, isLoading: true });
+          const { wrapper } = setup({
+            announcements: EMPTY_ANNOUNCEMENTS,
+            isLoading: true,
+          });
           const expected = 1;
           const actual = wrapper.find('.shimmer-loader').length;
 
@@ -121,7 +122,10 @@ describe('AnnouncementsList', () => {
         });
 
         it('should render three loading items', () => {
-          const { wrapper } = setup({ announcements: EMPTY_ANNOUNCEMENTS, isLoading: true });
+          const { wrapper } = setup({
+            announcements: EMPTY_ANNOUNCEMENTS,
+            isLoading: true,
+          });
           const expected = 3;
           const actual = wrapper.find('.shimmer-loader-item').length;
 
@@ -172,7 +176,9 @@ describe('AnnouncementsList', () => {
 
         describe('announcement links', () => {
           it('renders links from the announcements to the announcements page', () => {
-            const { wrapper } = setup({ announcements: TWO_FAKE_ANNOUNCEMENTS });
+            const { wrapper } = setup({
+              announcements: TWO_FAKE_ANNOUNCEMENTS,
+            });
             const expected = 2;
             const actual = wrapper.find('a.announcement-link').length;
 
@@ -180,7 +186,9 @@ describe('AnnouncementsList', () => {
           });
 
           it('renders react router Links', () => {
-            const { wrapper } = setup({ announcements: TWO_FAKE_ANNOUNCEMENTS });
+            const { wrapper } = setup({
+              announcements: TWO_FAKE_ANNOUNCEMENTS,
+            });
             const expected = 2;
             const actual = wrapper.find('.announcement').find(Link).length;
 
@@ -188,9 +196,15 @@ describe('AnnouncementsList', () => {
           });
 
           it('takes users to the announcements page', () => {
-            const { wrapper } = setup({ announcements: TWO_FAKE_ANNOUNCEMENTS });
+            const { wrapper } = setup({
+              announcements: TWO_FAKE_ANNOUNCEMENTS,
+            });
             const expected = '/announcements';
-            const actual = wrapper.find('a.announcement-link').first().getDOMNode().attributes.getNamedItem('href').value;
+            const actual = wrapper
+              .find('a.announcement-link')
+              .first()
+              .getDOMNode()
+              .attributes.getNamedItem('href').value;
 
             expect(actual).toEqual(expected);
           });
@@ -198,7 +212,9 @@ describe('AnnouncementsList', () => {
 
         describe('when number of announcements is more than three', () => {
           it('should render three announcements', () => {
-            const { wrapper } = setup({ announcements: FOUR_FAKE_ANNOUNCEMENTS });
+            const { wrapper } = setup({
+              announcements: FOUR_FAKE_ANNOUNCEMENTS,
+            });
             const expected = 3;
             const actual = wrapper.find('.announcement').length;
 
@@ -219,7 +235,10 @@ describe('AnnouncementsList', () => {
 
       describe('when error on fetch', () => {
         it('should render the error message', () => {
-          const { wrapper } = setup({ announcements: EMPTY_ANNOUNCEMENTS, hasError: true });
+          const { wrapper } = setup({
+            announcements: EMPTY_ANNOUNCEMENTS,
+            hasError: true,
+          });
           const expected = 1;
           const actual = wrapper.find('.announcement-error').length;
 
@@ -227,6 +246,5 @@ describe('AnnouncementsList', () => {
         });
       });
     });
-
   });
 });
