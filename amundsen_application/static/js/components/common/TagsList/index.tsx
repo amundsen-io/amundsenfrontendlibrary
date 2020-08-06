@@ -18,7 +18,7 @@ import {
   POPULAR_TAGS_TITLE,
   CURATED_TAGS_TITLE,
   POPULAR_TAGS_NUMBER,
-  OTHER_TAGS_TITLE
+  OTHER_TAGS_TITLE,
 } from './constants';
 import './styles.scss';
 
@@ -80,8 +80,7 @@ export class TagsList extends React.Component<TagsListProps> {
   }
 
   sortTagsAlphabetically(tagArray: Tag[]) {
-    return tagArray.sort(
-      (a,b) => {
+    return tagArray.sort((a, b) => {
       if (a.tag_name < b.tag_name) return -1;
       if (a.tag_name > b.tag_name) return 1;
       return 0;
@@ -95,18 +94,22 @@ export class TagsList extends React.Component<TagsListProps> {
       return <ShimmeringTagListLoader />;
     }
 
-    const tagsByUsage = this.getTagsByUsage(otherTags.filter(
-      tag => {
+    const tagsByUsage = this.getTagsByUsage(
+      otherTags.filter((tag) => {
         return tag.tag_count > 0;
-      }
-    ));
-    const popularTags = this.sortTagsAlphabetically(tagsByUsage.slice(0, POPULAR_TAGS_NUMBER));
-    const remainingTags = this.sortTagsAlphabetically(tagsByUsage.slice(POPULAR_TAGS_NUMBER, tagsByUsage.length));
-    
+      })
+    );
+    const popularTags = this.sortTagsAlphabetically(
+      tagsByUsage.slice(0, POPULAR_TAGS_NUMBER)
+    );
+    const remainingTags = this.sortTagsAlphabetically(
+      tagsByUsage.slice(POPULAR_TAGS_NUMBER, tagsByUsage.length)
+    );
+
     if (this.props.shortTagList) {
       // Home page TagList
       return (
-        <div className={'short-tag-list'}>
+        <div className="short-tag-list">
           <h2 className="title-1">
             {curatedTags.length == 0 &&
               popularTags.length > 0 &&
@@ -123,35 +126,34 @@ export class TagsList extends React.Component<TagsListProps> {
         </div>
       );
     }
-    else {
-      // Browse page TagList
-      return (
-        <div className={'full-tag-list'}>
+    // Browse page TagList
+    return (
+      <div className="full-tag-list">
+        {curatedTags.length == 0 &&
+          popularTags.length > 0 &&
+          this.generateTagsSectionLabel(POPULAR_TAGS_TITLE)}
+        {curatedTags.length > 0 &&
+          this.generateTagsSectionLabel(CURATED_TAGS_TITLE)}
+
+        <div className="tags-list">
           {curatedTags.length == 0 &&
             popularTags.length > 0 &&
-            this.generateTagsSectionLabel(POPULAR_TAGS_TITLE)}
-          {curatedTags.length > 0 && this.generateTagsSectionLabel(CURATED_TAGS_TITLE)}
-
-          <div className={'tags-list'}>
-            {curatedTags.length == 0 &&
-              popularTags.length > 0 &&
-              this.generateTagInfo(popularTags)}
-            {curatedTags.length > 0 && this.generateTagInfo(curatedTags)}
-          </div>
-
-          {(remainingTags.length > 0 || otherTags.length > 0) &&
-            this.generateTagsSectionLabel(OTHER_TAGS_TITLE)}
-          <div className={'tags-list'}>
-          {curatedTags.length > 0 &&
-              otherTags.length > 0 &&
-              this.generateTagInfo(otherTags)}
-            {curatedTags.length == 0 &&
-              remainingTags.length > 0 &&
-              this.generateTagInfo(remainingTags)}
-          </div>
+            this.generateTagInfo(popularTags)}
+          {curatedTags.length > 0 && this.generateTagInfo(curatedTags)}
         </div>
-      );
-    }
+
+        {(remainingTags.length > 0 || otherTags.length > 0) &&
+          this.generateTagsSectionLabel(OTHER_TAGS_TITLE)}
+        <div className="tags-list">
+          {curatedTags.length > 0 &&
+            otherTags.length > 0 &&
+            this.generateTagInfo(otherTags)}
+          {curatedTags.length == 0 &&
+            remainingTags.length > 0 &&
+            this.generateTagInfo(remainingTags)}
+        </div>
+      </div>
+    );
   }
 }
 

@@ -16,10 +16,7 @@ import { resetSearchState } from 'ducks/search/reducer';
 import { UpdateSearchStateReset } from 'ducks/search/types';
 import SearchBar from 'components/common/SearchBar';
 import TagsList from 'components/common/TagsList';
-import {
-  SEARCH_BREADCRUMB_TEXT,
-  HOMEPAGE_TITLE
-} from './constants';
+import { SEARCH_BREADCRUMB_TEXT, HOMEPAGE_TITLE } from './constants';
 
 export interface DispatchFromProps {
   searchReset: () => UpdateSearchStateReset;
