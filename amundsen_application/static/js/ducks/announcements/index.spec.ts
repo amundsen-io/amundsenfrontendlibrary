@@ -2,18 +2,18 @@ import { expectSaga, testSaga } from 'redux-saga-test-plan';
 import * as matchers from 'redux-saga-test-plan/matchers';
 import { throwError } from 'redux-saga-test-plan/providers';
 
-import * as API from '../api/v0';
+import * as API from './api/v0';
 import reducer, {
   getAnnouncements,
   getAnnouncementsFailure,
   getAnnouncementsSuccess,
   initialState,
   AnnouncementsReducerState,
-} from '../reducer';
-import { getAnnouncementsWatcher, getAnnouncementsWorker } from '../sagas';
-import { GetAnnouncements } from '../types';
+} from './reducer';
+import { getAnnouncementsWatcher, getAnnouncementsWorker } from './sagas';
+import { GetAnnouncements } from './types';
 
-describe('announcements ducks', () => {
+describe('Announcements ducks', () => {
   describe('actions', () => {
     it('getAnnouncements - returns the action to get all tags', () => {
       const action = getAnnouncements();
@@ -35,7 +35,11 @@ describe('announcements ducks', () => {
           html_content: '<div>Test content</div>',
         },
       ];
-      const action = getAnnouncementsSuccess(expectedPosts);
+      const expectedPayload = {
+        posts: expectedPosts,
+        statusCode: 200,
+      };
+      const action = getAnnouncementsSuccess(expectedPayload);
       const { payload } = action;
       expect(action.type).toBe(GetAnnouncements.SUCCESS);
       expect(payload.posts).toBe(expectedPosts);
@@ -44,34 +48,68 @@ describe('announcements ducks', () => {
 
   describe('reducer', () => {
     let testState: AnnouncementsReducerState;
+
     beforeAll(() => {
       testState = {
+        isLoading: false,
+        statusCode: 200,
         posts: [],
       };
     });
-    it('should return the existing state if action is not handled', () => {
-      expect(reducer(testState, { type: 'INVALID.ACTION' })).toEqual(testState);
-    });
 
-    it('should handle GetAnnouncements.SUCCESS', () => {
-      const expectedPosts = [
-        {
-          date: '12/31/1999',
-          title: 'Test',
-          html_content: '<div>Test content</div>',
-        },
-      ];
-      expect(
-        reducer(testState, getAnnouncementsSuccess(expectedPosts))
-      ).toEqual({
-        posts: expectedPosts,
+    describe('when action is not handled', () => {
+      it('should return the existing state', () => {
+        const expected = testState;
+        const actual = reducer(testState, { type: 'INVALID.ACTION' });
+
+        expect(actual).toEqual(expected);
       });
     });
 
-    it('should return the initialState if GetAnnouncements.FAILURE', () => {
-      expect(reducer(testState, getAnnouncementsFailure())).toEqual(
-        initialState
-      );
+    describe('when action is REQUEST', () => {
+      it('should handle GetAnnouncements.REQUEST', () => {
+        const expected = {
+          ...testState,
+          isLoading: true,
+          statusCode: null,
+        };
+        const actual = reducer(testState, getAnnouncements());
+
+        expect(actual).toEqual(expected);
+      });
+    });
+
+    describe('when action is SUCCESS', () => {
+      it('should handle GetAnnouncements.SUCCESS', () => {
+        const expectedPosts = [
+          {
+            date: '12/31/1999',
+            title: 'Test',
+            html_content: '<div>Test content</div>',
+          },
+        ];
+        const payload = {
+          posts: expectedPosts,
+          statusCode: 200,
+        };
+        const expected = {
+          isLoading: false,
+          statusCode: 200,
+          posts: expectedPosts,
+        };
+        const actual = reducer(testState, getAnnouncementsSuccess(payload));
+
+        expect(actual).toEqual(expected);
+      });
+    });
+
+    xdescribe('when action is FAILURE', () => {
+      it('should return the initialState', () => {
+        const expected = initialState;
+        const actual = reducer(testState, getAnnouncementsFailure());
+
+        expect(actual).toEqual(expected);
+      });
     });
   });
 

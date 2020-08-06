@@ -2,13 +2,14 @@ import axios, { AxiosResponse } from 'axios';
 
 import { AnnouncementPost } from 'interfaces';
 
-import * as API from '../v0';
+import * as API from './v0';
 
 jest.mock('axios');
 
 describe('getAnnouncements', () => {
   let expectedPosts: AnnouncementPost[];
   let mockResponse: AxiosResponse<API.AnnouncementsAPI>;
+
   beforeAll(() => {
     expectedPosts = [
       {
@@ -31,10 +32,15 @@ describe('getAnnouncements', () => {
     axios.mockResolvedValue(mockResponse);
   });
 
-  it('resolves with array of posts from response.data on success', async () => {
+  it('resolves with array of posts and status code on success', async () => {
     expect.assertions(1);
-    await API.getAnnouncements().then((posts) => {
-      expect(posts).toEqual(expectedPosts);
+    const expected = {
+      posts: expectedPosts,
+      statusCode: mockResponse.status,
+    };
+
+    await API.getAnnouncements().then((response) => {
+      expect(response).toEqual(expected);
     });
   });
 

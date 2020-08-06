@@ -7,8 +7,9 @@ import { GetAnnouncements } from './types';
 
 export function* getAnnouncementsWorker(): SagaIterator {
   try {
-    const posts = yield call(API.getAnnouncements);
-    yield put(getAnnouncementsSuccess(posts));
+    const response = yield call(API.getAnnouncements);
+
+    yield put(getAnnouncementsSuccess(response));
   } catch (e) {
     yield put(getAnnouncementsFailure());
   }

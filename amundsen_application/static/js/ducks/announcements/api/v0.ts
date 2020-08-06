@@ -12,6 +12,11 @@ export function getAnnouncements() {
     method: 'get',
     url: '/api/announcements/v0/',
   }).then((response: AxiosResponse<AnnouncementsAPI>) => {
-    return response.data.posts;
+    const { data, status } = response;
+
+    return {
+      posts: data.posts,
+      statusCode: status,
+    };
   });
 }

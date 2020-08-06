@@ -4,6 +4,7 @@ import {
   GetAnnouncements,
   GetAnnouncementsRequest,
   GetAnnouncementsResponse,
+  GetAnnouncementsPayload,
 } from './types';
 
 /* ACTIONS */
@@ -14,18 +15,25 @@ export function getAnnouncementsFailure(): GetAnnouncementsResponse {
   return { type: GetAnnouncements.FAILURE, payload: { posts: [] } };
 }
 export function getAnnouncementsSuccess(
-  posts: AnnouncementPost[]
+  payload: GetAnnouncementsPayload
 ): GetAnnouncementsResponse {
-  return { type: GetAnnouncements.SUCCESS, payload: { posts } };
+  return {
+    type: GetAnnouncements.SUCCESS,
+    payload,
+  };
 }
 
 /* REDUCER */
 export interface AnnouncementsReducerState {
   posts: AnnouncementPost[];
+  isLoading: boolean;
+  statusCode: number;
 }
 
 export const initialState: AnnouncementsReducerState = {
   posts: [],
+  isLoading: true,
+  statusCode: null,
 };
 
 export default function reducer(
@@ -33,10 +41,21 @@ export default function reducer(
   action
 ): AnnouncementsReducerState {
   switch (action.type) {
+    case GetAnnouncements.REQUEST:
+      return {
+        ...state,
+        statusCode: null,
+        isLoading: true,
+      };
     case GetAnnouncements.FAILURE:
       return initialState;
     case GetAnnouncements.SUCCESS:
-      return { posts: (<GetAnnouncementsResponse>action).payload.posts };
+      return {
+        ...state,
+        isLoading: false,
+        statusCode: action.payload.statusCode,
+        posts: (<GetAnnouncementsResponse>action).payload.posts,
+      };
     default:
       return state;
   }
