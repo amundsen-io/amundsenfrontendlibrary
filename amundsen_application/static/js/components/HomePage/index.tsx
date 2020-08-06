@@ -18,8 +18,7 @@ import SearchBar from 'components/common/SearchBar';
 import TagsList from 'components/common/TagsList';
 import {
   SEARCH_BREADCRUMB_TEXT,
-  HOMEPAGE_TITLE,
-  TAGS_TITLE,
+  HOMEPAGE_TITLE
 } from './constants';
 
 export interface DispatchFromProps {
@@ -51,12 +50,6 @@ export class HomePage extends React.Component<HomePageProps> {
               />
             </div>
             <div className="home-element-container">
-              <h2
-                id="browse-tags-header"
-                className="title-1 browse-tags-header"
-              >
-                {TAGS_TITLE}
-              </h2>
               <TagsList shortTagList />
             </div>
             <div className="home-element-container">

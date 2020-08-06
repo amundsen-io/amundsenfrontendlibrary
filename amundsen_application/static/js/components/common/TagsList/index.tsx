@@ -5,17 +5,22 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import './styles.scss';
-
 import ShimmeringTagListLoader from 'components/common/ShimmeringTagListLoader';
-
 import TagInfo from 'components/Tags/TagInfo';
 import { Tag } from 'interfaces';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { getAllTags } from 'ducks/tags/reducer';
 import { GetAllTagsRequest } from 'ducks/tags/types';
-import { getCuratedTags, showAllTags } from 'config/config-utils';
+import { getCuratedTags } from 'config/config-utils';
+
+import {
+  POPULAR_TAGS_TITLE,
+  CURATED_TAGS_TITLE,
+  POPULAR_TAGS_NUMBER,
+  OTHER_TAGS_TITLE
+} from './constants';
+import './styles.scss';
 
 export interface StateFromProps {
   curatedTags: Tag[];
@@ -25,7 +30,7 @@ export interface StateFromProps {
 
 interface OwnProps {
   /* determine if we only want curated/popular tags with
-  'see more' or the entire tags list */
+  'Browse more tags' link or the entire tags list */
   shortTagList: boolean;
 }
 
@@ -89,56 +94,64 @@ export class TagsList extends React.Component<TagsListProps> {
     if (isLoading) {
       return <ShimmeringTagListLoader />;
     }
+
     const tagsByUsage = this.getTagsByUsage(otherTags.filter(
       tag => {
         return tag.tag_count > 0;
       }
     ));
+    const popularTags = this.sortTagsAlphabetically(tagsByUsage.slice(0, POPULAR_TAGS_NUMBER));
+    const remainingTags = this.sortTagsAlphabetically(tagsByUsage.slice(POPULAR_TAGS_NUMBER, tagsByUsage.length));
     
-    // TODO add constant here
-    // TODO add test to verify this works as expected when there are less than 20 tags
-    const popularTags = this.sortTagsAlphabetically(tagsByUsage.slice(0, 20));
-    // TODO maybe rename remainingTags to something that differentiates it from otherTags
-    const remainingTags = this.sortTagsAlphabetically(tagsByUsage.slice(20, tagsByUsage.length));
-    
-    // TODO refactor this logic to all be within the return statement
     if (this.props.shortTagList) {
+      // Home page TagList
       return (
-        <div id="tags-list" className="tags-list">
-          {curatedTags.length == 0 &&
-            popularTags.length > 0 &&
-            this.generateTagInfo(popularTags)}
-          {curatedTags.length > 0 && this.generateTagInfo(curatedTags)}
-          {showAllTags() && curatedTags.length > 0 && otherTags.length > 0 && (
-            <hr />
-          )}
-          {showAllTags() &&
-            otherTags.length > 0 &&
-            this.generateTagInfo(otherTags)}
-          {!showAllTags() && this.generateBrowseTagLink()}
+        <div className={'short-tag-list'}>
+          <h2 className="title-1">
+            {curatedTags.length == 0 &&
+              popularTags.length > 0 &&
+              POPULAR_TAGS_TITLE}
+            {curatedTags.length > 0 && CURATED_TAGS_TITLE}
+          </h2>
+          <div id="tags-list" className="tags-list">
+            {curatedTags.length == 0 &&
+              popularTags.length > 0 &&
+              this.generateTagInfo(popularTags)}
+            {curatedTags.length > 0 && this.generateTagInfo(curatedTags)}
+            {this.generateBrowseTagLink()}
+          </div>
         </div>
       );
     }
+    else {
+      // Browse page TagList
+      return (
+        <div className={'full-tag-list'}>
+          {curatedTags.length == 0 &&
+            popularTags.length > 0 &&
+            this.generateTagsSectionLabel(POPULAR_TAGS_TITLE)}
+          {curatedTags.length > 0 && this.generateTagsSectionLabel(CURATED_TAGS_TITLE)}
 
-    // Browse page TagList
-    return (
-      <div>
-        {this.generateTagsSectionLabel('Popular Tags')}
-        {curatedTags.length == 0 &&
-          popularTags.length > 0 &&
-          this.generateTagInfo(popularTags)}
-        {curatedTags.length > 0 && this.generateTagInfo(curatedTags)}
+          <div className={'tags-list'}>
+            {curatedTags.length == 0 &&
+              popularTags.length > 0 &&
+              this.generateTagInfo(popularTags)}
+            {curatedTags.length > 0 && this.generateTagInfo(curatedTags)}
+          </div>
 
-        {(remainingTags.length > 0 || otherTags.length > 0) &&
-          this.generateTagsSectionLabel('Other Tags')}
-        {curatedTags.length > 0 &&
-          otherTags.length > 0 &&
-          this.generateTagInfo(otherTags)}
-        {curatedTags.length == 0 &&
-          remainingTags.length > 0 &&
-          this.generateTagInfo(remainingTags)}
-      </div>
-    );
+          {(remainingTags.length > 0 || otherTags.length > 0) &&
+            this.generateTagsSectionLabel(OTHER_TAGS_TITLE)}
+          <div className={'tags-list'}>
+          {curatedTags.length > 0 &&
+              otherTags.length > 0 &&
+              this.generateTagInfo(otherTags)}
+            {curatedTags.length == 0 &&
+              remainingTags.length > 0 &&
+              this.generateTagInfo(remainingTags)}
+          </div>
+        </div>
+      );
+    }
   }
 }
 
