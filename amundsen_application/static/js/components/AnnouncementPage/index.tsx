@@ -17,6 +17,8 @@ import { GetAnnouncementsRequest } from 'ducks/announcements/types';
 import { getAnnouncements } from 'ducks/announcements/reducer';
 import { AnnouncementPost } from 'interfaces';
 
+const ANNOUNCEMENTS_HEADER_TEXT = 'Announcements';
+
 export interface StateFromProps {
   posts: AnnouncementPost[];
 }
@@ -58,9 +60,7 @@ export class AnnouncementPage extends React.Component<AnnouncementPageProps> {
         <main className="container announcement-container">
           <div className="row">
             <div className="col-xs-12">
-              <h1 id="announcement-header" className="h3">
-                Announcements
-              </h1>
+              <h1 id="announcement-header" className="h3">{ANNOUNCEMENTS_HEADER_TEXT}</h1>
               <hr />
               <div id="announcement-content" className="announcement-content">
                 {this.createPosts()}
