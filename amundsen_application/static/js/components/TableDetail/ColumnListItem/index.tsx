@@ -61,7 +61,9 @@ export class ColumnListItem extends React.Component<
       });
     }
     if (this.shouldRenderDescription() || metadata.stats.length !== 0) {
-      this.setState({ isExpanded: !this.state.isExpanded });
+      this.setState((prevState) => ({
+        isExpanded: !prevState.isExpanded,
+      }));
     }
   };
 
