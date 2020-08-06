@@ -335,23 +335,6 @@ describe('ProfilePage', () => {
       );
     });
 
-    it('renders Flag with correct props if user not active', () => {
-      const userCopy = {
-        ...globalState.user.profile.user,
-        is_active: false,
-      };
-      const { wrapper } = setup({
-        user: userCopy,
-      });
-      expect(
-        wrapper.find('.header-title-text').find(Flag).props()
-      ).toMatchObject({
-        caseType: 'sentenceCase',
-        labelStyle: BadgeStyle.DANGER,
-        text: 'Alumni',
-      });
-    });
-
     it('renders user role', () => {
       expect(wrapper.find('#user-role').text()).toEqual('Tester');
     });
@@ -364,6 +347,17 @@ describe('ProfilePage', () => {
       expect(wrapper.find('#user-manager').text()).toEqual(
         'Manager: Test Manager'
       );
+    });
+
+    it('renders alumni bullet is user not active', () => {
+      const userCopy = {
+        ...globalState.user.profile.user,
+        is_active: false,
+      };
+      const { wrapper } = setup({
+        user: userCopy,
+      });
+      expect(wrapper.find('#alumni').text()).toEqual('Alumni');
     });
 
     it('renders github link with correct href', () => {
