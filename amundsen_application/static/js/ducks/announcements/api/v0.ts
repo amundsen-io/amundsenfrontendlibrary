@@ -7,6 +7,8 @@ export type AnnouncementsAPI = {
   posts: AnnouncementPost[];
 };
 
+const SERVER_ERROR_CODE = 500;
+
 export function getAnnouncements() {
   return axios({
     method: 'get',
@@ -22,7 +24,9 @@ export function getAnnouncements() {
     })
     .catch((e) => {
       const { response } = e;
-      const statusCode = response ? response.status || 500 : 500;
+      const statusCode = response
+        ? response.status || SERVER_ERROR_CODE
+        : SERVER_ERROR_CODE;
 
       return Promise.reject({
         posts: [],

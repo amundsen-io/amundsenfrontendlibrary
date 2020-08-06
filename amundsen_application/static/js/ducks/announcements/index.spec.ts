@@ -1,6 +1,4 @@
-import { expectSaga, testSaga } from 'redux-saga-test-plan';
-import * as matchers from 'redux-saga-test-plan/matchers';
-import { throwError } from 'redux-saga-test-plan/providers';
+import { testSaga } from 'redux-saga-test-plan';
 
 import * as API from './api/v0';
 import reducer, {
@@ -13,6 +11,8 @@ import reducer, {
 import { getAnnouncementsWatcher, getAnnouncementsWorker } from './sagas';
 import { GetAnnouncements } from './types';
 
+const SERVER_ERROR_CODE = 500;
+
 describe('Announcements ducks', () => {
   describe('actions', () => {
     it('getAnnouncements - returns the action to get all tags', () => {
@@ -22,7 +22,7 @@ describe('Announcements ducks', () => {
 
     it('getAnnouncementsFailure - returns the action to process failure', () => {
       const expectedPayload = {
-        statusCode: 500,
+        statusCode: SERVER_ERROR_CODE,
         posts: [],
       };
       const action = getAnnouncementsFailure(expectedPayload);
@@ -30,7 +30,7 @@ describe('Announcements ducks', () => {
 
       expect(action.type).toBe(GetAnnouncements.FAILURE);
       expect(payload.posts).toEqual([]);
-      expect(payload.statusCode).toEqual(500);
+      expect(payload.statusCode).toEqual(SERVER_ERROR_CODE);
     });
 
     it('getAllTagsSuccess - returns the action to process success', () => {
@@ -116,11 +116,11 @@ describe('Announcements ducks', () => {
         const expected = {
           ...initialState,
           isLoading: false,
-          statusCode: 500,
+          statusCode: SERVER_ERROR_CODE,
         };
         const actual = reducer(
           testState,
-          getAnnouncementsFailure({ statusCode: 500 })
+          getAnnouncementsFailure({ statusCode: SERVER_ERROR_CODE })
         );
 
         expect(actual).toEqual(expected);
@@ -163,7 +163,7 @@ describe('Announcements ducks', () => {
 
       it('executes flow for a failed request', () => {
         const mockResponse = {
-          statusCode: 500,
+          statusCode: SERVER_ERROR_CODE,
           statusMessage: 'Error',
         };
 
