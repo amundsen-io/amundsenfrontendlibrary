@@ -74,18 +74,33 @@ export class TagsList extends React.Component<TagsListProps> {
     );
   }
 
+  sortTagsAlphabetically(tagArray: Tag[]) {
+    return tagArray.sort(
+      (a,b) => {
+      if (a.tag_name < b.tag_name) return -1;
+      if (a.tag_name > b.tag_name) return 1;
+      return 0;
+    });
+  }
+
   render() {
     const { isLoading, curatedTags, otherTags } = this.props;
 
     if (isLoading) {
       return <ShimmeringTagListLoader />;
     }
-    const tagsByUsage = this.getTagsByUsage(otherTags);
+    const tagsByUsage = this.getTagsByUsage(otherTags.filter(
+      tag => {
+        return tag.tag_count > 0;
+      }
+    ));
+    
     // TODO add constant here
     // TODO add test to verify this works as expected when there are less than 20 tags
-    const popularTags = tagsByUsage.slice(0, 20);
+    const popularTags = this.sortTagsAlphabetically(tagsByUsage.slice(0, 20));
     // TODO maybe rename remainingTags to something that differentiates it from otherTags
-    const remainingTags = tagsByUsage.slice(20, tagsByUsage.length);
+    const remainingTags = this.sortTagsAlphabetically(tagsByUsage.slice(20, tagsByUsage.length));
+    
     // TODO refactor this logic to all be within the return statement
     if (this.props.shortTagList) {
       return (
