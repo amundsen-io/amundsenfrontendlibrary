@@ -27,6 +27,7 @@ announcements_blueprint = Blueprint('announcements', __name__, url_prefix='/api/
 @announcements_blueprint.route('/', methods=['GET'])
 def get_announcements() -> Response:
     global ANNOUNCEMENT_CLIENT_INSTANCE
+
     try:
         if ANNOUNCEMENT_CLIENT_INSTANCE is None and ANNOUNCEMENT_CLIENT_CLASS is not None:
             ANNOUNCEMENT_CLIENT_INSTANCE = ANNOUNCEMENT_CLIENT_CLASS()
