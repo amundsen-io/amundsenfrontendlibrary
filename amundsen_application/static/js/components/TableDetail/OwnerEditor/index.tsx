@@ -231,7 +231,7 @@ export class OwnerEditor extends React.Component<
                 target="_blank"
                 id={`table-owners:${key}`}
                 onClick={logClick}
-                rel="noreferrer"
+                rel="noopener noreferrer"
               >
                 {avatarLabel}
               </a>
@@ -264,6 +264,7 @@ export class OwnerEditor extends React.Component<
         )}
         {!this.props.readOnly && !hasItems && (
           <button
+            type="button"
             className="btn btn-flat-icon add-item-button"
             onClick={this.handleShow}
           >

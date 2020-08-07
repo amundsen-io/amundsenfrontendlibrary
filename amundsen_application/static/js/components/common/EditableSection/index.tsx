@@ -110,9 +110,9 @@ export class EditableSection extends React.Component<
   };
 
   render() {
-    const { title, readOnly = false } = this.props;
+    const { children, title, readOnly = false } = this.props;
     const childrenWithProps = React.Children.map(
-      this.props.children,
+      children,
       (child) => {
         if (!React.isValidElement(child)) {
           return child;
