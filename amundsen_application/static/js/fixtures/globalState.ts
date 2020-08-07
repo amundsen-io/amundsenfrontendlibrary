@@ -148,7 +148,6 @@ const globalState: GlobalState = {
   },
   tableMetadata: {
     isLoading: true,
-    // lastIndexed: 1555632106,
     preview: {
       data: {},
       status: null,

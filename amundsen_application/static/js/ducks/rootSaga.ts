@@ -44,7 +44,6 @@ import { updateTableOwnerWatcher } from './tableMetadata/owners/sagas';
 import {
   getTableDataWatcher,
   getColumnDescriptionWatcher,
-  // getLastIndexedWatcher,
   getPreviewDataWatcher,
   getTableDescriptionWatcher,
   updateColumnDescriptionWatcher,
