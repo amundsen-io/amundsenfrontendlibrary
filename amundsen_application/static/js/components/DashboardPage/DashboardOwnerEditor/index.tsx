@@ -1,5 +1,6 @@
 // Copyright Contributors to the Amundsen project.
 // SPDX-License-Identifier: Apache-2.0
+
 import { connect } from 'react-redux';
 
 import { GlobalState } from 'ducks/rootReducer';
@@ -38,5 +39,5 @@ export const mapStateToProps = (state: GlobalState) => {
 
 export default connect<StateFromProps, {}, ComponentProps>(
   mapStateToProps,
-  null,
+  null
 )(OwnerEditor);

@@ -7,12 +7,7 @@ import AvatarLabel from 'components/common/AvatarLabel';
 
 import { ResourceType } from 'interfaces';
 
-import {
-  OwnerEditor,
-  OwnerEditorProps,
-  // mapStateToProps,
-  // mapDispatchToProps,
-} from '.';
+import { OwnerEditor, OwnerEditorProps } from '.';
 import * as Constants from './constants';
 
 describe('OwnerEditor', () => {

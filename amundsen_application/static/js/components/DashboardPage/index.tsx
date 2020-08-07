@@ -32,7 +32,7 @@ import {
   EDIT_DESC_TEXT,
   DASHBOARD_SOURCE,
   LAST_RUN_SUCCEEDED,
-  NO_OWNER_TEXT,
+  OWNER_HEADER_TEXT,
   TABLES_PER_PAGE,
 } from 'components/DashboardPage/constants';
 import TagInput from 'components/Tags/TagInput';
@@ -240,8 +240,8 @@ export class DashboardPage extends React.Component<
             </EditableSection>
             <section className="column-layout-2">
               <section className="left-panel">
-                <EditableSection title="Owners" readOnly>
-                  <DashboardOwnerEditor />
+                <EditableSection title={OWNER_HEADER_TEXT} readOnly>
+                  <DashboardOwnerEditor resourceType={ResourceType.dashboard} />
                 </EditableSection>
                 <section className="metadata-section">
                   <div className="section-title title-3">Created</div>
