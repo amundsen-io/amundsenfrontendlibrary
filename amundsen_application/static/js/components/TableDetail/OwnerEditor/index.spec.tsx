@@ -31,8 +31,10 @@ describe('OwnerEditor', () => {
 
   describe('render', () => {
     it('renders text if no owners', () => {
-      const { wrapper } = setup({ itemProps: {} });
-      expect(wrapper.find(AvatarLabel).text()).toContain(Constants.NO_OWNER_TEXT));
+      const { wrapper } = setup();
+      expect(wrapper.find(AvatarLabel).text()).toContain(
+        Constants.NO_OWNER_TEXT
+      );
     });
 
     it('renders owners if they exist', () => {
@@ -40,6 +42,18 @@ describe('OwnerEditor', () => {
         itemProps: { owner1: {}, owner2: {}, owner3: {} },
       });
       expect(wrapper.find(AvatarLabel).length).toBe(3);
+    });
+
+    describe('editing modal', () => {
+      it('renders when not readOnly', () => {
+        const { wrapper } = setup();
+        expect(wrapper.find('.owner-editor-modal').exists()).toBe(true);
+      });
+
+      it('does not render when readOnly', () => {
+        const { wrapper } = setup({ readOnly: true });
+        expect(wrapper.find('.owner-editor-modal').exists()).toBe(false);
+      });
     });
   });
 });

@@ -44,7 +44,7 @@ export interface StateFromProps {
   itemProps: { [id: string]: OwnerAvatarLabelProps };
 }
 
-type OwnerEditorProps = ComponentProps &
+export type OwnerEditorProps = ComponentProps &
   DispatchFromProps &
   StateFromProps &
   EditableSectionChildProps;
@@ -52,7 +52,6 @@ type OwnerEditorProps = ComponentProps &
 interface OwnerEditorState {
   errorText: string | null;
   itemProps: { [id: string]: OwnerAvatarLabelProps };
-  readOnly: boolean;
   tempItemProps: { [id: string]: AvatarLabelProps };
 }
 
@@ -75,7 +74,6 @@ export class OwnerEditor extends React.Component<
     this.state = {
       errorText: props.errorText,
       itemProps: props.itemProps,
-      readOnly: props.readOnly,
       tempItemProps: props.itemProps,
     };
 
@@ -116,7 +114,6 @@ export class OwnerEditor extends React.Component<
     const onFailureCallback = () => {
       this.setState({
         errorText: Constants.DEFAULT_ERROR_TEXT,
-        readOnly: true,
       });
       this.props.setEditMode(false);
     };
@@ -260,32 +257,34 @@ export class OwnerEditor extends React.Component<
     return (
       <div className="owner-editor-component">
         {ownerList}
-        <Modal
-         className="owner-editor-modal"
-         show={this.props.isEditing}
-         onHide={this.cancelEdit}
-        >
-         <Modal.Header className="text-center" closeButton={false}>
-           <Modal.Title>{Constants.OWNED_BY}</Modal.Title>
-         </Modal.Header>
-         {this.renderModalBody()}
-         <Modal.Footer>
-           <button
-             type="button"
-             className="btn btn-default"
-             onClick={this.cancelEdit}
-           >
-             {Constants.CANCEL_TEXT}
-           </button>
-           <button
-             type="button"
-             className="btn btn-primary"
-             onClick={this.saveEdit}
-           >
-             {Constants.SAVE_TEXT}
-           </button>
-         </Modal.Footer>
-       </Modal>
+        {!this.props.readOnly && (
+          <Modal
+            className="owner-editor-modal"
+            show={this.props.isEditing}
+            onHide={this.cancelEdit}
+          >
+            <Modal.Header className="text-center" closeButton={false}>
+              <Modal.Title>{Constants.OWNED_BY}</Modal.Title>
+            </Modal.Header>
+            {this.renderModalBody()}
+            <Modal.Footer>
+              <button
+                type="button"
+                className="btn btn-default"
+                onClick={this.cancelEdit}
+              >
+                {Constants.CANCEL_TEXT}
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={this.saveEdit}
+              >
+                {Constants.SAVE_TEXT}
+              </button>
+            </Modal.Footer>
+          </Modal>
+        )}
       </div>
     );
   }

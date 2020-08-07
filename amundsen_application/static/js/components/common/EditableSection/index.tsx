@@ -24,6 +24,7 @@ interface EditableSectionState {
 export interface EditableSectionChildProps {
   isEditing?: boolean;
   setEditMode?: (isEditing: boolean) => void;
+  readOnly?: boolean;
 }
 
 export class EditableSection extends React.Component<
@@ -113,15 +114,16 @@ export class EditableSection extends React.Component<
     const childrenWithProps = React.Children.map(
       this.props.children,
       (child) => {
-          if (!React.isValidElement(child)) {
-            return child;
-          }
+        if (!React.isValidElement(child)) {
+          return child;
+        }
 
-          return React.cloneElement(child, {
-            isEditing: this.state.isEditing,
-            setEditMode: this.setEditMode,
-          });
+        return React.cloneElement(child, {
+          isEditing: this.state.isEditing,
+          setEditMode: this.setEditMode,
         });
+      }
+    );
 
     return (
       <section className="editable-section">
