@@ -14,7 +14,7 @@ import './styles.scss';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { GetAnnouncementsRequest } from 'ducks/announcements/types';
-import { getAnnouncements } from 'ducks/announcements/reducer';
+import { getAnnouncements } from 'ducks/announcements';
 import { AnnouncementPost } from 'interfaces';
 
 const ANNOUNCEMENTS_HEADER_TEXT = 'Announcements';
@@ -31,7 +31,9 @@ export type AnnouncementPageProps = StateFromProps & DispatchFromProps;
 
 export class AnnouncementPage extends React.Component<AnnouncementPageProps> {
   componentDidMount() {
-    this.props.announcementsGet();
+    const { announcementsGet } = this.props;
+
+    announcementsGet();
   }
 
   createPost(post: AnnouncementPost, postIndex: number) {
@@ -49,7 +51,9 @@ export class AnnouncementPage extends React.Component<AnnouncementPageProps> {
   }
 
   createPosts() {
-    return this.props.posts.map((post, index) => {
+    const { posts } = this.props;
+
+    return posts.map((post, index) => {
       return this.createPost(post, index);
     });
   }
