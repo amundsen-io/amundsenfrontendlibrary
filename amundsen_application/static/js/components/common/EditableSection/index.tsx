@@ -111,20 +111,17 @@ export class EditableSection extends React.Component<
 
   render() {
     const { children, title, readOnly = false } = this.props;
-    const childrenWithProps = React.Children.map(
-      children,
-      (child) => {
-        if (!React.isValidElement(child)) {
-          return child;
-        }
-
-        return React.cloneElement(child, {
-          readOnly,
-          isEditing: this.state.isEditing,
-          setEditMode: this.setEditMode,
-        });
+    const childrenWithProps = React.Children.map(children, (child) => {
+      if (!React.isValidElement(child)) {
+        return child;
       }
-    );
+
+      return React.cloneElement(child, {
+        readOnly,
+        isEditing: this.state.isEditing,
+        setEditMode: this.setEditMode,
+      });
+    });
 
     return (
       <section className="editable-section">
