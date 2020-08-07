@@ -26,6 +26,7 @@ describe('TableHeaderBullets', () => {
     const props: TableHeaderBulletsProps = {
       database: 'hive',
       cluster: 'main',
+      isView: false,
       ...propOverrides,
     };
     const wrapper = shallow(<TableHeaderBullets {...props} />);

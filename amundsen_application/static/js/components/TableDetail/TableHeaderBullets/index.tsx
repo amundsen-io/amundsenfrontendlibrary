@@ -10,7 +10,7 @@ import {
 
 import { ResourceType } from 'interfaces/Resources';
 
-import {TABLE_VIEW_TEXT} from './constants';
+import { TABLE_VIEW_TEXT } from './constants';
 
 export interface TableHeaderBulletsProps {
   cluster: string;
