@@ -23,15 +23,15 @@ describe('EditableSection', () => {
 
   describe('handleClick', () => {
     const clickEvent = {
-      preventDefault: jest.fn(),
+      stopPropagation: jest.fn(),
     };
 
-    it('preventDefault on click', () => {
+    it('stopPropagation on click', () => {
       const { wrapper, props } = setup();
       wrapper
         .find('.editable-section-label-wrapper')
         .simulate('click', clickEvent);
-      expect(clickEvent.preventDefault).toHaveBeenCalled();
+      expect(clickEvent.stopPropagation).toHaveBeenCalled();
     });
   });
 

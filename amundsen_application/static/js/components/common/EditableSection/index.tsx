@@ -51,8 +51,8 @@ export class EditableSection extends React.Component<
     this.setState({ isEditing: !this.state.isEditing });
   };
 
-  preventDefault = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault();
+  stopPropagation = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
   };
 
   static convertText(str: string): string {
@@ -128,7 +128,7 @@ export class EditableSection extends React.Component<
         <label className="editable-section-label">
           <div
             className="editable-section-label-wrapper"
-            onClick={this.preventDefault}
+            onClick={this.stopPropagation}
           >
             <span className="section-title title-3">
               {EditableSection.convertText(title)}
