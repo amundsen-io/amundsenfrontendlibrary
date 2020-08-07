@@ -11,15 +11,15 @@ import {
   getTableDescriptionSuccess,
   getColumnDescriptionFailure,
   getColumnDescriptionSuccess,
-  getLastIndexedFailure,
-  getLastIndexedSuccess,
+  // getLastIndexedFailure,
+  // getLastIndexedSuccess,
   getPreviewDataFailure,
   getPreviewDataSuccess,
 } from './reducer';
 
 import {
-  GetLastIndexed,
-  GetLastIndexedRequest,
+  // GetLastIndexed,
+  // GetLastIndexedRequest,
   GetPreviewData,
   GetPreviewDataRequest,
   GetTableData,
@@ -164,19 +164,19 @@ export function* updateColumnDescriptionWatcher(): SagaIterator {
   );
 }
 
-export function* getLastIndexedWorker(
-  action: GetLastIndexedRequest
-): SagaIterator {
-  try {
-    const lastIndexed = yield call(API.getLastIndexed);
-    yield put(getLastIndexedSuccess(lastIndexed));
-  } catch (e) {
-    yield put(getLastIndexedFailure());
-  }
-}
-export function* getLastIndexedWatcher(): SagaIterator {
-  yield takeEvery(GetLastIndexed.REQUEST, getLastIndexedWorker);
-}
+// export function* getLastIndexedWorker(
+//   action: GetLastIndexedRequest
+// ): SagaIterator {
+//   try {
+//     const lastIndexed = yield call(API.getLastIndexed);
+//     yield put(getLastIndexedSuccess(lastIndexed));
+//   } catch (e) {
+//     yield put(getLastIndexedFailure());
+//   }
+// }
+// export function* getLastIndexedWatcher(): SagaIterator {
+//   yield takeEvery(GetLastIndexed.REQUEST, getLastIndexedWorker);
+// }
 
 export function* getPreviewDataWorker(
   action: GetPreviewDataRequest

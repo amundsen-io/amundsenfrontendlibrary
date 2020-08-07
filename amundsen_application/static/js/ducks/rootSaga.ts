@@ -44,12 +44,15 @@ import { updateTableOwnerWatcher } from './tableMetadata/owners/sagas';
 import {
   getTableDataWatcher,
   getColumnDescriptionWatcher,
-  getLastIndexedWatcher,
+  // getLastIndexedWatcher,
   getPreviewDataWatcher,
   getTableDescriptionWatcher,
   updateColumnDescriptionWatcher,
   updateTableDescriptionWatcher,
 } from './tableMetadata/sagas';
+
+// LastIndexed
+import { getLastIndexedWatcher } from './lastIndexed/sagas';
 
 // Tags
 import { getAllTagsWatcher, updateResourceTagsWatcher } from './tags/sagas';
@@ -100,12 +103,13 @@ export default function* rootSaga() {
     // TableDetail
     getTableDataWatcher(),
     getColumnDescriptionWatcher(),
-    getLastIndexedWatcher(),
     getPreviewDataWatcher(),
     getTableDescriptionWatcher(),
     updateColumnDescriptionWatcher(),
     updateTableDescriptionWatcher(),
     updateTableOwnerWatcher(),
+    // LastIndexed
+    getLastIndexedWatcher(),
     // User
     getLoggedInUserWatcher(),
     getUserWatcher(),
