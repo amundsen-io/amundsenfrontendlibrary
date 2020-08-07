@@ -119,6 +119,7 @@ export class EditableSection extends React.Component<
         }
 
         return React.cloneElement(child, {
+          readOnly,
           isEditing: this.state.isEditing,
           setEditMode: this.setEditMode,
         });
