@@ -30,11 +30,20 @@ describe('OwnerEditor', () => {
   };
 
   describe('render', () => {
-    it('renders text if no owners', () => {
-      const { wrapper } = setup();
-      expect(wrapper.find(AvatarLabel).text()).toContain(
-        Constants.NO_OWNER_TEXT
-      );
+    describe('when no owners', () => {
+      it('renders text if readOnly', () => {
+        const { wrapper } = setup({ readOnly: true });
+        expect(wrapper.find(AvatarLabel).text()).toContain(
+          Constants.NO_OWNER_TEXT
+        );
+      });
+
+      it('renders add button if not readOnly', () => {
+        const { wrapper } = setup();
+        expect(wrapper.find('.add-item-button').text()).toContain(
+          Constants.ADD_OWNER
+        );
+      });
     });
 
     it('renders owners if they exist', () => {

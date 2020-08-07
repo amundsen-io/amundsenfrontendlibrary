@@ -90,6 +90,10 @@ export class OwnerEditor extends React.Component<
     }
   }
 
+  handleShow = () => {
+    this.props.setEditMode(true);
+  };
+
   cancelEdit = () => {
     this.setState({ tempItemProps: this.state.itemProps });
     this.props.setEditMode(false);
@@ -246,17 +250,27 @@ export class OwnerEditor extends React.Component<
           return <li key={`list-item:${key}`}>{listItem}</li>;
         })}
       </ul>
-    ) : (
-      <AvatarLabel
-        avatarClass="gray-avatar"
-        labelClass="text-placeholder"
-        label={Constants.NO_OWNER_TEXT}
-      />
-    );
+    ) : null;
 
     return (
       <div className="owner-editor-component">
         {ownerList}
+        {this.props.readOnly && !hasItems && (
+          <AvatarLabel
+            avatarClass="gray-avatar"
+            labelClass="text-placeholder"
+            label={Constants.NO_OWNER_TEXT}
+          />
+        )}
+        {!this.props.readOnly && !hasItems && (
+          <button
+            className="btn btn-flat-icon add-item-button"
+            onClick={this.handleShow}
+          >
+            <img className="icon icon-plus-circle" alt="" />
+            <span>{Constants.ADD_OWNER}</span>
+          </button>
+        )}
         {!this.props.readOnly && (
           <Modal
             className="owner-editor-modal"
