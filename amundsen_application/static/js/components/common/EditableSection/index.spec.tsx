@@ -26,7 +26,7 @@ describe('EditableSection', () => {
       preventDefault: jest.fn(),
     };
 
-    it('preventDefault on click if !readOnly', () => {
+    it('preventDefault on click', () => {
       const { wrapper, props } = setup();
       wrapper
         .find('.editable-section-label-wrapper')
