@@ -1,0 +1,45 @@
+import * as React from 'react';
+
+import { mount } from 'enzyme';
+
+import globalState from 'fixtures/globalState';
+import AvatarLabel from 'components/common/AvatarLabel';
+
+import {
+  OwnerEditor,
+  OwnerEditorProps,
+  mapStateToProps,
+  mapDispatchToProps,
+} from '.';
+import * as Constants from './constants';
+
+describe('OwnerEditor', () => {
+  const setup = (propOverrides?: Partial<OwnerEditorProps>) => {
+    const props: OwnerEditorProps = {
+      errorText: null,
+      isLoading: false,
+      itemProps: {},
+      isEditing: null,
+      setEditMode: jest.fn(),
+      onUpdateList: jest.fn(),
+      readOnly: null,
+      ...propOverrides,
+    };
+    const wrapper = mount<OwnerEditor>(<OwnerEditor {...props} />);
+    return { props, wrapper };
+  };
+
+  describe('render', () => {
+    it('renders text if no owners', () => {
+      const { wrapper } = setup({ itemProps: {} });
+      expect(wrapper.find(AvatarLabel).text()).toContain(Constants.NO_OWNER_TEXT));
+    });
+
+    it('renders owners if they exist', () => {
+      const { wrapper } = setup({
+        itemProps: { owner1: {}, owner2: {}, owner3: {} },
+      });
+      expect(wrapper.find(AvatarLabel).length).toBe(3);
+    });
+  });
+});
