@@ -110,8 +110,9 @@ export class EditableSection extends React.Component<
 
   render() {
     const { title, readOnly = false } = this.props;
-    const childrenWithProps = !readOnly
-      ? React.Children.map(this.props.children, (child) => {
+    const childrenWithProps = React.Children.map(
+      this.props.children,
+      (child) => {
           if (!React.isValidElement(child)) {
             return child;
           }
@@ -120,8 +121,7 @@ export class EditableSection extends React.Component<
             isEditing: this.state.isEditing,
             setEditMode: this.setEditMode,
           });
-        })
-      : this.props.children;
+        });
 
     return (
       <section className="editable-section">
