@@ -5,7 +5,6 @@ import Card, { CardProps } from '.';
 
 const setup = (propOverrides?: Partial<CardProps>) => {
   const props = {
-    title: 'test title',
     ...propOverrides,
   };
   const wrapper = mount<typeof Card>(<Card {...props} />);
@@ -38,12 +37,22 @@ describe('Card', () => {
         expect(actual).toEqual(expected);
       });
 
-      it('renders a title', () => {
-        const { wrapper } = setup();
-        const expected = 1;
-        const actual = wrapper.find('.card-title').length;
+      describe('subtitle', () => {
+        it('renders a title if passed', () => {
+          const { wrapper } = setup({ title: 'test title' });
+          const expected = 1;
+          const actual = wrapper.find('.card-title').length;
 
-        expect(actual).toEqual(expected);
+          expect(actual).toEqual(expected);
+        });
+
+        it('does not render a title if missing', () => {
+          const { wrapper } = setup();
+          const expected = 0;
+          const actual = wrapper.find('.card-title').length;
+
+          expect(actual).toEqual(expected);
+        });
       });
 
       describe('subtitle', () => {

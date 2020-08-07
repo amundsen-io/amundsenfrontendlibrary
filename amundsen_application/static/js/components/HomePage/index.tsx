@@ -16,6 +16,7 @@ import { resetSearchState } from 'ducks/search/reducer';
 import { UpdateSearchStateReset } from 'ducks/search/types';
 import SearchBar from 'components/common/SearchBar';
 import TagsList from 'components/common/TagsList';
+import Card from 'components/common/Card';
 import {
   SEARCH_BREADCRUMB_TEXT,
   HOMEPAGE_TITLE,
@@ -39,6 +40,7 @@ export class HomePage extends React.Component<HomePageProps> {
         <div className="row">
           <div className="col-xs-12 col-md-offset-1 col-md-10">
             <h1 className="sr-only">{HOMEPAGE_TITLE}</h1>
+            <Card isLoading />
             <SearchBar />
             <div className="filter-breadcrumb pull-right">
               <Breadcrumb
