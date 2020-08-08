@@ -8,7 +8,9 @@ export interface GetLastIndexedRequest {
 }
 export interface GetLastIndexedResponse {
   type: GetLastIndexed.SUCCESS | GetLastIndexed.FAILURE;
-  payload?: {
-    lastIndexedEpoch: number;
-  };
+  payload?: GetLastIndexedPayload;
+}
+
+export interface GetLastIndexedPayload {
+  lastIndexedEpoch?: number;
 }

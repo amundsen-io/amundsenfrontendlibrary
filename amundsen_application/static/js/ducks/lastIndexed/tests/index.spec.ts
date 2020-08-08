@@ -49,6 +49,10 @@ describe('lastIndexed ducks', () => {
       expect(reducer(testState, { type: 'INVALID.ACTION' })).toEqual(testState);
     });
 
+    it('should handle GetLastIndexed.REQUEST', () => {
+      expect(reducer(testState, getLastIndexed())).toEqual(initialState);
+    });
+
     it('should handle GetLastIndexed.FAILURE', () => {
       expect(reducer(testState, getLastIndexedFailure())).toEqual({
         lastIndexed: null,

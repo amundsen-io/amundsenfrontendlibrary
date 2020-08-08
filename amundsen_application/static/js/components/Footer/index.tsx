@@ -33,7 +33,9 @@ const ShimmeringFooterLoader: React.FC = () => {
 
 export class Footer extends React.Component<FooterProps> {
   componentDidMount() {
-    this.props.getLastIndexed();
+    const { getLastIndexed } = this.props;
+
+    getLastIndexed();
   }
 
   generateDateTimeString = () => {

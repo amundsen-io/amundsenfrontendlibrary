@@ -10,6 +10,14 @@ export function getLastIndexed() {
   return axios
     .get(`${API_PATH}/get_last_indexed`)
     .then((response: AxiosResponse<LastIndexedAPI>) => {
-      return response.data.timestamp;
+      const { data } = response;
+
+      return data.timestamp;
+    })
+    .catch((e) => {
+      const timestamp = null;
+      return Promise.reject({
+        timestamp,
+      });
     });
 }
