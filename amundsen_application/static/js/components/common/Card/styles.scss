@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'typography-default';
 
 $shimmer-loader-items: 1, 2, 3, 4, 5;
 $shimmer-loader-row-height: 16px;
@@ -11,6 +12,38 @@ $shimmer-loader-row-max-width: 300;
   border-bottom: 1px solid $gray20;
 }
 
+.card-title {
+  font-family: $font-family-body;
+  font-size: 18px;
+  line-height: 22px;
+  font-weight: $font-weight-body-bold;
+  color: $gray100;
+}
+
+.card-subtitle {
+  font-family: $font-family-body;
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: $font-weight-body-regular;
+  color: $gray70;
+}
+
+.card-copy {
+  font-family: $font-family-body;
+  font-size: 14px;
+  line-height: 16px;
+  font-weight: $font-weight-body-regular;
+  color: $gray100;
+  margin: 0;
+
+  @include truncate(14px, 16px, 3);
+}
+
+.card-body {
+  padding-top: $spacer-3;
+}
+
+// Shimmer Loader
 .card-shimmer-loader {
   width: 100%;
 }

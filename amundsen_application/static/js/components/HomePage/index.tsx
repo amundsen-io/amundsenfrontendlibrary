@@ -41,6 +41,11 @@ export class HomePage extends React.Component<HomePageProps> {
           <div className="col-xs-12 col-md-offset-1 col-md-10">
             <h1 className="sr-only">{HOMEPAGE_TITLE}</h1>
             <Card isLoading />
+            <Card
+              title="Test title"
+              subtitle="June 05, 2020"
+              copy="lorem ipsum dolor lorem ipsum dolor lorem ipsum dolor lorem ipsum dolor lorem ipsum dolor lorem ipsum dolor lorem ipsum dolor"
+            />
             <SearchBar />
             <div className="filter-breadcrumb pull-right">
               <Breadcrumb

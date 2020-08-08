@@ -204,3 +204,15 @@ body {
   white-space: nowrap !important;
   border: 0 !important;
 }
+
+// From https://gist.github.com/igorescobar/d74a76629bab47d601d71c3a6e010ff2
+@mixin truncate($font-size, $line-height, $lines-to-show) {
+  display: block; // Fallback for non-webkit
+  display: -webkit-box;
+  font-size: $font-size;
+  line-height: $line-height;
+  -webkit-line-clamp: $lines-to-show;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
