@@ -1,14 +1,18 @@
 import * as React from 'react';
+import { Link, BrowserRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
 
 import Card, { CardProps } from '.';
 
 const setup = (propOverrides?: Partial<CardProps>) => {
   const props = {
-    title: 'test title',
     ...propOverrides,
   };
-  const wrapper = mount<typeof Card>(<Card {...props} />);
+  const wrapper = mount<typeof Card>(
+    <BrowserRouter>
+      <Card {...props} />
+    </BrowserRouter>
+  );
 
   return { props, wrapper };
 };
@@ -38,12 +42,22 @@ describe('Card', () => {
         expect(actual).toEqual(expected);
       });
 
-      it('renders a title', () => {
-        const { wrapper } = setup();
-        const expected = 1;
-        const actual = wrapper.find('.card-title').length;
+      describe('subtitle', () => {
+        it('renders a title if passed', () => {
+          const { wrapper } = setup({ title: 'test title' });
+          const expected = 1;
+          const actual = wrapper.find('.card-title').length;
 
-        expect(actual).toEqual(expected);
+          expect(actual).toEqual(expected);
+        });
+
+        it('does not render a title if missing', () => {
+          const { wrapper } = setup();
+          const expected = 0;
+          const actual = wrapper.find('.card-title').length;
+
+          expect(actual).toEqual(expected);
+        });
       });
 
       describe('subtitle', () => {
@@ -114,6 +128,38 @@ describe('Card', () => {
         const { wrapper } = setup({ isLoading: true });
         const expected = 5;
         const actual = wrapper.find('.card-shimmer-row').length;
+
+        expect(actual).toEqual(expected);
+      });
+    });
+
+    describe('when an href is passed', () => {
+      it('should render a link', () => {
+        const testPath = 'fakePath';
+        const { wrapper } = setup({ href: testPath });
+        const expected = 1;
+        const actual = wrapper.find('a.card').length;
+
+        expect(actual).toEqual(expected);
+      });
+
+      it('renders a react router Link', () => {
+        const testPath = 'fakePath';
+        const { wrapper } = setup({ href: testPath });
+        const expected = 1;
+        const actual = wrapper.find(Link).length;
+
+        expect(actual).toEqual(expected);
+      });
+
+      it('sets the link to the passed href', () => {
+        const testPath = 'fakePath';
+        const { wrapper } = setup({ href: testPath });
+        const expected = '/' + testPath;
+        const actual = wrapper
+          .find('a.card')
+          .getDOMNode()
+          .attributes.getNamedItem('href').value;
 
         expect(actual).toEqual(expected);
       });
