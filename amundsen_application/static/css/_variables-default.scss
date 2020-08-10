@@ -130,3 +130,13 @@ $spacer-1: $spacer-size;
 $spacer-2: $spacer-size * 2;
 $spacer-3: $spacer-size * 3;
 $spacer-4: $spacer-size * 4;
+
+// Elevations (from LPL)
+$elevation-level1: 0 0 1px 0 rgba(0, 0, 0, 0.12),
+  0 1px 1px 1px rgba(0, 0, 0, 0.08);
+$elevation-level2: 0 0 1px 0 rgba(0, 0, 0, 0.12),
+  0 2px 3px 0 rgba(0, 0, 0, 0.16);
+$elevation-level3: 0 0 1px 0 rgba(0, 0, 0, 0.12),
+  0 2px 4px 0 rgba(0, 0, 0, 0.16);
+$elevation-level4: 0 0 1px 0 rgba(0, 0, 0, 0.12),
+  0 3px 6px 0 rgba(0, 0, 0, 0.16);
