@@ -1,5 +1,11 @@
 @import 'variables';
 
+$more-link-size: 18px;
+$more-link-line-height: 21px;
+$message-size: 14px;
+$message-line-height: 16px;
+$message-border-size: 1px;
+
 .announcements-list-container {
   margin-top: $spacer-3;
 }
@@ -19,18 +25,18 @@
 }
 
 .announcements-list-more-link {
-  font-size: 18px;
-  line-height: 21px;
+  font-size: $more-link-size;
+  line-height: $more-link-line-height;
   margin-top: 12px;
   display: block;
 }
 
 .empty-announcement,
 .error-announcement {
-  font-size: 14px;
-  line-height: 16px;
-  color: $gray100;
+  font-size: $message-size;
+  line-height: $message-line-height;
+  color: $text-primary;
   text-align: center;
-  border-top: 1px solid $gray20;
+  border-top: $message-border-size solid $gray20;
   padding-top: $spacer-3;
 }
