@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import './styles.scss';
 
@@ -7,6 +8,7 @@ export interface CardProps {
   subtitle?: string;
   copy?: string;
   isLoading?: boolean;
+  href?: string;
 }
 
 const CardShimmerLoader: React.FC = () => (
@@ -23,11 +25,13 @@ const CardShimmerLoader: React.FC = () => (
 );
 
 const Card: React.FC<CardProps> = ({
+  href,
   title,
   subtitle,
   copy,
   isLoading = false,
 }: CardProps) => {
+  let card;
   let cardContent = (
     <>
       <header className="card-header">
@@ -44,11 +48,24 @@ const Card: React.FC<CardProps> = ({
     cardContent = <CardShimmerLoader />;
   }
 
-  return (
-    <article className={`card ${isLoading ? 'is-loading' : ''}`}>
-      {cardContent}
-    </article>
-  );
+  if (href) {
+    card = (
+      <Link
+        className={`card is-link ${isLoading ? 'is-loading' : ''}`}
+        to={href}
+      >
+        {cardContent}
+      </Link>
+    );
+  } else {
+    card = (
+      <article className={`card ${isLoading ? 'is-loading' : ''}`}>
+        {cardContent}
+      </article>
+    );
+  }
+
+  return <>{card}</>;
 };
 
 export default Card;

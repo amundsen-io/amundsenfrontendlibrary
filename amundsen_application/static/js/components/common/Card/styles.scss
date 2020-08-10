@@ -4,12 +4,28 @@
 $shimmer-loader-items: 1, 2, 3, 4, 5;
 $shimmer-loader-row-height: 16px;
 $shimmer-loader-row-min-width: 90;
-$shimmer-loader-row-max-width: 300;
+$shimmer-loader-row-max-width: 230;
 
 .card {
+  display: block;
   padding: $spacer-3;
   border-top: 1px solid $gray20;
   border-bottom: 1px solid $gray20;
+
+  &.is-link {
+    &:focus {
+      text-decoration: none;
+      border: 2px solid $blue80;
+      border-radius: $spacer-1/2;
+      outline-offset: 0;
+    }
+
+    &:hover,
+    &:active {
+      text-decoration: none;
+      box-shadow: $elevation-level2;
+    }
+  }
 }
 
 .card-title {
