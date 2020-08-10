@@ -1,0 +1,29 @@
+@import 'variables';
+
+.announcements-list-container {
+}
+
+.announcements-list-title {
+}
+
+.announcements-list {
+  list-style: none;
+  margin: $spacer-1 0 0 0;
+  padding: 0;
+}
+
+.announcements-list-more-link {
+  font-size: 18px;
+  line-height: 21px;
+  margin-top: $spacer-1;
+}
+
+.empty-announcement,
+.error-announcement {
+  font-size: 14px;
+  line-height: 16px;
+  color: $gray100;
+  text-align: center;
+  border-top: 1px solid $gray20;
+  padding-top: $spacer-3;
+}

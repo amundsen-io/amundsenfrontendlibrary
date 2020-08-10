@@ -3,6 +3,8 @@ import { Link, BrowserRouter } from 'react-router-dom';
 import SanitizedHTML from 'react-sanitized-html';
 import { mount } from 'enzyme';
 
+import Card from '../../Card';
+
 import AnnouncementsList, { AnnouncementsListProps } from '.';
 
 const TWO_FAKE_ANNOUNCEMENTS = [
@@ -73,7 +75,7 @@ describe('AnnouncementsList', () => {
 
     describe('See more link', () => {
       it('should render a "See more" link', () => {
-        const { wrapper } = setup();
+        const { wrapper } = setup({ announcements: TWO_FAKE_ANNOUNCEMENTS });
         const expected = 1;
         const actual = wrapper.find('a.announcements-list-more-link').length;
 
@@ -81,7 +83,7 @@ describe('AnnouncementsList', () => {
       });
 
       it('renders a react router Link', () => {
-        const { wrapper } = setup();
+        const { wrapper } = setup({ announcements: TWO_FAKE_ANNOUNCEMENTS });
         const expected = 1;
         const actual = wrapper.find(Link).length;
 
@@ -89,7 +91,7 @@ describe('AnnouncementsList', () => {
       });
 
       it('takes users to the announcements page', () => {
-        const { wrapper } = setup();
+        const { wrapper } = setup({ announcements: TWO_FAKE_ANNOUNCEMENTS });
         const expected = '/announcements';
         const actual = wrapper
           .find('a.announcements-list-more-link')
@@ -110,24 +112,35 @@ describe('AnnouncementsList', () => {
       });
 
       describe('when loading', () => {
-        it('should render the loading shimmer', () => {
-          const { wrapper } = setup({
-            announcements: EMPTY_ANNOUNCEMENTS,
-            isLoading: true,
-          });
-          const expected = 1;
-          const actual = wrapper.find('.shimmer-loader').length;
-
-          expect(actual).toEqual(expected);
-        });
-
-        it('should render three loading items', () => {
+        it('should render three cards', () => {
           const { wrapper } = setup({
             announcements: EMPTY_ANNOUNCEMENTS,
             isLoading: true,
           });
           const expected = 3;
-          const actual = wrapper.find('.shimmer-loader-item').length;
+          const actual = wrapper.find(Card).length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        it('should render three cards in loading state', () => {
+          const { wrapper } = setup({
+            announcements: EMPTY_ANNOUNCEMENTS,
+            isLoading: true,
+          });
+          const expected = 3;
+          const actual = wrapper.find('.card-shimmer-loader').length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        it('should not render the see more link', () => {
+          const { wrapper } = setup({
+            announcements: EMPTY_ANNOUNCEMENTS,
+            isLoading: true,
+          });
+          const expected = 0;
+          const actual = wrapper.find('a.announcements-list-more-link').length;
 
           expect(actual).toEqual(expected);
         });
@@ -142,72 +155,12 @@ describe('AnnouncementsList', () => {
           expect(actual).toEqual(expected);
         });
 
-        it('should render announcement dates', () => {
+        it('should render announcement cards', () => {
           const { wrapper } = setup({ announcements: TWO_FAKE_ANNOUNCEMENTS });
           const expected = 2;
-          const actual = wrapper.find('.announcement-date').length;
+          const actual = wrapper.find(Card).length;
 
           expect(actual).toEqual(expected);
-        });
-
-        it('should render announcement titles', () => {
-          const { wrapper } = setup({ announcements: TWO_FAKE_ANNOUNCEMENTS });
-          const expected = 2;
-          const actual = wrapper.find('.announcement-title').length;
-
-          expect(actual).toEqual(expected);
-        });
-
-        it('should render announcement contents', () => {
-          const { wrapper } = setup({ announcements: TWO_FAKE_ANNOUNCEMENTS });
-          const expected = 2;
-          const actual = wrapper.find('div.announcement-content').length;
-
-          expect(actual).toEqual(expected);
-        });
-
-        it('should render sanitized announcement contents', () => {
-          const { wrapper } = setup({ announcements: TWO_FAKE_ANNOUNCEMENTS });
-          const expected = 2;
-          const actual = wrapper.find(SanitizedHTML).length;
-
-          expect(actual).toEqual(expected);
-        });
-
-        describe('announcement links', () => {
-          it('renders links from the announcements to the announcements page', () => {
-            const { wrapper } = setup({
-              announcements: TWO_FAKE_ANNOUNCEMENTS,
-            });
-            const expected = 2;
-            const actual = wrapper.find('a.announcement-link').length;
-
-            expect(actual).toEqual(expected);
-          });
-
-          it('renders react router Links', () => {
-            const { wrapper } = setup({
-              announcements: TWO_FAKE_ANNOUNCEMENTS,
-            });
-            const expected = 2;
-            const actual = wrapper.find('.announcement').find(Link).length;
-
-            expect(actual).toEqual(expected);
-          });
-
-          it('takes users to the announcements page', () => {
-            const { wrapper } = setup({
-              announcements: TWO_FAKE_ANNOUNCEMENTS,
-            });
-            const expected = '/announcements';
-            const actual = wrapper
-              .find('a.announcement-link')
-              .first()
-              .getDOMNode()
-              .attributes.getNamedItem('href').value;
-
-            expect(actual).toEqual(expected);
-          });
         });
 
         describe('when number of announcements is more than three', () => {
@@ -216,7 +169,7 @@ describe('AnnouncementsList', () => {
               announcements: FOUR_FAKE_ANNOUNCEMENTS,
             });
             const expected = 3;
-            const actual = wrapper.find('.announcement').length;
+            const actual = wrapper.find(Card).length;
 
             expect(actual).toEqual(expected);
           });
@@ -231,6 +184,14 @@ describe('AnnouncementsList', () => {
 
           expect(actual).toEqual(expected);
         });
+
+        it('should not render the see more link', () => {
+          const { wrapper } = setup({ announcements: EMPTY_ANNOUNCEMENTS });
+          const expected = 0;
+          const actual = wrapper.find('a.announcements-list-more-link').length;
+
+          expect(actual).toEqual(expected);
+        });
       });
 
       describe('when error on fetch', () => {
@@ -240,7 +201,18 @@ describe('AnnouncementsList', () => {
             hasError: true,
           });
           const expected = 1;
-          const actual = wrapper.find('.announcement-error').length;
+          const actual = wrapper.find('.error-announcement').length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        it('should not render the see more link', () => {
+          const { wrapper } = setup({
+            announcements: EMPTY_ANNOUNCEMENTS,
+            hasError: true,
+          });
+          const expected = 0;
+          const actual = wrapper.find('a.announcements-list-more-link').length;
 
           expect(actual).toEqual(expected);
         });

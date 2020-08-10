@@ -6,7 +6,7 @@ import './styles.scss';
 export interface CardProps {
   title?: string;
   subtitle?: string;
-  copy?: string;
+  copy?: string | JSX.Element;
   isLoading?: boolean;
   href?: string;
 }
@@ -39,7 +39,7 @@ const Card: React.FC<CardProps> = ({
         {subtitle && <h3 className="card-subtitle">{subtitle}</h3>}
       </header>
       <div className="card-body">
-        {copy && <p className="card-copy">{copy}</p>}
+        {copy && <div className="card-copy">{copy}</div>}
       </div>
     </>
   );

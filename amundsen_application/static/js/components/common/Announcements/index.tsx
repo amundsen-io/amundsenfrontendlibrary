@@ -32,7 +32,7 @@ const AnnouncementsListContainer: React.FC<AnnouncementContainerProps> = ({
 }: AnnouncementContainerProps) => {
   React.useEffect(() => {
     announcementsGet();
-  });
+  }, []);
 
   return (
     <AnnouncementsList

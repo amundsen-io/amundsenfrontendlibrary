@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import SanitizedHTML from 'react-sanitized-html';
 
 import { AnnouncementPost } from 'interfaces';
+import Card from '../../Card';
 
 import {
   MORE_LINK_TEXT,
@@ -10,6 +11,8 @@ import {
   ANNOUNCEMENTS_ERROR_TEXT,
   HEADER_TEXT,
 } from '../constants';
+
+import './styles.scss';
 
 const ANNOUNCEMENT_LIST_THRESHOLD = 3;
 const ANNOUNCEMENTS_PAGE_PATH = '/announcements';
@@ -34,24 +37,23 @@ const AnnouncementItem: React.FC<AnnouncementPost> = ({
 }: AnnouncementPost) => {
   return (
     <li className="announcement">
-      <Link to={ANNOUNCEMENTS_PAGE_PATH} className="announcement-link">
-        <h3 className="announcement-title">{title}</h3>
-        <time className="announcement-date">{date}</time>
-        <hr />
-        <SanitizedHTML className="announcement-content" html={html_content} />
-      </Link>
+      <Card
+        title={title}
+        subtitle={date}
+        copy={
+          <SanitizedHTML className="announcement-content" html={html_content} />
+        }
+      />
     </li>
   );
 };
+// href={ANNOUNCEMENTS_PAGE_PATH}
 
 const EmptyAnnouncementItem: React.FC = () => (
   <li className="empty-announcement">{NO_ANNOUNCEMENTS_TEXT}</li>
 );
 const AnnouncementErrorItem: React.FC = () => (
-  <li className="announcement-error">{ANNOUNCEMENTS_ERROR_TEXT}</li>
-);
-const ShimmeringLoaderItem: React.FC = () => (
-  <li className="shimmer-loader-item is-shimmer-animated" />
+  <li className="error-announcement">{ANNOUNCEMENTS_ERROR_TEXT}</li>
 );
 
 const AnnouncementsList: React.FC<AnnouncementsListProps> = ({
@@ -59,9 +61,10 @@ const AnnouncementsList: React.FC<AnnouncementsListProps> = ({
   hasError,
   isLoading,
 }: AnnouncementsListProps) => {
+  const isEmpty = announcements.length === 0;
   let listContent = null;
 
-  if (announcements.length === 0) {
+  if (isEmpty) {
     listContent = <EmptyAnnouncementItem />;
   }
   if (announcements.length > 0) {
@@ -81,22 +84,24 @@ const AnnouncementsList: React.FC<AnnouncementsListProps> = ({
   }
   if (isLoading) {
     listContent = times(3).map((_, index) => (
-      <ShimmeringLoaderItem key={`key:${index}`} />
+      <Card title="Loading" key={`key:${index}`} isLoading />
     ));
   }
 
   return (
-    <article>
+    <article className="announcements-list-container">
       <h2 className="announcements-list-title">{HEADER_TEXT}</h2>
       <ul className={`announcements-list ${isLoading ? 'shimmer-loader' : ''}`}>
         {listContent}
       </ul>
-      <Link
-        to={ANNOUNCEMENTS_PAGE_PATH}
-        className="announcements-list-more-link"
-      >
-        {MORE_LINK_TEXT}
-      </Link>
+      {!isEmpty && (
+        <Link
+          to={ANNOUNCEMENTS_PAGE_PATH}
+          className="announcements-list-more-link"
+        >
+          {MORE_LINK_TEXT}
+        </Link>
+      )}
     </article>
   );
 };
