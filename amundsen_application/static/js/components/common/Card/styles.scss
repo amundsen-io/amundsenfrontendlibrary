@@ -39,6 +39,7 @@ $card-copy-max-lines: 3;
     &:active {
       text-decoration: none;
       box-shadow: $elevation-level2;
+      border: 0;
     }
   }
 }
@@ -52,7 +53,7 @@ $card-copy-max-lines: 3;
   font-size: $card-title-font-size;
   line-height: $card-title-line-height;
   font-weight: $font-weight-body-bold;
-  color: $gray100;
+  color: $text-primary;
 
   @include truncate(
     $card-title-font-size,
@@ -66,7 +67,7 @@ $card-copy-max-lines: 3;
   font-size: $card-subtitle-font-size;
   line-height: $card-subtitle-line-height;
   font-weight: $font-weight-body-regular;
-  color: $gray70;
+  color: $text-secondary;
 }
 
 .card-copy {
@@ -74,7 +75,7 @@ $card-copy-max-lines: 3;
   font-size: $card-copy-font-size;
   line-height: $card-copy-line-height;
   font-weight: $font-weight-body-regular;
-  color: $gray100;
+  color: $text-primary;
   margin: 0;
 
   @include truncate(

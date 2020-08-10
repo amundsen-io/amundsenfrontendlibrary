@@ -39,7 +39,7 @@ export class HomePage extends React.Component<HomePageProps> {
     return (
       <main className="container home-page">
         <div className="row">
-          <div className="col-xs-12 col-md-9">
+          <div className="col-xs-12 col-md-8">
             <h1 className="sr-only">{HOMEPAGE_TITLE}</h1>
             <SearchBar />
             <div className="filter-breadcrumb pull-right">
@@ -65,7 +65,7 @@ export class HomePage extends React.Component<HomePageProps> {
               <PopularTables />
             </div>
           </div>
-          <div className="col-xs-12 col-md-3">
+          <div className="col-xs-12 col-md-offset-1 col-md-3">
             <Announcements />
           </div>
         </div>
