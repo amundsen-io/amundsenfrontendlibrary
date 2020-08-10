@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import SanitizedHTML from 'react-sanitized-html';
 
+import { logClick } from 'ducks/utilMethods';
+
 import { AnnouncementPost } from 'interfaces';
 import Card from '../../Card';
 
@@ -41,6 +43,7 @@ const AnnouncementItem: React.FC<AnnouncementPost> = ({
         title={title}
         subtitle={date}
         href={ANNOUNCEMENTS_PAGE_PATH}
+        onClick={logClick}
         copy={
           <SanitizedHTML className="announcement-content" html={html_content} />
         }
@@ -98,6 +101,7 @@ const AnnouncementsList: React.FC<AnnouncementsListProps> = ({
         <Link
           to={ANNOUNCEMENTS_PAGE_PATH}
           className="announcements-list-more-link"
+          onClick={logClick}
         >
           {MORE_LINK_TEXT}
         </Link>
