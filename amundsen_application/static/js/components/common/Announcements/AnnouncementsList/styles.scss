@@ -10,12 +10,21 @@
   list-style: none;
   margin: $spacer-1 0 0 0;
   padding: 0;
+
+  .announcement {
+    margin-bottom: -1px;
+  }
+
+  .announcement-content p {
+    margin: 0;
+  }
 }
 
 .announcements-list-more-link {
   font-size: 18px;
   line-height: 21px;
-  margin-top: $spacer-1;
+  margin-top: 12px;
+  display: block;
 }
 
 .empty-announcement,

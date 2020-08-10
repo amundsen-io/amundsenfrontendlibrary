@@ -40,6 +40,7 @@ const AnnouncementItem: React.FC<AnnouncementPost> = ({
       <Card
         title={title}
         subtitle={date}
+        href={ANNOUNCEMENTS_PAGE_PATH}
         copy={
           <SanitizedHTML className="announcement-content" html={html_content} />
         }
@@ -47,7 +48,6 @@ const AnnouncementItem: React.FC<AnnouncementPost> = ({
     </li>
   );
 };
-// href={ANNOUNCEMENTS_PAGE_PATH}
 
 const EmptyAnnouncementItem: React.FC = () => (
   <li className="empty-announcement">{NO_ANNOUNCEMENTS_TEXT}</li>
