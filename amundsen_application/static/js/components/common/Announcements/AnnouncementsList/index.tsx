@@ -84,16 +84,16 @@ const AnnouncementsList: React.FC<AnnouncementsListProps> = ({
   }
   if (isLoading) {
     listContent = times(3).map((_, index) => (
-      <Card title="Loading" key={`key:${index}`} isLoading />
+      <li className="announcement" key={`key:${index}`}>
+        <Card isLoading />
+      </li>
     ));
   }
 
   return (
     <article className="announcements-list-container">
       <h2 className="announcements-list-title">{HEADER_TEXT}</h2>
-      <ul className={`announcements-list ${isLoading ? 'shimmer-loader' : ''}`}>
-        {listContent}
-      </ul>
+      <ul className="announcements-list">{listContent}</ul>
       {!isEmpty && (
         <Link
           to={ANNOUNCEMENTS_PAGE_PATH}

@@ -84,7 +84,7 @@ describe('AnnouncementsList', () => {
 
       it('renders a react router Link', () => {
         const { wrapper } = setup({ announcements: TWO_FAKE_ANNOUNCEMENTS });
-        const expected = 1;
+        const expected = TWO_FAKE_ANNOUNCEMENTS.length + 1;
         const actual = wrapper.find(Link).length;
 
         expect(actual).toEqual(expected);
