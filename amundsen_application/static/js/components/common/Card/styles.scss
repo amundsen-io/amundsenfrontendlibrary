@@ -6,16 +6,31 @@ $shimmer-loader-row-height: 16px;
 $shimmer-loader-row-min-width: 90;
 $shimmer-loader-row-max-width: 230;
 
+$card-height: 188px;
+$card-header-height: 66px;
+$card-border-size: 1px;
+$card-focus-border-size: 2px;
+
+$card-title-font-size: 18px;
+$card-title-line-height: 22px;
+$card-title-max-lines: 2;
+$card-subtitle-font-size: 14px;
+$card-subtitle-line-height: 22px;
+$card-copy-font-size: 14px;
+$card-copy-line-height: 16px;
+$card-copy-max-lines: 3;
+
 .card {
   display: block;
   padding: $spacer-3;
-  border-top: 1px solid $gray20;
-  border-bottom: 1px solid $gray20;
+  border-top: $card-border-size solid $gray20;
+  border-bottom: $card-border-size solid $gray20;
+  height: $card-height;
 
   &.is-link {
     &:focus {
       text-decoration: none;
-      border: 2px solid $blue80;
+      border: $card-focus-border-size solid $blue80;
       border-radius: $spacer-1/2;
       outline-offset: 0;
     }
@@ -28,31 +43,45 @@ $shimmer-loader-row-max-width: 230;
   }
 }
 
+.card-header {
+  height: $card-header-height;
+}
+
 .card-title {
   font-family: $font-family-body;
-  font-size: 18px;
-  line-height: 22px;
+  font-size: $card-title-font-size;
+  line-height: $card-title-line-height;
   font-weight: $font-weight-body-bold;
   color: $gray100;
+
+  @include truncate(
+    $card-title-font-size,
+    $card-title-line-height,
+    $card-title-max-lines
+  );
 }
 
 .card-subtitle {
   font-family: $font-family-body;
-  font-size: 14px;
-  line-height: 22px;
+  font-size: $card-subtitle-font-size;
+  line-height: $card-subtitle-line-height;
   font-weight: $font-weight-body-regular;
   color: $gray70;
 }
 
 .card-copy {
   font-family: $font-family-body;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: $card-copy-font-size;
+  line-height: $card-copy-line-height;
   font-weight: $font-weight-body-regular;
   color: $gray100;
   margin: 0;
 
-  @include truncate(14px, 16px, 3);
+  @include truncate(
+    $card-copy-font-size,
+    $card-copy-line-height,
+    $card-copy-max-lines
+  );
 }
 
 .card-body {
