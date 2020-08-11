@@ -77,9 +77,9 @@ const ShortTagsList: React.FC<TagsListProps> = ({
         <TagsListBlock tags={popularTags}/>}
       {curatedTags.length > 0 && <TagsListBlock tags={curatedTags}/>}
       <span>
-        <a className="browse-tags-link" href={BROWSE_PAGE_PATH}>
+        <Link to={BROWSE_PAGE_PATH} className="browse-tags-link">
           {BROWSE_MORE_TAGS_TEXT}
-        </a>
+        </Link>
       </span>
     </div>
   );
