@@ -97,6 +97,13 @@ export function feedbackEnabled(): boolean {
 }
 
 /**
+ * Returns whether or not feedback features should be enabled
+ */
+export function announcementsEnabled(): boolean {
+  return AppConfig.announcements.announcementsEnabled;
+}
+
+/**
  * Returns whether or not dashboard features should be shown
  */
 export function indexDashboardsEnabled(): boolean {

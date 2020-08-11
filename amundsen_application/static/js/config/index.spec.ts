@@ -113,6 +113,14 @@ describe('feedbackEnabled', () => {
   });
 });
 
+describe('announcementsEnabled', () => {
+  it('returns whether or not the announcements feature is enabled', () => {
+    expect(ConfigUtils.announcementsEnabled()).toBe(
+      AppConfig.announcements.announcementsEnabled
+    );
+  });
+});
+
 describe('issueTrackingEnabled', () => {
   it('returns whether or not the issueTracking feature is enabled', () => {
     expect(ConfigUtils.issueTrackingEnabled()).toBe(
