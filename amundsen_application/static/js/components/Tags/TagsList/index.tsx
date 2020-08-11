@@ -62,8 +62,8 @@ const TagsListBlock: React.FC<TagsListBlockProps> = ({
 }: TagsListBlockProps) => {
   return (
     <div id="tags-list" className="tags-list">
-      {tags.map((tag, index) => (
-        <TagInfo data={tag} compact={false} key={index} />
+      {tags.map((tag) => (
+        <TagInfo data={tag} compact={false} key={tag.tag_name} />
       ))}
     </div>
   );
