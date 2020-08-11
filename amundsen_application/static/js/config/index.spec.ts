@@ -116,7 +116,7 @@ describe('feedbackEnabled', () => {
 describe('announcementsEnabled', () => {
   it('returns whether or not the announcements feature is enabled', () => {
     expect(ConfigUtils.announcementsEnabled()).toBe(
-      AppConfig.announcements.announcementsEnabled
+      AppConfig.announcements.enabled
     );
   });
 });

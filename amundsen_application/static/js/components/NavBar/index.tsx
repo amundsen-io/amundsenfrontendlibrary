@@ -15,7 +15,11 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import { LoggedInUser } from 'interfaces';
 
-import { feedbackEnabled, indexUsersEnabled } from 'config/config-utils';
+import {
+  feedbackEnabled,
+  indexUsersEnabled,
+  announcementsEnabled,
+} from 'config/config-utils';
 
 import Feedback from 'components/Feedback';
 import SearchBar from 'components/common/SearchBar';
@@ -24,6 +28,7 @@ import './styles.scss';
 
 const LOGO_TITLE = 'AMUNDSEN';
 const PROFILE_LINK_TEXT = 'My Profile';
+const ANNOUNCEMENTS_LINK_LABEL = 'Announcements';
 
 // Props
 interface StateFromProps {
@@ -31,6 +36,14 @@ interface StateFromProps {
 }
 
 export type NavBarProps = StateFromProps & RouteComponentProps<{}>;
+
+const isNavLinkActive = (link: LinkConfig): boolean => {
+  if (!announcementsEnabled()) {
+    return link.label !== ANNOUNCEMENTS_LINK_LABEL;
+  }
+
+  return true;
+};
 
 export class NavBar extends React.Component<NavBarProps> {
   generateNavLinks(navLinks: LinkConfig[]) {
@@ -101,7 +114,9 @@ export class NavBar extends React.Component<NavBarProps> {
             </div>
             {this.renderSearchBar()}
             <div id="nav-bar-right" className="ml-auto nav-bar-right">
-              {this.generateNavLinks(AppConfig.navLinks)}
+              {this.generateNavLinks(
+                AppConfig.navLinks.filter(isNavLinkActive)
+              )}
               {feedbackEnabled() && <Feedback />}
               {loggedInUser && indexUsersEnabled() && (
                 <Dropdown id="user-dropdown" pullRight>

@@ -193,10 +193,10 @@ interface MailClientFeaturesConfig {
 /**
  * AnnoucementsFeaturesConfig - Enable/disable UI features related to the announcements
  *
- * announcementsEnabled - Enables the announcements feature
+ * enabled - Enables the announcements feature
  */
 interface AnnoucementsFeaturesConfig {
-  announcementsEnabled: boolean;
+  enabled: boolean;
 }
 
 /**

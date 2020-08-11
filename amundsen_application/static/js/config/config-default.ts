@@ -38,7 +38,7 @@ const configDefault: AppConfig = {
     notificationsEnabled: false,
   },
   announcements: {
-    announcementsEnabled: true,
+    enabled: true,
   },
   navLinks: [
     {
