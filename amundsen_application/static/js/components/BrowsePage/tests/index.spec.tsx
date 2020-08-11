@@ -31,16 +31,14 @@ describe('BrowsePage', () => {
       );
     });
 
-    it('renders correct header', () => {
-      expect(wrapper.find('#browse-header').text()).toEqual('Browse Tags');
-    });
-
     it('renders <hr>', () => {
       expect(wrapper.contains(<hr className="header-hr" />));
     });
 
     it('contains TagsList', () => {
-      expect(wrapper.contains(<TagsListContainer shortTagsList={false} />));
+      const expected = 1;
+      const actual = wrapper.find(TagsListContainer).length;
+      expect(actual).toEqual(expected);
     });
   });
 });

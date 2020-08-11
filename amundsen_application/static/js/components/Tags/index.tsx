@@ -50,13 +50,15 @@ export class TagsListContainer extends React.Component<TagsListContainerProps> {
       shortTagsList,
     } = this.props;
     return (
-      <TagsList
-        curatedTags={curatedTags}
-        popularTags={popularTags}
-        otherTags={otherTags}
-        isLoading={isLoading}
-        shortTagsList={shortTagsList}
-      />
+      <span className="tag-list">
+        <TagsList
+          curatedTags={curatedTags}
+          popularTags={popularTags}
+          otherTags={otherTags}
+          isLoading={isLoading}
+          shortTagsList={shortTagsList}
+        />
+      </span>
     );
   }
 }

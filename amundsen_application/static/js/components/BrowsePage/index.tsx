@@ -7,7 +7,7 @@ import * as DocumentTitle from 'react-document-title';
 import TagsListContainer from 'components/Tags';
 
 import './styles.scss';
-import {BROWSE_PAGE_DOCUMENT_TITLE} from './constants';
+import { BROWSE_PAGE_DOCUMENT_TITLE } from './constants';
 
 export class BrowsePage extends React.Component {
   render() {

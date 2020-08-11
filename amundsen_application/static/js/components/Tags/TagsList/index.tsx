@@ -80,9 +80,7 @@ const ShortTagsList: React.FC<TagsListProps> = ({
       {!hasCuratedTags && hasPopularTags && (
         <TagsListTitle titleText={POPULAR_TAGS_TITLE} />
       )}
-      {hasCuratedTags && (
-        <TagsListTitle titleText={CURATED_TAGS_TITLE} />
-      )}
+      {hasCuratedTags && <TagsListTitle titleText={CURATED_TAGS_TITLE} />}
       {!hasCuratedTags && hasPopularTags && (
         <TagsListBlock tags={popularTags} />
       )}
@@ -104,14 +102,12 @@ const LongTagsList: React.FC<TagsListProps> = ({
   const hasOtherTags = otherTags.length > 0;
   return (
     <div className="full-tag-list">
-      <TagsListTitle titleText={BROWSE_TAGS_TITLE}/>
+      <TagsListTitle titleText={BROWSE_TAGS_TITLE} />
       <hr className="header-hr" />
       {!hasCuratedTags && hasPopularTags && (
         <TagsListLabel titleText={POPULAR_TAGS_TITLE} />
       )}
-      {hasCuratedTags && (
-        <TagsListLabel titleText={CURATED_TAGS_TITLE} />
-      )}
+      {hasCuratedTags && <TagsListLabel titleText={CURATED_TAGS_TITLE} />}
       {!hasCuratedTags && hasPopularTags && (
         <TagsListBlock tags={popularTags} />
       )}
@@ -132,6 +128,7 @@ const TagsList: React.FC<TagsListProps> = ({
   if (isLoading) {
     return <ShimmeringTagListLoader />;
   }
+
   if (shortTagsList) {
     return (
       <ShortTagsList curatedTags={curatedTags} popularTags={popularTags} />
