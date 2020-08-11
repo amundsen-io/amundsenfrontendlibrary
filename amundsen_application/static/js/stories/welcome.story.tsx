@@ -7,6 +7,10 @@ export default {
   component: Welcome,
 };
 
+// Don't put other stories in this folder, unless they're meta (i.e. about
+// storybook itself). Storybook components for normal components should be
+// put in the same folder as the component itself.
+
 export const ToAmundsen = () => {
   return (
     <>
