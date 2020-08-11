@@ -37,13 +37,17 @@ interface TagsListTitleProps {
   titleText: string;
 }
 
-const TagsListTitle: React.FC<TagsListTitleProps> = ({titleText}) => (
+const TagsListTitle: React.FC<TagsListTitleProps> = ({
+  titleText,
+}: TagsListTitleProps) => (
   <h1 className="title-1" id="browse-header">
     {titleText}
   </h1>
 );
 
-const TagsListLabel: React.FC<TagsListTitleProps> = ({titleText}) => (
+const TagsListLabel: React.FC<TagsListTitleProps> = ({
+  titleText,
+}: TagsListTitleProps) => (
   <label className="section-label">
     <span className="section-title title-2">{titleText}</span>
   </label>
@@ -53,7 +57,9 @@ interface TagsListBlockProps {
   tags: Tag[];
 }
 
-const TagsListBlock: React.FC<TagsListBlockProps> = ({tags}) => {
+const TagsListBlock: React.FC<TagsListBlockProps> = ({
+  tags,
+}: TagsListBlockProps) => {
   return (
     <div id="tags-list" className="tags-list">
       {tags.map((tag, index) => (
@@ -69,13 +75,16 @@ const ShortTagsList: React.FC<TagsListProps> = ({
 }: TagsListProps) => {
   return (
     <div className="short-tag-list">
-      {curatedTags.length === 0 &&
-        popularTags.length > 0 && <TagsListTitle titleText={POPULAR_TAGS_TITLE}/>}
-      {curatedTags.length > 0 && <TagsListTitle titleText={CURATED_TAGS_TITLE}/>}
-      {curatedTags.length === 0 &&
-        popularTags.length > 0 &&
-        <TagsListBlock tags={popularTags}/>}
-      {curatedTags.length > 0 && <TagsListBlock tags={curatedTags}/>}
+      {curatedTags.length === 0 && popularTags.length > 0 && (
+        <TagsListTitle titleText={POPULAR_TAGS_TITLE} />
+      )}
+      {curatedTags.length > 0 && (
+        <TagsListTitle titleText={CURATED_TAGS_TITLE} />
+      )}
+      {curatedTags.length === 0 && popularTags.length > 0 && (
+        <TagsListBlock tags={popularTags} />
+      )}
+      {curatedTags.length > 0 && <TagsListBlock tags={curatedTags} />}
       <span>
         <Link to={BROWSE_PAGE_PATH} className="browse-tags-link">
           {BROWSE_MORE_TAGS_TEXT}
@@ -83,7 +92,7 @@ const ShortTagsList: React.FC<TagsListProps> = ({
       </span>
     </div>
   );
-}
+};
 
 const LongTagsList: React.FC<TagsListProps> = ({
   curatedTags,
@@ -92,20 +101,23 @@ const LongTagsList: React.FC<TagsListProps> = ({
 }: TagsListProps) => {
   return (
     <div className="full-tag-list">
-      {<TagsListTitle titleText={BROWSE_TAGS_TITLE}/>}
+      <TagsListTitle titleText={BROWSE_TAGS_TITLE} />
       <hr className="header-hr" />
-      {curatedTags.length === 0 && popularTags.length > 0 && <TagsListLabel titleText={POPULAR_TAGS_TITLE}/>}
-      {curatedTags.length > 0 &&
-        <TagsListLabel titleText={CURATED_TAGS_TITLE}/>}
-        {curatedTags.length === 0 && popularTags.length > 0 && <TagsListBlock tags={popularTags}/>}
-        {curatedTags.length > 0 && <TagsListBlock tags={curatedTags}/>}
-      {(otherTags.length > 0) &&
-        <TagsListLabel titleText={OTHER_TAGS_TITLE}/>}
-      {otherTags.length > 0 &&
-        <TagsListBlock tags={otherTags}/>}
+      {curatedTags.length === 0 && popularTags.length > 0 && (
+        <TagsListLabel titleText={POPULAR_TAGS_TITLE} />
+      )}
+      {curatedTags.length > 0 && (
+        <TagsListLabel titleText={CURATED_TAGS_TITLE} />
+      )}
+      {curatedTags.length === 0 && popularTags.length > 0 && (
+        <TagsListBlock tags={popularTags} />
+      )}
+      {curatedTags.length > 0 && <TagsListBlock tags={curatedTags} />}
+      {otherTags.length > 0 && <TagsListLabel titleText={OTHER_TAGS_TITLE} />}
+      {otherTags.length > 0 && <TagsListBlock tags={otherTags} />}
     </div>
   );
-}
+};
 
 const TagsList: React.FC<TagsListProps> = ({
   curatedTags,
@@ -117,19 +129,19 @@ const TagsList: React.FC<TagsListProps> = ({
   if (isLoading) {
     return <ShimmeringTagListLoader />;
   }
-  if (shortTagsList){
-    return <ShortTagsList
-      curatedTags={curatedTags}
-      popularTags={popularTags}
-    />;
+  if (shortTagsList) {
+    return (
+      <ShortTagsList curatedTags={curatedTags} popularTags={popularTags} />
+    );
   }
-  else {
-    return <LongTagsList
+
+  return (
+    <LongTagsList
       curatedTags={curatedTags}
       popularTags={popularTags}
       otherTags={otherTags}
     />
-  }
-}
+  );
+};
 
 export default TagsList;

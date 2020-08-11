@@ -12,10 +12,7 @@ import globalState from 'fixtures/globalState';
 import AppConfig from 'config/config';
 
 import { getCuratedTags, showAllTags } from 'config/config-utils';
-import {
-  mapDispatchToProps,
-  mapStateToProps,
-} from '.';
+import { mapDispatchToProps, mapStateToProps } from '.';
 
 AppConfig.browse.curatedTags = ['test1'];
 

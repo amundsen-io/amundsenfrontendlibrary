@@ -16,7 +16,7 @@ export class BrowsePage extends React.Component {
         <main className="container">
           <div className="row">
             <div className="col-xs-12">
-              <TagsListContainer shortTagsList={false}/>
+              <TagsListContainer shortTagsList={false} />
             </div>
           </div>
         </main>

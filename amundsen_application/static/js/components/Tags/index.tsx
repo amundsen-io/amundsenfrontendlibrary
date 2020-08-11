@@ -32,14 +32,23 @@ export interface DispatchFromProps {
   getAllTags: () => GetAllTagsRequest;
 }
 
-export type TagsListContainerProps = StateFromProps & DispatchFromProps & OwnProps;
+export type TagsListContainerProps = StateFromProps &
+  DispatchFromProps &
+  OwnProps;
 
 export class TagsListContainer extends React.Component<TagsListContainerProps> {
   componentDidMount() {
     this.props.getAllTags();
   }
-  render () {
-    const { isLoading, curatedTags, popularTags, otherTags, shortTagsList } = this.props;
+
+  render() {
+    const {
+      isLoading,
+      curatedTags,
+      popularTags,
+      otherTags,
+      shortTagsList,
+    } = this.props;
     return (
       <TagsList
         curatedTags={curatedTags}
@@ -53,13 +62,10 @@ export class TagsListContainer extends React.Component<TagsListContainerProps> {
 }
 
 export const mapStateToProps = (state: GlobalState) => {
-  
   // TODO: These functions are selectors, consider moving them into the ducks
   const allTags = state.tags.allTags.tags;
 
-  const allTagsNoZeros = allTags.filter(
-    (tag) => tag.tag_count > 0
-  );
+  const allTagsNoZeros = allTags.filter((tag) => tag.tag_count > 0);
 
   const curatedTagsList = getCuratedTags();
 
@@ -74,25 +80,25 @@ export const mapStateToProps = (state: GlobalState) => {
     );
     otherTags = allTagsNoZeros.filter(
       (tag) => curatedTagsList.indexOf(tag.tag_name) === -1
-    )
-  }
-  else {
-    const tagsByUsage = allTagsNoZeros.sort((a, b) => {
-      return a.tag_count - b.tag_count;
-    })
-    .reverse();
-    popularTags = tagsByUsage.slice(0, POPULAR_TAGS_NUMBER)
-    .sort((a, b) => {
+    );
+  } else {
+    const tagsByUsage = allTagsNoZeros
+      .sort((a, b) => {
+        return a.tag_count - b.tag_count;
+      })
+      .reverse();
+    popularTags = tagsByUsage.slice(0, POPULAR_TAGS_NUMBER).sort((a, b) => {
       if (a.tag_name < b.tag_name) return -1;
       if (a.tag_name > b.tag_name) return 1;
       return 0;
     });
-    otherTags = tagsByUsage.slice(POPULAR_TAGS_NUMBER, tagsByUsage.length)
-    .sort((a, b) => {
-      if (a.tag_name < b.tag_name) return -1;
-      if (a.tag_name > b.tag_name) return 1;
-      return 0;
-    });
+    otherTags = tagsByUsage
+      .slice(POPULAR_TAGS_NUMBER, tagsByUsage.length)
+      .sort((a, b) => {
+        if (a.tag_name < b.tag_name) return -1;
+        if (a.tag_name > b.tag_name) return 1;
+        return 0;
+      });
   }
 
   return {
