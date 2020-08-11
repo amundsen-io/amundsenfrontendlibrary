@@ -6,9 +6,10 @@ import './styles.scss';
 export interface CardProps {
   title?: string;
   subtitle?: string;
-  copy?: string;
+  copy?: string | JSX.Element;
   isLoading?: boolean;
   href?: string;
+  onClick?: (e: React.SyntheticEvent) => void;
 }
 
 const CardShimmerLoader: React.FC = () => (
@@ -29,6 +30,7 @@ const Card: React.FC<CardProps> = ({
   title,
   subtitle,
   copy,
+  onClick = null,
   isLoading = false,
 }: CardProps) => {
   let card;
@@ -39,7 +41,7 @@ const Card: React.FC<CardProps> = ({
         {subtitle && <h3 className="card-subtitle">{subtitle}</h3>}
       </header>
       <div className="card-body">
-        {copy && <p className="card-copy">{copy}</p>}
+        {copy && <div className="card-copy">{copy}</div>}
       </div>
     </>
   );
@@ -53,6 +55,7 @@ const Card: React.FC<CardProps> = ({
       <Link
         className={`card is-link ${isLoading ? 'is-loading' : ''}`}
         to={href}
+        onClick={onClick}
       >
         {cardContent}
       </Link>
