@@ -7,12 +7,13 @@ import * as DocumentTitle from 'react-document-title';
 import TagsListContainer from 'components/Tags';
 
 import './styles.scss';
+import {BROWSE_PAGE_DOCUMENT_TITLE} from './constants';
 
 export class BrowsePage extends React.Component {
   render() {
     return (
       /* TODO: add expand/collapse behavior */
-      <DocumentTitle title="Browse - Amundsen">
+      <DocumentTitle title={BROWSE_PAGE_DOCUMENT_TITLE}>
         <main className="container">
           <div className="row">
             <div className="col-xs-12">

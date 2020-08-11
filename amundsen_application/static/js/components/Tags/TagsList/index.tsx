@@ -5,6 +5,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 import ShimmeringTagListLoader from 'components/common/ShimmeringTagListLoader';
+
 import TagInfo from 'components/Tags/TagInfo';
 import { Tag } from 'interfaces';
 
@@ -16,6 +17,7 @@ import {
   BROWSE_TAGS_TITLE,
   BROWSE_PAGE_PATH,
 } from './constants';
+
 import './styles.scss';
 
 export type TagsListProps = StateFromProps & OwnProps;
@@ -28,8 +30,6 @@ export interface StateFromProps {
 }
 
 interface OwnProps {
-  /* determine if we only want curated/popular tags with
-  'Browse more tags' link or the entire tags list */
   shortTagsList?: boolean;
 }
 
@@ -37,10 +37,14 @@ interface TagsListTitleProps {
   titleText: string;
 }
 
+interface TagsListBlockProps {
+  tags: Tag[];
+}
+
 const TagsListTitle: React.FC<TagsListTitleProps> = ({
   titleText,
 }: TagsListTitleProps) => (
-  <h1 className="title-1" id="browse-header">
+  <h1 className="title-1 section-title" id="browse-header">
     {titleText}
   </h1>
 );
@@ -52,10 +56,6 @@ const TagsListLabel: React.FC<TagsListTitleProps> = ({
     <span className="section-title title-2">{titleText}</span>
   </label>
 );
-
-interface TagsListBlockProps {
-  tags: Tag[];
-}
 
 const TagsListBlock: React.FC<TagsListBlockProps> = ({
   tags,
@@ -73,23 +73,23 @@ const ShortTagsList: React.FC<TagsListProps> = ({
   curatedTags,
   popularTags,
 }: TagsListProps) => {
+  const hasCuratedTags = curatedTags.length > 0;
+  const hasPopularTags = popularTags.length > 0;
   return (
     <div className="short-tag-list">
-      {curatedTags.length === 0 && popularTags.length > 0 && (
+      {!hasCuratedTags && hasPopularTags && (
         <TagsListTitle titleText={POPULAR_TAGS_TITLE} />
       )}
-      {curatedTags.length > 0 && (
+      {hasCuratedTags && (
         <TagsListTitle titleText={CURATED_TAGS_TITLE} />
       )}
-      {curatedTags.length === 0 && popularTags.length > 0 && (
+      {!hasCuratedTags && hasPopularTags && (
         <TagsListBlock tags={popularTags} />
       )}
-      {curatedTags.length > 0 && <TagsListBlock tags={curatedTags} />}
-      <span>
-        <Link to={BROWSE_PAGE_PATH} className="browse-tags-link">
-          {BROWSE_MORE_TAGS_TEXT}
-        </Link>
-      </span>
+      {hasCuratedTags && <TagsListBlock tags={curatedTags} />}
+      <Link to={BROWSE_PAGE_PATH} className="browse-tags-link">
+        {BROWSE_MORE_TAGS_TEXT}
+      </Link>
     </div>
   );
 };
@@ -99,22 +99,25 @@ const LongTagsList: React.FC<TagsListProps> = ({
   popularTags,
   otherTags,
 }: TagsListProps) => {
+  const hasCuratedTags = curatedTags.length > 0;
+  const hasPopularTags = popularTags.length > 0;
+  const hasOtherTags = otherTags.length > 0;
   return (
     <div className="full-tag-list">
-      <TagsListTitle titleText={BROWSE_TAGS_TITLE} />
+      <TagsListTitle titleText={BROWSE_TAGS_TITLE}/>
       <hr className="header-hr" />
-      {curatedTags.length === 0 && popularTags.length > 0 && (
+      {!hasCuratedTags && hasPopularTags && (
         <TagsListLabel titleText={POPULAR_TAGS_TITLE} />
       )}
-      {curatedTags.length > 0 && (
+      {hasCuratedTags && (
         <TagsListLabel titleText={CURATED_TAGS_TITLE} />
       )}
-      {curatedTags.length === 0 && popularTags.length > 0 && (
+      {!hasCuratedTags && hasPopularTags && (
         <TagsListBlock tags={popularTags} />
       )}
-      {curatedTags.length > 0 && <TagsListBlock tags={curatedTags} />}
-      {otherTags.length > 0 && <TagsListLabel titleText={OTHER_TAGS_TITLE} />}
-      {otherTags.length > 0 && <TagsListBlock tags={otherTags} />}
+      {hasCuratedTags && <TagsListBlock tags={curatedTags} />}
+      {hasOtherTags && <TagsListLabel titleText={OTHER_TAGS_TITLE} />}
+      {hasOtherTags && <TagsListBlock tags={otherTags} />}
     </div>
   );
 };

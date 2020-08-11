@@ -3,33 +3,37 @@
 
 @import 'variables';
 
-hr.header-hr {
+$browse-tags-link-font-size: 16px;
+
+.header-hr {
   border: 2px solid $brand-color-4;
+}
+
+.section-title {
+  margin-bottom: $spacer-2;
 }
 
 .tags-list {
   margin: 0 -4px;
 }
 
-@import 'variables';
-
 .browse-tags-link {
-  font-size: 16px;
+  font-size: $browse-tags-link-font-size;
   text-decoration: none;
   display: block;
   margin-top: $spacer-1;
 
-  &:hover,
+  &:link,
   &:visited,
-  &:active,
-  &:link {
+  &:hover,
+  &:active {
     text-decoration: none;
   }
 }
 
 .section-label {
   display: block;
-  font-weight: 400;
+  font-weight: $font-weight-body-regular;
   margin-top: $spacer-3;
   margin-bottom: $spacer-2;
 }
