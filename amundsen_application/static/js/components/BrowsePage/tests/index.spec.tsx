@@ -6,7 +6,7 @@ import * as DocumentTitle from 'react-document-title';
 
 import { shallow } from 'enzyme';
 
-import TagsList from 'components/common/TagsList';
+import TagsListContainer from 'components/Tags';
 import { BrowsePage } from '..';
 
 describe('BrowsePage', () => {
@@ -40,7 +40,7 @@ describe('BrowsePage', () => {
     });
 
     it('contains TagsList', () => {
-      expect(wrapper.contains(<TagsList shortTagList={false} />));
+      expect(wrapper.contains(<TagsListContainer shortTagsList={false} />));
     });
   });
 });
