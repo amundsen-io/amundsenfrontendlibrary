@@ -47,7 +47,7 @@ export class HomePage extends React.Component<HomePageProps> {
               />
             </div>
             <div className="home-element-container">
-              <TagsListContainer shortTagsList={false}/>
+              <TagsListContainer shortTagsList={true}/>
             </div>
             <div className="home-element-container">
               <MyBookmarks />

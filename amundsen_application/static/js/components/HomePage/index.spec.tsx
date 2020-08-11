@@ -47,9 +47,9 @@ describe('HomePage', () => {
       expect(element.props().path).toEqual('/search');
     });
 
-    it('contains TagsList', () => {
-      expect(wrapper.contains(<TagsList shortTagList />));
-    });
+    // it('contains TagsList', () => {
+    //   expect(wrapper.contains(<TagsList shortTagList />));
+    // });
 
     it('contains MyBookmarks', () => {
       expect(wrapper.contains(<MyBookmarks />));

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import ShimmeringTagListLoader from 'components/common/ShimmeringTagListLoader';
 import TagInfo from 'components/Tags/TagInfo';
@@ -13,6 +14,7 @@ import {
   BROWSE_MORE_TAGS_TEXT,
   OTHER_TAGS_TITLE,
   BROWSE_TAGS_TITLE,
+  BROWSE_PAGE_PATH,
 } from './constants';
 import './styles.scss';
 
@@ -68,17 +70,17 @@ const ShortTagsList: React.FC<TagsListProps> = ({
   return (
     <div className="short-tag-list">
       {curatedTags.length === 0 &&
-        popularTags.length > 0 && <TagsListLabel titleText={POPULAR_TAGS_TITLE}/>}
-      {curatedTags.length > 0 && <TagsListLabel titleText={CURATED_TAGS_TITLE}/>}
+        popularTags.length > 0 && <TagsListTitle titleText={POPULAR_TAGS_TITLE}/>}
+      {curatedTags.length > 0 && <TagsListTitle titleText={CURATED_TAGS_TITLE}/>}
       {curatedTags.length === 0 &&
         popularTags.length > 0 &&
         <TagsListBlock tags={popularTags}/>}
       {curatedTags.length > 0 && <TagsListBlock tags={curatedTags}/>}
-      {<span>
-        <a className="browse-tags-link" href="/browse">
+      <span>
+        <a className="browse-tags-link" href={BROWSE_PAGE_PATH}>
           {BROWSE_MORE_TAGS_TEXT}
         </a>
-      </span>}
+      </span>
     </div>
   );
 }
@@ -98,9 +100,9 @@ const LongTagsList: React.FC<TagsListProps> = ({
         {curatedTags.length === 0 && popularTags.length > 0 && <TagsListBlock tags={popularTags}/>}
         {curatedTags.length > 0 && <TagsListBlock tags={curatedTags}/>}
       {(otherTags.length > 0) &&
-        this.generateTagsSectionLabel(OTHER_TAGS_TITLE)}
+        <TagsListLabel titleText={OTHER_TAGS_TITLE}/>}
       {otherTags.length > 0 &&
-        this.generateTagInfo(otherTags)}
+        <TagsListBlock tags={otherTags}/>}
     </div>
   );
 }
@@ -125,6 +127,7 @@ const TagsList: React.FC<TagsListProps> = ({
     return <LongTagsList
       curatedTags={curatedTags}
       popularTags={popularTags}
+      otherTags={otherTags}
     />
   }
 }
