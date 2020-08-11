@@ -165,4 +165,23 @@ describe('Card', () => {
       });
     });
   });
+
+  describe('lifetime', () => {
+    describe('when clicking on an interactive card', () => {
+      it('should call the onClick handler', () => {
+        const clickSpy = jest.fn();
+        const { wrapper } = setup({
+          onClick: clickSpy,
+          href: 'testPath',
+        });
+        const expected = 1;
+
+        wrapper.find(Link).simulate('click');
+
+        const actual = clickSpy.mock.calls.length;
+
+        expect(actual).toEqual(expected);
+      });
+    });
+  });
 });
