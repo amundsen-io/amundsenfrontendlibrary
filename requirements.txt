@@ -36,7 +36,7 @@ mypy==0.660
 # PEP 484
 # License: PSF
 # Upstream url: https://github.com/python/typing
-typing==3.6.4
+typing==3.7.4.3
 
 # A lightweight WSGI web application framework
 # License: BSD
