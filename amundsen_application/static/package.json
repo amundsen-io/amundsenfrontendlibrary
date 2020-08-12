@@ -24,8 +24,8 @@
     "stylelint": "stylelint '**/*.scss'",
     "stylelint-fix": "stylelint --fix '**/*.scss'",
     "format": "prettier --loglevel warn --write \"**/*.{ts,tsx,css,scss}\"",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "storybook": "cross-env TS_NODE_PROJECT='tsconfig.webpack.json' start-storybook -p 6006",
+    "build-storybook": "cross-env TS_NODE_PROJECT='tsconfig.webpack.json' build-storybook"
   },
   "author": "",
   "license": "Apache-2.0",
