@@ -18,6 +18,9 @@ import PopularTables from 'components/common/PopularTables';
 import SearchBar from 'components/common/SearchBar';
 import TagsList from 'components/common/TagsList';
 import Announcements from 'components/common/Announcements';
+
+import { announcementsEnabled } from 'config/config-utils';
+
 import {
   SEARCH_BREADCRUMB_TEXT,
   HOMEPAGE_TITLE,
@@ -39,7 +42,11 @@ export class HomePage extends React.Component<HomePageProps> {
     return (
       <main className="container home-page">
         <div className="row">
-          <div className="col-xs-12 col-md-8">
+          <div
+            className={`col-xs-12 ${
+              announcementsEnabled() ? 'col-md-8' : 'col-md-offset-1 col-md-10'
+            }`}
+          >
             <h1 className="sr-only">{HOMEPAGE_TITLE}</h1>
             <SearchBar />
             <div className="filter-breadcrumb pull-right">
@@ -65,9 +72,11 @@ export class HomePage extends React.Component<HomePageProps> {
               <PopularTables />
             </div>
           </div>
-          <div className="col-xs-12 col-md-offset-1 col-md-3">
-            <Announcements />
-          </div>
+          {announcementsEnabled() && (
+            <div className="col-xs-12 col-md-offset-1 col-md-3">
+              <Announcements />
+            </div>
+          )}
         </div>
       </main>
     );
