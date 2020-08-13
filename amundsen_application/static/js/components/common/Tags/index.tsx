@@ -5,8 +5,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import ShimmeringTagListLoader from 'components/common/ShimmeringTagListLoader';
-import TagInfo from 'components/Tags/TagInfo';
 import { Tag } from 'interfaces';
 
 import { GlobalState } from 'ducks/rootReducer';
@@ -82,7 +80,11 @@ export const mapStateToProps = (state: GlobalState) => {
     );
     otherTags = allTagsNoZeros.filter(
       (tag) => curatedTagsList.indexOf(tag.tag_name) === -1
-    );
+    ).sort((a, b) => {
+      if (a.tag_name < b.tag_name) return -1;
+      if (a.tag_name > b.tag_name) return 1;
+      return 0;
+    });
   } else {
     const tagsByUsage = allTagsNoZeros
       .sort((a, b) => {

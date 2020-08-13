@@ -15,7 +15,7 @@ import PopularTables from 'components/common/PopularTables';
 import { resetSearchState } from 'ducks/search/reducer';
 import { UpdateSearchStateReset } from 'ducks/search/types';
 import SearchBar from 'components/common/SearchBar';
-import TagsListContainer from 'components/Tags';
+import TagsListContainer from 'components/common/Tags';
 import { SEARCH_BREADCRUMB_TEXT, HOMEPAGE_TITLE } from './constants';
 
 export interface DispatchFromProps {
