@@ -54,7 +54,7 @@
     "@storybook/addon-info": "^5.3.19",
     "@storybook/addon-links": "^5.3.19",
     "@storybook/addons": "^5.3.19",
-    "@storybook/react": "^5.3.19",
+    "@storybook/react": "^6.0.5",
     "@types/enzyme": "^3.10.5",
     "@types/jasmine-matchers": "^0.2.32",
     "@types/jest": "^24.9.1",
