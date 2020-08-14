@@ -48,7 +48,7 @@ describe('HomePage', () => {
     });
 
     it('contains TagsList', () => {
-      expect(wrapper.contains(<TagsListContainer shortTagsList/>));
+      expect(wrapper.contains(<TagsListContainer shortTagsList />));
     });
 
     it('contains MyBookmarks', () => {

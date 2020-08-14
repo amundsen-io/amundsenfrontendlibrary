@@ -53,7 +53,7 @@ describe('TagsList', () => {
       expect(actual).toEqual(expected);
     });
   });
-  
+
   describe('render shortTagsList with popular tags', () => {
     const { wrapper } = setup({
       popularTags,
