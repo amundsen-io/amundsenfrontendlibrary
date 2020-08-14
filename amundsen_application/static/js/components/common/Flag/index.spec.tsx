@@ -5,6 +5,7 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
+import { BadgeStyle } from 'config/config-types';
 import Flag, { CaseType, FlagProps, convertText } from '.';
 
 describe('Flag', () => {
@@ -21,15 +22,15 @@ describe('Flag', () => {
   describe('render', () => {
     it('renders span with correct default className', () => {
       expect(subject.find('span').props().className).toEqual(
-        'flag label label-default'
+        `flag label label-${BadgeStyle.DEFAULT}`
       );
     });
 
     it('renders span with correct custom className', () => {
-      props.labelStyle = 'primary';
+      props.labelStyle = BadgeStyle.PRIMARY;
       subject.setProps(props);
       expect(subject.find('span').props().className).toEqual(
-        'flag label label-primary'
+        `flag label label-${BadgeStyle.PRIMARY}`
       );
     });
 

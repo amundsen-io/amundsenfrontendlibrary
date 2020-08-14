@@ -5,6 +5,7 @@ import * as React from 'react';
 
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
+import { BadgeStyle } from 'config/config-types';
 
 export enum CaseType {
   LOWER_CASE = 'lowerCase',
@@ -15,7 +16,7 @@ export enum CaseType {
 export interface FlagProps {
   caseType?: string | null;
   text: string;
-  labelStyle?: string;
+  labelStyle?: BadgeStyle;
 }
 
 export function convertText(str: string, caseType: string): string {
@@ -32,7 +33,7 @@ export function convertText(str: string, caseType: string): string {
   }
 }
 
-const Flag: React.SFC<FlagProps> = ({
+const Flag: React.FC<FlagProps> = ({
   caseType,
   text,
   labelStyle,
@@ -41,7 +42,9 @@ const Flag: React.SFC<FlagProps> = ({
   // https://getbootstrap.com/docs/4.1/components/badge/
   return (
     <span className={`flag label label-${labelStyle}`}>
-      {convertText(text, caseType)}
+      <div className={`badge-overlay-${labelStyle}`}>
+        {convertText(text, caseType)}
+      </div>
     </span>
   );
 };
@@ -49,7 +52,7 @@ const Flag: React.SFC<FlagProps> = ({
 Flag.defaultProps = {
   caseType: null,
   text: '',
-  labelStyle: 'default',
+  labelStyle: BadgeStyle.DEFAULT,
 };
 
 export default Flag;

@@ -148,7 +148,6 @@ const globalState: GlobalState = {
   },
   tableMetadata: {
     isLoading: true,
-    lastIndexed: 1555632106,
     preview: {
       data: {},
       status: null,
@@ -172,13 +171,14 @@ const globalState: GlobalState = {
       source: { source: '', source_type: '' },
       resource_reports: [],
       watermarks: [],
-      programmatic_descriptions: [],
+      programmatic_descriptions: {},
     },
     tableOwners: {
       isLoading: true,
       owners: {},
     },
   },
+  lastIndexed: { lastIndexed: 1555632106 },
   tags: {
     allTags: {
       isLoading: false,

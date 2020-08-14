@@ -10,6 +10,7 @@ import Flag from 'components/common/Flag';
 import { Link } from 'react-router-dom';
 
 import { ResourceType } from 'interfaces';
+import { BadgeStyle } from 'config/config-types';
 import UserListItem, { UserListItemProps } from '.';
 
 describe('UserListItem', () => {
@@ -209,7 +210,7 @@ describe('UserListItem', () => {
         expect(flagComponent.exists()).toBe(true);
         expect(flagComponent.props()).toMatchObject({
           text: 'Alumni',
-          labelStyle: 'danger',
+          labelStyle: BadgeStyle.DANGER,
         });
       });
 
