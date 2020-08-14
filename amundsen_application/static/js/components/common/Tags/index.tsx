@@ -78,13 +78,13 @@ export const mapStateToProps = (state: GlobalState) => {
     curatedTags = allTags.filter(
       (tag) => curatedTagsList.indexOf(tag.tag_name) !== -1
     );
-    otherTags = allTagsNoZeros.filter(
-      (tag) => curatedTagsList.indexOf(tag.tag_name) === -1
-    ).sort((a, b) => {
-      if (a.tag_name < b.tag_name) return -1;
-      if (a.tag_name > b.tag_name) return 1;
-      return 0;
-    });
+    otherTags = allTagsNoZeros
+      .filter((tag) => curatedTagsList.indexOf(tag.tag_name) === -1)
+      .sort((a, b) => {
+        if (a.tag_name < b.tag_name) return -1;
+        if (a.tag_name > b.tag_name) return 1;
+        return 0;
+      });
   } else {
     const tagsByUsage = allTagsNoZeros
       .sort((a, b) => {

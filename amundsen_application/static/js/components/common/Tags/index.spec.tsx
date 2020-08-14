@@ -23,8 +23,8 @@ describe('TagsListContainer', () => {
     });
 
     it('requests all the tags', () => {
-      const expected = {type: 'amundsen/allTags/GET_REQUEST'};
-      
+      const expected = { type: 'amundsen/allTags/GET_REQUEST' };
+
       props.getAllTags();
 
       expect(dispatch.mock.calls[0][0]).toEqual(expected);
@@ -35,7 +35,7 @@ describe('TagsListContainer', () => {
     it('sets isLoading on props', () => {
       const expected = globalState.tags.allTags.isLoading;
       const actual = mapStateToProps(globalState).isLoading;
-    
+
       expect(actual).toEqual(expected);
     });
 
@@ -52,11 +52,10 @@ describe('TagsListContainer', () => {
       expectedPopularTags = [];
     });
 
-  
     it('sets curatedTags on the props', () => {
       expect(result.curatedTags).toEqual(expectedCuratedTags);
     });
-  
+
     it('sets otherTags on the props', () => {
       expect(result.otherTags).toEqual(expectedOtherTags);
     });
@@ -64,7 +63,5 @@ describe('TagsListContainer', () => {
     it('sets popularTags on the props', () => {
       expect(result.popularTags).toEqual(expectedPopularTags);
     });
-
-
   });
 });
