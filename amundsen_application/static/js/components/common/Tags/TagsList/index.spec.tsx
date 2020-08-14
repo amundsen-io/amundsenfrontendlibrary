@@ -38,6 +38,22 @@ const setup = (propOverrides?: Partial<TagsListProps>) => {
 };
 
 describe('TagsList', () => {
+  describe('render shimmer loader whe isLoading is true', () => {
+    const { wrapper } = setup({
+      popularTags,
+      otherTags,
+      isLoading: true,
+      shortTagsList: true,
+    });
+
+    it('should render ShimmeringTagListLoader', () => {
+      const expected = 1;
+      const actual = wrapper.find('.shimmer-tag-list-loader').length;
+
+      expect(actual).toEqual(expected);
+    });
+  });
+  
   describe('render shortTagsList with popular tags', () => {
     const { wrapper } = setup({
       popularTags,
