@@ -33,9 +33,7 @@ export const Typography = () => {
   );
 };
 
-Typography.story = {
-  name: 'Headings',
-};
+Typography.storyName = 'Headings';
 
 export const Body = () => {
   return (
@@ -61,6 +59,4 @@ export const Body = () => {
   );
 };
 
-Body.story = {
-  name: 'Body Text',
-};
+Body.storyName = 'Body Text';

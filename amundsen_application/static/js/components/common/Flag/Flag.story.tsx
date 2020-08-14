@@ -11,6 +11,4 @@ export const SimpleFlag = () => {
   return <Flag caseType={CaseType.LOWER_CASE} text="Test Flag" />;
 };
 
-SimpleFlag.story = {
-  name: 'simple flag',
-};
+SimpleFlag.storyName = 'simple flag';
