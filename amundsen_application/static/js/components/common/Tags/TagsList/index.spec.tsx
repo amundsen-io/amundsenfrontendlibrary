@@ -157,11 +157,8 @@ describe('TagsList', () => {
       shortTagsList: false,
     });
 
-    const allChildren = [];
-    wrapper.children().forEach((child) => {
-      allChildren.push(child.shallow());
-    });
-
+    const allChildren = wrapper.children().map((child) => child.shallow());
+    
     it('should render longTagsList', () => {
       const expected = 1;
       const actual = wrapper.find('.full-tag-list').length;
