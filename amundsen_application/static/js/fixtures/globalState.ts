@@ -198,7 +198,7 @@ const globalState: GlobalState = {
         {
           tag_name: 'zero_count_tag_1',
           tag_count: 0,
-        }
+        },
       ],
     },
     resourceTags: {

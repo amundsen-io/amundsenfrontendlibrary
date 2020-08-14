@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { Link, BrowserRouter } from 'react-router-dom';
-import configureStore from 'redux-mock-store';
 
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 
-import { TagInfo } from 'components/common/Tags/TagInfo';
-import { Provider } from 'react-redux';
+import { strict } from 'assert';
+import { all } from 'redux-saga/effects';
 import TagsList, { TagsListProps } from '.';
 
 const POPULAR_TAGS_NUMBER = 20;
@@ -107,15 +106,7 @@ const setup = (propOverrides?: Partial<TagsListProps>) => {
     otherTags: [],
     ...propOverrides,
   };
-  // TagsList.prototype.
-  // jest.mock('components/common/Tags/TagInfo');
-  const wrapper = mount<typeof TagsList>(
-    // <Provider store={store}>
-    <BrowserRouter>
-      <TagsList {...props} />
-    </BrowserRouter>
-    // </Provider>
-  );
+  const wrapper = shallow<typeof TagsList>(<TagsList {...props} />).dive();
   return { props, wrapper };
 };
 
@@ -136,15 +127,16 @@ describe('TagsList', () => {
     });
 
     it('should render TagsListTitle', () => {
+      wrapper.children();
       const expected = 1;
-      const actual = wrapper.find('.section-title').length;
+      const actual = wrapper.childAt(0).shallow().find('.section-title').length;
 
       expect(actual).toEqual(expected);
     });
 
     it('should render TagsListBlock', () => {
       const expected = 1;
-      const actual = wrapper.find('.tags-list').length;
+      const actual = wrapper.childAt(1).shallow().find('.tags-list').length;
 
       expect(actual).toEqual(expected);
     });
@@ -165,31 +157,53 @@ describe('TagsList', () => {
       shortTagsList: false,
     });
 
+    const allChildren = [];
+    wrapper.children().forEach((child) => {
+      allChildren.push(child.shallow());
+    });
+
     it('should render longTagsList', () => {
       const expected = 1;
-      const actual = wrapper.find('.long-tag-list').length;
+      const actual = wrapper.find('.full-tag-list').length;
 
       expect(actual).toEqual(expected);
     });
 
     it('should render TagsListTitle', () => {
       const expected = 1;
-      const actual = wrapper.find('#browse-header').length;
+      let actual = 0;
+
+      allChildren.forEach((comp) => {
+        if (comp.find('#browse-header').exists()) {
+          actual++;
+        }
+      });
 
       expect(actual).toEqual(expected);
     });
 
     it('should render TagsListLabels for both sections', () => {
       const expected = 2;
-      const actual = wrapper.find('.section-label').length;
+      let actual = 0;
+
+      allChildren.forEach((comp) => {
+        if (comp.find('.section-label').exists()) {
+          actual++;
+        }
+      });
 
       expect(actual).toEqual(expected);
     });
 
     it('should render TagsListBlock for both Popular Tags section and Other Tags section', () => {
       const expected = 2;
-      const actual = wrapper.find('.tags-list').length;
+      let actual = 0;
 
+      allChildren.forEach((comp) => {
+        if (comp.find('.tags-list').exists()) {
+          actual++;
+        }
+      });
       expect(actual).toEqual(expected);
     });
   });
