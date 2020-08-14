@@ -9,7 +9,7 @@ import Breadcrumb from 'components/common/Breadcrumb';
 import MyBookmarks from 'components/common/Bookmark/MyBookmarks';
 import PopularTables from 'components/common/PopularTables';
 import SearchBar from 'components/common/SearchBar';
-import TagsList from 'components/common/Tags';
+import TagsListContainer from 'components/common/Tags';
 
 import { getMockRouterProps } from 'fixtures/mockRouter';
 import { mapDispatchToProps, HomePage, HomePageProps } from '.';
@@ -47,9 +47,9 @@ describe('HomePage', () => {
       expect(element.props().path).toEqual('/search');
     });
 
-    // it('contains TagsList', () => {
-    //   expect(wrapper.contains(<TagsList shortTagList />));
-    // });
+    it('contains TagsList', () => {
+      expect(wrapper.contains(<TagsListContainer shortTagsList/>));
+    });
 
     it('contains MyBookmarks', () => {
       expect(wrapper.contains(<MyBookmarks />));
