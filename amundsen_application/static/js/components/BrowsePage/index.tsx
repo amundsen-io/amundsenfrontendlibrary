@@ -12,7 +12,7 @@ export class BrowsePage extends React.Component {
       <DocumentTitle title="Browse - Amundsen">
         <main className="container">
           <div className="row">
-            <div className="col-xs-12">
+            <div className="col-xs-12 col-md-10 col-md-offset-1">
               <h1 className="h3" id="browse-header">
                 Browse Tags
               </h1>

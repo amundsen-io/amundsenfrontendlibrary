@@ -3,6 +3,150 @@
 
 @import 'variables';
 
+// New Typography styles based on LPL
+// Use these styles going forward
+
+// Placeholder selectors
+// Ref: http://thesassway.com/intermediate/understanding-placeholder-selectors
+
+%lpl-headline-w1 {
+  font-family: $lpl-heading-font-family;
+  font-size: $w1-headline-font-size;
+  line-height: $w1-headline-line-height;
+  font-weight: $title-font-weight;
+}
+
+%lpl-headline-w2 {
+  font-family: $lpl-heading-font-family;
+  font-size: $w2-headline-font-size;
+  line-height: $w2-headline-line-height;
+  font-weight: $title-font-weight;
+}
+
+%lpl-headline-w3 {
+  font-family: $lpl-heading-font-family;
+  font-size: $w3-headline-font-size;
+  line-height: $w3-headline-line-height;
+  font-weight: $title-font-weight;
+}
+
+%lpl-title-w1 {
+  font-family: $lpl-body-font-family;
+  font-size: $w1-font-size;
+  line-height: $w1-line-height;
+  font-weight: $title-font-weight;
+}
+
+%lpl-title-w2 {
+  font-family: $lpl-body-font-family;
+  font-size: $w2-font-size;
+  line-height: $w2-line-height;
+  font-weight: $title-font-weight;
+}
+
+%lpl-title-w3 {
+  font-family: $lpl-body-font-family;
+  font-size: $w3-font-size;
+  line-height: $w3-line-height;
+  font-weight: $title-font-weight;
+}
+
+%lpl-subtitle-w1 {
+  font-family: $lpl-body-font-family;
+  font-size: $w1-font-size;
+  line-height: $w1-line-height;
+  font-weight: $subtitle-font-weight;
+}
+
+%lpl-subtitle-w2 {
+  font-family: $lpl-body-font-family;
+  font-size: $w2-font-size;
+  line-height: $w2-line-height;
+  font-weight: $subtitle-font-weight;
+}
+
+%lpl-subtitle-w3 {
+  font-family: $lpl-body-font-family;
+  font-size: $w3-font-size;
+  line-height: $w3-line-height;
+  font-weight: $subtitle-font-weight;
+}
+
+%lpl-body-w1 {
+  font-family: $lpl-body-font-family;
+  font-size: $w1-font-size;
+  line-height: $w1-line-height;
+  font-weight: $body-font-weight;
+}
+
+%lpl-body-w2 {
+  font-family: $lpl-body-font-family;
+  font-size: $w2-font-size;
+  line-height: $w2-line-height;
+  font-weight: $body-font-weight;
+}
+
+%lpl-body-w3 {
+  font-family: $lpl-body-font-family;
+  font-size: $w3-font-size;
+  line-height: $w3-line-height;
+  font-weight: $body-font-weight;
+}
+
+// Typography classes
+// Headlines
+.lpl-headline-w1 {
+  @extend %lpl-headline-w1;
+}
+
+.lpl-headline-w2 {
+  @extend %lpl-headline-w2;
+}
+
+.lpl-headline-w3 {
+  @extend %lpl-headline-w3;
+}
+
+// Titles
+.lpl-title-w1 {
+  @extend %lpl-title-w1;
+}
+
+.lpl-title-w2 {
+  @extend %lpl-title-w2;
+}
+
+.lpl-title-w3 {
+  @extend %lpl-title-w3;
+}
+
+// Subtitles
+.lpl-subtitle-w1 {
+  @extend %lpl-subtitle-w1;
+}
+
+.lpl-subtitle-w2 {
+  @extend %lpl-subtitle-w2;
+}
+
+.lpl-subtitle-w3 {
+  @extend %lpl-subtitle-w3;
+}
+
+// Body
+.lpl-body-w1 {
+  @extend %lpl-body-w1;
+}
+
+.lpl-body-w2 {
+  @extend %lpl-body-w2;
+}
+
+.lpl-body-w3 {
+  @extend %lpl-body-w3;
+}
+
+// Typography Helpers
 .text-center {
   text-align: center;
 }
@@ -15,6 +159,40 @@
   text-align: right;
 }
 
+.truncated {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Text for Screen Readers only
+// Reference: Bootstrap 4 codebase
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// From https://gist.github.com/igorescobar/d74a76629bab47d601d71c3a6e010ff2
+@mixin truncate($font-size, $line-height, $lines-to-show) {
+  display: block; // Fallback for non-webkit
+  display: -webkit-box;
+  font-size: $font-size;
+  line-height: $line-height;
+  -webkit-line-clamp: $lines-to-show;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Old typography styles
+// DEPRECATED - Don't use!
 h1,
 h2,
 h3,
@@ -183,36 +361,4 @@ body {
 
 .text-primary {
   color: $text-primary;
-}
-
-.truncated {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-// Text for Screen Readers only
-// Reference: Bootstrap 4 codebase
-.sr-only {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-}
-
-// From https://gist.github.com/igorescobar/d74a76629bab47d601d71c3a6e010ff2
-@mixin truncate($font-size, $line-height, $lines-to-show) {
-  display: block; // Fallback for non-webkit
-  display: -webkit-box;
-  font-size: $font-size;
-  line-height: $line-height;
-  -webkit-line-clamp: $lines-to-show;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
