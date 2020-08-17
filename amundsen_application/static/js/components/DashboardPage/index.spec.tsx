@@ -10,13 +10,11 @@ import { shallow } from 'enzyme';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
-import Flag from 'components/common/Flag';
 import ResourceList from 'components/common/ResourceList';
 import TabsComponent from 'components/common/TabsComponent';
 import { dashboardMetadata } from 'fixtures/metadata/dashboard';
 import { NO_TIMESTAMP_TEXT } from 'components/constants';
 import { ResourceType } from 'interfaces';
-import { BadgeStyle } from 'config/config-types';
 import ChartList from './ChartList';
 import DashboardOwnerEditor from './DashboardOwnerEditor';
 import ImagePreview from './ImagePreview';
@@ -139,26 +137,6 @@ describe('DashboardPage', () => {
     });
   });
 
-  describe('mapStatusToStyle', () => {
-    let wrapper;
-
-    beforeAll(() => {
-      ({ wrapper } = setup());
-    });
-
-    it('returns BadgeStyle.SUCCESS if status === LAST_RUN_SUCCEEDED', () => {
-      expect(
-        wrapper.instance().mapStatusToStyle(Constants.LAST_RUN_SUCCEEDED)
-      ).toBe(BadgeStyle.SUCCESS);
-    });
-
-    it('returns BadgeStyle.DANGER if status !== LAST_RUN_SUCCEEDED', () => {
-      expect(wrapper.instance().mapStatusToStyle('anythingelse')).toBe(
-        BadgeStyle.DANGER
-      );
-    });
-  });
-
   describe('render', () => {
     const { props, wrapper } = setup();
 
@@ -215,20 +193,20 @@ describe('DashboardPage', () => {
       expect(wrapper.find(DashboardOwnerEditor).exists()).toBe(true);
     });
 
-    it('renders a Flag for last run state', () => {
-      const mockStyle = BadgeStyle.DANGER;
-      const mapStatusToStyleSpy = jest
-        .spyOn(wrapper.instance(), 'mapStatusToStyle')
-        .mockImplementationOnce(() => mockStyle);
-      wrapper.instance().forceUpdate();
-      const element = wrapper.find('.last-run-state').find(Flag);
+    // it('renders a Flag for last run state', () => {
+    //   const mockStyle = BadgeStyle.DANGER;
+    //   const mapStatusToStyleSpy = jest
+    //     .spyOn(wrapper.instance(), 'mapStatusToStyle')
+    //     .mockImplementationOnce(() => mockStyle);
+    //   wrapper.instance().forceUpdate();
+    //   const element = wrapper.find('.last-run-state').find(Flag);
 
-      expect(element.props().text).toBe(props.dashboard.last_run_state);
-      expect(mapStatusToStyleSpy).toHaveBeenCalledWith(
-        props.dashboard.last_run_state
-      );
-      expect(element.props().labelStyle).toBe(mockStyle);
-    });
+    //   expect(element.props().text).toBe(props.dashboard.last_run_state);
+    //   expect(mapStatusToStyleSpy).toHaveBeenCalledWith(
+    //     props.dashboard.last_run_state
+    //   );
+    //   expect(element.props().labelStyle).toBe(mockStyle);
+    // });
 
     it('renders an ImagePreview with correct props', () => {
       expect(wrapper.find(ImagePreview).props().uri).toBe(wrapper.state().uri);
