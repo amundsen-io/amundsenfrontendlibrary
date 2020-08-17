@@ -38,7 +38,7 @@ interface OwnerAvatarLabelProps extends AvatarLabelProps {
 
 export interface StateFromProps {
   isLoading: boolean;
-  itemProps: { [id: string]: OwnerAvatarLabelProps };
+  itemProps: OwnerItemProps;
 }
 
 export type OwnerEditorProps = ComponentProps &
@@ -46,9 +46,11 @@ export type OwnerEditorProps = ComponentProps &
   StateFromProps &
   EditableSectionChildProps;
 
+export type OwnerItemProps = { [id: string]: OwnerAvatarLabelProps };
+
 interface OwnerEditorState {
   errorText: string | null;
-  itemProps: { [id: string]: OwnerAvatarLabelProps };
+  itemProps: OwnerItemProps;
   tempItemProps: { [id: string]: AvatarLabelProps };
 }
 
