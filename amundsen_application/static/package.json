@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "cross-env TS_NODE_PROJECT='tsconfig.webpack.json' webpack --progress --config webpack.prod.ts",
+    "build:storybook": "cross-env TS_NODE_PROJECT='tsconfig.webpack.json' build-storybook",
     "dev-build": "cross-env TS_NODE_PROJECT='tsconfig.webpack.json' webpack --progress --config webpack.dev.ts",
     "test": "cross-env TZ=UTC jest --coverage --collectCoverageFrom=js/**/*.{js,jsx,ts,tsx}",
     "posttest": "npm run format",
@@ -24,8 +25,7 @@
     "stylelint": "stylelint '**/*.scss'",
     "stylelint-fix": "stylelint --fix '**/*.scss'",
     "format": "prettier --loglevel warn --write \"**/*.{ts,tsx,css,scss}\"",
-    "storybook": "cross-env TS_NODE_PROJECT='tsconfig.webpack.json' start-storybook -p 6006",
-    "build-storybook": "cross-env TS_NODE_PROJECT='tsconfig.webpack.json' build-storybook"
+    "storybook": "cross-env TS_NODE_PROJECT='tsconfig.webpack.json' start-storybook -p 6006"
   },
   "author": "",
   "license": "Apache-2.0",

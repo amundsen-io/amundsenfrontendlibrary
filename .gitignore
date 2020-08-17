@@ -24,6 +24,7 @@ env
 
 amundsen_application/.*/
 dist/
+static/storybook-static/
 node_modules/
 jest
 .coverage
