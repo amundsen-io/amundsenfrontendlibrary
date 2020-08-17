@@ -13,7 +13,6 @@ import * as ReactMarkdown from 'react-markdown';
 import AvatarLabel from 'components/common/AvatarLabel';
 import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
-import Flag from 'components/common/Flag';
 import EditableSection from 'components/common/EditableSection';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import TabsComponent from 'components/common/TabsComponent';
@@ -24,6 +23,7 @@ import { logClick } from 'ducks/utilMethods';
 import { DashboardMetadata } from 'interfaces/Dashboard';
 import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
+import RunStateContainer from 'components/DashboardPage/RunState';
 import { formatDateTimeShort } from 'utils/dateUtils';
 import ResourceList from 'components/common/ResourceList';
 import {
@@ -31,7 +31,6 @@ import {
   EDIT_DESC_TEXT,
   DASHBOARD_OWNER_SOURCE,
   DASHBOARD_SOURCE,
-  LAST_RUN_SUCCEEDED,
   NO_OWNER_TEXT,
   TABLES_PER_PAGE,
 } from 'components/DashboardPage/constants';
@@ -102,13 +101,6 @@ export class DashboardPage extends React.Component<
       this.props.getDashboard({ source, uri, searchIndex: index });
     }
   }
-
-  mapStatusToStyle = (status: string): BadgeStyle => {
-    if (status === LAST_RUN_SUCCEEDED) {
-      return BadgeStyle.SUCCESS;
-    }
-    return BadgeStyle.DANGER;
-  };
 
   renderTabs() {
     const tabInfo = [];
@@ -315,13 +307,9 @@ export class DashboardPage extends React.Component<
                         : NO_TIMESTAMP_TEXT}
                     </time>
                     <div className="last-run-state">
-                      <Flag
-                        caseType="sentenceCase"
-                        text={dashboard.last_run_state}
-                        labelStyle={this.mapStatusToStyle(
-                          dashboard.last_run_state
-                        )}
-                      />
+                      <RunStateContainer
+                        lastRunState={dashboard.last_run_state}
+                        />
                     </div>
                   </div>
                 </section>

@@ -1,0 +1,38 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
+@import 'variables';
+
+.missed-icon,
+.hit-icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 100%;
+    display: inline-block;
+    margin-bottom: -1px;
+}
+.missed-icon {
+    background-color: #DB3615;
+    .exclamation-top {
+        width: 2px;
+        height: 4px;
+        background-color: #F2F2F2;
+        margin: 4px 6px 3px;
+    }
+    .exclamation-bottom {
+        width: 2px;
+        height: 2px;
+        border-radius: 100%;
+        background-color: #F2F2F2;
+        margin: -2px 6px;
+    }
+}
+
+.hit-icon{
+    background-color: #00824C;
+}
+
+.status-text {
+    display: inline-block;
+    margin-left: $spacer-1;
+}
