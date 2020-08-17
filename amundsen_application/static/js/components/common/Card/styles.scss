@@ -6,18 +6,12 @@ $shimmer-loader-row-height: 16px;
 $shimmer-loader-row-min-width: 90;
 $shimmer-loader-row-max-width: 230;
 
-$card-height: 188px;
-$card-header-height: 66px;
+$card-height: 180px;
+$card-header-height: 60px;
 $card-border-size: 1px;
 $card-focus-border-size: 2px;
 
-$card-title-font-size: 18px;
-$card-title-line-height: 22px;
 $card-title-max-lines: 2;
-$card-subtitle-font-size: 14px;
-$card-subtitle-line-height: 22px;
-$card-copy-font-size: 14px;
-$card-copy-line-height: 16px;
 $card-copy-max-lines: 3;
 
 .card {
@@ -49,44 +43,30 @@ $card-copy-max-lines: 3;
 }
 
 .card-title {
-  font-family: $font-family-body;
-  font-size: $card-title-font-size;
-  line-height: $card-title-line-height;
-  font-weight: $font-weight-body-bold;
+  @extend %text-title-w2;
+
   color: $text-primary;
 
-  @include truncate(
-    $card-title-font-size,
-    $card-title-line-height,
-    $card-title-max-lines
-  );
+  @include truncate($w2-font-size, $w2-line-height, $card-title-max-lines);
 }
 
 .card-subtitle {
-  font-family: $font-family-body;
-  font-size: $card-subtitle-font-size;
-  line-height: $card-subtitle-line-height;
-  font-weight: $font-weight-body-regular;
+  @extend %text-body-w3;
+
   color: $text-secondary;
 }
 
 .card-copy {
-  font-family: $font-family-body;
-  font-size: $card-copy-font-size;
-  line-height: $card-copy-line-height;
-  font-weight: $font-weight-body-regular;
+  @extend %text-body-w3;
+
   color: $text-primary;
   margin: 0;
 
-  @include truncate(
-    $card-copy-font-size,
-    $card-copy-line-height,
-    $card-copy-max-lines
-  );
+  @include truncate($w3-font-size, $w3-line-height, $card-copy-max-lines);
 }
 
 .card-body {
-  padding-top: $spacer-3;
+  padding-top: $spacer-2;
 }
 
 // Shimmer Loader
@@ -106,10 +86,9 @@ $card-copy-max-lines: 3;
 
 @each $line in $shimmer-loader-items {
   .shimmer-row-line--#{$line} {
-    width:
-      (
+    width: (
         random($shimmer-loader-row-max-width - $shimmer-loader-row-min-width) +
-        $shimmer-loader-row-min-width
+          $shimmer-loader-row-min-width
       ) +
       px;
   }

@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'typography-default';
 
 $more-link-size: 18px;
 $more-link-line-height: 21px;
@@ -6,8 +7,8 @@ $message-size: 14px;
 $message-line-height: 16px;
 $message-border-size: 1px;
 
-.announcements-list-container {
-  margin-top: $spacer-3;
+.announcements-list-title {
+  @extend %text-title-w1;
 }
 
 .announcements-list {

@@ -63,7 +63,7 @@ export class AnnouncementPage extends React.Component<AnnouncementPageProps> {
       <DocumentTitle title="Announcements - Amundsen">
         <main className="container announcement-container">
           <div className="row">
-            <div className="col-xs-12">
+            <div className="col-xs-12 col-md-10 col-md-offset-1">
               <h1 id="announcement-header" className="h3">
                 {ANNOUNCEMENTS_HEADER_TEXT}
               </h1>
