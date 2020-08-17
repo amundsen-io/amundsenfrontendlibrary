@@ -9,85 +9,85 @@
 // Placeholder selectors
 // Ref: http://thesassway.com/intermediate/understanding-placeholder-selectors
 
-%lpl-headline-w1 {
-  font-family: $lpl-heading-font-family;
+%text-headline-w1 {
+  font-family: $text-heading-font-family;
   font-size: $w1-headline-font-size;
   line-height: $w1-headline-line-height;
   font-weight: $title-font-weight;
 }
 
-%lpl-headline-w2 {
-  font-family: $lpl-heading-font-family;
+%text-headline-w2 {
+  font-family: $text-heading-font-family;
   font-size: $w2-headline-font-size;
   line-height: $w2-headline-line-height;
   font-weight: $title-font-weight;
 }
 
-%lpl-headline-w3 {
-  font-family: $lpl-heading-font-family;
+%text-headline-w3 {
+  font-family: $text-heading-font-family;
   font-size: $w3-headline-font-size;
   line-height: $w3-headline-line-height;
   font-weight: $title-font-weight;
 }
 
-%lpl-title-w1 {
-  font-family: $lpl-body-font-family;
+%text-title-w1 {
+  font-family: $text-body-font-family;
   font-size: $w1-font-size;
   line-height: $w1-line-height;
   font-weight: $title-font-weight;
 }
 
-%lpl-title-w2 {
-  font-family: $lpl-body-font-family;
+%text-title-w2 {
+  font-family: $text-body-font-family;
   font-size: $w2-font-size;
   line-height: $w2-line-height;
   font-weight: $title-font-weight;
 }
 
-%lpl-title-w3 {
-  font-family: $lpl-body-font-family;
+%text-title-w3 {
+  font-family: $text-body-font-family;
   font-size: $w3-font-size;
   line-height: $w3-line-height;
   font-weight: $title-font-weight;
 }
 
-%lpl-subtitle-w1 {
-  font-family: $lpl-body-font-family;
+%text-subtitle-w1 {
+  font-family: $text-body-font-family;
   font-size: $w1-font-size;
   line-height: $w1-line-height;
   font-weight: $subtitle-font-weight;
 }
 
-%lpl-subtitle-w2 {
-  font-family: $lpl-body-font-family;
+%text-subtitle-w2 {
+  font-family: $text-body-font-family;
   font-size: $w2-font-size;
   line-height: $w2-line-height;
   font-weight: $subtitle-font-weight;
 }
 
-%lpl-subtitle-w3 {
-  font-family: $lpl-body-font-family;
+%text-subtitle-w3 {
+  font-family: $text-body-font-family;
   font-size: $w3-font-size;
   line-height: $w3-line-height;
   font-weight: $subtitle-font-weight;
 }
 
-%lpl-body-w1 {
-  font-family: $lpl-body-font-family;
+%text-body-w1 {
+  font-family: $text-body-font-family;
   font-size: $w1-font-size;
   line-height: $w1-line-height;
   font-weight: $body-font-weight;
 }
 
-%lpl-body-w2 {
-  font-family: $lpl-body-font-family;
+%text-body-w2 {
+  font-family: $text-body-font-family;
   font-size: $w2-font-size;
   line-height: $w2-line-height;
   font-weight: $body-font-weight;
 }
 
-%lpl-body-w3 {
-  font-family: $lpl-body-font-family;
+%text-body-w3 {
+  font-family: $text-body-font-family;
   font-size: $w3-font-size;
   line-height: $w3-line-height;
   font-weight: $body-font-weight;
@@ -95,55 +95,55 @@
 
 // Typography classes
 // Headlines
-.lpl-headline-w1 {
-  @extend %lpl-headline-w1;
+.text-headline-w1 {
+  @extend %text-headline-w1;
 }
 
-.lpl-headline-w2 {
-  @extend %lpl-headline-w2;
+.text-headline-w2 {
+  @extend %text-headline-w2;
 }
 
-.lpl-headline-w3 {
-  @extend %lpl-headline-w3;
+.text-headline-w3 {
+  @extend %text-headline-w3;
 }
 
 // Titles
-.lpl-title-w1 {
-  @extend %lpl-title-w1;
+.text-title-w1 {
+  @extend %text-title-w1;
 }
 
-.lpl-title-w2 {
-  @extend %lpl-title-w2;
+.text-title-w2 {
+  @extend %text-title-w2;
 }
 
-.lpl-title-w3 {
-  @extend %lpl-title-w3;
+.text-title-w3 {
+  @extend %text-title-w3;
 }
 
 // Subtitles
-.lpl-subtitle-w1 {
-  @extend %lpl-subtitle-w1;
+.text-subtitle-w1 {
+  @extend %text-subtitle-w1;
 }
 
-.lpl-subtitle-w2 {
-  @extend %lpl-subtitle-w2;
+.text-subtitle-w2 {
+  @extend %text-subtitle-w2;
 }
 
-.lpl-subtitle-w3 {
-  @extend %lpl-subtitle-w3;
+.text-subtitle-w3 {
+  @extend %text-subtitle-w3;
 }
 
 // Body
-.lpl-body-w1 {
-  @extend %lpl-body-w1;
+.text-body-w1 {
+  @extend %text-body-w1;
 }
 
-.lpl-body-w2 {
-  @extend %lpl-body-w2;
+.text-body-w2 {
+  @extend %text-body-w2;
 }
 
-.lpl-body-w3 {
-  @extend %lpl-body-w3;
+.text-body-w3 {
+  @extend %text-body-w3;
 }
 
 // Typography Helpers

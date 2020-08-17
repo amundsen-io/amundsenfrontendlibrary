@@ -43,7 +43,7 @@ $card-copy-max-lines: 3;
 }
 
 .card-title {
-  @extend %lpl-title-w2;
+  @extend %text-title-w2;
 
   color: $text-primary;
 
@@ -51,13 +51,13 @@ $card-copy-max-lines: 3;
 }
 
 .card-subtitle {
-  @extend %lpl-body-w3;
+  @extend %text-body-w3;
 
   color: $text-secondary;
 }
 
 .card-copy {
-  @extend %lpl-body-w3;
+  @extend %text-body-w3;
 
   color: $text-primary;
   margin: 0;
@@ -86,10 +86,9 @@ $card-copy-max-lines: 3;
 
 @each $line in $shimmer-loader-items {
   .shimmer-row-line--#{$line} {
-    width:
-      (
+    width: (
         random($shimmer-loader-row-max-width - $shimmer-loader-row-min-width) +
-        $shimmer-loader-row-min-width
+          $shimmer-loader-row-min-width
       ) +
       px;
   }
