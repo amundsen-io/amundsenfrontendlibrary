@@ -204,20 +204,13 @@ describe('DashboardPage', () => {
       });
     });
 
-    // it('renders a Flag for last run state', () => {
-    //   const mockStyle = BadgeStyle.DANGER;
-    //   const mapStatusToStyleSpy = jest
-    //     .spyOn(wrapper.instance(), 'mapStatusToStyle')
-    //     .mockImplementationOnce(() => mockStyle);
-    //   wrapper.instance().forceUpdate();
-    //   const element = wrapper.find('.last-run-state').find(Flag);
+    it('renders a RunStateContainer for last run state', () => {
+      const expected = 1;
+      const actual = wrapper.find('.last-run-state').find('RunStateContainer').length;
 
-    //   expect(element.props().text).toBe(props.dashboard.last_run_state);
-    //   expect(mapStatusToStyleSpy).toHaveBeenCalledWith(
-    //     props.dashboard.last_run_state
-    //   );
-    //   expect(element.props().labelStyle).toBe(mockStyle);
-    // });
+    expect(actual).toEqual(expected);
+
+    });
 
     it('renders an ImagePreview with correct props', () => {
       expect(wrapper.find(ImagePreview).props().uri).toBe(wrapper.state().uri);
