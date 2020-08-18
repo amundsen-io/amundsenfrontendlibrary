@@ -298,7 +298,7 @@ export class DashboardPage extends React.Component<
                     <div className="last-run-state">
                       <RunStateContainer
                         lastRunState={dashboard.last_run_state}
-                        />
+                      />
                     </div>
                   </div>
                 </section>

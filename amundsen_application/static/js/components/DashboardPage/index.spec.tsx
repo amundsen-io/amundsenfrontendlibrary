@@ -195,10 +195,10 @@ describe('DashboardPage', () => {
 
     it('renders a RunStateContainer for last run state', () => {
       const expected = 1;
-      const actual = wrapper.find('.last-run-state').find('RunStateContainer').length;
+      const actual = wrapper.find('.last-run-state').find('RunStateContainer')
+        .length;
 
-    expect(actual).toEqual(expected);
-
+      expect(actual).toEqual(expected);
     });
 
     it('renders an ImagePreview with correct props', () => {
