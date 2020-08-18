@@ -12,7 +12,7 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.6
-  test-unit:
+  test-unit-python:
     runs-on: ubuntu-18.04
     strategy:
         matrix:
@@ -28,3 +28,21 @@ jobs:
         run: pip3 install -r requirements.txt && pip3 install .[all] && pip3 install codecov
       - name: Run python unit tests
         run: make test
+  test-unit-frontend:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm install codecov -g
+    - run: npm run lint
+    - run: npm run build --if-present
+    - run: npm run test
+      env:
+        CI: true
