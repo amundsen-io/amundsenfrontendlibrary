@@ -18,7 +18,6 @@ import { NO_TIMESTAMP_TEXT } from 'components/constants';
 import * as LogUtils from 'utils/logUtils';
 import { ResourceType } from 'interfaces';
 import ChartList from './ChartList';
-import DashboardOwnerEditor from './DashboardOwnerEditor';
 import ImagePreview from './ImagePreview';
 
 import { DashboardPage, DashboardPageProps, MatchProps } from '.';
@@ -190,9 +189,19 @@ describe('DashboardPage', () => {
       });
     });
 
-    it('renders owners', () => {
-      const { wrapper } = setup();
-      expect(wrapper.find(DashboardOwnerEditor).exists()).toBe(true);
+    describe('renders owners', () => {
+      it('with correct AvatarLabel if no owners exist', () => {
+        const { wrapper } = setup({
+          dashboard: {
+            ...dashboardMetadata,
+            owners: [],
+          },
+        });
+
+        expect(wrapper.find(AvatarLabel).props().label).toBe(
+          Constants.NO_OWNER_TEXT
+        );
+      });
     });
 
     it('renders a RunStateContainer for last run state', () => {

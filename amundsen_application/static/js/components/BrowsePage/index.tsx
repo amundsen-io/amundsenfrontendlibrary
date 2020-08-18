@@ -4,21 +4,20 @@
 import * as React from 'react';
 import * as DocumentTitle from 'react-document-title';
 
-import TagsListContainer from 'components/common/Tags';
-
-import { BROWSE_PAGE_DOCUMENT_TITLE } from './constants';
-
-import './styles.scss';
+import TagsList from 'components/common/TagsList';
 
 export class BrowsePage extends React.Component {
   render() {
     return (
-      /* TODO: add expand/collapse behavior */
-      <DocumentTitle title={BROWSE_PAGE_DOCUMENT_TITLE}>
+      <DocumentTitle title="Browse - Amundsen">
         <main className="container">
           <div className="row">
             <div className="col-xs-12">
-              <TagsListContainer shortTagsList={false} />
+              <h1 className="h3" id="browse-header">
+                Browse Tags
+              </h1>
+              <hr className="header-hr" />
+              <TagsList />
             </div>
           </div>
         </main>

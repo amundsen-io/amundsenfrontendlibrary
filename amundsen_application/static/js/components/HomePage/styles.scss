@@ -5,7 +5,11 @@
 
 .home-page {
   .home-element-container {
-    margin-top: $spacer-4 * 2;
+    margin-top: 64px;
+  }
+
+  .browse-tags-header {
+    margin-bottom: 32px;
   }
 
   .filter-breadcrumb {

@@ -24,7 +24,6 @@ import BadgeList from 'components/common/BadgeList';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import Breadcrumb from 'components/common/Breadcrumb';
 import TabsComponent from 'components/common/TabsComponent';
-import TagInput from 'components/common/Tags/TagInput';
 import EditableText from 'components/common/EditableText';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 
@@ -33,7 +32,7 @@ import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
 import ExploreButton from 'components/TableDetail/ExploreButton';
 import FrequentUsers from 'components/TableDetail/FrequentUsers';
 import LineageLink from 'components/TableDetail/LineageLink';
-import TableOwnerEditor from 'components/TableDetail/TableOwnerEditor';
+import OwnerEditor from 'components/TableDetail/OwnerEditor';
 import SourceLink from 'components/TableDetail/SourceLink';
 import TableDashboardResourceList from 'components/TableDetail/TableDashboardResourceList';
 import TableDescEditableText from 'components/TableDetail/TableDescEditableText';
@@ -41,7 +40,7 @@ import TableHeaderBullets from 'components/TableDetail/TableHeaderBullets';
 import TableIssues from 'components/TableDetail/TableIssues';
 import WatermarkLabel from 'components/TableDetail/WatermarkLabel';
 import WriterLink from 'components/TableDetail/WriterLink';
-
+import TagInput from 'components/Tags/TagInput';
 import {
   ProgrammaticDescription,
   ResourceType,
@@ -316,7 +315,7 @@ export class TableDetail extends React.Component<
                     />
                   </EditableSection>
                   <EditableSection title="Owners">
-                    <TableOwnerEditor resourceType={ResourceType.table} />
+                    <OwnerEditor />
                   </EditableSection>
                   {this.renderProgrammaticDesc(
                     data.programmatic_descriptions.right
