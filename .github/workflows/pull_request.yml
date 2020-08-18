@@ -39,6 +39,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - name: Setup Frontend Application
+      run: cd amundsen_application/static
     - run: npm install
     - run: npm install codecov -g
     - run: npm run lint
