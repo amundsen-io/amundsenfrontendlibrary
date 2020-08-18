@@ -62,7 +62,7 @@
     "@types/jest": "^24.9.1",
     "@types/node": "^10.17.21",
     "@types/react-redux": "^6.0.14",
-    "@types/react-router": "^4.4.5",
+    "@types/react-router": "^5.1.8",
     "@types/react-tagsinput": "^3.19.7",
     "@types/webpack": "^4.41.12",
     "@typescript-eslint/eslint-plugin": "^3.9.0",
