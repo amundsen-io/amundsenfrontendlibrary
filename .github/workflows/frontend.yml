@@ -1,5 +1,11 @@
+name: frontend
 on:
+  push:
+    branches:
+    - master
   pull_request:
+    branches:
+    - master
     paths:
     - 'amundsen_application/static/**'
 jobs:
