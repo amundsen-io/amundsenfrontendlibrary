@@ -152,7 +152,7 @@ describe('Announcements ducks', () => {
           statusCode: 200,
         };
 
-        testSaga(getAnnouncementsWorker, getAnnouncements())
+        testSaga(getAnnouncementsWorker)
           .next()
           .call(API.getAnnouncements)
           .next(mockResponse)
@@ -167,7 +167,7 @@ describe('Announcements ducks', () => {
           statusMessage: 'Error',
         };
 
-        testSaga(getAnnouncementsWorker, getAnnouncements())
+        testSaga(getAnnouncementsWorker)
           .next()
           .call(API.getAnnouncements)
           // @ts-ignore

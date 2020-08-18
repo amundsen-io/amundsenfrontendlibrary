@@ -21,11 +21,7 @@ import Announcements from 'components/common/Announcements';
 
 import { announcementsEnabled } from 'config/config-utils';
 
-import {
-  SEARCH_BREADCRUMB_TEXT,
-  HOMEPAGE_TITLE,
-  TAGS_TITLE,
-} from './constants';
+import { SEARCH_BREADCRUMB_TEXT, HOMEPAGE_TITLE } from './constants';
 
 export interface DispatchFromProps {
   searchReset: () => UpdateSearchStateReset;
