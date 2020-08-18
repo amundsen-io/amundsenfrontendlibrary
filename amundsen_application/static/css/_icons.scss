@@ -196,6 +196,11 @@ img.icon {
     -webkit-mask-image: url('/static/images/icons/More.svg');
     mask-image: url('/static/images/icons/More.svg');
   }
+
+  &.icon-check {
+    -webkit-mask-image: url('/static/images/icons/check.svg');
+    mask-image: url('/static/images/icons/check.svg');
+  }
 }
 
 .disabled,

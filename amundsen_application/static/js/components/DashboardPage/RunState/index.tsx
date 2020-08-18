@@ -29,7 +29,9 @@ const MissedState: React.FC = () => {
 const HitState: React.FC = () => {
     return (
         <div className={'hit'}>
-            <div className={'hit-icon'}></div>
+            <div className={'hit-icon'}>
+                <img className="icon icon-check" alt="" />
+            </div>
             <span className={'status-text body-2 text-primary'}>{HIT_RUN_TEXT}</span>
         </div>
     );
