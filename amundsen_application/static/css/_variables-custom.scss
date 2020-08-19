@@ -2,3 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // This file is intentionally left blank and should be used to add new custom variables or overwrite defaults from _variables-default.scss
+
+@import '~nhsuk-frontend/packages/core/settings/_colours.scss';
+
+$brand-color-1: shade($color_nhsuk-blue, 10%);
+$brand-color-2: shade($color_nhsuk-blue, 20%);
+$brand-color-3: shade($color_nhsuk-blue, 40%);
+$brand-color-4: shade($color_nhsuk-blue, 60%);
+$brand-color-5: shade($color_nhsuk-blue, 80%);
+$column-name-color: shade($color_nhsuk-blue, 70%);
+$nav-bar-color: $color_nhsuk-blue;
+
+$font-family-body: 'Frutiger W01', sans-serif;
+$font-family-header: 'Frutiger W01', sans-serif;
