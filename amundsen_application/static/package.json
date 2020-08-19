@@ -534,19 +534,19 @@
   "lint-staged": {
     "*.js": [
       "prettier --write",
-      "eslint:fix"
+      "eslint --fix"
     ],
     "*.jsx": [
       "prettier --write",
-      "eslint:fix"
+      "eslint --fix"
     ],
     "*.ts": [
       "prettier --write",
-      "eslint:fix"
+      "eslint --fix"
     ],
     "*.tsx": [
       "prettier --write",
-      "eslint:fix"
+      "eslint --fix"
     ],
     "*.scss": [
       "prettier --write",
