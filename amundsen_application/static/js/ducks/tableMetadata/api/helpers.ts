@@ -33,18 +33,15 @@ export function getRelatedDashboardSlug(key: string): string {
 }
 
 /**
- * Parses the response for table metadata and the related dashboard information to create a TableMetadata object
+ * Parses the response for table metadata information to create a TableMetadata object
  */
 export function getTableDataFromResponseData(
-  responseData: API.TableDataAPI,
-  relatedDashboardsData: API.RelatedDashboardDataAPI
+  responseData: API.TableDataAPI
 ): TableMetadata {
-  const mergedTableData = {
-    ...filterFromObj(responseData.tableData, ['owners', 'tags']),
-    ...filterFromObj(relatedDashboardsData, ['msg', 'status_code']),
-  };
-
-  return mergedTableData as TableMetadata;
+  return filterFromObj(responseData.tableData, [
+    'owners',
+    'tags',
+  ]) as TableMetadata;
 }
 
 /**
@@ -53,10 +50,9 @@ export function getTableDataFromResponseData(
 export function getTableOwnersFromResponseData(
   responseData: API.TableDataAPI
 ): OwnerDict {
-  // TODO: owner needs proper id, until then we have to remember that we are using display_name
   const ownerObj = responseData.tableData.owners.reduce(
     (resultObj, currentOwner) => {
-      resultObj[currentOwner.display_name] = currentOwner as User;
+      resultObj[currentOwner.user_id] = currentOwner as User;
       return resultObj;
     },
     {}

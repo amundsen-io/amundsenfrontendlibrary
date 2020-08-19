@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 
 import AvatarLabel from 'components/common/AvatarLabel';
@@ -9,7 +12,7 @@ export interface LineageLinkProps {
   tableData: TableMetadata;
 }
 
-const LineageLink: React.SFC<LineageLinkProps> = ({
+const LineageLink: React.FC<LineageLinkProps> = ({
   tableData,
 }: LineageLinkProps) => {
   const config = AppConfig.tableLineage;

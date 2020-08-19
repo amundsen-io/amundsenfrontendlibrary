@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import * as DocumentTitle from 'react-document-title';
 import * as Avatar from 'react-avatar';
@@ -8,6 +11,7 @@ import { bindActionCreators } from 'redux';
 import Breadcrumb from 'components/common/Breadcrumb';
 import Flag from 'components/common/Flag';
 import TabsComponent from 'components/common/TabsComponent';
+import { BadgeStyle } from 'config/config-types';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { getUser, getUserOwn, getUserRead } from 'ducks/user/reducer';
@@ -212,7 +216,11 @@ export class ProfilePage extends React.Component<
         <h1 className="h3 header-title-text truncated">
           {user.display_name}
           {!user.is_active && (
-            <Flag caseType="sentenceCase" labelStyle="danger" text="Alumni" />
+            <Flag
+              caseType="sentenceCase"
+              labelStyle={BadgeStyle.DANGER}
+              text="Alumni"
+            />
           )}
         </h1>
       );

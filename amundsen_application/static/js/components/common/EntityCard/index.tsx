@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import EntityCardSection, { EntityCardSectionProps } from './EntityCardSection';
 
@@ -8,7 +11,7 @@ export interface EntityCardProps {
   sections: EntityCardSectionProps[];
 }
 
-const EntityCard: React.SFC<EntityCardProps> = ({
+const EntityCard: React.FC<EntityCardProps> = ({
   sections,
 }: EntityCardProps) => {
   const cardItems = sections.map((entry, index) => {

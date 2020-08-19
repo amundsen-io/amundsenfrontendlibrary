@@ -1,7 +1,12 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 @import 'variables';
 
 $resource-header-height: 84px;
 $aside-separation-space: 40px;
+$screen-lg-max: 1490px;
+$screen-lg-container: 1440px;
 
 .resource-detail-layout {
   height: calc(100vh - #{$nav-bar-height} - #{$footer-height});
@@ -113,21 +118,35 @@ $aside-separation-space: 40px;
       .editable-section,
       .metadata-section {
         margin-top: $aside-separation-space;
-        display: inline-table;
-        min-height: 70px;
       }
 
       .editable-text {
         font-size: 16px;
-
-        .markdown-wrapper {
-          font-size: 16px;
-        }
       }
 
       .avatar-label-component {
         .avatar-label {
           color: $text-primary;
+        }
+      }
+
+      .markdown-wrapper {
+        font-size: 16px;
+
+        // Remove extra margin form text elements
+        > p,
+        ul,
+        ol {
+          margin: 0;
+        }
+
+        // Restrict max size of header elements
+        h1,
+        h2,
+        h3 {
+          font-size: 20px;
+          font-weight: $font-weight-header-bold;
+          line-height: 28px;
         }
       }
     }
@@ -179,6 +198,12 @@ $aside-separation-space: 40px;
 // Main Layout
 #main {
   min-width: $body-min-width;
+}
+
+@media (min-width: $screen-lg-max) {
+  #main > .container {
+    width: $screen-lg-container;
+  }
 }
 
 #main > .container {

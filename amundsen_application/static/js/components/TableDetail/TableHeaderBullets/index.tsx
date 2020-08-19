@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 
 import {
@@ -12,7 +15,7 @@ export interface TableHeaderBulletsProps {
   database: string;
 }
 
-const TableHeaderBullets: React.SFC<TableHeaderBulletsProps> = ({
+const TableHeaderBullets: React.FC<TableHeaderBulletsProps> = ({
   cluster,
   database,
 }: TableHeaderBulletsProps) => {

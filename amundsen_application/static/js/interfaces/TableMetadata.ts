@@ -1,7 +1,6 @@
 import { UpdateMethod } from './Enums';
 import { User } from './User';
 import { Badge } from './Tags';
-import { DashboardResource } from './Resources';
 
 interface PartitionData {
   is_partitioned: boolean;
@@ -74,12 +73,21 @@ export interface ProgrammaticDescription {
   source: string;
   text: string;
 }
+export interface TableProgrammaticDescriptions {
+  left?: ProgrammaticDescription[];
+  right?: ProgrammaticDescription[];
+  other?: ProgrammaticDescription[];
+}
+
+export interface ResourceReport {
+  name: string;
+  url: string;
+}
 
 export interface TableMetadata {
   badges: Badge[];
   cluster: string;
   columns: TableColumn[];
-  dashboards: DashboardResource[];
   database: string;
   is_editable: boolean;
   is_view: boolean;
@@ -92,8 +100,9 @@ export interface TableMetadata {
   partition: PartitionData;
   table_readers: TableReader[];
   source: TableSource;
+  resource_reports: ResourceReport[];
   watermarks: Watermark[];
-  programmatic_descriptions: ProgrammaticDescription[];
+  programmatic_descriptions: TableProgrammaticDescriptions;
 }
 
 export interface UpdateOwnerPayload {

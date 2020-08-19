@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
@@ -21,6 +24,7 @@ interface EditableSectionState {
 export interface EditableSectionChildProps {
   isEditing?: boolean;
   setEditMode?: (isEditing: boolean) => void;
+  readOnly?: boolean;
 }
 
 export class EditableSection extends React.Component<
@@ -45,6 +49,10 @@ export class EditableSection extends React.Component<
 
   toggleEdit = () => {
     this.setState({ isEditing: !this.state.isEditing });
+  };
+
+  preventDefault = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.preventDefault();
   };
 
   static convertText(str: string): string {
@@ -102,31 +110,33 @@ export class EditableSection extends React.Component<
   };
 
   render() {
-    const { title, readOnly = false } = this.props;
-    const childrenWithProps = !readOnly
-      ? React.Children.map(this.props.children, (child) => {
-          if (!React.isValidElement(child)) {
-            return child;
-          }
+    const { children, title, readOnly = false } = this.props;
+    const childrenWithProps = React.Children.map(children, (child) => {
+      if (!React.isValidElement(child)) {
+        return child;
+      }
 
-          return React.cloneElement(child, {
-            isEditing: this.state.isEditing,
-            setEditMode: this.setEditMode,
-          });
-        })
-      : this.props.children;
+      return React.cloneElement(child, {
+        readOnly,
+        isEditing: this.state.isEditing,
+        setEditMode: this.setEditMode,
+      });
+    });
 
     return (
       <section className="editable-section">
         <label className="editable-section-label">
-          <div className="editable-section-label-wrapper">
+          <div
+            className="editable-section-label-wrapper"
+            onClick={!readOnly ? this.preventDefault : null}
+          >
             <span className="section-title title-3">
               {EditableSection.convertText(title)}
             </span>
             {!readOnly ? this.renderButton() : this.renderReadOnlyButton()}
           </div>
-          <div className="editable-section-content">{childrenWithProps}</div>
         </label>
+        <div className="editable-section-content">{childrenWithProps}</div>
       </section>
     );
   }

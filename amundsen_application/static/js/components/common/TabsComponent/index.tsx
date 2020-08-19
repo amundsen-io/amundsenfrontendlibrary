@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
 
@@ -16,7 +19,7 @@ interface TabInfo {
   title: string;
 }
 
-const TabsComponent: React.SFC<TabsProps> = ({
+const TabsComponent: React.FC<TabsProps> = ({
   tabs,
   activeKey,
   defaultTab,

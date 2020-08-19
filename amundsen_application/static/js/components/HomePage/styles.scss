@@ -1,12 +1,11 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 @import 'variables';
 
 .home-page {
   .home-element-container {
-    margin-top: 64px;
-  }
-
-  .browse-tags-header {
-    margin-bottom: 32px;
+    margin-top: $spacer-4 * 2;
   }
 
   .filter-breadcrumb {

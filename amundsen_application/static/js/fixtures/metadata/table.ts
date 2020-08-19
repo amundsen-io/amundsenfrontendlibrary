@@ -93,7 +93,6 @@ export const tableMetadata: TableMetadata = {
       ],
     },
   ],
-  dashboards: [],
   database: 'hive',
   description:
     'One row per ride request, showing all stages of the ride funnel. ',
@@ -107,13 +106,14 @@ export const tableMetadata: TableMetadata = {
     key: 'ds',
     value: '2020-03-05',
   },
-  programmatic_descriptions: [],
+  programmatic_descriptions: {},
   schema: 'base',
   source: {
     source:
       'https://github.com/lyft/etl/blob/master/sql/hive/base/rides.config',
     source_type: 'github',
   },
+  resource_reports: [{ name: 'Test report', url: 'http://localhost' }],
   table_readers: [
     {
       read_count: 1735,

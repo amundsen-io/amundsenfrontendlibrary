@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 
 import { shallow } from 'enzyme';
@@ -142,7 +145,6 @@ describe('Feedback', () => {
           expect(button.props()).toMatchObject({
             type: 'button',
             className: 'btn btn-close',
-            'aria-label': BUTTON_CLOSE_TEXT,
             onClick: wrapper.instance().toggle,
           });
         });
@@ -163,7 +165,6 @@ describe('Feedback', () => {
           expect(buttonGroup.props()).toMatchObject({
             className: 'btn-group',
             role: 'group',
-            'aria-label': FEEDBACK_TYPE_TEXT,
           });
         });
 

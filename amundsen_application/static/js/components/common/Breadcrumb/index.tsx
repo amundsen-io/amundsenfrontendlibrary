@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -21,7 +24,7 @@ type BreadcrumbDirection = 'left' | 'right';
 
 export type BreadcrumbProps = OwnProps & MapDispatchToProps;
 
-export const Breadcrumb: React.SFC<BreadcrumbProps> = (
+export const Breadcrumb: React.FC<BreadcrumbProps> = (
   props: BreadcrumbProps
 ) => {
   const { direction = 'left', path, text } = props;

@@ -1,3 +1,6 @@
+# Copyright Contributors to the Amundsen project.
+# SPDX-License-Identifier: Apache-2.0
+
 import logging
 import json
 from http import HTTPStatus
@@ -53,15 +56,17 @@ def popular_tables() -> Response:
     https://github.com/lyft/amundsenmetadatalibrary/blob/master/metadata_service/api/popular_tables.py
     """
     try:
-        url = app.config['METADATASERVICE_BASE'] + POPULAR_TABLES_ENDPOINT
+        service_base = app.config['METADATASERVICE_BASE']
+        count = app.config['POPULAR_TABLE_COUNT']
+        url = f'{service_base}{POPULAR_TABLES_ENDPOINT}?limit={count}'
+
         response = request_metadata(url=url)
         status_code = response.status_code
 
         if status_code == HTTPStatus.OK:
             message = 'Success'
             response_list = response.json().get('popular_tables')
-            top4 = response_list[0:min(len(response_list), app.config['POPULAR_TABLE_COUNT'])]
-            popular_tables = [marshall_table_partial(result) for result in top4]
+            popular_tables = [marshall_table_partial(result) for result in response_list]
         else:
             message = 'Encountered error: Request to metadata service failed with status code ' + str(status_code)
             logging.error(message)
@@ -656,7 +661,7 @@ def get_related_dashboard_metadata(table_key: str) -> Response:
 def _get_related_dashboards_metadata(*, url: str) -> Dict[str, Any]:
 
     results_dict = {
-        'dashboards': {},
+        'dashboards': [],
         'msg': '',
     }
 
@@ -674,7 +679,7 @@ def _get_related_dashboards_metadata(*, url: str) -> Dict[str, Any]:
     results_dict['status_code'] = status_code
 
     if status_code != HTTPStatus.OK:
-        message = 'Encountered error: Related Dashboard Metadata request failed'
+        message = f'Encountered {status_code} Error: Related dashboard metadata request failed'
         results_dict['msg'] = message
         logging.error(message)
         return results_dict

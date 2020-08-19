@@ -1,4 +1,5 @@
 import {
+  DashboardResource,
   OwnerDict,
   PreviewData,
   PreviewQueryParams,
@@ -27,6 +28,17 @@ export interface GetTableDataResponse {
     data: TableMetadata;
     owners: OwnerDict;
     tags: Tag[];
+  };
+}
+
+export enum GetTableDashboards {
+  RESPONSE = 'amundsen/tableMetadata/GET_TABLE_DASHBOARDS_RESPONSE',
+}
+export interface GetTableDashboardsResponse {
+  type: GetTableDashboards.RESPONSE;
+  payload: {
+    dashboards: DashboardResource[];
+    errorMessage: string;
   };
 }
 
@@ -102,21 +114,6 @@ export interface UpdateColumnDescriptionRequest {
 }
 export interface UpdateColumnDescriptionResponse {
   type: UpdateColumnDescription.SUCCESS | UpdateColumnDescription.FAILURE;
-}
-
-export enum GetLastIndexed {
-  REQUEST = 'amundsen/tableMetadata/GET_LAST_UPDATED_REQUEST',
-  SUCCESS = 'amundsen/tableMetadata/GET_LAST_UPDATED_SUCCESS',
-  FAILURE = 'amundsen/tableMetadata/GET_LAST_UPDATED_FAILURE',
-}
-export interface GetLastIndexedRequest {
-  type: GetLastIndexed.REQUEST;
-}
-export interface GetLastIndexedResponse {
-  type: GetLastIndexed.SUCCESS | GetLastIndexed.FAILURE;
-  payload?: {
-    lastIndexedEpoch: number;
-  };
 }
 
 export enum GetPreviewData {

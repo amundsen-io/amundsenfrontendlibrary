@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
@@ -82,6 +85,6 @@ describe('mapStateToProps', () => {
   });
 
   it('sets lastIndexed on the props', () => {
-    expect(result.lastIndexed).toEqual(globalState.tableMetadata.lastIndexed);
+    expect(result.lastIndexed).toEqual(globalState.lastIndexed.lastIndexed);
   });
 });

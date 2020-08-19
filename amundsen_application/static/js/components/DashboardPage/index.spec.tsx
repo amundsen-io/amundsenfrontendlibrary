@@ -1,4 +1,8 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
+import * as ReactMarkdown from 'react-markdown';
 import * as History from 'history';
 
 import { shallow } from 'enzyme';
@@ -14,7 +18,9 @@ import { dashboardMetadata } from 'fixtures/metadata/dashboard';
 import { NO_TIMESTAMP_TEXT } from 'components/constants';
 import * as LogUtils from 'utils/logUtils';
 import { ResourceType } from 'interfaces';
+import { BadgeStyle } from 'config/config-types';
 import ChartList from './ChartList';
+import DashboardOwnerEditor from './DashboardOwnerEditor';
 import ImagePreview from './ImagePreview';
 
 import { DashboardPage, DashboardPageProps, MatchProps } from '.';
@@ -142,15 +148,15 @@ describe('DashboardPage', () => {
       ({ wrapper } = setup());
     });
 
-    it('returns success if status === LAST_RUN_SUCCEEDED', () => {
+    it('returns BadgeStyle.SUCCESS if status === LAST_RUN_SUCCEEDED', () => {
       expect(
         wrapper.instance().mapStatusToStyle(Constants.LAST_RUN_SUCCEEDED)
-      ).toBe('success');
+      ).toBe(BadgeStyle.SUCCESS);
     });
 
-    it('returns danger if status !== LAST_RUN_SUCCEEDED', () => {
+    it('returns BadgeStyle.DANGER if status !== LAST_RUN_SUCCEEDED', () => {
       expect(wrapper.instance().mapStatusToStyle('anythingelse')).toBe(
-        'danger'
+        BadgeStyle.DANGER
       );
     });
   });
@@ -182,6 +188,14 @@ describe('DashboardPage', () => {
     });
 
     describe('renders description', () => {
+      it('using a ReactMarkdown component', () => {
+        const markdown = wrapper.find(ReactMarkdown);
+        expect(markdown.exists()).toBe(true);
+        expect(markdown.props()).toMatchObject({
+          source: props.dashboard.description,
+        });
+      });
+
       it('with link to add description if none exists', () => {
         const { wrapper } = setup({
           dashboard: {
@@ -198,25 +212,16 @@ describe('DashboardPage', () => {
       });
     });
 
-    describe('renders owners', () => {
-      it('with correct AvatarLabel if no owners exist', () => {
-        const { wrapper } = setup({
-          dashboard: {
-            ...dashboardMetadata,
-            owners: [],
-          },
-        });
-
-        expect(wrapper.find(AvatarLabel).props().label).toBe(
-          Constants.NO_OWNER_TEXT
-        );
-      });
+    it('renders owners', () => {
+      const { wrapper } = setup();
+      expect(wrapper.find(DashboardOwnerEditor).exists()).toBe(true);
     });
 
     it('renders a Flag for last run state', () => {
+      const mockStyle = BadgeStyle.DANGER;
       const mapStatusToStyleSpy = jest
         .spyOn(wrapper.instance(), 'mapStatusToStyle')
-        .mockImplementationOnce(() => 'testStyle');
+        .mockImplementationOnce(() => mockStyle);
       wrapper.instance().forceUpdate();
       const element = wrapper.find('.last-run-state').find(Flag);
 
@@ -224,7 +229,7 @@ describe('DashboardPage', () => {
       expect(mapStatusToStyleSpy).toHaveBeenCalledWith(
         props.dashboard.last_run_state
       );
-      expect(element.props().labelStyle).toBe('testStyle');
+      expect(element.props().labelStyle).toBe(mockStyle);
     });
 
     it('renders an ImagePreview with correct props', () => {

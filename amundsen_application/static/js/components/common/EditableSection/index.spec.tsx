@@ -1,7 +1,10 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import TagInput from 'components/Tags/TagInput';
+import TagInput from 'components/common/Tags/TagInput';
 import { ResourceType } from 'interfaces/Resources';
 import EditableSection, { EditableSectionProps } from '.';
 
@@ -17,6 +20,20 @@ describe('EditableSection', () => {
     );
     return { wrapper, props };
   };
+
+  describe('handleClick', () => {
+    const clickEvent = {
+      preventDefault: jest.fn(),
+    };
+
+    it('preventDefault on click', () => {
+      const { wrapper, props } = setup();
+      wrapper
+        .find('.editable-section-label-wrapper')
+        .simulate('click', clickEvent);
+      expect(clickEvent.preventDefault).toHaveBeenCalled();
+    });
+  });
 
   describe('setEditMode', () => {
     const { wrapper, props } = setup();

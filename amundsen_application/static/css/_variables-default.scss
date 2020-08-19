@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 @import 'colors';
 
 // TODO - consider using more descriptive names, or replacing with more specific variables.
@@ -23,7 +26,6 @@ $stroke-underline: $gray40 !default;
 
 // Typography
 $text-primary: $gray100 !default;
-$text-secondary: $gray60 !default;
 $text-secondary: $gray60 !default;
 $text-tertiary: $gray40 !default;
 $text-placeholder: $gray40 !default;
@@ -53,11 +55,19 @@ $line-height-large: 1.5 !default;
 
 // Badges
 $badge-text-color: $text-primary;
-$badge-danger-color: $sunset20;
-$badge-default-color: $gray20;
+$badge-negative-color: $sunset20;
+$badge-neutral-color: $gray20;
 $badge-primary-color: $cyan10;
-$badge-success-color: $mint20;
+$badge-positive-color: $mint20;
 $badge-warning-color: $amber30;
+
+$badge-overlay: $gray100;
+$badge-opacity-light: 0.14;
+$badge-opacity-dark: 0.16;
+$badge-pressed-light: 0.21;
+$badge-pressed-dark: 0.22;
+
+$badge-height: 20px;
 
 // Buttons
 $btn-border-radius-base: 4px;
@@ -119,3 +129,39 @@ $spacer-1: $spacer-size;
 $spacer-2: $spacer-size * 2;
 $spacer-3: $spacer-size * 3;
 $spacer-4: $spacer-size * 4;
+
+// Elevations (from LPL)
+$elevation-level1: 0 0 1px 0 rgba(0, 0, 0, 0.12),
+  0 1px 1px 1px rgba(0, 0, 0, 0.08);
+$elevation-level2: 0 0 1px 0 rgba(0, 0, 0, 0.12),
+  0 2px 3px 0 rgba(0, 0, 0, 0.16);
+$elevation-level3: 0 0 1px 0 rgba(0, 0, 0, 0.12),
+  0 2px 4px 0 rgba(0, 0, 0, 0.16);
+$elevation-level4: 0 0 1px 0 rgba(0, 0, 0, 0.12),
+  0 3px 6px 0 rgba(0, 0, 0, 0.16);
+
+// New Typography variables based on LPL
+$text-heading-font-family: $font-family-header;
+$text-body-font-family: $font-family-body;
+
+$w1-font-size: 20px;
+$w1-line-height: 24px;
+
+$w2-font-size: 16px;
+$w2-line-height: 20px;
+
+$w3-font-size: 14px;
+$w3-line-height: 18px;
+
+$w1-headline-font-size: 36px;
+$w1-headline-line-height: 40px;
+
+$w2-headline-font-size: 26px;
+$w2-headline-line-height: 28px;
+
+$w3-headline-font-size: 22px;
+$w3-headline-line-height: 24px;
+
+$title-font-weight: $font-weight-body-bold;
+$subtitle-font-weight: $font-weight-body-semi-bold;
+$body-font-weight: $font-weight-body-regular;

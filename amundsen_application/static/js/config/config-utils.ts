@@ -2,12 +2,13 @@ import AppConfig from 'config/config';
 import { BadgeStyleConfig, BadgeStyle } from 'config/config-types';
 import { TableMetadata } from 'interfaces/TableMetadata';
 
-import { FilterConfig } from './config-types';
+import { FilterConfig, LinkConfig } from './config-types';
 
 import { ResourceType } from '../interfaces';
 
 export const DEFAULT_DATABASE_ICON_CLASS = 'icon-database icon-color';
 export const DEFAULT_DASHBOARD_ICON_CLASS = 'icon-dashboard icon-color';
+const ANNOUNCEMENTS_LINK_LABEL = 'Announcements';
 
 /**
  * Returns the display name for a given source id for a given resource type.
@@ -77,14 +78,14 @@ export function getFilterConfigByResource(
 /*
  * Given a badge name, this will return a badge style and a display name.
  * If these are not specified by config, it will default to some simple rules:
- * use BadgeStyle.DEFAULT and replace '-' and '_' with spaces for display name.
+ * use BadgeStyle.DEFAULT and badge name as display name.
  */
 export function getBadgeConfig(badgeName: string): BadgeStyleConfig {
   const config = AppConfig.badges[badgeName] || {};
 
   return {
     style: BadgeStyle.DEFAULT,
-    displayName: badgeName.replace(/[-_]/g, ' '),
+    displayName: badgeName,
     ...config,
   };
 }
@@ -94,6 +95,13 @@ export function getBadgeConfig(badgeName: string): BadgeStyleConfig {
  */
 export function feedbackEnabled(): boolean {
   return AppConfig.mailClientFeatures.feedbackEnabled;
+}
+
+/**
+ * Returns whether or not feedback features should be enabled
+ */
+export function announcementsEnabled(): boolean {
+  return AppConfig.announcements.enabled;
 }
 
 /**
@@ -139,6 +147,25 @@ export function getCuratedTags(): string[] {
 }
 
 /**
+ * Checks if nav links are active
+ */
+const isNavLinkActive = (link: LinkConfig): boolean => {
+  if (!announcementsEnabled()) {
+    return link.label !== ANNOUNCEMENTS_LINK_LABEL;
+  }
+
+  return true;
+};
+
+/*
+ * Returns the updated list of navigation links given the other
+ * configuration options state
+ */
+export function getNavLinks(): LinkConfig[] {
+  return AppConfig.navLinks.filter(isNavLinkActive);
+}
+
+/**
  * Returns whether to enable the table `explore` feature
  */
 export function exploreEnabled(): boolean {
@@ -169,4 +196,12 @@ export function generateExploreUrl(tableData: TableMetadata): string {
     tableData.schema,
     tableData.name
   );
+}
+
+/**
+ * Gets the max length for items with a configurable max length.
+ * Currently only applied to `editableText`, but method can be extended for future cases
+ */
+export function getMaxLength(key: string) {
+  return AppConfig.editableText[key];
 }

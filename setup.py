@@ -1,3 +1,6 @@
+# Copyright Contributors to the Amundsen project.
+# SPDX-License-Identifier: Apache-2.0
+
 import logging
 import os
 import subprocess
@@ -34,7 +37,7 @@ requirements_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'r
 with open(requirements_path) as requirements_file:
     requirements = requirements_file.readlines()
 
-__version__ = '2.2.0'
+__version__ = '2.3.0'
 
 
 setup(
@@ -43,7 +46,7 @@ setup(
     description='Web UI for Amundsen',
     url='https://www.github.com/lyft/amundsenfrontendlibrary',
     maintainer='Lyft',
-    maintainer_email='dev@lyft.com',
+    maintainer_email='amundsen-dev@lyft.com',
     packages=find_packages(exclude=['tests*']),
     include_package_data=True,
     dependency_links=[],

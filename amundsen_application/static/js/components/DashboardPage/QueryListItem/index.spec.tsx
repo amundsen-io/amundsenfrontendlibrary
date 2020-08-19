@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 
 import { mount } from 'enzyme';
@@ -6,6 +9,7 @@ import QueryListItem, { QueryListItemProps } from '.';
 
 const setup = (propOverrides?: Partial<QueryListItemProps>) => {
   const props: QueryListItemProps = {
+    product: 'Mode',
     text: 'testQuery',
     url: 'http://test.url',
     name: 'testName',

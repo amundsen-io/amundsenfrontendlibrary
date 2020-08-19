@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import * as times from 'lodash/times';
 
@@ -5,7 +8,7 @@ import './styles.scss';
 
 const DEFAULT_REPETITION = 3;
 
-export const ShimmeringResourceItem: React.SFC = () => {
+export const ShimmeringResourceItem: React.FC = () => {
   return (
     <div className="shimmer-resource-loader-item media">
       <div className="media-left media-middle">
@@ -23,7 +26,7 @@ export interface ShimmeringResourceLoaderProps {
   numItems?: number;
 }
 
-const ShimmeringResourceLoader: React.SFC<ShimmeringResourceLoaderProps> = ({
+const ShimmeringResourceLoader: React.FC<ShimmeringResourceLoaderProps> = ({
   numItems = DEFAULT_REPETITION,
 }: ShimmeringResourceLoaderProps) => {
   return (

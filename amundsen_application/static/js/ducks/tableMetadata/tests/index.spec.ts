@@ -10,6 +10,7 @@ import {
   User,
 } from 'interfaces';
 
+import { dashboardSummary } from 'fixtures/metadata/dashboard';
 import globalState from 'fixtures/globalState';
 
 import * as API from '../api/v0';
@@ -18,6 +19,7 @@ import reducer, {
   getTableData,
   getTableDataFailure,
   getTableDataSuccess,
+  getTableDashboardsResponse,
   getTableDescription,
   getTableDescriptionFailure,
   getTableDescriptionSuccess,
@@ -26,9 +28,6 @@ import reducer, {
   getColumnDescriptionFailure,
   getColumnDescriptionSuccess,
   updateColumnDescription,
-  getLastIndexed,
-  getLastIndexedFailure,
-  getLastIndexedSuccess,
   getPreviewData,
   getPreviewDataFailure,
   getPreviewDataSuccess,
@@ -49,8 +48,6 @@ import {
   getColumnDescriptionWorker,
   updateColumnDescriptionWatcher,
   updateColumnDescriptionWorker,
-  getLastIndexedWatcher,
-  getLastIndexedWorker,
   getPreviewDataWatcher,
   getPreviewDataWorker,
 } from '../sagas';
@@ -61,7 +58,6 @@ import {
   UpdateTableDescription,
   GetColumnDescription,
   UpdateColumnDescription,
-  GetLastIndexed,
   GetPreviewData,
 } from '../types';
 
@@ -82,7 +78,6 @@ describe('tableMetadata ducks', () => {
   let newDescription: string;
   let previewData: PreviewData;
   let queryParams: PreviewQueryParams;
-  let testEpoch: number;
   beforeAll(() => {
     expectedData = globalState.tableMetadata.tableData;
     expectedOwners = {
@@ -128,7 +123,6 @@ describe('tableMetadata ducks', () => {
       schema: 'testSchema',
       tableName: 'testName',
     };
-    testEpoch = 1545925769;
   });
 
   describe('actions', () => {
@@ -243,23 +237,6 @@ describe('tableMetadata ducks', () => {
       expect(payload.onFailure).toBe(mockFailure);
     });
 
-    it('getLastIndexed - returns the action to get the last indexed date of the table', () => {
-      const action = getLastIndexed();
-      expect(action.type).toBe(GetLastIndexed.REQUEST);
-    });
-
-    it('getLastIndexedFailure - returns the action to process failure', () => {
-      const action = getLastIndexedFailure();
-      expect(action.type).toBe(GetLastIndexed.FAILURE);
-    });
-
-    it('getLastIndexedSuccess - returns the action to process success', () => {
-      const action = getLastIndexedSuccess(testEpoch);
-      const { payload } = action;
-      expect(action.type).toBe(GetLastIndexed.SUCCESS);
-      expect(payload.lastIndexedEpoch).toBe(testEpoch);
-    });
-
     it('getPreviewData - returns the action to get the preview table data', () => {
       const action = getPreviewData(queryParams);
       const { payload } = action;
@@ -296,6 +273,24 @@ describe('tableMetadata ducks', () => {
       expect(reducer(testState, { type: 'INVALID.ACTION' })).toEqual(testState);
     });
 
+    it('should handle GetTableDashboards.RESPONSE', () => {
+      const mockDashboards = [dashboardSummary];
+      const mockMessage = 'test';
+      expect(
+        reducer(
+          testState,
+          getTableDashboardsResponse(mockDashboards, mockMessage)
+        )
+      ).toEqual({
+        ...testState,
+        dashboards: {
+          isLoading: false,
+          dashboards: mockDashboards,
+          errorMessage: mockMessage,
+        },
+      });
+    });
+
     it('should handle GetTableDescription.FAILURE', () => {
       expect(
         reducer(testState, getTableDescriptionFailure(expectedData))
@@ -329,20 +324,6 @@ describe('tableMetadata ducks', () => {
       ).toEqual({
         ...testState,
         tableData: expectedData,
-      });
-    });
-
-    it('should handle GetLastIndexed.FAILURE', () => {
-      expect(reducer(testState, getLastIndexedFailure())).toEqual({
-        ...testState,
-        lastIndexed: null,
-      });
-    });
-
-    it('should handle GetLastIndexed.SUCCESS', () => {
-      expect(reducer(testState, getLastIndexedSuccess(testEpoch))).toEqual({
-        ...testState,
-        lastIndexed: testEpoch,
       });
     });
 
@@ -382,6 +363,9 @@ describe('tableMetadata ducks', () => {
           statusCode: expectedStatus,
           tags: expectedTags,
         };
+        const mockDashboardsResult = {
+          dashboards: [dashboardSummary],
+        };
         testSaga(
           getTableDataWorker,
           getTableData(testKey, testIndex, testSource)
@@ -398,10 +382,14 @@ describe('tableMetadata ducks', () => {
             )
           )
           .next()
+          .call(API.getTableDashboards, testKey)
+          .next(mockDashboardsResult)
+          .put(getTableDashboardsResponse(mockDashboardsResult.dashboards))
+          .next()
           .isDone();
       });
 
-      it('handles request error', () => {
+      it('handles request error on getTableData', () => {
         testSaga(getTableDataWorker, getTableData(testKey))
           .next()
           .throw(new Error())
@@ -690,37 +678,6 @@ describe('tableMetadata ducks', () => {
         it('with failure callback', () => {
           sagaTest(mockFailure).call(mockFailure).next().isDone();
         });
-      });
-    });
-
-    describe('getLastIndexedWatcher', () => {
-      it('takes every GetLastIndexed.REQUEST with getLastIndexedWorker', () => {
-        testSaga(getLastIndexedWatcher)
-          .next()
-          .takeEvery(GetLastIndexed.REQUEST, getLastIndexedWorker)
-          .next()
-          .isDone();
-      });
-    });
-
-    describe('getLastIndexedWorker', () => {
-      it('executes flow for getting last indexed value', () => {
-        testSaga(getLastIndexedWorker, getLastIndexed())
-          .next()
-          .call(API.getLastIndexed)
-          .next(testEpoch)
-          .put(getLastIndexedSuccess(testEpoch))
-          .next()
-          .isDone();
-      });
-
-      it('handles request error', () => {
-        testSaga(getLastIndexedWorker, getLastIndexed())
-          .next()
-          .throw(new Error())
-          .put(getLastIndexedFailure())
-          .next()
-          .isDone();
       });
     });
 

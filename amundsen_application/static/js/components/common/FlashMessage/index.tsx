@@ -1,4 +1,8 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
+import * as Constants from './constants';
 
 import './styles.scss';
 
@@ -8,7 +12,7 @@ export interface FlashMessageProps {
   onClose: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-const FlashMessage: React.SFC<FlashMessageProps> = ({
+const FlashMessage: React.FC<FlashMessageProps> = ({
   iconClass,
   message,
   onClose,
@@ -17,12 +21,9 @@ const FlashMessage: React.SFC<FlashMessageProps> = ({
     <div className="flash-message">
       {iconClass && <img className={`icon ${iconClass}`} alt="" />}
       <div className="message">{message}</div>
-      <button
-        type="button"
-        className="btn btn-close"
-        aria-label="Close"
-        onClick={onClose}
-      />
+      <button type="button" className="btn btn-close" onClick={onClose}>
+        <span className="sr-only">{Constants.CLOSE}</span>
+      </button>
     </div>
   );
 };

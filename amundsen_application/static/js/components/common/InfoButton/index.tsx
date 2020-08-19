@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
@@ -16,7 +19,7 @@ export interface InfoButtonProps {
   size?: string;
 }
 
-const InfoButton: React.SFC<InfoButtonProps> = ({
+const InfoButton: React.FC<InfoButtonProps> = ({
   title,
   infoText,
   placement,

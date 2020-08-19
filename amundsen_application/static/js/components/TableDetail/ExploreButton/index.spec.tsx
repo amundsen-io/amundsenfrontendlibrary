@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import * as ConfigUtils from 'config/config-utils';
@@ -48,8 +51,9 @@ describe('ExploreButton', () => {
         },
         table_readers: [],
         source: { source: '', source_type: '' },
+        resource_reports: [],
         watermarks: [],
-        programmatic_descriptions: [],
+        programmatic_descriptions: {},
         ...tableDataOverrides,
       },
     };

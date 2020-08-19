@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import * as Avatar from 'react-avatar';
 import { RouteComponentProps } from 'react-router';
@@ -12,7 +15,11 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import { LoggedInUser } from 'interfaces';
 
-import { feedbackEnabled, indexUsersEnabled } from 'config/config-utils';
+import {
+  feedbackEnabled,
+  indexUsersEnabled,
+  getNavLinks,
+} from 'config/config-utils';
 
 import Feedback from 'components/Feedback';
 import SearchBar from 'components/common/SearchBar';
@@ -62,7 +69,7 @@ export class NavBar extends React.Component<NavBarProps> {
   renderSearchBar = () => {
     if (this.props.location.pathname !== '/') {
       return (
-        <div className="search-bar">
+        <div className="nav-search-bar">
           <SearchBar size="small" />
         </div>
       );
@@ -98,7 +105,7 @@ export class NavBar extends React.Component<NavBarProps> {
             </div>
             {this.renderSearchBar()}
             <div id="nav-bar-right" className="ml-auto nav-bar-right">
-              {this.generateNavLinks(AppConfig.navLinks)}
+              {this.generateNavLinks(getNavLinks())}
               {feedbackEnabled() && <Feedback />}
               {loggedInUser && indexUsersEnabled() && (
                 <Dropdown id="user-dropdown" pullRight>

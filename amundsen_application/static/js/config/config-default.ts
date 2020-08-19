@@ -37,6 +37,9 @@ const configDefault: AppConfig = {
     feedbackEnabled: false,
     notificationsEnabled: false,
   },
+  announcements: {
+    enabled: true,
+  },
   navLinks: [
     {
       label: 'Announcements',
@@ -58,6 +61,10 @@ const configDefault: AppConfig = {
         mode: {
           displayName: 'Mode',
           iconClass: 'icon-mode',
+        },
+        redash: {
+          displayName: 'Redash',
+          iconClass: 'icon-redash',
         },
       },
       filterCategories: [

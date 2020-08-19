@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import { connect } from 'react-redux';
 
@@ -12,7 +15,7 @@ export interface CheckBoxItemProps {
   children: React.ReactNode;
 }
 
-const CheckBoxItem: React.SFC<CheckBoxItemProps> = ({
+const CheckBoxItem: React.FC<CheckBoxItemProps> = ({
   checked = false,
   disabled = false,
   name,

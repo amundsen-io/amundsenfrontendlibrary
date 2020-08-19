@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import * as Avatar from 'react-avatar';
 
@@ -11,7 +14,7 @@ export interface AvatarLabelProps {
   src?: string;
 }
 
-const AvatarLabel: React.SFC<AvatarLabelProps> = ({
+const AvatarLabel: React.FC<AvatarLabelProps> = ({
   avatarClass,
   labelClass,
   label,

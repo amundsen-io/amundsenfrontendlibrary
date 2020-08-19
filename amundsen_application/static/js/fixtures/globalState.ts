@@ -7,6 +7,8 @@ import { dashboardMetadata } from './metadata/dashboard';
 
 const globalState: GlobalState = {
   announcements: {
+    isLoading: false,
+    statusCode: 200,
     posts: [
       {
         date: '12/31/1999',
@@ -148,7 +150,6 @@ const globalState: GlobalState = {
   },
   tableMetadata: {
     isLoading: true,
-    lastIndexed: 1555632106,
     preview: {
       data: {},
       status: null,
@@ -158,7 +159,6 @@ const globalState: GlobalState = {
       badges: [],
       cluster: '',
       columns: [],
-      dashboards: [],
       database: '',
       is_editable: false,
       is_view: false,
@@ -171,14 +171,16 @@ const globalState: GlobalState = {
       partition: { is_partitioned: false },
       table_readers: [],
       source: { source: '', source_type: '' },
+      resource_reports: [],
       watermarks: [],
-      programmatic_descriptions: [],
+      programmatic_descriptions: {},
     },
     tableOwners: {
       isLoading: true,
       owners: {},
     },
   },
+  lastIndexed: { lastIndexed: 1555632106 },
   tags: {
     allTags: {
       isLoading: false,
@@ -190,6 +192,14 @@ const globalState: GlobalState = {
         {
           tag_name: 'other_tag_1',
           tag_count: 15,
+        },
+        {
+          tag_name: 'alphabetical_tag_1',
+          tag_count: 5,
+        },
+        {
+          tag_name: 'zero_count_tag_1',
+          tag_count: 0,
         },
       ],
     },

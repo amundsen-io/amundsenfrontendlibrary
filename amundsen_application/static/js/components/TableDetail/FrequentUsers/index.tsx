@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import * as Avatar from 'react-avatar';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
@@ -53,7 +56,7 @@ export function renderReader(
   );
 }
 
-const FrequentUsers: React.SFC<FrequentUsersProps> = ({
+const FrequentUsers: React.FC<FrequentUsersProps> = ({
   readers,
 }: FrequentUsersProps) => {
   if (readers.length === 0) {

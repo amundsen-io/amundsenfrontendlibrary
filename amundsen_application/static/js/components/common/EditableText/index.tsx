@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as autosize from 'autosize';
 import * as React from 'react';
 import * as ReactMarkdown from 'react-markdown';
@@ -121,7 +124,7 @@ class EditableText extends React.Component<
       return (
         <div className="editable-text">
           <div className="markdown-wrapper">
-            <ReactMarkdown source={this.state.value} />
+            <ReactMarkdown source={this.state.value} escapeHtml={false} />
           </div>
           {this.props.editable && !this.state.value && (
             <a

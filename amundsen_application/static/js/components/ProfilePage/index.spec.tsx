@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import * as DocumentTitle from 'react-document-title';
 import * as Avatar from 'react-avatar';
@@ -17,6 +20,7 @@ import { ResourceType } from 'interfaces/Resources';
 import * as LogUtils from 'utils/logUtils';
 
 import { indexDashboardsEnabled } from 'config/config-utils';
+import { BadgeStyle } from 'config/config-types';
 import { AVATAR_SIZE } from './constants';
 import {
   mapDispatchToProps,
@@ -343,7 +347,7 @@ describe('ProfilePage', () => {
         wrapper.find('.header-title-text').find(Flag).props()
       ).toMatchObject({
         caseType: 'sentenceCase',
-        labelStyle: 'danger',
+        labelStyle: BadgeStyle.DANGER,
         text: 'Alumni',
       });
     });

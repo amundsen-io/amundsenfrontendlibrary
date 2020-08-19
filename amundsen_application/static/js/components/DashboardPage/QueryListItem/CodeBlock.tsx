@@ -1,3 +1,6 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
 import * as React from 'react';
 import { CopyBlock, atomOneLight } from 'react-code-blocks';
 
@@ -7,7 +10,7 @@ type CodeBlockProps = {
   text: string;
 };
 
-const CodeBlock: React.SFC<CodeBlockProps> = ({ text }: CodeBlockProps) => {
+const CodeBlock: React.FC<CodeBlockProps> = ({ text }: CodeBlockProps) => {
   return (
     <CopyBlock
       text={text}

@@ -18,6 +18,7 @@ export interface AppConfig {
   issueTracking: IssueTrackingConfig;
   logoPath: string | null;
   mailClientFeatures: MailClientFeaturesConfig;
+  announcements: AnnoucementsFeaturesConfig;
   navLinks: Array<LinkConfig>;
   resourceConfig: ResourceConfig;
   tableLineage: TableLineageConfig;
@@ -134,11 +135,11 @@ interface BaseResourceConfig {
 }
 
 export enum BadgeStyle {
-  DANGER = 'danger',
-  DEFAULT = 'default',
+  DANGER = 'negative',
+  DEFAULT = 'neutral',
   INFO = 'info',
   PRIMARY = 'primary',
-  SUCCESS = 'success',
+  SUCCESS = 'positive',
   WARNING = 'warning',
 }
 
@@ -188,6 +189,16 @@ interface MailClientFeaturesConfig {
   feedbackEnabled: boolean;
   notificationsEnabled: boolean;
 }
+
+/**
+ * AnnoucementsFeaturesConfig - Enable/disable UI features related to the announcements
+ *
+ * enabled - Enables the announcements feature
+ */
+interface AnnoucementsFeaturesConfig {
+  enabled: boolean;
+}
+
 /**
  * TableProfileConfig - Customize the "Table Profile" section of the "Table Details" page.
  *
