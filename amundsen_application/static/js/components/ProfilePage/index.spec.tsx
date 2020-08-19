@@ -357,7 +357,8 @@ describe('ProfilePage', () => {
       const { wrapper } = setup({
         user: userCopy,
       });
-      expect(wrapper.find('#alumni').text()).toEqual('Alumni');
+      const expected = 1;
+      expect(wrapper.find('#alumni').length).toEqual(expected);
     });
 
     it('renders github link with correct href', () => {
