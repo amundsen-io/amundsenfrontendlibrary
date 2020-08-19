@@ -27,7 +27,8 @@
     "format": "prettier --loglevel warn --write \"**/*.{ts,tsx,css,scss}\"",
     "storybook": "cross-env TS_NODE_PROJECT='tsconfig.webpack.json' start-storybook -p 6006",
     "build-storybook": "cross-env TS_NODE_PROJECT='tsconfig.webpack.json' build-storybook",
-    "betterer": "betterer"
+    "betterer": "betterer",
+    "betterer:update": "betterer --update"
   },
   "author": "",
   "license": "Apache-2.0",

@@ -1,13 +1,16 @@
 // BETTERER RESULTS V2.
 exports[`strict null compilation`] = {
   value: `{
-    "global.d.ts:2892022323": [
-      [0, 14, 7, "Cannot redeclare block-scoped variable \'require\'.", "1363927880"]
+    "js/components/DashboardPage/DashboardOwnerEditor/index.spec.tsx:4125678807": [
+      [29, 19, 11, "Type \'{ manager_id: null; manager_fullname: null; manager_email: null; profile_url: string; role_name: null; display_name: null; github_username: null; team_name: null; last_name: null; full_name: null; ... 6 more ...; user_id: string; }\' is not assignable to type \'User\'.\\n  Types of property \'display_name\' are incompatible.\\n    Type \'null\' is not assignable to type \'string\'.", "2041815528"]
     ],
-    "js/components/DashboardPage/index.spec.tsx:3974700433": [
-      [56, 4, 8, "Argument of type \'Partial<Location<{} | null | undefined>> | undefined\' is not assignable to parameter of type \'Partial<Location<{} | null | undefined>>\'.\\n  Type \'undefined\' is not assignable to type \'Partial<Location<{} | null | undefined>>\'.", "2700611480"],
-      [251, 10, 18, "Type \'null\' is not assignable to type \'number\'.", "2901767208"],
-      [252, 10, 29, "Type \'null\' is not assignable to type \'number\'.", "1157138603"]
+    "js/components/DashboardPage/DashboardOwnerEditor/index.tsx:3906399124": [
+      [46, 2, 4, "No overload matches this call.\\n  The last overload gave the following error.\\n    Argument of type \'null\' is not assignable to parameter of type \'{}\'.", "2087897566"]
+    ],
+    "js/components/DashboardPage/index.spec.tsx:2960511959": [
+      [57, 4, 8, "Argument of type \'Partial<Location<{} | null | undefined>> | undefined\' is not assignable to parameter of type \'Partial<Location<{} | null | undefined>>\'.\\n  Type \'undefined\' is not assignable to type \'Partial<Location<{} | null | undefined>>\'.", "2700611480"],
+      [242, 10, 18, "Type \'null\' is not assignable to type \'number\'.", "2901767208"],
+      [243, 10, 29, "Type \'null\' is not assignable to type \'number\'.", "1157138603"]
     ],
     "js/components/Feedback/index.tsx:1605423346": [
       [46, 6, 7, "Type \'FC<any> | undefined\' is not assignable to type \'FC<any>\'.\\n  Type \'undefined\' is not assignable to type \'FunctionComponent<any>\'.", "3716929964"]
@@ -83,27 +86,14 @@ exports[`strict null compilation`] = {
       [141, 17, 16, "Object is possibly \'undefined\'.", "3451845569"],
       [257, 30, 34, "Argument of type \'number | null\' is not assignable to parameter of type \'number\'.\\n  Type \'null\' is not assignable to type \'number\'.", "3967943985"]
     ],
-    "js/components/TableDetail/OwnerEditor/index.spec.tsx:4103702085": [
-      [21, 6, 9, "Type \'null\' is not assignable to type \'boolean | undefined\'.", "1517648899"],
-      [24, 6, 8, "Type \'null\' is not assignable to type \'boolean | undefined\'.", "2673870115"]
-    ],
-    "js/components/TableDetail/OwnerEditor/index.tsx:2688603643": [
-      [93, 4, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
-      [98, 4, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
-      [105, 27, 6, "Type \'UpdateMethod.DELETE\' is not assignable to type \'never\'.", "1469012122"],
-      [105, 56, 2, "Type \'string\' is not assignable to type \'never\'.", "5861160"],
-      [110, 27, 6, "Type \'UpdateMethod.PUT\' is not assignable to type \'never\'.", "1469012122"],
-      [110, 53, 2, "Type \'string\' is not assignable to type \'never\'.", "5861160"],
-      [115, 6, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
-      [121, 6, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
-      [128, 12, 5, "Property \'value\' does not exist on type \'HTMLInputElement | null\'.", "189936718"],
-      [130, 6, 21, "Object is possibly \'null\'.", "2411403565"]
-    ],
     "js/components/TableDetail/TableDashboardResourceList/index.tsx:3147978263": [
       [64, 2, 15, "No overload matches this call.\\n  The last overload gave the following error.\\n    Argument of type \'(state: GlobalState) => { dashboards: DashboardResource[]; isLoading: boolean; errorText: string | undefined; }\' is not assignable to parameter of type \'MapStateToPropsParam<StateFromProps, OwnProps, {}>\'.\\n      Type \'(state: GlobalState) => { dashboards: DashboardResource[]; isLoading: boolean; errorText: string | undefined; }\' is not assignable to type \'MapStateToPropsFactory<StateFromProps, OwnProps, {}>\'.\\n        Type \'{ dashboards: DashboardResource[]; isLoading: boolean; errorText: string | undefined; }\' is not assignable to type \'MapStateToProps<StateFromProps, OwnProps, {}>\'.\\n          Type \'{ dashboards: DashboardResource[]; isLoading: boolean; errorText: string | undefined; }\' provides no match for the signature \'(state: {}, ownProps: OwnProps): StateFromProps\'.", "1389821531"]
     ],
     "js/components/TableDetail/TableIssues/index.spec.tsx:285770959": [
       [76, 8, 12, "Type \'null\' is not assignable to type \'string | undefined\'.", "124336133"]
+    ],
+    "js/components/TableDetail/TableOwnerEditor/index.spec.tsx:3400494524": [
+      [28, 10, 6, "Type \'{ [x: string]: { manager_id: null; manager_fullname: null; manager_email: null; profile_url: string; role_name: null; display_name: null; github_username: null; team_name: null; last_name: null; full_name: null; ... 6 more ...; user_id: string; }; }\' is not assignable to type \'OwnerDict\'.\\n  Index signatures are incompatible.\\n    Type \'{ manager_id: null; manager_fullname: null; manager_email: null; profile_url: string; role_name: null; display_name: null; github_username: null; team_name: null; last_name: null; full_name: null; ... 6 more ...; user_id: string; }\' is not assignable to type \'User\'.", "1719502071"]
     ],
     "js/components/TableDetail/WatermarkLabel/index.spec.tsx:3090288121": [
       [77, 57, 4, "Argument of type \'null\' is not assignable to parameter of type \'string\'.", "2087897566"]
@@ -114,28 +104,28 @@ exports[`strict null compilation`] = {
     "js/components/TableDetail/index.spec.tsx:2169788066": [
       [32, 4, 8, "Argument of type \'Partial<Location<{} | null | undefined>> | undefined\' is not assignable to parameter of type \'Partial<Location<{} | null | undefined>>\'.\\n  Type \'undefined\' is not assignable to type \'Partial<Location<{} | null | undefined>>\'.", "2700611480"]
     ],
-    "js/components/TableDetail/index.tsx:388044151": [
-      [157, 10, 13, "Type \'null\' is not assignable to type \'((newValue: string, onSuccess?: (() => any) | undefined, onFailure?: (() => any) | undefined) => void) | undefined\'.", "67794331"],
-      [168, 6, 7, "Type \'Element\' is not assignable to type \'never\'.", "3716929964"],
-      [175, 6, 3, "Type \'string\' is not assignable to type \'never\'.", "193424690"],
-      [176, 6, 5, "Type \'string\' is not assignable to type \'never\'.", "183222373"],
-      [186, 8, 7, "Type \'Element\' is not assignable to type \'never\'.", "3716929964"],
-      [187, 11, 26, "Type \'{ itemsPerPage: number; source: string; }\' is missing the following properties from type \'Readonly<Pick<TableDashboardResourceListProps, \\"source\\" | \\"dashboards\\" | \\"isLoading\\" | \\"itemsPerPage\\" | \\"errorText\\"> & OwnProps>\': dashboards, isLoading, errorText", "2224258167"],
-      [192, 8, 3, "Type \'string\' is not assignable to type \'never\'.", "193424690"],
-      [193, 8, 5, "Type \'string | Element\' is not assignable to type \'never\'.\\n  Type \'string\' is not assignable to type \'never\'.", "183222373"],
-      [267, 16, 7, "Type \'string | null\' is not assignable to type \'string | undefined\'.\\n  Type \'null\' is not assignable to type \'string | undefined\'.", "3817619378"],
-      [309, 20, 35, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "4249007202"],
-      [323, 20, 36, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "2770872537"],
-      [328, 16, 36, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "2776557981"]
+    "js/components/TableDetail/index.tsx:2025163043": [
+      [154, 10, 13, "Type \'null\' is not assignable to type \'((newValue: string, onSuccess?: (() => any) | undefined, onFailure?: (() => any) | undefined) => void) | undefined\'.", "67794331"],
+      [165, 6, 7, "Type \'Element\' is not assignable to type \'never\'.", "3716929964"],
+      [172, 6, 3, "Type \'string\' is not assignable to type \'never\'.", "193424690"],
+      [173, 6, 5, "Type \'string\' is not assignable to type \'never\'.", "183222373"],
+      [183, 8, 7, "Type \'Element\' is not assignable to type \'never\'.", "3716929964"],
+      [184, 11, 26, "Type \'{ itemsPerPage: number; source: string; }\' is missing the following properties from type \'Readonly<Pick<TableDashboardResourceListProps, \\"source\\" | \\"dashboards\\" | \\"isLoading\\" | \\"errorText\\" | \\"itemsPerPage\\"> & OwnProps>\': dashboards, isLoading, errorText", "2224258167"],
+      [189, 8, 3, "Type \'string\' is not assignable to type \'never\'.", "193424690"],
+      [190, 8, 5, "Type \'string | Element\' is not assignable to type \'never\'.\\n  Type \'string\' is not assignable to type \'never\'.", "183222373"],
+      [264, 16, 7, "Type \'string | null\' is not assignable to type \'string | undefined\'.\\n  Type \'null\' is not assignable to type \'string | undefined\'.", "3817619378"],
+      [306, 20, 35, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "4249007202"],
+      [320, 20, 36, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "2770872537"],
+      [325, 16, 36, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "2776557981"]
     ],
-    "js/components/Tags/TagInput/index.tsx:3754832290": [
-      [63, 22, 6, "Type \'undefined\' is not assignable to type \'GetAllTagsRequest\'.", "1979467425"],
-      [66, 4, 4, "Type \'undefined\' is not assignable to type \'Tag[]\'.", "2087952548"],
-      [67, 22, 6, "Type \'undefined\' is not assignable to type \'UpdateTagsRequest\'.", "1979467425"],
-      [100, 31, 10, "Type \'UpdateMethod.DELETE\' is not assignable to type \'never\'.", "3392756765"],
-      [100, 64, 7, "Type \'string\' is not assignable to type \'never\'.", "1671693616"],
-      [102, 31, 10, "Type \'UpdateMethod.PUT\' is not assignable to type \'never\'.", "3392756765"],
-      [102, 61, 7, "Type \'string\' is not assignable to type \'never\'.", "1671693616"]
+    "js/components/common/Announcements/AnnouncementsList/index.spec.tsx:1710887993": [
+      [95, 23, 124, "Object is possibly \'null\'.", "4248337497"]
+    ],
+    "js/components/common/Announcements/AnnouncementsList/index.tsx:1484765516": [
+      [70, 4, 11, "Type \'Element\' is not assignable to type \'null\'.", "3768376622"],
+      [73, 4, 11, "Type \'Element[]\' is not assignable to type \'null\'.", "3768376622"],
+      [85, 4, 11, "Type \'Element\' is not assignable to type \'null\'.", "3768376622"],
+      [88, 4, 11, "Type \'Element[]\' is not assignable to type \'null\'.", "3768376622"]
     ],
     "js/components/common/BadgeList/index.tsx:4121776008": [
       [21, 12, 4, "Type \'string | undefined\' is not assignable to type \'string\'.\\n  Type \'undefined\' is not assignable to type \'string\'.", "2087956376"]
@@ -148,7 +138,13 @@ exports[`strict null compilation`] = {
       [74, 8, 3, "Type \'string\' is not assignable to type \'never\'.", "193424690"],
       [75, 8, 5, "Type \'string\' is not assignable to type \'never\'.", "183222373"]
     ],
-    "js/components/common/EditableSection/index.spec.tsx:351345550": [
+    "js/components/common/Card/index.spec.tsx:1434265974": [
+      [158, 23, 100, "Object is possibly \'null\'.", "1846024709"]
+    ],
+    "js/components/common/Card/index.tsx:330138477": [
+      [32, 2, 7, "Type \'null\' is not assignable to type \'(e: SyntheticEvent<Element, Event>) => void\'.", "4055953994"]
+    ],
+    "js/components/common/EditableSection/index.spec.tsx:1117078860": [
       [93, 32, 4, "Argument of type \'null\' is not assignable to parameter of type \'Partial<EditableSectionProps> | undefined\'.", "2087897566"]
     ],
     "js/components/common/EditableSection/index.tsx:3911151831": [
@@ -169,6 +165,22 @@ exports[`strict null compilation`] = {
     ],
     "js/components/common/Flag/index.tsx:128873066": [
       [44, 27, 8, "Argument of type \'string | null\' is not assignable to parameter of type \'string\'.\\n  Type \'null\' is not assignable to type \'string\'.", "4036080041"]
+    ],
+    "js/components/common/OwnerEditor/index.spec.tsx:3936675418": [
+      [18, 6, 9, "Type \'null\' is not assignable to type \'boolean | undefined\'.", "1517648899"],
+      [21, 6, 8, "Type \'null\' is not assignable to type \'boolean | undefined\'.", "2673870115"]
+    ],
+    "js/components/common/OwnerEditor/index.tsx:4237797567": [
+      [92, 4, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
+      [97, 4, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
+      [104, 27, 6, "Type \'UpdateMethod.DELETE\' is not assignable to type \'never\'.", "1469012122"],
+      [104, 56, 2, "Type \'string\' is not assignable to type \'never\'.", "5861160"],
+      [109, 27, 6, "Type \'UpdateMethod.PUT\' is not assignable to type \'never\'.", "1469012122"],
+      [109, 53, 2, "Type \'string\' is not assignable to type \'never\'.", "5861160"],
+      [114, 6, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
+      [120, 6, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
+      [127, 12, 5, "Property \'value\' does not exist on type \'HTMLInputElement | null\'.", "189936718"],
+      [129, 6, 21, "Object is possibly \'null\'.", "2411403565"]
     ],
     "js/components/common/ResourceListItem/DashboardListItem/index.spec.tsx:53357032": [
       [163, 14, 29, "Type \'null\' is not assignable to type \'number\'.", "1157138603"]
@@ -198,25 +210,52 @@ exports[`strict null compilation`] = {
       [248, 6, 11, "No overload matches this call.\\n  The last overload gave the following error.\\n    Type \'(() => SubmitSearchRequest) | null\' is not assignable to type \'ActionCreator<any>\'.\\n      Type \'null\' is not assignable to type \'ActionCreator<any>\'.", "2296208050"],
       [263, 4, 18, "No overload matches this call.\\n  The last overload gave the following error.\\n    Argument of type \'(dispatch: any, ownProps: any) => ActionCreator<unknown>\' is not assignable to parameter of type \'DispatchFromProps\'.\\n      Type \'(dispatch: any, ownProps: any) => ActionCreator<unknown>\' is missing the following properties from type \'DispatchFromProps\': submitSearch, onInputChange, onSelectInlineResult", "2926224796"]
     ],
-    "js/config/config-utils.ts:1432374780": [
-      [85, 4, 25, "\'style\' is specified more than once, so this usage will be overwritten.", "1214862559"]
+    "js/components/common/Tags/TagInput/index.tsx:3754832290": [
+      [63, 22, 6, "Type \'undefined\' is not assignable to type \'GetAllTagsRequest\'.", "1979467425"],
+      [66, 4, 4, "Type \'undefined\' is not assignable to type \'Tag[]\'.", "2087952548"],
+      [67, 22, 6, "Type \'undefined\' is not assignable to type \'UpdateTagsRequest\'.", "1979467425"],
+      [100, 31, 10, "Type \'UpdateMethod.DELETE\' is not assignable to type \'never\'.", "3392756765"],
+      [100, 64, 7, "Type \'string\' is not assignable to type \'never\'.", "1671693616"],
+      [102, 31, 10, "Type \'UpdateMethod.PUT\' is not assignable to type \'never\'.", "3392756765"],
+      [102, 61, 7, "Type \'string\' is not assignable to type \'never\'.", "1671693616"]
     ],
-    "js/config/tests/index.spec.ts:2926285531": [
+    "js/components/common/Tags/TagsList/index.tsx:3330150315": [
+      [101, 23, 9, "Object is possibly \'undefined\'.", "3803340896"],
+      [115, 38, 4, "Type \'Tag[] | undefined\' is not assignable to type \'Tag[]\'.\\n  Type \'undefined\' is not assignable to type \'Tag[]\'.", "2087952548"]
+    ],
+    "js/components/common/Tags/index.tsx:575750387": [
+      [67, 49, 13, "Object is possibly \'undefined\'.", "4085240695"],
+      [77, 4, 11, "Type \'Tag[]\' is not assignable to type \'never[]\'.\\n  Type \'Tag\' is not assignable to type \'never\'.", "4011456884"],
+      [80, 4, 9, "Type \'Tag[]\' is not assignable to type \'never[]\'.", "3803340896"],
+      [90, 15, 11, "Object is possibly \'undefined\'.", "2324562820"],
+      [90, 29, 11, "Object is possibly \'undefined\'.", "430779911"],
+      [93, 4, 11, "Type \'Tag[]\' is not assignable to type \'never[]\'.", "255414113"],
+      [98, 4, 9, "Type \'Tag[]\' is not assignable to type \'never[]\'.", "3803340896"]
+    ],
+    "js/config/config-utils.ts:1181911782": [
+      [86, 4, 25, "\'style\' is specified more than once, so this usage will be overwritten.", "1214862559"]
+    ],
+    "js/config/index.spec.ts:696974304": [
       [17, 6, 61, "Object is possibly \'undefined\'.", "1496333578"],
       [51, 6, 61, "Object is possibly \'undefined\'.", "1496333578"]
+    ],
+    "js/ducks/announcements/index.ts:2989299303": [
+      [37, 2, 10, "Type \'null\' is not assignable to type \'number\'.", "3382497788"],
+      [49, 8, 10, "Type \'null\' is not assignable to type \'number\'.", "3382497788"],
+      [62, 8, 5, "Type \'AnnouncementPost[] | undefined\' is not assignable to type \'AnnouncementPost[]\'.\\n  Type \'undefined\' is not assignable to type \'AnnouncementPost[]\'.", "187752366"]
+    ],
+    "js/ducks/bookmark/index.spec.ts:2451112669": [
+      [86, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
+      [104, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
+      [124, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
+      [144, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
+      [145, 13, 7, "Object is possibly \'undefined\'.", "2531329355"]
     ],
     "js/ducks/bookmark/reducer.ts:1596344454": [
       [126, 21, 38, "Object is possibly \'undefined\'.", "2378953250"],
       [139, 26, 45, "Object is possibly \'undefined\'.", "2845005480"],
       [143, 14, 11, "Property \'resourceKey\' does not exist on type \'{ resourceKey: string; resourceType: ResourceType; } | undefined\'.", "2431704504"],
       [143, 27, 12, "Property \'resourceType\' does not exist on type \'{ resourceKey: string; resourceType: ResourceType; } | undefined\'.", "2937713623"]
-    ],
-    "js/ducks/bookmark/tests/index.spec.ts:3651205981": [
-      [86, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
-      [104, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
-      [124, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
-      [144, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
-      [145, 13, 7, "Object is possibly \'undefined\'.", "2531329355"]
     ],
     "js/ducks/dashboard/reducer.ts:562296055": [
       [49, 2, 17, "Type \'null\' is not assignable to type \'number\'.", "2818833716"],
@@ -254,6 +293,9 @@ exports[`strict null compilation`] = {
     ],
     "js/ducks/lastIndexed/tests/index.spec.ts:3678025492": [
       [37, 13, 7, "Object is possibly \'undefined\'.", "2531329355"]
+    ],
+    "js/ducks/notification/tests/index.spec.ts:2474130513": [
+      [197, 43, 4, "Argument of type \'null\' is not assignable to parameter of type \'SubmitNotificationRequest\'.", "2087897566"]
     ],
     "js/ducks/search/reducer.ts:2164504857": [
       [69, 6, 8, "Type \'ResourceType | undefined\' is not assignable to type \'ResourceType\'.\\n  Type \'undefined\' is not assignable to type \'ResourceType\'.", "2131237679"],
@@ -294,24 +336,23 @@ exports[`strict null compilation`] = {
     "js/ducks/tags/reducer.ts:419330645": [
       [130, 16, 48, "Object is possibly \'undefined\'.", "1931932323"]
     ],
+    "js/ducks/user/index.spec.ts:3598813627": [
+      [65, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
+      [84, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
+      [103, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
+      [122, 13, 7, "Object is possibly \'undefined\'.", "2531329355"]
+    ],
     "js/ducks/user/reducer.ts:1917256202": [
       [119, 22, 41, "Object is possibly \'undefined\'.", "291980569"],
       [135, 16, 33, "Object is possibly \'undefined\'.", "625812796"],
       [154, 15, 36, "Object is possibly \'undefined\'.", "3626509514"],
       [171, 16, 37, "Object is possibly \'undefined\'.", "1613771502"]
     ],
-    "js/ducks/user/tests/index.spec.ts:2988985083": [
-      [65, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
-      [84, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
-      [103, 13, 7, "Object is possibly \'undefined\'.", "2531329355"],
-      [122, 13, 7, "Object is possibly \'undefined\'.", "2531329355"]
-    ],
     "js/ducks/utilMethods.ts:2135866627": [
       [51, 4, 5, "Type \'string | null\' is not assignable to type \'string | undefined\'.\\n  Type \'null\' is not assignable to type \'string | undefined\'.", "173467459"]
     ],
-    "js/fixtures/globalState.ts:3219246446": [
-      [67, 4, 12, "Type \'null\' is not assignable to type \'string\'.", "124336133"],
-      [154, 4, 10, "Type \'null\' is not assignable to type \'number\'.", "3382497788"]
+    "js/fixtures/globalState.ts:3931474038": [
+      [69, 4, 12, "Type \'null\' is not assignable to type \'string\'.", "124336133"]
     ],
     "js/fixtures/metadata/table.ts:2912527294": [
       [52, 6, 11, "Type \'null\' is not assignable to type \'string\'.", "1848305091"],
@@ -331,25 +372,6 @@ exports[`strict null compilation`] = {
     ],
     "js/utils/navigationUtils.ts:1127210474": [
       [19, 50, 21, "Type \'undefined\' cannot be used as an index type.", "602535635"]
-    ],
-    "node_modules/@types/node/globals.d.ts:2752700620": [
-      [208, 12, 7, "Cannot redeclare block-scoped variable \'require\'.", "1363927880"]
-    ],
-    "node_modules/redux-saga-test-plan/effects.d.ts:2707109322": [
-      [88, 38, 22, "Generic type \'CallEffectDescriptor<RT>\' requires 1 type argument(s).", "2159905736"],
-      [89, 34, 22, "Generic type \'CallEffectDescriptor<RT>\' requires 1 type argument(s).", "2159905736"],
-      [91, 36, 22, "Generic type \'CallEffectDescriptor<RT>\' requires 1 type argument(s).", "2159905736"],
-      [92, 36, 22, "Generic type \'CallEffectDescriptor<RT>\' requires 1 type argument(s).", "2159905736"],
-      [93, 38, 22, "Generic type \'CallEffectDescriptor<RT>\' requires 1 type argument(s).", "2159905736"]
-    ],
-    "node_modules/redux-saga-test-plan/index.d.ts:403666101": [
-      [28, 13, 11, "Generic type \'CpsEffect\' requires 1 type argument(s).", "3794750905"]
-    ],
-    "node_modules/redux-saga-test-plan/providers.d.ts:3487640923": [
-      [15, 26, 22, "Generic type \'CallEffectDescriptor<RT>\' requires 1 type argument(s).", "2159905736"],
-      [18, 25, 22, "Generic type \'CallEffectDescriptor<RT>\' requires 1 type argument(s).", "2159905736"],
-      [20, 26, 22, "Generic type \'ForkEffectDescriptor<RT>\' requires 1 type argument(s).", "2282739514"],
-      [27, 27, 22, "Generic type \'CallEffectDescriptor<RT>\' requires 1 type argument(s).", "2159905736"]
     ],
     "webpack.common.ts:4170625548": [
       [32, 24, 20, "No overload matches this call.\\n  Overload 1 of 2, \'(...items: ConcatArray<never>[]): never[]\', gave the following error.\\n    Argument of type \'string\' is not assignable to parameter of type \'ConcatArray<never>\'.\\n  Overload 2 of 2, \'(...items: ConcatArray<never>[]): never[]\', gave the following error.\\n    Argument of type \'string\' is not assignable to parameter of type \'ConcatArray<never>\'.", "806093104"]
