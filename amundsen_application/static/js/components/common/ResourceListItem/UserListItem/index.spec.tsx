@@ -171,6 +171,24 @@ describe('UserListItem', () => {
         expect(resourceType.text()).toEqual('User');
       });
     });
+
+    describe('renders resource-badges section', () => {
+      let resourceBadges;
+      beforeAll(() => {
+        resourceBadges = wrapper.find('.resource-badges');
+      });
+
+      it('renders resource badges section', () => {
+        expect(resourceBadges.exists()).toBe(true);
+      });
+
+      it('renders correct end icon', () => {
+        const expectedClassName = 'icon icon-right';
+        expect(resourceBadges.find('img').props().className).toEqual(
+          expectedClassName
+        );
+      });
+    });
   });
 
   describe('getLink', () => {

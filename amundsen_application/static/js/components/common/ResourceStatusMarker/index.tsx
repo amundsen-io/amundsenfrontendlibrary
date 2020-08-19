@@ -14,9 +14,7 @@ export interface StateProps {
   stateText: string;
 }
 
-const FailureState: React.FC<StateProps> = ({
-  stateText,
-}: StateProps) => {
+const FailureState: React.FC<StateProps> = ({ stateText }: StateProps) => {
   return (
     <div className="failure">
       <div className="failure-icon">
@@ -28,9 +26,7 @@ const FailureState: React.FC<StateProps> = ({
   );
 };
 
-const SuccessState: React.FC<StateProps> = ({
-  stateText,
-}: StateProps) => {
+const SuccessState: React.FC<StateProps> = ({ stateText }: StateProps) => {
   return (
     <div className="success">
       <div className="success-icon">
@@ -46,11 +42,9 @@ const ResourceStatusMarker: React.FC<StatusMarkerProps> = ({
   succeeded,
 }: StatusMarkerProps) => {
   if (succeeded) {
-    return <SuccessState
-      stateText={stateText}/>;
+    return <SuccessState stateText={stateText} />;
   }
-  return <FailureState 
-    stateText={stateText}/>;
+  return <FailureState stateText={stateText} />;
 };
 
 export default ResourceStatusMarker;

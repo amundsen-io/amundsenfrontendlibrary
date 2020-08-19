@@ -195,8 +195,9 @@ describe('DashboardPage', () => {
 
     it('renders a ResourceStatusMarker for last run state', () => {
       const expected = 1;
-      const actual = wrapper.find('.last-run-state').find('ResourceStatusMarker')
-        .length;
+      const actual = wrapper
+        .find('.last-run-state')
+        .find('ResourceStatusMarker').length;
 
       expect(actual).toEqual(expected);
     });

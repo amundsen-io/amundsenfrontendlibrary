@@ -111,12 +111,13 @@ export class DashboardPage extends React.Component<
     }
   }
 
-  mapStatusToBoolean = (status: string): boolean => {	
-    if (status === LAST_RUN_SUCCEEDED) {	
-      return true;	
-    }	
-    return false;	
+  mapStatusToBoolean = (status: string): boolean => {
+    if (status === LAST_RUN_SUCCEEDED) {
+      return true;
+    }
+    return false;
   };
+
   renderTabs() {
     const tabInfo: TabInfo[] = [];
 
@@ -306,9 +307,14 @@ export class DashboardPage extends React.Component<
                     </time>
                     <div className="last-run-state">
                       <ResourceStatusMarker
-                        stateText={this.mapStatusToBoolean(dashboard.last_run_state)
-                          ? HIT_RUN_TEXT : MISSED_RUN_TEXT}
-                        succeeded={this.mapStatusToBoolean(dashboard.last_run_state)}
+                        stateText={
+                          this.mapStatusToBoolean(dashboard.last_run_state)
+                            ? HIT_RUN_TEXT
+                            : MISSED_RUN_TEXT
+                        }
+                        succeeded={this.mapStatusToBoolean(
+                          dashboard.last_run_state
+                        )}
                       />
                     </div>
                   </div>

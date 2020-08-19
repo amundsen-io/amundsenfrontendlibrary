@@ -26,7 +26,7 @@ describe('RunStateContainer', () => {
         stateText: 'Hit',
         succeeded: true,
       });
-      
+
       const expected = 1;
       const actual = wrapper.find('.success').length;
 
@@ -34,9 +34,9 @@ describe('RunStateContainer', () => {
     });
   });
   describe('Failed', () => {
-    const { wrapper } = setup({ 
-        stateText: 'Missed',
-     });
+    const { wrapper } = setup({
+      stateText: 'Missed',
+    });
     it('renders MissedState when lastRunState failed', () => {
       const expected = 1;
       const actual = wrapper.find('.failure').length;
