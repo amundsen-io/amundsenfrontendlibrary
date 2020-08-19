@@ -4,8 +4,8 @@
 @import 'variables';
 @import 'typography-default';
 
-.missed-icon,
-.hit-icon {
+.failure-icon,
+.success-icon {
     width: $icon-size;
     height: $icon-size;
     border-radius: 100%;
