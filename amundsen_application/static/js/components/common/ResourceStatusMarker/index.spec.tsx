@@ -9,7 +9,6 @@ import ResourceStatusMarker, { StatusMarkerProps } from '.';
 
 const setup = (propsOverrides?: Partial<StatusMarkerProps>) => {
   const props = {
-    stateText: '',
     succeeded: false,
     ...propsOverrides,
   };
@@ -23,7 +22,6 @@ describe('RunStateContainer', () => {
   describe('Succeded', () => {
     it('renders SuccessState when lastRunState successful', () => {
       const { wrapper } = setup({
-        stateText: 'Hit',
         succeeded: true,
       });
 
@@ -34,9 +32,7 @@ describe('RunStateContainer', () => {
     });
   });
   describe('Failed', () => {
-    const { wrapper } = setup({
-      stateText: 'Missed',
-    });
+    const { wrapper } = setup();
     it('renders MissedState when lastRunState failed', () => {
       const expected = 1;
       const actual = wrapper.find('.failure').length;

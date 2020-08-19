@@ -34,8 +34,6 @@ import {
   DASHBOARD_SOURCE,
   TABLES_PER_PAGE,
   LAST_RUN_SUCCEEDED,
-  MISSED_RUN_TEXT,
-  HIT_RUN_TEXT,
 } from 'components/DashboardPage/constants';
 import TagInput from 'components/common/Tags/TagInput';
 import { ResourceType } from 'interfaces';
@@ -307,11 +305,6 @@ export class DashboardPage extends React.Component<
                     </time>
                     <div className="last-run-state">
                       <ResourceStatusMarker
-                        stateText={
-                          this.mapStatusToBoolean(dashboard.last_run_state)
-                            ? HIT_RUN_TEXT
-                            : MISSED_RUN_TEXT
-                        }
                         succeeded={this.mapStatusToBoolean(
                           dashboard.last_run_state
                         )}
