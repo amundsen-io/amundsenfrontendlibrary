@@ -73,17 +73,25 @@ export class InputFilter extends React.Component<
         className="input-section-content form-group"
         onSubmit={this.onApplyChanges}
       >
-        <input
-          type="text"
-          className="form-control"
-          name={categoryId}
-          id={categoryId}
-          onChange={this.onInputChange}
-          value={this.state.value}
-        />
-        <button name={categoryId} className="btn btn-default" type="submit">
-          {APPLY_BTN_TEXT}
-        </button>
+        <div className="nhsuk-form-group">
+          <input
+            type="text"
+            className="nhsuk-input"
+            name={categoryId}
+            id={categoryId}
+            onChange={this.onInputChange}
+            value={this.state.value}
+          />
+        </div>
+        <div>
+          <button
+            name={categoryId}
+            className="nhsuk-button nhsuk-button--secondary"
+            type="submit"
+          >
+            {APPLY_BTN_TEXT}
+          </button>
+        </div>
       </form>
     );
   };

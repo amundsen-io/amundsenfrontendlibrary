@@ -49,17 +49,21 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps> {
 
   renderRadioOption = (option: ResourceOptionConfig, index: number) => {
     return (
-      <div key={`resource-radio-item:${index}`} className="radio">
-        <label className="radio-label">
-          <input
-            type="radio"
-            name="resource"
-            value={option.type}
-            checked={this.props.resource === option.type}
-            onChange={this.onChange}
-          />
-          <span className="subtitle-2">{option.label}</span>
-          <span className="body-secondary-3 pull-right">{option.count}</span>
+      <div key={`resource-radio-item:${index}`} className="nhsuk-radios__item">
+        <input
+          id={`radio-item-${index}`}
+          className="nhsuk-radios__input"
+          type="radio"
+          name="resource"
+          value={option.type}
+          checked={this.props.resource === option.type}
+          onChange={this.onChange}
+        />
+        <label
+          className="nhsuk-label nhsuk-radios__label"
+          htmlFor={`radio-item-${index}`}
+        >
+          {option.label} ({option.count})
         </label>
       </div>
     );
@@ -92,10 +96,20 @@ export class ResourceSelector extends React.Component<ResourceSelectorProps> {
 
     return (
       <>
-        <h2 className="title-2">{RESOURCE_SELECTOR_TITLE}</h2>
-        {resourceOptions.map((option, index) =>
-          this.renderRadioOption(option, index)
-        )}
+        <div className="nhsuk-form-group">
+          <fieldset className="nhsuk-fieldset">
+            <legend className="nhsuk-fieldset__legend nhsuk-fieldset__legend--l">
+              <h1 className="nhsuk-fieldset__heading">
+                {RESOURCE_SELECTOR_TITLE}
+              </h1>
+            </legend>
+            <div className="nhsuk-radios">
+              {resourceOptions.map((option, index) =>
+                this.renderRadioOption(option, index)
+              )}
+            </div>
+          </fieldset>
+        </div>
       </>
     );
   };
