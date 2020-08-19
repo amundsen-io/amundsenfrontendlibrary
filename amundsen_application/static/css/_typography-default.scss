@@ -205,14 +205,12 @@ h6 {
 h1,
 h2,
 h3,
-.h1,
 .h3 {
   color: $text-primary;
   font-family: $font-family-header;
 }
 
-h1,
-.h1 {
+h1 {
   font-size: 36px;
   font-weight: $font-weight-header-regular;
   line-height: 34px;
