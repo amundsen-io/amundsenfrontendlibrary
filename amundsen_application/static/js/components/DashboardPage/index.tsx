@@ -24,7 +24,7 @@ import { DashboardMetadata } from 'interfaces/Dashboard';
 import DashboardOwnerEditor from 'components/DashboardPage/DashboardOwnerEditor';
 import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
-import RunStateContainer from 'components/common/RunState';
+import ResourceStatusMarker from 'components/common/ResourceStatusMarker';
 import { formatDateTimeShort } from 'utils/dateUtils';
 import ResourceList from 'components/common/ResourceList';
 import {
@@ -305,7 +305,7 @@ export class DashboardPage extends React.Component<
                         : NO_TIMESTAMP_TEXT}
                     </time>
                     <div className="last-run-state">
-                      <RunStateContainer
+                      <ResourceStatusMarker
                         stateText={this.mapStatusToBoolean(dashboard.last_run_state)
                           ? HIT_RUN_TEXT : MISSED_RUN_TEXT}
                         succeeded={this.mapStatusToBoolean(dashboard.last_run_state)}

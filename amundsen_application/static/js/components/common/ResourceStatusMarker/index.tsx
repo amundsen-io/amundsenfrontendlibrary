@@ -5,7 +5,7 @@ import * as React from 'react';
 
 import './styles.scss';
 
-export interface RunStateProps {
+export interface StatusMarkerProps {
   stateText: string;
   succeeded: boolean;
 }
@@ -14,12 +14,12 @@ export interface StateProps {
   stateText: string;
 }
 
-const MissedState: React.FC<StateProps> = ({
+const FailureState: React.FC<StateProps> = ({
   stateText,
 }: StateProps) => {
   return (
-    <div className="missed">
-      <div className="missed-icon">
+    <div className="failure">
+      <div className="failure-icon">
         <div className="exclamation-top" />
         <div className="exclamation-bottom" />
       </div>
@@ -28,12 +28,12 @@ const MissedState: React.FC<StateProps> = ({
   );
 };
 
-const HitState: React.FC<StateProps> = ({
+const SuccessState: React.FC<StateProps> = ({
   stateText,
 }: StateProps) => {
   return (
-    <div className="hit">
-      <div className="hit-icon">
+    <div className="success">
+      <div className="success-icon">
         <img className="icon icon-check" alt="" />
       </div>
       <span className="status-text">{stateText}</span>
@@ -41,16 +41,16 @@ const HitState: React.FC<StateProps> = ({
   );
 };
 
-const RunStateContainer: React.FC<RunStateProps> = ({
+const ResourceStatusMarker: React.FC<StatusMarkerProps> = ({
   stateText,
   succeeded,
-}: RunStateProps) => {
+}: StatusMarkerProps) => {
   if (succeeded) {
-    return <HitState
+    return <SuccessState
       stateText={stateText}/>;
   }
-  return <MissedState 
+  return <FailureState 
     stateText={stateText}/>;
 };
 
-export default RunStateContainer;
+export default ResourceStatusMarker;

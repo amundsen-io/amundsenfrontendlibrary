@@ -5,46 +5,46 @@ import * as React from 'react';
 
 import { mount } from 'enzyme';
 
-import RunStateContainer, { RunStateProps } from '.';
+import ResourceStatusMarker, { StatusMarkerProps } from '.';
 
-const setup = (propsOverrides?: Partial<RunStateProps>) => {
+const setup = (propsOverrides?: Partial<StatusMarkerProps>) => {
   const props = {
     stateText: '',
     succeeded: false,
     ...propsOverrides,
   };
-  const wrapper = mount<typeof RunStateContainer>(
-    <RunStateContainer {...props} />
+  const wrapper = mount<typeof ResourceStatusMarker>(
+    <ResourceStatusMarker {...props} />
   );
   return { props, wrapper };
 };
 
 describe('RunStateContainer', () => {
-  describe('Hit', () => {
+  describe('Succeded', () => {
     const { wrapper } = setup({
       stateText: 'Hit',
       succeeded: true,
     });
-    it('renders HitState when lastRunState successful', () => {
+    it('renders SuccessState when lastRunState successful', () => {
       const expected = 1;
-      const actual = wrapper.find('.hit').length;
+      const actual = wrapper.find('.success').length;
 
       expect(actual).toEqual(expected);
     });
   });
-  describe('Missed', () => {
+  describe('Failed', () => {
     const { wrapper } = setup({ 
         stateText: 'Missed',
      });
     it('renders MissedState when lastRunState failed', () => {
       const expected = 1;
-      const actual = wrapper.find('.missed').length;
+      const actual = wrapper.find('.failure').length;
 
       expect(actual).toEqual(expected);
     });
-    it('renders missed icon', () => {
+    it('renders failure icon', () => {
       const expected = 1;
-      const actual = wrapper.find('.missed-icon').length;
+      const actual = wrapper.find('.failure-icon').length;
 
       expect(expected).toEqual(actual);
     });
