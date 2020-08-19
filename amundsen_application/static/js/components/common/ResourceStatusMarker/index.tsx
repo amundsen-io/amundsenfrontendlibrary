@@ -3,47 +3,49 @@
 
 import * as React from 'react';
 
-import {
-  MISSED_STATUS_TEXT,
-  HIT_STATUS_TEXT,
-} from './constants';
-
 import './styles.scss';
 
 export interface StatusMarkerProps {
+  stateText: string;
   succeeded: boolean;
 }
 
-const FailureState: React.FC = () => {
+export interface StateProps {
+  stateText: string;
+}
+
+const FailureState: React.FC<StateProps> = ({ stateText }: StateProps) => {
   return (
     <div className="failure">
       <div className="failure-icon">
         <div className="exclamation-top" />
         <div className="exclamation-bottom" />
       </div>
-      <span className="status-text">{MISSED_STATUS_TEXT}</span>
+      <span className="status-text">{stateText}</span>
     </div>
   );
 };
 
-const SuccessState: React.FC = () => {
+const SuccessState: React.FC<StateProps> = ({ stateText }: StateProps) => {
   return (
     <div className="success">
       <div className="success-icon">
         <span className="icon icon-check" />
       </div>
-      <span className="status-text">{HIT_STATUS_TEXT}</span>
+      <span className="status-text">{stateText}</span>
     </div>
   );
 };
 
 const ResourceStatusMarker: React.FC<StatusMarkerProps> = ({
+  stateText,
   succeeded,
 }: StatusMarkerProps) => {
+  const state = stateText.charAt(0).toUpperCase() + stateText.slice(1);
   if (succeeded) {
-    return <SuccessState />;
+    return <SuccessState stateText={state} />;
   }
-  return <FailureState />;
+  return <FailureState stateText={state} />;
 };
 
 export default ResourceStatusMarker;
