@@ -5,18 +5,18 @@
 
 .missed-icon,
 .hit-icon {
-    width: 14px;
-    height: 14px;
+    width: $icon-size;
+    height: $icon-size;
     border-radius: 100%;
     display: inline-block;
     vertical-align: middle;
 }
 .missed-icon {
-    background-color: #DB3615;
+    background-color: $icon-status-missed;
     .exclamation-top {
         width: 2px;
         height: 4px;
-        background-color: #F2F2F2;
+        background-color: $icon-status-color;
         margin: 4px 6px 3px;
     }
     .exclamation-bottom {
@@ -29,9 +29,9 @@
 }
 
 .hit-icon{
-    background-color: #00824C;
+    background-color: $icon-status-hit;
     .icon-check {
-        background-color: #F2F2F2;
+        background-color: $icon-status-color;
         width: 10px;
         height: 10px;
         margin-top: -10px;

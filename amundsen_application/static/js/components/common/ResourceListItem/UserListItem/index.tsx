@@ -55,6 +55,7 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
             </div>
           </div>
           <div className="resource-type">User</div>
+          <img className="icon icon-right" alt="" />
         </Link>
       </li>
     );
