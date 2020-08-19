@@ -21,11 +21,12 @@ const setup = (propsOverrides?: Partial<StatusMarkerProps>) => {
 
 describe('RunStateContainer', () => {
   describe('Succeded', () => {
-    const { wrapper } = setup({
-      stateText: 'Hit',
-      succeeded: true,
-    });
     it('renders SuccessState when lastRunState successful', () => {
+      const { wrapper } = setup({
+        stateText: 'Hit',
+        succeeded: true,
+      });
+      
       const expected = 1;
       const actual = wrapper.find('.success').length;
 
