@@ -40,7 +40,7 @@ const store = createStoreWithMiddleware(rootReducer);
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
-  <DocumentTitle title="Amundsen - Data Discovery Portal">
+  <DocumentTitle title="PHE - Data Discovery Portal">
     <Provider store={store}>
       <Router history={BrowserHistory}>
         <div id="main">
