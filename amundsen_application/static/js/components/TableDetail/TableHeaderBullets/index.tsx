@@ -28,7 +28,7 @@ const TableHeaderBullets: React.FC<TableHeaderBulletsProps> = ({
       <li>{getDisplayNameByResource(ResourceType.table)}</li>
       <li>{getSourceDisplayName(database, ResourceType.table)}</li>
       <li>{cluster}</li>
-      <li>{isView && TABLE_VIEW_TEXT}</li>
+      {isView && <li>{TABLE_VIEW_TEXT}</li>}
     </ul>
   );
 };
