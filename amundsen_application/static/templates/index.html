@@ -7,7 +7,7 @@
 <html lang="en-US">
   <head>
     <meta charset="utf-8">
-    <title>Amundsen - Data Discovery Portal</title>
+    <title>PHE - Data Discovery Portal</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% if env == "development" %}
@@ -23,8 +23,11 @@
     {% endif %}
 
     <%= htmlWebpackPlugin.tags.headTags %>
+    <script src="node_modules/nhsuk-frontend/dist/nhsuk.min.js" defer></script>
+
   </head>
   <body class="{{ env }}">
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
     <div id="content"/>
     <%= htmlWebpackPlugin.tags.bodyTags %>
   </body>
