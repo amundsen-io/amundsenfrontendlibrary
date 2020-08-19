@@ -24,7 +24,7 @@ import { DashboardMetadata } from 'interfaces/Dashboard';
 import DashboardOwnerEditor from 'components/DashboardPage/DashboardOwnerEditor';
 import QueryList from 'components/DashboardPage/QueryList';
 import ChartList from 'components/DashboardPage/ChartList';
-import RunStateContainer from 'components/DashboardPage/RunState';
+import RunStateContainer from 'components/common/RunState';
 import { formatDateTimeShort } from 'utils/dateUtils';
 import ResourceList from 'components/common/ResourceList';
 import {
@@ -33,6 +33,9 @@ import {
   OWNER_HEADER_TEXT,
   DASHBOARD_SOURCE,
   TABLES_PER_PAGE,
+  LAST_RUN_SUCCEEDED,
+  MISSED_RUN_TEXT,
+  HIT_RUN_TEXT,
 } from 'components/DashboardPage/constants';
 import TagInput from 'components/common/Tags/TagInput';
 import { ResourceType } from 'interfaces';
@@ -108,6 +111,12 @@ export class DashboardPage extends React.Component<
     }
   }
 
+  mapStatusToBoolean = (status: string): boolean => {	
+    if (status === LAST_RUN_SUCCEEDED) {	
+      return true;	
+    }	
+    return false;	
+  };
   renderTabs() {
     const tabInfo: TabInfo[] = [];
 
@@ -297,7 +306,9 @@ export class DashboardPage extends React.Component<
                     </time>
                     <div className="last-run-state">
                       <RunStateContainer
-                        lastRunState={dashboard.last_run_state}
+                        stateText={this.mapStatusToBoolean(dashboard.last_run_state)
+                          ? HIT_RUN_TEXT : MISSED_RUN_TEXT}
+                        succeeded={this.mapStatusToBoolean(dashboard.last_run_state)}
                       />
                     </div>
                   </div>

@@ -29,6 +29,12 @@ $users: (
   users: '/static/images/icons/users.svg',
 );
 
+$check: (
+  check: '/static/images/icons/check.svg',
+);
+
+
+
 // Given a Map of key/value pairs, generates a new class
 @mixin iconBackgrounds($map) {
   @each $name, $url in $map {
@@ -43,6 +49,7 @@ span.icon {
   @include iconBackgrounds($data-stores);
   @include iconBackgrounds($dashboards);
   @include iconBackgrounds($users);
+  @include iconBackgrounds($check);
 
   background-color: $icon-bg;
   border: none;
@@ -195,11 +202,6 @@ img.icon {
   &.icon-more {
     -webkit-mask-image: url('/static/images/icons/More.svg');
     mask-image: url('/static/images/icons/More.svg');
-  }
-
-  &.icon-check {
-    -webkit-mask-image: url('/static/images/icons/check.svg');
-    mask-image: url('/static/images/icons/check.svg');
   }
 }
 

@@ -7,11 +7,10 @@ import { mount } from 'enzyme';
 
 import RunStateContainer, { RunStateProps } from '.';
 
-import { LAST_RUN_SUCCEEDED, LAST_RUN_FAILED } from './constants';
-
 const setup = (propsOverrides?: Partial<RunStateProps>) => {
   const props = {
-    lastRunState: '',
+    stateText: '',
+    succeeded: false,
     ...propsOverrides,
   };
   const wrapper = mount<typeof RunStateContainer>(
@@ -22,7 +21,10 @@ const setup = (propsOverrides?: Partial<RunStateProps>) => {
 
 describe('RunStateContainer', () => {
   describe('Hit', () => {
-    const { wrapper } = setup({ lastRunState: LAST_RUN_SUCCEEDED });
+    const { wrapper } = setup({
+      stateText: 'Hit',
+      succeeded: true,
+    });
     it('renders HitState when lastRunState successful', () => {
       const expected = 1;
       const actual = wrapper.find('.hit').length;
@@ -31,7 +33,9 @@ describe('RunStateContainer', () => {
     });
   });
   describe('Missed', () => {
-    const { wrapper } = setup({ lastRunState: LAST_RUN_FAILED });
+    const { wrapper } = setup({ 
+        stateText: 'Missed',
+     });
     it('renders MissedState when lastRunState failed', () => {
       const expected = 1;
       const actual = wrapper.find('.missed').length;
@@ -42,7 +46,7 @@ describe('RunStateContainer', () => {
       const expected = 1;
       const actual = wrapper.find('.missed-icon').length;
 
-      expect(actual).toEqual(actual);
+      expect(expected).toEqual(actual);
     });
   });
 });

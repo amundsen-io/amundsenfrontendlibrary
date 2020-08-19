@@ -3,44 +3,54 @@
 
 import * as React from 'react';
 
-import { HIT_RUN_TEXT, MISSED_RUN_TEXT, LAST_RUN_SUCCEEDED } from './constants';
-
 import './styles.scss';
 
 export interface RunStateProps {
-  lastRunState: string;
+  stateText: string;
+  succeeded: boolean;
 }
 
-const MissedState: React.FC = () => {
+export interface StateProps {
+  stateText: string;
+}
+
+const MissedState: React.FC<StateProps> = ({
+  stateText,
+}: StateProps) => {
   return (
     <div className="missed">
       <div className="missed-icon">
         <div className="exclamation-top" />
         <div className="exclamation-bottom" />
       </div>
-      <span className="status-text body-2 text-primary">{MISSED_RUN_TEXT}</span>
+      <span className="status-text body-2 text-primary">{stateText}</span>
     </div>
   );
 };
 
-const HitState: React.FC = () => {
+const HitState: React.FC<StateProps> = ({
+  stateText,
+}: StateProps) => {
   return (
     <div className="hit">
       <div className="hit-icon">
         <img className="icon icon-check" alt="" />
       </div>
-      <span className="status-text body-2 text-primary">{HIT_RUN_TEXT}</span>
+      <span className="status-text body-2 text-primary">{stateText}</span>
     </div>
   );
 };
 
 const RunStateContainer: React.FC<RunStateProps> = ({
-  lastRunState,
+  stateText,
+  succeeded,
 }: RunStateProps) => {
-  if (lastRunState === LAST_RUN_SUCCEEDED) {
-    return <HitState />;
+  if (succeeded) {
+    return <HitState
+      stateText={stateText}/>;
   }
-  return <MissedState />;
+  return <MissedState 
+    stateText={stateText}/>;
 };
 
 export default RunStateContainer;
