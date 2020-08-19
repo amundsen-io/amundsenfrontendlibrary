@@ -33,8 +33,6 @@ $check: (
   check: '/static/images/icons/check.svg',
 );
 
-
-
 // Given a Map of key/value pairs, generates a new class
 @mixin iconBackgrounds($map) {
   @each $name, $url in $map {
