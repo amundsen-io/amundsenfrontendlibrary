@@ -183,6 +183,12 @@ const configDefault: AppConfig = {
       return `https://DEFAULT_EXPLORE_URL?schema=${schema}&cluster=${cluster}&db=${database}&table=${table}`;
     },
   },
+  tableSource: {
+    github: {
+      displayName: 'Github',
+      iconPath: '/static/images/github.png',
+    },
+  },
 };
 
 export default configDefault;
