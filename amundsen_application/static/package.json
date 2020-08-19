@@ -290,7 +290,6 @@
         "never"
       ],
       "@typescript-eslint/dot-notation": "warn",
-      "@typescript-eslint/lines-between-class-members": "warn",
       "@typescript-eslint/naming-convention": "warn",
       "@typescript-eslint/no-unused-vars": "warn",
       "@typescript-eslint/member-delimiter-style": [
