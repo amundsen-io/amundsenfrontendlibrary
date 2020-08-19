@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 @import 'variables';
+@import 'typography-default';
 
 .missed-icon,
 .hit-icon {
@@ -44,4 +45,5 @@
     display: inline-block;
     margin-left: $spacer-1;
     vertical-align: middle;
+    @extend %text-body-w2;
 }

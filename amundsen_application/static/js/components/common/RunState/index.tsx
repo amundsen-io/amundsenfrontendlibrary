@@ -23,7 +23,7 @@ const MissedState: React.FC<StateProps> = ({
         <div className="exclamation-top" />
         <div className="exclamation-bottom" />
       </div>
-      <span className="status-text body-2 text-primary">{stateText}</span>
+      <span className="status-text">{stateText}</span>
     </div>
   );
 };
@@ -36,7 +36,7 @@ const HitState: React.FC<StateProps> = ({
       <div className="hit-icon">
         <img className="icon icon-check" alt="" />
       </div>
-      <span className="status-text body-2 text-primary">{stateText}</span>
+      <span className="status-text">{stateText}</span>
     </div>
   );
 };
