@@ -206,7 +206,6 @@ h1,
 h2,
 h3,
 .h1,
-.h2,
 .h3 {
   color: $text-primary;
   font-family: $font-family-header;
@@ -219,8 +218,7 @@ h1,
   line-height: 34px;
 }
 
-h2,
-.h2 {
+h2 {
   font-size: 26px;
   font-weight: $font-weight-header-bold;
   line-height: 34px;
