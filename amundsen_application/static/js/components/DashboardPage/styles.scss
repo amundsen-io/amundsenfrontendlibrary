@@ -1,6 +1,5 @@
 // Copyright Contributors to the Amundsen project.
 // SPDX-License-Identifier: Apache-2.0
-
 @import 'variables';
 @import 'typography-default';
 
@@ -9,6 +8,10 @@
     .flag {
       margin: 0 $spacer-1;
     }
+  }
+
+  .header-title-text {
+    @extend %text-headline-w2;
   }
 
   .edit-link {

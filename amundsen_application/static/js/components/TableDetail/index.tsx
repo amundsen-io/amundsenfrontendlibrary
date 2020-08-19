@@ -226,7 +226,7 @@ export class TableDetail extends React.Component<
               />
             </div>
             <div className="header-section header-title">
-              <h1 className="h3 header-title-text truncated">
+              <h1 className="header-title-text truncated">
                 {this.getDisplayName()}
               </h1>
               <BookmarkIcon
