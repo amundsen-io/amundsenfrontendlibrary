@@ -26,6 +26,7 @@ const configCustom: AppConfigCustom = {
   issueTracking: {
     enabled: false,
   },
+  logoPath: 'static/images/NHS-Digital-logo_LEFT-WHITE-235x183.png',
 };
 
 export default configCustom;
