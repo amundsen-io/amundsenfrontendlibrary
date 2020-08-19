@@ -30,7 +30,7 @@ const SuccessState: React.FC<StateProps> = ({ stateText }: StateProps) => {
   return (
     <div className="success">
       <div className="success-icon">
-        <img className="icon icon-check" alt="" />
+        <span className="icon icon-check" />
       </div>
       <span className="status-text">{stateText}</span>
     </div>
