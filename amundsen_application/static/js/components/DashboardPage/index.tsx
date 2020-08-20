@@ -304,6 +304,7 @@ export class DashboardPage extends React.Component<
                         : NO_TIMESTAMP_TEXT}
                     </time>
                     <div className="last-run-state">
+                      <span className='status'>Status:</span>
                       <ResourceStatusMarker
                         stateText={dashboard.last_run_state}
                         succeeded={this.mapStatusToBoolean(
