@@ -27,7 +27,6 @@ import TabsComponent from 'components/common/TabsComponent';
 import TagInput from 'components/common/Tags/TagInput';
 import EditableText from 'components/common/EditableText';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import Flag from 'components/common/Flag';
 
 import ColumnList from 'components/TableDetail/ColumnList';
 import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
@@ -50,6 +49,7 @@ import {
 } from 'interfaces';
 
 import EditableSection from 'components/common/EditableSection';
+import TableReportsDropdown from 'components/TableDetail/ResourceReportsDropdown';
 
 import { formatDateTimeShort } from 'utils/dateUtils';
 import { getLoggingParams } from 'utils/logUtils';
@@ -57,14 +57,9 @@ import { getLoggingParams } from 'utils/logUtils';
 import RequestDescriptionText from './RequestDescriptionText';
 import RequestMetadataForm from './RequestMetadataForm';
 
-import {
-  PROGRMMATIC_DESC_HEADER,
-  ERROR_MESSAGE,
-  EDIT_DESC_TEXT,
-} from './constants';
+import { ERROR_MESSAGE, EDIT_DESC_TEXT } from './constants';
 
 import './styles.scss';
-import TableReportsDropdown from 'components/TableDetail/ResourceReportsDropdown';
 
 const SERVER_ERROR_CODE = 500;
 const DASHBOARDS_PER_PAGE = 10;
@@ -242,11 +237,9 @@ export class TableDetail extends React.Component<
                 <TableHeaderBullets
                   database={data.database}
                   cluster={data.cluster}
+                  isView={data.is_view}
                 />
                 {data.badges.length > 0 && <BadgeList badges={data.badges} />}
-                {data.is_view && (
-                  <Flag text="table view" labelStyle={BadgeStyle.WARNING} />
-                )}
               </div>
             </div>
             <div className="header-section header-links">

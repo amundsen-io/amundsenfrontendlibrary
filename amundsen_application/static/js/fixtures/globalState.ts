@@ -7,6 +7,8 @@ import { dashboardMetadata } from './metadata/dashboard';
 
 const globalState: GlobalState = {
   announcements: {
+    isLoading: false,
+    statusCode: 200,
     posts: [
       {
         date: '12/31/1999',
@@ -152,7 +154,7 @@ const globalState: GlobalState = {
       data: {},
       status: null,
     },
-    statusCode: null,
+    statusCode: 200,
     tableData: {
       badges: [],
       cluster: '',
