@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 
 import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableText';
 import ColumnStats from 'components/TableDetail/ColumnStats';
-import ColumnType from './ColumnType';
 import { notificationsEnabled, getMaxLength } from 'config/config-utils';
 import { openRequestDescriptionDialog } from 'ducks/notification/reducer';
 import { OpenRequestAction } from 'ducks/notification/types';
@@ -17,6 +16,7 @@ import { RequestMetadataType, TableColumn } from 'interfaces';
 
 import './styles.scss';
 import EditableSection from 'components/common/EditableSection';
+import ColumnType from './ColumnType';
 
 const MORE_BUTTON_TEXT = 'More options';
 const EDITABLE_SECTION_TITLE = 'Description';
@@ -109,7 +109,11 @@ export class ColumnListItem extends React.Component<
               )}
             </div>
             <div className="resource-type">
-              <ColumnType columnIndex={this.props.index} type={metadata.col_type} />
+              <ColumnType
+                columnName={metadata.name}
+                columnIndex={this.props.index}
+                type={metadata.col_type}
+              />
             </div>
             <div className="badges">{/* Placeholder */}</div>
             <div className="actions">
