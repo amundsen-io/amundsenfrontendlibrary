@@ -47,9 +47,7 @@ describe('render SourceLink', () => {
     });
 
     it('does not render if Table Source is null', () => {
-      const { wrapper } = setup({
-        tableSource: null,
-      });
+      const { wrapper } = setup({ tableSource: null });
       const expected = 0;
       const actual = wrapper.find('.header-link').length;
 
