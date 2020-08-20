@@ -45,14 +45,6 @@ describe('render SourceLink', () => {
 
       expect(actual).toEqual(expected);
     });
-
-    it('does not render if Table Source is null', () => {
-      const { wrapper } = setup({ tableSource: null });
-      const expected = 0;
-      const actual = wrapper.find('.header-link').length;
-
-      expect(actual).toEqual(expected);
-    });
   });
 
   describe('renders AvatarLabel with correct props', () => {
