@@ -10,7 +10,6 @@ import { RouteComponentProps } from 'react-router';
 import { GlobalState } from 'ducks/rootReducer';
 import { getTableData } from 'ducks/tableMetadata/reducer';
 import { GetTableDataRequest } from 'ducks/tableMetadata/types';
-import { BadgeStyle } from 'config/config-types';
 
 import {
   getMaxLength,

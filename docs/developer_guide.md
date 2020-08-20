@@ -96,7 +96,7 @@ In the past, we have used several classes to set the styling of our heading and 
 
 ```scss
 @import "variables";
-@import "typography-default";
+@import "typography";
 
 .header-title-text {
   @extend %text-headline-w2;
