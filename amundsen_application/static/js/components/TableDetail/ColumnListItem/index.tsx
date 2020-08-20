@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import { Dropdown, MenuItem, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Dropdown, MenuItem } from 'react-bootstrap';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import ColumnDescEditableText from 'components/TableDetail/ColumnDescEditableText';
 import ColumnStats from 'components/TableDetail/ColumnStats';
+import ColumnType from './ColumnType';
 import { notificationsEnabled, getMaxLength } from 'config/config-utils';
 import { openRequestDescriptionDialog } from 'ducks/notification/reducer';
 import { OpenRequestAction } from 'ducks/notification/types';
@@ -89,56 +90,6 @@ export class ColumnListItem extends React.Component<
     return true;
   };
 
-  renderColumnType = (columnIndex: number, type: string) => {
-    const truncatedTypes: string[] = ['array', 'struct', 'map', 'row'];
-    let shouldTrucate = false;
-
-    const fullText = type.toLowerCase();
-    let text = fullText;
-
-    truncatedTypes.forEach((truncatedType) => {
-      if (type.startsWith(truncatedType) && type !== truncatedType) {
-        shouldTrucate = true;
-        const lastChar = type.charAt(type.length - 1);
-        if (lastChar === '>') {
-          text = `${truncatedType}<...>`;
-        } else if (lastChar === ')') {
-          text = `${truncatedType}(...)`;
-        } else {
-          text = `${truncatedType}...`;
-        }
-      }
-    });
-
-    if (shouldTrucate) {
-      const popoverHover = (
-        <Popover
-          className="column-type-popover"
-          id={`column-type-popover:${columnIndex}`}
-        >
-          {fullText}
-        </Popover>
-      );
-      return (
-        <OverlayTrigger
-          trigger={['click']}
-          placement="left"
-          overlay={popoverHover}
-          rootClose
-        >
-          <a
-            className="column-type"
-            href="JavaScript:void(0)"
-            onClick={this.stopPropagation}
-          >
-            {text}
-          </a>
-        </OverlayTrigger>
-      );
-    }
-    return <div className="column-type">{text}</div>;
-  };
-
   render() {
     const metadata = this.props.data;
     return (
@@ -158,7 +109,7 @@ export class ColumnListItem extends React.Component<
               )}
             </div>
             <div className="resource-type">
-              {this.renderColumnType(this.props.index, metadata.col_type)}
+              <ColumnType columnIndex={this.props.index} type={metadata.col_type} />
             </div>
             <div className="badges">{/* Placeholder */}</div>
             <div className="actions">
