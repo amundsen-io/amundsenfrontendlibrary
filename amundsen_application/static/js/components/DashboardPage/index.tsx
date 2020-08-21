@@ -34,6 +34,7 @@ import {
   DASHBOARD_SOURCE,
   TABLES_PER_PAGE,
   LAST_RUN_SUCCEEDED,
+  STATUS_TEXT,
 } from 'components/DashboardPage/constants';
 import TagInput from 'components/common/Tags/TagInput';
 import { ResourceType } from 'interfaces';
@@ -183,7 +184,7 @@ export class DashboardPage extends React.Component<
             />
           </div>
           <div className="header-section header-title">
-            <h1 className="h3 header-title-text truncated">{dashboard.name}</h1>
+            <h1 className="header-title-text truncated">{dashboard.name}</h1>
             <BookmarkIcon
               bookmarkKey={dashboard.uri}
               resourceType={ResourceType.dashboard}
@@ -304,6 +305,7 @@ export class DashboardPage extends React.Component<
                         : NO_TIMESTAMP_TEXT}
                     </time>
                     <div className="last-run-state">
+                      <span className="status">{STATUS_TEXT}</span>
                       <ResourceStatusMarker
                         stateText={dashboard.last_run_state}
                         succeeded={this.mapStatusToBoolean(
