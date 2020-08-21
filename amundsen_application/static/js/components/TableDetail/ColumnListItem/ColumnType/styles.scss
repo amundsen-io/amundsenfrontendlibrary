@@ -1,0 +1,44 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
+@import 'variables';
+
+// TODO (design qa): Modal from react-bootstrap needs these fixed heights to render consistently,
+$modal-content-height: 484px;
+$modal-dialog-height: 484px;
+$modal-header-height: 94px;
+
+// TODO (design qa): Also using fixed width from Figma
+$modal-dialog-width: 418px;
+
+.column-type-modal {
+  .modal-body {
+    border-bottom: 1px solid $stroke-light;
+    border-top: 1px solid $stroke-light;
+    // TODO (design qa): Should height be fixed, or should we allow the flex nature of Modal and set some max-height.
+    height: calc(
+      #{$modal-dialog-height - $modal-header-height - $spacer-3}
+    );
+    /* Override react-bootstrap styles to match design */
+    margin: 0 $spacer-3 !important;
+    padding: $spacer-1 0 !important;
+    text-align: initial !important;
+  }
+
+  .modal-content {
+    height: $modal-content-height;
+  }
+
+  .modal-dialog {
+    height: $modal-dialog-height;
+    width: $modal-dialog-width;
+    overflow-y: hidden;
+  }
+
+  .modal-header {
+    border-bottom: none;
+    height: $modal-header-height;
+    /* Override react-bootstrap styles to match design */
+    padding: $spacer-3 !important;
+  }
+}
