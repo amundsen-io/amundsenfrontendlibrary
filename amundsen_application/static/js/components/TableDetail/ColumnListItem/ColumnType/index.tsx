@@ -10,7 +10,6 @@ const CTA_TEXT = 'Click to see nested fields';
 const MODAL_TITLE = 'Nested Type';
 
 export interface ColumnTypeProps {
-  columnIndex: number;
   columnName: string;
   type: string;
 }
@@ -42,7 +41,7 @@ export class ColumnType extends React.Component<
   };
 
   render = () => {
-    const { columnName, columnIndex, type } = this.props;
+    const { columnName, type } = this.props;
 
     const truncatedTypes: string[] = ['array', 'struct', 'map', 'row'];
     let shouldTrucate = false;
@@ -68,7 +67,7 @@ export class ColumnType extends React.Component<
       const popoverHover = (
         <Popover
           className="column-type-popover"
-          id={`column-type-popover:${columnIndex}`}
+          id={`column-type-popover:${columnName}`}
         >
           {CTA_TEXT}
         </Popover>

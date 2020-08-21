@@ -109,11 +109,7 @@ export class ColumnListItem extends React.Component<
               )}
             </div>
             <div className="resource-type">
-              <ColumnType
-                columnName={metadata.name}
-                columnIndex={this.props.index}
-                type={metadata.col_type}
-              />
+              <ColumnType columnName={metadata.name} type={metadata.col_type} />
             </div>
             <div className="badges">{/* Placeholder */}</div>
             <div className="actions">
