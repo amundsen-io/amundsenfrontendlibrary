@@ -42,7 +42,7 @@ export class ColumnType extends React.Component<
 
   stopPropagation = (e) => {
     e.stopPropagation();
-  }
+  };
 
   render = () => {
     const { columnName, type } = this.props;
