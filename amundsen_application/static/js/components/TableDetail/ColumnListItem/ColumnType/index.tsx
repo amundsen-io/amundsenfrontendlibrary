@@ -31,14 +31,18 @@ export class ColumnType extends React.Component<
   }
 
   hideModal = (e) => {
-    e.stopPropagation();
+    this.stopPropagation(e);
     this.setState({ showModal: false });
   };
 
   showModal = (e) => {
-    e.stopPropagation();
+    this.stopPropagation(e);
     this.setState({ showModal: true });
   };
+
+  stopPropagation = (e) => {
+    e.stopPropagation();
+  }
 
   render = () => {
     const { columnName, type } = this.props;
@@ -73,7 +77,7 @@ export class ColumnType extends React.Component<
         </Popover>
       );
       return (
-        <>
+        <div onClick={this.stopPropagation}>
           <OverlayTrigger
             trigger={['hover']}
             placement="top"
@@ -103,7 +107,7 @@ export class ColumnType extends React.Component<
               <div className="column-type-modal-content">{fullText}</div>
             </Modal.Body>
           </Modal>
-        </>
+        </div>
       );
     }
 
