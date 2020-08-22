@@ -23,7 +23,6 @@ export interface AppConfig {
   resourceConfig: ResourceConfig;
   tableLineage: TableLineageConfig;
   tableProfile: TableProfileConfig;
-  tableSource: TableSourceConfig;
 }
 
 export interface AppConfigCustom {
@@ -42,7 +41,6 @@ export interface AppConfigCustom {
   resourceConfig?: ResourceConfig;
   tableLineage?: TableLineageConfig;
   tableProfile?: TableProfileConfig;
-  tableSource?: TableSourceConfig;
 }
 
 /**
@@ -121,6 +119,7 @@ type SourcesConfig = {
   [id: string]: {
     displayName?: string;
     iconClass?: string;
+    iconPath?: string;
   };
 };
 
@@ -134,6 +133,10 @@ interface BaseResourceConfig {
   displayName: string;
   filterCategories?: FilterConfig;
   supportedSources?: SourcesConfig;
+}
+
+interface TableResourceConfig extends BaseResourceConfig {
+  supportedDescriptionSources?: SourcesConfig;
 }
 
 export enum BadgeStyle {
@@ -176,7 +179,7 @@ interface DateFormatConfig {
  */
 interface ResourceConfig {
   [ResourceType.dashboard]: BaseResourceConfig;
-  [ResourceType.table]: BaseResourceConfig;
+  [ResourceType.table]: TableResourceConfig;
   [ResourceType.user]: BaseResourceConfig;
 }
 
@@ -239,20 +242,6 @@ interface TableLineageConfig {
     schema: string,
     table: string
   ) => string;
-}
-
-/**
- * TableSourceConfig - Customize the "Table Sources" links and icon on the "Table Details" page.
- *
- * id - Contains source id which is received from backend as part of Table Source
- * displayName - Name displayed next to Table source icon
- * iconPath - Path to icon which will be displayed on Table Details page.
- */
-interface TableSourceConfig {
-  [id: string]: {
-    displayName: string;
-    iconPath: string;
-  };
 }
 
 export interface LinkConfig {

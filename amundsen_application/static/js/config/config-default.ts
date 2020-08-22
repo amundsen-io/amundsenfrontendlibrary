@@ -154,6 +154,12 @@ const configDefault: AppConfig = {
           type: FilterType.INPUT_SELECT,
         },
       ],
+      supportedDescriptionSources: {
+        github: {
+          displayName: 'Github',
+          iconPath: '/static/images/github.png',
+        },
+      },
     },
     [ResourceType.user]: {
       displayName: 'People',
@@ -184,12 +190,6 @@ const configDefault: AppConfig = {
       partitionValue?: string
     ) => {
       return `https://DEFAULT_EXPLORE_URL?schema=${schema}&cluster=${cluster}&db=${database}&table=${table}`;
-    },
-  },
-  tableSource: {
-    github: {
-      displayName: 'Github',
-      iconPath: '/static/images/github.png',
     },
   },
 };

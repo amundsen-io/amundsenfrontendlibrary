@@ -205,3 +205,45 @@ export function generateExploreUrl(tableData: TableMetadata): string {
 export function getMaxLength(key: string) {
   return AppConfig.editableText[key];
 }
+
+/**
+ * Returns the display name for a given description source id for a given resource type.
+ * If a configuration or display name does not exist for the given description source id, the id
+ * is returned.
+ */
+export function getDescriptionSourceDisplayName(
+  sourceId: string,
+  resource = ResourceType.table
+): string {
+  const config = AppConfig.resourceConfig[resource];
+  if (
+    !config ||
+    !config.supportedDescriptionSources ||
+    !config.supportedDescriptionSources[sourceId]
+  ) {
+    return sourceId;
+  }
+
+  return config.supportedDescriptionSources[sourceId].displayName;
+}
+
+/**
+ * Returns the icon path for a given description source id for a given resource type.
+ * If a configuration does not exist for the given description source id, empty string
+ * is returned.
+ */
+export function getDescriptionSourceIconPath(
+  sourceId: string,
+  resource = ResourceType.table
+): string {
+  const config = AppConfig.resourceConfig[resource];
+  if (
+    !config ||
+    !config.supportedDescriptionSources ||
+    !config.supportedDescriptionSources[sourceId]
+  ) {
+    return '';
+  }
+
+  return config.supportedDescriptionSources[sourceId].iconPath;
+}

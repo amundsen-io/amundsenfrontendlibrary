@@ -5,7 +5,7 @@ import { mount } from 'enzyme';
 import SourceLink, { SourceLinkProps } from '.';
 import AvatarLabel from 'components/common/AvatarLabel';
 import AppConfig from 'config/config';
-import LoadingSpinner from 'components/common/LoadingSpinner';
+import { ResourceType } from 'interfaces/Resources';
 
 const setup = (propOverrides?: Partial<SourceLinkProps>) => {
   const props = {
@@ -49,14 +49,25 @@ describe('render SourceLink', () => {
 
   describe('renders AvatarLabel with correct props', () => {
     beforeAll(() => {
-      AppConfig.tableSource = {
-        xyz: {
-          displayName: 'XYZ',
-          iconPath: 'images/xyz.png',
+      AppConfig.resourceConfig = {
+        [ResourceType.table]: {
+          displayName: 'Tables',
+          supportedDescriptionSources: {
+            xyz: {
+              displayName: 'XYZ',
+              iconPath: 'images/xyz.png',
+            },
+            abc: {
+              displayName: 'ABC',
+              iconPath: 'images/abc.png',
+            },
+          },
         },
-        abc: {
-          displayName: 'ABC',
-          iconPath: 'images/abc.png',
+        [ResourceType.dashboard]: {
+          displayName: 'Dashboards',
+        },
+        [ResourceType.user]: {
+          displayName: 'Users',
         },
       };
     });
