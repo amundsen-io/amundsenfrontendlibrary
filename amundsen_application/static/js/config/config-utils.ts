@@ -216,7 +216,8 @@ export function getDescriptionSourceDisplayName(sourceId: string): string {
   if (
     !config ||
     !config.supportedDescriptionSources ||
-    !config.supportedDescriptionSources[sourceId]
+    !config.supportedDescriptionSources[sourceId] ||
+    !config.supportedDescriptionSources[sourceId].displayName
   ) {
     return sourceId;
   }
@@ -234,7 +235,8 @@ export function getDescriptionSourceIconPath(sourceId: string): string {
   if (
     !config ||
     !config.supportedDescriptionSources ||
-    !config.supportedDescriptionSources[sourceId]
+    !config.supportedDescriptionSources[sourceId] ||
+    !config.supportedDescriptionSources[sourceId].iconPath
   ) {
     return '';
   }
