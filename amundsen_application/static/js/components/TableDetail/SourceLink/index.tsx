@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import { ResourceType } from '../../../interfaces';
 
 import {
   getDescriptionSourceDisplayName,
@@ -11,6 +10,7 @@ import {
 import { logClick } from 'ducks/utilMethods';
 import AvatarLabel from 'components/common/AvatarLabel';
 import { TableSource } from 'interfaces';
+import { ResourceType } from '../../../interfaces';
 
 export interface SourceLinkProps {
   tableSource: TableSource;
@@ -21,15 +21,9 @@ const SourceLink: React.FC<SourceLinkProps> = ({
 }: SourceLinkProps) => {
   if (tableSource === null || tableSource.source === null) return null;
 
-  const image = getDescriptionSourceIconPath(
-    tableSource.source_type,
-    ResourceType.table
-  );
+  const image = getDescriptionSourceIconPath(tableSource.source_type);
 
-  const displayName = getDescriptionSourceDisplayName(
-    tableSource.source_type,
-    ResourceType.table
-  );
+  const displayName = getDescriptionSourceDisplayName(tableSource.source_type);
 
   return (
     <a

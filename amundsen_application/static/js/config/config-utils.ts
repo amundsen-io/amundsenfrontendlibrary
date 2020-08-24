@@ -1,5 +1,5 @@
 import AppConfig from 'config/config';
-import { BadgeStyleConfig, BadgeStyle } from 'config/config-types';
+import { BadgeStyle, BadgeStyleConfig } from 'config/config-types';
 import { TableMetadata } from 'interfaces/TableMetadata';
 
 import { FilterConfig, LinkConfig } from './config-types';
@@ -211,11 +211,8 @@ export function getMaxLength(key: string) {
  * If a configuration or display name does not exist for the given description source id, the id
  * is returned.
  */
-export function getDescriptionSourceDisplayName(
-  sourceId: string,
-  resource = ResourceType.table
-): string {
-  const config = AppConfig.resourceConfig[resource];
+export function getDescriptionSourceDisplayName(sourceId: string): string {
+  const config = AppConfig.resourceConfig[ResourceType.table];
   if (
     !config ||
     !config.supportedDescriptionSources ||
@@ -232,11 +229,8 @@ export function getDescriptionSourceDisplayName(
  * If a configuration does not exist for the given description source id, empty string
  * is returned.
  */
-export function getDescriptionSourceIconPath(
-  sourceId: string,
-  resource = ResourceType.table
-): string {
-  const config = AppConfig.resourceConfig[resource];
+export function getDescriptionSourceIconPath(sourceId: string): string {
+  const config = AppConfig.resourceConfig[ResourceType.table];
   if (
     !config ||
     !config.supportedDescriptionSources ||
