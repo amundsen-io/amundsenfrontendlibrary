@@ -13,8 +13,8 @@ import ColumnType, { ColumnTypeProps } from '.';
 
 const setup = (propOverrides?: Partial<ColumnTypeProps>) => {
   const props = {
-    columnIndex: 0,
     columnName: 'test',
+    database: 'hive',
     type:
       'row(test_id varchar,test2 row(test2_id varchar,started_at timestamp,ended_at timestamp))',
     ...propOverrides,

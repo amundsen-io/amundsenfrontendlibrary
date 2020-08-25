@@ -6,11 +6,15 @@ import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 
 import './styles.scss';
 
+import { getTruncatedText, parseComplexType, NestedType, ParsedType } from './parser';
+
 const CTA_TEXT = 'Click to see nested fields';
 const MODAL_TITLE = 'Nested Type';
+const TEXT_INDENT= 8;
 
 export interface ColumnTypeProps {
   columnName: string;
+  database: string;
   type: string;
 }
 
@@ -22,12 +26,16 @@ export class ColumnType extends React.Component<
   ColumnTypeProps,
   ColumnTypeState
 > {
+  parsedType: ParsedType;
+
   constructor(props) {
     super(props);
 
     this.state = {
       showModal: false,
     };
+
+    this.parsedType = parseComplexType(this.props.type, this.props.database);
   }
 
   hideModal = (e) => {
@@ -44,30 +52,42 @@ export class ColumnType extends React.Component<
     e.stopPropagation();
   };
 
-  render = () => {
-    const { columnName, type } = this.props;
+  createLineItem = (text: string, textIndent: number) => {
+    return <div style={{ textIndent: `${textIndent}px` }}>{text}</div>;
+  };
 
-    const truncatedTypes: string[] = ['array', 'struct', 'map', 'row'];
-    let shouldTrucate = false;
-
-    const fullText = type.toLowerCase();
-    let text = fullText;
-
-    truncatedTypes.forEach((truncatedType) => {
-      if (type.startsWith(truncatedType) && type !== truncatedType) {
-        shouldTrucate = true;
-        const lastChar = type.charAt(type.length - 1);
-        if (lastChar === '>') {
-          text = `${truncatedType}<...>`;
-        } else if (lastChar === ')') {
-          text = `${truncatedType}(...)`;
-        } else {
-          text = `${truncatedType}...`;
-        }
+  renderParsedChildren = (children: ParsedType[], level: number) => {
+    const textIndent = level * TEXT_INDENT;
+    return children.map((item) => {
+      if (typeof item === 'string') {
+        return this.createLineItem(item, textIndent);
       }
+      // TODO else check if NestedType, else render nothing.
+      // Look into other checks for preventing endless loop failure crashing whole page
+      return this.renderParsedType(item as NestedType, level);
     });
+  };
 
-    if (shouldTrucate) {
+  renderParsedType = (nestedType: ParsedType, level: number = 0) => {
+    if (typeof nestedType === 'string') {
+      return '';
+    }
+    const { head, tail, children } = nestedType as NestedType;
+    const textIndent = level * TEXT_INDENT;
+    return (
+      <>
+        {this.createLineItem(head, textIndent)}
+        {this.renderParsedChildren(children, level + 1)}
+        {this.createLineItem(tail, textIndent)}
+      </>
+    );
+  };
+
+  render = () => {
+    const { columnName, database, type } = this.props;
+    const truncatedText = getTruncatedText(type, database);
+
+    if (truncatedText !== type) {
       const popoverHover = (
         <Popover
           className="column-type-popover"
@@ -89,7 +109,7 @@ export class ColumnType extends React.Component<
               href="JavaScript:void(0)"
               onClick={this.showModal}
             >
-              {text}
+              {truncatedText}
             </a>
           </OverlayTrigger>
           <Modal
@@ -104,14 +124,16 @@ export class ColumnType extends React.Component<
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              <div className="column-type-modal-content">{fullText}</div>
+              <div className="column-type-modal-content">
+                {this.renderParsedType(this.parsedType)}
+              </div>
             </Modal.Body>
           </Modal>
         </div>
       );
     }
 
-    return <div className="column-type">{text}</div>;
+    return <div className="column-type">{type}</div>;
   };
 }
 
