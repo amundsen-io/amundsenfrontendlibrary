@@ -13,7 +13,7 @@ const SUPPORTED_TYPES = {
   // https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Types#LanguageManualTypes-ComplexTypes
   hive: ['array', 'map', 'struct', 'uniontype'],
   // https://prestosql.io/docs/current/language/types.html#structural
-  presto: ['array', 'map', 'row'],
+  presto: ['array', 'map', 'row']
 };
 const OPEN_DELIMETERS = {
   '(': ')',
@@ -34,7 +34,7 @@ function parseNestedTypeHelper(
   columnType: string,
   startIndex: number = 0,
   currentIndex: number = 0
-) {
+): { nextStartIndex: number, results: ParsedType[] } {
   const children: ParsedType[] = [];
 
   while (currentIndex < columnType.length) {
@@ -61,19 +61,17 @@ function parseNestedTypeHelper(
         currentIndex + 1,
         currentIndex + 1
       );
-      let isLast = true;
-      let { nextStartIndex } = parsedResults;
+      let isLast: boolean = true;
+      let nextStartIndex: number = parsedResults.nextStartIndex;
 
       if (columnType.charAt(nextStartIndex) === SEPARATOR_DELIMETER) {
         isLast = false;
         nextStartIndex++;
-      }
+      };
 
       children.push({
         head: columnType.substring(startIndex, currentIndex + 1),
-        tail: `${OPEN_DELIMETERS[currentChar]}${
-          isLast ? '' : SEPARATOR_DELIMETER
-        }`,
+        tail: `${OPEN_DELIMETERS[currentChar]}${isLast ? '' : SEPARATOR_DELIMETER}`,
         children: parsedResults.results,
       });
 
@@ -85,10 +83,10 @@ function parseNestedTypeHelper(
   }
 
   return {
-    next: currentIndex + 1,
+    nextStartIndex: currentIndex + 1,
     results: children,
   };
-}
+};
 
 /*
  * Returns whether or not a columnType string represents a complexc type for the given database
@@ -97,25 +95,22 @@ function isNestedType(columnType: string, databaseId: string): boolean {
   const supportedTypes = SUPPORTED_TYPES[databaseId];
   let isNestedType = false;
   supportedTypes.forEach((supportedType) => {
-    if (columnType.startsWith(supportedType) && columnType !== supportedType) {
+    if(columnType.startsWith(supportedType) && columnType !== supportedType){
       isNestedType = true;
     }
-  });
+  })
   return isNestedType;
-}
+};
 
 /**
  * Returns a NestedType object for supported complex types, else returns null
  */
-export function parseNestedType(
-  columnType: string,
-  databaseId: string
-): NestedType | null {
+export function parseNestedType(columnType: string, databaseId: string): NestedType | null {
   if (isNestedType(columnType, databaseId)) {
-    return parseNestedTypeHelper(columnType).results[0];
+    return parseNestedTypeHelper(columnType).results[0] as NestedType;
   }
   return null;
-}
+};
 
 /*
  * Returns the truncated string representation for a NestedType
@@ -123,4 +118,4 @@ export function parseNestedType(
 export function getTruncatedText(nestedType: NestedType): string {
   const { head, tail } = nestedType;
   return `${head}...${tail.replace(SEPARATOR_DELIMETER, '')}`;
-}
+};

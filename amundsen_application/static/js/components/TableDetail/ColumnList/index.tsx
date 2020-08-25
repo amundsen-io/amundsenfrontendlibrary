@@ -8,7 +8,7 @@ import ColumnListItem from '../ColumnListItem';
 import './styles.scss';
 
 interface ColumnListProps {
-  columns?: TableColumn[];
+  columns: TableColumn[];
   database: string;
   editText?: string;
   editUrl?: string;
@@ -31,8 +31,8 @@ const ColumnList: React.FC<ColumnListProps> = ({
       data={entry}
       database={database}
       index={index}
-      editText={editText}
-      editUrl={editUrl}
+      editText={editText || ''}
+      editUrl={editUrl || ''}
     />
   ));
 
