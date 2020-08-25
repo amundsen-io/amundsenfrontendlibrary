@@ -46,7 +46,7 @@ describe('render SourceLink', () => {
     });
   });
 
-  describe('renders AvatarLabel with correct props', () => {
+  describe('when supported description sources present in resource config', () => {
     beforeAll(() => {
       AppConfig.resourceConfig = {
         [ResourceType.table]: {
@@ -71,7 +71,7 @@ describe('render SourceLink', () => {
       };
     });
 
-    it('renders AvatarLabel', () => {
+    it('should render AvatarLabel', () => {
       const { wrapper } = setup();
       const expected = 1;
       const actual = wrapper.find(AvatarLabel).length;
@@ -79,27 +79,25 @@ describe('render SourceLink', () => {
       expect(actual).toEqual(expected);
     });
 
-    describe('renders correct display name and icon path', () => {
-      it('when source type is present in configurations', () => {
-        const { wrapper } = setup();
-        const expected = { label: 'XYZ', src: 'images/xyz.png' };
-        const actual = wrapper.find(AvatarLabel).props();
+    it('should render display name and icon path present in configurations', () => {
+      const { wrapper } = setup();
+      const expected = { label: 'XYZ', src: 'images/xyz.png' };
+      const actual = wrapper.find(AvatarLabel).props();
 
-        expect(actual).toMatchObject(expected);
+      expect(actual).toMatchObject(expected);
+    });
+
+    it('should render empty icon path and source type as display name', () => {
+      const { wrapper } = setup({
+        tableSource: {
+          source_type: 'foo',
+          source: 'www.bar.xz',
+        },
       });
+      const expected = { label: 'foo', src: '' };
+      const actual = wrapper.find(AvatarLabel).props();
 
-      it('when source type is present not present in configurations', () => {
-        const { wrapper } = setup({
-          tableSource: {
-            source_type: 'foo',
-            source: 'www.bar.xz',
-          },
-        });
-        const expected = { label: 'foo', src: '' };
-        const actual = wrapper.find(AvatarLabel).props();
-
-        expect(actual).toMatchObject(expected);
-      });
+      expect(actual).toMatchObject(expected);
     });
   });
 });
