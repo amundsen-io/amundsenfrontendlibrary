@@ -214,15 +214,15 @@ export function getMaxLength(key: string) {
 export function getDescriptionSourceDisplayName(sourceId: string): string {
   const config = AppConfig.resourceConfig[ResourceType.table];
   if (
-    !config ||
-    !config.supportedDescriptionSources ||
-    !config.supportedDescriptionSources[sourceId] ||
-    !config.supportedDescriptionSources[sourceId].displayName
+    config &&
+    config.supportedDescriptionSources &&
+    config.supportedDescriptionSources[sourceId] &&
+    config.supportedDescriptionSources[sourceId].displayName
   ) {
-    return sourceId;
+    return config.supportedDescriptionSources[sourceId].displayName;
   }
 
-  return config.supportedDescriptionSources[sourceId].displayName;
+  return sourceId;
 }
 
 /**
@@ -233,13 +233,13 @@ export function getDescriptionSourceDisplayName(sourceId: string): string {
 export function getDescriptionSourceIconPath(sourceId: string): string {
   const config = AppConfig.resourceConfig[ResourceType.table];
   if (
-    !config ||
-    !config.supportedDescriptionSources ||
-    !config.supportedDescriptionSources[sourceId] ||
-    !config.supportedDescriptionSources[sourceId].iconPath
+    config &&
+    config.supportedDescriptionSources &&
+    config.supportedDescriptionSources[sourceId] &&
+    config.supportedDescriptionSources[sourceId].iconPath
   ) {
-    return '';
+    return config.supportedDescriptionSources[sourceId].iconPath;
   }
 
-  return config.supportedDescriptionSources[sourceId].iconPath;
+  return '';
 }

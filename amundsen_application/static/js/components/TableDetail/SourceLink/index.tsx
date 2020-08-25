@@ -10,7 +10,6 @@ import {
 import { logClick } from 'ducks/utilMethods';
 import AvatarLabel from 'components/common/AvatarLabel';
 import { TableSource } from 'interfaces';
-import { ResourceType } from '../../../interfaces';
 
 export interface SourceLinkProps {
   tableSource: TableSource;
@@ -34,7 +33,10 @@ const SourceLink: React.FC<SourceLinkProps> = ({
       target="_blank"
       rel="noreferrer"
     >
-      <AvatarLabel label={displayName} src={image} />
+      <AvatarLabel
+        label={getDescriptionSourceDisplayName(tableSource.source_type)}
+        src={getDescriptionSourceIconPath(tableSource.source_type)}
+      />
     </a>
   );
 };
