@@ -42,13 +42,13 @@ function parseNestedTypeHelper(
 
     if (currentChar === SEPARATOR_DELIMETER) {
       /* Case 1: End of non-nested item */
-      children.push(columnType.substring(startIndex, currentIndex + 1));
+      children.push(columnType.substring(startIndex, currentIndex + 1).trim());
       startIndex = currentIndex + 1;
       currentIndex = startIndex;
     } else if (currentChar in CLOSE_DELIMETERS) {
       /* Case 2: End of a nested item  */
       if (startIndex !== currentIndex) {
-        children.push(columnType.substring(startIndex, currentIndex));
+        children.push(columnType.substring(startIndex, currentIndex).trim());
       }
       return {
         nextStartIndex: currentIndex + 1,
@@ -93,14 +93,19 @@ function parseNestedTypeHelper(
 /*
  * Returns whether or not a columnType string represents a complex type for the given database
  */
-function isNestedType(columnType: string, databaseId: string): boolean {
+export function isNestedType(columnType: string, databaseId: string): boolean {
   const supportedTypes = SUPPORTED_TYPES[databaseId];
   let isNestedType = false;
-  supportedTypes.forEach((supportedType) => {
-    if (columnType.startsWith(supportedType) && columnType !== supportedType) {
-      isNestedType = true;
-    }
-  });
+  if (supportedTypes) {
+    supportedTypes.forEach((supportedType) => {
+      if (
+        columnType.startsWith(supportedType) &&
+        columnType !== supportedType
+      ) {
+        isNestedType = true;
+      }
+    });
+  }
   return isNestedType;
 }
 
