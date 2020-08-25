@@ -1,5 +1,4 @@
 import * as React from 'react';
-import SanitizedHTML from 'react-sanitized-html';
 import { mount } from 'enzyme';
 
 import SourceLink, { SourceLinkProps } from '.';
@@ -21,13 +20,13 @@ const setup = (propOverrides?: Partial<SourceLinkProps>) => {
 
 describe('render SourceLink', () => {
   describe('render', () => {
-    it('renders without issues', () => {
+    it('should render without issues', () => {
       expect(() => {
         setup();
       }).not.toThrow();
     });
 
-    it('renders icon and source link', () => {
+    it('should render icon and source link', () => {
       const { wrapper } = setup();
       const expected = 1;
       const actual = wrapper.find('.header-link').length;
@@ -35,7 +34,7 @@ describe('render SourceLink', () => {
       expect(actual).toEqual(expected);
     });
 
-    it('renders correct source link', () => {
+    it('should render correct source link', () => {
       const { wrapper } = setup();
       const expected = 'www.xyz.com';
       const actual = wrapper

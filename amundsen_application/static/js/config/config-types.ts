@@ -119,8 +119,14 @@ type SourcesConfig = {
   [id: string]: {
     displayName?: string;
     iconClass?: string;
-    iconPath?: string;
   };
+};
+
+/**
+ * Configures the UI for a given table description source
+ */
+type DescriptionSourceConfig = {
+  [id: string]: { displayName: string; iconPath: string };
 };
 
 /**
@@ -136,7 +142,7 @@ interface BaseResourceConfig {
 }
 
 interface TableResourceConfig extends BaseResourceConfig {
-  supportedDescriptionSources?: SourcesConfig;
+  supportedDescriptionSources?: DescriptionSourceConfig;
 }
 
 export enum BadgeStyle {
