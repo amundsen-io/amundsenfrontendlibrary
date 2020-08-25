@@ -31,8 +31,8 @@ const ColumnList: React.FC<ColumnListProps> = ({
       data={entry}
       database={database}
       index={index}
-      editText={editText || ''}
-      editUrl={editUrl || ''}
+      editText={editText}
+      editUrl={editUrl}
     />
   ));
 
@@ -40,7 +40,6 @@ const ColumnList: React.FC<ColumnListProps> = ({
 };
 
 ColumnList.defaultProps = {
-  columns: [] as TableColumn[],
   editText: '',
   editUrl: '',
 };
