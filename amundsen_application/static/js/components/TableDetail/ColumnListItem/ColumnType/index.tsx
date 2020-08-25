@@ -10,12 +10,12 @@ import {
   getTruncatedText,
   parseNestedType,
   NestedType,
-  ParsedType,
+  ParsedType
 } from './parser';
 
 const CTA_TEXT = 'Click to see nested fields';
 const MODAL_TITLE = 'Nested Type';
-const TEXT_INDENT = 8;
+const TEXT_INDENT= 8;
 
 export interface ColumnTypeProps {
   columnName: string;
@@ -58,7 +58,7 @@ export class ColumnType extends React.Component<
   };
 
   createLineItem = (text: string, textIndent: number) => {
-    return <div style={{ textIndent: `${textIndent}px` }}>{text}</div>;
+    return <div key={`lineitem:${text}`} style={{ textIndent: `${textIndent}px` }}>{text}</div>;
   };
 
   renderParsedChildren = (children: ParsedType[], level: number) => {
@@ -75,11 +75,11 @@ export class ColumnType extends React.Component<
     const { head, tail, children } = nestedType;
     const textIndent = level * TEXT_INDENT;
     return (
-      <>
+      <div key={`nesteditem:${head}${tail}`} >
         {this.createLineItem(head, textIndent)}
         {this.renderParsedChildren(children, level + 1)}
         {this.createLineItem(tail, textIndent)}
-      </>
+      </div>
     );
   };
 
