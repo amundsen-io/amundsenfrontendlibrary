@@ -73,11 +73,11 @@ exports[`strict null compilation`] = {
     "js/components/SearchPage/index.tsx:1421221531": [
       [175, 11, 12, "Property \'filterSections\' is missing in type \'{}\' but required in type \'Readonly<Pick<StateFromProps, \\"filterSections\\">>\'.", "250899467"]
     ],
-    "js/components/TableDetail/ColumnList/index.tsx:2024292996": [
-      [20, 6, 7, "Object is possibly \'undefined\'.", "3718923584"],
-      [25, 21, 7, "Object is possibly \'undefined\'.", "3718923584"],
-      [30, 6, 8, "Type \'string | undefined\' is not assignable to type \'string\'.\\n  Type \'undefined\' is not assignable to type \'string\'.", "1427606500"],
-      [31, 6, 7, "Type \'string | undefined\' is not assignable to type \'string\'.\\n  Type \'undefined\' is not assignable to type \'string\'.", "3817619378"]
+    "js/components/TableDetail/ColumnList/index.tsx:355148301": [
+      [22, 6, 7, "Object is possibly \'undefined\'.", "3718923584"],
+      [27, 21, 7, "Object is possibly \'undefined\'.", "3718923584"],
+      [33, 6, 8, "Type \'string | undefined\' is not assignable to type \'string\'.\\n  Type \'undefined\' is not assignable to type \'string\'.", "1427606500"],
+      [34, 6, 7, "Type \'string | undefined\' is not assignable to type \'string\'.\\n  Type \'undefined\' is not assignable to type \'string\'.", "3817619378"]
     ],
     "js/components/TableDetail/ColumnStats/index.spec.tsx:1228258528": [
       [90, 39, 4, "Argument of type \'null\' is not assignable to parameter of type \'number\'.", "2087897566"]
@@ -104,19 +104,19 @@ exports[`strict null compilation`] = {
     "js/components/TableDetail/index.spec.tsx:2169788066": [
       [32, 4, 8, "Argument of type \'Partial<Location<{} | null | undefined>> | undefined\' is not assignable to parameter of type \'Partial<Location<{} | null | undefined>>\'.\\n  Type \'undefined\' is not assignable to type \'Partial<Location<{} | null | undefined>>\'.", "2700611480"]
     ],
-    "js/components/TableDetail/index.tsx:173712209": [
+    "js/components/TableDetail/index.tsx:4022397794": [
       [152, 10, 13, "Type \'null\' is not assignable to type \'((newValue: string, onSuccess?: (() => any) | undefined, onFailure?: (() => any) | undefined) => void) | undefined\'.", "67794331"],
-      [163, 6, 7, "Type \'Element\' is not assignable to type \'never\'.", "3716929964"],
-      [170, 6, 3, "Type \'string\' is not assignable to type \'never\'.", "193424690"],
-      [171, 6, 5, "Type \'string\' is not assignable to type \'never\'.", "183222373"],
-      [181, 8, 7, "Type \'Element\' is not assignable to type \'never\'.", "3716929964"],
-      [182, 11, 26, "Type \'{ itemsPerPage: number; source: string; }\' is missing the following properties from type \'Readonly<Pick<TableDashboardResourceListProps, \\"source\\" | \\"dashboards\\" | \\"isLoading\\" | \\"errorText\\" | \\"itemsPerPage\\"> & OwnProps>\': dashboards, isLoading, errorText", "2224258167"],
-      [187, 8, 3, "Type \'string\' is not assignable to type \'never\'.", "193424690"],
-      [188, 8, 5, "Type \'string | Element\' is not assignable to type \'never\'.\\n  Type \'string\' is not assignable to type \'never\'.", "183222373"],
-      [260, 16, 7, "Type \'string | null\' is not assignable to type \'string | undefined\'.\\n  Type \'null\' is not assignable to type \'string | undefined\'.", "3817619378"],
-      [302, 20, 35, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "4249007202"],
-      [316, 20, 36, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "2770872537"],
-      [321, 16, 36, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "2776557981"]
+      [164, 6, 7, "Type \'Element\' is not assignable to type \'never\'.", "3716929964"],
+      [172, 6, 3, "Type \'string\' is not assignable to type \'never\'.", "193424690"],
+      [173, 6, 5, "Type \'string\' is not assignable to type \'never\'.", "183222373"],
+      [183, 8, 7, "Type \'Element\' is not assignable to type \'never\'.", "3716929964"],
+      [184, 11, 26, "Type \'{ itemsPerPage: number; source: string; }\' is missing the following properties from type \'Readonly<Pick<TableDashboardResourceListProps, \\"source\\" | \\"dashboards\\" | \\"isLoading\\" | \\"errorText\\" | \\"itemsPerPage\\"> & OwnProps>\': dashboards, isLoading, errorText", "2224258167"],
+      [189, 8, 3, "Type \'string\' is not assignable to type \'never\'.", "193424690"],
+      [190, 8, 5, "Type \'string | Element\' is not assignable to type \'never\'.\\n  Type \'string\' is not assignable to type \'never\'.", "183222373"],
+      [262, 16, 7, "Type \'string | null\' is not assignable to type \'string | undefined\'.\\n  Type \'null\' is not assignable to type \'string | undefined\'.", "3817619378"],
+      [304, 20, 35, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "4249007202"],
+      [318, 20, 36, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "2770872537"],
+      [323, 16, 36, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "2776557981"]
     ],
     "js/components/common/Announcements/AnnouncementsList/index.spec.tsx:1710887993": [
       [95, 23, 124, "Object is possibly \'null\'.", "4248337497"]

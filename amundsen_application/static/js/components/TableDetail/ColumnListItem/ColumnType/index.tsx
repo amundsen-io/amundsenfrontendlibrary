@@ -91,7 +91,7 @@ export class ColumnType extends React.Component<
     const { columnName, database, type } = this.props;
 
     if (this.nestedType === null) {
-      return <div className="column-type">{type}</div>;
+      return <p className="column-type">{type}</p>;
     }
 
     const popoverHover = (
@@ -110,13 +110,9 @@ export class ColumnType extends React.Component<
           overlay={popoverHover}
           rootClose
         >
-          <a
-            className="column-type"
-            href="JavaScript:void(0)"
-            onClick={this.showModal}
-          >
+          <button className="column-type" onClick={this.showModal}>
             {getTruncatedText(this.nestedType)}
-          </a>
+          </button>
         </OverlayTrigger>
         <Modal
           className="column-type-modal"

@@ -91,7 +91,7 @@ function parseNestedTypeHelper(
 }
 
 /*
- * Returns whether or not a columnType string represents a complexc type for the given database
+ * Returns whether or not a columnType string represents a complex type for the given database
  */
 function isNestedType(columnType: string, databaseId: string): boolean {
   const supportedTypes = SUPPORTED_TYPES[databaseId];

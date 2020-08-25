@@ -11,6 +11,18 @@ $modal-header-height: 94px;
 // TODO (design qa): Also using fixed width from Figma
 $modal-dialog-width: 418px;
 
+button.column-type {
+  border: none;
+  background: none;
+  color: $link-color;
+  padding-left: 0;
+
+  &:hover,
+  &:focus {
+    color: $link-hover-color;
+  }
+}
+
 .column-type-modal {
   .modal-body {
     border-bottom: 1px solid $stroke-light;
