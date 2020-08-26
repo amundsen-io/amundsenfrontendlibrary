@@ -54,3 +54,24 @@ $modal-dialog-width: 418px;
     padding: $spacer-3 !important;
   }
 }
+
+/*
+  These three styles vertically center the modal: https://codepen.io/dimbslmh/full/mKfCc
+  Bootstrap4 will have a dedicated class to handle this.
+*/
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+}
