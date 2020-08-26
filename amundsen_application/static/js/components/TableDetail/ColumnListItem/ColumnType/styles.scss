@@ -20,6 +20,7 @@ $modal-dialog-width: 418px;
   &:hover,
   &:focus {
     color: $link-hover-color;
+    cursor: pointer;
   }
 }
 
@@ -31,6 +32,8 @@ $modal-dialog-width: 418px;
     height: calc(
       #{$modal-dialog-height - $modal-header-height - $spacer-3}
     );
+    font-family: $font-family-spacemono;
+    font-size: $code-font-size;
     /* Override react-bootstrap styles to match design */
     margin: 0 $spacer-3 !important;
     padding: $spacer-1 0 !important;
@@ -52,5 +55,35 @@ $modal-dialog-width: 418px;
     height: $modal-header-height;
     /* Override react-bootstrap styles to match design */
     padding: $spacer-3 !important;
+
+    /* A design audit of modals is needed to reconcile differences accumulated over time */
+    .modal-title {
+      font-family: $font-family-body !important;
+    }
+
+    .column-name {
+      font-size: $w2-font-size;
+    }
   }
+}
+
+/*
+  These three styles vertically center the modal: https://codepen.io/dimbslmh/full/mKfCc
+  Bootstrap4 will have a dedicated class to handle this.
+*/
+.modal {
+  text-align: center;
+  padding: 0!important;
+}
+.modal:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  margin-right: -4px;
+}
+.modal-dialog {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
 }
