@@ -31,6 +31,8 @@ $modal-dialog-width: 418px;
     height: calc(
       #{$modal-dialog-height - $modal-header-height - $spacer-3}
     );
+    font-family: $font-family-spacemono;
+    font-size: 12px;
     /* Override react-bootstrap styles to match design */
     margin: 0 $spacer-3 !important;
     padding: $spacer-1 0 !important;
@@ -52,6 +54,15 @@ $modal-dialog-width: 418px;
     height: $modal-header-height;
     /* Override react-bootstrap styles to match design */
     padding: $spacer-3 !important;
+
+    /* A design audit of modals is needed to reconcile differences accumulated over time */
+    .modal-title {
+      font-family: $font-family-body !important;
+    }
+
+    .column-name {
+      font-size: 16px;
+    }
   }
 }
 

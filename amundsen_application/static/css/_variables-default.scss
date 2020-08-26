@@ -45,6 +45,8 @@ $font-weight-header-regular: 500 !default;
 $font-weight-header-bold: 700 !default;
 
 $font-family-monospace: 'Menlo-Bold', menlo, monospace !default;
+// TODO design qa: Is usage of both MenloBold and Space Mono intended?
+$font-family-spacemono: 'Space Mono', menlo, monospace !default;
 $font-family-serif: georgia, 'Times New Roman', times, serif !default;
 
 $font-size-small: 12px !default;
