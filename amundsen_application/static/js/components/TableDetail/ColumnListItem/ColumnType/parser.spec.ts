@@ -47,7 +47,7 @@ describe('parseNestedType', () => {
     expect(Parser.parseNestedType('test', 'hive')).toEqual(null);
   });
 
-  it('returns correct text with delimeters removed', () => {
+  it('returns expected NestedType', () => {
     const spy = jest
       .spyOn(Parser, 'isNestedType')
       .mockImplementation(() => true);
