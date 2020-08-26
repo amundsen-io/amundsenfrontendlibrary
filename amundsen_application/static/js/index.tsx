@@ -8,6 +8,8 @@ import * as ReactDOM from 'react-dom';
 import * as ReduxPromise from 'redux-promise';
 
 import createSagaMiddleware from 'redux-saga';
+import { Config, Nevermined } from '@keyko-io/nevermined-sdk-js';
+import { LogLevel } from '@keyko-io/nevermined-sdk-js/dist/node/utils';
 
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
@@ -38,6 +40,15 @@ const createStoreWithMiddleware = applyMiddleware(
 const store = createStoreWithMiddleware(rootReducer);
 
 sagaMiddleware.run(rootSaga);
+
+(async () => {
+  const nvm = await Nevermined.getInstance({
+    nodeUri: 'https://rinkeby.infura.io/v3/5b322298e356423ea24362fc80fabd16',
+    verbose: LogLevel.Verbose,
+  } as Config);
+
+  console.log(nvm.keeper.connected);
+})();
 
 ReactDOM.render(
   <DocumentTitle title="Amundsen - Data Discovery Portal">

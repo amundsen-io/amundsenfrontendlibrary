@@ -10,6 +10,7 @@
     "typeRoots": ["node_modules/@types"],
     "allowJs": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "noResolve": false,
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
