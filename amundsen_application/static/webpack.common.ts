@@ -51,6 +51,9 @@ const config: webpack.Configuration = {
       path.join(__dirname, '/js/index.tsx'),
     ],
   },
+  node: {
+    fs: 'empty',
+  },
   output: {
     publicPath: '/static/dist/',
     path: PATHS.dist,

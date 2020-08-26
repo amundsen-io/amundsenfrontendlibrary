@@ -122,6 +122,7 @@
     "webworkify-webpack": "2.1.0"
   },
   "dependencies": {
+    "@keyko-io/nevermined-sdk-js": "^0.3.1",
     "autosize": "^4.0.2",
     "axios": "0.19.0",
     "core-js": "^3.6.5",
