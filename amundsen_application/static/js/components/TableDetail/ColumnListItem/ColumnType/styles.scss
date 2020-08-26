@@ -20,6 +20,7 @@ $modal-dialog-width: 418px;
   &:hover,
   &:focus {
     color: $link-hover-color;
+    cursor: pointer;
   }
 }
 

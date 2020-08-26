@@ -54,7 +54,9 @@ export class ColumnType extends React.Component<
   };
 
   stopPropagation = (e) => {
-    e.stopPropagation();
+    if (e) {
+      e.stopPropagation();
+    }
   };
 
   createLineItem = (text: string, textIndent: number) => {
@@ -105,7 +107,7 @@ export class ColumnType extends React.Component<
     return (
       <div onClick={this.stopPropagation}>
         <OverlayTrigger
-          trigger={['hover']}
+          trigger={['hover', 'focus']}
           placement="top"
           overlay={popoverHover}
           rootClose
