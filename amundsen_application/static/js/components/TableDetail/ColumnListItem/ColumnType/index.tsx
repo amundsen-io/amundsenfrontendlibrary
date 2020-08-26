@@ -110,7 +110,11 @@ export class ColumnType extends React.Component<
           overlay={popoverHover}
           rootClose
         >
-          <button className="column-type" onClick={this.showModal}>
+          <button
+            type="button"
+            className="column-type-btn"
+            onClick={this.showModal}
+          >
             {getTruncatedText(this.nestedType)}
           </button>
         </OverlayTrigger>

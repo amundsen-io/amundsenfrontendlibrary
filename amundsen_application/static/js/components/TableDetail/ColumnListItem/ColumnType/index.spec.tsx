@@ -14,7 +14,7 @@ import ColumnType, { ColumnTypeProps } from '.';
 const setup = (propOverrides?: Partial<ColumnTypeProps>) => {
   const props = {
     columnName: 'test',
-    database: 'hive',
+    database: 'presto',
     type:
       'row(test_id varchar,test2 row(test2_id varchar,started_at timestamp,ended_at timestamp))',
     ...propOverrides,
@@ -37,7 +37,7 @@ describe('ColumnType', () => {
 
     it('renders the truncated column type string for nested types', () => {
       const expectedText = 'row(...)';
-      expect(wrapper.find('.column-type').text()).toBe(expectedText);
+      expect(wrapper.find('.column-type-btn').text()).toBe(expectedText);
     });
   });
 });
