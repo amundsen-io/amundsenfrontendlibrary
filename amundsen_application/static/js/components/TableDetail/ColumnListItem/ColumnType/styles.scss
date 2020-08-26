@@ -33,7 +33,7 @@ $modal-dialog-width: 418px;
       #{$modal-dialog-height - $modal-header-height - $spacer-3}
     );
     font-family: $font-family-spacemono;
-    font-size: 12px;
+    font-size: $code-font-size;
     /* Override react-bootstrap styles to match design */
     margin: 0 $spacer-3 !important;
     padding: $spacer-1 0 !important;
@@ -62,7 +62,7 @@ $modal-dialog-width: 418px;
     }
 
     .column-name {
-      font-size: 16px;
+      font-size: $w2-font-size;
     }
   }
 }
