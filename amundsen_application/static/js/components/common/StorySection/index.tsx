@@ -14,7 +14,6 @@ const StorySection: React.FC<BlockProps> = ({
   <div style={{ padding: '2em', maxWidth: 600 }}>
     <h1 className="text-headline-w1">{title}</h1>
     {text && <p className="text-body-w1">{text}</p>}
-    <hr />
     {children}
   </div>
 );
