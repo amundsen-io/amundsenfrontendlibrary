@@ -98,8 +98,10 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   };
 
   componentDidUpdate = (prevProps: SearchBarProps) => {
-    if (this.props.searchTerm !== prevProps.searchTerm) {
-      this.setState({ searchTerm: this.props.searchTerm });
+    const { searchTerm } = this.props;
+
+    if (searchTerm !== prevProps.searchTerm) {
+      this.setState({ searchTerm });
     }
   };
 
@@ -121,8 +123,11 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   handleValueSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
     const searchTerm = this.state.searchTerm.trim();
     event.preventDefault();
+
     if (this.isFormValid(searchTerm)) {
-      this.props.submitSearch(searchTerm);
+      const { submitSearch } = this.props;
+
+      submitSearch(searchTerm);
       this.hideTypeAhead();
     }
   };
@@ -180,7 +185,9 @@ export class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
 
   render() {
     const inputClass = `${
-      this.props.size === Constants.SIZE_SMALL ? 'title-2 small' : 'h2 large'
+      this.props.size === Constants.SIZE_SMALL
+        ? 'text-title-w2 small'
+        : 'text-headline-w2 large'
     } search-bar-input form-control`;
     const searchButtonClass = `btn btn-flat-icon search-button ${
       this.props.size === Constants.SIZE_SMALL ? 'small' : 'large'

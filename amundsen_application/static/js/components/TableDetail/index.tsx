@@ -10,9 +10,9 @@ import { RouteComponentProps } from 'react-router';
 import { GlobalState } from 'ducks/rootReducer';
 import { getTableData } from 'ducks/tableMetadata/reducer';
 import { GetTableDataRequest } from 'ducks/tableMetadata/types';
-import { BadgeStyle } from 'config/config-types';
 
 import {
+  getDescriptionSourceDisplayName,
   getMaxLength,
   getSourceIconClass,
   indexDashboardsEnabled,
@@ -27,7 +27,6 @@ import TabsComponent from 'components/common/TabsComponent';
 import TagInput from 'components/common/Tags/TagInput';
 import EditableText from 'components/common/EditableText';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import Flag from 'components/common/Flag';
 
 import ColumnList from 'components/TableDetail/ColumnList';
 import DataPreviewButton from 'components/TableDetail/DataPreviewButton';
@@ -209,7 +208,9 @@ export class TableDetail extends React.Component<
     } else {
       const data = tableData;
       const editText = data.source
-        ? `${EDIT_DESC_TEXT} ${data.source.source_type}`
+        ? `${EDIT_DESC_TEXT} ${getDescriptionSourceDisplayName(
+            data.source.source_type
+          )}`
         : '';
       const editUrl = data.source ? data.source.source : '';
 
@@ -227,7 +228,7 @@ export class TableDetail extends React.Component<
               />
             </div>
             <div className="header-section header-title">
-              <h1 className="h3 header-title-text truncated">
+              <h1 className="header-title-text truncated">
                 {this.getDisplayName()}
               </h1>
               <BookmarkIcon
@@ -238,11 +239,9 @@ export class TableDetail extends React.Component<
                 <TableHeaderBullets
                   database={data.database}
                   cluster={data.cluster}
+                  isView={data.is_view}
                 />
                 {data.badges.length > 0 && <BadgeList badges={data.badges} />}
-                {data.is_view && (
-                  <Flag text="table view" labelStyle={BadgeStyle.WARNING} />
-                )}
               </div>
             </div>
             <div className="header-section header-links">

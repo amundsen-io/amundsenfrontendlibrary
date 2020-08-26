@@ -66,6 +66,10 @@ const configDefault: AppConfig = {
           displayName: 'Redash',
           iconClass: 'icon-redash',
         },
+        tableau: {
+          displayName: 'Tableau',
+          iconClass: 'icon-tableau',
+        },
       },
       filterCategories: [
         {
@@ -154,6 +158,12 @@ const configDefault: AppConfig = {
           type: FilterType.INPUT_SELECT,
         },
       ],
+      supportedDescriptionSources: {
+        github: {
+          displayName: 'Github',
+          iconPath: '/static/images/github.png',
+        },
+      },
     },
     [ResourceType.user]: {
       displayName: 'People',
