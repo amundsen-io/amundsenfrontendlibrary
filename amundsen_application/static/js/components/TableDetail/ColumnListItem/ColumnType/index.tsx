@@ -6,11 +6,20 @@ import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 
 import './styles.scss';
 
+import {
+  getTruncatedText,
+  parseNestedType,
+  NestedType,
+  ParsedType,
+} from './parser';
+
 const CTA_TEXT = 'Click to see nested fields';
 const MODAL_TITLE = 'Nested Type';
+const TEXT_INDENT = 8;
 
 export interface ColumnTypeProps {
   columnName: string;
+  database: string;
   type: string;
 }
 
@@ -22,12 +31,16 @@ export class ColumnType extends React.Component<
   ColumnTypeProps,
   ColumnTypeState
 > {
+  nestedType: NestedType | null;
+
   constructor(props) {
     super(props);
 
     this.state = {
       showModal: false,
     };
+
+    this.nestedType = parseNestedType(this.props.type, this.props.database);
   }
 
   hideModal = (e) => {
@@ -44,74 +57,86 @@ export class ColumnType extends React.Component<
     e.stopPropagation();
   };
 
-  render = () => {
-    const { columnName, type } = this.props;
+  createLineItem = (text: string, textIndent: number) => {
+    return (
+      <div key={`lineitem:${text}`} style={{ textIndent: `${textIndent}px` }}>
+        {text}
+      </div>
+    );
+  };
 
-    const truncatedTypes: string[] = ['array', 'struct', 'map', 'row'];
-    let shouldTrucate = false;
-
-    const fullText = type.toLowerCase();
-    let text = fullText;
-
-    truncatedTypes.forEach((truncatedType) => {
-      if (type.startsWith(truncatedType) && type !== truncatedType) {
-        shouldTrucate = true;
-        const lastChar = type.charAt(type.length - 1);
-        if (lastChar === '>') {
-          text = `${truncatedType}<...>`;
-        } else if (lastChar === ')') {
-          text = `${truncatedType}(...)`;
-        } else {
-          text = `${truncatedType}...`;
-        }
+  renderParsedChildren = (children: ParsedType[], level: number) => {
+    const textIndent = level * TEXT_INDENT;
+    return children.map((item) => {
+      if (typeof item === 'string') {
+        return this.createLineItem(item, textIndent);
       }
+      return this.renderNestedType(item, level);
     });
+  };
 
-    if (shouldTrucate) {
-      const popoverHover = (
-        <Popover
-          className="column-type-popover"
-          id={`column-type-popover:${columnName}`}
-        >
-          {CTA_TEXT}
-        </Popover>
-      );
-      return (
-        <div onClick={this.stopPropagation}>
-          <OverlayTrigger
-            trigger={['hover']}
-            placement="top"
-            overlay={popoverHover}
-            rootClose
-          >
-            <a
-              className="column-type"
-              href="JavaScript:void(0)"
-              onClick={this.showModal}
-            >
-              {text}
-            </a>
-          </OverlayTrigger>
-          <Modal
-            className="column-type-modal"
-            show={this.state.showModal}
-            onHide={this.hideModal}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>
-                {MODAL_TITLE}
-                <div className="column-name">{columnName}</div>
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              <div className="column-type-modal-content">{fullText}</div>
-            </Modal.Body>
-          </Modal>
-        </div>
-      );
+  renderNestedType = (nestedType: NestedType, level: number = 0) => {
+    const { head, tail, children } = nestedType;
+    const textIndent = level * TEXT_INDENT;
+    return (
+      <div key={`nesteditem:${head}${tail}`}>
+        {this.createLineItem(head, textIndent)}
+        {this.renderParsedChildren(children, level + 1)}
+        {this.createLineItem(tail, textIndent)}
+      </div>
+    );
+  };
+
+  render = () => {
+    const { columnName, database, type } = this.props;
+
+    if (this.nestedType === null) {
+      return <p className="column-type">{type}</p>;
     }
 
-    return <div className="column-type">{text}</div>;
+    const popoverHover = (
+      <Popover
+        className="column-type-popover"
+        id={`column-type-popover:${columnName}`}
+      >
+        {CTA_TEXT}
+      </Popover>
+    );
+    return (
+      <div onClick={this.stopPropagation}>
+        <OverlayTrigger
+          trigger={['hover']}
+          placement="top"
+          overlay={popoverHover}
+          rootClose
+        >
+          <button
+            type="button"
+            className="column-type-btn"
+            onClick={this.showModal}
+          >
+            {getTruncatedText(this.nestedType)}
+          </button>
+        </OverlayTrigger>
+        <Modal
+          className="column-type-modal"
+          show={this.state.showModal}
+          onHide={this.hideModal}
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>
+              {MODAL_TITLE}
+              <div className="column-name">{columnName}</div>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="column-type-modal-content">
+              {this.renderNestedType(this.nestedType)}
+            </div>
+          </Modal.Body>
+        </Modal>
+      </div>
+    );
   };
 }
 

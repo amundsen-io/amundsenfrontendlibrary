@@ -38,6 +38,7 @@ describe('ColumnListItem', () => {
           },
         ],
       },
+      database: 'hive',
       index: 0,
       openRequestDescriptionDialog: jest.fn(),
       editText: 'Click to edit discription in source',

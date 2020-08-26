@@ -30,6 +30,7 @@ interface DispatchFromProps {
 
 interface OwnProps {
   data: TableColumn;
+  database: string;
   index: number;
   editText: string;
   editUrl: string;
@@ -53,15 +54,15 @@ export class ColumnListItem extends React.Component<
   }
 
   toggleExpand = (e) => {
-    const metadata = this.props.data;
+    const { data } = this.props;
     if (!this.state.isExpanded) {
       logClick(e, {
-        target_id: `column::${metadata.name}`,
+        target_id: `column::${data.name}`,
         target_type: 'column stats',
-        label: `${metadata.name} ${metadata.col_type}`,
+        label: `${data.name} ${data.col_type}`,
       });
     }
-    if (this.shouldRenderDescription() || metadata.stats.length !== 0) {
+    if (this.shouldRenderDescription() || data.stats.length !== 0) {
       this.setState((prevState) => ({
         isExpanded: !prevState.isExpanded,
       }));
@@ -91,7 +92,7 @@ export class ColumnListItem extends React.Component<
   };
 
   render() {
-    const metadata = this.props.data;
+    const { data, database } = this.props;
     return (
       <li className="list-group-item clickable" onClick={this.toggleExpand}>
         <div className="column-list-item">
@@ -101,15 +102,19 @@ export class ColumnListItem extends React.Component<
                 !this.state.isExpanded ? 'my-auto' : ''
               }`}
             >
-              <div className="column-name">{metadata.name}</div>
+              <div className="column-name">{data.name}</div>
               {!this.state.isExpanded && (
                 <div className="column-desc body-3 truncated">
-                  {metadata.description}
+                  {data.description}
                 </div>
               )}
             </div>
             <div className="resource-type">
-              <ColumnType columnName={metadata.name} type={metadata.col_type} />
+              <ColumnType
+                columnName={data.name}
+                database={database}
+                type={data.col_type}
+              />
             </div>
             <div className="badges">{/* Placeholder */}</div>
             <div className="actions">
@@ -142,20 +147,20 @@ export class ColumnListItem extends React.Component<
                 {this.shouldRenderDescription() && (
                   <EditableSection
                     title={EDITABLE_SECTION_TITLE}
-                    readOnly={!metadata.is_editable}
+                    readOnly={!data.is_editable}
                     editText={this.props.editText}
                     editUrl={this.props.editUrl}
                   >
                     <ColumnDescEditableText
                       columnIndex={this.props.index}
-                      editable={metadata.is_editable}
+                      editable={data.is_editable}
                       maxLength={getMaxLength('columnDescLength')}
-                      value={metadata.description}
+                      value={data.description}
                     />
                   </EditableSection>
                 )}
               </div>
-              <ColumnStats stats={metadata.stats} />
+              <ColumnStats stats={data.stats} />
             </section>
           )}
         </div>
