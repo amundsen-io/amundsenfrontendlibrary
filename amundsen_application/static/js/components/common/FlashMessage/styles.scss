@@ -14,7 +14,8 @@ $flash-message-message-line-height: 24px;
   color: $white;
   display: flex;
   height: $flash-message-height;
-  padding: $spacer-2 $spacer-1;
+  padding: $spacer-2;
+  padding-right: $spacer-1 * 1.5;
   justify-content: space-between;
 
   .message {
@@ -25,8 +26,11 @@ $flash-message-message-line-height: 24px;
     display: inline;
   }
 
-  .icon,
+  .icon {
+    margin: 0 $spacer-1 0 0;
+  }
+
   .btn-close {
-    margin: auto $spacer-1;
+    margin: auto 0;
   }
 }
