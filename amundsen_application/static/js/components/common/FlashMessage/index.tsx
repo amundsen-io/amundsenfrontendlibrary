@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
+import { ImageIconType } from 'interfaces/Enums';
 import * as Constants from './constants';
 
 import './styles.scss';
 
 export interface FlashMessageProps {
-  iconClass?: string | null;
+  iconClass?: ImageIconType | null;
   message: string;
   onClose: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }

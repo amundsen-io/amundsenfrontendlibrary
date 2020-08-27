@@ -5,6 +5,7 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
+import { ImageIconType } from 'interfaces/Enums';
 import FlashMessage, { FlashMessageProps } from '.';
 
 describe('FlashMessage', () => {
@@ -34,8 +35,9 @@ describe('FlashMessage', () => {
       });
 
       it('if iconClass, renders img with correct className', () => {
-        const testClass = 'icon-mail';
+        const testClass = ImageIconType.MAIL;
         const { wrapper } = setup({ iconClass: testClass });
+
         expect(wrapper.find('img').props()).toMatchObject({
           className: `icon ${testClass}`,
         });
