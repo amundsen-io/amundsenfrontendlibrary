@@ -20,8 +20,10 @@ const FlashMessage: React.FC<FlashMessageProps> = ({
 }: FlashMessageProps) => {
   return (
     <div className="flash-message">
-      {iconClass && <img className={`icon ${iconClass}`} alt="" />}
-      <div className="message">{message}</div>
+      <div>
+        {iconClass && <img className={`icon ${iconClass}`} alt="" />}
+        <p className="message">{message}</p>
+      </div>
       <button type="button" className="btn btn-close" onClick={onClose}>
         <span className="sr-only">{Constants.CLOSE}</span>
       </button>

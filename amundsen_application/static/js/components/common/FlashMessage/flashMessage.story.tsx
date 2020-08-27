@@ -20,7 +20,7 @@ stories.add('Flash Message', () => (
     <StorySection title="Flash Message with Icon">
       <FlashMessage
         message="Flash message text that can be short"
-        iconClass={ImageIconType.BOOKMARK}
+        iconClass={ImageIconType.ALERT}
         onClose={() => {
           alert('message closed!');
         }}
