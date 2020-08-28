@@ -52,6 +52,30 @@ describe('Alert', () => {
         expect(actual).toEqual(expected);
       });
     });
+
+    describe('when passing an action text and action href', () => {
+      it('should render the action link', () => {
+        const { wrapper } = setup({
+          actionHref: 'http://testSite.com',
+          actionText: 'Action Text',
+        });
+        const expected = 1;
+        const actual = wrapper.find('.action-link').length;
+
+        expect(actual).toEqual(expected);
+      });
+
+      it('should render the action text', () => {
+        const { props, wrapper } = setup({
+          actionHref: 'http://testSite.com',
+          actionText: 'Action Text',
+        });
+        const expected = props.actionText;
+        const actual = wrapper.find('.action-link').text();
+
+        expect(actual).toEqual(expected);
+      });
+    });
   });
 
   describe('lifetime', () => {

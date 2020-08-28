@@ -12,7 +12,7 @@ $alert-message-line-height: 24px;
   border-radius: $alert-border-radius;
   display: flex;
   padding: $spacer-1 $spacer-1 * 1.5 $spacer-1 $spacer-2;
-  justify-content: space-between;
+  justify-content: flex-start;
   box-shadow: $elevation-level2;
 
   .alert-message {
@@ -24,10 +24,12 @@ $alert-message-line-height: 24px;
   }
 
   .alert-triangle-svg-icon {
-    margin: 0 $spacer-1 -2px 0;
+    flex-shrink: 0;
+    align-self: center;
+    margin-right: $spacer-1;
   }
 
   .btn-link {
-    margin: auto 0 auto $spacer-3;
+    margin: auto 0 auto auto;
   }
 }
