@@ -24,7 +24,7 @@ const Alert: React.FC<AlertProps> = ({
   actionHref,
   actionLink,
 }: AlertProps) => {
-  let action = null;
+  let action: null | React.ReactNode = null;
 
   if (actionText && onAction) {
     action = (
