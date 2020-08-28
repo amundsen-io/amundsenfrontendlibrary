@@ -25,13 +25,30 @@ stories.add('Alert', () => (
         }
       />
     </StorySection>
-    <StorySection title="Alert with Action">
+    <StorySection title="Alert with Action as button">
       <Alert
         message="Alert text that can be short"
         actionText="Action Text"
         onAction={() => {
           alert('action executed!');
         }}
+      />
+    </StorySection>
+    <StorySection title="Alert with Action as link">
+      <Alert
+        message="Alert text that can be short"
+        actionText="Action Text"
+        actionHref="http://www.lyft.com"
+      />
+    </StorySection>
+    <StorySection title="Alert with Action as custom link">
+      <Alert
+        message="Alert text that can be short"
+        actionLink={
+          <a className="test-action-link" href="http://testSite.com">
+            Custom Link
+          </a>
+        }
       />
     </StorySection>
     <StorySection title="Alert with long text">

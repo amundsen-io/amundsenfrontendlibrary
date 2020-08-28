@@ -1,16 +1,25 @@
 import * as React from 'react';
 
-const STROKE_COLOR = '#b8072c'; // $red70
-const SIZE = 16;
+import { IconSizes } from '.';
 
-const AlertIcon: React.FC = () => {
+const DEFAULT_STROKE_COLOR = 'currentColor';
+
+export interface IconProps {
+  stroke?: string;
+  size?: number;
+}
+
+export const AlertIcon: React.FC<IconProps> = ({
+  stroke = DEFAULT_STROKE_COLOR,
+  size = IconSizes.REGULAR,
+}: IconProps) => {
   return (
     <svg
-      width={SIZE}
-      height={SIZE}
+      width={size}
+      height={size}
       viewBox="0 0 24 24"
       fill="none"
-      stroke={STROKE_COLOR}
+      stroke={stroke}
       strokeWidth={2}
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -20,5 +29,3 @@ const AlertIcon: React.FC = () => {
     </svg>
   );
 };
-
-export default AlertIcon;

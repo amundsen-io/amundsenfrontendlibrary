@@ -18,7 +18,6 @@ $alert-message-line-height: 24px;
   .alert-message {
     @extend %text-body-w2;
 
-    // line-height: $alert-message-line-height;
     margin: 0;
     display: inline;
   }
@@ -29,7 +28,7 @@ $alert-message-line-height: 24px;
     margin-right: $spacer-1;
   }
 
-  .btn-link {
+  .alert-action {
     margin: auto 0 auto auto;
   }
 }

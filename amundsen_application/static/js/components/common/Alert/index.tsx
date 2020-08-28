@@ -3,12 +3,15 @@
 
 import * as React from 'react';
 
-import AlertIcon from './AlertIcon';
+import { AlertIcon, IconSizes } from '../SVGIcons';
 
 import './styles.scss';
 
+const STROKE_COLOR = '#b8072c'; // $red70
+
 export interface AlertProps {
   message: string | React.ReactNode;
+  actionLink?: React.ReactNode;
   actionText?: string;
   actionHref?: string;
   onAction?: (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -19,21 +22,39 @@ const Alert: React.FC<AlertProps> = ({
   onAction,
   actionText,
   actionHref,
+  actionLink,
 }: AlertProps) => {
-  return (
-    <div className="alert">
-      <AlertIcon />
-      <p className="alert-message">{message}</p>
-      {actionText && onAction && (
+  let action = null;
+
+  if (actionText && onAction) {
+    action = (
+      <span className="alert-action">
         <button type="button" className="btn btn-link" onClick={onAction}>
           {actionText}
         </button>
-      )}
-      {actionText && actionHref && (
+      </span>
+    );
+  }
+
+  if (actionText && actionHref) {
+    action = (
+      <span className="alert-action">
         <a className="action-link" href={actionHref}>
           {actionText}
         </a>
-      )}
+      </span>
+    );
+  }
+
+  if (actionLink) {
+    action = <span className="alert-action">{actionLink}</span>;
+  }
+
+  return (
+    <div className="alert">
+      <AlertIcon stroke={STROKE_COLOR} size={IconSizes.SMALL} />
+      <p className="alert-message">{message}</p>
+      {action}
     </div>
   );
 };

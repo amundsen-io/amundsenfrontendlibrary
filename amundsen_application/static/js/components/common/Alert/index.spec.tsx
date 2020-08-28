@@ -76,6 +76,22 @@ describe('Alert', () => {
         expect(actual).toEqual(expected);
       });
     });
+
+    describe('when passing a custom action link', () => {
+      it('should render the custom action link', () => {
+        const { wrapper } = setup({
+          actionLink: (
+            <a className="test-action-link" href="http://testSite.com">
+              Custom Link
+            </a>
+          ),
+        });
+        const expected = 1;
+        const actual = wrapper.find('.test-action-link').length;
+
+        expect(actual).toEqual(expected);
+      });
+    });
   });
 
   describe('lifetime', () => {
