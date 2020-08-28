@@ -4,33 +4,30 @@
 @import 'variables';
 @import 'typography';
 
-$alert-height: 56px;
 $alert-border-radius: 4px;
 $alert-message-line-height: 24px;
 
 .alert {
-  background-color: $body-bg-dark;
+  background-color: $body-bg;
   border-radius: $alert-border-radius;
-  color: $white;
   display: flex;
-  height: $alert-height;
-  padding: $spacer-2;
-  padding-right: $spacer-1 * 1.5;
+  padding: $spacer-1 $spacer-1 * 1.5 $spacer-1 $spacer-2;
   justify-content: space-between;
+  box-shadow: $elevation-level2;
 
-  .message {
-    @extend %text-body-w3;
+  .alert-message {
+    @extend %text-body-w2;
 
-    line-height: $alert-message-line-height;
+    // line-height: $alert-message-line-height;
     margin: 0;
     display: inline;
   }
 
-  .icon {
-    margin: 0 $spacer-1 0 0;
+  .alert-triangle-svg-icon {
+    margin: 0 $spacer-1 -2px 0;
   }
 
-  .btn-close {
+  .btn-link {
     margin: auto 0 auto $spacer-3;
   }
 }

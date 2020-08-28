@@ -4,7 +4,6 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 
-import { ImageIconType } from 'interfaces/Enums';
 import Alert, { AlertProps } from '.';
 
 const setup = (propOverrides?: Partial<AlertProps>) => {
@@ -23,7 +22,7 @@ describe('Alert', () => {
     it('should render an alert icon', () => {
       const { wrapper } = setup();
       const expected = 1;
-      const actual = wrapper.find(`.${ImageIconType.ALERT}`).length;
+      const actual = wrapper.find('.alert-triangle-svg-icon').length;
 
       expect(actual).toEqual(expected);
     });

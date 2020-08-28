@@ -3,14 +3,14 @@
 
 import * as React from 'react';
 
-import { ImageIconType } from 'interfaces/Enums';
+import AlertIcon from './AlertIcon';
 
 import './styles.scss';
 
 export interface AlertProps {
-  message: string;
+  message: string | React.ReactNode;
   actionText?: string;
-  onAction: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onAction?: (event: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const Alert: React.FC<AlertProps> = ({
@@ -21,7 +21,7 @@ const Alert: React.FC<AlertProps> = ({
   return (
     <div className="alert">
       <div>
-        <img className={`icon ${ImageIconType.ALERT}`} alt="" />
+        <AlertIcon />
         <p className="alert-message">{message}</p>
       </div>
       {actionText && onAction && (
