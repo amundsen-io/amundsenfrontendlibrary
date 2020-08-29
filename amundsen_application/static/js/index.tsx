@@ -14,17 +14,17 @@ import { createStore, applyMiddleware } from 'redux';
 import { Router, Route, Switch } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
 
-import DashboardPage from 'components/DashboardPage';
 import Preloader from 'components/common/Preloader';
 import { BrowserHistory } from 'utils/navigationUtils';
-import AnnouncementPage from './components/AnnouncementPage';
+import DashboardPage from './pages/DashboardPage';
+import AnnouncementPage from './pages/AnnouncementPage';
 import BrowsePage from './components/BrowsePage';
 import Footer from './components/Footer';
 import HomePage from './components/HomePage';
 import NavBar from './components/NavBar';
-import NotFoundPage from './components/NotFoundPage';
+import NotFoundPage from './pages/NotFoundPage';
 import ProfilePage from './components/ProfilePage';
-import SearchPage from './components/SearchPage';
+import SearchPage from './pages/SearchPage';
 import TableDetail from './components/TableDetail';
 
 import rootReducer from './ducks/rootReducer';
