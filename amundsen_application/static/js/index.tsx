@@ -21,10 +21,10 @@ import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
 import SearchPage from './pages/SearchPage';
 import ProfilePage from './pages/ProfilePage';
+import TableDetail from './pages/TableDetail';
 
 import Preloader from './components/common/Preloader';
 import Footer from './components/Footer';
-import TableDetail from './components/TableDetail';
 import NavBar from './components/NavBar';
 
 import rootReducer from './ducks/rootReducer';
