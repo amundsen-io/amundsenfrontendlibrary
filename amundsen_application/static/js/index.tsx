@@ -21,7 +21,7 @@ import HomePage from './pages/HomePage';
 import NotFoundPage from './pages/NotFoundPage';
 import SearchPage from './pages/SearchPage';
 import ProfilePage from './pages/ProfilePage';
-import TableDetail from './pages/TableDetail';
+import TableDetail from './pages/TableDetailPage';
 
 import Preloader from './components/common/Preloader';
 import Footer from './components/Footer';
