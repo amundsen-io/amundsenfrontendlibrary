@@ -29,9 +29,7 @@ $modal-dialog-width: 418px;
     border-bottom: 1px solid $stroke-light;
     border-top: 1px solid $stroke-light;
     // TODO (design qa): Should height be fixed, or should we allow the flex nature of Modal and set some max-height.
-    height: calc(
-      #{$modal-dialog-height - $modal-header-height - $spacer-3}
-    );
+    height: calc(#{$modal-dialog-height - $modal-header-height - $spacer-3});
     font-family: $font-family-spacemono;
     font-size: $code-font-size;
     /* Override react-bootstrap styles to match design */
@@ -73,7 +71,7 @@ $modal-dialog-width: 418px;
 */
 .modal {
   text-align: center;
-  padding: 0!important;
+  padding: 0 !important;
 }
 .modal:before {
   content: '';
