@@ -23,7 +23,7 @@ import {
 import BadgeList from 'components/common/BadgeList';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import Breadcrumb from 'components/common/Breadcrumb';
-import TabsComponent from 'components/common/TabsComponent';
+import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
 import TagInput from 'components/common/Tags/TagInput';
 import EditableText from 'components/common/EditableText';
 import LoadingSpinner from 'components/common/LoadingSpinner';
@@ -76,12 +76,6 @@ export interface DispatchFromProps {
     source?: string
   ) => GetTableDataRequest;
 }
-
-type TabInfo = {
-  content: JSX.Element;
-  key: string;
-  title: string;
-};
 
 export interface MatchProps {
   cluster: string;
@@ -186,6 +180,7 @@ export class TableDetail extends React.Component<
           Dashboards <LoadingSpinner />
         </div>
       );
+
       tabInfo.push({
         content: (
           <TableDashboardResourceList

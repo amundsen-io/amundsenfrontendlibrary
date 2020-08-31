@@ -16,7 +16,7 @@ import Breadcrumb from 'components/common/Breadcrumb';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import EditableSection from 'components/common/EditableSection';
 import LoadingSpinner from 'components/common/LoadingSpinner';
-import TabsComponent from 'components/common/TabsComponent';
+import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
 import ResourceStatusMarker from 'components/common/ResourceStatusMarker';
 import ResourceList from 'components/common/ResourceList';
 import TagInput from 'components/common/Tags/TagInput';
@@ -48,12 +48,6 @@ import './styles.scss';
 interface DashboardPageState {
   uri: string;
 }
-
-type TabInfo = {
-  content: JSX.Element;
-  key: string;
-  title: string;
-};
 
 export interface StateFromProps {
   isLoading: boolean;
