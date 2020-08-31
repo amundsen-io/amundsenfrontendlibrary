@@ -6,10 +6,11 @@ import { mount } from 'enzyme';
 
 import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 
+import * as UtilMethods from 'ducks/utilMethods';
 import ColumnType, { ColumnTypeProps } from '.';
 
-// const logClickSpy = jest.spyOn(UtilMethods, 'logClick');
-// logClickSpy.mockImplementation(() => null);
+const logClickSpy = jest.spyOn(UtilMethods, 'logClick');
+logClickSpy.mockImplementation(() => null);
 
 const setup = (propOverrides?: Partial<ColumnTypeProps>) => {
   const props = {
@@ -33,6 +34,13 @@ describe('ColumnType', () => {
         wrapper.find('.column-type-btn').simulate('click');
 
         expect(clickSpy).toHaveBeenCalled();
+      });
+
+      it('should log the interaction', () => {
+        logClickSpy.mockClear();
+        wrapper.find('.column-type-btn').simulate('click');
+
+        expect(logClickSpy).toHaveBeenCalled();
       });
     });
   });

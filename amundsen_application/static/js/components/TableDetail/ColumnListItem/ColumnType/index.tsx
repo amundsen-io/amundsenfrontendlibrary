@@ -4,6 +4,8 @@
 import * as React from 'react';
 import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 
+import { logClick } from 'ducks/utilMethods';
+
 import './styles.scss';
 
 import {
@@ -49,6 +51,7 @@ export class ColumnType extends React.Component<
   };
 
   showModal = (e) => {
+    logClick(e);
     this.stopPropagation(e);
     this.setState({ showModal: true });
   };
@@ -113,6 +116,7 @@ export class ColumnType extends React.Component<
           rootClose
         >
           <button
+            data-type="column-type"
             type="button"
             className="column-type-btn"
             onClick={this.showModal}
