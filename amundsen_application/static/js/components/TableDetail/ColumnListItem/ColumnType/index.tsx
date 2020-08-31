@@ -127,8 +127,8 @@ export class ColumnType extends React.Component<
         >
           <Modal.Header closeButton>
             <Modal.Title>
-              {MODAL_TITLE}
-              <div className="column-name">{columnName}</div>
+              <div className="main-title">{MODAL_TITLE}</div>
+              <div className="sub-title">{columnName}</div>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
