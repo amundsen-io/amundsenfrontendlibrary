@@ -73,7 +73,7 @@ describe('TableIssues', () => {
       const { wrapper } = setup({
         issues: [],
         total: 0,
-        allIssuesUrl: null,
+        allIssuesUrl: undefined,
       });
       expect(wrapper.find('.table-issue-more-issues').length).toEqual(0);
     });

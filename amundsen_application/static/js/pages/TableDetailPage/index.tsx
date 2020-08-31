@@ -76,12 +76,20 @@ export interface DispatchFromProps {
     source?: string
   ) => GetTableDataRequest;
 }
+
+type TabInfo = {
+  content: JSX.Element;
+  key: string;
+  title: string;
+};
+
 export interface MatchProps {
   cluster: string;
   database: string;
   schema: string;
   table: string;
 }
+
 export type TableDetailProps = StateFromProps &
   DispatchFromProps &
   RouteComponentProps<MatchProps>;
@@ -155,7 +163,7 @@ export class TableDetail extends React.Component<
   };
 
   renderTabs(editText, editUrl) {
-    const tabInfo = [];
+    const tabInfo: TabInfo[] = [];
     const { isLoadingDashboards, numRelatedDashboards, tableData } = this.props;
 
     // Default Column content
