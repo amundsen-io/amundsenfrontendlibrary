@@ -109,22 +109,22 @@ exports[`strict null compilation`] = {
     ],
     "js/components/TableDetail/index.tsx:3223260709": [
       [153, 10, 13, "Type \'null\' is not assignable to type \'((newValue: string, onSuccess?: (() => any) | undefined, onFailure?: (() => any) | undefined) => void) | undefined\'.", "67794331"],
-      [165, 6, 7, "Type \'Element\' is not assignable to type \'never\'.", "3716929964"],
-      [173, 6, 3, "Type \'string\' is not assignable to type \'never\'.", "193424690"],
-      [174, 6, 5, "Type \'string\' is not assignable to type \'never\'.", "183222373"],
-      [184, 8, 7, "Type \'Element\' is not assignable to type \'never\'.", "3716929964"],
-      [185, 11, 26, "Type \'{ itemsPerPage: number; source: string; }\' is missing the following properties from type \'Readonly<Pick<TableDashboardResourceListProps, \\"source\\" | \\"dashboards\\" | \\"isLoading\\" | \\"errorText\\" | \\"itemsPerPage\\"> & OwnProps>\': dashboards, isLoading, errorText", "2224258167"],
-      [190, 8, 3, "Type \'string\' is not assignable to type \'never\'.", "193424690"],
-      [191, 8, 5, "Type \'string | Element\' is not assignable to type \'never\'.\\n  Type \'string\' is not assignable to type \'never\'.", "183222373"],
-      [265, 16, 7, "Type \'string | null\' is not assignable to type \'string | undefined\'.\\n  Type \'null\' is not assignable to type \'string | undefined\'.", "3817619378"],
-      [307, 20, 35, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "4249007202"],
-      [321, 20, 36, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "2770872537"],
-      [326, 16, 36, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "2776557981"]
+      [164, 6, 7, "Type \'Element\' is not assignable to type \'never\'.", "3716929964"],
+      [171, 6, 3, "Type \'string\' is not assignable to type \'never\'.", "193424690"],
+      [172, 6, 5, "Type \'string\' is not assignable to type \'never\'.", "183222373"],
+      [182, 8, 7, "Type \'Element\' is not assignable to type \'never\'.", "3716929964"],
+      [183, 11, 26, "Type \'{ itemsPerPage: number; source: string; }\' is missing the following properties from type \'Readonly<Pick<TableDashboardResourceListProps, \\"source\\" | \\"isLoading\\" | \\"dashboards\\" | \\"errorText\\" | \\"itemsPerPage\\"> & OwnProps>\': isLoading, dashboards, errorText", "2224258167"],
+      [188, 8, 3, "Type \'string\' is not assignable to type \'never\'.", "193424690"],
+      [189, 8, 5, "Type \'string | Element\' is not assignable to type \'never\'.\\n  Type \'string\' is not assignable to type \'never\'.", "183222373"],
+      [263, 16, 7, "Type \'string | null\' is not assignable to type \'string | undefined\'.\\n  Type \'null\' is not assignable to type \'string | undefined\'.", "3817619378"],
+      [305, 20, 35, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "4249007202"],
+      [319, 20, 36, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "2770872537"],
+      [324, 16, 36, "Argument of type \'ProgrammaticDescription[] | undefined\' is not assignable to parameter of type \'ProgrammaticDescription[]\'.\\n  Type \'undefined\' is not assignable to type \'ProgrammaticDescription[]\'.", "2776557981"]
     ],
-    "js/components/common/Announcements/AnnouncementsList/index.spec.tsx:1710887993": [
-      [95, 23, 124, "Object is possibly \'null\'.", "4248337497"]
+    "js/components/common/Announcements/AnnouncementsList/index.spec.tsx:1395073325": [
+      [94, 23, 124, "Object is possibly \'null\'.", "4248337497"]
     ],
-    "js/components/common/Announcements/AnnouncementsList/index.tsx:1484765516": [
+    "js/components/common/Announcements/AnnouncementsList/index.tsx:3478884749": [
       [70, 4, 11, "Type \'Element\' is not assignable to type \'null\'.", "3768376622"],
       [73, 4, 11, "Type \'Element[]\' is not assignable to type \'null\'.", "3768376622"],
       [85, 4, 11, "Type \'Element\' is not assignable to type \'null\'.", "3768376622"],
