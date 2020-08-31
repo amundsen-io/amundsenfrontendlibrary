@@ -7,16 +7,16 @@ module.exports = {
       statements: 90,
     },
     './js/components': {
-      branches: 70, // 75
-      functions: 70, // 75
-      lines: 78, // 75
-      statements: 78, // 75
+      branches: 67, // 75
+      functions: 67, // 75
+      lines: 75, // 75
+      statements: 75, // 75
     },
     './js/pages': {
-      branches: 68, // 75
-      functions: 75, // 75
-      lines: 84, // 75
-      statements: 82, // 75
+      branches: 65, // 75
+      functions: 72, // 75
+      lines: 81, // 75
+      statements: 78, // 75
     },
     './js/ducks': {
       branches: 75,
