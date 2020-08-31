@@ -7,10 +7,16 @@ module.exports = {
       statements: 90,
     },
     './js/components': {
-      branches: 60, // 75
-      functions: 65, // 75
-      lines: 65, // 75
-      statements: 70, // 75
+      branches: 70, // 75
+      functions: 70, // 75
+      lines: 78, // 75
+      statements: 78, // 75
+    },
+    './js/pages': {
+      branches: 68, // 75
+      functions: 75, // 75
+      lines: 84, // 75
+      statements: 82, // 75
     },
     './js/ducks': {
       branches: 75,
@@ -33,6 +39,7 @@ module.exports = {
   },
   testRegex: '(test|spec)\\.(j|t)sx?$',
   moduleDirectories: ['node_modules', 'js'],
+  coveragePathIgnorePatterns: ['stories/*', 'constants.ts'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json'],
   moduleNameMapper: {
     '^.+\\.(css|scss)$': '<rootDir>/node_modules/jest-css-modules',
