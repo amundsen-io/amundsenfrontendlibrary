@@ -47,19 +47,134 @@ describe('parseNestedType', () => {
     expect(Parser.parseNestedType('test', 'hive')).toEqual(null);
   });
 
-  it('returns expected NestedType', () => {
-    const spy = jest
-      .spyOn(Parser, 'isNestedType')
-      .mockImplementation(() => true);
+  describe('hive support', () => {
+    it('returns expected NestedType for nested structs', () => {
+      const columnType =
+        'array<struct<amount:bigint,column:struct<column_id:string,name:string,template:struct<code:string,currency:string>>,id:string>>';
+      const expected: Parser.NestedType = {
+        head: 'array<',
+        children: [
+          {
+            head: 'struct<',
+            children: [
+              'amount:bigint,',
+              {
+                head: 'column:struct<',
+                children: [
+                  'column_id:string,',
+                  'name:string,',
+                  {
+                    head: 'template:struct<',
+                    children: ['code:string,', 'currency:string'],
+                    tail: '>',
+                  },
+                ],
+                tail: '>,',
+              },
+              'id:string',
+            ],
+            tail: '>',
+          },
+        ],
+        tail: '>',
+      };
 
-    const columnType = 'struct<how are you, goodbye>';
-    const expected: Parser.NestedType = {
-      head: 'struct<',
-      children: ['how are you,', 'goodbye'],
-      tail: '>',
-    };
-    expect(Parser.parseNestedType(columnType, 'hive')).toEqual(expected);
+      expect(Parser.parseNestedType(columnType, 'hive')).toEqual(expected);
+    });
+  });
 
-    spy.mockRestore();
+  describe('presto support', () => {
+    it('returns expected NestedType for row', () => {
+      const columnType =
+        'row("c0_test" timestamp(3),"c1" row("c2" timestamp(3),"c3_test" varchar,"c4" double,"c5" double,"c6" row("c7" varchar,"c8" varchar),"c9" row("c10" varchar,"c11" varchar,"c12" row("c13_id" varchar,"c14" varchar)))';
+      const expected: Parser.NestedType = {
+        head: 'row(',
+        children: [
+          'c0_test timestamp(3),',
+          {
+            head: 'c1 row(',
+            children: [
+              'c2 timestamp(3),',
+              'c3_test varchar,',
+              'c4 double,',
+              'c5 double,',
+              {
+                head: 'c6 row(',
+                children: ['c7 varchar,', 'c8 varchar'],
+                tail: '),',
+              },
+              {
+                head: 'c9 row(',
+                children: [
+                  'c10 varchar,',
+                  'c11 varchar,',
+                  {
+                    head: 'c12 row(',
+                    children: ['c13_id varchar,', 'c14 varchar'],
+                    tail: ')',
+                  },
+                ],
+                tail: ')',
+              },
+            ],
+            tail: ')',
+          },
+        ],
+        tail: ')',
+      };
+
+      expect(Parser.parseNestedType(columnType, 'presto')).toEqual(expected);
+    });
+
+    it('returns expected NestedType for array', () => {
+      const columnType =
+        'array(row("total" bigint,"currency" varchar,"status" varchar,"payments" array(row("method" varchar,"payment" varchar,"amount" bigint,"authed" bigint,"id" varchar)),"id" varchar,"line_items" array(row("type" varchar,"amount" bigint,"id" varchar))))';
+      const expected: Parser.NestedType = {
+        head: 'array(',
+        children: [
+          {
+            head: 'row(',
+            children: [
+              'total bigint,',
+              'currency varchar,',
+              'status varchar,',
+              {
+                head: 'payments array(',
+                children: [
+                  {
+                    head: 'row(',
+                    children: [
+                      'method varchar,',
+                      'payment varchar,',
+                      'amount bigint,',
+                      'authed bigint,',
+                      'id varchar',
+                    ],
+                    tail: ')',
+                  },
+                ],
+                tail: '),',
+              },
+              'id varchar,',
+              {
+                head: 'line_items array(',
+                children: [
+                  {
+                    head: 'row(',
+                    children: ['type varchar,', 'amount bigint,', 'id varchar'],
+                    tail: ')',
+                  },
+                ],
+                tail: ')',
+              },
+            ],
+            tail: ')',
+          },
+        ],
+        tail: ')',
+      };
+
+      expect(Parser.parseNestedType(columnType, 'presto')).toEqual(expected);
+    });
   });
 });

@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 @import 'variables';
+@import 'typography';
 
-// TODO (design qa): Modal from react-bootstrap needs these fixed heights to render consistently,
+/* Fixed heights via designs */
 $modal-content-height: 484px;
 $modal-dialog-height: 484px;
 $modal-header-height: 94px;
 
-// TODO (design qa): Also using fixed width from Figma
+/* Fixed witdh via designs */
 $modal-dialog-width: 418px;
 
 .column-type-btn {
@@ -28,11 +29,8 @@ $modal-dialog-width: 418px;
   .modal-body {
     border-bottom: 1px solid $stroke-light;
     border-top: 1px solid $stroke-light;
-    // TODO (design qa): Should height be fixed, or should we allow the flex nature of Modal and set some max-height.
-    height: calc(
-      #{$modal-dialog-height - $modal-header-height - $spacer-3}
-    );
-    font-family: $font-family-spacemono;
+    height: calc(#{$modal-dialog-height - $modal-header-height - $spacer-3});
+    font-family: $font-family-monospace-code;
     font-size: $code-font-size;
     /* Override react-bootstrap styles to match design */
     margin: 0 $spacer-3 !important;
@@ -56,13 +54,12 @@ $modal-dialog-width: 418px;
     /* Override react-bootstrap styles to match design */
     padding: $spacer-3 !important;
 
-    /* A design audit of modals is needed to reconcile differences accumulated over time */
-    .modal-title {
-      font-family: $font-family-body !important;
+    .main-title {
+      @extend %text-title-w1;
     }
-
-    .column-name {
-      font-size: $w2-font-size;
+    .sub-title {
+      @extend %text-subtitle-w3;
+      color: $text-secondary;
     }
   }
 }
@@ -73,7 +70,7 @@ $modal-dialog-width: 418px;
 */
 .modal {
   text-align: center;
-  padding: 0!important;
+  padding: 0 !important;
 }
 .modal:before {
   content: '';
@@ -84,6 +81,5 @@ $modal-dialog-width: 418px;
 }
 .modal-dialog {
   display: inline-block;
-  text-align: left;
   vertical-align: middle;
 }

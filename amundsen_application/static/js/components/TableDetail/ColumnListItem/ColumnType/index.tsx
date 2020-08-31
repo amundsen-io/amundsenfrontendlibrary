@@ -4,6 +4,8 @@
 import * as React from 'react';
 import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
 
+import { logClick } from 'ducks/utilMethods';
+
 import './styles.scss';
 
 import {
@@ -39,8 +41,8 @@ export class ColumnType extends React.Component<
     this.state = {
       showModal: false,
     };
-
-    this.nestedType = parseNestedType(this.props.type, this.props.database);
+    const { database, type } = this.props;
+    this.nestedType = parseNestedType(type, database);
   }
 
   hideModal = (e) => {
@@ -49,6 +51,7 @@ export class ColumnType extends React.Component<
   };
 
   showModal = (e) => {
+    logClick(e);
     this.stopPropagation(e);
     this.setState({ showModal: true });
   };
@@ -90,7 +93,7 @@ export class ColumnType extends React.Component<
   };
 
   render = () => {
-    const { columnName, database, type } = this.props;
+    const { columnName, type } = this.props;
 
     if (this.nestedType === null) {
       return <p className="column-type">{type}</p>;
@@ -113,6 +116,7 @@ export class ColumnType extends React.Component<
           rootClose
         >
           <button
+            data-type="column-type"
             type="button"
             className="column-type-btn"
             onClick={this.showModal}
@@ -127,8 +131,8 @@ export class ColumnType extends React.Component<
         >
           <Modal.Header closeButton>
             <Modal.Title>
-              {MODAL_TITLE}
-              <div className="column-name">{columnName}</div>
+              <h5 className="main-title">{MODAL_TITLE}</h5>
+              <div className="sub-title">{columnName}</div>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
