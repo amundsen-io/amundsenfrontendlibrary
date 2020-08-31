@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 
-import { Modal, OverlayTrigger, Popover } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 
 import * as UtilMethods from 'ducks/utilMethods';
 import ColumnType, { ColumnTypeProps } from '.';

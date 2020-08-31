@@ -12,7 +12,7 @@ enum DatabaseId {
   Hive = 'hive',
   Presto = 'presto',
 }
-const SUPPORTED_TYPES: { [DatabaseId]: string[] } = {
+const SUPPORTED_TYPES = {
   // https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Types#LanguageManualTypes-ComplexTypes
   [DatabaseId.Hive]: ['array', 'map', 'struct', 'uniontype'],
   // https://prestosql.io/docs/current/language/types.html#structural
@@ -115,18 +115,18 @@ function parseNestedTypeHelper(
  */
 export function isNestedType(columnType: string, databaseId: string): boolean {
   const supportedTypes = SUPPORTED_TYPES[databaseId];
-  let isNestedType = false;
+  let isNested = false;
   if (supportedTypes) {
     supportedTypes.forEach((supportedType) => {
       if (
         columnType.startsWith(supportedType) &&
         columnType !== supportedType
       ) {
-        isNestedType = true;
+        isNested = true;
       }
     });
   }
-  return isNestedType;
+  return isNested;
 }
 
 /**
