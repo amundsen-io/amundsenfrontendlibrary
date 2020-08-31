@@ -8,12 +8,15 @@ export interface NestedType {
   tail: string;
   children: ParsedType[];
 }
-
-const SUPPORTED_TYPES = {
+enum DatabaseId {
+  Hive = 'hive',
+  Presto = 'presto',
+}
+const SUPPORTED_TYPES: { [DatabaseId]: string[] } = {
   // https://cwiki.apache.org/confluence/display/Hive/LanguageManual+Types#LanguageManualTypes-ComplexTypes
-  hive: ['array', 'map', 'struct', 'uniontype'],
+  [DatabaseId.Hive]: ['array', 'map', 'struct', 'uniontype'],
   // https://prestosql.io/docs/current/language/types.html#structural
-  presto: ['array', 'map', 'row'],
+  [DatabaseId.Presto]: ['array', 'map', 'row'],
 };
 const OPEN_DELIMETERS = {
   '(': ')',
@@ -134,7 +137,7 @@ export function parseNestedType(
   databaseId: string
 ): NestedType | null {
   // Presto includes un-needed "" characters
-  if (databaseId === 'presto') {
+  if (databaseId === DatabaseId.Presto) {
     columnType = columnType.replace(/"/g, '');
   }
 
