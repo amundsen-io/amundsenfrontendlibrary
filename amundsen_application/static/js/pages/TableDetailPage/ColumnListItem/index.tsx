@@ -111,8 +111,6 @@ export class ColumnListItem extends React.Component<
                 type={data.col_type}
               />
             </div>
-            {data.usage && <div className="usage">{data.usage}</div>}
-            <div className="badges">{/* Placeholder */}</div>
             <div className="actions">
               {
                 // TODO - Make this dropdown into a separate component
