@@ -3,8 +3,15 @@ import { mount } from 'enzyme';
 
 import Table, { TableProps } from '.';
 
+import TestDataBuilder from './testDataBuilder';
+
+const dataBuilder = new TestDataBuilder();
+
 const setup = (propOverrides?: Partial<TableProps>) => {
+  const { data, columns } = dataBuilder.build();
   const props = {
+    data,
+    columns,
     ...propOverrides,
   };
   const wrapper = mount<TableProps>(<Table {...props} />);
@@ -18,6 +25,94 @@ describe('Table', () => {
       expect(() => {
         setup();
       }).not.toThrow();
+    });
+
+    describe('when simple data is passed', () => {
+      it('renders a table', () => {
+        const { wrapper } = setup();
+        const expected = 1;
+        const actual = wrapper.find('.table').length;
+
+        expect(actual).toEqual(expected);
+      });
+
+      describe('table header', () => {
+        it('renders a table header', () => {
+          const { wrapper } = setup();
+          const expected = 1;
+          const actual = wrapper.find('.table-header').length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        it('renders a three cells inside the header', () => {
+          const { wrapper } = setup();
+          const expected = 3;
+          const actual = wrapper.find('.table-header .table-heading-cell')
+            .length;
+
+          expect(actual).toEqual(expected);
+        });
+      });
+
+      describe('table body', () => {
+        it('renders a table body', () => {
+          const { wrapper } = setup();
+          const expected = 1;
+          const actual = wrapper.find('.table-body').length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        it('renders three rows', () => {
+          const { wrapper } = setup();
+          const expected = 3;
+          const actual = wrapper.find('.table-row').length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        it('renders nine cells', () => {
+          const { wrapper } = setup();
+          const expected = 9;
+          const actual = wrapper.find('.table-row .table-cell').length;
+
+          expect(actual).toEqual(expected);
+        });
+      });
+    });
+
+    describe('when more data than columns', () => {
+      const { columns, data } = dataBuilder.withMoreDataThanColumns().build();
+
+      describe('table header', () => {
+        it('renders a three cells inside the header', () => {
+          const { wrapper } = setup({ columns, data });
+          const expected = 3;
+          const actual = wrapper.find('.table-header .table-heading-cell')
+            .length;
+
+          expect(actual).toEqual(expected);
+        });
+      });
+
+      describe('table body', () => {
+        it('renders four rows', () => {
+          const { wrapper } = setup({ columns, data });
+          const expected = 4;
+          const actual = wrapper.find('.table-row').length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        it('renders twelve cells', () => {
+          const { wrapper } = setup({ columns, data });
+          const expected = 12;
+          const actual = wrapper.find('.table-row .table-cell').length;
+          console.log(wrapper.debug());
+          expect(actual).toEqual(expected);
+        });
+      });
     });
   });
 
