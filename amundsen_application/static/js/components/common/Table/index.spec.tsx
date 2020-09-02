@@ -48,8 +48,9 @@ describe('Table', () => {
         it('renders a three cells inside the header', () => {
           const { wrapper } = setup();
           const expected = 3;
-          const actual = wrapper.find('.ams-table-header .table-heading-cell')
-            .length;
+          const actual = wrapper.find(
+            '.ams-table-header .ams-table-heading-cell'
+          ).length;
 
           expect(actual).toEqual(expected);
         });
@@ -75,7 +76,7 @@ describe('Table', () => {
         it('renders nine cells', () => {
           const { wrapper } = setup();
           const expected = 9;
-          const actual = wrapper.find('.ams-table-row .table-cell').length;
+          const actual = wrapper.find('.ams-table-row .ams-table-cell').length;
 
           expect(actual).toEqual(expected);
         });
@@ -89,8 +90,9 @@ describe('Table', () => {
         it('renders a three cells inside the header', () => {
           const { wrapper } = setup({ columns, data });
           const expected = 3;
-          const actual = wrapper.find('.ams-table-header .table-heading-cell')
-            .length;
+          const actual = wrapper.find(
+            '.ams-table-header .ams-table-heading-cell'
+          ).length;
 
           expect(actual).toEqual(expected);
         });
@@ -108,8 +110,8 @@ describe('Table', () => {
         it('renders twelve cells', () => {
           const { wrapper } = setup({ columns, data });
           const expected = 12;
-          const actual = wrapper.find('.ams-table-row .table-cell').length;
-          console.log(wrapper.debug());
+          const actual = wrapper.find('.ams-table-row .ams-table-cell').length;
+
           expect(actual).toEqual(expected);
         });
       });
