@@ -31,15 +31,12 @@ describe('Table', () => {
     });
 
     describe('when empty data is passed', () => {
+      const { columns, data } = dataBuilder.withEmptyData().build();
+
       it('renders a table', () => {
         const { wrapper } = setup({
-          data: [],
-          columns: [
-            {
-              title: 'Name',
-              field: 'name',
-            },
-          ],
+          data,
+          columns,
         });
         const expected = 1;
         const actual = wrapper.find('.ams-table').length;
@@ -50,13 +47,8 @@ describe('Table', () => {
       describe('table header', () => {
         it('renders a table header', () => {
           const { wrapper } = setup({
-            data: [],
-            columns: [
-              {
-                title: 'Name',
-                field: 'name',
-              },
-            ],
+            data,
+            columns,
           });
           const expected = 1;
           const actual = wrapper.find('.ams-table-header').length;
@@ -66,13 +58,8 @@ describe('Table', () => {
 
         it('renders one cell inside the header', () => {
           const { wrapper } = setup({
-            data: [],
-            columns: [
-              {
-                title: 'Name',
-                field: 'name',
-              },
-            ],
+            data,
+            columns,
           });
           const expected = 1;
           const actual = wrapper.find(
@@ -86,13 +73,8 @@ describe('Table', () => {
       describe('table body', () => {
         it('renders a table body', () => {
           const { wrapper } = setup({
-            data: [],
-            columns: [
-              {
-                title: 'Name',
-                field: 'name',
-              },
-            ],
+            data,
+            columns,
           });
           const expected = 1;
           const actual = wrapper.find('.ams-table-body').length;
@@ -102,13 +84,8 @@ describe('Table', () => {
 
         it('renders one row', () => {
           const { wrapper } = setup({
-            data: [],
-            columns: [
-              {
-                title: 'Name',
-                field: 'name',
-              },
-            ],
+            data,
+            columns,
           });
           const expected = 1;
           const actual = wrapper.find('.ams-table-row').length;
@@ -118,13 +95,8 @@ describe('Table', () => {
 
         it('renders an empty message', () => {
           const { wrapper } = setup({
-            data: [],
-            columns: [
-              {
-                title: 'Name',
-                field: 'name',
-              },
-            ],
+            data,
+            columns,
           });
           const expected = 1;
           const actual = wrapper.find('.ams-table-row .ams-empty-message-cell')
