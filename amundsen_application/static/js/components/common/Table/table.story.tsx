@@ -14,5 +14,8 @@ stories.add('Table', () => (
     <StorySection title="Basic Table">
       <Table columns={columns} data={data} />
     </StorySection>
+    <StorySection title="Empty Table">
+      <Table columns={columns} data={[]} />
+    </StorySection>
   </>
 ));

@@ -27,6 +27,111 @@ describe('Table', () => {
       }).not.toThrow();
     });
 
+    describe('when empty data is passed', () => {
+      it('renders a table', () => {
+        const { wrapper } = setup({
+          data: [],
+          columns: [
+            {
+              title: 'Name',
+              field: 'name',
+            },
+          ],
+        });
+        const expected = 1;
+        const actual = wrapper.find('.ams-table').length;
+
+        expect(actual).toEqual(expected);
+      });
+
+      describe('table header', () => {
+        it('renders a table header', () => {
+          const { wrapper } = setup({
+            data: [],
+            columns: [
+              {
+                title: 'Name',
+                field: 'name',
+              },
+            ],
+          });
+          const expected = 1;
+          const actual = wrapper.find('.ams-table-header').length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        it('renders one cell inside the header', () => {
+          const { wrapper } = setup({
+            data: [],
+            columns: [
+              {
+                title: 'Name',
+                field: 'name',
+              },
+            ],
+          });
+          const expected = 1;
+          const actual = wrapper.find(
+            '.ams-table-header .ams-table-heading-cell'
+          ).length;
+
+          expect(actual).toEqual(expected);
+        });
+      });
+
+      describe('table body', () => {
+        it('renders a table body', () => {
+          const { wrapper } = setup({
+            data: [],
+            columns: [
+              {
+                title: 'Name',
+                field: 'name',
+              },
+            ],
+          });
+          const expected = 1;
+          const actual = wrapper.find('.ams-table-body').length;
+          console.log('debug', wrapper.debug());
+          expect(actual).toEqual(expected);
+        });
+
+        it('renders one row', () => {
+          const { wrapper } = setup({
+            data: [],
+            columns: [
+              {
+                title: 'Name',
+                field: 'name',
+              },
+            ],
+          });
+          const expected = 1;
+          const actual = wrapper.find('.ams-table-row').length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        it('renders an empty message', () => {
+          const { wrapper } = setup({
+            data: [],
+            columns: [
+              {
+                title: 'Name',
+                field: 'name',
+              },
+            ],
+          });
+          const expected = 1;
+          const actual = wrapper.find('.ams-table-row .ams-empty-message-cell')
+            .length;
+
+          expect(actual).toEqual(expected);
+        });
+      });
+    });
+
     describe('when simple data is passed', () => {
       it('renders a table', () => {
         const { wrapper } = setup();
@@ -111,6 +216,20 @@ describe('Table', () => {
           const { wrapper } = setup({ columns, data });
           const expected = 12;
           const actual = wrapper.find('.ams-table-row .ams-table-cell').length;
+
+          expect(actual).toEqual(expected);
+        });
+      });
+    });
+
+    describe('options', () => {
+      describe('when a tableClassName is passed', () => {
+        it('adds the class to the table', () => {
+          const { wrapper } = setup({
+            options: { tableClassName: 'test-class' },
+          });
+          const expected = 1;
+          const actual = wrapper.find('.test-class').length;
 
           expect(actual).toEqual(expected);
         });

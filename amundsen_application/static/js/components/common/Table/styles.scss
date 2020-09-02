@@ -24,3 +24,10 @@ $table-header-border-width: 2px;
   height: $table-header-height;
   text-transform: uppercase;
 }
+
+.ams-empty-message-cell {
+  @extend %text-body-w3;
+
+  color: $text-primary;
+  text-align: center;
+}
