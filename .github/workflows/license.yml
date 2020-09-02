@@ -24,9 +24,7 @@ jobs:
       run: |
         export PATH=${PATH}:`go env GOPATH`/bin
         addlicense -check -l mit -c "Amundsen" $(find $PWD -type f -name '*.py')
-    - name: Check license css
-      run: |
-        addlicense -check -l mit -c "Amundsen" $(find $PWD -type f -name '*.scss')
     - name: Check license tsx
       run: |
-        ]addlicense -check -l mit -c "Amundsen" $(find $PWD -type f -name '*.tsx')
+        export PATH=${PATH}:`go env GOPATH`/bin
+        addlicense -check -l mit -c "Amundsen" $(find $PWD -type f -name '*.tsx')
