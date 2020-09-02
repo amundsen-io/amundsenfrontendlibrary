@@ -17,5 +17,8 @@ stories.add('Table', () => (
     <StorySection title="Empty Table">
       <Table columns={columns} data={[]} />
     </StorySection>
+    <StorySection title="Loading Table">
+      <Table columns={[]} data={[]} options={{ isLoading: true }} />
+    </StorySection>
   </>
 ));

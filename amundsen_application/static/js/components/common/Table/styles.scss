@@ -1,10 +1,14 @@
 @import 'variables';
 @import 'typography';
+@import 'animations';
 
 $table-header-font-size: 12px;
 $table-header-line-height: 16px;
 $table-header-height: 33px;
 $table-header-border-width: 2px;
+
+$shimmer-block-height: 16px;
+$shimmer-block-width: 40%;
 
 .ams-table {
   width: 100%;
@@ -30,4 +34,23 @@ $table-header-border-width: 2px;
 
   color: $text-primary;
   text-align: center;
+}
+
+.ams-table-heading-loading-cell {
+  padding: $spacer-1;
+}
+
+.ams-table-body-loading-cell {
+  padding: 0 $spacer-1;
+
+  .shimmer-resource-loader {
+    margin-top: -1px;
+  }
+}
+
+.ams-table-shimmer-block {
+  @extend %is-shimmer-animated;
+
+  height: $shimmer-block-height;
+  width: $shimmer-block-width;
 }
