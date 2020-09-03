@@ -7,11 +7,13 @@ import ShimmeringResourceLoader from '../ShimmeringResourceLoader';
 
 import './styles.scss';
 
+type TextAlignmentValues = 'left' | 'right' | 'center';
+
 export interface TableColumn {
   title: string;
   field: string;
+  horAlign?: TextAlignmentValues;
   // className?: string;
-  // horAlign?: 'left' | 'right' | 'center';
   // width?: number;
   // sortable?: bool (false)
   // data?: () => React.ReactNode ((row,index) => <div>{index}</div>)
@@ -34,6 +36,7 @@ export interface TableProps {
 const DEFAULT_EMPTY_MESSAGE = 'No Results';
 const DEFAULT_LOADING_ITEMS = 3;
 const DEFAULT_ROW_HEIGHT = 30;
+const DEFAULT_TEXT_ALIGNMENT = 'left';
 
 type RowStyles = {
   height: string;
@@ -101,11 +104,23 @@ const Table: React.FC<TableProps> = ({
         <tr className="ams-table-row" key={`index:${index}`} style={rowStyles}>
           {Object.entries(item)
             .filter(([key]) => fields.includes(key))
-            .map(([, value], index) => (
-              <td className="ams-table-cell" key={`index:${index}`}>
-                {value}
-              </td>
-            ))}
+            .map(([key, value], index) => {
+              const columnInfo = columns.find(({ field }) => field === key);
+              const horAlign = columnInfo.horAlign || DEFAULT_TEXT_ALIGNMENT;
+              const cellStyle = {
+                textAlign: `${horAlign}` as TextAlignmentValues,
+              };
+
+              return (
+                <td
+                  className="ams-table-cell"
+                  key={`index:${index}`}
+                  style={cellStyle}
+                >
+                  {value}
+                </td>
+              );
+            })}
         </tr>
       );
     });
@@ -113,9 +128,17 @@ const Table: React.FC<TableProps> = ({
 
   let header: React.ReactNode = (
     <tr>
-      {columns.map(({ title }, index) => {
+      {columns.map(({ title, horAlign = DEFAULT_TEXT_ALIGNMENT }, index) => {
+        const cellStyle = {
+          textAlign: `${horAlign}` as TextAlignmentValues,
+        };
+
         return (
-          <th className="ams-table-heading-cell" key={`index:${index}`}>
+          <th
+            className="ams-table-heading-cell"
+            key={`index:${index}`}
+            style={cellStyle}
+          >
             {title}
           </th>
         );
