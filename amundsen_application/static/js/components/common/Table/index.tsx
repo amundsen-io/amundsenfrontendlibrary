@@ -113,7 +113,8 @@ const Table: React.FC<TableProps> = ({
               const cellStyle = {
                 textAlign: `${horAlign}` as TextAlignmentValues,
               };
-              let cellContent = value;
+              // TODO: Improve the typing of this
+              let cellContent: React.ReactNode | typeof value = value;
               if (columnInfo && columnInfo.component) {
                 cellContent = columnInfo.component(value);
               }
