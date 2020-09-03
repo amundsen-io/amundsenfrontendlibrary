@@ -13,6 +13,7 @@ export interface TableColumn {
   title: string;
   field: string;
   horAlign?: TextAlignmentValues;
+  component?: (value: any) => React.ReactNode;
   // className?: string;
   // width?: number;
   // sortable?: bool (false)
@@ -112,6 +113,10 @@ const Table: React.FC<TableProps> = ({
               const cellStyle = {
                 textAlign: `${horAlign}` as TextAlignmentValues,
               };
+              let cellContent = value;
+              if (columnInfo && columnInfo.component) {
+                cellContent = columnInfo.component(value);
+              }
 
               return (
                 <td
@@ -119,7 +124,7 @@ const Table: React.FC<TableProps> = ({
                   key={`index:${index}`}
                   style={cellStyle}
                 >
-                  {value}
+                  {cellContent}
                 </td>
               );
             })}
