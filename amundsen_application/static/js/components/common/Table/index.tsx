@@ -106,7 +106,9 @@ const Table: React.FC<TableProps> = ({
             .filter(([key]) => fields.includes(key))
             .map(([key, value], index) => {
               const columnInfo = columns.find(({ field }) => field === key);
-              const horAlign = columnInfo.horAlign || DEFAULT_TEXT_ALIGNMENT;
+              const horAlign = columnInfo
+                ? columnInfo.horAlign || DEFAULT_TEXT_ALIGNMENT
+                : DEFAULT_TEXT_ALIGNMENT;
               const cellStyle = {
                 textAlign: `${horAlign}` as TextAlignmentValues,
               };
