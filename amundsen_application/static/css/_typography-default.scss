@@ -374,8 +374,9 @@ body {
 }
 
 .resource-type {
+  @extend %text-subtitle-w3;
+
   color: $text-placeholder;
-  font-size: 13px;
 }
 
 .helper-text {
