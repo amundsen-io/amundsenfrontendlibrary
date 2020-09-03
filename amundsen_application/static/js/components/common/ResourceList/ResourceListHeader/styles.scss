@@ -1,0 +1,33 @@
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
+
+@import 'variables';
+
+.resource-list-header {
+    display: flex;
+    flex-direction: row;
+    height: $spacer-3*2;
+    font-size: $font-size-small;
+    font-weight: bold;
+    color: $text-placeholder;
+    font-family: 'Open Sans', sans-serif;
+    padding: $spacer-2 $spacer-3 $spacer-2;
+
+    .dataset{
+        flex: 7;
+        margin-right: $spacer-3;
+        min-width: 0;
+    }
+    .source{
+        flex: 2;
+        margin: auto $spacer-3;
+    }
+    .badges{
+        display: flex;
+        flex: 3;
+        flex-wrap: wrap;
+        margin-bottom: auto;
+        margin-left: $spacer-3;
+        margin-top: auto;
+    }
+}
