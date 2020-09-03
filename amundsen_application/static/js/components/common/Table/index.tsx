@@ -22,6 +22,7 @@ export interface TableOptions {
   tableClassName?: string;
   isLoading?: boolean;
   numLoadingBlocks?: number;
+  rowHeight?: number;
 }
 
 export interface TableProps {
@@ -32,13 +33,22 @@ export interface TableProps {
 
 const DEFAULT_EMPTY_MESSAGE = 'No Results';
 const DEFAULT_LOADING_ITEMS = 3;
+const DEFAULT_ROW_HEIGHT = 30;
+
+type RowStyles = {
+  height: string;
+};
 
 type EmptyRowProps = {
   colspan: number;
+  rowStyles: RowStyles;
 };
 
-const EmptyRow: React.FC<EmptyRowProps> = ({ colspan }: EmptyRowProps) => (
-  <tr className="ams-table-row">
+const EmptyRow: React.FC<EmptyRowProps> = ({
+  colspan,
+  rowStyles,
+}: EmptyRowProps) => (
+  <tr className="ams-table-row" style={rowStyles}>
     <td className="ams-empty-message-cell" colSpan={colspan}>
       {DEFAULT_EMPTY_MESSAGE}
     </td>
@@ -76,15 +86,19 @@ const Table: React.FC<TableProps> = ({
     tableClassName = '',
     isLoading = false,
     numLoadingBlocks = DEFAULT_LOADING_ITEMS,
+    rowHeight = DEFAULT_ROW_HEIGHT,
   } = options;
   const fields = columns.map(({ field }) => field);
+  const rowStyles = { height: `${rowHeight}px` };
 
-  let body: React.ReactNode = <EmptyRow colspan={fields.length} />;
+  let body: React.ReactNode = (
+    <EmptyRow colspan={fields.length} rowStyles={rowStyles} />
+  );
 
   if (data.length) {
     body = data.map((item, index) => {
       return (
-        <tr className="ams-table-row" key={`index:${index}`}>
+        <tr className="ams-table-row" key={`index:${index}`} style={rowStyles}>
           {Object.entries(item)
             .filter(([key]) => fields.includes(key))
             .map(([, value], index) => (

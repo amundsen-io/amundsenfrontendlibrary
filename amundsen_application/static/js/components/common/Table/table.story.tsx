@@ -23,5 +23,8 @@ stories.add('Table', () => (
     <StorySection title="Loading Table">
       <Table columns={[]} data={[]} options={{ isLoading: true }} />
     </StorySection>
+    <StorySection title="Table with 50px row height">
+      <Table columns={columns} data={data} options={{ rowHeight: 50 }} />
+    </StorySection>
   </>
 ));

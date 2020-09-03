@@ -210,6 +210,18 @@ describe('Table', () => {
         });
       });
 
+      describe('when a rowHeight is passed', () => {
+        it('adds the styling to the rows', () => {
+          const { wrapper } = setup({
+            options: { rowHeight: 20 },
+          });
+          const expected = { height: '20px' };
+          const actual = wrapper.find('.ams-table-row').get(0).props.style;
+
+          expect(actual).toEqual(expected);
+        });
+      });
+
       describe('when isLoading is active', () => {
         it('renders a table', () => {
           const { wrapper } = setup({
