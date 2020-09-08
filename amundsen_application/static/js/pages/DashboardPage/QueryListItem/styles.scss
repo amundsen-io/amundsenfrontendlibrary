@@ -52,6 +52,10 @@ $query-list-hover-z-index: 999;
     box-shadow: $elevation-level2;
     position: relative;
     z-index: $query-list-hover-z-index;
+
+    &[aria-expanded='true'] {
+      box-shadow: none;
+    }
   }
 }
 
