@@ -14,9 +14,13 @@ import {
 const ResourceListHeader: React.FC = () => {
   return (
     <div className="resource-list-header">
-      <span className="dataset"><span className="dataset-text">{DATASET_HEADER_TITLE}</span></span>
+      <span className="dataset">
+        <span className="dataset-text">{DATASET_HEADER_TITLE}</span>
+      </span>
       <span className="source">{SOURCE_HEADER_TITLE}</span>
-      <span className="badges"><span className="badges-text">{BADGES_HEADER_TITLE}</span></span>
+      <span className="badges">
+        <span className="badges-text">{BADGES_HEADER_TITLE}</span>
+      </span>
     </div>
   );
 };
