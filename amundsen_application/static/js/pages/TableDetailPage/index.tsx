@@ -298,12 +298,6 @@ export class TableDetail extends React.Component<
               )}
               <section className="column-layout-2">
                 <section className="left-panel">
-                  {!data.is_view && (
-                    <section className="metadata-section">
-                      <div className="section-title title-3">Date Range</div>
-                      <WatermarkLabel watermarks={data.watermarks} />
-                    </section>
-                  )}
                   {!!data.last_updated_timestamp && (
                     <section className="metadata-section">
                       <div className="section-title title-3">Last Updated</div>
@@ -314,24 +308,30 @@ export class TableDetail extends React.Component<
                       </time>
                     </section>
                   )}
-                  <section className="metadata-section">
-                    <div className="section-title title-3">Frequent Users</div>
-                    <FrequentUsers readers={data.table_readers} />
-                  </section>
-                  {this.renderProgrammaticDesc(
-                    data.programmatic_descriptions.left
+                  {!data.is_view && (
+                    <section className="metadata-section">
+                      <div className="section-title title-3">Date Range</div>
+                      <WatermarkLabel watermarks={data.watermarks} />
+                    </section>
                   )}
-                </section>
-                <section className="right-panel">
                   <EditableSection title="Tags">
                     <TagInput
                       resourceType={ResourceType.table}
                       uriKey={this.props.tableData.key}
                     />
                   </EditableSection>
+                  {this.renderProgrammaticDesc(
+                    data.programmatic_descriptions.left
+                  )}
+                </section>
+                <section className="right-panel">
                   <EditableSection title="Owners">
                     <TableOwnerEditor resourceType={ResourceType.table} />
                   </EditableSection>
+                  <section className="metadata-section">
+                    <div className="section-title title-3">Frequent Users</div>
+                    <FrequentUsers readers={data.table_readers} />
+                  </section>
                   {this.renderProgrammaticDesc(
                     data.programmatic_descriptions.right
                   )}
