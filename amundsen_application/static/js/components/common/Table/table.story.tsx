@@ -22,6 +22,10 @@ const {
   columns: multipleCustomColumns,
   data: multipleCustomComlumnsData,
 } = dataBuilder.withMultipleComponentsColumn().build();
+const {
+  columns: columnsWithAction,
+  data: dataWithAction,
+} = dataBuilder.withActionCell().build();
 
 const stories = storiesOf('Components/Table', module);
 
@@ -53,6 +57,13 @@ stories.add('Table', () => (
       <Table
         columns={multipleCustomColumns}
         data={multipleCustomComlumnsData}
+        options={{ rowHeight: 40 }}
+      />
+    </StorySection>
+    <StorySection title="Table with Bootstrap dropdown as component">
+      <Table
+        columns={columnsWithAction}
+        data={dataWithAction}
         options={{ rowHeight: 40 }}
       />
     </StorySection>
