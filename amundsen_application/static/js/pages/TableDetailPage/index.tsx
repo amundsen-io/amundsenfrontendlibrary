@@ -58,7 +58,7 @@ import TableReportsDropdown from './ResourceReportsDropdown';
 import RequestDescriptionText from './RequestDescriptionText';
 import RequestMetadataForm from './RequestMetadataForm';
 
-import { ERROR_MESSAGE, EDIT_DESC_TEXT } from './constants';
+import * as Constants from './constants';
 
 import './styles.scss';
 
@@ -100,7 +100,7 @@ const ErrorMessage = () => {
   return (
     <div className="container error-label">
       <Breadcrumb />
-      <label>{ERROR_MESSAGE}</label>
+      <label>{Constants.ERROR_MESSAGE}</label>
     </div>
   );
 };
@@ -224,7 +224,7 @@ export class TableDetail extends React.Component<
     } else {
       const data = tableData;
       const editText = data.source
-        ? `${EDIT_DESC_TEXT} ${getDescriptionSourceDisplayName(
+        ? `${Constants.EDIT_DESC_TEXT} ${getDescriptionSourceDisplayName(
             data.source.source_type
           )}`
         : '';
@@ -274,7 +274,7 @@ export class TableDetail extends React.Component<
           <div className="column-layout-1">
             <aside className="left-panel">
               <EditableSection
-                title="Description"
+                title={Constants.DESCRIPTION_TITLE}
                 readOnly={!data.is_editable}
                 editText={editText}
                 editUrl={editUrl}
@@ -300,7 +300,7 @@ export class TableDetail extends React.Component<
                 <section className="left-panel">
                   {!!data.last_updated_timestamp && (
                     <section className="metadata-section">
-                      <div className="section-title title-3">Last Updated</div>
+                      <div className="section-title">{Constants.LAST_UPDATED_TITLE}</div>
                       <time className="body-2">
                         {formatDateTimeShort({
                           epochTimestamp: data.last_updated_timestamp,
@@ -310,11 +310,11 @@ export class TableDetail extends React.Component<
                   )}
                   {!data.is_view && (
                     <section className="metadata-section">
-                      <div className="section-title title-3">Date Range</div>
+                      <div className="section-title">{Constants.DATE_RANGE_TITLE}</div>
                       <WatermarkLabel watermarks={data.watermarks} />
                     </section>
                   )}
-                  <EditableSection title="Tags">
+                  <EditableSection title={Constants.TAG_TITLE}>
                     <TagInput
                       resourceType={ResourceType.table}
                       uriKey={this.props.tableData.key}
@@ -325,11 +325,11 @@ export class TableDetail extends React.Component<
                   )}
                 </section>
                 <section className="right-panel">
-                  <EditableSection title="Owners">
+                  <EditableSection title={Constants.OWNERS_TITLE}>
                     <TableOwnerEditor resourceType={ResourceType.table} />
                   </EditableSection>
                   <section className="metadata-section">
-                    <div className="section-title title-3">Frequent Users</div>
+                    <div className="section-title">{Constants.FREQ_USERS_TITLE}</div>
                     <FrequentUsers readers={data.table_readers} />
                   </section>
                   {this.renderProgrammaticDesc(
