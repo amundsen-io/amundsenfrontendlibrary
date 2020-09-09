@@ -300,7 +300,9 @@ export class TableDetail extends React.Component<
                 <section className="left-panel">
                   {!!data.last_updated_timestamp && (
                     <section className="metadata-section">
-                      <div className="section-title">{Constants.LAST_UPDATED_TITLE}</div>
+                      <div className="section-title">
+                        {Constants.LAST_UPDATED_TITLE}
+                      </div>
                       <time className="body-2">
                         {formatDateTimeShort({
                           epochTimestamp: data.last_updated_timestamp,
@@ -310,7 +312,9 @@ export class TableDetail extends React.Component<
                   )}
                   {!data.is_view && (
                     <section className="metadata-section">
-                      <div className="section-title">{Constants.DATE_RANGE_TITLE}</div>
+                      <div className="section-title">
+                        {Constants.DATE_RANGE_TITLE}
+                      </div>
                       <WatermarkLabel watermarks={data.watermarks} />
                     </section>
                   )}
@@ -329,7 +333,9 @@ export class TableDetail extends React.Component<
                     <TableOwnerEditor resourceType={ResourceType.table} />
                   </EditableSection>
                   <section className="metadata-section">
-                    <div className="section-title">{Constants.FREQ_USERS_TITLE}</div>
+                    <div className="section-title">
+                      {Constants.FREQ_USERS_TITLE}
+                    </div>
                     <FrequentUsers readers={data.table_readers} />
                   </section>
                   {this.renderProgrammaticDesc(
