@@ -567,6 +567,22 @@ describe('Table', () => {
 
               expect(actual).toEqual(expected);
             });
+
+            it('renders hidden by default', () => {
+              const { wrapper } = setup({
+                data,
+                columns,
+                options: {
+                  expandRow: expandRowComponent,
+                },
+              });
+              const expected = 0;
+              const actual = wrapper.find(
+                '.ams-table-body .ams-table-expanded-row.is-expanded'
+              ).length;
+
+              expect(actual).toEqual(expected);
+            });
           });
         });
       });

@@ -48,6 +48,14 @@ $shimmer-block-width: 40%;
   }
 }
 
+.ams-table-expanded-row {
+  display: none;
+
+  &.is-expanded {
+    display: block;
+  }
+}
+
 // Loading State
 .ams-table-heading-loading-cell {
   padding: $spacer-1;

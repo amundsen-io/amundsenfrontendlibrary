@@ -102,6 +102,8 @@ const ExpandingCell: React.FC<ExpandingCellProps> = ({
   </td>
 );
 
+type RowIndex = number;
+
 const Table: React.FC<TableProps> = ({
   data,
   columns,
@@ -117,6 +119,7 @@ const Table: React.FC<TableProps> = ({
   const fields = columns.map(({ field }) => field);
   const rowStyles = { height: `${rowHeight}px` };
   const isExpandable: boolean = !!expandRow;
+  const [expandedRows, setExpandedRows] = React.useState<RowIndex[]>([]);
 
   let body: React.ReactNode = (
     <EmptyRow colspan={fields.length} rowStyles={rowStyles} />
@@ -125,7 +128,7 @@ const Table: React.FC<TableProps> = ({
   if (data.length) {
     body = data.map((item, index) => {
       return (
-        <>
+        <React.Fragment key={`index:${index}`}>
           <tr
             className="ams-table-row"
             key={`index:${index}`}
@@ -163,7 +166,9 @@ const Table: React.FC<TableProps> = ({
           </tr>
           {isExpandable ? (
             <tr
-              className="ams-table-expanded-row"
+              className={`ams-table-expanded-row ${
+                expandedRows.includes(index) ? 'is-expanded' : ''
+              }`}
               key={`expandedIndex:${index}`}
             >
               <td className="ams-table-cell" colSpan={fields.length + 1}>
@@ -171,7 +176,7 @@ const Table: React.FC<TableProps> = ({
               </td>
             </tr>
           ) : null}
-        </>
+        </React.Fragment>
       );
     });
   }
