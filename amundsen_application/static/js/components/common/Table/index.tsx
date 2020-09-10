@@ -15,8 +15,8 @@ export interface TableColumn {
   field: string;
   horAlign?: TextAlignmentValues;
   component?: (value: any, index: number) => React.ReactNode;
+  width?: number;
   // className?: string;
-  // width?: number;
   // sortable?: bool (false)
 }
 
@@ -40,6 +40,7 @@ const DEFAULT_LOADING_ITEMS = 3;
 const DEFAULT_ROW_HEIGHT = 30;
 const EXPANDING_CELL_WIDTH = '70px';
 const DEFAULT_TEXT_ALIGNMENT = 'left';
+const DEFAULT_CELL_WIDTH = 'auto';
 
 type RowStyles = {
   height: string;
@@ -167,7 +168,12 @@ const Table: React.FC<TableProps> = ({
                   const horAlign = columnInfo
                     ? columnInfo.horAlign || DEFAULT_TEXT_ALIGNMENT
                     : DEFAULT_TEXT_ALIGNMENT;
+                  const width =
+                    columnInfo && columnInfo.width
+                      ? `${columnInfo.width}px`
+                      : DEFAULT_CELL_WIDTH;
                   const cellStyle = {
+                    width,
                     textAlign: `${horAlign}` as TextAlignmentValues,
                   };
                   // TODO: Improve the typing of this
@@ -210,21 +216,24 @@ const Table: React.FC<TableProps> = ({
       {isExpandable && (
         <th key="emptyTableHeading" className="ams-table-heading-cell" />
       )}
-      {columns.map(({ title, horAlign = DEFAULT_TEXT_ALIGNMENT }, index) => {
-        const cellStyle = {
-          textAlign: `${horAlign}` as TextAlignmentValues,
-        };
+      {columns.map(
+        ({ title, horAlign = DEFAULT_TEXT_ALIGNMENT, width = null }, index) => {
+          const cellStyle = {
+            width: width ? `${width}px` : DEFAULT_CELL_WIDTH,
+            textAlign: `${horAlign}` as TextAlignmentValues,
+          };
 
-        return (
-          <th
-            className="ams-table-heading-cell"
-            key={`index:${index}`}
-            style={cellStyle}
-          >
-            {title}
-          </th>
-        );
-      })}
+          return (
+            <th
+              className="ams-table-heading-cell"
+              key={`index:${index}`}
+              style={cellStyle}
+            >
+              {title}
+            </th>
+          );
+        }
+      )}
     </tr>
   );
 

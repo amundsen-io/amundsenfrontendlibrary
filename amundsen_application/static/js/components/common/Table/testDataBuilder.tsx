@@ -197,6 +197,33 @@ function TestDataBuilder(config = {}) {
     return new this.Klass(attr);
   };
 
+  this.withFixedWidthColumns = () => {
+    const attr = {
+      data: [...this.config.data],
+      columns: [
+        {
+          title: 'Name',
+          field: 'name',
+          width: 50,
+          horAlign: 'left',
+        },
+        {
+          title: 'Type',
+          field: 'type',
+          width: 200,
+          horAlign: 'center',
+        },
+        {
+          title: 'Value',
+          field: 'value',
+          horAlign: 'right',
+        },
+      ],
+    };
+
+    return new this.Klass(attr);
+  };
+
   this.withEmptyData = () => {
     const attr = {
       data: [],

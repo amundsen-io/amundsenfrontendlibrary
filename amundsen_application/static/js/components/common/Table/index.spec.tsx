@@ -212,10 +212,10 @@ describe('Table', () => {
               data,
               columns,
             });
-            const expected = { textAlign: 'left' };
+            const expected = 'left';
             const actual = wrapper
               .find('.ams-table-header .ams-table-heading-cell')
-              .get(0).props.style;
+              .get(0).props.style.textAlign;
 
             expect(actual).toEqual(expected);
           });
@@ -225,10 +225,10 @@ describe('Table', () => {
               data,
               columns,
             });
-            const expected = { textAlign: 'center' };
+            const expected = 'center';
             const actual = wrapper
               .find('.ams-table-header .ams-table-heading-cell')
-              .get(1).props.style;
+              .get(1).props.style.textAlign;
 
             expect(actual).toEqual(expected);
           });
@@ -238,10 +238,10 @@ describe('Table', () => {
               data,
               columns,
             });
-            const expected = { textAlign: 'right' };
+            const expected = 'right';
             const actual = wrapper
               .find('.ams-table-header .ams-table-heading-cell')
-              .get(2).props.style;
+              .get(2).props.style.textAlign;
 
             expect(actual).toEqual(expected);
           });
@@ -253,10 +253,10 @@ describe('Table', () => {
               data,
               columns,
             });
-            const expected = { textAlign: 'left' };
+            const expected = 'left';
             const actual = wrapper
               .find('.ams-table-body .ams-table-cell')
-              .get(0).props.style;
+              .get(0).props.style.textAlign;
 
             expect(actual).toEqual(expected);
           });
@@ -266,10 +266,10 @@ describe('Table', () => {
               data,
               columns,
             });
-            const expected = { textAlign: 'center' };
+            const expected = 'center';
             const actual = wrapper
               .find('.ams-table-body .ams-table-cell')
-              .get(1).props.style;
+              .get(1).props.style.textAlign;
 
             expect(actual).toEqual(expected);
           });
@@ -279,10 +279,70 @@ describe('Table', () => {
               data,
               columns,
             });
-            const expected = { textAlign: 'right' };
+            const expected = 'right';
             const actual = wrapper
               .find('.ams-table-body .ams-table-cell')
-              .get(2).props.style;
+              .get(2).props.style.textAlign;
+
+            expect(actual).toEqual(expected);
+          });
+        });
+      });
+
+      describe('when column width is passed', () => {
+        const { columns, data } = dataBuilder.withFixedWidthColumns().build();
+
+        describe('table header', () => {
+          it('renders the first column as a 50px column', () => {
+            const { wrapper } = setup({
+              data,
+              columns,
+            });
+            const expected = '50px';
+            const actual = wrapper
+              .find('.ams-table-header .ams-table-heading-cell')
+              .get(0).props.style.width;
+
+            expect(actual).toEqual(expected);
+          });
+
+          it('renders the second column as a 200px column', () => {
+            const { wrapper } = setup({
+              data,
+              columns,
+            });
+            const expected = '200px';
+            const actual = wrapper
+              .find('.ams-table-header .ams-table-heading-cell')
+              .get(1).props.style.width;
+
+            expect(actual).toEqual(expected);
+          });
+        });
+
+        describe('table body', () => {
+          it('renders the first column as a 50px column', () => {
+            const { wrapper } = setup({
+              data,
+              columns,
+            });
+            const expected = '50px';
+            const actual = wrapper
+              .find('.ams-table-body .ams-table-cell')
+              .get(0).props.style.width;
+
+            expect(actual).toEqual(expected);
+          });
+
+          it('renders the second column as a 200px column', () => {
+            const { wrapper } = setup({
+              data,
+              columns,
+            });
+            const expected = '200px';
+            const actual = wrapper
+              .find('.ams-table-body .ams-table-cell')
+              .get(1).props.style.width;
 
             expect(actual).toEqual(expected);
           });
