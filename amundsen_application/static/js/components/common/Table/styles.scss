@@ -52,7 +52,16 @@ $shimmer-block-width: 40%;
   display: none;
 
   &.is-expanded {
-    display: block;
+    display: table-row;
+  }
+}
+
+.ams-table-expanding-button {
+  border: 0;
+  background-color: white;
+
+  svg {
+    vertical-align: bottom;
   }
 }
 

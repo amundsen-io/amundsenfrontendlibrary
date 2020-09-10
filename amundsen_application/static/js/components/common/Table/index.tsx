@@ -4,6 +4,7 @@
 import * as React from 'react';
 
 import ShimmeringResourceLoader from '../ShimmeringResourceLoader';
+import { DownIcon, UpIcon } from '../SVGIcons';
 
 import './styles.scss';
 
@@ -37,6 +38,7 @@ const DEFAULT_EMPTY_MESSAGE = 'No Results';
 const EXPAND_ROW_TEXT = 'Expand Row';
 const DEFAULT_LOADING_ITEMS = 3;
 const DEFAULT_ROW_HEIGHT = 30;
+const EXPANDING_CELL_WIDTH = '70px';
 const DEFAULT_TEXT_ALIGNMENT = 'left';
 
 type RowStyles = {
@@ -90,26 +92,33 @@ const ExpandingCell: React.FC<ExpandingCellProps> = ({
   index,
   onClick,
   expandedRows,
-}: ExpandingCellProps) => (
-  <td
-    className="ams-table-cell ams-table-expanding-cell"
-    key={`expandingIndex:${index}`}
-  >
-    <button
-      type="button"
-      className="ams-table-expanding-button"
-      onClick={() => {
-        const newExpandedRows = expandedRows.includes(index)
-          ? expandedRows.filter((i) => i !== index)
-          : [...expandedRows, index];
+}: ExpandingCellProps) => {
+  const isExpanded = expandedRows.includes(index);
+  const cellStyling = { width: EXPANDING_CELL_WIDTH };
 
-        onClick(newExpandedRows);
-      }}
+  return (
+    <td
+      className="ams-table-cell ams-table-expanding-cell"
+      key={`expandingIndex:${index}`}
+      style={cellStyling}
     >
-      <span className="sr-only">{EXPAND_ROW_TEXT}</span>
-    </button>
-  </td>
-);
+      <button
+        type="button"
+        className="ams-table-expanding-button"
+        onClick={() => {
+          const newExpandedRows = isExpanded
+            ? expandedRows.filter((i) => i !== index)
+            : [...expandedRows, index];
+
+          onClick(newExpandedRows);
+        }}
+      >
+        <span className="sr-only">{EXPAND_ROW_TEXT}</span>
+        {isExpanded ? <UpIcon /> : <DownIcon />}
+      </button>
+    </td>
+  );
+};
 
 type RowIndex = number;
 
