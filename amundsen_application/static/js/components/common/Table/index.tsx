@@ -34,6 +34,7 @@ export interface TableProps {
 }
 
 const DEFAULT_EMPTY_MESSAGE = 'No Results';
+const EXPAND_ROW_TEXT = 'Expand Row';
 const DEFAULT_LOADING_ITEMS = 3;
 const DEFAULT_ROW_HEIGHT = 30;
 const DEFAULT_TEXT_ALIGNMENT = 'left';
@@ -82,9 +83,13 @@ const ShimmeringBody: React.FC<ShimmeringBodyProps> = ({
 
 type ExpandingCellProps = {
   index: number;
+  expandedRows: RowIndex[];
+  onClick: (index) => void;
 };
 const ExpandingCell: React.FC<ExpandingCellProps> = ({
   index,
+  onClick,
+  expandedRows,
 }: ExpandingCellProps) => (
   <td
     className="ams-table-cell ams-table-expanding-cell"
@@ -94,10 +99,14 @@ const ExpandingCell: React.FC<ExpandingCellProps> = ({
       type="button"
       className="ams-table-expanding-button"
       onClick={() => {
-        console.log('expand!', index);
+        const newExpandedRows = expandedRows.includes(index)
+          ? expandedRows.filter((i) => i !== index)
+          : [...expandedRows, index];
+
+        onClick(newExpandedRows);
       }}
     >
-      Expand
+      <span className="sr-only">{EXPAND_ROW_TEXT}</span>
     </button>
   </td>
 );
@@ -135,7 +144,13 @@ const Table: React.FC<TableProps> = ({
             style={rowStyles}
           >
             <>
-              {isExpandable ? <ExpandingCell index={index} /> : null}
+              {isExpandable ? (
+                <ExpandingCell
+                  index={index}
+                  expandedRows={expandedRows}
+                  onClick={setExpandedRows}
+                />
+              ) : null}
               {Object.entries(item)
                 .filter(([key]) => fields.includes(key))
                 .map(([key, value], index) => {

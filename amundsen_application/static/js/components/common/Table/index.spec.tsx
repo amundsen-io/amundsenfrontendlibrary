@@ -589,5 +589,91 @@ describe('Table', () => {
     });
   });
 
-  describe('lifetime', () => {});
+  describe('lifetime', () => {
+    describe('when expandRow is passed', () => {
+      const { columns, data } = dataBuilder.withCollapsedRow().build();
+      const expandRowComponent = (rowValue, index) => (
+        <strong>
+          {index}:{rowValue.value}
+        </strong>
+      );
+
+      describe('when clicking on expand button', () => {
+        it('shows the expand row', () => {
+          const { wrapper } = setup({
+            data,
+            columns,
+            options: {
+              expandRow: expandRowComponent,
+            },
+          });
+          const expected = 1;
+
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(0)
+            .simulate('click');
+
+          const actual = wrapper.find(
+            '.ams-table-body .ams-table-expanded-row.is-expanded'
+          ).length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        describe('when clicking again', () => {
+          it('hides the expand row', () => {
+            const { wrapper } = setup({
+              data,
+              columns,
+              options: {
+                expandRow: expandRowComponent,
+              },
+            });
+            const expected = 0;
+
+            wrapper
+              .find('.ams-table-body .ams-table-expanding-button')
+              .at(0)
+              .simulate('click')
+              .simulate('click');
+
+            const actual = wrapper.find(
+              '.ams-table-body .ams-table-expanded-row.is-expanded'
+            ).length;
+
+            expect(actual).toEqual(expected);
+          });
+        });
+      });
+
+      describe('when clicking on multiple expand buttons', () => {
+        it('shows all those expand rows', () => {
+          const { wrapper } = setup({
+            data,
+            columns,
+            options: {
+              expandRow: expandRowComponent,
+            },
+          });
+          const expected = 2;
+
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(0)
+            .simulate('click');
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(1)
+            .simulate('click');
+
+          const actual = wrapper.find(
+            '.ams-table-body .ams-table-expanded-row.is-expanded'
+          ).length;
+
+          expect(actual).toEqual(expected);
+        });
+      });
+    });
+  });
 });
