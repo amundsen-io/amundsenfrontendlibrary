@@ -56,6 +56,28 @@ function TestDataBuilder(config = {}) {
     return new this.Klass(attr);
   };
 
+  this.withCollapsedRow = () => {
+    const attr = {
+      data: [
+        { name: 'rowName', type: 'rowType', value: 1 },
+        { name: 'rowName2', type: 'rowType2', value: 2 },
+        { name: 'rowName3', type: 'rowType3', value: 3 },
+      ],
+      columns: [
+        {
+          title: 'Name',
+          field: 'name',
+        },
+        {
+          title: 'Type',
+          field: 'type',
+        },
+      ],
+    };
+
+    return new this.Klass(attr);
+  };
+
   this.withOneComponentColumn = () => {
     const attr = {
       data: [...this.config.data],

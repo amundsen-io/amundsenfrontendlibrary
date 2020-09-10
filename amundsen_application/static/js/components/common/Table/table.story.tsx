@@ -26,6 +26,15 @@ const {
   columns: columnsWithAction,
   data: dataWithAction,
 } = dataBuilder.withActionCell().build();
+const {
+  columns: columnsWithCollapsedRow,
+  data: dataWithCollapsedRow,
+} = dataBuilder.withCollapsedRow().build();
+const expandRowComponent = (rowValue, index) => (
+  <strong>
+    {index}:{rowValue.value}
+  </strong>
+);
 
 const stories = storiesOf('Components/Table', module);
 
@@ -65,6 +74,13 @@ stories.add('Table', () => (
         columns={columnsWithAction}
         data={dataWithAction}
         options={{ rowHeight: 40 }}
+      />
+    </StorySection>
+    <StorySection title="Table with Collapsed Rows">
+      <Table
+        columns={columnsWithCollapsedRow}
+        data={dataWithCollapsedRow}
+        options={{ rowHeight: 40, expandRow: expandRowComponent }}
       />
     </StorySection>
   </>

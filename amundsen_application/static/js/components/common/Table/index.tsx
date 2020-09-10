@@ -17,8 +17,6 @@ export interface TableColumn {
   // className?: string;
   // width?: number;
   // sortable?: bool (false)
-  // data?: () => React.ReactNode ((row,index) => <div>{index}</div>)
-  // actions?: Action[]
 }
 
 export interface TableOptions {
@@ -26,6 +24,7 @@ export interface TableOptions {
   isLoading?: boolean;
   numLoadingBlocks?: number;
   rowHeight?: number;
+  expandRow?: (rowValue: any, index: number) => React.ReactNode;
 }
 
 export interface TableProps {
@@ -81,6 +80,28 @@ const ShimmeringBody: React.FC<ShimmeringBodyProps> = ({
   </tr>
 );
 
+type ExpandingCellProps = {
+  index: number;
+};
+const ExpandingCell: React.FC<ExpandingCellProps> = ({
+  index,
+}: ExpandingCellProps) => (
+  <td
+    className="ams-table-cell ams-table-expanding-cell"
+    key={`expandingIndex:${index}`}
+  >
+    <button
+      type="button"
+      className="ams-table-expanding-button"
+      onClick={() => {
+        console.log('expand!', index);
+      }}
+    >
+      Expand
+    </button>
+  </td>
+);
+
 const Table: React.FC<TableProps> = ({
   data,
   columns,
@@ -91,9 +112,11 @@ const Table: React.FC<TableProps> = ({
     isLoading = false,
     numLoadingBlocks = DEFAULT_LOADING_ITEMS,
     rowHeight = DEFAULT_ROW_HEIGHT,
+    expandRow = null,
   } = options;
   const fields = columns.map(({ field }) => field);
   const rowStyles = { height: `${rowHeight}px` };
+  const isExpandable: boolean = !!expandRow;
 
   let body: React.ReactNode = (
     <EmptyRow colspan={fields.length} rowStyles={rowStyles} />
@@ -102,40 +125,62 @@ const Table: React.FC<TableProps> = ({
   if (data.length) {
     body = data.map((item, index) => {
       return (
-        <tr className="ams-table-row" key={`index:${index}`} style={rowStyles}>
-          {Object.entries(item)
-            .filter(([key]) => fields.includes(key))
-            .map(([key, value], index) => {
-              const columnInfo = columns.find(({ field }) => field === key);
-              const horAlign = columnInfo
-                ? columnInfo.horAlign || DEFAULT_TEXT_ALIGNMENT
-                : DEFAULT_TEXT_ALIGNMENT;
-              const cellStyle = {
-                textAlign: `${horAlign}` as TextAlignmentValues,
-              };
-              // TODO: Improve the typing of this
-              let cellContent: React.ReactNode | typeof value = value;
-              if (columnInfo && columnInfo.component) {
-                cellContent = columnInfo.component(value, index);
-              }
+        <>
+          <tr
+            className="ams-table-row"
+            key={`index:${index}`}
+            style={rowStyles}
+          >
+            <>
+              {isExpandable ? <ExpandingCell index={index} /> : null}
+              {Object.entries(item)
+                .filter(([key]) => fields.includes(key))
+                .map(([key, value], index) => {
+                  const columnInfo = columns.find(({ field }) => field === key);
+                  const horAlign = columnInfo
+                    ? columnInfo.horAlign || DEFAULT_TEXT_ALIGNMENT
+                    : DEFAULT_TEXT_ALIGNMENT;
+                  const cellStyle = {
+                    textAlign: `${horAlign}` as TextAlignmentValues,
+                  };
+                  // TODO: Improve the typing of this
+                  let cellContent: React.ReactNode | typeof value = value;
+                  if (columnInfo && columnInfo.component) {
+                    cellContent = columnInfo.component(value, index);
+                  }
 
-              return (
-                <td
-                  className="ams-table-cell"
-                  key={`index:${index}`}
-                  style={cellStyle}
-                >
-                  {cellContent}
-                </td>
-              );
-            })}
-        </tr>
+                  return (
+                    <td
+                      className="ams-table-cell"
+                      key={`index:${index}`}
+                      style={cellStyle}
+                    >
+                      {cellContent}
+                    </td>
+                  );
+                })}
+            </>
+          </tr>
+          {isExpandable ? (
+            <tr
+              className="ams-table-expanded-row"
+              key={`expandedIndex:${index}`}
+            >
+              <td className="ams-table-cell" colSpan={fields.length + 1}>
+                {expandRow(item, index)}
+              </td>
+            </tr>
+          ) : null}
+        </>
       );
     });
   }
 
   let header: React.ReactNode = (
     <tr>
+      {isExpandable && (
+        <th key="emptyTableHeading" className="ams-table-heading-cell" />
+      )}
       {columns.map(({ title, horAlign = DEFAULT_TEXT_ALIGNMENT }, index) => {
         const cellStyle = {
           textAlign: `${horAlign}` as TextAlignmentValues,

@@ -477,6 +477,99 @@ describe('Table', () => {
           });
         });
       });
+
+      describe('when expandRow is passed', () => {
+        const { columns, data } = dataBuilder.withCollapsedRow().build();
+        const expandRowComponent = (rowValue, index) => (
+          <strong>
+            {index}:{rowValue.value}
+          </strong>
+        );
+
+        describe('table header', () => {
+          it('renders a table header', () => {
+            const { wrapper } = setup({
+              data,
+              columns,
+              options: {
+                expandRow: expandRowComponent,
+              },
+            });
+            const expected = 1;
+            const actual = wrapper.find('.ams-table-header').length;
+
+            expect(actual).toEqual(expected);
+          });
+
+          it('renders one cell more than columns length inside the header', () => {
+            const { wrapper } = setup({
+              data,
+              columns,
+              options: {
+                expandRow: expandRowComponent,
+              },
+            });
+            const expected = columns.length + 1;
+            const actual = wrapper.find(
+              '.ams-table-header .ams-table-heading-cell'
+            ).length;
+
+            expect(actual).toEqual(expected);
+          });
+        });
+
+        describe('table body', () => {
+          it('renders the first column as a expansion cell', () => {
+            const { wrapper } = setup({
+              data,
+              columns,
+              options: {
+                expandRow: expandRowComponent,
+              },
+            });
+            const expected = data.length;
+            const actual = wrapper.find(
+              '.ams-table-body .ams-table-expanding-cell'
+            ).length;
+
+            expect(actual).toEqual(expected);
+          });
+
+          it('renders buttons for expansion', () => {
+            const { wrapper } = setup({
+              data,
+              columns,
+              options: {
+                expandRow: expandRowComponent,
+              },
+            });
+            const expected = data.length;
+            const actual = wrapper.find(
+              '.ams-table-body .ams-table-expanding-button'
+            ).length;
+
+            expect(actual).toEqual(expected);
+          });
+
+          describe('expanded row', () => {
+            it('renders it with multiple colspan', () => {
+              const { wrapper } = setup({
+                data,
+                columns,
+                options: {
+                  expandRow: expandRowComponent,
+                },
+              });
+              const expected = columns.length + 1;
+              const actual = wrapper
+                .find('.ams-table-body .ams-table-expanded-row .ams-table-cell')
+                .get(0).props.colSpan;
+
+              expect(actual).toEqual(expected);
+            });
+          });
+        });
+      });
     });
   });
 
