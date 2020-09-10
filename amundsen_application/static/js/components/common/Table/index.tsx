@@ -137,7 +137,6 @@ const Table: React.FC<TableProps> = ({
   } = options;
   const fields = columns.map(({ field }) => field);
   const rowStyles = { height: `${rowHeight}px` };
-  const isExpandable: boolean = !!expandRow;
   const [expandedRows, setExpandedRows] = React.useState<RowIndex[]>([]);
 
   let body: React.ReactNode = (
@@ -154,7 +153,7 @@ const Table: React.FC<TableProps> = ({
             style={rowStyles}
           >
             <>
-              {isExpandable ? (
+              {expandRow ? (
                 <ExpandingCell
                   index={index}
                   expandedRows={expandedRows}
@@ -194,7 +193,7 @@ const Table: React.FC<TableProps> = ({
                 })}
             </>
           </tr>
-          {isExpandable ? (
+          {expandRow ? (
             <tr
               className={`ams-table-expanded-row ${
                 expandedRows.includes(index) ? 'is-expanded' : ''
@@ -213,7 +212,7 @@ const Table: React.FC<TableProps> = ({
 
   let header: React.ReactNode = (
     <tr>
-      {isExpandable && (
+      {expandRow && (
         <th key="emptyTableHeading" className="ams-table-heading-cell" />
       )}
       {columns.map(
