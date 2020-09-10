@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 
-import { IconSizes, IconProps } from '.';
+import { IconSizes, IconProps } from './types';
 
 const DEFAULT_STROKE_COLOR = 'currentColor';
 
