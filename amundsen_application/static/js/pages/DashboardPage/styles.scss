@@ -3,6 +3,12 @@
 @import 'variables';
 @import 'typography';
 
+.clickable-group {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .dashboard-page {
   .header-section {
     .flag {
