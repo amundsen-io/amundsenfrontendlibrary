@@ -14,9 +14,11 @@ const JSX_PATTERN = /\.jsx?$/;
 const CSS_PATTERN = /\.(sa|sc|c)ss$/;
 const IMAGE_PATTERN = /\.(png|svg|jpg|gif)$/;
 const VENDORS_PATTERN = /[\\/]node_modules[\\/](react|react-dom)[\\/]/;
+const FONT_PATTERN = /\.(ttf|woff2|otf)$/;
 
 const PATHS = {
   dist: path.join(__dirname, '/dist'),
+  pages: path.join(__dirname, '/js/pages'),
   components: path.join(__dirname, '/js/components'),
   config: path.join(__dirname, '/js/config'),
   ducks: path.join(__dirname, '/js/ducks'),
@@ -59,6 +61,7 @@ const config: webpack.Configuration = {
   devtool: 'source-map',
   resolve: {
     alias: {
+      pages: PATHS.pages,
       components: PATHS.components,
       config: PATHS.config,
       ducks: PATHS.ducks,
@@ -86,7 +89,9 @@ const config: webpack.Configuration = {
           {
             loader: 'sass-loader',
             options: {
-              includePaths: [PATHS.css],
+              sassOptions: {
+                includePaths: [PATHS.css],
+              },
             },
           },
         ],
@@ -95,16 +100,16 @@ const config: webpack.Configuration = {
         test: IMAGE_PATTERN,
         use: 'file-loader',
       },
+      {
+        test: FONT_PATTERN,
+        use: 'file-loader',
+      },
     ],
   },
   plugins: [
     new CleanWebpackPlugin(),
     new MomentLocalesPlugin(), // To strip all locales except “en”
-    new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-    }),
     ...htmlWebpackPluginConfig,
-    // new BundleAnalyzerPlugin(),   // Uncomment to analyze the production bundle on local
   ],
   optimization: {
     moduleIds: 'hashed',

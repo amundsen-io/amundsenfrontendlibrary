@@ -13,13 +13,13 @@ export interface TabsProps {
   onSelect?: (key: string) => void;
 }
 
-interface TabInfo {
+export interface TabInfo {
   content: JSX.Element;
   key: string;
-  title: string;
+  title: string | JSX.Element;
 }
 
-const TabsComponent: React.SFC<TabsProps> = ({
+const TabsComponent: React.FC<TabsProps> = ({
   tabs,
   activeKey,
   defaultTab,

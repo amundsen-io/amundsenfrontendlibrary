@@ -6,7 +6,6 @@ import * as Avatar from 'react-avatar';
 import { Link } from 'react-router-dom';
 
 import { UserResource } from 'interfaces';
-import Flag from 'components/common/Flag';
 import { LoggingParams } from '../types';
 
 export interface UserListItemProps {
@@ -55,7 +54,6 @@ class UserListItem extends React.Component<UserListItemProps, {}> {
           </div>
           <div className="resource-type">User</div>
           <div className="resource-badges">
-            {!user.is_active && <Flag text="Alumni" labelStyle="danger" />}
             <img className="icon icon-right" alt="" />
           </div>
         </Link>

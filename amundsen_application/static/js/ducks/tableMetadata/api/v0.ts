@@ -31,7 +31,6 @@ export type TableData = TableMetadata & {
   tags: Tag[];
 };
 export type DescriptionAPI = { description: string } & MessageAPI;
-export type LastIndexedAPI = { timestamp: string } & MessageAPI;
 export type PreviewDataAPI = { previewData: PreviewData } & MessageAPI;
 export type TableDataAPI = { tableData: TableData } & MessageAPI;
 export type RelatedDashboardDataAPI = {
@@ -78,7 +77,7 @@ export function getTableDashboards(tableKey: string) {
       if (response && response.data && response.data.msg) {
         msg = response.data.msg;
       }
-      const status = response ? response.status : null;
+
       return Promise.reject({ msg, dashboards: [] });
     });
 }
@@ -127,7 +126,7 @@ export function generateOwnerUpdateRequests(
 
     /* Chain requests to send notification on success to desired users */
     const request = axios(updatePayload)
-      .then((response) => {
+      .then(() => {
         return axios.get(`/api/metadata/v0/user?user_id=${item.id}`);
       })
       .then((response) => {
@@ -171,14 +170,6 @@ export function updateColumnDescription(
     key: tableData.key,
     source: 'user',
   });
-}
-
-export function getLastIndexed() {
-  return axios
-    .get(`${API_PATH}/get_last_indexed`)
-    .then((response: AxiosResponse<LastIndexedAPI>) => {
-      return response.data.timestamp;
-    });
 }
 
 export function getPreviewData(queryParams: PreviewQueryParams) {

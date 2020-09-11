@@ -1,13 +1,14 @@
 import AppConfig from 'config/config';
-import { BadgeStyleConfig, BadgeStyle } from 'config/config-types';
+import { BadgeStyle, BadgeStyleConfig } from 'config/config-types';
 import { TableMetadata } from 'interfaces/TableMetadata';
 
-import { FilterConfig } from './config-types';
+import { FilterConfig, LinkConfig } from './config-types';
 
 import { ResourceType } from '../interfaces';
 
 export const DEFAULT_DATABASE_ICON_CLASS = 'icon-database icon-color';
 export const DEFAULT_DASHBOARD_ICON_CLASS = 'icon-dashboard icon-color';
+const ANNOUNCEMENTS_LINK_LABEL = 'Announcements';
 
 /**
  * Returns the display name for a given source id for a given resource type.
@@ -97,6 +98,13 @@ export function feedbackEnabled(): boolean {
 }
 
 /**
+ * Returns whether or not feedback features should be enabled
+ */
+export function announcementsEnabled(): boolean {
+  return AppConfig.announcements.enabled;
+}
+
+/**
  * Returns whether or not dashboard features should be shown
  */
 export function indexDashboardsEnabled(): boolean {
@@ -139,6 +147,25 @@ export function getCuratedTags(): string[] {
 }
 
 /**
+ * Checks if nav links are active
+ */
+const isNavLinkActive = (link: LinkConfig): boolean => {
+  if (!announcementsEnabled()) {
+    return link.label !== ANNOUNCEMENTS_LINK_LABEL;
+  }
+
+  return true;
+};
+
+/*
+ * Returns the updated list of navigation links given the other
+ * configuration options state
+ */
+export function getNavLinks(): LinkConfig[] {
+  return AppConfig.navLinks.filter(isNavLinkActive);
+}
+
+/**
  * Returns whether to enable the table `explore` feature
  */
 export function exploreEnabled(): boolean {
@@ -177,4 +204,42 @@ export function generateExploreUrl(tableData: TableMetadata): string {
  */
 export function getMaxLength(key: string) {
   return AppConfig.editableText[key];
+}
+
+/**
+ * Returns the display name for a given description source id for a given resource type.
+ * If a configuration or display name does not exist for the given description source id, the id
+ * is returned.
+ */
+export function getDescriptionSourceDisplayName(sourceId: string): string {
+  const config = AppConfig.resourceConfig[ResourceType.table];
+  if (
+    config &&
+    config.supportedDescriptionSources &&
+    config.supportedDescriptionSources[sourceId] &&
+    config.supportedDescriptionSources[sourceId].displayName
+  ) {
+    return config.supportedDescriptionSources[sourceId].displayName;
+  }
+
+  return sourceId;
+}
+
+/**
+ * Returns the icon path for a given description source id for a given resource type.
+ * If a configuration does not exist for the given description source id, empty string
+ * is returned.
+ */
+export function getDescriptionSourceIconPath(sourceId: string): string {
+  const config = AppConfig.resourceConfig[ResourceType.table];
+  if (
+    config &&
+    config.supportedDescriptionSources &&
+    config.supportedDescriptionSources[sourceId] &&
+    config.supportedDescriptionSources[sourceId].iconPath
+  ) {
+    return config.supportedDescriptionSources[sourceId].iconPath;
+  }
+
+  return '';
 }

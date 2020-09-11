@@ -3,7 +3,6 @@
 
 import * as React from 'react';
 
-import { Button, Panel } from 'react-bootstrap';
 import BugReportFeedbackForm from './FeedbackForm/BugReportFeedbackForm';
 import RatingFeedbackForm from './FeedbackForm/RatingFeedbackForm';
 import RequestFeedbackForm from './FeedbackForm/RequestFeedbackForm';
@@ -14,12 +13,12 @@ import * as Constants from './constants';
 import './styles.scss';
 
 export interface FeedbackProps {
-  content?: React.SFC<any>;
+  content?: React.FC<any>;
   title?: string;
 }
 
 interface FeedbackState {
-  content: React.SFC<any>;
+  content: React.FC<any>;
   feedbackType: FeedbackType;
   isOpen: boolean;
 }

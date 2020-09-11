@@ -10,6 +10,7 @@ import Flag from 'components/common/Flag';
 import { Link } from 'react-router-dom';
 
 import { ResourceType } from 'interfaces';
+import { BadgeStyle } from 'config/config-types';
 import UserListItem, { UserListItemProps } from '.';
 
 describe('UserListItem', () => {
@@ -179,38 +180,6 @@ describe('UserListItem', () => {
 
       it('renders resource badges section', () => {
         expect(resourceBadges.exists()).toBe(true);
-      });
-
-      it('does not render Alumni flag if user is active', () => {
-        expect(resourceBadges.find(Flag).exists()).toBe(false);
-      });
-
-      it('renders Alumni flag if user not active', () => {
-        const { wrapper } = setup({
-          user: {
-            type: ResourceType.user,
-            display_name: 'firstname lastname',
-            email: 'test@test.com',
-            employee_type: 'fulltime',
-            first_name: 'firstname',
-            full_name: 'firstname lastname',
-            github_username: 'githubName',
-            is_active: false,
-            last_name: 'lastname',
-            manager_fullname: 'Test Manager',
-            profile_url: 'www.test.com',
-            role_name: 'Tester',
-            slack_id: 'www.slack.com',
-            team_name: 'QA',
-            user_id: 'test0',
-          },
-        });
-        const flagComponent = wrapper.find('.resource-badges').find(Flag);
-        expect(flagComponent.exists()).toBe(true);
-        expect(flagComponent.props()).toMatchObject({
-          text: 'Alumni',
-          labelStyle: 'danger',
-        });
       });
 
       it('renders correct end icon', () => {

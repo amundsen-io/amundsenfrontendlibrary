@@ -2,9 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 @import 'variables';
+@import 'typography';
 
 $resource-header-height: 84px;
 $aside-separation-space: 40px;
+$screen-lg-max: 1490px;
+$screen-lg-container: 1440px;
 
 .resource-detail-layout {
   height: calc(100vh - #{$nav-bar-height} - #{$footer-height});
@@ -27,9 +30,6 @@ $aside-separation-space: 40px;
 
         .header-title-text {
           display: inline-block;
-          // Better align the header-title-text
-          // (84px header height - 32px vertical padding - 2px border - 20px subtitle line-height) = 30px
-          line-height: 30px;
           max-width: calc(100% - 100px);
         }
       }
@@ -109,6 +109,8 @@ $aside-separation-space: 40px;
       }
 
       .section-title {
+        @extend %text-title-w3;
+
         color: $text-tertiary;
         margin-bottom: 8px;
       }
@@ -196,6 +198,12 @@ $aside-separation-space: 40px;
 // Main Layout
 #main {
   min-width: $body-min-width;
+}
+
+@media (min-width: $screen-lg-max) {
+  #main > .container {
+    width: $screen-lg-container;
+  }
 }
 
 #main > .container {

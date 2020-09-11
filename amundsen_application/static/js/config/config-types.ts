@@ -18,6 +18,7 @@ export interface AppConfig {
   issueTracking: IssueTrackingConfig;
   logoPath: string | null;
   mailClientFeatures: MailClientFeaturesConfig;
+  announcements: AnnoucementsFeaturesConfig;
   navLinks: Array<LinkConfig>;
   resourceConfig: ResourceConfig;
   tableLineage: TableLineageConfig;
@@ -122,6 +123,13 @@ type SourcesConfig = {
 };
 
 /**
+ * Configures the UI for a given table description source
+ */
+type DescriptionSourceConfig = {
+  [id: string]: { displayName: string; iconPath: string };
+};
+
+/**
  * Base interface for all possible ResourceConfig objects
  *
  * displayName - The name displayed throughout the application to refer to this resource type
@@ -133,12 +141,16 @@ interface BaseResourceConfig {
   supportedSources?: SourcesConfig;
 }
 
+interface TableResourceConfig extends BaseResourceConfig {
+  supportedDescriptionSources?: DescriptionSourceConfig;
+}
+
 export enum BadgeStyle {
-  DANGER = 'danger',
-  DEFAULT = 'default',
+  DANGER = 'negative',
+  DEFAULT = 'neutral',
   INFO = 'info',
   PRIMARY = 'primary',
-  SUCCESS = 'success',
+  SUCCESS = 'positive',
   WARNING = 'warning',
 }
 
@@ -173,7 +185,7 @@ interface DateFormatConfig {
  */
 interface ResourceConfig {
   [ResourceType.dashboard]: BaseResourceConfig;
-  [ResourceType.table]: BaseResourceConfig;
+  [ResourceType.table]: TableResourceConfig;
   [ResourceType.user]: BaseResourceConfig;
 }
 
@@ -188,6 +200,16 @@ interface MailClientFeaturesConfig {
   feedbackEnabled: boolean;
   notificationsEnabled: boolean;
 }
+
+/**
+ * AnnoucementsFeaturesConfig - Enable/disable UI features related to the announcements
+ *
+ * enabled - Enables the announcements feature
+ */
+interface AnnoucementsFeaturesConfig {
+  enabled: boolean;
+}
+
 /**
  * TableProfileConfig - Customize the "Table Profile" section of the "Table Details" page.
  *

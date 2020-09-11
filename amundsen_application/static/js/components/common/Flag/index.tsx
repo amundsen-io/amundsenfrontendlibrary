@@ -3,7 +3,8 @@
 
 import * as React from 'react';
 
-// TODO: Use css-modules instead of 'import'
+import { BadgeStyle } from 'config/config-types';
+
 import './styles.scss';
 
 export enum CaseType {
@@ -15,11 +16,10 @@ export enum CaseType {
 export interface FlagProps {
   caseType?: string | null;
   text: string;
-  labelStyle?: string;
+  labelStyle?: BadgeStyle;
 }
 
-export function convertText(str: string, caseType: string): string {
-  str = str || '';
+export function convertText(str = '', caseType: string): string {
   switch (caseType) {
     case CaseType.LOWER_CASE:
       return str.toLowerCase();
@@ -32,24 +32,20 @@ export function convertText(str: string, caseType: string): string {
   }
 }
 
-const Flag: React.SFC<FlagProps> = ({
-  caseType,
-  text,
-  labelStyle,
+const Flag: React.FC<FlagProps> = ({
+  caseType = null,
+  text = '',
+  labelStyle = BadgeStyle.DEFAULT,
 }: FlagProps) => {
   // TODO: After upgrading to Bootstrap 4, this component should leverage badges
   // https://getbootstrap.com/docs/4.1/components/badge/
   return (
     <span className={`flag label label-${labelStyle}`}>
-      {convertText(text, caseType)}
+      <div className={`badge-overlay-${labelStyle}`}>
+        {convertText(text, caseType)}
+      </div>
     </span>
   );
-};
-
-Flag.defaultProps = {
-  caseType: null,
-  text: '',
-  labelStyle: 'default',
 };
 
 export default Flag;

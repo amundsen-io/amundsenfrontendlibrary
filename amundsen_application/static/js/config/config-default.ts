@@ -37,6 +37,9 @@ const configDefault: AppConfig = {
     feedbackEnabled: false,
     notificationsEnabled: false,
   },
+  announcements: {
+    enabled: true,
+  },
   navLinks: [
     {
       label: 'Announcements',
@@ -62,6 +65,10 @@ const configDefault: AppConfig = {
         redash: {
           displayName: 'Redash',
           iconClass: 'icon-redash',
+        },
+        tableau: {
+          displayName: 'Tableau',
+          iconClass: 'icon-tableau',
         },
       },
       filterCategories: [
@@ -151,6 +158,12 @@ const configDefault: AppConfig = {
           type: FilterType.INPUT_SELECT,
         },
       ],
+      supportedDescriptionSources: {
+        github: {
+          displayName: 'Github',
+          iconPath: '/static/images/github.png',
+        },
+      },
     },
     [ResourceType.user]: {
       displayName: 'People',
