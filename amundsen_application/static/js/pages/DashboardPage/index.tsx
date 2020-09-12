@@ -193,10 +193,11 @@ export class DashboardPage extends React.Component<
             />
             <div className="body-2">
               Dashboard in&nbsp;
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
               <a
                 className="clickable-group"
                 id="dashboard-group-link"
-                href="#top"
+                href="#"
                 onClick={this.searchGroup}
               >
                 {dashboard.group_name}
