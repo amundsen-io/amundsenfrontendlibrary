@@ -193,15 +193,14 @@ export class DashboardPage extends React.Component<
             />
             <div className="body-2">
               Dashboard in&nbsp;
-              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-              <a
-                className="clickable-group"
+              <button
+                type="button"
+                className="btn btn-link body-2"
                 id="dashboard-group-link"
-                href="#"
                 onClick={this.searchGroup}
               >
                 {dashboard.group_name}
-              </a>
+              </button>
             </div>
           </div>
           {/* <div className="header-section header-links">links here</div> */}
