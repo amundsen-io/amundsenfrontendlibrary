@@ -196,7 +196,7 @@ export class DashboardPage extends React.Component<
               <button
                 type="button"
                 className="btn btn-link body-2"
-                id="dashboard-group-link"
+                data-type="dashboard-group-link"
                 onClick={this.searchGroup}
               >
                 {dashboard.group_name}
