@@ -40,7 +40,7 @@ export interface TableResource extends Resource {
   name: string;
   schema: string;
   schema_description?: string;
-  badges?: Badge[];
+  badges?: any[]; // TODO replace with new badges later
 }
 
 export interface UserResource extends Resource, PeopleUser {
