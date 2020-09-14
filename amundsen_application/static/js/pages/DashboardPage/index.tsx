@@ -327,7 +327,7 @@ export class DashboardPage extends React.Component<
   }
 }
 
-export function searchDashboardGroup(
+function searchDashboardGroup(
   dashboardGroup: string
 ): UpdateSearchStateRequest {
   return updateSearchState({
