@@ -1,3 +1,6 @@
+# Copyright Contributors to the Amundsen project.
+# SPDX-License-Identifier: Apache-2.0	# SPDX-License-Identifier: Apache-2.0
+
 # TODO remove after new badges in metadata and search @allisonsuarez
 
 from typing import Any, List, Optional
