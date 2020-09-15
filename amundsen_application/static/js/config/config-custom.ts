@@ -16,9 +16,6 @@ const configCustom: AppConfigCustom = {
     feedbackEnabled: false,
     notificationsEnabled: false,
   },
-  announcements: {
-    enabled: false,
-  },
   indexDashboards: {
     enabled: false,
   },
