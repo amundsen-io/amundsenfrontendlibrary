@@ -1,3 +1,5 @@
+# TODO remove after new badges in metadata and search @allisonsuarez
+
 from typing import Any, List, Optional
 
 import attr
