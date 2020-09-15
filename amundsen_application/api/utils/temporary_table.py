@@ -3,7 +3,7 @@
 
 # TODO remove after new badges in metadata and search @allisonsuarez
 
-from typing import Any, List, Optional
+from typing import List, Optional
 
 import attr
 
@@ -106,6 +106,7 @@ class SourceSchema(AttrsSchema):
     class Meta:
         target = Source
         register_as_scheme = True
+
 
 @attr.s(auto_attribs=True, kw_only=True)
 class ResourceReport:
