@@ -8,7 +8,7 @@ import { getBadgeConfig } from 'config/config-utils';
 import { Badge } from 'interfaces/Tags';
 
 export interface BadgeListProps {
-  badges: any[]; // TODO replace with new badges later
+  badges: any[]; // TODO replace with new badges later @allisonsuarez
 }
 
 const BadgeList: React.FC<BadgeListProps> = ({ badges }: BadgeListProps) => {
