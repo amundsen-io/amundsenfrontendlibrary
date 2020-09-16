@@ -15,7 +15,7 @@ export interface BadgeListProps {
 /*
  * maps badge type to a badge style
  */
-export function mapBadgeStyle(badgeType: string): BadgeStyle {
+function mapBadgeStyle(badgeType: string): BadgeStyle {
   if (badgeType === 'negative') return BadgeStyle.DANGER;
   if (badgeType === 'positive') return BadgeStyle.SUCCESS;
   if (badgeType === 'warning') return BadgeStyle.WARNING;
