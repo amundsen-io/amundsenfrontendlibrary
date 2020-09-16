@@ -155,7 +155,6 @@ def _convert_prog_descriptions(prog_descriptions: List = None) -> Dict:
     :param prog_descriptions: A list of objects representing programmatic descriptions
     :return: A dictionary with organized programmatic_descriptions
     """
-    other = []  # type: List
     updated_descriptions = {}
 
     if prog_descriptions:
@@ -184,9 +183,10 @@ def _convert_prog_descriptions(prog_descriptions: List = None) -> Dict:
             updated_descriptions['left'] = left
             updated_descriptions['right'] = right
         else:
-            prog_descriptions.sort(key=lambda x: _sort_prog_descriptions(prog_display_config, x))
+            if prog_display_config:
+                prog_descriptions.sort(key=lambda x: _sort_prog_descriptions(prog_display_config, x))
             other = prog_descriptions
-    updated_descriptions['other'] = other
+        updated_descriptions['other'] = other
     return updated_descriptions
 
 
