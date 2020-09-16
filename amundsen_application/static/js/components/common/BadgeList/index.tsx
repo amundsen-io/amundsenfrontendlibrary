@@ -4,7 +4,7 @@
 import * as React from 'react';
 
 import ClickableBadge from 'components/common/Badges';
-import { getBadgeConfig } from 'config/config-utils';
+import { getBadgeConfig, mapBadgeStyle } from 'config/config-utils';
 import { Badge } from 'interfaces/Tags';
 
 export interface BadgeListProps {
@@ -29,7 +29,7 @@ const BadgeList: React.FC<BadgeListProps> = ({ badges }: BadgeListProps) => {
           return (
             <ClickableBadge
               text={badge.badge_name}
-              labelStyle={badge.badge_type}
+              labelStyle={mapBadgeStyle(badge.badge_type)}
               key={`badge-${index}`}
             />
           );

@@ -90,6 +90,16 @@ export function getBadgeConfig(badgeName: string): BadgeStyleConfig {
   };
 }
 
+/*
+ * maps badge type to a badge style
+ */
+export function mapBadgeStyle(badge_type: string): BadgeStyle {
+  if (badge_type == 'negative') return BadgeStyle.DANGER;
+  if (badge_type == 'positive') return BadgeStyle.SUCCESS;
+  if (badge_type == 'warning') return BadgeStyle.WARNING;
+  else return BadgeStyle.DEFAULT;
+}
+
 /**
  * Returns whether or not feedback features should be enabled
  */
