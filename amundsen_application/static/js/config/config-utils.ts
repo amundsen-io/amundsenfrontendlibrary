@@ -93,11 +93,11 @@ export function getBadgeConfig(badgeName: string): BadgeStyleConfig {
 /*
  * maps badge type to a badge style
  */
-export function mapBadgeStyle(badge_type: string): BadgeStyle {
-  if (badge_type == 'negative') return BadgeStyle.DANGER;
-  if (badge_type == 'positive') return BadgeStyle.SUCCESS;
-  if (badge_type == 'warning') return BadgeStyle.WARNING;
-  else return BadgeStyle.DEFAULT;
+export function mapBadgeStyle(badgeType: string): BadgeStyle {
+  if (badgeType === 'negative') return BadgeStyle.DANGER;
+  if (badgeType === 'positive') return BadgeStyle.SUCCESS;
+  if (badgeType === 'warning') return BadgeStyle.WARNING;
+  return BadgeStyle.DEFAULT;
 }
 
 /**
