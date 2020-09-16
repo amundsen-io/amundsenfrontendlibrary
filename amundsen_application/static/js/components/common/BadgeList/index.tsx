@@ -4,11 +4,22 @@
 import * as React from 'react';
 
 import ClickableBadge from 'components/common/Badges';
-import { getBadgeConfig, mapBadgeStyle } from 'config/config-utils';
+import { getBadgeConfig } from 'config/config-utils';
+import { BadgeStyle } from 'config/config-types';
 import { Badge } from 'interfaces/Tags';
 
 export interface BadgeListProps {
   badges: any[]; // TODO replace with new badges later @allisonsuarez
+}
+
+/*
+ * maps badge type to a badge style
+ */
+export function mapBadgeStyle(badgeType: string): BadgeStyle {
+  if (badgeType === 'negative') return BadgeStyle.DANGER;
+  if (badgeType === 'positive') return BadgeStyle.SUCCESS;
+  if (badgeType === 'warning') return BadgeStyle.WARNING;
+  return BadgeStyle.DEFAULT;
 }
 
 const BadgeList: React.FC<BadgeListProps> = ({ badges }: BadgeListProps) => {
