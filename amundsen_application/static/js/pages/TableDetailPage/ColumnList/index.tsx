@@ -6,7 +6,11 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 
 import { OpenRequestAction } from 'ducks/notification/types';
 
-import { notificationsEnabled } from 'config/config-utils';
+import EditableSection from 'components/common/EditableSection';
+import ColumnDescEditableText from 'pages/TableDetailPage/ColumnDescEditableText';
+
+import { formatDate } from 'utils/dateUtils';
+import { notificationsEnabled, getMaxLength } from 'config/config-utils';
 import { TableColumn, RequestMetadataType } from 'interfaces';
 
 import Table, {
@@ -19,6 +23,7 @@ import './styles.scss';
 const MORE_BUTTON_TEXT = 'More options';
 const REQUEST_DESCRIPTION_TEXT = 'Request Column Description';
 const EMPTY_MESSAGE = 'There are no available columns for this table';
+const EDITABLE_SECTION_TITLE = 'Edit Description';
 
 interface ColumnListProps {
   columns?: TableColumn[];
@@ -35,6 +40,75 @@ type ContentType = {
   title: string;
   description: string;
 };
+
+type FormattedDataType = {
+  content: ContentType;
+  col_type: string;
+  usage: string;
+  action: string;
+  editText: string;
+  editUrl: string;
+  stats: any;
+  index: number;
+  shouldRenderDescription: boolean;
+  isEditable: boolean;
+  isDescriptionEditable: boolean;
+};
+
+type ExpandedRowProps = {
+  rowValue: FormattedDataType;
+  index: number;
+};
+
+const getStatsInfoText = (startEpoch: number, endEpoch: number) => {
+  const startDate = startEpoch
+    ? formatDate({ epochTimestamp: startEpoch })
+    : null;
+  const endDate = endEpoch ? formatDate({ epochTimestamp: endEpoch }) : null;
+
+  let infoText = 'Stats reflect data collected';
+
+  if (startDate && endDate) {
+    if (startDate === endDate) {
+      infoText = `${infoText} on ${startDate} only. (daily partition)`;
+    } else {
+      infoText = `${infoText} between ${startDate} and ${endDate}.`;
+    }
+  } else {
+    infoText = `${infoText} over a recent period of time.`;
+  }
+
+  return infoText;
+};
+
+// @ts-ignore
+const ExpandedRowComponent: React.FC<ExpandedRowProps> = (
+  rowValue: FormattedDataType
+) => (
+  <div className="expanded-row-container">
+    {rowValue.stats && (
+      <div className="stat-collection-info">
+        <span className="title-3">Column Statistics&nbsp;</span>
+        {getStatsInfoText(rowValue.stats.start_epoch, rowValue.stats.end_epoch)}
+      </div>
+    )}
+    {(rowValue.shouldRenderDescription || rowValue.isDescriptionEditable) && (
+      <EditableSection
+        title={EDITABLE_SECTION_TITLE}
+        readOnly={!rowValue.isEditable}
+        editText={rowValue.editText}
+        editUrl={rowValue.editUrl}
+      >
+        <ColumnDescEditableText
+          columnIndex={rowValue.index}
+          editable={rowValue.isEditable}
+          maxLength={getMaxLength('columnDescLength')}
+          value={rowValue.content.description}
+        />
+      </EditableSection>
+    )}
+  </div>
+);
 
 const ColumnList: React.FC<ColumnListProps> = ({
   columns,
@@ -60,7 +134,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
     />
   ));
 
-  const formattedData = columns.map((item) => {
+  const formattedData: FormattedDataType[] = columns.map((item, index) => {
     return {
       content: {
         title: item.name,
@@ -68,7 +142,14 @@ const ColumnList: React.FC<ColumnListProps> = ({
       },
       col_type: item.col_type,
       usage: item.stats[0].stat_val,
+      stats: item.stats[0],
       action: item.name,
+      shouldRenderDescription: !!item.description,
+      isEditable: item.is_editable,
+      editText,
+      editUrl,
+      index,
+      isDescriptionEditable: !editText && !editUrl && !item.is_editable,
     };
   });
 
@@ -138,7 +219,12 @@ const ColumnList: React.FC<ColumnListProps> = ({
       <Table
         columns={formattedColumns}
         data={formattedData}
-        options={{ rowHeight: 72, emptyMessage: EMPTY_MESSAGE }}
+        options={{
+          rowHeight: 72,
+          emptyMessage: EMPTY_MESSAGE,
+          expandRow: ExpandedRowComponent,
+          tableClassName: 'table-detail-table',
+        }}
       />
       <ul className="column-list list-group">{columnList}</ul>
     </>
