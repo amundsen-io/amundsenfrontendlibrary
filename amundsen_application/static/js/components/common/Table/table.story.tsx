@@ -103,5 +103,12 @@ stories.add('Customized Table', () => (
         options={{ rowHeight: 40, expandRow: expandRowComponent }}
       />
     </StorySection>
+    <StorySection title="with Custom Empty Message">
+      <Table
+        columns={columns}
+        data={[]}
+        options={{ emptyMessage: 'Custom Empty Message Here!' }}
+      />
+    </StorySection>
   </>
 ));

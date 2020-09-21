@@ -646,6 +646,61 @@ describe('Table', () => {
           });
         });
       });
+
+      describe('when emptyMessage is passed', () => {
+        const { columns, data } = dataBuilder.withEmptyData().build();
+        const TEST_EMPTY_MESSAGE = 'Test Empty Message';
+
+        describe('table header', () => {
+          it('renders one cell inside the header', () => {
+            const { wrapper } = setup({
+              data,
+              columns,
+              options: {
+                emptyMessage: TEST_EMPTY_MESSAGE,
+              },
+            });
+            const expected = 1;
+            const actual = wrapper.find(
+              '.ams-table-header .ams-table-heading-cell'
+            ).length;
+
+            expect(actual).toEqual(expected);
+          });
+        });
+
+        describe('table body', () => {
+          it('renders one row', () => {
+            const { wrapper } = setup({
+              data,
+              columns,
+              options: {
+                emptyMessage: TEST_EMPTY_MESSAGE,
+              },
+            });
+            const expected = 1;
+            const actual = wrapper.find('.ams-table-row').length;
+
+            expect(actual).toEqual(expected);
+          });
+
+          it('renders the custom empty message', () => {
+            const { wrapper } = setup({
+              data,
+              columns,
+              options: {
+                emptyMessage: TEST_EMPTY_MESSAGE,
+              },
+            });
+            const expected = TEST_EMPTY_MESSAGE;
+            const actual = wrapper
+              .find('.ams-table-row .ams-empty-message-cell')
+              .text();
+
+            expect(actual).toEqual(expected);
+          });
+        });
+      });
     });
   });
 

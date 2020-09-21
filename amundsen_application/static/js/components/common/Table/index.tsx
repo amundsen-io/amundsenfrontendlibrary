@@ -26,6 +26,7 @@ export interface TableOptions {
   numLoadingBlocks?: number;
   rowHeight?: number;
   expandRow?: (rowValue: any, index: number) => React.ReactNode;
+  emptyMessage?: string;
 }
 
 export interface TableProps {
@@ -49,15 +50,17 @@ type RowStyles = {
 type EmptyRowProps = {
   colspan: number;
   rowStyles: RowStyles;
+  emptyMessage?: string;
 };
 
 const EmptyRow: React.FC<EmptyRowProps> = ({
   colspan,
   rowStyles,
+  emptyMessage = DEFAULT_EMPTY_MESSAGE,
 }: EmptyRowProps) => (
-  <tr className="ams-table-row" style={rowStyles}>
+  <tr className="ams-table-row is-empty" style={rowStyles}>
     <td className="ams-empty-message-cell" colSpan={colspan}>
-      {DEFAULT_EMPTY_MESSAGE}
+      {emptyMessage}
     </td>
   </tr>
 );
@@ -134,13 +137,18 @@ const Table: React.FC<TableProps> = ({
     numLoadingBlocks = DEFAULT_LOADING_ITEMS,
     rowHeight = DEFAULT_ROW_HEIGHT,
     expandRow = null,
+    emptyMessage,
   } = options;
   const fields = columns.map(({ field }) => field);
   const rowStyles = { height: `${rowHeight}px` };
   const [expandedRows, setExpandedRows] = React.useState<RowIndex[]>([]);
 
   let body: React.ReactNode = (
-    <EmptyRow colspan={fields.length} rowStyles={rowStyles} />
+    <EmptyRow
+      colspan={fields.length}
+      rowStyles={rowStyles}
+      emptyMessage={emptyMessage}
+    />
   );
 
   if (data.length) {
