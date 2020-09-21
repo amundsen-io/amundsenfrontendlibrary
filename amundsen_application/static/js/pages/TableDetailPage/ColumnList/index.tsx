@@ -67,6 +67,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
         description: item.description,
       },
       col_type: item.col_type,
+      usage: item.stats[0].stat_val,
       action: item.name,
     };
   });
@@ -87,6 +88,12 @@ const ColumnList: React.FC<ColumnListProps> = ({
       field: 'col_type',
       component: (type) => <p className="resource-type">{type}</p>,
     },
+    {
+      title: 'Usage',
+      field: 'usage',
+      horAlign: 'right',
+      component: (usage) => <p className="resource-type">{usage}</p>,
+    },
   ];
 
   if (notificationsEnabled()) {
@@ -95,6 +102,8 @@ const ColumnList: React.FC<ColumnListProps> = ({
       {
         title: '',
         field: 'action',
+        width: 80,
+        horAlign: 'right',
         component: (name, index) => (
           <div className="actions">
             <Dropdown
