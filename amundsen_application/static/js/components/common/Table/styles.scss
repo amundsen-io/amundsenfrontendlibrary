@@ -24,6 +24,7 @@ $row-bottom-border-color: $gray10;
 .ams-table-header {
   @extend %text-caption-w2;
 
+  background-color: $gray5;
   color: $text-secondary;
   border-bottom: $table-header-border-width solid
     $table-header-bottom-border-color;
@@ -78,6 +79,10 @@ $row-bottom-border-color: $gray10;
 
   svg {
     vertical-align: bottom;
+  }
+
+  &:focus {
+    outline: none;
   }
 }
 

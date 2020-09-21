@@ -212,6 +212,9 @@ const Table: React.FC<TableProps> = ({
               }`}
               key={`expandedIndex:${index}`}
             >
+              <td className="ams-table-cell">
+                {/* Placeholder for the expanded arrow */}
+              </td>
               <td className="ams-table-cell" colSpan={fields.length + 1}>
                 {expandRow(item, index)}
               </td>
