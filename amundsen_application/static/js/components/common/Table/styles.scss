@@ -11,6 +11,9 @@ $table-header-border-width: 2px;
 $shimmer-block-height: 16px;
 $shimmer-block-width: 40%;
 
+$table-header-bottom-border-color: $gray15;
+$row-bottom-border-color: $gray10;
+
 .ams-table {
   width: 100%;
   max-width: 100%;
@@ -22,7 +25,8 @@ $shimmer-block-width: 40%;
   @extend %text-caption-w2;
 
   color: $text-secondary;
-  border-bottom: $table-header-border-width solid $gray15;
+  border-bottom: $table-header-border-width solid
+    $table-header-bottom-border-color;
 }
 
 .ams-table-heading-cell {
@@ -38,13 +42,11 @@ $shimmer-block-width: 40%;
   }
 }
 
-.ams-table-cell {
-  &:first-child {
-    padding-left: $spacer-3;
-  }
+.ams-table-row {
+  border-bottom: 1px solid $row-bottom-border-color;
 
-  &:last-child {
-    padding-right: $spacer-3;
+  &.is-child-expanded {
+    border-bottom: 0;
   }
 }
 
@@ -53,6 +55,19 @@ $shimmer-block-width: 40%;
 
   &.is-expanded {
     display: table-row;
+    border-bottom: 1px solid $row-bottom-border-color;
+  }
+}
+
+.ams-table-cell {
+  overflow: visible;
+
+  &:first-child {
+    padding-left: $spacer-3;
+  }
+
+  &:last-child {
+    padding-right: $spacer-3;
   }
 }
 

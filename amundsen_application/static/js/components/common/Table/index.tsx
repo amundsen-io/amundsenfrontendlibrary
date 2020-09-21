@@ -30,7 +30,7 @@ export interface TableOptions {
 
 export interface TableProps {
   columns: TableColumn[];
-  data: [];
+  data: any[];
   options?: TableOptions;
 }
 
@@ -148,7 +148,11 @@ const Table: React.FC<TableProps> = ({
       return (
         <React.Fragment key={`index:${index}`}>
           <tr
-            className="ams-table-row"
+            className={`ams-table-row ${
+              expandRow && expandedRows.includes(index)
+                ? 'is-child-expanded'
+                : ''
+            }`}
             key={`index:${index}`}
             style={rowStyles}
           >
