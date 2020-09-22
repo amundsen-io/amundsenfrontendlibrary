@@ -13,7 +13,7 @@ import { OpenRequestAction } from 'ducks/notification/types';
 import EditableSection from 'components/common/EditableSection';
 import ColumnStats from '../ColumnStats';
 import ColumnDescEditableText from '../ColumnDescEditableText';
-import ColumnType from './ColumnType';
+import ColumnType from '../ColumnList/ColumnType';
 
 import './styles.scss';
 

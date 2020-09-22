@@ -8,7 +8,7 @@ import { OpenRequestAction } from 'ducks/notification/types';
 
 import EditableSection from 'components/common/EditableSection';
 import ColumnDescEditableText from 'pages/TableDetailPage/ColumnDescEditableText';
-import ColumnType from 'pages/TableDetailPage/ColumnListItem/ColumnType';
+import ColumnType from 'pages/TableDetailPage/ColumnList/ColumnType';
 
 import { logAction } from 'ducks/utilMethods';
 import { formatDate } from 'utils/dateUtils';

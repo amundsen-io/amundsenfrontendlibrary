@@ -12,7 +12,7 @@ import ColumnStats from '../ColumnStats';
 import ColumnDescEditableText from '../ColumnDescEditableText';
 import { ColumnListItem, ColumnListItemProps } from '.';
 
-import ColumnType from './ColumnType';
+import ColumnType from '../ColumnList/ColumnType';
 
 const logClickSpy = jest.spyOn(UtilMethods, 'logClick');
 logClickSpy.mockImplementation(() => null);
