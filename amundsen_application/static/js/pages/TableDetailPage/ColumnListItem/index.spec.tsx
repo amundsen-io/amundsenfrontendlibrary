@@ -8,7 +8,7 @@ import AppConfig from 'config/config';
 import EditableSection from 'components/common/EditableSection';
 import * as UtilMethods from 'ducks/utilMethods';
 import { RequestMetadataType } from 'interfaces/Notifications';
-import ColumnStats from '../ColumnStats';
+import ColumnStats from '../ColumnList/ColumnStats';
 import ColumnDescEditableText from '../ColumnDescEditableText';
 import { ColumnListItem, ColumnListItemProps } from '.';
 
