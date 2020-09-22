@@ -8,6 +8,7 @@ import { OpenRequestAction } from 'ducks/notification/types';
 
 import EditableSection from 'components/common/EditableSection';
 import ColumnDescEditableText from 'pages/TableDetailPage/ColumnDescEditableText';
+import ColumnType from 'pages/TableDetailPage/ColumnListItem/ColumnType';
 
 import { formatDate } from 'utils/dateUtils';
 import { notificationsEnabled, getMaxLength } from 'config/config-utils';
@@ -41,18 +42,29 @@ type ContentType = {
   description: string;
 };
 
+type DatatypeType = {
+  name: string;
+  database: string;
+  type: string;
+};
+
+type StatType = {
+  end_epoch: number;
+  start_epoch: number;
+  stat_type: string;
+  stat_val: string;
+};
+
 type FormattedDataType = {
   content: ContentType;
-  col_type: string;
-  usage: string;
+  type: DatatypeType;
+  usage: string | null;
+  stats: StatType | null;
   action: string;
   editText: string;
   editUrl: string;
-  stats: any;
   index: number;
-  shouldRenderDescription: boolean;
   isEditable: boolean;
-  isDescriptionEditable: boolean;
 };
 
 type ExpandedRowProps = {
@@ -84,31 +96,49 @@ const getStatsInfoText = (startEpoch: number, endEpoch: number) => {
 // @ts-ignore
 const ExpandedRowComponent: React.FC<ExpandedRowProps> = (
   rowValue: FormattedDataType
-) => (
-  <div className="expanded-row-container">
-    {rowValue.stats && (
-      <div className="stat-collection-info">
-        <span className="title-3">Column Statistics&nbsp;</span>
-        {getStatsInfoText(rowValue.stats.start_epoch, rowValue.stats.end_epoch)}
-      </div>
-    )}
-    {(rowValue.shouldRenderDescription || rowValue.isDescriptionEditable) && (
-      <EditableSection
-        title={EDITABLE_SECTION_TITLE}
-        readOnly={!rowValue.isEditable}
-        editText={rowValue.editText}
-        editUrl={rowValue.editUrl}
-      >
-        <ColumnDescEditableText
-          columnIndex={rowValue.index}
-          editable={rowValue.isEditable}
-          maxLength={getMaxLength('columnDescLength')}
-          value={rowValue.content.description}
-        />
-      </EditableSection>
-    )}
-  </div>
-);
+) => {
+  const shouldRenderDescription = () => {
+    const { content, editText, editUrl, isEditable } = rowValue;
+
+    if (content.description) {
+      return true;
+    }
+    if (!editText && !editUrl && !isEditable) {
+      return false;
+    }
+
+    return true;
+  };
+
+  return (
+    <div className="expanded-row-container">
+      {rowValue.stats && (
+        <div className="stat-collection-info">
+          <span className="title-3">Column Statistics&nbsp;</span>
+          {getStatsInfoText(
+            rowValue.stats.start_epoch,
+            rowValue.stats.end_epoch
+          )}
+        </div>
+      )}
+      {shouldRenderDescription() && (
+        <EditableSection
+          title={EDITABLE_SECTION_TITLE}
+          readOnly={!rowValue.isEditable}
+          editText={rowValue.editText}
+          editUrl={rowValue.editUrl}
+        >
+          <ColumnDescEditableText
+            columnIndex={rowValue.index}
+            editable={rowValue.isEditable}
+            maxLength={getMaxLength('columnDescLength')}
+            value={rowValue.content.description}
+          />
+        </EditableSection>
+      )}
+    </div>
+  );
+};
 
 const ColumnList: React.FC<ColumnListProps> = ({
   columns,
@@ -134,22 +164,31 @@ const ColumnList: React.FC<ColumnListProps> = ({
     />
   ));
 
+  let hasStats = true;
   const formattedData: FormattedDataType[] = columns.map((item, index) => {
+    const hasItemStats = !!item.stats.length;
+
+    if (!hasItemStats) {
+      hasStats = false;
+    }
+
     return {
       content: {
         title: item.name,
         description: item.description,
       },
-      col_type: item.col_type,
-      usage: item.stats[0].stat_val,
-      stats: item.stats[0],
+      type: {
+        type: item.col_type,
+        name: item.name,
+        database,
+      },
+      usage: hasItemStats ? item.stats[0].stat_val : null,
+      stats: hasItemStats ? item.stats[0] : null,
       action: item.name,
-      shouldRenderDescription: !!item.description,
       isEditable: item.is_editable,
       editText,
       editUrl,
       index,
-      isDescriptionEditable: !editText && !editUrl && !item.is_editable,
     };
   });
 
@@ -166,16 +205,30 @@ const ColumnList: React.FC<ColumnListProps> = ({
     },
     {
       title: 'Type',
-      field: 'col_type',
-      component: (type) => <p className="resource-type">{type}</p>,
-    },
-    {
-      title: 'Usage',
-      field: 'usage',
-      horAlign: 'right',
-      component: (usage) => <p className="resource-type">{usage}</p>,
+      field: 'type',
+      component: (type) => (
+        <div className="resource-type">
+          <ColumnType
+            type={type.type}
+            database={type.database}
+            columnName={type.name}
+          />
+        </div>
+      ),
     },
   ];
+
+  if (hasStats) {
+    formattedColumns = [
+      ...formattedColumns,
+      {
+        title: 'Usage',
+        field: 'usage',
+        horAlign: 'right',
+        component: (usage) => <p className="resource-type">{usage}</p>,
+      },
+    ];
+  }
 
   if (notificationsEnabled()) {
     formattedColumns = [
