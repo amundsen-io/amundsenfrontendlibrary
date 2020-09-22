@@ -10,6 +10,7 @@ import EditableSection from 'components/common/EditableSection';
 import ColumnDescEditableText from 'pages/TableDetailPage/ColumnDescEditableText';
 import ColumnType from 'pages/TableDetailPage/ColumnListItem/ColumnType';
 
+import { logAction } from 'ducks/utilMethods';
 import { formatDate } from 'utils/dateUtils';
 import { notificationsEnabled, getMaxLength } from 'config/config-utils';
 import { TableColumn, RequestMetadataType } from 'interfaces';
@@ -72,6 +73,15 @@ type ExpandedRowProps = {
   index: number;
 };
 
+const handleRowExpand = (rowValues) => {
+  logAction({
+    command: 'click',
+    label: `${rowValues.content.title} ${rowValues.type.type}`,
+    target_id: `column::${rowValues.content.title}`,
+    target_type: 'column stats',
+  });
+};
+
 const getStatsInfoText = (startEpoch: number, endEpoch: number) => {
   const startDate = startEpoch
     ? formatDate({ epochTimestamp: startEpoch })
@@ -112,15 +122,6 @@ const ExpandedRowComponent: React.FC<ExpandedRowProps> = (
 
   return (
     <div className="expanded-row-container">
-      {rowValue.stats && (
-        <div className="stat-collection-info">
-          <span className="title-3">Column Statistics&nbsp;</span>
-          {getStatsInfoText(
-            rowValue.stats.start_epoch,
-            rowValue.stats.end_epoch
-          )}
-        </div>
-      )}
       {shouldRenderDescription() && (
         <EditableSection
           title={EDITABLE_SECTION_TITLE}
@@ -135,6 +136,15 @@ const ExpandedRowComponent: React.FC<ExpandedRowProps> = (
             value={rowValue.content.description}
           />
         </EditableSection>
+      )}
+      {rowValue.stats && (
+        <div className="stat-collection-info">
+          <span className="title-3">Column Statistics&nbsp;</span>
+          {getStatsInfoText(
+            rowValue.stats.start_epoch,
+            rowValue.stats.end_epoch
+          )}
+        </div>
       )}
     </div>
   );
@@ -276,6 +286,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
           rowHeight: 72,
           emptyMessage: EMPTY_MESSAGE,
           expandRow: ExpandedRowComponent,
+          onExpand: handleRowExpand,
           tableClassName: 'table-detail-table',
         }}
       />

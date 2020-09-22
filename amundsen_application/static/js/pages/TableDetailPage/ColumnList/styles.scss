@@ -46,6 +46,14 @@
     }
   }
 
+  .ams-table-header {
+    background-color: white;
+  }
+
+  .ams-table-row.is-child-expanded .column-desc {
+    display: none;
+  }
+
   .expanded-row-container {
     padding-bottom: $spacer-2;
   }
