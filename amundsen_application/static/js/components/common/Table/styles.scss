@@ -12,6 +12,7 @@ $shimmer-block-height: 16px;
 $shimmer-block-width: 40%;
 
 $table-header-bottom-border-color: $gray15;
+$table-header-background-color: $gray5;
 $row-bottom-border-color: $gray10;
 
 .ams-table {
@@ -24,7 +25,7 @@ $row-bottom-border-color: $gray10;
 .ams-table-header {
   @extend %text-caption-w2;
 
-  background-color: $gray5;
+  background-color: $table-header-background-color;
   color: $text-secondary;
   border-bottom: $table-header-border-width solid
     $table-header-bottom-border-color;

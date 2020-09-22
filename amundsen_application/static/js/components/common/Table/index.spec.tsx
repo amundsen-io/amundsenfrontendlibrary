@@ -623,7 +623,7 @@ describe('Table', () => {
               const expected = columns.length + 1;
               const actual = wrapper
                 .find('.ams-table-body .ams-table-expanded-row .ams-table-cell')
-                .get(0).props.colSpan;
+                .get(1).props.colSpan;
 
               expect(actual).toEqual(expected);
             });
@@ -785,6 +785,203 @@ describe('Table', () => {
           const actual = wrapper.find(
             '.ams-table-body .ams-table-expanded-row.is-expanded'
           ).length;
+
+          expect(actual).toEqual(expected);
+        });
+      });
+    });
+
+    describe('when onExpand is passed', () => {
+      const { columns, data } = dataBuilder.withCollapsedRow().build();
+      const expandRowComponent = (rowValue, index) => (
+        <strong>
+          {index}:{rowValue.value}
+        </strong>
+      );
+
+      describe('when clicking on expand button', () => {
+        it('calls the onExpand handler', () => {
+          const onExpandSpy = jest.fn();
+          const { wrapper } = setup({
+            data,
+            columns,
+            options: {
+              expandRow: expandRowComponent,
+              onExpand: onExpandSpy,
+            },
+          });
+          const expected = 1;
+
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(0)
+            .simulate('click');
+
+          const actual = onExpandSpy.mock.calls.length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        it('calls the onExpand handler with the row values and the index', () => {
+          const onExpandSpy = jest.fn();
+          const { wrapper } = setup({
+            data,
+            columns,
+            options: {
+              expandRow: expandRowComponent,
+              onExpand: onExpandSpy,
+            },
+          });
+          const expected = [data[0], 0];
+
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(0)
+            .simulate('click');
+
+          const actual = onExpandSpy.mock.calls[0];
+          expect(actual).toEqual(expected);
+        });
+      });
+
+      describe('when clicking on multiple expand buttons', () => {
+        it('calls the onExpand handler several times', () => {
+          const onExpandSpy = jest.fn();
+          const { wrapper } = setup({
+            data,
+            columns,
+            options: {
+              expandRow: expandRowComponent,
+              onExpand: onExpandSpy,
+            },
+          });
+          const expected = 2;
+
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(0)
+            .simulate('click');
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(1)
+            .simulate('click');
+
+          const actual = onExpandSpy.mock.calls.length;
+
+          expect(actual).toEqual(expected);
+        });
+      });
+
+      describe('when clicking a second time on the expand button', () => {
+        it('does not call the onExpand handler', () => {
+          const onExpandSpy = jest.fn();
+          const { wrapper } = setup({
+            data,
+            columns,
+            options: {
+              expandRow: expandRowComponent,
+              onExpand: onExpandSpy,
+            },
+          });
+          const expected = 1;
+
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(0)
+            .simulate('click');
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(0)
+            .simulate('click');
+
+          const actual = onExpandSpy.mock.calls.length;
+
+          expect(actual).toEqual(expected);
+        });
+      });
+    });
+
+    describe('when onCollapse is passed', () => {
+      const { columns, data } = dataBuilder.withCollapsedRow().build();
+      const expandRowComponent = (rowValue, index) => (
+        <strong>
+          {index}:{rowValue.value}
+        </strong>
+      );
+
+      describe('when clicking on expand button', () => {
+        it('does not call the onCollapse handler', () => {
+          const onCollapseSpy = jest.fn();
+          const { wrapper } = setup({
+            data,
+            columns,
+            options: {
+              expandRow: expandRowComponent,
+              onCollapse: onCollapseSpy,
+            },
+          });
+          const expected = 0;
+
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(0)
+            .simulate('click');
+
+          const actual = onCollapseSpy.mock.calls.length;
+
+          expect(actual).toEqual(expected);
+        });
+      });
+
+      describe('when clicking a second time on the expand button', () => {
+        it('calls the onCollapse handler', () => {
+          const onCollapseSpy = jest.fn();
+          const { wrapper } = setup({
+            data,
+            columns,
+            options: {
+              expandRow: expandRowComponent,
+              onCollapse: onCollapseSpy,
+            },
+          });
+          const expected = 1;
+
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(0)
+            .simulate('click');
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(0)
+            .simulate('click');
+
+          const actual = onCollapseSpy.mock.calls.length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        it('calls the onCollapse handler with the row values and the index', () => {
+          const onCollapseSpy = jest.fn();
+          const { wrapper } = setup({
+            data,
+            columns,
+            options: {
+              expandRow: expandRowComponent,
+              onCollapse: onCollapseSpy,
+            },
+          });
+          const expected = [data[0], 0];
+
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(0)
+            .simulate('click');
+          wrapper
+            .find('.ams-table-body .ams-table-expanding-button')
+            .at(0)
+            .simulate('click');
+
+          const actual = onCollapseSpy.mock.calls[0];
 
           expect(actual).toEqual(expected);
         });
