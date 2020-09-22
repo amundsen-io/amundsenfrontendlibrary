@@ -74,6 +74,8 @@ type ExpandedRowProps = {
   index: number;
 };
 
+const SHOW_STATS_THRESHOLD = 1;
+
 const handleRowExpand = (rowValues) => {
   logAction({
     command: 'click',
@@ -170,13 +172,8 @@ const ColumnList: React.FC<ColumnListProps> = ({
     />
   ));
 
-  let hasStats = true;
   const formattedData: FormattedDataType[] = columns.map((item, index) => {
     const hasItemStats = !!item.stats.length;
-
-    if (!hasItemStats) {
-      hasStats = false;
-    }
 
     return {
       content: {
@@ -188,7 +185,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
         name: item.name,
         database,
       },
-      usage: hasItemStats ? item.stats[0].stat_val : null,
+      usage: hasItemStats ? item.stats[0].stat_val : '',
       stats: hasItemStats ? item.stats[0] : null,
       action: item.name,
       isEditable: item.is_editable,
@@ -197,6 +194,8 @@ const ColumnList: React.FC<ColumnListProps> = ({
       index,
     };
   });
+  const statsCount = formattedData.filter((item) => !!item.stats).length;
+  const hasStats = statsCount > SHOW_STATS_THRESHOLD;
 
   let formattedColumns: ReusableTableColumn[] = [
     {
