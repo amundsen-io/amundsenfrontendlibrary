@@ -19,15 +19,16 @@ import Table, {
   TableColumn as ReusableTableColumn,
 } from 'components/common/Table';
 import ColumnListItem from '../ColumnListItem';
+import {
+  MORE_BUTTON_TEXT,
+  REQUEST_DESCRIPTION_TEXT,
+  EMPTY_MESSAGE,
+  EDITABLE_SECTION_TITLE,
+} from './constants';
 
 import './styles.scss';
 
-const MORE_BUTTON_TEXT = 'More options';
-const REQUEST_DESCRIPTION_TEXT = 'Request Column Description';
-const EMPTY_MESSAGE = 'There are no available columns for this table';
-const EDITABLE_SECTION_TITLE = 'Edit Description';
-
-interface ColumnListProps {
+export interface ColumnListProps {
   columns?: TableColumn[];
   openRequestDescriptionDialog: (
     requestMetadataType: RequestMetadataType,
@@ -157,11 +158,6 @@ const ColumnList: React.FC<ColumnListProps> = ({
   editUrl,
   openRequestDescriptionDialog,
 }: ColumnListProps) => {
-  if (columns.length < 1) {
-    return <div />;
-    // ToDo: return No Results Message
-  }
-
   const columnList = columns.map((entry, index) => (
     <ColumnListItem
       openRequestDescriptionDialog={openRequestDescriptionDialog}
@@ -293,12 +289,6 @@ const ColumnList: React.FC<ColumnListProps> = ({
       <ul className="column-list list-group">{columnList}</ul>
     </>
   );
-};
-
-ColumnList.defaultProps = {
-  columns: [] as TableColumn[],
-  editText: '',
-  editUrl: '',
 };
 
 export default ColumnList;
