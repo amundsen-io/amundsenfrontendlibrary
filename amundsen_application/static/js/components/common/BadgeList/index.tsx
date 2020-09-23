@@ -6,10 +6,11 @@ import * as React from 'react';
 import ClickableBadge from 'components/common/Badges';
 import { getBadgeConfig } from 'config/config-utils';
 import { BadgeStyle } from 'config/config-types';
-import { Badge } from 'interfaces/Tags';
+import { Badge } from 'interfaces/Badges';
+import { debug } from 'console';
 
 export interface BadgeListProps {
-  badges: any[]; // TODO replace with new badges later @allisonsuarez
+  badges: any[];
 }
 
 /*
@@ -23,19 +24,21 @@ function mapBadgeStyle(badgeType: string): BadgeStyle {
 }
 
 const BadgeList: React.FC<BadgeListProps> = ({ badges }: BadgeListProps) => {
+  
   return (
     <span className="badge-list">
       {badges.map((badge, index) => {
-        if (badge.tag_name) {
-          const badgeConfig = getBadgeConfig(badge.tag_name);
-          return (
-            <ClickableBadge
-              text={badgeConfig.displayName}
-              labelStyle={badgeConfig.style}
-              key={`badge-${index}`}
-            />
-          );
-        }
+        // if (badge.tag_name) {
+        //   const badgeConfig = getBadgeConfig(badge.tag_name);
+        //   return (
+        //     <ClickableBadge
+        //       text={badgeConfig.displayName}
+        //       labelStyle={badgeConfig.style}
+        //       key={`badge-${index}`}
+        //     />
+        //   );
+        // }
+        {badges[0].tag_name}
         if (badge.badge_name) {
           return (
             <ClickableBadge

@@ -31,6 +31,17 @@ class Tag:
     category: Optional[str] = None
     badge_type: Optional[str] = None
 
+@attr.s(auto_attribs=True, kw_only=True)
+class Badge:
+    badge_name: Optional[str] = None
+    category: Optional[str] = None
+    badge_type: Optional[str] = None
+
+class BadgeSchema(AttrsSchema):
+    class Meta:
+        target = Badge
+        register_as_scheme = True
+
 
 class TagSchema(AttrsSchema):
     class Meta:
@@ -145,7 +156,7 @@ class Table:
     schema: str
     name: str
     tags: List[Tag] = []
-    badges: Optional[List[Tag]] = []
+    badges: Optional[List[Badge]] = []
     table_readers: List[Reader] = []
     description: Optional[str] = None
     columns: List[Column]

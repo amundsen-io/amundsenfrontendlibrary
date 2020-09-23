@@ -7,10 +7,10 @@ import { TagType } from '../../interfaces/Tags';
 
 export const tableMetadata: TableMetadata = {
   badges: [
-    {
-      tag_name: 'ga',
-      tag_type: TagType.BADGE,
-    },
+    // {
+    //   tag_name: 'ga',
+    //   tag_type: TagType.BADGE,
+    // },
   ],
   cluster: 'gold',
   columns: [
