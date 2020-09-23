@@ -29,7 +29,7 @@ import {
 import './styles.scss';
 
 export interface ColumnListProps {
-  columns?: TableColumn[];
+  columns: TableColumn[];
   openRequestDescriptionDialog: (
     requestMetadataType: RequestMetadataType,
     columnName: string
