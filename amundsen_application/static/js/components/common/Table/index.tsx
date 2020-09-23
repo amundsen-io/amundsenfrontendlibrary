@@ -25,8 +25,8 @@ export interface TableOptions {
   numLoadingBlocks?: number;
   rowHeight?: number;
   expandRow?: (rowValue: any, index: number) => React.ReactNode;
-  onExpand?: (rowValue: any, index: number) => void;
-  onCollapse?: (rowValue: any, index: number) => void;
+  onExpand?: (rowValues: any, index: number) => void;
+  onCollapse?: (rowValues: any, index: number) => void;
   emptyMessage?: string;
 }
 
@@ -93,8 +93,8 @@ type ExpandingCellProps = {
   expandedRows: RowIndex[];
   rowValues: any;
   onClick: (index) => void;
-  onExpand: (rowValues, index) => void;
-  onCollapse: (rowValues, index) => void;
+  onExpand?: (rowValues: any, index: number) => void;
+  onCollapse?: (rowValues: any, index: number) => void;
 };
 const ExpandingCell: React.FC<ExpandingCellProps> = ({
   index,

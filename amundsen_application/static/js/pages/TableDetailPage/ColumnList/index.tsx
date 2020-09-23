@@ -63,8 +63,8 @@ type FormattedDataType = {
   usage: string | null;
   stats: StatType | null;
   action: string;
-  editText: string;
-  editUrl: string;
+  editText?: string;
+  editUrl?: string;
   index: number;
   isEditable: boolean;
 };
@@ -160,17 +160,17 @@ const ColumnList: React.FC<ColumnListProps> = ({
   editUrl,
   openRequestDescriptionDialog,
 }: ColumnListProps) => {
-  const columnList = columns.map((entry, index) => (
-    <ColumnListItem
-      openRequestDescriptionDialog={openRequestDescriptionDialog}
-      key={`column:${index}`}
-      data={entry}
-      database={database}
-      index={index}
-      editText={editText}
-      editUrl={editUrl}
-    />
-  ));
+  // const columnList = columns.map((entry, index) => (
+  //   <ColumnListItem
+  //     openRequestDescriptionDialog={openRequestDescriptionDialog}
+  //     key={`column:${index}`}
+  //     data={entry}
+  //     database={database}
+  //     index={index}
+  //     editText={editText}
+  //     editUrl={editUrl}
+  //   />
+  // ));
 
   const formattedData: FormattedDataType[] = columns.map((item, index) => {
     const hasItemStats = !!item.stats.length;
@@ -258,11 +258,12 @@ const ColumnList: React.FC<ColumnListProps> = ({
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <MenuItem
-                  onClick={openRequestDescriptionDialog.bind(
-                    null,
-                    RequestMetadataType.COLUMN_DESCRIPTION,
-                    name
-                  )}
+                  onClick={() => {
+                    openRequestDescriptionDialog(
+                      RequestMetadataType.COLUMN_DESCRIPTION,
+                      name
+                    );
+                  }}
                 >
                   {REQUEST_DESCRIPTION_TEXT}
                 </MenuItem>
