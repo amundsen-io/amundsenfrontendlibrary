@@ -24,6 +24,7 @@ import {
   REQUEST_DESCRIPTION_TEXT,
   EMPTY_MESSAGE,
   EDITABLE_SECTION_TITLE,
+  COLUMN_STATS_TITLE,
 } from './constants';
 
 import './styles.scss';
@@ -142,7 +143,7 @@ const ExpandedRowComponent: React.FC<ExpandedRowProps> = (
       )}
       {rowValue.stats && (
         <div className="stat-collection-info">
-          <span className="title-3">Column Statistics&nbsp;</span>
+          <span className="stat-title">{COLUMN_STATS_TITLE} </span>
           {getStatsInfoText(
             rowValue.stats.start_epoch,
             rowValue.stats.end_epoch

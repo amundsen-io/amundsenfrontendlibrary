@@ -2,9 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 
 @import 'variables';
+@import 'typography';
 
 .column-list {
   margin: 0;
+}
+
+.stat-title {
+  @extend %text-title-w3;
 }
 
 // Modification for Table to support dropdowns
