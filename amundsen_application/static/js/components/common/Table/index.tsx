@@ -174,7 +174,7 @@ const Table: React.FC<TableProps> = ({
           <tr
             className={`ams-table-row ${
               expandRow && expandedRows.includes(index)
-                ? 'is-child-expanded'
+                ? 'has-child-expanded'
                 : ''
             }`}
             key={`index:${index}`}
@@ -232,7 +232,7 @@ const Table: React.FC<TableProps> = ({
               key={`expandedIndex:${index}`}
             >
               <td className="ams-table-cell">
-                {/* Placeholder for the expanded arrow */}
+                {/* Placeholder for the collapse/expand cell */}
               </td>
               <td className="ams-table-cell" colSpan={fields.length + 1}>
                 {expandRow(item, index)}
