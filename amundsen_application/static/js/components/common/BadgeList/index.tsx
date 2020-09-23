@@ -24,33 +24,26 @@ function mapBadgeStyle(badgeType: string): BadgeStyle {
 }
 
 const BadgeList: React.FC<BadgeListProps> = ({ badges }: BadgeListProps) => {
-  
   return (
     <span className="badge-list">
       {badges.map((badge, index) => {
-        // if (badge.tag_name) {
-        //   const badgeConfig = getBadgeConfig(badge.tag_name);
-        //   return (
-        //     <ClickableBadge
-        //       text={badgeConfig.displayName}
-        //       labelStyle={badgeConfig.style}
-        //       key={`badge-${index}`}
-        //     />
-        //   );
-        // }
-        {badges[0].tag_name}
-        if (badge.badge_name) {
-          return (
-            <ClickableBadge
-              text={badge.badge_name}
-              labelStyle={mapBadgeStyle(badge.badge_type)}
-              key={`badge-${index}`}
-            />
-          );
+        let badgeConfig;
+        if (badge.tag_name) {
+          badgeConfig = getBadgeConfig(badge.tag_name);
         }
+        else if (badge.badge_name) {
+          badgeConfig = getBadgeConfig(badge.badge_name);
+        }
+        return (
+          <ClickableBadge
+            text={badgeConfig.displayName}
+            labelStyle={badgeConfig.style}
+            key={`badge-${index}`}
+          />
+        );
       })}
     </span>
   );
-};
+}
 
 export default BadgeList;
