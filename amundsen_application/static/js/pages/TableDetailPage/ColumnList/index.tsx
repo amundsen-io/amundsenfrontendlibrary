@@ -285,7 +285,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
           tableClassName: 'table-detail-table',
         }}
       />
-      <ul className="column-list list-group">{columnList}</ul>
+      {/* <ul className="column-list list-group">{columnList}</ul> */}
     </>
   );
 };
