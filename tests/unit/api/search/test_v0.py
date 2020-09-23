@@ -11,7 +11,7 @@ from unittest.mock import Mock, patch
 
 from amundsen_application import create_app
 from amundsen_application.api.search.v0 import SEARCH_DASHBOARD_ENDPOINT, SEARCH_DASHBOARD_FILTER_ENDPOINT, \
-    SEARCH_TABLE_ENDPOINT, SEARCH_TABLE_FILTER_ENDPOINT, SEARCH_USER_ENDPOINT, search_table
+    SEARCH_TABLE_ENDPOINT, SEARCH_TABLE_FILTER_ENDPOINT, SEARCH_USER_ENDPOINT
 
 local_app = create_app('amundsen_application.config.TestConfig', 'tests/templates')
 
