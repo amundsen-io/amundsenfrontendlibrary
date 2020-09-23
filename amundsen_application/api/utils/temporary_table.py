@@ -27,15 +27,11 @@ class ReaderSchema(AttrsSchema):
 class Tag:
     tag_type: Optional[str] = None
     tag_name: Optional[str] = None
-    badge_name: Optional[str] = None
-    category: Optional[str] = None
-    badge_type: Optional[str] = None
 
 @attr.s(auto_attribs=True, kw_only=True)
 class Badge:
     badge_name: Optional[str] = None
     category: Optional[str] = None
-    badge_type: Optional[str] = None
 
 class BadgeSchema(AttrsSchema):
     class Meta:

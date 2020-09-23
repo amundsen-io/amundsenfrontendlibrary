@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export interface Badge {
-    badgeName: string;
-    category: string;
+    badge_name?: string;
+    category?: string;
+    tag_name?: string;
   }

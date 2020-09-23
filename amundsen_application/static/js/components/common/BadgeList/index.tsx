@@ -5,9 +5,21 @@ import * as React from 'react';
 
 import ClickableBadge from 'components/common/Badges';
 import { getBadgeConfig } from 'config/config-utils';
+import { Badge } from 'interfaces/Badges';
+
+// type BadgeSearch = {
+//   tag_name: string;
+// };
+// type BadgeMetadata = {
+//   badge_name: string;
+//   category: string;
+// };
+
+// type Badges = BadgeSearch | BadgeMetadata;
+
 
 export interface BadgeListProps {
-  badges: any[];
+  badges: Badge[];
 }
 
 const BadgeList: React.FC<BadgeListProps> = ({ badges }: BadgeListProps) => {
