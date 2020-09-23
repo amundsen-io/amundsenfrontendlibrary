@@ -195,7 +195,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
     };
   });
   const statsCount = formattedData.filter((item) => !!item.stats).length;
-  const hasStats = statsCount > SHOW_STATS_THRESHOLD;
+  const hasStats = statsCount >= SHOW_STATS_THRESHOLD;
 
   let formattedColumns: ReusableTableColumn[] = [
     {
@@ -230,7 +230,9 @@ const ColumnList: React.FC<ColumnListProps> = ({
         title: 'Usage',
         field: 'usage',
         horAlign: 'right',
-        component: (usage) => <p className="resource-type">{usage}</p>,
+        component: (usage) => (
+          <p className="resource-type usage-value">{usage}</p>
+        ),
       },
     ];
   }
