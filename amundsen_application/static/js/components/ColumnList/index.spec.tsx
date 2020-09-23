@@ -61,10 +61,10 @@ describe('ColumnList', () => {
       it('should render the custom empty messagee', () => {
         const { wrapper } = setup({ columns });
         const expected = EMPTY_MESSAGE;
-
         const actual = wrapper
           .find('.table-detail-table .ams-empty-message-cell')
           .text();
+
         expect(actual).toEqual(expected);
       });
     });
