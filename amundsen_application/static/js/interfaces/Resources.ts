@@ -27,6 +27,7 @@ export interface DashboardResource extends Resource {
   url: string;
   // Bookmark logic is cleaner if all resources can settle on either "key" or "uri"
   key?: string;
+  badges?: Badge[];
 }
 
 export interface TableResource extends Resource {

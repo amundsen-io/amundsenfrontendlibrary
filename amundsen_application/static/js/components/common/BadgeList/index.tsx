@@ -5,22 +5,9 @@ import * as React from 'react';
 
 import ClickableBadge from 'components/common/Badges';
 import { getBadgeConfig } from 'config/config-utils';
-import { BadgeStyle } from 'config/config-types';
-import { Badge } from 'interfaces/Badges';
-import { debug } from 'console';
 
 export interface BadgeListProps {
   badges: any[];
-}
-
-/*
- * maps badge type to a badge style
- */
-function mapBadgeStyle(badgeType: string): BadgeStyle {
-  if (badgeType === 'negative') return BadgeStyle.DANGER;
-  if (badgeType === 'positive') return BadgeStyle.SUCCESS;
-  if (badgeType === 'warning') return BadgeStyle.WARNING;
-  return BadgeStyle.DEFAULT;
 }
 
 const BadgeList: React.FC<BadgeListProps> = ({ badges }: BadgeListProps) => {
@@ -28,9 +15,11 @@ const BadgeList: React.FC<BadgeListProps> = ({ badges }: BadgeListProps) => {
     <span className="badge-list">
       {badges.map((badge, index) => {
         let badgeConfig;
+        // search badges with just name
         if (badge.tag_name) {
           badgeConfig = getBadgeConfig(badge.tag_name);
         }
+        // metadata badges with name and category
         else if (badge.badge_name) {
           badgeConfig = getBadgeConfig(badge.badge_name);
         }
@@ -44,6 +33,6 @@ const BadgeList: React.FC<BadgeListProps> = ({ badges }: BadgeListProps) => {
       })}
     </span>
   );
-}
+};
 
 export default BadgeList;
