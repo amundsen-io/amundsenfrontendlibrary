@@ -10,14 +10,14 @@ import EditableSection from 'components/common/EditableSection';
 import Table, {
   TableColumn as ReusableTableColumn,
 } from 'components/common/Table';
-import ColumnDescEditableText from 'pages/TableDetailPage/ColumnDescEditableText';
-import ColumnType from 'pages/TableDetailPage/ColumnList/ColumnType';
 
 import { logAction } from 'ducks/utilMethods';
 import { formatDate } from 'utils/dateUtils';
 import { notificationsEnabled, getMaxLength } from 'config/config-utils';
-
 import { TableColumn, RequestMetadataType } from 'interfaces';
+
+import ColumnType from './ColumnType';
+import ColumnDescEditableText from './ColumnDescEditableText';
 
 import {
   MORE_BUTTON_TEXT,

@@ -41,7 +41,7 @@ import {
   RequestMetadataType,
 } from 'interfaces';
 
-import ColumnList from './ColumnList';
+import ColumnList from '../../components/ColumnList';
 import DataPreviewButton from './DataPreviewButton';
 import ExploreButton from './ExploreButton';
 import FrequentUsers from './FrequentUsers';
