@@ -82,6 +82,7 @@ $row-bottom-border-color: $gray10;
     vertical-align: bottom;
   }
 
+  // TODO: Fix this so it is accessible
   &:focus {
     outline: none;
   }

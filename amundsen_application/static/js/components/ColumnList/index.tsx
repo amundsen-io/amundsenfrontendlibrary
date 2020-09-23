@@ -86,6 +86,7 @@ const handleRowExpand = (rowValues) => {
   });
 };
 
+// TODO: Move into utils
 const getStatsInfoText = (startEpoch: number, endEpoch: number) => {
   const startDate = startEpoch
     ? formatDate({ epochTimestamp: startEpoch })
