@@ -321,8 +321,7 @@ class SearchUser(unittest.TestCase):
  
             users = data.get('users')
             self.assertEqual(users.get('total_results'), self.mock_search_user_results.get('total_results'))
-            self.assertDictContainsSubset(self.expected_parsed_search_user_results[0], users.get('results')[0])
- 
+
     @responses.activate
     def test_search_user_fail_on_non_200_response(self) -> None:
         """
@@ -419,7 +418,6 @@ class SearchDashboard(unittest.TestCase):
             self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
  
     @responses.activate
-    @patch('amundsen_application.api.search.v0.transform_filters')
     @patch('amundsen_application.api.search.v0.transform_filters')
     def test_calls_transform_filters(self, transform_filter_mock: Mock) -> None:
         """
