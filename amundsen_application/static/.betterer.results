@@ -325,8 +325,8 @@ exports[`strict null compilation`] = {
     "js/pages/TableDetailPage/ColumnList/ColumnStats/index.spec.tsx:1228258528": [
       [90, 39, 4, "Argument of type \'null\' is not assignable to parameter of type \'number\'.", "2087897566"]
     ],
-    "js/pages/TableDetailPage/ColumnList/index.tsx:3985904274": [
-      [174, 45, 7, "Object is possibly \'undefined\'.", "3718923584"]
+    "js/pages/TableDetailPage/ColumnList/index.tsx:3003319870": [
+      [162, 45, 7, "Object is possibly \'undefined\'.", "3718923584"]
     ],
     "js/pages/TableDetailPage/DataPreviewButton/index.tsx:793484139": [
       [141, 17, 16, "Object is possibly \'undefined\'.", "3451845569"],

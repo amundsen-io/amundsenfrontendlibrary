@@ -7,18 +7,18 @@ import { Dropdown, MenuItem } from 'react-bootstrap';
 import { OpenRequestAction } from 'ducks/notification/types';
 
 import EditableSection from 'components/common/EditableSection';
+import Table, {
+  TableColumn as ReusableTableColumn,
+} from 'components/common/Table';
 import ColumnDescEditableText from 'pages/TableDetailPage/ColumnDescEditableText';
 import ColumnType from 'pages/TableDetailPage/ColumnList/ColumnType';
 
 import { logAction } from 'ducks/utilMethods';
 import { formatDate } from 'utils/dateUtils';
 import { notificationsEnabled, getMaxLength } from 'config/config-utils';
+
 import { TableColumn, RequestMetadataType } from 'interfaces';
 
-import Table, {
-  TableColumn as ReusableTableColumn,
-} from 'components/common/Table';
-import ColumnListItem from '../ColumnListItem';
 import {
   MORE_BUTTON_TEXT,
   REQUEST_DESCRIPTION_TEXT,
@@ -160,18 +160,6 @@ const ColumnList: React.FC<ColumnListProps> = ({
   editUrl,
   openRequestDescriptionDialog,
 }: ColumnListProps) => {
-  // const columnList = columns.map((entry, index) => (
-  //   <ColumnListItem
-  //     openRequestDescriptionDialog={openRequestDescriptionDialog}
-  //     key={`column:${index}`}
-  //     data={entry}
-  //     database={database}
-  //     index={index}
-  //     editText={editText}
-  //     editUrl={editUrl}
-  //   />
-  // ));
-
   const formattedData: FormattedDataType[] = columns.map((item, index) => {
     const hasItemStats = !!item.stats.length;
 
@@ -276,20 +264,17 @@ const ColumnList: React.FC<ColumnListProps> = ({
   }
 
   return (
-    <>
-      <Table
-        columns={formattedColumns}
-        data={formattedData}
-        options={{
-          rowHeight: 72,
-          emptyMessage: EMPTY_MESSAGE,
-          expandRow: ExpandedRowComponent,
-          onExpand: handleRowExpand,
-          tableClassName: 'table-detail-table',
-        }}
-      />
-      {/* <ul className="column-list list-group">{columnList}</ul> */}
-    </>
+    <Table
+      columns={formattedColumns}
+      data={formattedData}
+      options={{
+        rowHeight: 72,
+        emptyMessage: EMPTY_MESSAGE,
+        expandRow: ExpandedRowComponent,
+        onExpand: handleRowExpand,
+        tableClassName: 'table-detail-table',
+      }}
+    />
   );
 };
 

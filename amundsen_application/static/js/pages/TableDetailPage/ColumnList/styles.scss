@@ -10,6 +10,8 @@
 // Modification for Table to support dropdowns
 // Extra nesting added for fixing specificity issues
 .table-detail-table {
+  margin-bottom: 0;
+
   .ams-table-body .actions .column-dropdown {
     &.open {
       background-color: $body-bg-tertiary;
