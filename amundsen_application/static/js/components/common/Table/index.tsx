@@ -4,7 +4,7 @@
 import * as React from 'react';
 
 import ShimmeringResourceLoader from '../ShimmeringResourceLoader';
-import { DownIcon, UpIcon } from '../SVGIcons';
+import { RightIcon, UpIcon } from '../SVGIcons';
 
 import './styles.scss';
 
@@ -132,7 +132,7 @@ const ExpandingCell: React.FC<ExpandingCellProps> = ({
         }}
       >
         <span className="sr-only">{EXPAND_ROW_TEXT}</span>
-        {isExpanded ? <UpIcon /> : <DownIcon />}
+        {isExpanded ? <UpIcon /> : <RightIcon />}
       </button>
     </td>
   );

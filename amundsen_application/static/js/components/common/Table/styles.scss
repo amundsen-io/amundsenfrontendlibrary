@@ -76,12 +76,17 @@ $row-bottom-border-color: $gray10;
 
 .ams-table-expanding-button {
   border: 0;
+  padding: 0;
   background-color: white;
+  margin-right: $spacer-2;
 
   svg {
     vertical-align: bottom;
   }
 
+  &:hover {
+    background-color: $gray10;
+  }
   // TODO: Fix this so it is accessible
   &:focus {
     outline: none;
