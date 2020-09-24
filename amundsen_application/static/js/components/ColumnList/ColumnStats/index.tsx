@@ -4,7 +4,7 @@
 import * as React from 'react';
 
 import { TableColumnStats } from 'interfaces/index';
-import { formatDate } from 'utils/dateUtils';
+import { getStatsInfoText } from '../utils';
 
 import './styles.scss';
 
@@ -13,25 +13,6 @@ export interface ColumnStatsProps {
 }
 
 export class ColumnStats extends React.Component<ColumnStatsProps> {
-  getStatsInfoText = (startEpoch?: number, endEpoch?: number) => {
-    const startDate = startEpoch
-      ? formatDate({ epochTimestamp: startEpoch })
-      : null;
-    const endDate = endEpoch ? formatDate({ epochTimestamp: endEpoch }) : null;
-
-    let infoText = 'Stats reflect data collected';
-    if (startDate && endDate) {
-      if (startDate === endDate) {
-        infoText = `${infoText} on ${startDate} only. (daily partition)`;
-      } else {
-        infoText = `${infoText} between ${startDate} and ${endDate}.`;
-      }
-    } else {
-      infoText = `${infoText} over a recent period of time.`;
-    }
-    return infoText;
-  };
-
   renderColumnStat = (entry: TableColumnStats) => {
     return (
       <div className="column-stat-row" key={entry.stat_type}>
@@ -55,7 +36,7 @@ export class ColumnStats extends React.Component<ColumnStatsProps> {
       <section className="column-stats">
         <div className="stat-collection-info">
           <span className="title-3">Column Statistics&nbsp;</span>
-          {this.getStatsInfoText(startEpoch, endEpoch)}
+          {getStatsInfoText(startEpoch, endEpoch)}
         </div>
         <div className="column-stats-table">
           <div className="column-stats-column">
