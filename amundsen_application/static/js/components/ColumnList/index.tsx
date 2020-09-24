@@ -189,7 +189,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
 
   let formattedColumns: ReusableTableColumn[] = [
     {
-      title: 'Column',
+      title: 'Name',
       field: 'content',
       component: ({ title, description }: ContentType) => (
         <>
