@@ -7,6 +7,7 @@ export const getStatsInfoText = (startEpoch?: number, endEpoch?: number) => {
   const endDate = endEpoch ? formatDate({ epochTimestamp: endEpoch }) : null;
 
   let infoText = 'Stats reflect data collected';
+
   if (startDate && endDate) {
     if (startDate === endDate) {
       infoText = `${infoText} on ${startDate} only. (daily partition)`;
@@ -16,5 +17,6 @@ export const getStatsInfoText = (startEpoch?: number, endEpoch?: number) => {
   } else {
     infoText = `${infoText} over a recent period of time.`;
   }
+
   return infoText;
 };
