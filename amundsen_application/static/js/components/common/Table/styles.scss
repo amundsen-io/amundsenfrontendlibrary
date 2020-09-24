@@ -84,8 +84,8 @@ $row-bottom-border-color: $gray10;
     vertical-align: bottom;
   }
 
-  &:hover {
-    background-color: $gray10;
+  &:hover svg use {
+    fill: $gray60;
   }
   // TODO: Fix this so it is accessible
   &:focus {

@@ -4,6 +4,8 @@
 @import 'variables';
 @import 'typography';
 
+$description-max-width: 700px;
+
 .column-list {
   margin: 0;
 }
@@ -57,10 +59,6 @@
     background-color: white;
   }
 
-  .ams-table-row.has-child-expanded .column-desc {
-    display: none;
-  }
-
   .expanded-row-container {
     padding-bottom: $spacer-2;
   }
@@ -77,5 +75,25 @@
 
   .markdown-wrapper p {
     margin-top: 0;
+  }
+
+  .column-desc {
+    @extend %text-body-w3;
+
+    padding-right: $spacer-1;
+    max-width: $description-max-width;
+
+    .ams-table-row.has-child-expanded & {
+      display: none;
+    }
+  }
+
+  .column-type {
+    padding-right: $spacer-1;
+  }
+
+  .actions,
+  .usage-value {
+    padding-left: $spacer-1;
   }
 }

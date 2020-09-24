@@ -194,7 +194,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
       component: ({ title, description }: ContentType) => (
         <>
           <div className="column-name">{title}</div>
-          <div className="column-desc body-3 truncated">{description}</div>
+          <div className="column-desc truncated">{description}</div>
         </>
       ),
     },
