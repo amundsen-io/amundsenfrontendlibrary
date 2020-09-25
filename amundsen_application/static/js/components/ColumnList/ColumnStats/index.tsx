@@ -6,57 +6,83 @@ import * as React from 'react';
 import { TableColumnStats } from 'interfaces/index';
 import { getStatsInfoText } from '../utils';
 
+import { COLUMN_STATS_TITLE } from '../constants';
+
 import './styles.scss';
 
 export interface ColumnStatsProps {
   stats: TableColumnStats[];
 }
 
-export class ColumnStats extends React.Component<ColumnStatsProps> {
-  renderColumnStat = (entry: TableColumnStats) => {
-    return (
-      <div className="column-stat-row" key={entry.stat_type}>
-        <div className="stat-name body-3">{entry.stat_type.toUpperCase()}</div>
-        <div className="stat-value">{entry.stat_val}</div>
+type ColumnStatRowProps = {
+  stat_type: string;
+  stat_val: string;
+};
+
+const ColumnStatRow: React.FC<ColumnStatRowProps> = ({
+  stat_type,
+  stat_val,
+}: ColumnStatRowProps) => {
+  return (
+    <div className="column-stat-row">
+      <div className="stat-name body-3">{stat_type.toUpperCase()}</div>
+      <div className="stat-value">{stat_val}</div>
+    </div>
+  );
+};
+
+const getStart = ({ start_epoch }) => start_epoch;
+const getEnd = ({ end_epoch }) => end_epoch;
+
+const ColumnStats: React.FC<ColumnStatsProps> = ({
+  stats,
+}: ColumnStatsProps) => {
+  if (stats.length === 0) {
+    return null;
+  }
+  const startEpoch = Math.min(...stats.map(getStart));
+  const endEpoch = Math.max(...stats.map(getEnd));
+
+  return (
+    <article className="column-stats">
+      <div className="stat-collection-info">
+        <span className="stat-title">{COLUMN_STATS_TITLE} </span>
+        {getStatsInfoText(startEpoch, endEpoch)}
       </div>
-    );
-  };
+      <div className="column-stats-table">
+        <div className="column-stats-column">
+          {stats.map((stat, index) => {
+            if (index % 2 === 0) {
+              return (
+                <ColumnStatRow
+                  key={stat.stat_type}
+                  stat_type={stat.stat_type}
+                  stat_val={stat.stat_val}
+                />
+              );
+            }
 
-  render = () => {
-    const { stats } = this.props;
-    if (stats.length === 0) {
-      return null;
-    }
-
-    // TODO - Move map statements to separate functions for better testing
-    const startEpoch = Math.min(...stats.map((s) => s.start_epoch));
-    const endEpoch = Math.max(...stats.map((s) => s.end_epoch));
-
-    return (
-      <section className="column-stats">
-        <div className="stat-collection-info">
-          <span className="title-3">Column Statistics&nbsp;</span>
-          {getStatsInfoText(startEpoch, endEpoch)}
+            return null;
+          })}
         </div>
-        <div className="column-stats-table">
-          <div className="column-stats-column">
-            {stats.map((stat, index) => {
-              if (index % 2 === 0) {
-                return this.renderColumnStat(stat);
-              }
-            })}
-          </div>
-          <div className="column-stats-column">
-            {this.props.stats.map((stat, index) => {
-              if (index % 2 === 1) {
-                return this.renderColumnStat(stat);
-              }
-            })}
-          </div>
+        <div className="column-stats-column">
+          {stats.map((stat, index) => {
+            if (index % 2 === 1) {
+              return (
+                <ColumnStatRow
+                  key={stat.stat_type}
+                  stat_type={stat.stat_type}
+                  stat_val={stat.stat_val}
+                />
+              );
+            }
+
+            return null;
+          })}
         </div>
-      </section>
-    );
-  };
-}
+      </div>
+    </article>
+  );
+};
 
 export default ColumnStats;

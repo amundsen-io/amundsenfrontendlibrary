@@ -12,7 +12,6 @@ import Table, {
 } from 'components/common/Table';
 
 import { logAction } from 'ducks/utilMethods';
-import { formatDate } from 'utils/dateUtils';
 import { notificationsEnabled, getMaxLength } from 'config/config-utils';
 import { TableColumn, RequestMetadataType } from 'interfaces';
 
