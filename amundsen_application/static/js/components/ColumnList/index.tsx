@@ -29,6 +29,9 @@ import {
 
 import './styles.scss';
 
+export type SortDirection = 'asc' | 'desc';
+export type SortCriteria = { key: string; direction: SortDirection };
+
 export interface ColumnListProps {
   columns: TableColumn[];
   openRequestDescriptionDialog: (
@@ -38,6 +41,7 @@ export interface ColumnListProps {
   database: string;
   editText?: string;
   editUrl?: string;
+  sortBy?: SortCriteria;
 }
 
 type ContentType = {
@@ -67,6 +71,7 @@ type FormattedDataType = {
   editText?: string;
   editUrl?: string;
   index: number;
+  sort_order: string;
   isEditable: boolean;
 };
 
@@ -76,6 +81,10 @@ type ExpandedRowProps = {
 };
 
 const SHOW_STATS_THRESHOLD = 1;
+const DEFAULT_SORTING: SortCriteria = {
+  key: 'sort_order',
+  direction: 'asc',
+};
 
 const handleRowExpand = (rowValues) => {
   logAction({
@@ -139,6 +148,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
   editText,
   editUrl,
   openRequestDescriptionDialog,
+  sortBy = DEFAULT_SORTING,
 }: ColumnListProps) => {
   const formattedData: FormattedDataType[] = columns.map((item, index) => {
     const hasItemStats = !!item.stats.length;
@@ -153,6 +163,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
         name: item.name,
         database,
       },
+      sort_order: item.sort_order,
       usage: hasItemStats ? item.stats[0].stat_val : '',
       stats: hasItemStats ? item.stats[0] : null,
       action: item.name,
@@ -164,6 +175,12 @@ const ColumnList: React.FC<ColumnListProps> = ({
   });
   const statsCount = formattedData.filter((item) => !!item.stats).length;
   const hasStats = statsCount >= SHOW_STATS_THRESHOLD;
+  const formattedAndOrderedData = formattedData.sort((a, b) => {
+    if (sortBy.direction === 'asc') {
+      return a[sortBy.key] - b[sortBy.key];
+    }
+    return b[sortBy.key] - a[sortBy.key];
+  });
 
   let formattedColumns: ReusableTableColumn[] = [
     {
@@ -246,7 +263,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
   return (
     <Table
       columns={formattedColumns}
-      data={formattedData}
+      data={formattedAndOrderedData}
       options={{
         rowHeight: 72,
         emptyMessage: EMPTY_MESSAGE,

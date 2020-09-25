@@ -96,6 +96,23 @@ describe('ColumnList', () => {
 
         expect(actual).toEqual(expected);
       });
+
+      describe('when sorting is passed', () => {
+        it('should sort the data by that value', () => {
+          const { wrapper } = setup({
+            columns,
+            sortBy: { key: 'usage', direction: 'desc' },
+          });
+          const expected = 'simple_column_name_timestamp';
+          const actual = wrapper
+            .find('.table-detail-table .ams-table-row')
+            .at(0)
+            .find('.column-name')
+            .text();
+
+          expect(actual).toEqual(expected);
+        });
+      });
     });
 
     describe('when complex type columns are passed', () => {

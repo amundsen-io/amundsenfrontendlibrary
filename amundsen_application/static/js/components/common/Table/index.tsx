@@ -10,6 +10,9 @@ import './styles.scss';
 
 type TextAlignmentValues = 'left' | 'right' | 'center';
 
+// export type SortDirection = 'asc' | 'desc';
+// export type SortCriteria = { key: string; direction: SortDirection };
+
 export interface TableColumn {
   title: string;
   field: string;

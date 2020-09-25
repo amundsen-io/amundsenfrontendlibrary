@@ -66,7 +66,7 @@ const SERVER_ERROR_CODE = 500;
 const DASHBOARDS_PER_PAGE = 10;
 const TABLE_SOURCE = 'table_page';
 
-export interface StateFromProps {
+export interface PropsFromState {
   isLoading: boolean;
   isLoadingDashboards: boolean;
   numRelatedDashboards: number;
@@ -92,7 +92,7 @@ export interface MatchProps {
   table: string;
 }
 
-export type TableDetailProps = StateFromProps &
+export type TableDetailProps = PropsFromState &
   DispatchFromProps &
   RouteComponentProps<MatchProps>;
 
@@ -105,12 +105,28 @@ const ErrorMessage = () => {
   );
 };
 
+export type SortDirection = 'asc' | 'desc';
+export type SortCriteria = { key: string; direction: SortDirection };
+
+export interface StateProps {
+  sortedBy: SortCriteria;
+}
+
 export class TableDetail extends React.Component<
-  TableDetailProps & RouteComponentProps<any>
+  TableDetailProps & RouteComponentProps<any>,
+  StateProps
 > {
   private key: string;
 
   private didComponentMount: boolean = false;
+
+  // @ts-ignore
+  state = {
+    sortedBy: {
+      key: 'sort_order',
+      direction: 'asc',
+    },
+  };
 
   componentDidMount() {
     const { index, source } = getLoggingParams(this.props.location.search);
@@ -125,6 +141,7 @@ export class TableDetail extends React.Component<
 
     if (this.key !== newKey) {
       const { index, source } = getLoggingParams(this.props.location.search);
+
       this.key = newKey;
       this.props.getTableData(this.key, index, source);
     }
@@ -172,6 +189,7 @@ export class TableDetail extends React.Component<
       tableData,
       openRequestDescriptionDialog,
     } = this.props;
+    const { sortedBy } = this.state;
 
     // Default Column content
     tabInfo.push({
@@ -182,6 +200,8 @@ export class TableDetail extends React.Component<
           database={tableData.database}
           editText={editText}
           editUrl={editUrl}
+          // @ts-ignore
+          sortBy={sortedBy}
         />
       ),
       key: 'columns',
@@ -210,6 +230,16 @@ export class TableDetail extends React.Component<
     }
 
     return <TabsComponent tabs={tabInfo} defaultTab="columns" />;
+  }
+
+  toggleSort(sorting: SortCriteria) {
+    const { sortedBy } = this.state;
+
+    if (sorting !== sortedBy) {
+      this.setState({
+        sortedBy: sorting,
+      });
+    }
   }
 
   render() {
@@ -242,6 +272,28 @@ export class TableDetail extends React.Component<
                   getSourceIconClass(data.database, ResourceType.table)
                 }
               />
+              <button
+                type="button"
+                onClick={() => {
+                  this.toggleSort({
+                    key: 'sort_order',
+                    direction: 'asc',
+                  });
+                }}
+              >
+                Default Order
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  this.toggleSort({
+                    key: 'usage',
+                    direction: 'desc',
+                  });
+                }}
+              >
+                Usage Order
+              </button>
             </div>
             <div className="header-section header-title">
               <h1 className="header-title-text truncated">
@@ -386,7 +438,7 @@ export const mapDispatchToProps = (dispatch: any) => {
   );
 };
 
-export default connect<StateFromProps, DispatchFromProps>(
+export default connect<PropsFromState, DispatchFromProps>(
   mapStateToProps,
   mapDispatchToProps
 )(TableDetail);
