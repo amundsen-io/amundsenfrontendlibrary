@@ -57,6 +57,7 @@ import WriterLink from './WriterLink';
 import TableReportsDropdown from './ResourceReportsDropdown';
 import RequestDescriptionText from './RequestDescriptionText';
 import RequestMetadataForm from './RequestMetadataForm';
+import ListSortingDropdown from './ListSortingDropdown';
 
 import * as Constants from './constants';
 
@@ -65,6 +66,26 @@ import './styles.scss';
 const SERVER_ERROR_CODE = 500;
 const DASHBOARDS_PER_PAGE = 10;
 const TABLE_SOURCE = 'table_page';
+const SORT_CRITERIAS = {
+  usage: {
+    key: 'usage',
+    direction: 'desc',
+  },
+  sort_order: {
+    key: 'sort_order',
+    direction: 'asc',
+  },
+};
+const SORT_OPTIONS = [
+  {
+    name: 'Table Default',
+    type: 'sort_order',
+  },
+  {
+    name: 'Usage Count',
+    type: 'usage',
+  },
+];
 
 export interface PropsFromState {
   isLoading: boolean;
@@ -122,10 +143,7 @@ export class TableDetail extends React.Component<
 
   // @ts-ignore
   state = {
-    sortedBy: {
-      key: 'sort_order',
-      direction: 'asc',
-    },
+    sortedBy: SORT_CRITERIAS.sort_order,
   };
 
   componentDidMount() {
@@ -232,7 +250,11 @@ export class TableDetail extends React.Component<
     return <TabsComponent tabs={tabInfo} defaultTab="columns" />;
   }
 
-  toggleSort(sorting: SortCriteria) {
+  handleSortingChange = (sortValue) => {
+    this.toggleSort(SORT_CRITERIAS[sortValue]);
+  };
+
+  toggleSort = (sorting: SortCriteria) => {
     const { sortedBy } = this.state;
 
     if (sorting !== sortedBy) {
@@ -240,7 +262,7 @@ export class TableDetail extends React.Component<
         sortedBy: sorting,
       });
     }
-  }
+  };
 
   render() {
     const { isLoading, statusCode, tableData } = this.props;
@@ -272,28 +294,6 @@ export class TableDetail extends React.Component<
                   getSourceIconClass(data.database, ResourceType.table)
                 }
               />
-              <button
-                type="button"
-                onClick={() => {
-                  this.toggleSort({
-                    key: 'sort_order',
-                    direction: 'asc',
-                  });
-                }}
-              >
-                Default Order
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  this.toggleSort({
-                    key: 'usage',
-                    direction: 'desc',
-                  });
-                }}
-              >
-                Usage Order
-              </button>
             </div>
             <div className="header-section header-title">
               <h1 className="header-title-text truncated">
@@ -400,6 +400,10 @@ export class TableDetail extends React.Component<
               )}
             </aside>
             <main className="right-panel">
+              <ListSortingDropdown
+                options={SORT_OPTIONS}
+                onChange={this.handleSortingChange}
+              />
               {this.renderTabs(editText, editUrl)}
             </main>
           </div>
