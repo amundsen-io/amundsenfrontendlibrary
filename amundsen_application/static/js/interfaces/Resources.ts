@@ -42,6 +42,16 @@ export interface TableResource extends Resource {
   badges?: any[]; // TODO replace with new badges later @allisonsuarez
 }
 
+export enum SortDirection {
+  ascending = 'asc',
+  descending = 'desc',
+}
+export interface SortCriteria {
+  key: string;
+  direction: SortDirection;
+  name: string;
+}
+
 export interface UserResource extends Resource, PeopleUser {
   type: ResourceType.user;
 }

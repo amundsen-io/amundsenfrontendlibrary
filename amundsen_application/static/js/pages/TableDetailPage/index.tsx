@@ -17,6 +17,7 @@ import {
   getDescriptionSourceDisplayName,
   getMaxLength,
   getSourceIconClass,
+  getTableSortCriterias,
   indexDashboardsEnabled,
   issueTrackingEnabled,
   notificationsEnabled,
@@ -40,6 +41,7 @@ import {
   ResourceType,
   TableMetadata,
   RequestMetadataType,
+  SortCriteria,
 } from 'interfaces';
 
 import DataPreviewButton from './DataPreviewButton';
@@ -67,25 +69,8 @@ const SERVER_ERROR_CODE = 500;
 const DASHBOARDS_PER_PAGE = 10;
 const TABLE_SOURCE = 'table_page';
 const SORT_CRITERIAS = {
-  usage: {
-    key: 'usage',
-    direction: 'desc',
-  },
-  sort_order: {
-    key: 'sort_order',
-    direction: 'asc',
-  },
+  ...getTableSortCriterias(),
 };
-const SORT_OPTIONS = [
-  {
-    name: 'Table Default',
-    type: 'sort_order',
-  },
-  {
-    name: 'Usage Count',
-    type: 'usage',
-  },
-];
 const COLUMN_TAB_KEY = 'columns';
 
 export interface PropsFromState {
@@ -126,9 +111,6 @@ const ErrorMessage = () => {
     </div>
   );
 };
-
-export type SortDirection = 'asc' | 'desc';
-export type SortCriteria = { key: string; direction: SortDirection };
 
 export interface StateProps {
   sortedBy: SortCriteria;
@@ -416,7 +398,7 @@ export class TableDetail extends React.Component<
             <main className="right-panel">
               {currentTab === COLUMN_TAB_KEY && (
                 <ListSortingDropdown
-                  options={SORT_OPTIONS}
+                  options={SORT_CRITERIAS}
                   onChange={this.handleSortingChange}
                 />
               )}

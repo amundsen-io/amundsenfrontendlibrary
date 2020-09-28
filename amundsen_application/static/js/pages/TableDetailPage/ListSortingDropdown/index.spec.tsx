@@ -5,20 +5,28 @@ import * as React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { mount } from 'enzyme';
 
+import { SortDirection } from 'interfaces';
+
 import ListSortingDropdown, { ListSortingDropdownProps } from '.';
 
 const DEFAULT_SORTING = {
-  name: 'Table Default',
-  type: 'sort_order',
+  sort_order: {
+    name: 'Table Default',
+    key: 'sort_order',
+    direction: SortDirection.ascending,
+  },
 };
 const USAGE_SORTING = {
-  name: 'Usage Count',
-  type: 'usage',
+  usage: {
+    name: 'Usage Count',
+    key: 'usage',
+    direction: SortDirection.descending,
+  },
 };
 
 const setup = (propOverrides?: Partial<ListSortingDropdownProps>) => {
   const props = {
-    options: [],
+    options: {},
     ...propOverrides,
   };
   const wrapper = mount<typeof ListSortingDropdown>(
@@ -48,7 +56,7 @@ describe('ListSortingDropdown', () => {
 
     describe('when one option is passed', () => {
       it('renders a DropDown component', () => {
-        const { wrapper } = setup({ options: [DEFAULT_SORTING] });
+        const { wrapper } = setup({ options: DEFAULT_SORTING });
         const expected = 1;
         const actual = wrapper.find(Dropdown).length;
 
@@ -56,7 +64,7 @@ describe('ListSortingDropdown', () => {
       });
 
       it('renders one item', () => {
-        const { wrapper } = setup({ options: [DEFAULT_SORTING] });
+        const { wrapper } = setup({ options: DEFAULT_SORTING });
         const expected = 1;
         const actual = wrapper.find('.list-sorting-dropdown .radio-label')
           .length;
@@ -65,7 +73,7 @@ describe('ListSortingDropdown', () => {
       });
 
       it('is selected by default', () => {
-        const { wrapper } = setup({ options: [DEFAULT_SORTING] });
+        const { wrapper } = setup({ options: DEFAULT_SORTING });
         const expected = true;
         const actual = wrapper
           .find('.list-sorting-dropdown .radio-label input')
@@ -78,7 +86,7 @@ describe('ListSortingDropdown', () => {
     describe('when two options are passed', () => {
       it('renders a DropDown component', () => {
         const { wrapper } = setup({
-          options: [DEFAULT_SORTING, USAGE_SORTING],
+          options: { ...DEFAULT_SORTING, ...USAGE_SORTING },
         });
         const expected = 1;
         const actual = wrapper.find(Dropdown).length;
@@ -88,7 +96,7 @@ describe('ListSortingDropdown', () => {
 
       it('renders two items', () => {
         const { wrapper } = setup({
-          options: [DEFAULT_SORTING, USAGE_SORTING],
+          options: { ...DEFAULT_SORTING, ...USAGE_SORTING },
         });
         const expected = 2;
         const actual = wrapper.find('.list-sorting-dropdown .radio-label')
@@ -99,7 +107,7 @@ describe('ListSortingDropdown', () => {
 
       it('selects the first one by default', () => {
         const { wrapper } = setup({
-          options: [DEFAULT_SORTING, USAGE_SORTING],
+          options: { ...DEFAULT_SORTING, ...USAGE_SORTING },
         });
         const expected = true;
         const actual = wrapper
@@ -116,7 +124,7 @@ describe('ListSortingDropdown', () => {
     describe('when selecting an option', () => {
       it('should make it the selected', () => {
         const { wrapper } = setup({
-          options: [DEFAULT_SORTING, USAGE_SORTING],
+          options: { ...DEFAULT_SORTING, ...USAGE_SORTING },
         });
         const expected = true;
 
@@ -137,7 +145,7 @@ describe('ListSortingDropdown', () => {
         const onChangeSpy = jest.fn();
         const { wrapper } = setup({
           onChange: onChangeSpy,
-          options: [DEFAULT_SORTING, USAGE_SORTING],
+          options: { ...DEFAULT_SORTING, ...USAGE_SORTING },
         });
         const expected = 1;
 
@@ -155,7 +163,7 @@ describe('ListSortingDropdown', () => {
         const onChangeSpy = jest.fn();
         const { wrapper } = setup({
           onChange: onChangeSpy,
-          options: [DEFAULT_SORTING, USAGE_SORTING],
+          options: { ...DEFAULT_SORTING, ...USAGE_SORTING },
         });
         const expected = ['usage'];
 
