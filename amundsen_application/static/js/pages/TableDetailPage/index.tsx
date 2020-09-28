@@ -125,7 +125,6 @@ export class TableDetail extends React.Component<
 
   private didComponentMount: boolean = false;
 
-  // @ts-ignore
   state = {
     sortedBy: SORT_CRITERIAS.sort_order,
     currentTab: COLUMN_TAB_KEY,
@@ -219,7 +218,6 @@ export class TableDetail extends React.Component<
           database={tableData.database}
           editText={editText}
           editUrl={editUrl}
-          // @ts-ignore
           sortBy={sortedBy}
         />
       ),
