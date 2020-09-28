@@ -7,7 +7,11 @@ import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import { mocked } from 'ts-jest/utils';
 
-import { notificationsEnabled } from 'config/config-utils';
+import { SortDirection } from 'interfaces';
+import {
+  notificationsEnabled,
+  getTableSortCriterias,
+} from 'config/config-utils';
 
 import globalState from 'fixtures/globalState';
 import ColumnList, { ColumnListProps } from '.';
@@ -19,6 +23,7 @@ import TestDataBuilder from './testDataBuilder';
 jest.mock('config/config-utils');
 
 const mockedNotificationsEnabled = mocked(notificationsEnabled, true);
+const mockedGetTableSortCriterias = mocked(getTableSortCriterias, true);
 const dataBuilder = new TestDataBuilder();
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -46,6 +51,18 @@ const setup = (propOverrides?: Partial<ColumnListProps>) => {
 };
 
 describe('ColumnList', () => {
+  mockedGetTableSortCriterias.mockReturnValue({
+    sort_order: {
+      name: 'Table Default',
+      key: 'sort_order',
+      direction: SortDirection.ascending,
+    },
+    usage: {
+      name: 'Usage Count',
+      key: 'usage',
+      direction: SortDirection.descending,
+    },
+  });
   mockedNotificationsEnabled.mockReturnValue(true);
 
   describe('render', () => {
@@ -101,7 +118,11 @@ describe('ColumnList', () => {
         it('should sort the data by that value', () => {
           const { wrapper } = setup({
             columns,
-            sortBy: { key: 'usage', direction: 'desc' },
+            sortBy: {
+              key: 'usage',
+              direction: SortDirection.descending,
+              name: 'Usage',
+            },
           });
           const expected = 'simple_column_name_timestamp';
           const actual = wrapper

@@ -47,9 +47,9 @@ export enum SortDirection {
   descending = 'desc',
 }
 export interface SortCriteria {
+  name: string;
   key: string;
   direction: SortDirection;
-  name: string;
 }
 
 export interface UserResource extends Resource, PeopleUser {

@@ -9,11 +9,22 @@ import { OpenRequestAction } from 'ducks/notification/types';
 import EditableSection from 'components/common/EditableSection';
 import Table, {
   TableColumn as ReusableTableColumn,
+  TextAlignmentValues,
 } from 'components/common/Table';
 
 import { logAction } from 'ducks/utilMethods';
-import { notificationsEnabled, getMaxLength } from 'config/config-utils';
-import { TableColumn, RequestMetadataType } from 'interfaces';
+import {
+  notificationsEnabled,
+  getMaxLength,
+  getTableSortCriterias,
+} from 'config/config-utils';
+
+import {
+  TableColumn,
+  RequestMetadataType,
+  SortCriteria,
+  SortDirection,
+} from 'interfaces';
 
 import ColumnType from './ColumnType';
 import ColumnDescEditableText from './ColumnDescEditableText';
@@ -28,9 +39,6 @@ import {
 } from './constants';
 
 import './styles.scss';
-
-export type SortDirection = 'asc' | 'desc';
-export type SortCriteria = { key: string; direction: SortDirection };
 
 export interface ColumnListProps {
   columns: TableColumn[];
@@ -82,8 +90,9 @@ type ExpandedRowProps = {
 
 const SHOW_STATS_THRESHOLD = 1;
 const DEFAULT_SORTING: SortCriteria = {
+  name: 'Table Default',
   key: 'sort_order',
-  direction: 'asc',
+  direction: SortDirection.ascending,
 };
 
 const handleRowExpand = (rowValues) => {
@@ -174,7 +183,8 @@ const ColumnList: React.FC<ColumnListProps> = ({
     };
   });
   const statsCount = formattedData.filter((item) => !!item.stats).length;
-  const hasStats = statsCount >= SHOW_STATS_THRESHOLD;
+  const hasStats =
+    getTableSortCriterias().usage && statsCount >= SHOW_STATS_THRESHOLD;
   const formattedAndOrderedData = formattedData.sort((a, b) => {
     if (sortBy.direction === 'asc') {
       return a[sortBy.key] - b[sortBy.key];
@@ -214,7 +224,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
       {
         title: 'Usage',
         field: 'usage',
-        horAlign: 'right',
+        horAlign: TextAlignmentValues.right,
         component: (usage) => (
           <p className="resource-type usage-value">{usage}</p>
         ),
@@ -229,7 +239,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
         title: '',
         field: 'action',
         width: 80,
-        horAlign: 'right',
+        horAlign: TextAlignmentValues.right,
         component: (name, index) => (
           <div className="actions">
             <Dropdown
