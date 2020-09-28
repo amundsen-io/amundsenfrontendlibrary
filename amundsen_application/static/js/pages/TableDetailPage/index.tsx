@@ -86,6 +86,7 @@ const SORT_OPTIONS = [
     type: 'usage',
   },
 ];
+const COLUMN_TAB_KEY = 'columns';
 
 export interface PropsFromState {
   isLoading: boolean;
@@ -131,6 +132,7 @@ export type SortCriteria = { key: string; direction: SortDirection };
 
 export interface StateProps {
   sortedBy: SortCriteria;
+  currentTab: string;
 }
 
 export class TableDetail extends React.Component<
@@ -144,6 +146,7 @@ export class TableDetail extends React.Component<
   // @ts-ignore
   state = {
     sortedBy: SORT_CRITERIAS.sort_order,
+    currentTab: COLUMN_TAB_KEY,
   };
 
   componentDidMount() {
@@ -182,7 +185,9 @@ export class TableDetail extends React.Component<
     return `${params.database}://${params.cluster}.${params.schema}/${params.table}`;
   }
 
-  renderProgrammaticDesc = (descriptions: ProgrammaticDescription[]) => {
+  renderProgrammaticDesc = (
+    descriptions: ProgrammaticDescription[] | undefined
+  ) => {
     if (!descriptions) {
       return null;
     }
@@ -197,6 +202,20 @@ export class TableDetail extends React.Component<
         />
       </EditableSection>
     ));
+  };
+
+  handleSortingChange = (sortValue) => {
+    this.toggleSort(SORT_CRITERIAS[sortValue]);
+  };
+
+  toggleSort = (sorting: SortCriteria) => {
+    const { sortedBy } = this.state;
+
+    if (sorting !== sortedBy) {
+      this.setState({
+        sortedBy: sorting,
+      });
+    }
   };
 
   renderTabs(editText, editUrl) {
@@ -247,25 +266,20 @@ export class TableDetail extends React.Component<
       });
     }
 
-    return <TabsComponent tabs={tabInfo} defaultTab="columns" />;
+    return (
+      <TabsComponent
+        tabs={tabInfo}
+        defaultTab="columns"
+        onSelect={(key) => {
+          this.setState({ currentTab: key });
+        }}
+      />
+    );
   }
-
-  handleSortingChange = (sortValue) => {
-    this.toggleSort(SORT_CRITERIAS[sortValue]);
-  };
-
-  toggleSort = (sorting: SortCriteria) => {
-    const { sortedBy } = this.state;
-
-    if (sorting !== sortedBy) {
-      this.setState({
-        sortedBy: sorting,
-      });
-    }
-  };
 
   render() {
     const { isLoading, statusCode, tableData } = this.props;
+    const { currentTab } = this.state;
     let innerContent;
 
     // We want to avoid rendering the previous table's metadata before new data is fetched in componentDidMount
@@ -400,10 +414,12 @@ export class TableDetail extends React.Component<
               )}
             </aside>
             <main className="right-panel">
-              <ListSortingDropdown
-                options={SORT_OPTIONS}
-                onChange={this.handleSortingChange}
-              />
+              {currentTab === COLUMN_TAB_KEY && (
+                <ListSortingDropdown
+                  options={SORT_OPTIONS}
+                  onChange={this.handleSortingChange}
+                />
+              )}
               {this.renderTabs(editText, editUrl)}
             </main>
           </div>
