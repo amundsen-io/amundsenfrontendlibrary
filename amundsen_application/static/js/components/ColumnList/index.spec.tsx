@@ -114,17 +114,59 @@ describe('ColumnList', () => {
         expect(actual).toEqual(expected);
       });
 
-      describe('when sorting is passed', () => {
+      describe('when usage sorting is passed', () => {
         it('should sort the data by that value', () => {
           const { wrapper } = setup({
             columns,
             sortBy: {
+              name: 'Usage',
               key: 'usage',
               direction: SortDirection.descending,
-              name: 'Usage',
             },
           });
           const expected = 'simple_column_name_timestamp';
+          const actual = wrapper
+            .find('.table-detail-table .ams-table-row')
+            .at(0)
+            .find('.column-name')
+            .text();
+
+          expect(actual).toEqual(expected);
+        });
+      });
+
+      describe('when default sorting is passed', () => {
+        it('should sort the data by that value', () => {
+          const { wrapper } = setup({
+            columns,
+            sortBy: {
+              name: 'Default',
+              key: 'sort_order',
+              direction: SortDirection.ascending,
+            },
+          });
+          const expected = 'simple_column_name_string';
+          const actual = wrapper
+            .find('.table-detail-table .ams-table-row')
+            .at(0)
+            .find('.column-name')
+            .text();
+
+          expect(actual).toEqual(expected);
+        });
+      });
+
+      describe('when name sorting is passed', () => {
+        it('should sort the data by name', () => {
+          const { wrapper } = setup({
+            columns,
+            sortBy: {
+              name: 'Name',
+              key: 'name',
+              direction: SortDirection.descending,
+            },
+          });
+          const expected = 'simple_column_name_bigint';
           const actual = wrapper
             .find('.table-detail-table .ams-table-row')
             .at(0)

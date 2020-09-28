@@ -73,12 +73,13 @@ type StatType = {
 type FormattedDataType = {
   content: ContentType;
   type: DatatypeType;
-  usage: string | null;
+  usage: number | null;
   stats: StatType | null;
   action: string;
   editText?: string;
   editUrl?: string;
   index: number;
+  name: string;
   sort_order: string;
   isEditable: boolean;
 };
@@ -93,6 +94,30 @@ const DEFAULT_SORTING: SortCriteria = {
   name: 'Table Default',
   key: 'sort_order',
   direction: SortDirection.ascending,
+};
+
+const getSortingFunction = (
+  formattedData: FormattedDataType[],
+  sortBy: SortCriteria
+) => {
+  const numberSortingFunction = (a, b) => {
+    return b[sortBy.key] - a[sortBy.key];
+  };
+
+  const stringSortingFunction = (a, b) => {
+    if (a[sortBy.key] && b[sortBy.key]) {
+      return a[sortBy.key].localeCompare(b[sortBy.key]);
+    }
+    return null;
+  };
+
+  if (!formattedData.length) {
+    return numberSortingFunction;
+  }
+
+  return Number.isInteger(formattedData[0][sortBy.key])
+    ? numberSortingFunction
+    : stringSortingFunction;
 };
 
 const handleRowExpand = (rowValues) => {
@@ -173,9 +198,10 @@ const ColumnList: React.FC<ColumnListProps> = ({
         database,
       },
       sort_order: item.sort_order,
-      usage: hasItemStats ? item.stats[0].stat_val : '',
+      usage: hasItemStats ? +item.stats[0].stat_val : null,
       stats: hasItemStats ? item.stats[0] : null,
       action: item.name,
+      name: item.name,
       isEditable: item.is_editable,
       editText,
       editUrl,
@@ -185,12 +211,12 @@ const ColumnList: React.FC<ColumnListProps> = ({
   const statsCount = formattedData.filter((item) => !!item.stats).length;
   const hasStats =
     getTableSortCriterias().usage && statsCount >= SHOW_STATS_THRESHOLD;
-  const formattedAndOrderedData = formattedData.sort((a, b) => {
-    if (sortBy.direction === 'asc') {
-      return a[sortBy.key] - b[sortBy.key];
-    }
-    return b[sortBy.key] - a[sortBy.key];
-  });
+  let formattedAndOrderedData = formattedData.sort(
+    getSortingFunction(formattedData, sortBy)
+  );
+  if (sortBy.direction === SortDirection.ascending) {
+    formattedAndOrderedData = formattedAndOrderedData.reverse();
+  }
 
   let formattedColumns: ReusableTableColumn[] = [
     {

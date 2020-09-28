@@ -168,6 +168,11 @@ const configDefault: AppConfig = {
           key: 'sort_order',
           direction: SortDirection.ascending,
         },
+        name: {
+          name: 'Alphabetical',
+          key: 'name',
+          direction: SortDirection.descending,
+        },
       },
       supportedDescriptionSources: {
         github: {

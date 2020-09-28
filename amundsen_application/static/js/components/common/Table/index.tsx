@@ -207,7 +207,7 @@ const Table: React.FC<TableProps> = ({
               ) : null}
               {Object.entries(item)
                 .filter(([key]) => fields.includes(key))
-                .map(([key, value], index) => {
+                .map(([key, value], rowIndex) => {
                   const columnInfo = columns.find(({ field }) => field === key);
                   const horAlign: TextAlignmentValues = columnInfo
                     ? columnInfo.horAlign || DEFAULT_TEXT_ALIGNMENT
@@ -222,7 +222,7 @@ const Table: React.FC<TableProps> = ({
                   // TODO: Improve the typing of this
                   let cellContent: React.ReactNode | typeof value = value;
                   if (columnInfo && columnInfo.component) {
-                    cellContent = columnInfo.component(value, index);
+                    cellContent = columnInfo.component(value, rowIndex);
                   }
 
                   return (
@@ -230,7 +230,7 @@ const Table: React.FC<TableProps> = ({
                       className={`ams-table-cell ${getCellAlignmentClass(
                         horAlign
                       )}`}
-                      key={`index:${index}`}
+                      key={`index:${rowIndex}`}
                       style={cellStyle}
                     >
                       {cellContent}
