@@ -64,7 +64,7 @@
     "@storybook/theming": "^6.0.21",
     "@types/enzyme": "^3.10.5",
     "@types/jasmine-matchers": "^0.2.32",
-    "@types/jest": "^24.9.1",
+    "@types/jest": "^26.0.14",
     "@types/node": "^10.17.21",
     "@types/react-redux": "^6.0.14",
     "@types/react-router": "^4.4.5",
