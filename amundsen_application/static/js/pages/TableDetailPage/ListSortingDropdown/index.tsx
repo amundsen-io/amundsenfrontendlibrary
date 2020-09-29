@@ -32,11 +32,13 @@ const TableReportsDropdown: React.FC<ListSortingDropdownProps> = ({
   const [selectedOption, setSelectedOption] = React.useState<OptionType>(
     criterias[0][1].key
   );
+  const [isOpen, setOpen] = React.useState(false);
 
   const handleChange = (e) => {
     const { value } = e.target;
 
     setSelectedOption(value);
+    setOpen(false);
     if (onChange) {
       onChange(value);
     }
@@ -47,6 +49,10 @@ const TableReportsDropdown: React.FC<ListSortingDropdownProps> = ({
       className="list-sorting-dropdown"
       id="list-sorting-dropdown"
       pullRight
+      open={isOpen}
+      onToggle={() => {
+        setOpen(!isOpen);
+      }}
     >
       <Dropdown.Toggle className="btn btn-default list-sorting-dropdown-button">
         {SORT_BY_DROPDOWN_TITLE}

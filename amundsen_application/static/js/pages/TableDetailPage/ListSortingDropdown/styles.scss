@@ -19,6 +19,9 @@
   }
 
   .list-sorting-dropdown-menu-item {
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   .list-sorting-dropdown-menu-item-text {

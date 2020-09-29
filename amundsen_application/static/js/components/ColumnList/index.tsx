@@ -89,8 +89,9 @@ type ExpandedRowProps = {
   index: number;
 };
 
-const SHOW_STATS_THRESHOLD = 1;
+// TODO: Move this into the configuration once we have more info about the rest of stats
 const USAGE_STAT_TYPE = 'column_usage';
+const SHOW_STATS_THRESHOLD = 1;
 const DEFAULT_SORTING: SortCriteria = {
   name: 'Table Default',
   key: 'sort_order',
