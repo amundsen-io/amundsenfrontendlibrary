@@ -7,16 +7,6 @@ import ClickableBadge from 'components/common/Badges';
 import { getBadgeConfig } from 'config/config-utils';
 import { Badge } from 'interfaces/Badges';
 
-// type BadgeSearch = {
-//   tag_name: string;
-// };
-// type BadgeMetadata = {
-//   badge_name: string;
-//   category: string;
-// };
-
-// type Badges = BadgeSearch | BadgeMetadata;
-
 
 export interface BadgeListProps {
   badges: Badge[];
