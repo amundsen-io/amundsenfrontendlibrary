@@ -7,7 +7,6 @@ import ClickableBadge from 'components/common/Badges';
 import { getBadgeConfig } from 'config/config-utils';
 import { Badge } from 'interfaces/Badges';
 
-
 export interface BadgeListProps {
   badges: Badge[];
 }
