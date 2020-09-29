@@ -232,6 +232,39 @@ describe('ColumnList', () => {
       });
     });
 
+    describe('when columns with serveral stats including usage are passed', () => {
+      const { columns } = dataBuilder.withSeveralStats().build();
+
+      it('should render the usage column', () => {
+        const { wrapper } = setup({ columns });
+        const expected = columns.length;
+        const actual = wrapper.find('.table-detail-table .usage-value').length;
+
+        expect(actual).toEqual(expected);
+      });
+
+      describe('when usage sorting is passed', () => {
+        it('should sort the data by that value', () => {
+          const { wrapper } = setup({
+            columns,
+            sortBy: {
+              name: 'Usage',
+              key: 'usage',
+              direction: SortDirection.ascending,
+            },
+          });
+          const expected = 'complex_column_name_2';
+          const actual = wrapper
+            .find('.table-detail-table .ams-table-row')
+            .at(0)
+            .find('.column-name')
+            .text();
+
+          expect(actual).toEqual(expected);
+        });
+      });
+    });
+
     describe('when notifications are not enabled', () => {
       const { columns } = dataBuilder.build();
 

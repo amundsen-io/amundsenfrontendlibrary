@@ -90,6 +90,7 @@ type ExpandedRowProps = {
 };
 
 const SHOW_STATS_THRESHOLD = 1;
+const USAGE_STAT_TYPE = 'column_usage';
 const DEFAULT_SORTING: SortCriteria = {
   name: 'Table Default',
   key: 'sort_order',
@@ -118,6 +119,20 @@ const getSortingFunction = (
   return Number.isInteger(formattedData[0][sortBy.key])
     ? numberSortingFunction
     : stringSortingFunction;
+};
+
+const getUsageStat = (item) => {
+  const hasItemStats = !!item.stats.length;
+
+  if (hasItemStats) {
+    const usageStat = item.stats.find((s) => {
+      return s.stat_type === USAGE_STAT_TYPE;
+    });
+
+    return usageStat ? +usageStat.stat_val : null;
+  }
+
+  return null;
 };
 
 const handleRowExpand = (rowValues) => {
@@ -198,7 +213,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
         database,
       },
       sort_order: item.sort_order,
-      usage: hasItemStats ? +item.stats[0].stat_val : null,
+      usage: getUsageStat(item),
       stats: hasItemStats ? item.stats[0] : null,
       action: item.name,
       name: item.name,
@@ -209,7 +224,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
     };
   });
   const statsCount = formattedData.filter((item) => !!item.stats).length;
-  const hasStats =
+  const hasUsageStat =
     getTableSortCriterias().usage && statsCount >= SHOW_STATS_THRESHOLD;
   let formattedAndOrderedData = formattedData.sort(
     getSortingFunction(formattedData, sortBy)
@@ -244,7 +259,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
     },
   ];
 
-  if (hasStats) {
+  if (hasUsageStat) {
     formattedColumns = [
       ...formattedColumns,
       {
