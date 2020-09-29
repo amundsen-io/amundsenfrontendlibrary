@@ -17,6 +17,7 @@ export const tableMetadata: TableMetadata = {
       col_type: 'bigint',
       description: 'Test Value',
       is_editable: true,
+      sort_order: '0',
       name: 'ride_id',
       stats: [
         {
@@ -44,13 +45,15 @@ export const tableMetadata: TableMetadata = {
       description:
         'ds will be the date part of requested_at ds will be the date part of requested_at ds will be the date part of requested_at ds will be the date part of requested_at ds will be the date part of requested_at ds will be the date part of requested_at ds w',
       is_editable: true,
+      sort_order: '1',
       name: 'ds',
       stats: [],
     },
     {
       col_type: 'string',
-      description: null,
+      description: 'Route_id Description',
       is_editable: true,
+      sort_order: '2',
       name: 'route_id',
       stats: [
         {
@@ -168,7 +171,7 @@ export const tableMetadata: TableMetadata = {
 export const relatedDashboards: DashboardResource[] = [
   {
     group_name: 'Test Group 1',
-    description: null,
+    description: 'Test Group 1 Description',
     cluster: 'gold',
     group_url: 'https://app.mode.com/testCompany/spaces/1234',
     uri: 'mode_dashboard://gold.1234/23445asb',
@@ -180,7 +183,7 @@ export const relatedDashboards: DashboardResource[] = [
   },
   {
     group_name: 'Test Group 2',
-    description: null,
+    description: 'Test Group 2 Description',
     cluster: 'gold',
     group_url: 'https://app.mode.com/testCompany/spaces/345asd',
     uri: 'mode_dashboard://gold.345asd/asdfas001',
@@ -192,7 +195,7 @@ export const relatedDashboards: DashboardResource[] = [
   },
   {
     group_name: 'Test Group 3',
-    description: null,
+    description: 'Test Group 3 Description',
     cluster: 'gold',
     group_url: 'https://app.mode.com/testCompany/spaces/casdg80',
     uri: 'mode_dashboard://gold.casdg80/123566',
