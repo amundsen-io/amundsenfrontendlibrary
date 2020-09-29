@@ -41,7 +41,7 @@ const expandRowComponent = (rowValue, index) => (
 
 // const stories = storiesOf('Components/Table', module);
 
-export const States = () => (
+export const TableStates = () => (
   <>
     <StorySection title="Basic Table">
       <Table
@@ -64,9 +64,8 @@ export const States = () => (
     </StorySection>
   </>
 );
-States.storyName = 'Table States';
 
-export const Styles = () => (
+export const StyledTable = () => (
   <>
     <StorySection title="with different column alignment">
       <Table
@@ -93,9 +92,8 @@ export const Styles = () => (
     </StorySection>
   </>
 );
-Styles.storyName = 'Styled Table';
 
-export const Customizations = () => (
+export const CustomizedTable = () => (
   <>
     <StorySection title="with custom column components">
       <Table
@@ -129,9 +127,8 @@ export const Customizations = () => (
     </StorySection>
   </>
 );
-Customizations.storyName = 'Customized Table';
 
-export const Collapsible = () => (
+export const CollapsibleTable = () => (
   <>
     <StorySection title="with Collapsed Rows">
       <Table
@@ -179,7 +176,6 @@ export const Collapsible = () => (
     </StorySection>
   </>
 );
-Collapsible.storyName = 'Collapsible Table';
 
 export default {
   title: 'Components/Table',
