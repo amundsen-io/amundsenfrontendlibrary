@@ -33,6 +33,10 @@ const {
   columns: columnsWithCollapsedRow,
   data: dataWithCollapsedRow,
 } = dataBuilder.withCollapsedRow().build();
+const {
+  columns: columnsWithWrongData,
+  data: dataWithWrongData,
+} = dataBuilder.withWrongData().build();
 const expandRowComponent = (rowValue, index) => (
   <strong>
     {index}:{rowValue.value}
@@ -61,6 +65,9 @@ export const TableStates = () => (
         data={[]}
         options={object('options', { isLoading: true })}
       />
+    </StorySection>
+    <StorySection title="Loading Table">
+      <Table columns={columnsWithWrongData} data={dataWithWrongData} />
     </StorySection>
   </>
 );

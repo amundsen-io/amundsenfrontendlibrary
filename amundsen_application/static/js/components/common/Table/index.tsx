@@ -16,13 +16,17 @@ export enum TextAlignmentValues {
   right = 'right',
   center = 'center',
 }
-export interface TableColumn {
+export interface TableColumn<T> {
   title: string;
-  field: string;
+  field: T;
   horAlign?: TextAlignmentValues;
   component?: (value: any, index: number) => React.ReactNode;
   width?: number;
   // sortable?: bool (false)
+}
+
+interface RowData {
+  [key: string]: any;
 }
 
 export interface TableOptions {
@@ -37,8 +41,8 @@ export interface TableOptions {
 }
 
 export interface TableProps {
-  columns: TableColumn[];
-  data: any[];
+  data: RowData[];
+  columns: TableColumn<keyof RowData>[];
   options?: TableOptions;
 }
 
