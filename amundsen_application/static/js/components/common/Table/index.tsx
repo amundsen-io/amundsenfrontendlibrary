@@ -84,12 +84,12 @@ const checkIfValidData = (
 ): data is ValidData[] => {
   let isValid = true;
 
-  fields.forEach((field) => {
-    if (data.filter(fieldIsDefined.bind(null, field)).length === 0) {
+  for (let i = 0; i < fields.length; i++) {
+    if (data.filter(fieldIsDefined.bind(null, fields[i])).length === 0) {
       isValid = false;
+      break;
     }
-  });
-
+  }
   return isValid;
 };
 
