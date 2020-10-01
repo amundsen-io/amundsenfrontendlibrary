@@ -407,7 +407,7 @@ describe('Table', () => {
 
         beforeEach(() => {
           jest.spyOn(console, 'error');
-          mocked(console.error).mockImplementation(() => {});
+          mocked(console.error).mockImplementation(jest.fn);
         });
 
         afterEach(() => {
