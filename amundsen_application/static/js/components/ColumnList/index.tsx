@@ -234,7 +234,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
     formattedAndOrderedData = formattedAndOrderedData.reverse();
   }
 
-  let formattedColumns: ReusableTableColumn<keyof FormattedDataType>[] = [
+  let formattedColumns: ReusableTableColumn[] = [
     {
       title: 'Name',
       field: 'content',
