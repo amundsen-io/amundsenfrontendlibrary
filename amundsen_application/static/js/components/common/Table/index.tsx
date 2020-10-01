@@ -25,10 +25,10 @@ export interface TableColumn {
   // sortable?: bool (false)
 }
 type Some = string | number | boolean | symbol | bigint | object;
-type ValidData = Record<string, Some>; // Removes the undefined | null values
+type ValidData = Record<string, Some | null>; // Removes the undefined values
 
 interface RowData {
-  [key: string]: Some;
+  [key: string]: Some | null;
 }
 
 export interface TableOptions {

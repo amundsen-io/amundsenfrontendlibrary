@@ -3,6 +3,7 @@
 
 import * as React from 'react';
 import { mount } from 'enzyme';
+import { mocked } from 'ts-jest/utils';
 
 import Table, { TableProps } from '.';
 
@@ -406,11 +407,11 @@ describe('Table', () => {
 
         beforeEach(() => {
           jest.spyOn(console, 'error');
-          console.error.mockImplementation(() => {});
+          mocked(console.error).mockImplementation(() => {});
         });
 
         afterEach(() => {
-          console.error.mockRestore();
+          mocked(console.error).mockRestore();
         });
 
         it('throws an error', () => {
