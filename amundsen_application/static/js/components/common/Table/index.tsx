@@ -73,14 +73,24 @@ type EmptyRowProps = {
 
 const getCellAlignmentClass = (alignment: TextAlignmentValues) =>
   ALIGNEMENT_TO_CLASS_MAP[alignment];
-
 const fieldIsDefined = (field, row) => row[field] !== undefined;
-const checkValidData = (data, fields) => {
+
+type Some = string | number | boolean | symbol | bigint | object;
+type ValidData = Record<string, Some>; // Removes the undefined | null values
+
+const checkValidData = (
+  data: unknown[],
+  fields: string[]
+): data is ValidData[] => {
+  let isValid = true;
+
   fields.forEach((field) => {
     if (data.filter(fieldIsDefined.bind(null, field)).length === 0) {
-      throw new Error(INVALID_DATA_ERROR_MESSAGE);
+      isValid = false;
     }
   });
+
+  return isValid;
 };
 
 const EmptyRow: React.FC<EmptyRowProps> = ({
@@ -197,7 +207,9 @@ const Table: React.FC<TableProps> = ({
   );
 
   if (data.length) {
-    checkValidData(data, fields);
+    if (!checkValidData(data, fields)) {
+      throw new Error(INVALID_DATA_ERROR_MESSAGE);
+    }
 
     body = data.map((item, index) => {
       return (
