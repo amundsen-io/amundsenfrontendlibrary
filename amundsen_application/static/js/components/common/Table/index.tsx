@@ -49,7 +49,7 @@ export interface TableProps {
 const DEFAULT_EMPTY_MESSAGE = 'No Results';
 const EXPAND_ROW_TEXT = 'Expand Row';
 const INVALID_DATA_ERROR_MESSAGE =
-  'Error: Invalid data! Your data does not contain the fields specified on the columns property.';
+  'Invalid data! Your data does not contain the fields specified on the columns property.';
 const DEFAULT_LOADING_ITEMS = 3;
 const DEFAULT_ROW_HEIGHT = 30;
 const EXPANDING_CELL_WIDTH = '70px';
