@@ -48,6 +48,8 @@ export interface TableProps {
 
 const DEFAULT_EMPTY_MESSAGE = 'No Results';
 const EXPAND_ROW_TEXT = 'Expand Row';
+const INVALID_DATA_ERROR_MESSAGE =
+  'Error: Invalid data! Your data does not contain the fields specified on the columns property.';
 const DEFAULT_LOADING_ITEMS = 3;
 const DEFAULT_ROW_HEIGHT = 30;
 const EXPANDING_CELL_WIDTH = '70px';
@@ -71,6 +73,15 @@ type EmptyRowProps = {
 
 const getCellAlignmentClass = (alignment: TextAlignmentValues) =>
   ALIGNEMENT_TO_CLASS_MAP[alignment];
+
+const fieldIsDefined = (field, row) => row[field] !== undefined;
+const checkValidData = (data, fields) => {
+  fields.forEach((field) => {
+    if (data.filter(fieldIsDefined.bind(null, field)).length === 0) {
+      throw new Error(INVALID_DATA_ERROR_MESSAGE);
+    }
+  });
+};
 
 const EmptyRow: React.FC<EmptyRowProps> = ({
   colspan,
@@ -186,6 +197,8 @@ const Table: React.FC<TableProps> = ({
   );
 
   if (data.length) {
+    checkValidData(data, fields);
+
     body = data.map((item, index) => {
       return (
         <React.Fragment key={`index:${index}`}>

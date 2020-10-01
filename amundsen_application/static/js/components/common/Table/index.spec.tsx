@@ -400,6 +400,19 @@ describe('Table', () => {
           });
         });
       });
+
+      describe('when columns specify fields not in the data', () => {
+        const { columns, data } = dataBuilder.withWrongData().build();
+
+        it('throws an error', () => {
+          expect(() => {
+            setup({
+              data,
+              columns,
+            });
+          }).toThrow();
+        });
+      });
     });
 
     describe('options', () => {
