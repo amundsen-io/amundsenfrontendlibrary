@@ -85,7 +85,7 @@ const checkIfValidData = (
   let isValid = true;
 
   for (let i = 0; i < fields.length; i++) {
-    if (data.filter(fieldIsDefined.bind(null, fields[i])).length === 0) {
+    if (!data.some(fieldIsDefined.bind(null, fields[i]))) {
       isValid = false;
       break;
     }

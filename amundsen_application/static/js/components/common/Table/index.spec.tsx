@@ -404,6 +404,15 @@ describe('Table', () => {
       describe('when columns specify fields not in the data', () => {
         const { columns, data } = dataBuilder.withWrongData().build();
 
+        beforeEach(() => {
+          jest.spyOn(console, 'error');
+          console.error.mockImplementation(() => {});
+        });
+
+        afterEach(() => {
+          console.error.mockRestore();
+        });
+
         it('throws an error', () => {
           expect(() => {
             setup({
