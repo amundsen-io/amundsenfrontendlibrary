@@ -303,7 +303,7 @@ describe('generateExploreUrl', () => {
 describe('numberFormat', () => {
   it('returns number format defined in config', () => {
     const actual = ConfigUtils.getNumberFormat();
-    const expected = AppConfig.numberFormat
+    const expected = AppConfig.numberFormat;
     expect(actual).toBe(expected);
   });
 });
