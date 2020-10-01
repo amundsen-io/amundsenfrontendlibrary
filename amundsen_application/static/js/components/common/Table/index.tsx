@@ -24,9 +24,11 @@ export interface TableColumn {
   width?: number;
   // sortable?: bool (false)
 }
+type Some = string | number | boolean | symbol | bigint | object;
+type ValidData = Record<string, Some>; // Removes the undefined | null values
 
 interface RowData {
-  [key: string]: any;
+  [key: string]: Some;
 }
 
 export interface TableOptions {
@@ -46,6 +48,16 @@ export interface TableProps {
   options?: TableOptions;
 }
 
+type RowStyles = {
+  height: string;
+};
+
+type EmptyRowProps = {
+  colspan: number;
+  rowStyles: RowStyles;
+  emptyMessage?: string;
+};
+
 const DEFAULT_EMPTY_MESSAGE = 'No Results';
 const EXPAND_ROW_TEXT = 'Expand Row';
 const INVALID_DATA_ERROR_MESSAGE =
@@ -61,24 +73,12 @@ const ALIGNEMENT_TO_CLASS_MAP = {
   center: 'is-center-aligned',
 };
 
-type RowStyles = {
-  height: string;
-};
-
-type EmptyRowProps = {
-  colspan: number;
-  rowStyles: RowStyles;
-  emptyMessage?: string;
-};
-
 const getCellAlignmentClass = (alignment: TextAlignmentValues) =>
   ALIGNEMENT_TO_CLASS_MAP[alignment];
+
 const fieldIsDefined = (field, row) => row[field] !== undefined;
 
-type Some = string | number | boolean | symbol | bigint | object;
-type ValidData = Record<string, Some>; // Removes the undefined | null values
-
-const checkValidData = (
+const checkIfValidData = (
   data: unknown[],
   fields: string[]
 ): data is ValidData[] => {
@@ -207,7 +207,7 @@ const Table: React.FC<TableProps> = ({
   );
 
   if (data.length) {
-    if (!checkValidData(data, fields)) {
+    if (!checkIfValidData(data, fields)) {
       throw new Error(INVALID_DATA_ERROR_MESSAGE);
     }
 
