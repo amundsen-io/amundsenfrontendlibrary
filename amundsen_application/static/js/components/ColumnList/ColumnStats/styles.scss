@@ -45,6 +45,8 @@
         .stat-value {
           flex: 100px 1 1;
           padding-right: 4px;
+          text-align: right;
+          font-style: $font-family-monospace-code;
         }
       }
     }

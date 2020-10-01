@@ -17,6 +17,7 @@ export interface AppConfig {
   userIdLabel?: string /* Temporary configuration due to lacking string customization/translation support */;
   issueTracking: IssueTrackingConfig;
   logoPath: string | null;
+  numberFormat: string | null;
   mailClientFeatures: MailClientFeaturesConfig;
   announcements: AnnoucementsFeaturesConfig;
   navLinks: Array<LinkConfig>;
