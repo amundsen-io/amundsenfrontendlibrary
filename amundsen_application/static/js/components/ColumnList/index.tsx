@@ -70,6 +70,11 @@ type StatType = {
   stat_val: string;
 };
 
+type BadgeType = {
+  name: string;
+  category: string;
+}
+
 type FormattedDataType = {
   content: ContentType;
   type: DatatypeType;
@@ -82,6 +87,7 @@ type FormattedDataType = {
   name: string;
   sort_order: string;
   isEditable: boolean;
+  badges: BadgeType[];
 };
 
 type ExpandedRowProps = {
@@ -121,6 +127,15 @@ const getSortingFunction = (
     ? numberSortingFunction
     : stringSortingFunction;
 };
+
+const hasColumnWithBadge = (columns:TableColumn[]) => {
+  for (let col in columns) {
+    if (col.badges.length > 0){
+      return true;
+    }
+  }
+  return false;
+}
 
 const getUsageStat = (item) => {
   const hasItemStats = !!item.stats.length;
@@ -216,6 +231,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
       sort_order: item.sort_order,
       usage: getUsageStat(item),
       stats: hasItemStats ? item.stats[0] : null,
+      badges: hasColumnWithBadge? item.badges : null;
       action: item.name,
       name: item.name,
       isEditable: item.is_editable,
@@ -272,6 +288,19 @@ const ColumnList: React.FC<ColumnListProps> = ({
         ),
       },
     ];
+  }
+
+
+  if (hasColumnWithBadge) {
+    formattedColumns = [
+      ...formattedColumns,
+      {
+        title: 'Badges',
+        field: 'badges',
+        horAlign: TextAlignmentValues.right,
+        
+      }
+    ]
   }
 
   if (notificationsEnabled()) {
