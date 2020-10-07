@@ -246,7 +246,8 @@
       "stylesheets/*",
       "vendor/*",
       "docs/*",
-      "appbuilder/*"
+      "appbuilder/*",
+      ".src-custom/*"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
