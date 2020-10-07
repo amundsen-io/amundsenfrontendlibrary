@@ -12,6 +12,8 @@ import {
   notificationsEnabled,
   getTableSortCriterias,
 } from 'config/config-utils';
+import { BadgeStyle } from 'config/config-types';
+import * as ConfigUtils from 'config/config-utils';
 
 import globalState from 'fixtures/globalState';
 import ColumnList, { ColumnListProps } from '.';
@@ -232,7 +234,7 @@ describe('ColumnList', () => {
       });
     });
 
-    describe('when columns with serveral stats including usage are passed', () => {
+    describe('when columns with several stats including usage are passed', () => {
       const { columns } = dataBuilder.withSeveralStats().build();
 
       it('should render the usage column', () => {
@@ -276,6 +278,64 @@ describe('ColumnList', () => {
 
         expect(actual).toEqual(expected);
       });
+    });
+
+    describe('when columns with badges are passed', () => {
+      const { columns } = dataBuilder.withBadges().build();
+      const getBadgeConfigSpy = jest.spyOn(ConfigUtils, 'getBadgeConfig');
+      getBadgeConfigSpy.mockImplementation((badgeName: string) => {
+        return {
+          displayName: badgeName + ' test name',
+          style: BadgeStyle.PRIMARY,
+        };
+      });
+
+      it('should render the rows', () => {
+        const { wrapper } = setup({ columns });
+        const expected = columns.length;
+        const actual = wrapper.find('.table-detail-table .ams-table-row')
+          .length;
+
+        expect(actual).toEqual(expected);
+      });
+
+      it('should render the badge column', () => {
+        const { wrapper } = setup({ columns });
+        const expected = columns.length;
+        const actual = wrapper.find('.table-detail-table .badges-list').length;
+
+        expect(actual).toEqual(expected);
+      });
+
+      describe('number of bages', () => {
+        it('should render no badges in the first cell', () => {
+          const { wrapper } = setup({ columns });
+          const expected = 0;
+          const actual = wrapper.find('.table-detail-table .badges-list').at(0).find('strong').length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        it('should render two badges in the first cell', () => {
+          const { wrapper } = setup({ columns });
+          const expected = 1;
+          const actual = wrapper.find('.table-detail-table .badges-list').at(1).find('strong').length;
+
+          expect(actual).toEqual(expected);
+        });
+
+        it('should render no badges in the first cell', () => {
+          const { wrapper } = setup({ columns });
+          const expected = 3;
+          const actual = wrapper.find('.table-detail-table .badges-list').at(2).find('strong').length;
+
+          expect(actual).toEqual(expected);
+        });
+
+      });
+
+
+
     });
   });
 });
