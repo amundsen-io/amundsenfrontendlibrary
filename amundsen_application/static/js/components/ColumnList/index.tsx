@@ -24,6 +24,7 @@ import {
   RequestMetadataType,
   SortCriteria,
   SortDirection,
+  Badge,
 } from 'interfaces';
 
 import ColumnType from './ColumnType';
@@ -39,6 +40,7 @@ import {
 } from './constants';
 
 import './styles.scss';
+import BadgeList from 'components/common/BadgeList';
 
 export interface ColumnListProps {
   columns: TableColumn[];
@@ -70,11 +72,6 @@ type StatType = {
   stat_val: string;
 };
 
-type BadgeType = {
-  name: string;
-  category: string;
-}
-
 type FormattedDataType = {
   content: ContentType;
   type: DatatypeType;
@@ -87,7 +84,7 @@ type FormattedDataType = {
   name: string;
   sort_order: string;
   isEditable: boolean;
-  badges: BadgeType[];
+  badges: Badge[];
 };
 
 type ExpandedRowProps = {
@@ -128,13 +125,13 @@ const getSortingFunction = (
     : stringSortingFunction;
 };
 
-const hasColumnWithBadge = (columns:TableColumn[]) => {
-  for (let col in columns) {
-    if (col.badges.length > 0){
-      return true;
+const hasColumnWithBadge = (columns: TableColumn[]) => {
+  return columns.some(col => {
+    if (col.badges) {
+      return col.badges.length > 0
     }
-  }
-  return false;
+    return false
+  });
 }
 
 const getUsageStat = (item) => {
@@ -215,6 +212,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
   openRequestDescriptionDialog,
   sortBy = DEFAULT_SORTING,
 }: ColumnListProps) => {
+  const hasColumnBadges = hasColumnWithBadge(columns);
   const formattedData: FormattedDataType[] = columns.map((item, index) => {
     const hasItemStats = !!item.stats.length;
 
@@ -231,7 +229,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
       sort_order: item.sort_order,
       usage: getUsageStat(item),
       stats: hasItemStats ? item.stats[0] : null,
-      badges: hasColumnWithBadge? item.badges : null;
+      badges: hasColumnBadges ? item.badges : null,
       action: item.name,
       name: item.name,
       isEditable: item.is_editable,
@@ -298,7 +296,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
         title: 'Badges',
         field: 'badges',
         horAlign: TextAlignmentValues.right,
-        
+        component: (values) => values ? <BadgeList badges={values} /> : null
       }
     ]
   }

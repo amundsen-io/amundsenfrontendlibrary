@@ -4,8 +4,11 @@
 import * as React from 'react';
 
 import ClickableBadge from 'components/common/Badges';
+import Flag from 'components/common/Flag';
 import { getBadgeConfig } from 'config/config-utils';
 import { Badge } from 'interfaces/Badges';
+
+const COLUMN_BADGE_CATEGORY = 'column'
 
 export interface BadgeListProps {
   badges: Badge[];
@@ -23,6 +26,13 @@ const BadgeList: React.FC<BadgeListProps> = ({ badges }: BadgeListProps) => {
         // metadata badges with name and category
         else if (badge.badge_name) {
           badgeConfig = getBadgeConfig(badge.badge_name);
+          if (badge.category === COLUMN_BADGE_CATEGORY) {
+            return (<Flag
+              caseType={badgeConfig.caseType}
+              text={badgeConfig.text}
+              labelStyle={badgeConfig.labelStyle}
+            />)
+          }
         }
         return (
           <ClickableBadge
