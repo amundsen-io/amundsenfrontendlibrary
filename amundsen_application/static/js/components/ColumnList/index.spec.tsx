@@ -313,10 +313,7 @@ describe('ColumnList', () => {
         it('should render no badges in the first cell', () => {
           const { wrapper } = setup({ columns });
           const expected = 0;
-          const actual = wrapper
-            .find('.badge-list')
-            .at(0)
-            .find('.flag').length;
+          const actual = wrapper.find('.badge-list').at(0).find('.flag').length;
 
           expect(actual).toEqual(expected);
         });
@@ -324,10 +321,7 @@ describe('ColumnList', () => {
         it('should render one badge in the second cell', () => {
           const { wrapper } = setup({ columns });
           const expected = 1;
-          const actual = wrapper
-            .find('.badge-list')
-            .at(1)
-            .find('.flag').length;
+          const actual = wrapper.find('.badge-list').at(1).find('.flag').length;
 
           expect(actual).toEqual(expected);
         });
@@ -335,10 +329,7 @@ describe('ColumnList', () => {
         it('should render three badges in the third cell', () => {
           const { wrapper } = setup({ columns });
           const expected = 3;
-          const actual = wrapper
-            .find('.badge-list')
-            .at(2)
-            .find('.flag').length;
+          const actual = wrapper.find('.badge-list').at(2).find('.flag').length;
 
           expect(actual).toEqual(expected);
         });
