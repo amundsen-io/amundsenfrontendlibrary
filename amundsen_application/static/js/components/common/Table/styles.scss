@@ -36,20 +36,22 @@ $row-bottom-border-color: $gray10;
   text-transform: uppercase;
 
   &:first-child {
-    padding-left: $spacer-3;
+    padding-left: $spacer-3 !important;
   }
 
   &:last-child {
-    padding-right: $spacer-3;
+    padding-right: $spacer-3 !important;
   }
 
   &.is-left-aligned {
     text-align: left;
     padding-right: $spacer-1;
+    padding-left: $spacer-1;
   }
 
   &.is-right-aligned {
     text-align: right;
+    padding-right: $spacer-1;
     padding-left: $spacer-1;
   }
 
@@ -82,20 +84,22 @@ $row-bottom-border-color: $gray10;
   overflow: visible;
 
   &:first-child {
-    padding-left: $spacer-3;
+    padding-left: $spacer-3 !important;
   }
 
   &:last-child {
-    padding-right: $spacer-3;
+    padding-right: $spacer-3 !important;
   }
 
   &.is-left-aligned {
     text-align: left;
     padding-right: $spacer-1;
+    padding-left: $spacer-1;
   }
 
   &.is-right-aligned {
     text-align: right;
+    padding-right: $spacer-1;
     padding-left: $spacer-1;
   }
 
@@ -119,6 +123,7 @@ $row-bottom-border-color: $gray10;
   &:hover svg use {
     fill: $gray60;
   }
+
   // TODO: Fix this so it is accessible
   &:focus {
     outline: none;
