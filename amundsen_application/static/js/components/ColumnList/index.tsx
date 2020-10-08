@@ -288,7 +288,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
     ];
   }
 
-  if (hasColumnWithBadge) {
+  if (hasColumnBadges) {
     formattedColumns = [
       ...formattedColumns,
       {
