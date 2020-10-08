@@ -229,7 +229,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
       sort_order: item.sort_order,
       usage: getUsageStat(item),
       stats: hasItemStats ? item.stats[0] : null,
-      badges: hasColumnBadges ? item.badges : null,
+      badges: hasColumnBadges ? item.badges : [],
       action: item.name,
       name: item.name,
       isEditable: item.is_editable,
