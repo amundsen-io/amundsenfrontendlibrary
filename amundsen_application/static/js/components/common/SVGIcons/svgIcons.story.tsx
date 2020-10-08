@@ -5,7 +5,7 @@ import React from 'react';
 import { withKnobs, object } from '@storybook/addon-knobs';
 
 import StorySection from '../StorySection';
-import { AlertIcon, DownIcon, UpIcon, RightIcon } from '.';
+import { AlertIcon, DownIcon, UpIcon, RightIcon, LeftIcon } from '.';
 
 export const SVGIcons = () => (
   <>
@@ -28,6 +28,12 @@ export const SVGIcons = () => (
       <RightIcon
         stroke={object('RightIcon stroke', 'currentColor')}
         fill={object('RightIcon fill', '#9191A8')}
+      />
+    </StorySection>
+    <StorySection title="Left">
+      <LeftIcon
+        stroke={object('LeftIcon stroke', 'currentColor')}
+        fill={object('LeftIcon fill', '#9191A8')}
       />
     </StorySection>
   </>
