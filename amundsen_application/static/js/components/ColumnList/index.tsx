@@ -27,6 +27,7 @@ import {
   Badge,
 } from 'interfaces';
 
+import BadgeList from 'components/common/BadgeList';
 import ColumnType from './ColumnType';
 import ColumnDescEditableText from './ColumnDescEditableText';
 import { getStatsInfoText } from './utils';
@@ -40,7 +41,6 @@ import {
 } from './constants';
 
 import './styles.scss';
-import BadgeList from 'components/common/BadgeList';
 
 export interface ColumnListProps {
   columns: TableColumn[];
@@ -126,13 +126,13 @@ const getSortingFunction = (
 };
 
 const hasColumnWithBadge = (columns: TableColumn[]) => {
-  return columns.some(col => {
+  return columns.some((col) => {
     if (col.badges) {
-      return col.badges.length > 0
+      return col.badges.length > 0;
     }
-    return false
+    return false;
   });
-}
+};
 
 const getUsageStat = (item) => {
   const hasItemStats = !!item.stats.length;
@@ -288,17 +288,16 @@ const ColumnList: React.FC<ColumnListProps> = ({
     ];
   }
 
-
   if (hasColumnWithBadge) {
     formattedColumns = [
       ...formattedColumns,
       {
         title: 'Badges',
         field: 'badges',
-        horAlign: TextAlignmentValues.right,
-        component: (values) => values ? <BadgeList badges={values} /> : null
-      }
-    ]
+        horAlign: TextAlignmentValues.left,
+        component: (values) => (values ? <BadgeList badges={values} /> : null),
+      },
+    ];
   }
 
   if (notificationsEnabled()) {
