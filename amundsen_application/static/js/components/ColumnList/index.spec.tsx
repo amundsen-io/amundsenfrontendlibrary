@@ -8,10 +8,6 @@ import configureStore from 'redux-mock-store';
 import { mocked } from 'ts-jest/utils';
 
 import { SortDirection } from 'interfaces';
-import {
-  notificationsEnabled,
-  getTableSortCriterias,
-} from 'config/config-utils';
 import { BadgeStyle } from 'config/config-types';
 import * as ConfigUtils from 'config/config-utils';
 
@@ -24,8 +20,14 @@ import TestDataBuilder from './testDataBuilder';
 
 jest.mock('config/config-utils');
 
-const mockedNotificationsEnabled = mocked(notificationsEnabled, true);
-const mockedGetTableSortCriterias = mocked(getTableSortCriterias, true);
+const mockedNotificationsEnabled = mocked(
+  ConfigUtils.notificationsEnabled,
+  true
+);
+const mockedGetTableSortCriterias = mocked(
+  ConfigUtils.getTableSortCriterias,
+  true
+);
 const dataBuilder = new TestDataBuilder();
 const middlewares = [];
 const mockStore = configureStore(middlewares);
@@ -302,7 +304,7 @@ describe('ColumnList', () => {
       it('should render the badge column', () => {
         const { wrapper } = setup({ columns });
         const expected = columns.length;
-        const actual = wrapper.find('.table-detail-table .badges-list').length;
+        const actual = wrapper.find('.badge-list').length;
 
         expect(actual).toEqual(expected);
       });
@@ -311,31 +313,36 @@ describe('ColumnList', () => {
         it('should render no badges in the first cell', () => {
           const { wrapper } = setup({ columns });
           const expected = 0;
-          const actual = wrapper.find('.table-detail-table .badges-list').at(0).find('strong').length;
+          const actual = wrapper
+            .find('.badge-list')
+            .at(0)
+            .find('.flag').length;
 
           expect(actual).toEqual(expected);
         });
 
-        it('should render two badges in the first cell', () => {
+        it('should render one badge in the second cell', () => {
           const { wrapper } = setup({ columns });
           const expected = 1;
-          const actual = wrapper.find('.table-detail-table .badges-list').at(1).find('strong').length;
+          const actual = wrapper
+            .find('.badge-list')
+            .at(1)
+            .find('.flag').length;
 
           expect(actual).toEqual(expected);
         });
 
-        it('should render no badges in the first cell', () => {
+        it('should render three badges in the third cell', () => {
           const { wrapper } = setup({ columns });
           const expected = 3;
-          const actual = wrapper.find('.table-detail-table .badges-list').at(2).find('strong').length;
+          const actual = wrapper
+            .find('.badge-list')
+            .at(2)
+            .find('.flag').length;
 
           expect(actual).toEqual(expected);
         });
-
       });
-
-
-
     });
   });
 });

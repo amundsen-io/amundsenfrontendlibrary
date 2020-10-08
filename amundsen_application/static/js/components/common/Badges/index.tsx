@@ -5,7 +5,7 @@ import * as React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Flag, { FlagProps } from 'components/common/Flag';
+import Flag, { FlagProps, convertText, CaseType } from 'components/common/Flag';
 import { ResourceType } from 'interfaces';
 import { updateSearchState } from 'ducks/search/reducer';
 import { UpdateSearchStateRequest } from 'ducks/search/types';
@@ -26,7 +26,7 @@ export class ClickableBadge extends React.Component<ClickableBadgeProps> {
       target_type: 'badge',
       label: badgeText,
     });
-    this.props.searchBadge(badgeText);
+    this.props.searchBadge(convertText(badgeText, CaseType.LOWER_CASE));
   };
 
   render() {

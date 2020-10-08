@@ -19,7 +19,7 @@ const columnBadges: Badge[] = [
   {
     badge_name: 'col badge 2',
     category: 'column',
-  }
+  },
 ];
 const badges: Badge[] = [
   {
@@ -41,7 +41,6 @@ const setup = (propOverrides?: Partial<BadgeListProps>) => {
 
   return { props, wrapper };
 };
-
 
 describe('BadgeList', () => {
   const getBadgeConfigSpy = jest.spyOn(ConfigUtils, 'getBadgeConfig');
@@ -71,7 +70,6 @@ describe('BadgeList', () => {
   });
 
   describe('when badges are passed', () => {
-
     const badgeList = shallow(<BadgeList badges={badges} />);
 
     it('renders a badge-list element', () => {

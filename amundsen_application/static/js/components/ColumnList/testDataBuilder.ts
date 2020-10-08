@@ -286,8 +286,7 @@ function TestDataBuilder(config = {}) {
               stat_val: '111',
             },
           ],
-          badges: [
-          ]
+          badges: [],
         },
         {
           col_type: 'struct<code:string,timezone:string>',
@@ -311,10 +310,10 @@ function TestDataBuilder(config = {}) {
           ],
           badges: [
             {
-              badge_name: "Badge Name 1",
-              category: "column",
-            }
-          ]
+              badge_name: 'Badge Name 1',
+              category: 'column',
+            },
+          ],
         },
         {
           col_type:
@@ -333,18 +332,18 @@ function TestDataBuilder(config = {}) {
           ],
           badges: [
             {
-              badge_name: "Badge Name 1",
-              category: "column",
+              badge_name: 'Badge Name 1',
+              category: 'column',
             },
             {
-              badge_name: "Badge Name 2",
-              category: "column",
+              badge_name: 'Badge Name 2',
+              category: 'column',
             },
             {
-              badge_name: "Badge Name 3",
-              category: "column",
-            }
-          ]
+              badge_name: 'Badge Name 3',
+              category: 'column',
+            },
+          ],
         },
       ],
     };
