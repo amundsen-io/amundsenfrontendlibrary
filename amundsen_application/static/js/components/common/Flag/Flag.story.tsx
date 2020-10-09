@@ -5,7 +5,8 @@ import React from 'react';
 
 import { BadgeStyle } from 'config/config-types';
 import StorySection from '../StorySection';
-import Flag, { CaseType } from '.';
+import Flag from '.';
+import { CaseType } from 'utils/textUtils';
 
 export default {
   title: 'Components/Flags',
