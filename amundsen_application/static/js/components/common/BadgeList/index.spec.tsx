@@ -50,7 +50,6 @@ const setup = (propOverrides?: Partial<BadgeListProps>) => {
       <BadgeList {...props} />
     </Provider>
   );
-  // const wrapper = shallow(<BadgeList {...props} />);
 
   return { props, wrapper };
 };
@@ -98,18 +97,6 @@ describe('BadgeList', () => {
 
       expect(actual).toEqual(expected);
     });
-
-    // TODO: Move into a specific test for the getBadgeConfi
-    // xit('passes the correct props to the Clickable Badge', () => {
-    //   badges.forEach((badge, index) => {
-    //     const clickableBadge = badgeList.childAt(index);
-    //     const clickableBadgeProps = clickableBadge.props();
-    //     const badgeConfig = ConfigUtils.getBadgeConfig(badge.badge_name);
-
-    //     expect(clickableBadgeProps.text).toEqual(badgeConfig.displayName);
-    //     expect(clickableBadgeProps.labelStyle).toEqual(badgeConfig.style);
-    //   });
-    // });
   });
 
   describe('when badge category is column', () => {

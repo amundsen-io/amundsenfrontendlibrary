@@ -60,7 +60,7 @@ const ActionableBadge: React.FC<ActionableBadgeProps> = ({
 export class BadgeList extends React.Component<BadgeListProps> {
   idx = 0;
 
-  onClick = (e) => {
+  handleClick = (e) => {
     const badgeText = this.props.badges[this.idx].badge_name
       ? this.props.badges[this.idx].badge_name
       : this.props.badges[this.idx].tag_name;
@@ -76,15 +76,12 @@ export class BadgeList extends React.Component<BadgeListProps> {
       <span className="badge-list">
         {this.props.badges.map((badge, index) => {
           let badgeConfig;
-          // let originalBadgeName;
           // search badges with just name
           if (badge.tag_name) {
-            // originalBadgeName = badge.tag_name;
             badgeConfig = getBadgeConfig(badge.tag_name);
           }
           // metadata badges with name and category
           else if (badge.badge_name) {
-            // originalBadgeName = badge.badge_name;
             badgeConfig = getBadgeConfig(badge.badge_name);
             if (badge.category === COLUMN_BADGE_CATEGORY) {
               return (
@@ -101,7 +98,7 @@ export class BadgeList extends React.Component<BadgeListProps> {
               <ActionableBadge
                 displayName={badgeConfig.displayName}
                 style={badgeConfig.style}
-                action={this.onClick}
+                action={this.handleClick}
                 key={`badge-${index}`}
               />
             );
