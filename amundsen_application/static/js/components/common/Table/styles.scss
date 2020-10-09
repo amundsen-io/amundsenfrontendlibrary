@@ -27,21 +27,12 @@ $row-bottom-border-color: $gray10;
 
   background-color: $table-header-background-color;
   color: $text-secondary;
-  border-bottom: $table-header-border-width solid
-    $table-header-bottom-border-color;
+  border-bottom: $table-header-border-width solid $table-header-bottom-border-color;
 }
 
 .ams-table-heading-cell {
   height: $table-header-height;
   text-transform: uppercase;
-
-  &:first-child {
-    padding-left: $spacer-3 !important;
-  }
-
-  &:last-child {
-    padding-right: $spacer-3 !important;
-  }
 
   &.is-left-aligned {
     text-align: left;
@@ -59,6 +50,14 @@ $row-bottom-border-color: $gray10;
     text-align: center;
     padding-left: $spacer-1;
     padding-right: $spacer-1;
+  }
+
+  &:first-child {
+    padding-left: $spacer-3;
+  }
+
+  &:last-child {
+    padding-right: $spacer-3;
   }
 }
 
