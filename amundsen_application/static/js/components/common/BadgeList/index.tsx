@@ -27,41 +27,43 @@ export interface DispatchFromProps {
 }
 
 export interface ActionableBadgeProps {
-  style: BadgeStyle,
-  displayName: string,
+  style: BadgeStyle;
+  displayName: string;
   action: any;
 }
 
 export type BadgeListProps = ListProps & DispatchFromProps;
 
-
-const StaticBadge: React.FC<BadgeStyleConfig> = ({ style, displayName }: BadgeStyleConfig) => {
+const StaticBadge: React.FC<BadgeStyleConfig> = ({
+  style,
+  displayName,
+}: BadgeStyleConfig) => {
   return (
     <span className={`static-badge flag label label-${style}`}>
-      <div className={`badge-overlay-${style}`}>
-        {displayName}
-      </div>
-    </span>);
+      <div className={`badge-overlay-${style}`}>{displayName}</div>
+    </span>
+  );
 };
 
-const ActionableBadge: React.FC<ActionableBadgeProps> = ({ style, displayName, action }: ActionableBadgeProps) => {
+const ActionableBadge: React.FC<ActionableBadgeProps> = ({
+  style,
+  displayName,
+  action,
+}: ActionableBadgeProps) => {
   return (
     <span className="actionable-badge" onClick={action}>
-      <StaticBadge
-        style={style}
-        displayName={displayName}
-      />
-    </span >
+      <StaticBadge style={style} displayName={displayName} />
+    </span>
   );
 };
 
 export class BadgeList extends React.Component<BadgeListProps> {
-
   idx = 0;
 
   onClick = (e) => {
-    const badgeText = this.props.badges[this.idx].badge_name ? this.props.badges[this.idx].badge_name :
-      this.props.badges[this.idx].tag_name;
+    const badgeText = this.props.badges[this.idx].badge_name
+      ? this.props.badges[this.idx].badge_name
+      : this.props.badges[this.idx].tag_name;
     logClick(e, {
       target_type: 'badge',
       label: badgeText,
@@ -85,25 +87,29 @@ export class BadgeList extends React.Component<BadgeListProps> {
             // originalBadgeName = badge.badge_name;
             badgeConfig = getBadgeConfig(badge.badge_name);
             if (badge.category === COLUMN_BADGE_CATEGORY) {
-              return (<StaticBadge
-                style={badgeConfig.style}
-                displayName={badgeConfig.displayName}
-                key={`badge-${index}`}
-              />);
+              return (
+                <StaticBadge
+                  style={badgeConfig.style}
+                  displayName={badgeConfig.displayName}
+                  key={`badge-${index}`}
+                />
+              );
             }
           }
           if (badge.category !== COLUMN_BADGE_CATEGORY) {
-            return (<ActionableBadge
-              displayName={badgeConfig.displayName}
-              style={badgeConfig.style}
-              action={this.onClick}
-              key={`badge-${index}`}
-            />);
+            return (
+              <ActionableBadge
+                displayName={badgeConfig.displayName}
+                style={badgeConfig.style}
+                action={this.onClick}
+                key={`badge-${index}`}
+              />
+            );
           }
           this.idx++;
-        }
-        )}
-      </span>);
+        })}
+      </span>
+    );
   }
 }
 

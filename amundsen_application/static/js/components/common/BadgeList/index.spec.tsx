@@ -83,7 +83,6 @@ describe('BadgeList', () => {
   });
 
   describe('when badges are passed', () => {
-
     it('renders a badge-list element', () => {
       const { wrapper } = setup({ badges });
       const expected = 1;
