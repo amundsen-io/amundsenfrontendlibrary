@@ -11,6 +11,7 @@ import { InformationIcon } from '../SVGIcons';
 import './styles.scss';
 
 const INFO_BUTTON_TEXT = 'More info';
+const DEFAULT_PLACEMENT = 'right';
 
 export interface InfoButtonProps {
   infoText?: string;
@@ -22,7 +23,7 @@ export interface InfoButtonProps {
 const InfoButton: React.FC<InfoButtonProps> = ({
   title,
   infoText,
-  placement = 'right',
+  placement = DEFAULT_PLACEMENT,
   size = IconSizes.REGULAR,
 }: InfoButtonProps) => {
   const popoverHoverFocus = (
