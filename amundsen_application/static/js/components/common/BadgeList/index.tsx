@@ -3,15 +3,13 @@
 
 import * as React from 'react';
 
-import ClickableBadge from 'components/common/Badges';
-import Flag, { CaseType } from 'components/common/Flag';
-import { getBadgeConfig, convertText } from 'config/config-utils';
+import { getBadgeConfig } from 'config/config-utils';
+import { convertText, CaseType } from 'utils/textUtils';
 import { Badge } from 'interfaces/Badges';
 import { BadgeStyle, BadgeStyleConfig } from 'config/config-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-// import Flag, { FlagProps, convertText, CaseType } from 'components/common/Flag';
 import { ResourceType } from 'interfaces';
 import { updateSearchState } from 'ducks/search/reducer';
 import { UpdateSearchStateRequest } from 'ducks/search/types';
@@ -58,20 +56,33 @@ const ActionableBadge: React.FC<ActionableBadgeProps> = ({ style, displayName, a
 };
 
 export class BadgeList extends React.Component<BadgeListProps> {
+
+  idx = 0;
+
+  onClick = (e) => {
+    const badgeText = this.props.badges[this.idx].badge_name ? this.props.badges[this.idx].badge_name :
+      this.props.badges[this.idx].tag_name;
+    logClick(e, {
+      target_type: 'badge',
+      label: badgeText,
+    });
+    this.props.searchBadge(convertText(badgeText, CaseType.LOWER_CASE));
+  };
+
   render() {
     return (
       <span className="badge-list">
         {this.props.badges.map((badge, index) => {
           let badgeConfig;
-          let originalBadgeName;
+          // let originalBadgeName;
           // search badges with just name
           if (badge.tag_name) {
-            originalBadgeName = badge.tag_name;
+            // originalBadgeName = badge.tag_name;
             badgeConfig = getBadgeConfig(badge.tag_name);
           }
           // metadata badges with name and category
           else if (badge.badge_name) {
-            originalBadgeName = badge.badge_name;
+            // originalBadgeName = badge.badge_name;
             badgeConfig = getBadgeConfig(badge.badge_name);
             if (badge.category === COLUMN_BADGE_CATEGORY) {
               return (<StaticBadge
@@ -82,22 +93,14 @@ export class BadgeList extends React.Component<BadgeListProps> {
             }
           }
           if (badge.category !== COLUMN_BADGE_CATEGORY) {
-            let onClick = (e) => {
-              const badgeText = originalBadgeName;
-              logClick(e, {
-                target_type: 'badge',
-                label: badgeText,
-              });
-              this.props.searchBadge(convertText(badgeText, CaseType.LOWER_CASE));
-            };
             return (<ActionableBadge
               displayName={badgeConfig.displayName}
               style={badgeConfig.style}
-              action={onClick}
+              action={this.onClick}
               key={`badge-${index}`}
             />);
           }
-
+          this.idx++;
         }
         )}
       </span>);

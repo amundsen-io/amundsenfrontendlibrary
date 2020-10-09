@@ -7,7 +7,6 @@ import { mount } from 'enzyme';
 import configureStore from 'redux-mock-store';
 
 import globalState from 'fixtures/globalState';
-import ClickableBadge from 'components/common/Badges';
 import Flag from 'components/common/Flag';
 import { BadgeStyle } from 'config/config-types';
 import * as ConfigUtils from 'config/config-utils';
