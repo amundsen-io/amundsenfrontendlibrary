@@ -82,14 +82,6 @@ $row-bottom-border-color: $gray10;
 .ams-table-cell {
   overflow: visible;
 
-  &:first-child {
-    padding-left: $spacer-3 !important;
-  }
-
-  &:last-child {
-    padding-right: $spacer-3 !important;
-  }
-
   &.is-left-aligned {
     text-align: left;
     padding-right: $spacer-1;
@@ -107,6 +99,15 @@ $row-bottom-border-color: $gray10;
     padding-left: $spacer-1;
     padding-right: $spacer-1;
   }
+
+  &:first-child {
+    padding-left: $spacer-3;
+  }
+
+  &:last-child {
+    padding-right: $spacer-3;
+  }
+
 }
 
 .ams-table-expanding-button {
