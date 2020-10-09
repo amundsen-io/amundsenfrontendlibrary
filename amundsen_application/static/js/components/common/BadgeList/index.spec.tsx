@@ -2,8 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { Provider } from 'react-redux';
+import { mount } from 'enzyme';
+import configureStore from 'redux-mock-store';
 
+import globalState from 'fixtures/globalState';
 import ClickableBadge from 'components/common/Badges';
 import Flag from 'components/common/Flag';
 import { BadgeStyle } from 'config/config-types';
@@ -32,12 +35,23 @@ const badges: Badge[] = [
   },
 ];
 
+const middlewares = [];
+const mockStore = configureStore(middlewares);
+
 const setup = (propOverrides?: Partial<BadgeListProps>) => {
   const props = {
     badges: [],
     ...propOverrides,
   };
-  const wrapper = shallow(<BadgeList {...props} />);
+
+  const testState = globalState;
+  testState.tableMetadata.tableData.badges = badges;
+  const wrapper = mount<BadgeListProps>(
+    <Provider store={mockStore(testState)}>
+      <BadgeList {...props} />
+    </Provider>
+  );
+  // const wrapper = shallow(<BadgeList {...props} />);
 
   return { props, wrapper };
 };
@@ -70,7 +84,6 @@ describe('BadgeList', () => {
   });
 
   describe('when badges are passed', () => {
-    const badgeList = shallow(<BadgeList badges={badges} />);
 
     it('renders a badge-list element', () => {
       const { wrapper } = setup({ badges });
@@ -80,25 +93,25 @@ describe('BadgeList', () => {
       expect(actual).toEqual(expected);
     });
 
-    it('renders a <ClickableBadge> for each badge in the input', () => {
+    it('renders a .actionable-badge for each badge in the input', () => {
       const { wrapper } = setup({ badges });
       const expected = badges.length;
-      const actual = wrapper.find(ClickableBadge).length;
+      const actual = wrapper.find('.actionable-badge').length;
 
       expect(actual).toEqual(expected);
     });
 
     // TODO: Move into a specific test for the getBadgeConfi
-    xit('passes the correct props to the Clickable Badge', () => {
-      badges.forEach((badge, index) => {
-        const clickableBadge = badgeList.childAt(index);
-        const clickableBadgeProps = clickableBadge.props();
-        const badgeConfig = ConfigUtils.getBadgeConfig(badge.badge_name);
+    // xit('passes the correct props to the Clickable Badge', () => {
+    //   badges.forEach((badge, index) => {
+    //     const clickableBadge = badgeList.childAt(index);
+    //     const clickableBadgeProps = clickableBadge.props();
+    //     const badgeConfig = ConfigUtils.getBadgeConfig(badge.badge_name);
 
-        expect(clickableBadgeProps.text).toEqual(badgeConfig.displayName);
-        expect(clickableBadgeProps.labelStyle).toEqual(badgeConfig.style);
-      });
-    });
+    //     expect(clickableBadgeProps.text).toEqual(badgeConfig.displayName);
+    //     expect(clickableBadgeProps.labelStyle).toEqual(badgeConfig.style);
+    //   });
+    // });
   });
 
   describe('when badge category is column', () => {
@@ -110,10 +123,10 @@ describe('BadgeList', () => {
       expect(actual).toEqual(expected);
     });
 
-    it('renders a <Flag> for each badge in the input', () => {
+    it('renders a .static-badge for each badge in the input', () => {
       const { wrapper } = setup({ badges: columnBadges });
       const expected = 2;
-      const actual = wrapper.find(Flag).length;
+      const actual = wrapper.find('.static-badge').length;
 
       expect(actual).toEqual(expected);
     });
