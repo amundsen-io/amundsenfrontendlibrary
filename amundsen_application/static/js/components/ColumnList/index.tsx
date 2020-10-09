@@ -295,7 +295,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
         title: 'Badges',
         field: 'badges',
         horAlign: TextAlignmentValues.left,
-        component: (values) => (values ? <BadgeList badges={values} /> : null),
+        component: (values) => <BadgeList badges={values} />,
       },
     ];
   }
