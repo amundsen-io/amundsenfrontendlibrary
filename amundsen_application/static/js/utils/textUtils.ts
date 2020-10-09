@@ -8,7 +8,7 @@ export enum CaseType {
   TITLE_CASE = 'titleCase',
 }
 
-export function convertText(str = '', caseType: string): string {
+export function convertText(str = '', caseType: CaseType): string {
   switch (caseType) {
     case CaseType.LOWER_CASE:
       return str.toLowerCase();
