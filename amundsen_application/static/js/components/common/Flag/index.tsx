@@ -8,7 +8,6 @@ import { convertText } from 'utils/textUtils';
 
 import './styles.scss';
 
-
 export interface FlagProps {
   caseType?: string | null;
   text: string;
