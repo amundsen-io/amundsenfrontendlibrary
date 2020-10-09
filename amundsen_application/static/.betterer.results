@@ -124,10 +124,10 @@ exports[`strict null compilation`] = {
       [93, 4, 11, "Type \'Tag[]\' is not assignable to type \'never[]\'.", "255414113"],
       [98, 4, 9, "Type \'Tag[]\' is not assignable to type \'never[]\'.", "3803340896"]
     ],
-    "js/config/config-utils.ts:1798174672": [
+    "js/config/config-utils.ts:2314482646": [
       [86, 4, 25, "\'style\' is specified more than once, so this usage will be overwritten.", "1214862559"]
     ],
-    "js/config/index.spec.ts:3155903042": [
+    "js/config/index.spec.ts:1229700976": [
       [17, 6, 61, "Object is possibly \'undefined\'.", "1496333578"],
       [51, 6, 61, "Object is possibly \'undefined\'.", "1496333578"]
     ],
