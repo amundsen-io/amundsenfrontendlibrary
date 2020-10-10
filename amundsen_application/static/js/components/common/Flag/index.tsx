@@ -4,12 +4,12 @@
 import * as React from 'react';
 
 import { BadgeStyle } from 'config/config-types';
-import { convertText } from 'utils/textUtils';
+import { convertText, CaseType } from 'utils/textUtils';
 
 import './styles.scss';
 
 export interface FlagProps {
-  caseType?: string | null;
+  caseType?: CaseType | null;
   text: string;
   labelStyle?: BadgeStyle;
 }
