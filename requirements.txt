@@ -31,7 +31,7 @@ pytest-mock==1.1
 # Mypy is an optional static type checker for Python.
 # License: MIT
 # Upstream url: https://github.com/python/mypy
-mypy==0.660
+mypy==0.790
 
 # PEP 484
 # License: PSF
