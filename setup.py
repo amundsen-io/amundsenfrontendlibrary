@@ -15,7 +15,7 @@ def is_npm_installed() -> bool:
     try:
         subprocess.check_call(['npm --version'], shell=True)
         return True
-    except Exception as e:
+    except subprocess.CalledProcessError:
         return False
 
 
@@ -52,7 +52,7 @@ setup(
     dependency_links=[],
     install_requires=requirements,
     extras_require={
-        'oidc': ['flaskoidc==0.1.0']
+        'oidc': ['flaskoidc==0.1.1']
     },
     python_requires=">=3.6",
     entry_points="""

@@ -1,7 +1,7 @@
 # The modular source code checker: pep8, pyflakes and co
 # License: MIT
 # Upstream url: http://bitbucket.org/tarek/flake8
-flake8==3.5.0
+flake8==3.8.4
 
 # A flake8 plugin that helps you write tidier imports.
 # License: ISCL
@@ -51,7 +51,7 @@ wheel==0.33.1
 # HTTP for Humans
 # License: Apache
 # Upstream url: http://docs.python-requests.org/en/master/
-requests==2.20.0
+requests==2.24.0
 
 # A lightweight library for converting complex datatypes to and from native Python datatypes.
 # License: MIT
