@@ -37,6 +37,7 @@ export interface AppConfigCustom {
   userIdLabel?: string /* Temporary configuration due to lacking string customization/translation support */;
   issueTracking?: IssueTrackingConfig;
   logoPath?: string;
+  numberFormat?: NumberFormatConfig | null;
   mailClientFeatures?: MailClientFeaturesConfig;
   announcements?: AnnoucementsFeaturesConfig;
   navLinks?: Array<LinkConfig>;
@@ -323,6 +324,6 @@ export interface NumberStyleConfig {
  * this allows users to display numbers in desired format
  */
 export interface NumberFormatConfig {
-  numbersystem: string | null;
+  numberSystem: string | null;
   [NumberStyle.DECIMAL]?: NumberStyleConfig;
 }

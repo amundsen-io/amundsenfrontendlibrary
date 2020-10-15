@@ -7,7 +7,7 @@ export function formatNumber(value) {
     return Intl.NumberFormat().format(value);
   }
 
-  const numbersystem = numberformat.numbersystem || null;
+  const numbersystem = numberformat.numberSystem || null;
   if (numbersystem) {
     return Intl.NumberFormat(numbersystem).format(value);
   }
