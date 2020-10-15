@@ -1,6 +1,8 @@
-import merge from 'webpack-merge';
+// Copyright Contributors to the Amundsen project.
+// SPDX-License-Identifier: Apache-2.0
 
-import devWebpackConfig from '../webpack.dev';
+import customWebpackConfig from './webpack.config.js';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 module.exports = {
   stories: ['../js/**/*.story.tsx'],
@@ -9,7 +11,23 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-knobs',
   ],
-  webpackFinal: async (config) => {
-    return merge(devWebpackConfig, config);
+  webpackFinal: (config) => {
+    return {
+      ...config,
+      module: {
+        ...config.module,
+        rules: customWebpackConfig.module.rules,
+      },
+      resolve: {
+        ...config.resolve,
+        ...customWebpackConfig.resolve,
+      },
+      plugins: [
+        new MiniCssExtractPlugin({
+          filename: '[name].[contenthash].css',
+        }),
+        ...config.plugins,
+      ],
+    };
   },
 };

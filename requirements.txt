@@ -1,7 +1,7 @@
 # The modular source code checker: pep8, pyflakes and co
 # License: MIT
 # Upstream url: http://bitbucket.org/tarek/flake8
-flake8==3.5.0
+flake8==3.8.4
 
 # A flake8 plugin that helps you write tidier imports.
 # License: ISCL
@@ -11,7 +11,7 @@ flake8-tidy-imports==1.1.0
 # A mature full-featured Python testing tool.
 # License: MIT
 # Upstream url: http://pytest.org/
-pytest==3.5.1
+pytest==6.1.1
 
 # Pytest plugin for measuring coverage.
 # License: MIT
@@ -51,7 +51,7 @@ wheel==0.33.1
 # HTTP for Humans
 # License: Apache
 # Upstream url: http://docs.python-requests.org/en/master/
-requests==2.20.0
+requests==2.24.0
 
 # A lightweight library for converting complex datatypes to and from native Python datatypes.
 # License: MIT
@@ -66,7 +66,7 @@ marshmallow-annotations>=2.4.0,<3.0
 # A utility library for mocking out the requests Python library.
 # License: Apache 2.0
 # Upstream url: https://pypi.org/project/responses/
-responses==0.9.0
+responses==0.12.0
 
 # A common package that holds the models deifnition and schemas that are used
 # accross different amundsen repositories.
@@ -78,6 +78,9 @@ flask-restful==0.3.8
 
 # SDK for JIRA
 jira==2.0.0
+
+# SDK for Asana
+asana==0.10.3
 
 # Retrying library
 retrying>=1.3.3,<2.0

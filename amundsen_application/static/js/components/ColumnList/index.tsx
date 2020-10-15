@@ -24,8 +24,10 @@ import {
   RequestMetadataType,
   SortCriteria,
   SortDirection,
+  Badge,
 } from 'interfaces';
 
+import BadgeList from 'components/common/BadgeList';
 import ColumnType from './ColumnType';
 import ColumnDescEditableText from './ColumnDescEditableText';
 import { getStatsInfoText } from './utils';
@@ -76,12 +78,13 @@ type FormattedDataType = {
   usage: number | null;
   stats: StatType | null;
   action: string;
-  editText?: string;
-  editUrl?: string;
+  editText: string | null;
+  editUrl: string | null;
   index: number;
   name: string;
   sort_order: string;
   isEditable: boolean;
+  badges: Badge[];
 };
 
 type ExpandedRowProps = {
@@ -120,6 +123,15 @@ const getSortingFunction = (
   return Number.isInteger(formattedData[0][sortBy.key])
     ? numberSortingFunction
     : stringSortingFunction;
+};
+
+const hasColumnWithBadge = (columns: TableColumn[]) => {
+  return columns.some((col) => {
+    if (col.badges) {
+      return col.badges.length > 0;
+    }
+    return false;
+  });
 };
 
 const getUsageStat = (item) => {
@@ -168,8 +180,8 @@ const ExpandedRowComponent: React.FC<ExpandedRowProps> = (
         <EditableSection
           title={EDITABLE_SECTION_TITLE}
           readOnly={!rowValue.isEditable}
-          editText={rowValue.editText}
-          editUrl={rowValue.editUrl}
+          editText={rowValue.editText || undefined}
+          editUrl={rowValue.editUrl || undefined}
         >
           <ColumnDescEditableText
             columnIndex={rowValue.index}
@@ -200,6 +212,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
   openRequestDescriptionDialog,
   sortBy = DEFAULT_SORTING,
 }: ColumnListProps) => {
+  const hasColumnBadges = hasColumnWithBadge(columns);
   const formattedData: FormattedDataType[] = columns.map((item, index) => {
     const hasItemStats = !!item.stats.length;
 
@@ -216,11 +229,12 @@ const ColumnList: React.FC<ColumnListProps> = ({
       sort_order: item.sort_order,
       usage: getUsageStat(item),
       stats: hasItemStats ? item.stats[0] : null,
+      badges: hasColumnBadges ? item.badges : [],
       action: item.name,
       name: item.name,
       isEditable: item.is_editable,
-      editText,
-      editUrl,
+      editText: editText || null,
+      editUrl: editUrl || null,
       index,
     };
   });
@@ -270,6 +284,18 @@ const ColumnList: React.FC<ColumnListProps> = ({
         component: (usage) => (
           <p className="resource-type usage-value">{usage}</p>
         ),
+      },
+    ];
+  }
+
+  if (hasColumnBadges) {
+    formattedColumns = [
+      ...formattedColumns,
+      {
+        title: 'Badges',
+        field: 'badges',
+        horAlign: TextAlignmentValues.left,
+        component: (values) => <BadgeList badges={values} />,
       },
     ];
   }

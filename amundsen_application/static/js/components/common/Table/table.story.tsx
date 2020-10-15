@@ -18,6 +18,10 @@ const {
   columns: differentWidthColumns,
 } = dataBuilder.withFixedWidthColumns().build();
 const {
+  columns: fourColumns,
+  data: fourColData,
+} = dataBuilder.withFourColumns().build();
+const {
   columns: customColumns,
   data: customColumnsData,
 } = dataBuilder.withOneComponentColumn().build();
@@ -38,8 +42,6 @@ const expandRowComponent = (rowValue, index) => (
     {index}:{rowValue.value}
   </strong>
 );
-
-// const stories = storiesOf('Components/Table', module);
 
 export const TableStates = () => (
   <>
@@ -87,6 +89,13 @@ export const StyledTable = () => (
           differentWidthColumns
         )}
         data={data}
+        options={{ rowHeight: 50 }}
+      />
+    </StorySection>
+    <StorySection title="with four columns">
+      <Table
+        columns={fourColumns}
+        data={fourColData}
         options={{ rowHeight: 50 }}
       />
     </StorySection>

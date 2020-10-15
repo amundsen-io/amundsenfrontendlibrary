@@ -2,15 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
-import { storiesOf } from '@storybook/react';
 
 import { BadgeStyle } from 'config/config-types';
+import { CaseType } from 'utils/textUtils';
 import StorySection from '../StorySection';
-import Flag, { CaseType } from '.';
+import Flag from '.';
 
-const stories = storiesOf('Components/Flags', module);
+export default {
+  title: 'Components/Flags',
+};
 
-stories.add('Flags', () => (
+export const Flags = () => (
   <>
     <StorySection title="Lower Case Flag">
       <Flag caseType={CaseType.LOWER_CASE} text="Test Flag" />
@@ -64,4 +66,6 @@ stories.add('Flags', () => (
       />
     </StorySection>
   </>
-));
+);
+
+Flags.storyName = 'Flags';
