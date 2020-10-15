@@ -17,7 +17,7 @@ export interface AppConfig {
   userIdLabel?: string /* Temporary configuration due to lacking string customization/translation support */;
   issueTracking: IssueTrackingConfig;
   logoPath: string | null;
-  numberFormat: NumberFormatConfig;
+  numberFormat: NumberFormatConfig | null;
   mailClientFeatures: MailClientFeaturesConfig;
   announcements: AnnoucementsFeaturesConfig;
   navLinks: Array<LinkConfig>;
@@ -315,14 +315,14 @@ export enum NumberStyle {
 }
 
 export interface NumberStyleConfig {
-  style: BadgeStyle;
-  displayName?: string;
+  style: NumberStyle;
+  config: string;
 }
 /**
  * NumberFormatConfig - configurations for formatting different type of numbers like currency, percentage,number system
  * this allows users to display numbers in desired format
  */
-interface NumberFormatConfig {
+export interface NumberFormatConfig {
   numbersystem: string | null;
   [NumberStyle.DECIMAL]?: NumberStyleConfig;
 }
