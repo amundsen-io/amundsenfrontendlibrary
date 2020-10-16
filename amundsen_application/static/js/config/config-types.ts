@@ -37,8 +37,8 @@ export interface AppConfigCustom {
   userIdLabel?: string /* Temporary configuration due to lacking string customization/translation support */;
   issueTracking?: IssueTrackingConfig;
   logoPath?: string;
+  numberFormat?: NumberFormatConfig | null;
   mailClientFeatures?: MailClientFeaturesConfig;
-  numberFormat: NumberFormatConfig | null;
   announcements?: AnnoucementsFeaturesConfig;
   navLinks?: Array<LinkConfig>;
   resourceConfig?: ResourceConfig;
