@@ -373,7 +373,7 @@ class SearchDashboard(unittest.TestCase):
         }
         self.expected_parsed_results = [
             {
-                'chart_names':[],
+                'chart_names': [],
                 'cluster': 'cluster',
                 'description': 'I am a dashboard',
                 'group_name': 'Amundsen Team',
