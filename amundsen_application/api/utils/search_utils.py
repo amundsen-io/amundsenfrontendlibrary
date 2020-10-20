@@ -17,6 +17,7 @@ valid_search_fields = {
     'dashboard': {
         'group_name',
         'name',
+        'chart_names',
         'product',
         'tag'
     }

@@ -86,6 +86,12 @@ const configDefault: AppConfig = {
           type: FilterType.INPUT_SELECT,
         },
         {
+          categoryId: 'chart_names',
+          displayName: 'Chart',
+          helpText: 'Enter exact chart name or a regex wildcard pattern',
+          type: FilterType.INPUT_SELECT,
+        },
+        {
           categoryId: 'name',
           displayName: 'Name',
           helpText: 'Enter exact dashboard name or a regex wildcard pattern',
