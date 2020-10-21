@@ -12,7 +12,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Router, Route, Switch } from 'react-router-dom';
 import DocumentTitle from 'react-document-title';
 
-import { analyticsMiddleware } from 'ducks/middlewares/analyticsMiddleware';
+import { analyticsMiddleware } from 'ducks/middlewares';
 
 import { BrowserHistory } from 'utils/navigationUtils';
 
