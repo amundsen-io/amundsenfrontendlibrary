@@ -1,16 +1,7 @@
 import { Middleware } from 'redux';
+
 import { RootState } from '../rootReducer';
-
-export const track = ({ type, payload }, state) => {
-  // analytics tracking api logic goes here
-  console.log(`Tracking [${type}]:`, payload);
-
-  // GA Tracking
-  // gaTrackEvent({
-  //     action: type,
-  //     label: userType + tags,
-  // })
-};
+import { trackGAEvent } from '../../utils/googleAnalytics';
 
 export const analyticsMiddleware: Middleware<
   {}, // legacy type parameter added to satisfy interface signature
@@ -25,7 +16,7 @@ export const analyticsMiddleware: Middleware<
 
   const { type, payload } = action.meta.analytics;
 
-  track({ type, payload }, getState());
+  trackGAEvent({ type, payload }, getState());
 
   return result;
 };
