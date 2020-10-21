@@ -52,7 +52,7 @@ export interface AppConfigCustom {
  * Key - The unique analytics key for your site
  * Sample Rate - The percentage of users (0 - 100) to track site speed.
  */
-interface GoogleAnalyticsConfig {
+export interface GoogleAnalyticsConfig {
   enabled: boolean;
   key: string;
   sampleRate: number;

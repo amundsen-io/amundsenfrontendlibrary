@@ -3,7 +3,11 @@ import { BadgeStyle, BadgeStyleConfig } from 'config/config-types';
 import { TableMetadata } from 'interfaces/TableMetadata';
 import { convertText, CaseType } from 'utils/textUtils';
 
-import { FilterConfig, LinkConfig } from './config-types';
+import {
+  FilterConfig,
+  LinkConfig,
+  GoogleAnalyticsConfig,
+} from './config-types';
 
 import { ResourceType } from '../interfaces';
 
@@ -74,6 +78,13 @@ export function getFilterConfigByResource(
   resourceType: ResourceType
 ): FilterConfig | undefined {
   return AppConfig.resourceConfig[resourceType].filterCategories;
+}
+
+/**
+ * Returns the filterCategories for the given resourceType
+ */
+export function getGoogleAnalyticsConfig(): GoogleAnalyticsConfig {
+  return AppConfig.google;
 }
 
 /*
