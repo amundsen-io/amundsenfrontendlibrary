@@ -25,6 +25,14 @@ export function addBookmark(
       resourceKey,
       resourceType,
     },
+    meta: {
+      analytics: {
+        type: 'app/openNote',
+        payload: {
+          id: 'fakeId',
+        },
+      },
+    },
     type: AddBookmark.REQUEST,
   };
 }
