@@ -11,6 +11,7 @@ export interface AddBookmarkRequest {
     resourceKey: string;
     resourceType: ResourceType;
   };
+  meta: any;
 }
 export interface AddBookmarkResponse {
   type: AddBookmark.SUCCESS | AddBookmark.FAILURE;
