@@ -69,10 +69,16 @@ const ShortTagsList: React.FC<TagsListProps> = ({
   const hasPopularTags = popularTags.length > 0;
   return (
     <div className="short-tag-list">
-      <h2 className="tag-list-title" id="browse-header">
-        {!hasCuratedTags && hasPopularTags && POPULAR_TAGS_TITLE}
-        {hasCuratedTags && CURATED_TAGS_TITLE}
-      </h2>
+      {!hasCuratedTags && hasPopularTags && (
+        <h2 className="tag-list-title" id="browse-header">
+          {POPULAR_TAGS_TITLE}
+        </h2>
+      )}
+      {hasCuratedTags && (
+        <h2 className="tag-list-title" id="browse-header">
+          {CURATED_TAGS_TITLE}
+        </h2>
+      )}
       {!hasCuratedTags && hasPopularTags && (
         <TagsListBlock tags={popularTags} />
       )}
