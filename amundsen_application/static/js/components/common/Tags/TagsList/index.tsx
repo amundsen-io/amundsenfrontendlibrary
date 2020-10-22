@@ -41,14 +41,6 @@ interface TagsListBlockProps {
   tags: Tag[];
 }
 
-const TagsListTitle: React.FC<TagsListTitleProps> = ({
-  titleText,
-}: TagsListTitleProps) => (
-  <h1 className="title-1 section-title" id="browse-header">
-    {titleText}
-  </h1>
-);
-
 const TagsListLabel: React.FC<TagsListTitleProps> = ({
   titleText,
 }: TagsListTitleProps) => (
@@ -77,10 +69,10 @@ const ShortTagsList: React.FC<TagsListProps> = ({
   const hasPopularTags = popularTags.length > 0;
   return (
     <div className="short-tag-list">
-      {!hasCuratedTags && hasPopularTags && (
-        <TagsListTitle titleText={POPULAR_TAGS_TITLE} />
-      )}
-      {hasCuratedTags && <TagsListTitle titleText={CURATED_TAGS_TITLE} />}
+      <h2 className="tag-list-title" id="browse-header">
+        {!hasCuratedTags && hasPopularTags && POPULAR_TAGS_TITLE}
+        {hasCuratedTags && CURATED_TAGS_TITLE}
+      </h2>
       {!hasCuratedTags && hasPopularTags && (
         <TagsListBlock tags={popularTags} />
       )}
@@ -102,7 +94,9 @@ const LongTagsList: React.FC<TagsListProps> = ({
   const hasOtherTags = otherTags.length > 0;
   return (
     <div className="full-tag-list">
-      <TagsListTitle titleText={BROWSE_TAGS_TITLE} />
+      <h1 className="tag-list-title" id="browse-header">
+        {BROWSE_TAGS_TITLE}
+      </h1>
       <hr className="header-hr" />
       {!hasCuratedTags && hasPopularTags && (
         <TagsListLabel titleText={POPULAR_TAGS_TITLE} />
