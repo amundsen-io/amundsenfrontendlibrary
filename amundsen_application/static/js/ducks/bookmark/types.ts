@@ -31,6 +31,7 @@ export interface RemoveBookmarkRequest {
     resourceKey: string;
     resourceType: ResourceType;
   };
+  meta: any;
 }
 export interface RemoveBookmarkResponse {
   type: RemoveBookmark.SUCCESS | RemoveBookmark.FAILURE;

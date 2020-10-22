@@ -27,9 +27,11 @@ export function addBookmark(
     },
     meta: {
       analytics: {
-        type: 'app/openNote',
+        type: 'bookmark/add',
         payload: {
-          id: 'fakeId',
+          category: 'bookmark',
+          action: 'add',
+          label: resourceKey,
         },
       },
     },
@@ -53,6 +55,16 @@ export function removeBookmark(
     payload: {
       resourceKey,
       resourceType,
+    },
+    meta: {
+      analytics: {
+        type: 'bookmark/remove',
+        payload: {
+          category: 'bookmark',
+          action: 'remove',
+          label: resourceKey,
+        },
+      },
     },
     type: RemoveBookmark.REQUEST,
   };
