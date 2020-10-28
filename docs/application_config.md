@@ -37,9 +37,29 @@ This config allows you to specify various date formats across the app. There are
 
 Reference for formatting: https://devhints.io/datetime#momentjs-format
 
-## Google Analytics
+## Analytics
 
-_TODO: Please add doc_
+Amundsen supports pluggable user behavior analytics via the [analytics](https://github.com/DavidWells/analytics) library.
+
+To emit analytics to a given destination, you must install the plugin, then you must specify it the config. Multiple destinations are supported if you wish to emit to multiple backends simultaneously.
+
+For example, to use Google analytics, you must first install the Google Analytics plugin: `npm install @analytics/google-analytics`
+
+Then, in your config:
+
+```
+analytics: [
+  vendor: 'google-analytics',
+  key: 'UA-1234567',
+  options: {
+    sampleRate: 100
+    // All Google Analytics config settings are supported
+  }
+]
+
+```
+
+All [`@analytics/` plugins](https://github.com/DavidWells/analytics#analytic-plugins) are supported.
 
 ## Indexing Optional Resources
 
