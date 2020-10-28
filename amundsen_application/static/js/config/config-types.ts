@@ -7,11 +7,12 @@ import { FilterType, ResourceType, SortCriteria } from '../interfaces';
  */
 
 export interface AppConfig {
+  analytics: Array<AnalyticsConfig>;
   badges: BadgeConfig;
   browse: BrowseConfig;
   date: DateFormatConfig;
   editableText: EditableTextConfig;
-  google: GoogleAnalyticsConfig;
+  google: GoogleAnalyticsConfig; // Deprecated
   indexDashboards: IndexDashboardsConfig;
   indexUsers: IndexUsersConfig;
   userIdLabel?: string /* Temporary configuration due to lacking string customization/translation support */;
@@ -27,11 +28,12 @@ export interface AppConfig {
 }
 
 export interface AppConfigCustom {
+  analytics?: Array<AnalyticsConfig>;
   badges?: BadgeConfig;
   browse?: BrowseConfig;
   date?: DateFormatConfig;
   editableText?: EditableTextConfig;
-  google?: GoogleAnalyticsConfig;
+  google?: GoogleAnalyticsConfig; // Deprecated
   indexDashboards?: IndexDashboardsConfig;
   indexUsers?: IndexUsersConfig;
   userIdLabel?: string /* Temporary configuration due to lacking string customization/translation support */;
@@ -47,6 +49,20 @@ export interface AppConfigCustom {
 }
 
 /**
+ * AnalyticsConfig - Configure a single analytics destination
+ *
+ * vendor - string, name of the vendor.
+ * id - string, unqiue identifier for this install. Different meaning for different
+ * options: options specific to this vendor.
+ */
+export interface AnalyticsConfig {
+  vendor: string;
+  id: string;
+  options?: Map<string, any>;
+}
+
+/**
+ * * DEPRECATED: USE analytics INSTEAD *
  * GoogleAnalyticsConfig - Customize 'gtag' - Google Tag Manager.
  *
  * Key - The unique analytics key for your site
