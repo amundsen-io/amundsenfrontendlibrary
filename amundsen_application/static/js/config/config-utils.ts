@@ -4,9 +4,9 @@ import { TableMetadata } from 'interfaces/TableMetadata';
 import { convertText, CaseType } from 'utils/textUtils';
 
 import {
+  AnalyticsConfig,
   FilterConfig,
   LinkConfig,
-  GoogleAnalyticsConfig,
 } from './config-types';
 
 import { ResourceType } from '../interfaces';
@@ -81,10 +81,10 @@ export function getFilterConfigByResource(
 }
 
 /**
- * Returns the filterCategories for the given resourceType
+ * Returns AnalyticsConfig.
  */
-export function getGoogleAnalyticsConfig(): GoogleAnalyticsConfig {
-  return AppConfig.google;
+export function getAnalyticsConfig(): AnalyticsConfig {
+  return AppConfig.analytics;
 }
 
 /*

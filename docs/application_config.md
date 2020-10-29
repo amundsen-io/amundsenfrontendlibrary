@@ -45,18 +45,17 @@ To emit analytics to a given destination, you must install the plugin, then you 
 
 For example, to use Google analytics, you must first install the Google Analytics plugin: `npm install @analytics/google-analytics`
 
-Then, in your config:
+Then, in your config, first add the import at the top: `import googleAnalytics from '@analytics/google-analytics';`, then add this config block:
 
 ```
-analytics: [
-  vendor: 'google-analytics',
-  key: 'UA-1234567',
-  options: {
-    sampleRate: 100
-    // All Google Analytics config settings are supported
-  }
-]
-
+analytics: {
+  plugins: [
+    googleAnalytics({
+      trackingId: 'UA-121991291',
+      sampleRate: 100
+    }),
+  ],
+}
 ```
 
 All [`@analytics/` plugins](https://github.com/DavidWells/analytics#analytic-plugins) are supported.
