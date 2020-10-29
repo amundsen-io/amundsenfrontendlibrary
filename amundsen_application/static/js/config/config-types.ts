@@ -7,7 +7,7 @@ import { FilterType, ResourceType, SortCriteria } from '../interfaces';
  */
 
 export interface AppConfig {
-  analytics: Array<AnalyticsConfig>;
+  analytics: AnalyticsConfig;
   badges: BadgeConfig;
   browse: BrowseConfig;
   date: DateFormatConfig;
@@ -28,7 +28,7 @@ export interface AppConfig {
 }
 
 export interface AppConfigCustom {
-  analytics?: Array<AnalyticsConfig>;
+  analytics?: AnalyticsConfig;
   badges?: BadgeConfig;
   browse?: BrowseConfig;
   date?: DateFormatConfig;
@@ -51,14 +51,10 @@ export interface AppConfigCustom {
 /**
  * AnalyticsConfig - Configure a single analytics destination
  *
- * vendor - string, name of the vendor.
- * id - string, unqiue identifier for this install. Different meaning for different
- * options: options specific to this vendor.
+ * plugins - array of AnalyticsPlugin functions (upstream doesn't expose this type, so any).
  */
 export interface AnalyticsConfig {
-  vendor: string;
-  id: string;
-  options?: Map<string, any>;
+  plugins: Array<any>;
 }
 
 /**

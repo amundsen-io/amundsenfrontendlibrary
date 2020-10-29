@@ -27,7 +27,7 @@ export function addBookmark(
     },
     meta: {
       analytics: {
-        type: 'app/openNote',
+        name: 'app/openNote',
         payload: {
           id: 'fakeId',
         },

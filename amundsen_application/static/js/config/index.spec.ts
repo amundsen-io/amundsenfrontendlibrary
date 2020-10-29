@@ -78,11 +78,11 @@ describe('getFilterConfigByResource', () => {
   });
 });
 
-describe('getGoogleAnalyticsConfig', () => {
-  it('returns the google analytics configuration object', () => {
-    const expectedValue = AppConfig.google;
+describe('getAnalyticsConfig', () => {
+  it('returns the analytics configuration object', () => {
+    const expectedValue = AppConfig.analytics;
 
-    expect(ConfigUtils.getGoogleAnalyticsConfig()).toBe(expectedValue);
+    expect(ConfigUtils.getAnalyticsConfig()).toBe(expectedValue);
   });
 });
 

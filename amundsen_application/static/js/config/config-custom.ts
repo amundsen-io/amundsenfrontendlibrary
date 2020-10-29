@@ -2,15 +2,19 @@
 
 import { AppConfigCustom } from './config-types';
 
+import segment from '@analytics/segment';
+
 const configCustom: AppConfigCustom = {
   browse: {
     curatedTags: [],
     showAllTags: true,
   },
-  google: {
-    enabled: false,
-    key: 'default-key',
-    sampleRate: 100,
+  analytics: {
+    plugins: [
+      segment({
+        writeKey: 'MhibS57o1RGYs3ncYfeALSTbawRs1F25',
+      })
+    ]
   },
   mailClientFeatures: {
     feedbackEnabled: false,

@@ -1,7 +1,7 @@
 import { Middleware } from 'redux';
 
 import { RootState } from '../rootReducer';
-import { trackGAEvent } from '../../utils/googleAnalytics';
+import { trackEvent } from '../../utils/analytics';
 
 export const analyticsMiddleware: Middleware<
   {}, // legacy type parameter added to satisfy interface signature
@@ -14,9 +14,7 @@ export const analyticsMiddleware: Middleware<
     return result;
   }
 
-  const { type, payload } = action.meta.analytics;
-
-  trackGAEvent({ type, payload }, getState());
-
+  const { name, payload } = action.meta.analytics;
+  trackEvent(name, payload);
   return result;
 };
