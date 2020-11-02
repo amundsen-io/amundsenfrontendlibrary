@@ -20,11 +20,6 @@ const configDefault: AppConfig = {
   analytics: {
     plugins: [],
   },
-  google: {
-    enabled: false,
-    key: 'default-key',
-    sampleRate: 100,
-  },
   indexDashboards: {
     enabled: false,
   },
