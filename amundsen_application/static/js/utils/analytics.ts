@@ -20,8 +20,7 @@ export const analyticsInstance = (): AnalyticsInstance => {
   return sharedAnalyticsInstance;
 };
 
-export const trackEvent = (eventName: string, payload: Map<string, any>) => {
+export const trackEvent = (eventName: string, properties: Map<string, any>) => {
   const analytics = analyticsInstance();
-  analytics.track(eventName, payload);
-  console.log(`Tracking [${eventName}]:`, payload);
+  analytics.track(eventName, properties);
 };
