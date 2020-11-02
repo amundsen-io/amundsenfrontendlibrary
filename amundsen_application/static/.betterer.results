@@ -56,17 +56,12 @@ exports[`strict null compilation`] = {
       [21, 6, 9, "Type \'null\' is not assignable to type \'boolean | undefined\'.", "1517648899"],
       [24, 6, 8, "Type \'null\' is not assignable to type \'boolean | undefined\'.", "2673870115"]
     ],
-    "js/components/common/OwnerEditor/index.tsx:3127875743": [
-      [92, 4, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
-      [97, 4, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
-      [104, 27, 6, "Type \'import(\\"./js/interfaces/Enums\\").UpdateMethod\' is not assignable to type \'never\'.", "1469012122"],
-      [104, 56, 2, "Type \'string\' is not assignable to type \'never\'.", "5861160"],
-      [109, 27, 6, "Type \'import(\\"./js/interfaces/Enums\\").UpdateMethod\' is not assignable to type \'never\'.", "1469012122"],
-      [109, 53, 2, "Type \'string\' is not assignable to type \'never\'.", "5861160"],
-      [114, 6, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
-      [120, 6, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
-      [127, 12, 5, "Property \'value\' does not exist on type \'HTMLInputElement | null\'.", "189936718"],
-      [129, 6, 21, "Object is possibly \'null\'.", "2411403565"]
+    "js/components/common/OwnerEditor/index.tsx:487917110": [
+      [119, 27, 6, "Type \'import(\\"./js/interfaces/Enums\\").UpdateMethod\' is not assignable to type \'never\'.", "1469012122"],
+      [119, 56, 2, "Type \'string\' is not assignable to type \'never\'.", "5861160"],
+      [124, 27, 6, "Type \'import(\\"./js/interfaces/Enums\\").UpdateMethod\' is not assignable to type \'never\'.", "1469012122"],
+      [124, 53, 2, "Type \'string\' is not assignable to type \'never\'.", "5861160"],
+      [147, 12, 5, "Property \'value\' does not exist on type \'HTMLInputElement | null\'.", "189936718"]
     ],
     "js/components/common/ResourceListItem/DashboardListItem/index.spec.tsx:53357032": [
       [163, 14, 29, "Type \'null\' is not assignable to type \'number\'.", "1157138603"]

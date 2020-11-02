@@ -94,7 +94,9 @@ export class OwnerEditor extends React.Component<
   handleShow = () => {
     const { setEditMode } = this.props;
 
-    setEditMode(true);
+    if (setEditMode) {
+      setEditMode(true);
+    }
   };
 
   cancelEdit = () => {
@@ -102,7 +104,9 @@ export class OwnerEditor extends React.Component<
     const { itemProps } = this.state;
 
     this.setState({ tempItemProps: itemProps });
-    setEditMode(false);
+    if (setEditMode) {
+      setEditMode(false);
+    }
   };
 
   saveEdit = () => {
@@ -123,13 +127,17 @@ export class OwnerEditor extends React.Component<
     });
 
     const onSuccessCallback = () => {
-      setEditMode(false);
+      if (setEditMode) {
+        setEditMode(false);
+      }
     };
     const onFailureCallback = () => {
       this.setState({
         errorText: Constants.DEFAULT_ERROR_TEXT,
       });
-      setEditMode(false);
+      if (setEditMode) {
+        setEditMode(false);
+      }
     };
 
     onUpdateList(updateArray, onSuccessCallback, onFailureCallback);
@@ -138,8 +146,10 @@ export class OwnerEditor extends React.Component<
   recordAddItem = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const { value } = this.inputRef.current;
-    if (value) {
+
+    if (this.inputRef.current && value) {
       this.inputRef.current.value = '';
+
       const newTempItemProps = {
         ...this.state.tempItemProps,
         [value]: { label: value },
@@ -149,12 +159,14 @@ export class OwnerEditor extends React.Component<
   };
 
   recordDeleteItem = (deletedKey: string) => {
-    const newTempItemProps = Object.keys(this.state.tempItemProps)
+    const { tempItemProps } = this.state;
+
+    const newTempItemProps = Object.keys(tempItemProps)
       .filter((key) => {
         return key !== deletedKey;
       })
       .reduce((obj, key) => {
-        obj[key] = this.state.tempItemProps[key];
+        obj[key] = tempItemProps[key];
         return obj;
       }, {});
     this.setState({ tempItemProps: newTempItemProps });
