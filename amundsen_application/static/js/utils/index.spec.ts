@@ -61,14 +61,14 @@ describe('numberUtils', () => {
       expect(actual).toEqual(expected);
     });
     it('returns false if string is not number', () => {
-      const actual_string = NumberUtils.isNumber('abcd');
-      const actual_date = NumberUtils.isNumber('2020-11-03');
-      const actual_alpha_num = NumberUtils.isNumber('1a2b3c');
+      const actualString = NumberUtils.isNumber('abcd');
+      const actualDate = NumberUtils.isNumber('2020-11-03');
+      const actualAlphaNum = NumberUtils.isNumber('1a2b3c');
       const expected = false;
 
-      expect(actual_string).toEqual(expected);
-      expect(actual_date).toEqual(expected);
-      expect(actual_alpha_num).toEqual(expected);
+      expect(actualString).toEqual(expected);
+      expect(actualDate).toEqual(expected);
+      expect(actualAlphaNum).toEqual(expected);
     });
   });
   describe('formatNumber', () => {
