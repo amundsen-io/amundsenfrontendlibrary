@@ -39,7 +39,7 @@ exports[`strict null compilation`] = {
     "js/components/common/EditableSection/index.tsx:3911151831": [
       [130, 12, 7, "Type \'((event: MouseEvent<HTMLDivElement, MouseEvent>) => void) | null\' is not assignable to type \'((event: MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined\'.\\n  Type \'null\' is not assignable to type \'((event: MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined\'.", "4055953994"]
     ],
-    "js/components/common/EditableText/index.tsx:3360221846": [
+    "js/components/common/EditableText/index.tsx:4277986546": [
       [55, 4, 13, "Type \'null\' is not assignable to type \'(newValue: string, onSuccess?: (() => any) | undefined, onFailure?: (() => any) | undefined) => void\'.", "67794331"],
       [56, 4, 14, "Type \'null\' is not assignable to type \'((onSuccess?: (() => any) | undefined, onFailure?: (() => any) | undefined) => void) | undefined\'.", "608289123"],
       [92, 4, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
