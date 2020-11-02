@@ -13,8 +13,6 @@ export function formatNumber(value) {
   return Intl.NumberFormat().format(value);
 }
 
-export function isNumber(value) {
-  if (typeof value == 'string') {
-    return !Number.isNaN(Number(value));
-  }
+export function isNumber(value): boolean {
+  return !Number.isNaN(Number(value));
 }
