@@ -59,9 +59,9 @@ exports[`strict null compilation`] = {
     "js/components/common/OwnerEditor/index.tsx:3127875743": [
       [92, 4, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
       [97, 4, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
-      [104, 27, 6, "Type \'UpdateMethod.DELETE\' is not assignable to type \'never\'.", "1469012122"],
+      [104, 27, 6, "Type \'import(\\"./js/interfaces/Enums\\").UpdateMethod\' is not assignable to type \'never\'.", "1469012122"],
       [104, 56, 2, "Type \'string\' is not assignable to type \'never\'.", "5861160"],
-      [109, 27, 6, "Type \'UpdateMethod.PUT\' is not assignable to type \'never\'.", "1469012122"],
+      [109, 27, 6, "Type \'import(\\"./js/interfaces/Enums\\").UpdateMethod\' is not assignable to type \'never\'.", "1469012122"],
       [109, 53, 2, "Type \'string\' is not assignable to type \'never\'.", "5861160"],
       [114, 6, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
       [120, 6, 22, "Cannot invoke an object which is possibly \'undefined\'.", "2225424112"],
@@ -100,9 +100,9 @@ exports[`strict null compilation`] = {
       [63, 22, 6, "Type \'undefined\' is not assignable to type \'GetAllTagsRequest\'.", "1979467425"],
       [66, 4, 4, "Type \'undefined\' is not assignable to type \'Tag[]\'.", "2087952548"],
       [67, 22, 6, "Type \'undefined\' is not assignable to type \'UpdateTagsRequest\'.", "1979467425"],
-      [100, 31, 10, "Type \'UpdateMethod.DELETE\' is not assignable to type \'never\'.", "3392756765"],
+      [100, 31, 10, "Type \'import(\\"./js/interfaces/Enums\\").UpdateMethod\' is not assignable to type \'never\'.", "3392756765"],
       [100, 64, 7, "Type \'string\' is not assignable to type \'never\'.", "1671693616"],
-      [102, 31, 10, "Type \'UpdateMethod.PUT\' is not assignable to type \'never\'.", "3392756765"],
+      [102, 31, 10, "Type \'import(\\"./js/interfaces/Enums\\").UpdateMethod\' is not assignable to type \'never\'.", "3392756765"],
       [102, 61, 7, "Type \'string\' is not assignable to type \'never\'.", "1671693616"]
     ],
     "js/components/common/Tags/TagsList/index.tsx:4084208491": [
