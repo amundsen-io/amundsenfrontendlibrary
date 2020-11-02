@@ -12,7 +12,6 @@ export interface AppConfig {
   browse: BrowseConfig;
   date: DateFormatConfig;
   editableText: EditableTextConfig;
-  google: GoogleAnalyticsConfig; // Deprecated
   indexDashboards: IndexDashboardsConfig;
   indexUsers: IndexUsersConfig;
   userIdLabel?: string /* Temporary configuration due to lacking string customization/translation support */;
@@ -33,7 +32,6 @@ export interface AppConfigCustom {
   browse?: BrowseConfig;
   date?: DateFormatConfig;
   editableText?: EditableTextConfig;
-  google?: GoogleAnalyticsConfig; // Deprecated
   indexDashboards?: IndexDashboardsConfig;
   indexUsers?: IndexUsersConfig;
   userIdLabel?: string /* Temporary configuration due to lacking string customization/translation support */;
@@ -55,19 +53,6 @@ export interface AppConfigCustom {
  */
 export interface AnalyticsConfig {
   plugins: Array<any>;
-}
-
-/**
- * * DEPRECATED: USE analytics INSTEAD *
- * GoogleAnalyticsConfig - Customize 'gtag' - Google Tag Manager.
- *
- * Key - The unique analytics key for your site
- * Sample Rate - The percentage of users (0 - 100) to track site speed.
- */
-export interface GoogleAnalyticsConfig {
-  enabled: boolean;
-  key: string;
-  sampleRate: number;
 }
 
 /**
