@@ -136,7 +136,7 @@
     "moment-timezone": "^0.5.28",
     "react": "^16.13.1",
     "react-avatar": "^2.5.1",
-    "react-bootstrap": "^0.32.4",
+    "react-bootstrap": "^1.4.0",
     "react-code-blocks": "0.0.7",
     "react-document-title": "^2.0.3",
     "react-dom": "^16.13.1",
