@@ -2,24 +2,22 @@ import Analytics, { AnalyticsInstance } from 'analytics';
 
 import * as ConfigUtils from 'config/config-utils';
 
-let _analyticsInstance;
+let sharedAnalyticsInstance;
 
 export const analyticsInstance = (): AnalyticsInstance => {
-  if (_analyticsInstance) {
-    return _analyticsInstance;
+  if (sharedAnalyticsInstance) {
+    return sharedAnalyticsInstance;
   }
 
-  console.log("analytics config", ConfigUtils.getAnalyticsConfig())
+  const { plugins } = ConfigUtils.getAnalyticsConfig();
 
-  const plugins = ConfigUtils.getAnalyticsConfig().plugins;
-
-  _analyticsInstance = Analytics({
+  sharedAnalyticsInstance = Analytics({
     app: 'amundsen',
     version: '100',
-    plugins: plugins
+    plugins,
   });
 
-  return _analyticsInstance;
+  return sharedAnalyticsInstance;
 };
 
 export const trackEvent = (eventName: string, payload: Map<string, any>) => {

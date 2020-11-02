@@ -3,11 +3,7 @@ import { BadgeStyle, BadgeStyleConfig } from 'config/config-types';
 import { TableMetadata } from 'interfaces/TableMetadata';
 import { convertText, CaseType } from 'utils/textUtils';
 
-import {
-  AnalyticsConfig,
-  FilterConfig,
-  LinkConfig,
-} from './config-types';
+import { AnalyticsConfig, FilterConfig, LinkConfig } from './config-types';
 
 import { ResourceType } from '../interfaces';
 
