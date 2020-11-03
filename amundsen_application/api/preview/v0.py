@@ -3,6 +3,7 @@
 
 import json
 import logging
+from pkg_resources import iter_entry_points
 
 from http import HTTPStatus
 
@@ -13,7 +14,13 @@ from werkzeug.utils import import_string
 from amundsen_application.models.preview_data import PreviewDataSchema
 
 LOGGER = logging.getLogger(__name__)
+PREVIEW_CLIENT_CLASS = None
 PREVIEW_CLIENT_INSTANCE = None
+
+for entry_point in iter_entry_points(group='preview_client', name='table_preview_client_class'):
+    preview_client_class = entry_point.load()
+    if preview_client_class is not None:
+        PREVIEW_CLIENT_CLASS = preview_client_class
 
 preview_blueprint = Blueprint('preview', __name__, url_prefix='/api/preview/v0')
 
@@ -21,12 +28,13 @@ preview_blueprint = Blueprint('preview', __name__, url_prefix='/api/preview/v0')
 @preview_blueprint.route('/', methods=['POST'])
 def get_table_preview() -> Response:
     global PREVIEW_CLIENT_INSTANCE
+    global PREVIEW_CLIENT_CLASS
     try:
         if PREVIEW_CLIENT_INSTANCE is None:
             if (app.config['PREVIEW_CLIENT_ENABLED']
                     and app.config['PREVIEW_CLIENT'] is not None):
-                preview_client_class = import_string(app.config['PREVIEW_CLIENT'])
-                PREVIEW_CLIENT_INSTANCE = preview_client_class()
+                PREVIEW_CLIENT_CLASS = import_string(app.config['PREVIEW_CLIENT'])
+                PREVIEW_CLIENT_INSTANCE = PREVIEW_CLIENT_CLASS()
             else:
                 payload = jsonify({'previewData': {}, 'msg': 'A client for the preview feature must be configured'})
                 return make_response(payload, HTTPStatus.NOT_IMPLEMENTED)

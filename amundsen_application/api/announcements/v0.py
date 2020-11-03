@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import logging
+from pkg_resources import iter_entry_points
 
 from http import HTTPStatus
 
@@ -10,7 +11,13 @@ from flask.blueprints import Blueprint
 from werkzeug.utils import import_string
 
 LOGGER = logging.getLogger(__name__)
+ANNOUNCEMENT_CLIENT_CLASS = None
 ANNOUNCEMENT_CLIENT_INSTANCE = None
+
+for entry_point in iter_entry_points(group='announcement_client', name='announcement_client_class'):
+    announcement_client_class = entry_point.load()
+    if announcement_client_class is not None:
+        ANNOUNCEMENT_CLIENT_CLASS = announcement_client_class
 
 announcements_blueprint = Blueprint('announcements', __name__, url_prefix='/api/announcements/v0')
 
@@ -18,12 +25,13 @@ announcements_blueprint = Blueprint('announcements', __name__, url_prefix='/api/
 @announcements_blueprint.route('/', methods=['GET'])
 def get_announcements() -> Response:
     global ANNOUNCEMENT_CLIENT_INSTANCE
+    global ANNOUNCEMENT_CLIENT_CLASS
     try:
         if ANNOUNCEMENT_CLIENT_INSTANCE is None:
             if (app.config['ANNOUNCEMENT_CLIENT_ENABLED']
                     and app.config['ANNOUNCEMENT_CLIENT'] is not None):
-                announcement_client_class = import_string(app.config['ANNOUNCEMENT_CLIENT'])
-                ANNOUNCEMENT_CLIENT_INSTANCE = announcement_client_class()
+                ANNOUNCEMENT_CLIENT_CLASS = import_string(app.config['ANNOUNCEMENT_CLIENT'])
+                ANNOUNCEMENT_CLIENT_INSTANCE = ANNOUNCEMENT_CLIENT_CLASS()
             else:
                 payload = jsonify({'posts': [],
                                    'msg': 'A client for retrieving announcements must be configured'})
