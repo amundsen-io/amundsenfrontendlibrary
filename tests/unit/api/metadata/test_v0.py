@@ -837,9 +837,7 @@ class MetadataTest(unittest.TestCase):
             response = test.get('/api/metadata/v0/user', query_string=dict(user_id='testuser'))
             data = json.loads(response.data)
             self.assertEqual(response.status_code, HTTPStatus.OK)
-            actual_parsed_user = data.get('user')
-            self.assertEqual(dict(actual_parsed_user, **self.expected_parsed_user),
-                             actual_parsed_user)
+            self.assertEqual(dict(data.get('user'), **self.expected_parsed_user), data.get('user'))
 
     @responses.activate
     def test_get_bookmark(self) -> None:
