@@ -5,7 +5,7 @@ import * as History from 'history';
 // Mock React-Router
 export function getMockRouterProps<P>(
   data: P,
-  location: Partial<History.Location>
+  location: Partial<History.Location> = {}
 ): RouteComponentProps<P> {
   const mockLocation: History.Location = {
     hash: '',
