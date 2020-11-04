@@ -24,7 +24,10 @@ export function getMockRouterProps<P>(
       url: '',
     },
     location: mockLocation,
-    history: {
+    // This history object is a mock and `null`s many of the required methods. The
+    // tests are designed not to trigger them, if they do, an error is expected.
+    // So cast this as any.
+    history: <any>{
       length: 2,
       action: 'POP',
       location: mockLocation,
