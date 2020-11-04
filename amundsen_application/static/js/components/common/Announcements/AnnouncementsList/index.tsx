@@ -68,7 +68,7 @@ const AnnouncementsList: React.FC<AnnouncementsListProps> = ({
   isLoading,
 }: AnnouncementsListProps) => {
   const isEmpty = announcements.length === 0;
-  let listContent: Array<JSX.Element> = [];
+  let listContent: JSX.Element[] = [];
 
   if (isEmpty) {
     listContent = [<EmptyAnnouncementItem />];

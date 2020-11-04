@@ -71,9 +71,9 @@ export const mapStateToProps = (state: GlobalState) => {
 
   const curatedTagsList = getCuratedTags();
 
-  let curatedTags: Array<Tag> = [];
-  let popularTags: Array<Tag> = [];
-  let otherTags: Array<Tag> = [];
+  let curatedTags: Tag[] = [];
+  let popularTags: Tag[] = [];
+  let otherTags: Tag[] = [];
 
   if (curatedTagsList.length > 0) {
     // keeping curated tags with zero usage count

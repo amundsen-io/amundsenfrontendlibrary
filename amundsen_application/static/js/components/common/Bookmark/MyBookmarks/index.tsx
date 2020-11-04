@@ -60,8 +60,8 @@ export class MyBookmarks extends React.Component<MyBookmarksProps> {
     return `${getDisplayNameByResource(resource)} (${bookmarks.length})`;
   };
 
-  generateTabInfo = (): Array<TabInfo> => {
-    const tabInfo: Array<TabInfo> = [];
+  generateTabInfo = (): TabInfo[] => {
+    const tabInfo: TabInfo[] = [];
 
     tabInfo.push({
       content: this.generateTabContent(ResourceType.table),
