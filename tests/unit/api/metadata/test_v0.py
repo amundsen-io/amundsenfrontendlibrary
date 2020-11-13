@@ -474,7 +474,10 @@ class MetadataTest(unittest.TestCase):
         Test successful popular_tables request
         :return:
         """
-        responses.add(responses.GET, local_app.config['METADATASERVICE_BASE'] + POPULAR_TABLES_ENDPOINT,
+        mock_url = local_app.config['METADATASERVICE_BASE'] \
+            + POPULAR_TABLES_ENDPOINT \
+            + f'/{TEST_USER_ID}'
+        responses.add(responses.GET, mock_url,
                       json=self.mock_popular_tables, status=HTTPStatus.OK)
 
         with local_app.test_client() as test:
@@ -490,8 +493,11 @@ class MetadataTest(unittest.TestCase):
         returned to the React application
         :return:
         """
-        responses.add(responses.GET, local_app.config['METADATASERVICE_BASE'] + POPULAR_TABLES_ENDPOINT,
-                      json=self.mock_popular_tables, status=HTTPStatus.BAD_REQUEST)
+        mock_url = local_app.config['METADATASERVICE_BASE'] \
+            + POPULAR_TABLES_ENDPOINT \
+            + f'/{TEST_USER_ID}'
+        responses.add(responses.GET, mock_url, json=self.mock_popular_tables,
+                      status=HTTPStatus.BAD_REQUEST)
 
         with local_app.test_client() as test:
             response = test.get('/api/metadata/v0/popular_tables')
@@ -504,8 +510,11 @@ class MetadataTest(unittest.TestCase):
         results from the metadata service
         :return:
         """
-        responses.add(responses.GET, local_app.config['METADATASERVICE_BASE'] + POPULAR_TABLES_ENDPOINT,
-                      json={'popular_tables': None}, status=HTTPStatus.OK)
+        mock_url = local_app.config['METADATASERVICE_BASE'] \
+            + POPULAR_TABLES_ENDPOINT \
+            + f'/{TEST_USER_ID}'
+        responses.add(responses.GET, mock_url, json={'popular_tables': None},
+                      status=HTTPStatus.OK)
 
         with local_app.test_client() as test:
             response = test.get('/api/metadata/v0/popular_tables')
