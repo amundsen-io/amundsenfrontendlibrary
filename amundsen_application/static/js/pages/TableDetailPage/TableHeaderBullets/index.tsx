@@ -33,7 +33,7 @@ export type TableHeaderBulletsProps = HeaderBulletsProps & DispatchFromProps;
 
 export class TableHeaderBullets extends React.Component<
   TableHeaderBulletsProps
-  > {
+  >{
   handleClick = (e) => {
     const databaseText = this.props.database;
     logClick(e, {
