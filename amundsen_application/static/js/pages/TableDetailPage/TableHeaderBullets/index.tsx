@@ -1,13 +1,5 @@
-/*
-  This file is copy-pasted from the upstream file at the same path and of the
-  same name. It has been modified to include a Lyft specific UI decision.
-
-  This choice requires manually maintaining these files, and they are not unit tested.
-
-  Before defaulting to this pattern for other components, first consider if an
-  application configuration would be appropriate and useful for other community
-  use cases.
-*/
+// Copyright Contributors to the Amundsen project.	/*
+// SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
 import { Link } from 'react-router-dom';
