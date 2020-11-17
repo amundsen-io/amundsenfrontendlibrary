@@ -41,7 +41,7 @@ export type TableHeaderBulletsProps = HeaderBulletsProps & DispatchFromProps;
 
 export class TableHeaderBullets extends React.Component<
   TableHeaderBulletsProps
-> {
+  > {
   handleClick = (e) => {
     const databaseText = this.props.database;
     logClick(e, {
@@ -53,7 +53,7 @@ export class TableHeaderBullets extends React.Component<
 
   render() {
     const isViewCheck =
-      this.props.isView == undefined ? false : this.props.isView;
+      this.props.isView === undefined ? false : this.props.isView;
     return (
       <ul className="header-bullets">
         <li>{getDisplayNameByResource(ResourceType.table)}</li>
