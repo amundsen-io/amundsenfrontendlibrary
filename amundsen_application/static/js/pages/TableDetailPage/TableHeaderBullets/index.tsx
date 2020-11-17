@@ -50,20 +50,14 @@ export class TableHeaderBullets extends React.Component<TableHeaderBulletsProps>
     return (
       <ul className="header-bullets" >
         <li>{getDisplayNameByResource(ResourceType.table)} </li>
-        <li><Link to='/search' onClick={this.handleClick}>{getSourceDisplayName(this.props.database, ResourceType.table)}</Link></li>
-        <li>{this.props.cluster}</li>
+        <li><Link to='/search' onClick={this.handleClick}>{getSourceDisplayName(this.props.database || '', ResourceType.table)}</Link></li>
+        <li>{this.props.cluster || ''}</li>
         {this.props.isView && <li>{TABLE_VIEW_TEXT}</li>}
       </ul >
     );
   }
 
 };
-
-// TableHeaderBullets.defaultProps = {
-//   cluster: '',
-//   database: '',
-//   isView: false,
-// };
 
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators(
