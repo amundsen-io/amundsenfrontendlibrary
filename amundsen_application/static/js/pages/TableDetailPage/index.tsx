@@ -125,7 +125,7 @@ export interface StateProps {
 export class TableDetail extends React.Component<
   TableDetailProps & RouteComponentProps<any>,
   StateProps
-  > {
+> {
   private key: string;
 
   private didComponentMount: boolean = false;
@@ -286,8 +286,8 @@ export class TableDetail extends React.Component<
       const data = tableData;
       const editText = data.source
         ? `${Constants.EDIT_DESC_TEXT} ${getDescriptionSourceDisplayName(
-          data.source.source_type
-        )}`
+            data.source.source_type
+          )}`
         : '';
       const editUrl = data.source ? data.source.source : '';
 
@@ -306,7 +306,10 @@ export class TableDetail extends React.Component<
             </div>
             <div className="header-section header-title">
               <h1 className="header-title-text truncated">
-                <Link to='/search' onClick={this.handleClick}>{data.schema}</Link>.{data.name}
+                <Link to="/search" onClick={this.handleClick}>
+                  {data.schema}
+                </Link>
+                .{data.name}
               </h1>
               <BookmarkIcon
                 bookmarkKey={data.key}
@@ -449,7 +452,9 @@ export const mapStateToProps = (state: GlobalState) => {
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators(
     {
-      getTableData, openRequestDescriptionDialog, searchSchema: (schemaText: string) =>
+      getTableData,
+      openRequestDescriptionDialog,
+      searchSchema: (schemaText: string) =>
         updateSearchState({
           filters: {
             [ResourceType.table]: { schema: schemaText },

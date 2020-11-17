@@ -12,7 +12,10 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import { getDisplayNameByResource, getSourceDisplayName } from 'config/config-utils';
+import {
+  getDisplayNameByResource,
+  getSourceDisplayName,
+} from 'config/config-utils';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -25,8 +28,6 @@ import { ResourceType } from 'interfaces/Resources';
 
 import { TABLE_VIEW_TEXT } from './constants';
 
-export type TableHeaderBulletsProps = HeaderBulletsProps & DispatchFromProps;
-
 export interface HeaderBulletsProps {
   cluster: string;
   database: string;
@@ -36,8 +37,11 @@ export interface DispatchFromProps {
   searchDatabase: (databaseText: string) => UpdateSearchStateRequest;
 }
 
-export class TableHeaderBullets extends React.Component<TableHeaderBulletsProps> {
+export type TableHeaderBulletsProps = HeaderBulletsProps & DispatchFromProps;
 
+export class TableHeaderBullets extends React.Component<
+  TableHeaderBulletsProps
+  > {
   handleClick = (e) => {
     const databaseText = this.props.database;
     logClick(e, {
@@ -46,18 +50,27 @@ export class TableHeaderBullets extends React.Component<TableHeaderBulletsProps>
     });
     this.props.searchDatabase(databaseText);
   };
+
   render() {
+    const isViewCheck =
+      this.props.isView == undefined ? false : this.props.isView;
     return (
-      <ul className="header-bullets" >
-        <li>{getDisplayNameByResource(ResourceType.table)} </li>
-        <li><Link to='/search' onClick={this.handleClick}>{getSourceDisplayName(this.props.database || '', ResourceType.table)}</Link></li>
+      <ul className="header-bullets">
+        <li>{getDisplayNameByResource(ResourceType.table)}</li>
+        <li>
+          <Link to="/search" onClick={this.handleClick}>
+            {getSourceDisplayName(
+              this.props.database || '',
+              ResourceType.table
+            )}
+          </Link>
+        </li>
         <li>{this.props.cluster || ''}</li>
-        {this.props.isView && <li>{TABLE_VIEW_TEXT}</li>}
-      </ul >
+        {isViewCheck && <li>{TABLE_VIEW_TEXT}</li>}
+      </ul>
     );
   }
-
-};
+}
 
 export const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators(
