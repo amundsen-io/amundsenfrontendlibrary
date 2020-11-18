@@ -1,4 +1,4 @@
 export interface AnalyticsEvent {
   name: string;
-  properties: { [prop: string]: unknown };
+  payload: { [prop: string]: unknown };
 }
