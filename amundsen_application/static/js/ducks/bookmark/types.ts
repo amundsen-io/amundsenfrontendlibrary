@@ -38,6 +38,9 @@ export interface RemoveBookmarkRequest {
     resourceKey: string;
     resourceType: ResourceType;
   };
+  meta: {
+    analytics: AnalyticsEvent;
+  };
 }
 export interface RemoveBookmarkResponse {
   type: RemoveBookmark.SUCCESS | RemoveBookmark.FAILURE;

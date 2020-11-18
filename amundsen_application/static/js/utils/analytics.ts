@@ -22,5 +22,6 @@ export const analyticsInstance = (): AnalyticsInstance => {
 
 export const trackEvent = (eventName: string, properties: Map<string, any>) => {
   const analytics = analyticsInstance();
+
   analytics.track(eventName, properties);
 };

@@ -129,6 +129,8 @@
     "webworkify-webpack": "2.1.5"
   },
   "dependencies": {
+    "@analytics/google-analytics": "^0.5.2",
+    "@analytics/mixpanel": "^0.2.1",
     "analytics": "^0.5.5",
     "autosize": "^4.0.2",
     "axios": "0.19.0",

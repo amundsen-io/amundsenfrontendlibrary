@@ -16,5 +16,6 @@ export const analyticsMiddleware: Middleware<
 
   const { name, payload } = action.meta.analytics;
   trackEvent(name, payload);
+
   return result;
 };
