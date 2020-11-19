@@ -58,10 +58,7 @@ const ActionableBadge: React.FC<ActionableBadgeProps> = ({
 };
 
 export class BadgeList extends React.Component<BadgeListProps> {
-  handleClick = (index: number, e) => {
-    const badgeText = this.props.badges[index].badge_name
-      ? this.props.badges[index].badge_name
-      : this.props.badges[index].tag_name;
+  handleClick = (index: number, badgeText: string, e) => {
     logClick(e, {
       target_type: 'badge',
       label: badgeText,
@@ -96,7 +93,9 @@ export class BadgeList extends React.Component<BadgeListProps> {
               <ActionableBadge
                 displayName={badgeConfig.displayName}
                 style={badgeConfig.style}
-                action={(e) => this.handleClick(index, e)}
+                action={(e) =>
+                  this.handleClick(index, badgeConfig.displayName, e)
+                }
                 key={`badge-${index}`}
               />
             );
