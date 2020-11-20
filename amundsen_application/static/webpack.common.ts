@@ -113,6 +113,14 @@ const config: webpack.Configuration = {
         test: FONT_PATTERN,
         use: 'file-loader',
       },
+      // Hacky, required for react-bootstrap @ 0.33.1 - remove after upgrading,
+      // see: https://github.com/webpack/webpack/issues/11467
+      {
+        test: /\.m?js$/,
+        resolve: {
+          fullySpecified: false,
+        },
+      },
     ],
   },
   plugins: [
