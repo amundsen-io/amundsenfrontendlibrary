@@ -74,6 +74,10 @@ const config: webpack.Configuration = {
       utils: PATHS.utils,
     },
     extensions: RESOLVED_EXTENSIONS,
+    fallback: {
+      // Needed by react-markdown as of 5.0.2
+      path: require.resolve('path-browserify'),
+    },
   },
   module: {
     rules: [
