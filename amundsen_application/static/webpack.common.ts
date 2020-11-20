@@ -115,6 +115,7 @@ const config: webpack.Configuration = {
       },
       // Hacky, required for react-bootstrap @ 0.33.1 - remove after upgrading,
       // see: https://github.com/webpack/webpack/issues/11467
+      // Tracked at https://github.com/amundsen-io/amundsen/issues/818
       {
         test: /\.m?js$/,
         resolve: {
