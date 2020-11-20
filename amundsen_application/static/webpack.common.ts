@@ -129,7 +129,7 @@ const config: webpack.Configuration = {
     ...htmlWebpackPluginConfig,
   ],
   optimization: {
-    moduleIds: 'hashed',
+    moduleIds: 'deterministic',
     splitChunks: {
       cacheGroups: {
         default: false,
