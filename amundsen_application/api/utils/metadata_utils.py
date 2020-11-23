@@ -204,7 +204,7 @@ def _map_user_object_to_schema(u: Dict) -> Dict:
 
 def _get_partition_data(watermarks: Dict) -> Dict:
     if watermarks:
-        high_watermark = next(filter(lambda x: x['watermark_type'] == 'high_watermark', watermarks))
+        high_watermark = next(filter(lambda x: x['watermark_type'].lower() == 'high_watermark', watermarks))
         if high_watermark:
             return {
                 'is_partitioned': True,
