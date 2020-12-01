@@ -83,7 +83,7 @@ def _parse_editable_rule(rule: MatchRuleObject,
     return True
 
 
-def is_table_editable(schema_name: str, table_name: str, cfg: any=None) -> bool:
+def is_table_editable(schema_name: str, table_name: str, cfg: Any = None) -> bool:
     if cfg is None:
         cfg = app.config
 
