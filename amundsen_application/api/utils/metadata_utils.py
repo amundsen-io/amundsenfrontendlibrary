@@ -96,6 +96,19 @@ def is_table_editable(schema_name: str, table_name: str, cfg: Any = None) -> boo
 
     return True
 
+def are_owners_editable(schema_name: str, table_name: str, cfg: Any = None) -> bool:
+    if cfg is None:
+        cfg = app.config
+
+    # if schema_name in cfg['UNEDITABLE_SCHEMAS']:
+    #     return False
+
+    for rule in cfg['UNEDITABLE_TABLE_OWNERS_MATCH_RULES']:
+        if not _parse_editable_rule(rule, schema_name, table_name):
+            return False
+
+    return True
+
 
 def marshall_table_full(table_dict: Dict) -> Dict:
     """
@@ -111,6 +124,8 @@ def marshall_table_full(table_dict: Dict) -> Dict:
 
     is_editable = is_table_editable(results['schema'], results['name'])
     results['is_editable'] = is_editable
+
+    results['owners_are_editable'] = are_owners_editable(results['schema'], results['name'])
 
     # TODO - Cleanup https://github.com/lyft/amundsen/issues/296
     #  This code will try to supplement some missing data since the data here is incomplete.
