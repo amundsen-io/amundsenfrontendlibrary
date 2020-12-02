@@ -316,6 +316,7 @@ export interface NumberStyleConfig {
   style: NumberStyle;
   config: string;
 }
+
 /**
  * NumberFormatConfig - configurations for formatting different type of numbers like currency, percentage,number system
  * this allows users to display numbers in desired format
