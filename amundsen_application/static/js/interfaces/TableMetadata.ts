@@ -92,7 +92,7 @@ export interface TableMetadata {
   columns: TableColumn[];
   database: string;
   is_editable: boolean;
-  owners_are_editable: boolean;
+  has_editable_owners: boolean;
   is_view: boolean;
   key: string;
   last_updated_timestamp: number;
