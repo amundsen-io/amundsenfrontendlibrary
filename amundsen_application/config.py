@@ -62,6 +62,11 @@ class Config:
     # Initialize custom routes
     INIT_CUSTOM_ROUTES = None  # type: Callable[[Flask], None]
 
+    # Settings for Preview Client integration
+    PREVIEW_CLIENT_URL = os.getenv('PREVIEW_CLIENT_URL')
+    PREVIEW_CLIENT_USERNAME = os.getenv('PREVIEW_CLIENT_USERNAME')
+    PREVIEW_CLIENT_PASSWORD = os.getenv('PREVIEW_CLIENT_PASSWORD')
+
     # Settings for Issue tracker integration
     ISSUE_LABELS = []  # type: List[str]
     ISSUE_TRACKER_API_TOKEN = None  # type: str
