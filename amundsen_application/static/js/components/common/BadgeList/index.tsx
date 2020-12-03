@@ -67,9 +67,15 @@ export class BadgeList extends React.Component<BadgeListProps> {
   };
 
   render() {
+    const { badges } = this.props;
+    const alphabetizedBadges = badges.sort((a, b) => {
+      const aName = (a.badge_name ? a.badge_name : a.tag_name) || '';
+      const bName = (b.badge_name ? b.badge_name : b.tag_name) || '';
+      return aName.localeCompare(bName);
+    });
     return (
       <span className="badge-list">
-        {this.props.badges.map((badge, index) => {
+        {alphabetizedBadges.map((badge, index) => {
           let badgeConfig;
           // search badges with just name
           if (badge.tag_name) {
