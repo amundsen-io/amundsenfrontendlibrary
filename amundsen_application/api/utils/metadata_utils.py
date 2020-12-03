@@ -112,8 +112,6 @@ def marshall_table_full(table_dict: Dict) -> Dict:
     is_editable = is_table_editable(results['schema'], results['name'])
     results['is_editable'] = is_editable
 
-    results['has_editable_owners'] = are_owners_editable(results['schema'], results['name'])
-
     # TODO - Cleanup https://github.com/lyft/amundsen/issues/296
     #  This code will try to supplement some missing data since the data here is incomplete.
     #  Once the metadata service response provides complete user objects we can remove this.
