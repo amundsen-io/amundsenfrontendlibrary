@@ -96,19 +96,6 @@ def is_table_editable(schema_name: str, table_name: str, cfg: Any = None) -> boo
 
     return True
 
-def are_owners_editable(schema_name: str, table_name: str, cfg: Any = None) -> bool:
-    if cfg is None:
-        cfg = app.config
-
-    # if schema_name in cfg['UNEDITABLE_SCHEMAS']:
-    #     return False
-
-    for rule in cfg['UNEDITABLE_TABLE_OWNERS_MATCH_RULES']:
-        if not _parse_editable_rule(rule, schema_name, table_name):
-            return False
-
-    return True
-
 
 def marshall_table_full(table_dict: Dict) -> Dict:
     """

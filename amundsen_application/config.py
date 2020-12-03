@@ -36,8 +36,6 @@ class Config:
 
     UNEDITABLE_TABLE_DESCRIPTION_MATCH_RULES = []  # type: List[MatchRuleObject]
 
-    UNEDITABLE_TABLE_OWNERS_MATCH_RULES = [] # type: List[MatchRuleObject]
-
     # Number of popular tables to be displayed on the index/search page
     POPULAR_TABLE_COUNT = 4  # type: int
 
