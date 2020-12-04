@@ -31,7 +31,11 @@ def get_table_preview() -> Response:
     global PREVIEW_CLIENT_CLASS
     try:
         if PREVIEW_CLIENT_INSTANCE is None:
-            if (app.config['PREVIEW_CLIENT_ENABLED']
+            if PREVIEW_CLIENT_CLASS is not None:
+                PREVIEW_CLIENT_INSTANCE = PREVIEW_CLIENT_CLASS()
+                logging.warn('Setting preview_client via entry_point is DEPRECATED and '
+                             'will be removed in a future version')
+            elif (app.config['PREVIEW_CLIENT_ENABLED']
                     and app.config['PREVIEW_CLIENT'] is not None):
                 PREVIEW_CLIENT_CLASS = import_string(app.config['PREVIEW_CLIENT'])
                 PREVIEW_CLIENT_INSTANCE = PREVIEW_CLIENT_CLASS()

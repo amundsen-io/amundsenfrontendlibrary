@@ -63,14 +63,14 @@ class Config:
     INIT_CUSTOM_ROUTES = None  # type: Callable[[Flask], None]
 
     # Settings for Preview Client integration
-    PREVIEW_CLIENT_ENABLED = False  # type: bool
+    PREVIEW_CLIENT_ENABLED = os.getenv('PREVIEW_CLIENT_ENABLED') == 'true'  # type: bool
     # Maps to a class path and name
-    PREVIEW_CLIENT = None  # type: Optional[str]
+    PREVIEW_CLIENT = os.getenv('PREVIEW_CLIENT', None)  # type: Optional[str]
 
     # Settings for Announcement Client integration
-    ANNOUNCEMENT_CLIENT_ENABLED = False  # type: bool
+    ANNOUNCEMENT_CLIENT_ENABLED = os.getenv('ANNOUNCEMENT_CLIENT_ENABLED') == 'true'  # type: bool
     # Maps to a class path and name
-    ANNOUNCEMENT_CLIENT = None  # type: Optional[str]
+    ANNOUNCEMENT_CLIENT = os.getenv('ANNOUNCEMENT_CLIENT', None)  # type: Optional[str]
 
     # Settings for Issue tracker integration
     ISSUE_LABELS = []  # type: List[str]
@@ -142,12 +142,6 @@ class LocalConfig(Config):
                                               LOCAL_HOST=LOCAL_HOST,
                                               PORT=METADATA_PORT)
                                           )
-
-    PREVIEW_CLIENT_ENABLED = os.environ.get('PREVIEW_CLIENT_ENABLED') == 'true'
-    PREVIEW_CLIENT = os.environ.get('PREVIEW_CLIENT', None)
-
-    ANNOUNCEMENT_CLIENT_ENABLED = os.environ.get('ANNOUNCEMENT_CLIENT_ENABLED') == 'true'
-    ANNOUNCEMENT_CLIENT = os.environ.get('ANNOUNCEMENT_CLIENT', None)
 
 
 class TestConfig(LocalConfig):

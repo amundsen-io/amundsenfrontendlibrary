@@ -27,6 +27,7 @@ class PreviewTest(unittest.TestCase):
         """
         # Reset side effects of other tests to ensure that the results are the
         # same regardless of execution order
+        v0.PREVIEW_CLIENT_CLASS = None
         v0.PREVIEW_CLIENT_INSTANCE = None
 
         local_app.config['PREVIEW_CLIENT'] = None

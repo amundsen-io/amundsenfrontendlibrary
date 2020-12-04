@@ -26,6 +26,7 @@ class AnnouncementTest(unittest.TestCase):
         """
         # Reset side effects of other tests to ensure that the results are the
         # same regardless of execution order
+        v0.ANNOUNCEMENT_CLIENT_CLASS = None
         v0.ANNOUNCEMENT_CLIENT_INSTANCE = None
 
         local_app.config['ANNOUNCEMENT_CLIENT'] = None

@@ -28,7 +28,11 @@ def get_announcements() -> Response:
     global ANNOUNCEMENT_CLIENT_CLASS
     try:
         if ANNOUNCEMENT_CLIENT_INSTANCE is None:
-            if (app.config['ANNOUNCEMENT_CLIENT_ENABLED']
+            if ANNOUNCEMENT_CLIENT_CLASS is not None:
+                ANNOUNCEMENT_CLIENT_INSTANCE = ANNOUNCEMENT_CLIENT_CLASS()
+                logging.warn('Setting announcement_client via entry_point is DEPRECATED'
+                             ' and will be removed in a future version')
+            elif (app.config['ANNOUNCEMENT_CLIENT_ENABLED']
                     and app.config['ANNOUNCEMENT_CLIENT'] is not None):
                 ANNOUNCEMENT_CLIENT_CLASS = import_string(app.config['ANNOUNCEMENT_CLIENT'])
                 ANNOUNCEMENT_CLIENT_INSTANCE = ANNOUNCEMENT_CLIENT_CLASS()
