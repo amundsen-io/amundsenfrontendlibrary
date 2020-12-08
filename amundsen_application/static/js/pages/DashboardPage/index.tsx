@@ -160,6 +160,8 @@ export class DashboardPage extends React.Component<
     const { dashboard, isLoading } = this.props;
     const hasDescription =
       dashboard.description && dashboard.description.length > 0;
+    const hasLastRunState =
+      dashboard.last_run_state && dashboard.last_run_state.length > 0;
 
     if (isLoading) {
       return <LoadingSpinner />;
@@ -317,15 +319,17 @@ export class DashboardPage extends React.Component<
                           })
                         : NO_TIMESTAMP_TEXT}
                     </time>
-                    <div className="last-run-state">
-                      <span className="status">{STATUS_TEXT}</span>
-                      <ResourceStatusMarker
-                        stateText={dashboard.last_run_state}
-                        succeeded={this.mapStatusToBoolean(
-                          dashboard.last_run_state
-                        )}
-                      />
-                    </div>
+                    {hasLastRunState && (
+                      <div className="last-run-state">
+                        <span className="status">{STATUS_TEXT}</span>
+                        <ResourceStatusMarker
+                          stateText={dashboard.last_run_state}
+                          succeeded={this.mapStatusToBoolean(
+                            dashboard.last_run_state
+                          )}
+                        />
+                      </div>
+                    )}
                   </div>
                 </section>
               </section>
