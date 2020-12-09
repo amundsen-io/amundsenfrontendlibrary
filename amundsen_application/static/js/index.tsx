@@ -26,7 +26,7 @@ import ProfilePage from './pages/ProfilePage';
 import TableDetail from './pages/TableDetailPage';
 
 import Preloader from './components/common/Preloader';
-import Footer from './components/Footer';
+import Footer from './features/Footer';
 import NavBar from './components/NavBar';
 
 import rootReducer from './ducks/rootReducer';
