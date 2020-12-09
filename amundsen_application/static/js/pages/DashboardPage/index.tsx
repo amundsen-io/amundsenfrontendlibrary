@@ -19,8 +19,8 @@ import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import EditableSection from 'components/EditableSection';
 import LoadingSpinner from 'components/LoadingSpinner';
 import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
-import ResourceStatusMarker from 'components/common/ResourceStatusMarker';
-import ResourceList from 'components/common/ResourceList';
+import ResourceStatusMarker from 'components/ResourceStatusMarker';
+import ResourceList from 'components/ResourceList';
 import TagInput from 'components/common/Tags/TagInput';
 
 import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';

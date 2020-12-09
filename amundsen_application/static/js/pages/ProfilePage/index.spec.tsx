@@ -4,12 +4,11 @@
 import * as React from 'react';
 import * as DocumentTitle from 'react-document-title';
 import * as Avatar from 'react-avatar';
-
 import { shallow } from 'enzyme';
 import { mocked } from 'ts-jest/utils';
 
 import Breadcrumb from 'components/Breadcrumb';
-import ResourceList from 'components/common/ResourceList';
+import ResourceList from 'components/ResourceList';
 import TabsComponent from 'components/common/TabsComponent';
 
 import globalState from 'fixtures/globalState';

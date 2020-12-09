@@ -20,8 +20,7 @@ import {
   GetUserReadRequest,
 } from 'ducks/user/types';
 
-import './styles.scss';
-import ResourceList from 'components/common/ResourceList';
+import ResourceList from 'components/ResourceList';
 import { GetBookmarksForUserRequest } from 'ducks/bookmark/types';
 import { getBookmarksForUser } from 'ducks/bookmark/reducer';
 
@@ -50,6 +49,8 @@ import {
   READ_SOURCE,
   READ_TITLE_PREFIX,
 } from './constants';
+
+import './styles.scss';
 
 interface ResourceRelation {
   bookmarks: Resource[];

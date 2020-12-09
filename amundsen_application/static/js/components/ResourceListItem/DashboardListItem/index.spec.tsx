@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-
 import { shallow } from 'enzyme';
-
 import { Link } from 'react-router-dom';
+
 import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import { ResourceType } from 'interfaces';
 
@@ -13,7 +12,7 @@ import * as ConfigUtils from 'config/config-utils';
 import * as DateUtils from 'utils/dateUtils';
 
 import { dashboardSummary } from 'fixtures/metadata/dashboard';
-import { NO_TIMESTAMP_TEXT } from '../../../../constants';
+import { NO_TIMESTAMP_TEXT } from '../../../constants';
 
 import * as Constants from './constants';
 import DashboardListItem, { DashboardListItemProps } from './index';

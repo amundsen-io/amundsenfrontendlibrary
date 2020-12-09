@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import ResourceListItem from 'components/common/ResourceListItem';
+
+import ResourceListItem from 'components/ResourceListItem';
 import { Resource } from 'interfaces';
 import * as Constants from './constants';
 

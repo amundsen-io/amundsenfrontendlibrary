@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-
 import { shallow } from 'enzyme';
 
-import ResourceList from 'components/common/ResourceList';
+import ResourceList from 'components/ResourceList';
 import ShimmeringResourceLoader from 'components/common/ShimmeringResourceLoader';
 
 import { dashboardSummary } from 'fixtures/metadata/dashboard';

@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-
 import { shallow } from 'enzyme';
 
 import { ResourceType } from 'interfaces';
-import ResourceListItem from 'components/common/ResourceListItem/index';
+import ResourceListItem from 'components/ResourceListItem/index';
 import ResourceList, { ResourceListProps } from '.';
 
 import * as CONSTANTS from './constants';

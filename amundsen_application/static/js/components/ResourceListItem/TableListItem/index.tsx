@@ -11,7 +11,7 @@ import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
 
 import BadgeList from 'features/BadgeList';
-import SchemaInfo from 'components/common/ResourceListItem/SchemaInfo';
+import SchemaInfo from 'components/ResourceListItem/SchemaInfo';
 import { LoggingParams } from '../types';
 
 export interface TableListItemProps {

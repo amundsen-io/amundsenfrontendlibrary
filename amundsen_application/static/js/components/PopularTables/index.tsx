@@ -6,7 +6,7 @@ import * as React from 'react';
 import { TableResource } from 'interfaces';
 
 import InfoButton from 'components/InfoButton';
-import PaginatedResourceList from 'components/common/ResourceList/PaginatedResourceList';
+import PaginatedResourceList from 'components/ResourceList/PaginatedResourceList';
 import ShimmeringResourceLoader from 'components/common/ShimmeringResourceLoader';
 
 import { getPopularTables } from 'ducks/popularTables/reducer';

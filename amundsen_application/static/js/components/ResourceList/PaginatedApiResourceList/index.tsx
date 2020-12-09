@@ -3,7 +3,7 @@
 
 import * as React from 'react';
 import Pagination from 'react-js-pagination';
-import ResourceListItem from 'components/common/ResourceListItem';
+import ResourceListItem from 'components/ResourceListItem';
 import { Resource } from 'interfaces';
 import * as Constants from '../constants';
 

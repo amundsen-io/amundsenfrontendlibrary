@@ -2,14 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-
 import { shallow } from 'enzyme';
-
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import SchemaInfo, {
   SchemaInfoProps,
-} from 'components/common/ResourceListItem/SchemaInfo';
+} from 'components/ResourceListItem/SchemaInfo';
 
 describe('SchemaInfo', () => {
   const setup = (propOverrides?: Partial<SchemaInfoProps>) => {

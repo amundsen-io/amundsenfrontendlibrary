@@ -5,13 +5,12 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { GlobalState } from 'ducks/rootReducer';
 
-import './styles.scss';
 import { Bookmark, ResourceType, ResourceDict } from 'interfaces';
 import {
   getDisplayNameByResource,
   indexDashboardsEnabled,
 } from 'config/config-utils';
-import PaginatedResourceList from 'components/common/ResourceList/PaginatedResourceList';
+import PaginatedResourceList from 'components/ResourceList/PaginatedResourceList';
 import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
 import ShimmeringResourceLoader from 'components/common/ShimmeringResourceLoader';
 import {
@@ -20,6 +19,8 @@ import {
   EMPTY_BOOKMARK_MESSAGE,
   MY_BOOKMARKS_SOURCE_NAME,
 } from './constants';
+
+import './styles.scss';
 
 interface StateFromProps {
   myBookmarks: ResourceDict<Bookmark[]>;

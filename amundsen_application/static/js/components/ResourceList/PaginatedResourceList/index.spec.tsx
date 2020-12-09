@@ -3,14 +3,12 @@
 
 import * as React from 'react';
 import Pagination from 'react-js-pagination';
-
 import { shallow } from 'enzyme';
 
 import { ResourceType } from 'interfaces';
-import ResourceListItem from 'components/common/ResourceListItem/index';
+import ResourceListItem from 'components/ResourceListItem/index';
 
 import PaginatedResourceList, { PaginatedResourceListProps } from '.';
-import * as CONSTANTS from '../constants';
 
 describe('PaginatedResourceList', () => {
   const setStateSpy = jest.spyOn(PaginatedResourceList.prototype, 'setState');

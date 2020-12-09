@@ -5,7 +5,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import InfoButton from 'components/InfoButton';
-import PaginatedResourceList from 'components/common/ResourceList/PaginatedResourceList';
+import PaginatedResourceList from 'components/ResourceList/PaginatedResourceList';
 import globalState from 'fixtures/globalState';
 import {
   POPULAR_TABLES_INFO_TEXT,

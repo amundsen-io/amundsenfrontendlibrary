@@ -8,7 +8,7 @@ import { mocked } from 'ts-jest/utils';
 
 import globalState from 'fixtures/globalState';
 import { ResourceType } from 'interfaces';
-import PaginatedResourceList from 'components/common/ResourceList/PaginatedResourceList';
+import PaginatedResourceList from 'components/ResourceList/PaginatedResourceList';
 import TabsComponent from 'components/common/TabsComponent';
 import { indexDashboardsEnabled } from 'config/config-utils';
 import {

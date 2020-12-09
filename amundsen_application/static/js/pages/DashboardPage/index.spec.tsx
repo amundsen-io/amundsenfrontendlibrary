@@ -4,13 +4,12 @@
 import * as React from 'react';
 import * as ReactMarkdown from 'react-markdown';
 import * as History from 'history';
-
 import { shallow } from 'enzyme';
 
 import LoadingSpinner from 'components/LoadingSpinner';
 import Breadcrumb from 'components/Breadcrumb';
 import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
-import ResourceList from 'components/common/ResourceList';
+import ResourceList from 'components/ResourceList';
 import TabsComponent from 'components/common/TabsComponent';
 import { dashboardMetadata } from 'fixtures/metadata/dashboard';
 import { ResourceType } from 'interfaces';
