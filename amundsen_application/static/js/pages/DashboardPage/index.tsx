@@ -310,27 +310,27 @@ export class DashboardPage extends React.Component<
                         : NO_TIMESTAMP_TEXT}
                     </time>
                   </section>,
-                <section className="metadata-section">
-                  <div className="section-title title-3">Last Run</div>
-                  <div>
-                    <time className="last-run-timestamp body-2 text-primary">
-                      {dashboard.last_run_timestamp
-                        ? formatDateTimeShort({
-                            epochTimestamp: dashboard.last_run_timestamp,
-                          })
-                        : NO_TIMESTAMP_TEXT}
-                    </time>
-                    <div className="last-run-state">
-                      <span className="status">{STATUS_TEXT}</span>
-                      <ResourceStatusMarker
-                        stateText={dashboard.last_run_state}
-                        succeeded={this.mapStatusToBoolean(
-                          dashboard.last_run_state
-                        )}
-                      />
+                  <section className="metadata-section">
+                    <div className="section-title title-3">Last Run</div>
+                    <div>
+                      <time className="last-run-timestamp body-2 text-primary">
+                        {dashboard.last_run_timestamp
+                          ? formatDateTimeShort({
+                              epochTimestamp: dashboard.last_run_timestamp,
+                            })
+                          : NO_TIMESTAMP_TEXT}
+                      </time>
+                      <div className="last-run-state">
+                        <span className="status">{STATUS_TEXT}</span>
+                        <ResourceStatusMarker
+                          stateText={dashboard.last_run_state}
+                          succeeded={this.mapStatusToBoolean(
+                            dashboard.last_run_state
+                          )}
+                        />
+                      </div>
                     </div>
-                  </div>
-                </section>]}
+                  </section>]}
               </section>
             </section>
             <ImagePreview uri={this.state.uri} redirectUrl={dashboard.url} />
