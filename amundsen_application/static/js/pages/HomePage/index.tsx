@@ -17,7 +17,7 @@ import Breadcrumb from 'components/common/Breadcrumb';
 import PopularTables from 'components/common/PopularTables';
 import SearchBar from 'components/common/SearchBar';
 import TagsListContainer from 'components/common/Tags';
-import Announcements from 'components/common/Announcements';
+import Announcements from 'components/Announcements';
 
 import { announcementsEnabled } from 'config/config-utils';
 
