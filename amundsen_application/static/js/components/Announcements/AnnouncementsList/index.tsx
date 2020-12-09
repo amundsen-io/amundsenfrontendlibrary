@@ -8,7 +8,7 @@ import SanitizedHTML from 'react-sanitized-html';
 import { logClick } from 'ducks/utilMethods';
 
 import { AnnouncementPost } from 'interfaces';
-import Card from '../../common/Card';
+import Card from '../../Card';
 
 import {
   MORE_LINK_TEXT,

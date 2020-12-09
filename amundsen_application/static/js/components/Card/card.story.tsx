@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-import StorySection from '../StorySection';
+import StorySection from '../common/StorySection';
 import Card from '.';
 
 export default {

@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Link, BrowserRouter } from 'react-router-dom';
 import { mount } from 'enzyme';
 
-import Card from '../../common/Card';
+import Card from '../../Card';
 
 import AnnouncementsList, { AnnouncementsListProps } from '.';
 
