@@ -13,7 +13,7 @@ import MyBookmarks from 'components/Bookmark/MyBookmarks';
 import Breadcrumb from 'components/Breadcrumb';
 import PopularTables from 'components/PopularTables';
 import SearchBar from 'components/SearchBar';
-import TagsListContainer from 'components/common/Tags';
+import TagsListContainer from 'components/Tags';
 import Announcements from 'components/Announcements';
 
 import { announcementsEnabled } from 'config/config-utils';

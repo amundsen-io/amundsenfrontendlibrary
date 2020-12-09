@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import ShimmeringTagListLoader from 'components/ShimmeringTagListLoader';
 
-import TagInfo from 'components/common/Tags/TagInfo';
+import TagInfo from 'components/Tags/TagInfo';
 import { Tag } from 'interfaces';
 
 import {

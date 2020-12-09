@@ -8,7 +8,7 @@ import Breadcrumb from 'components/Breadcrumb';
 import MyBookmarks from 'components/Bookmark/MyBookmarks';
 import PopularTables from 'components/PopularTables';
 import SearchBar from 'components/SearchBar';
-import TagsListContainer from 'components/common/Tags';
+import TagsListContainer from 'components/Tags';
 
 import { getMockRouterProps } from 'fixtures/mockRouter';
 import { mapDispatchToProps, HomePage, HomePageProps } from '.';

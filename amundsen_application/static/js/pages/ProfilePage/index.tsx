@@ -9,7 +9,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { bindActionCreators } from 'redux';
 
 import Breadcrumb from 'components/Breadcrumb';
-import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
+import TabsComponent, { TabInfo } from 'components/TabsComponent';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { getUser, getUserOwn, getUserRead } from 'ducks/user/reducer';

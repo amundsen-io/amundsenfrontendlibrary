@@ -3,8 +3,8 @@
 
 import * as React from 'react';
 
-import ShimmeringResourceLoader from '../../ShimmeringResourceLoader';
-import { UpIcon, DownIcon } from '../../SVGIcons';
+import ShimmeringResourceLoader from '../ShimmeringResourceLoader';
+import { UpIcon, DownIcon } from '../SVGIcons';
 
 import './styles.scss';
 

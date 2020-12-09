@@ -12,7 +12,7 @@ import {
   indexDashboardsEnabled,
 } from 'config/config-utils';
 import PaginatedResourceList from 'components/ResourceList/PaginatedResourceList';
-import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
+import TabsComponent, { TabInfo } from 'components/TabsComponent';
 import ShimmeringResourceLoader from 'components/ShimmeringResourceLoader';
 import {
   BOOKMARK_TITLE,

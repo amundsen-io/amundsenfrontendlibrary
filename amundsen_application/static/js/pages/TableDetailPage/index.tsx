@@ -30,8 +30,8 @@ import {
 import BadgeList from 'features/BadgeList';
 import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import Breadcrumb from 'components/Breadcrumb';
-import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
-import TagInput from 'components/common/Tags/TagInput';
+import TabsComponent, { TabInfo } from 'components/TabsComponent';
+import TagInput from 'components/Tags/TagInput';
 import EditableText from 'components/EditableText';
 import LoadingSpinner from 'components/LoadingSpinner';
 import EditableSection from 'components/EditableSection';

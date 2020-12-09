@@ -18,10 +18,10 @@ import Breadcrumb from 'components/Breadcrumb';
 import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import EditableSection from 'components/EditableSection';
 import LoadingSpinner from 'components/LoadingSpinner';
-import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
+import TabsComponent, { TabInfo } from 'components/TabsComponent';
 import ResourceStatusMarker from 'components/ResourceStatusMarker';
 import ResourceList from 'components/ResourceList';
-import TagInput from 'components/common/Tags/TagInput';
+import TagInput from 'components/Tags/TagInput';
 
 import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
 import { formatDateTimeShort } from 'utils/dateUtils';

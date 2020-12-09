@@ -4,7 +4,7 @@
 import React from 'react';
 import { withKnobs, object } from '@storybook/addon-knobs';
 
-import StorySection from '../../StorySection';
+import StorySection from '../StorySection';
 import Table from '.';
 import TestDataBuilder from './testDataBuilder';
 

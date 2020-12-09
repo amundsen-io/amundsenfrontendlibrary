@@ -9,7 +9,7 @@ import { mocked } from 'ts-jest/utils';
 
 import Breadcrumb from 'components/Breadcrumb';
 import ResourceList from 'components/ResourceList';
-import TabsComponent from 'components/common/TabsComponent';
+import TabsComponent from 'components/TabsComponent';
 
 import globalState from 'fixtures/globalState';
 import { getMockRouterProps } from 'fixtures/mockRouter';

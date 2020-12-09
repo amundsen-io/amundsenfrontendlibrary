@@ -10,7 +10,7 @@ import LoadingSpinner from 'components/LoadingSpinner';
 import Breadcrumb from 'components/Breadcrumb';
 import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import ResourceList from 'components/ResourceList';
-import TabsComponent from 'components/common/TabsComponent';
+import TabsComponent from 'components/TabsComponent';
 import { dashboardMetadata } from 'fixtures/metadata/dashboard';
 import { ResourceType } from 'interfaces';
 import { NO_TIMESTAMP_TEXT } from '../../constants';

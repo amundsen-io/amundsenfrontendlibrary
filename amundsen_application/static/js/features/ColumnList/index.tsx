@@ -10,7 +10,7 @@ import EditableSection from 'components/EditableSection';
 import Table, {
   TableColumn as ReusableTableColumn,
   TextAlignmentValues,
-} from 'components/common/Table';
+} from 'components/Table';
 
 import { logAction } from 'ducks/utilMethods';
 import {

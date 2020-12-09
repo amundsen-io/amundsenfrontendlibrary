@@ -2,14 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-
 import { shallow } from 'enzyme';
 import { mocked } from 'ts-jest/utils';
 
 import globalState from 'fixtures/globalState';
 import { ResourceType } from 'interfaces';
 import PaginatedResourceList from 'components/ResourceList/PaginatedResourceList';
-import TabsComponent from 'components/common/TabsComponent';
+import TabsComponent from 'components/TabsComponent';
 import { indexDashboardsEnabled } from 'config/config-utils';
 import {
   BOOKMARK_TITLE,
