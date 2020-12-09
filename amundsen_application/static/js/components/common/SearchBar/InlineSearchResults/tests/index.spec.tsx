@@ -6,8 +6,6 @@ import * as React from 'react';
 import { mocked } from 'ts-jest/utils';
 import { shallow } from 'enzyme';
 
-import LoadingSpinner from 'components/common/LoadingSpinner';
-
 import { SearchResults } from 'ducks/search/types';
 import {
   ResourceType,

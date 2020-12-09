@@ -11,7 +11,7 @@ import { UpdateSearchStateReset } from 'ducks/search/types';
 
 import MyBookmarks from 'components/Bookmark/MyBookmarks';
 import Breadcrumb from 'components/Breadcrumb';
-import PopularTables from 'components/common/PopularTables';
+import PopularTables from 'components/PopularTables';
 import SearchBar from 'components/common/SearchBar';
 import TagsListContainer from 'components/common/Tags';
 import Announcements from 'components/Announcements';

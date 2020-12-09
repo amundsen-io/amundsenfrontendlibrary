@@ -7,7 +7,7 @@ import * as History from 'history';
 
 import { shallow } from 'enzyme';
 
-import LoadingSpinner from 'components/common/LoadingSpinner';
+import LoadingSpinner from 'components/LoadingSpinner';
 import Breadcrumb from 'components/Breadcrumb';
 import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import ResourceList from 'components/common/ResourceList';

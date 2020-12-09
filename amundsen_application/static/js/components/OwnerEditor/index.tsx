@@ -7,7 +7,7 @@ import { Modal } from 'react-bootstrap';
 
 import AppConfig from 'config/config';
 import AvatarLabel, { AvatarLabelProps } from 'components/AvatarLabel';
-import LoadingSpinner from 'components/common/LoadingSpinner';
+import LoadingSpinner from 'components/LoadingSpinner';
 import { ResourceType, UpdateMethod, UpdateOwnerPayload } from 'interfaces';
 
 import { EditableSectionChildProps } from 'components/EditableSection';

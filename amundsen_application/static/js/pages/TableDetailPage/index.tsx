@@ -33,7 +33,7 @@ import Breadcrumb from 'components/Breadcrumb';
 import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
 import TagInput from 'components/common/Tags/TagInput';
 import EditableText from 'components/EditableText';
-import LoadingSpinner from 'components/common/LoadingSpinner';
+import LoadingSpinner from 'components/LoadingSpinner';
 import EditableSection from 'components/EditableSection';
 import ColumnList from 'features/ColumnList';
 

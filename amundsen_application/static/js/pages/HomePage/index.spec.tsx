@@ -7,7 +7,7 @@ import { shallow } from 'enzyme';
 
 import Breadcrumb from 'components/Breadcrumb';
 import MyBookmarks from 'components/Bookmark/MyBookmarks';
-import PopularTables from 'components/common/PopularTables';
+import PopularTables from 'components/PopularTables';
 import SearchBar from 'components/common/SearchBar';
 import TagsListContainer from 'components/common/Tags';
 

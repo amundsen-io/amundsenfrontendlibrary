@@ -9,7 +9,7 @@ import { mocked } from 'ts-jest/utils';
 import { getMockRouterProps } from 'fixtures/mockRouter';
 import { tableMetadata } from 'fixtures/metadata/table';
 
-import LoadingSpinner from 'components/common/LoadingSpinner';
+import LoadingSpinner from 'components/LoadingSpinner';
 import TabsComponent from 'components/common/TabsComponent';
 
 import { indexDashboardsEnabled } from 'config/config-utils';

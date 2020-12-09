@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { logClick } from 'ducks/utilMethods';
 import { ResourceType } from 'interfaces';
 
-import LoadingSpinner from 'components/common/LoadingSpinner';
+import LoadingSpinner from 'components/LoadingSpinner';
 
 import { GlobalState } from 'ducks/rootReducer';
 
