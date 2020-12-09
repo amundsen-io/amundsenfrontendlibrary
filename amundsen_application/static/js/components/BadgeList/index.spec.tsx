@@ -10,7 +10,7 @@ import { Badge } from 'interfaces/Badges';
 
 import * as UtilMethods from 'ducks/utilMethods';
 
-import Flag from 'components/common/Flag';
+import Flag from 'components/Flag';
 
 import BadgeList, { BadgeListProps } from '.';
 

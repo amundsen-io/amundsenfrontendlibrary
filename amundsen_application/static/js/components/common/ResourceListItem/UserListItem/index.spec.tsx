@@ -6,11 +6,9 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import * as Avatar from 'react-avatar';
-import Flag from 'components/common/Flag';
 import { Link } from 'react-router-dom';
 
 import { ResourceType } from 'interfaces';
-import { BadgeStyle } from 'config/config-types';
 import UserListItem, { UserListItemProps } from '.';
 
 describe('UserListItem', () => {
