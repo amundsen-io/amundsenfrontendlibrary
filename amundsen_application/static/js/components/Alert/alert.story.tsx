@@ -4,7 +4,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import StorySection from '../StorySection';
+import StorySection from '../common/StorySection';
 import Alert from '.';
 
 const stories = storiesOf('Components/Alert', module);
