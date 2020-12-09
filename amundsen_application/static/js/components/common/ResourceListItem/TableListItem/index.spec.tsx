@@ -6,9 +6,9 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import { Link } from 'react-router-dom';
-import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
+import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import SchemaInfo from 'components/common/ResourceListItem/SchemaInfo';
-import { ResourceType, TagType } from 'interfaces';
+import { ResourceType } from 'interfaces';
 
 import * as ConfigUtils from 'config/config-utils';
 import BadgeList from 'features/BadgeList';

@@ -9,7 +9,7 @@ import { shallow } from 'enzyme';
 
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import Breadcrumb from 'components/common/Breadcrumb';
-import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
+import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import ResourceList from 'components/common/ResourceList';
 import TabsComponent from 'components/common/TabsComponent';
 import { dashboardMetadata } from 'fixtures/metadata/dashboard';

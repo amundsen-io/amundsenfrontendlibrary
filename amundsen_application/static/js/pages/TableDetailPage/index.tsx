@@ -28,7 +28,7 @@ import {
 } from 'config/config-utils';
 
 import BadgeList from 'features/BadgeList';
-import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
+import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import Breadcrumb from 'components/common/Breadcrumb';
 import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
 import TagInput from 'components/common/Tags/TagInput';

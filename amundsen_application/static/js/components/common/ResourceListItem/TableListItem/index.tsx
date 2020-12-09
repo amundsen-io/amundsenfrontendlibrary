@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 import { ResourceType, TableResource } from 'interfaces';
 
-import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
+import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 
 import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
 

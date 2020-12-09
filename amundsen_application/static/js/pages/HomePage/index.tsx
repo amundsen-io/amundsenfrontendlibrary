@@ -6,13 +6,10 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 
-// TODO: Use css-modules instead of 'import'
-import './styles.scss';
-
 import { resetSearchState } from 'ducks/search/reducer';
 import { UpdateSearchStateReset } from 'ducks/search/types';
 
-import MyBookmarks from 'components/common/Bookmark/MyBookmarks';
+import MyBookmarks from 'components/Bookmark/MyBookmarks';
 import Breadcrumb from 'components/common/Breadcrumb';
 import PopularTables from 'components/common/PopularTables';
 import SearchBar from 'components/common/SearchBar';
@@ -22,6 +19,8 @@ import Announcements from 'components/Announcements';
 import { announcementsEnabled } from 'config/config-utils';
 
 import { SEARCH_BREADCRUMB_TEXT, HOMEPAGE_TITLE } from './constants';
+
+import './styles.scss';
 
 export interface DispatchFromProps {
   searchReset: () => UpdateSearchStateReset;

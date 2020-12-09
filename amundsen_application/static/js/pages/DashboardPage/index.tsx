@@ -15,7 +15,7 @@ import { UpdateSearchStateRequest } from 'ducks/search/types';
 import { updateSearchState } from 'ducks/search/reducer';
 
 import Breadcrumb from 'components/common/Breadcrumb';
-import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
+import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import EditableSection from 'components/common/EditableSection';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import TabsComponent, { TabInfo } from 'components/common/TabsComponent';

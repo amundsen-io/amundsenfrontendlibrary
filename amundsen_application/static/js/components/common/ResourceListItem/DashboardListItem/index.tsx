@@ -4,7 +4,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 
-import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
+import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 
 import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
 import { buildDashboardURL } from 'utils/navigationUtils';
