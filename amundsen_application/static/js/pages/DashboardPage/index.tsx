@@ -330,7 +330,8 @@ export class DashboardPage extends React.Component<
                         />
                       </div>
                     </div>
-                  </section>]}
+                  </section>,
+                ]}
               </section>
             </section>
             <ImagePreview uri={this.state.uri} redirectUrl={dashboard.url} />
