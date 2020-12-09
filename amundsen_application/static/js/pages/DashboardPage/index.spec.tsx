@@ -225,6 +225,31 @@ describe('DashboardPage', () => {
         );
       });
     });
+
+    describe('Not renders last run section if not exists', () => {
+      const { wrapper } = setup({
+        dashboard: {
+          ...dashboardMetadata,
+          last_run_timestamp: null,
+          last_successful_run_timestamp: null,
+          last_run_state: '',
+        },
+      });
+
+      it('last_run_timestamp', () => {
+        expect(wrapper.find('.last-run-timestamp').exists()).toBe(false);
+      });
+
+      it('last-successful-run-timestamp', () => {
+        expect(wrapper.find('.last-successful-run-timestamp').exists()).toBe(
+          false
+        );
+      });
+
+      it('last-run-state', () => {
+        expect(wrapper.find('.last-run-state').exists()).toBe(false);
+      });
+    });
   });
 
   describe('renderTabs', () => {
