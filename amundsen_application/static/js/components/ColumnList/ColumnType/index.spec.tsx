@@ -3,7 +3,6 @@
 
 import * as React from 'react';
 import { mount } from 'enzyme';
-
 import { Modal } from 'react-bootstrap';
 
 import * as UtilMethods from 'ducks/utilMethods';

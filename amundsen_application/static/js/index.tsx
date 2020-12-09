@@ -27,7 +27,7 @@ import TableDetail from './pages/TableDetailPage';
 
 import Preloader from './components/common/Preloader';
 import Footer from './features/Footer';
-import NavBar from './components/NavBar';
+import NavBar from './features/NavBar';
 
 import rootReducer from './ducks/rootReducer';
 import rootSaga from './ducks/rootSaga';
