@@ -2239,7 +2239,7 @@ exports[`eslint`] = {
       [247, 14, 7, "\'wrapper\' is already declared in the upper scope.", "990908086"],
       [250, 10, 11, "Property name \`chart_names\` must match one of the following formats: camelCase", "219563138"]
     ],
-    "js/pages/DashboardPage/index.tsx:3480554137": [
+    "js/pages/DashboardPage/index.tsx:181364056": [
       [82, 20, 16, "Must use destructuring props assignment", "1899951550"],
       [88, 47, 19, "Must use destructuring props assignment", "1779396464"],
       [89, 20, 16, "Must use destructuring props assignment", "1899951550"],
@@ -2262,8 +2262,8 @@ exports[`eslint`] = {
       [168, 8, 21, "Must use destructuring props assignment", "3005585300"],
       [172, 10, 7, "A form label must be associated with a control.", "2729454337"],
       [295, 28, 20, "Must use destructuring props assignment", "3424894889"],
-      [336, 31, 14, "Must use destructuring state assignment", "1770565882"],
-      [350, 34, 10, "Property name \`group_name\` must match one of the following formats: camelCase", "2646960194"]
+      [335, 31, 14, "Must use destructuring state assignment", "1770565882"],
+      [349, 34, 10, "Property name \`group_name\` must match one of the following formats: camelCase", "2646960194"]
     ],
     "js/pages/HomePage/index.spec.tsx:3384873462": [
       [27, 48, 10, "Prop spreading is forbidden", "480399587"],

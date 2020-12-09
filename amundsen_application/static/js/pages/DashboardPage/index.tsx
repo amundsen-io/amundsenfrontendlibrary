@@ -296,19 +296,20 @@ export class DashboardPage extends React.Component<
                     uriKey={this.props.dashboard.uri}
                   />
                 </EditableSection>
-                <section className="metadata-section">
-                  <div className="section-title title-3">
-                    Last Successful Run
-                  </div>
-                  <time className="last-successful-run-timestamp body-2 text-primary">
-                    {dashboard.last_successful_run_timestamp
-                      ? formatDateTimeShort({
-                          epochTimestamp:
-                            dashboard.last_successful_run_timestamp,
-                        })
-                      : NO_TIMESTAMP_TEXT}
-                  </time>
-                </section>
+                {hasLastRunState && [
+                  <section className="metadata-section">
+                    <div className="section-title title-3">
+                      Last Successful Run
+                    </div>
+                    <time className="last-successful-run-timestamp body-2 text-primary">
+                      {dashboard.last_successful_run_timestamp
+                        ? formatDateTimeShort({
+                            epochTimestamp:
+                              dashboard.last_successful_run_timestamp,
+                          })
+                        : NO_TIMESTAMP_TEXT}
+                    </time>
+                  </section>,
                 <section className="metadata-section">
                   <div className="section-title title-3">Last Run</div>
                   <div>
@@ -319,19 +320,17 @@ export class DashboardPage extends React.Component<
                           })
                         : NO_TIMESTAMP_TEXT}
                     </time>
-                    {hasLastRunState && (
-                      <div className="last-run-state">
-                        <span className="status">{STATUS_TEXT}</span>
-                        <ResourceStatusMarker
-                          stateText={dashboard.last_run_state}
-                          succeeded={this.mapStatusToBoolean(
-                            dashboard.last_run_state
-                          )}
-                        />
-                      </div>
-                    )}
+                    <div className="last-run-state">
+                      <span className="status">{STATUS_TEXT}</span>
+                      <ResourceStatusMarker
+                        stateText={dashboard.last_run_state}
+                        succeeded={this.mapStatusToBoolean(
+                          dashboard.last_run_state
+                        )}
+                      />
+                    </div>
                   </div>
-                </section>
+                </section>]}
               </section>
             </section>
             <ImagePreview uri={this.state.uri} redirectUrl={dashboard.url} />
