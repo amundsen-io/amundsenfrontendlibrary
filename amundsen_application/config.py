@@ -63,9 +63,17 @@ class Config:
     INIT_CUSTOM_ROUTES = None  # type: Callable[[Flask], None]
 
     # Settings for Preview Client integration
-    PREVIEW_CLIENT_URL = os.getenv('PREVIEW_CLIENT_URL')
-    PREVIEW_CLIENT_USERNAME = os.getenv('PREVIEW_CLIENT_USERNAME')
-    PREVIEW_CLIENT_PASSWORD = os.getenv('PREVIEW_CLIENT_PASSWORD')
+    PREVIEW_CLIENT_ENABLED = os.getenv('PREVIEW_CLIENT_ENABLED') == 'true'  # type: bool
+    # Maps to a class path and name
+    PREVIEW_CLIENT = os.getenv('PREVIEW_CLIENT', None)  # type: Optional[str]
+    PREVIEW_CLIENT_URL = os.getenv('PREVIEW_CLIENT_URL')  # type: Optional[str]
+    PREVIEW_CLIENT_USERNAME = os.getenv('PREVIEW_CLIENT_USERNAME')  # type: Optional[str]
+    PREVIEW_CLIENT_PASSWORD = os.getenv('PREVIEW_CLIENT_PASSWORD')  # type: Optional[str]
+
+    # Settings for Announcement Client integration
+    ANNOUNCEMENT_CLIENT_ENABLED = os.getenv('ANNOUNCEMENT_CLIENT_ENABLED') == 'true'  # type: bool
+    # Maps to a class path and name
+    ANNOUNCEMENT_CLIENT = os.getenv('ANNOUNCEMENT_CLIENT', None)  # type: Optional[str]
 
     # Settings for Issue tracker integration
     ISSUE_LABELS = []  # type: List[str]

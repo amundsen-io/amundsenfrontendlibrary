@@ -27,7 +27,7 @@ import {
   notificationsEnabled,
 } from 'config/config-utils';
 
-import BadgeList from 'components/common/BadgeList';
+import BadgeList from 'features/BadgeList';
 import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
 import Breadcrumb from 'components/common/Breadcrumb';
 import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
@@ -289,6 +289,13 @@ export class TableDetail extends React.Component<
             data.source.source_type
           )}`
         : '';
+      const ownersEditText = data.source
+        ? // TODO rename getDescriptionSourceDisplayName to more generic since
+          // owners also edited on the same file?
+          `${Constants.EDIT_OWNERS_TEXT} ${getDescriptionSourceDisplayName(
+            data.source.source_type
+          )}`
+        : '';
       const editUrl = data.source ? data.source.source : '';
 
       innerContent = (
@@ -396,7 +403,12 @@ export class TableDetail extends React.Component<
                   )}
                 </section>
                 <section className="right-panel">
-                  <EditableSection title={Constants.OWNERS_TITLE}>
+                  <EditableSection
+                    title={Constants.OWNERS_TITLE}
+                    readOnly={!data.is_editable}
+                    editText={ownersEditText}
+                    editUrl={editUrl || undefined}
+                  >
                     <TableOwnerEditor resourceType={ResourceType.table} />
                   </EditableSection>
                   <section className="metadata-section">

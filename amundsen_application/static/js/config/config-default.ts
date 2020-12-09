@@ -17,10 +17,8 @@ const configDefault: AppConfig = {
     tableDescLength: 750,
     columnDescLength: 250,
   },
-  google: {
-    enabled: false,
-    key: 'default-key',
-    sampleRate: 100,
+  analytics: {
+    plugins: [],
   },
   indexDashboards: {
     enabled: false,
@@ -105,6 +103,10 @@ const configDefault: AppConfig = {
         bigquery: {
           displayName: 'BigQuery',
           iconClass: 'icon-bigquery',
+        },
+        delta: {
+          displayName: 'Delta',
+          iconClass: 'icon-delta',
         },
         druid: {
           displayName: 'Druid',
