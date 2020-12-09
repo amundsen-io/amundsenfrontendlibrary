@@ -29,6 +29,7 @@ describe('RequestFeedbackForm', () => {
       submitFeedback: jest.fn(),
       resetFeedback: jest.fn(),
     };
+    // eslint-disable-next-line react/jsx-props-no-spreading
     return shallow(<RequestFeedbackForm {...props} />);
   };
 

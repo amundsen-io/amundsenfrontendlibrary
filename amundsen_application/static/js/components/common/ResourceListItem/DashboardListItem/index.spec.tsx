@@ -44,6 +44,7 @@ describe('DashboardListItem', () => {
       ...propOverrides,
     };
     const wrapper = shallow<DashboardListItem>(
+      // eslint-disable-next-line react/jsx-props-no-spreading
       <DashboardListItem {...props} />
     );
     return { props, wrapper };
