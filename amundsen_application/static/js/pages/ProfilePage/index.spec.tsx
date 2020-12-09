@@ -8,8 +8,7 @@ import * as Avatar from 'react-avatar';
 import { shallow } from 'enzyme';
 import { mocked } from 'ts-jest/utils';
 
-import Breadcrumb from 'components/common/Breadcrumb';
-import Flag from 'components/common/Flag';
+import Breadcrumb from 'components/Breadcrumb';
 import ResourceList from 'components/common/ResourceList';
 import TabsComponent from 'components/common/TabsComponent';
 
@@ -20,7 +19,6 @@ import { ResourceType } from 'interfaces/Resources';
 import * as LogUtils from 'utils/logUtils';
 
 import { indexDashboardsEnabled } from 'config/config-utils';
-import { BadgeStyle } from 'config/config-types';
 import { AVATAR_SIZE } from './constants';
 import {
   mapDispatchToProps,

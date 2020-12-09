@@ -14,7 +14,7 @@ import { logClick } from 'ducks/utilMethods';
 import { UpdateSearchStateRequest } from 'ducks/search/types';
 import { updateSearchState } from 'ducks/search/reducer';
 
-import Breadcrumb from 'components/common/Breadcrumb';
+import Breadcrumb from 'components/Breadcrumb';
 import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import EditableSection from 'components/common/EditableSection';
 import LoadingSpinner from 'components/common/LoadingSpinner';

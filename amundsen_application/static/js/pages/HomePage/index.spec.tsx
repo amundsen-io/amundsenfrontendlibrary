@@ -5,7 +5,7 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
-import Breadcrumb from 'components/common/Breadcrumb';
+import Breadcrumb from 'components/Breadcrumb';
 import MyBookmarks from 'components/Bookmark/MyBookmarks';
 import PopularTables from 'components/common/PopularTables';
 import SearchBar from 'components/common/SearchBar';

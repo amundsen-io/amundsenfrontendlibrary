@@ -10,7 +10,7 @@ import { resetSearchState } from 'ducks/search/reducer';
 import { UpdateSearchStateReset } from 'ducks/search/types';
 
 import MyBookmarks from 'components/Bookmark/MyBookmarks';
-import Breadcrumb from 'components/common/Breadcrumb';
+import Breadcrumb from 'components/Breadcrumb';
 import PopularTables from 'components/common/PopularTables';
 import SearchBar from 'components/common/SearchBar';
 import TagsListContainer from 'components/common/Tags';
