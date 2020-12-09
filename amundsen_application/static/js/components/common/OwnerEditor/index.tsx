@@ -10,13 +10,12 @@ import AvatarLabel, { AvatarLabelProps } from 'components/AvatarLabel';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import { ResourceType, UpdateMethod, UpdateOwnerPayload } from 'interfaces';
 
-// TODO: Use css-modules instead of 'import'
-import './styles.scss';
-
-import { EditableSectionChildProps } from 'components/common/EditableSection';
+import { EditableSectionChildProps } from 'components/EditableSection';
 import { logClick } from 'ducks/utilMethods';
 
 import * as Constants from './constants';
+
+import './styles.scss';
 
 export interface DispatchFromProps {
   onUpdateList: (

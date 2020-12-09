@@ -17,10 +17,10 @@ import {
   UpdateTagsRequest,
 } from 'ducks/tags/types';
 
-import { EditableSectionChildProps } from 'components/common/EditableSection';
+import { EditableSectionChildProps } from 'components/EditableSection';
 import { ResourceType, Tag, UpdateMethod, UpdateTagData } from 'interfaces';
 import TagInfo from '../TagInfo';
-// TODO: Use css-modules instead of 'import'
+
 import './styles.scss';
 
 const VALID_TAG_REGEXP = new RegExp(/^([a-z0-9_]+)$/);

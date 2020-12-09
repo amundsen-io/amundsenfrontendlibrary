@@ -5,15 +5,15 @@ import * as autosize from 'autosize';
 import * as React from 'react';
 import * as ReactMarkdown from 'react-markdown';
 
-// TODO: Use css-modules instead of 'import'
-import './styles.scss';
-import { EditableSectionChildProps } from 'components/common/EditableSection';
+import { EditableSectionChildProps } from 'components/EditableSection';
 import {
   CANCEL_BUTTON_TEXT,
   REFRESH_BUTTON_TEXT,
   REFRESH_MESSAGE,
   UPDATE_BUTTON_TEXT,
 } from './constants';
+
+import './styles.scss';
 
 export interface StateFromProps {
   refreshValue?: string;
