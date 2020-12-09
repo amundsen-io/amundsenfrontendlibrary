@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Modal } from 'react-bootstrap';
 
 import AppConfig from 'config/config';
-import AvatarLabel, { AvatarLabelProps } from 'components/common/AvatarLabel';
+import AvatarLabel, { AvatarLabelProps } from 'components/AvatarLabel';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import { ResourceType, UpdateMethod, UpdateOwnerPayload } from 'interfaces';
 

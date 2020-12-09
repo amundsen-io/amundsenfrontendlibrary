@@ -2,11 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-
 import { mount } from 'enzyme';
 
-import globalState from 'fixtures/globalState';
-import AvatarLabel from 'components/common/AvatarLabel';
+import AvatarLabel from 'components/AvatarLabel';
 
 import { ResourceType } from 'interfaces';
 
