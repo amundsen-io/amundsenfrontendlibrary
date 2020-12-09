@@ -5,7 +5,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 
 import { ImageIconType } from 'interfaces/Enums';
-import StorySection from '../common/StorySection';
+import StorySection from '../StorySection';
 import FlashMessage from '.';
 
 const stories = storiesOf('Components/Flash Message', module);

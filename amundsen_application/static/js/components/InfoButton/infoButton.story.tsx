@@ -5,7 +5,7 @@ import React from 'react';
 import { withKnobs, object } from '@storybook/addon-knobs';
 
 import { IconSizes } from 'interfaces';
-import StorySection from '../common/StorySection';
+import StorySection from '../StorySection';
 import InfoButton from '.';
 
 export const InfoButtonStory = () => (

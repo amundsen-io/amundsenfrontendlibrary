@@ -5,7 +5,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import ResourceList from 'components/ResourceList';
-import ShimmeringResourceLoader from 'components/common/ShimmeringResourceLoader';
+import ShimmeringResourceLoader from 'components/ShimmeringResourceLoader';
 
 import { dashboardSummary } from 'fixtures/metadata/dashboard';
 import globalState from 'fixtures/globalState';

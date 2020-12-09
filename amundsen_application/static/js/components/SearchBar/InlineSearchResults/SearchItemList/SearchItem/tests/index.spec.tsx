@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-
 import { shallow } from 'enzyme';
 
 import LoadingSpinner from 'components/LoadingSpinner';
 
-import { SEARCH_ITEM_NO_RESULTS } from 'components/common/SearchBar/InlineSearchResults/constants';
+import { SEARCH_ITEM_NO_RESULTS } from 'components/SearchBar/InlineSearchResults/constants';
 
 import { ResourceType } from 'interfaces';
 

@@ -7,7 +7,7 @@ import { TableResource } from 'interfaces';
 
 import InfoButton from 'components/InfoButton';
 import PaginatedResourceList from 'components/ResourceList/PaginatedResourceList';
-import ShimmeringResourceLoader from 'components/common/ShimmeringResourceLoader';
+import ShimmeringResourceLoader from 'components/ShimmeringResourceLoader';
 
 import { getPopularTables } from 'ducks/popularTables/reducer';
 import { GetPopularTablesRequest } from 'ducks/popularTables/types';

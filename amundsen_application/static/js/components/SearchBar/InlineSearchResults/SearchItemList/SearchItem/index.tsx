@@ -11,7 +11,7 @@ import LoadingSpinner from 'components/LoadingSpinner';
 
 import { GlobalState } from 'ducks/rootReducer';
 
-import { SEARCH_ITEM_NO_RESULTS } from 'components/common/SearchBar/InlineSearchResults/constants';
+import { SEARCH_ITEM_NO_RESULTS } from 'components/SearchBar/InlineSearchResults/constants';
 
 export interface StateFromProps {
   isLoading: boolean;

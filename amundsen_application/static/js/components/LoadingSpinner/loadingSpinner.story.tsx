@@ -4,7 +4,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import StorySection from '../common/StorySection';
+import StorySection from '../StorySection';
 import LoadingSpinner from '.';
 
 const stories = storiesOf('Attributes/States', module);

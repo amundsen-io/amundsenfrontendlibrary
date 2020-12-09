@@ -3,6 +3,7 @@
 
 import * as React from 'react';
 import { connect } from 'react-redux';
+
 import { GlobalState } from 'ducks/rootReducer';
 
 import { Bookmark, ResourceType, ResourceDict } from 'interfaces';
@@ -12,7 +13,7 @@ import {
 } from 'config/config-utils';
 import PaginatedResourceList from 'components/ResourceList/PaginatedResourceList';
 import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
-import ShimmeringResourceLoader from 'components/common/ShimmeringResourceLoader';
+import ShimmeringResourceLoader from 'components/ShimmeringResourceLoader';
 import {
   BOOKMARK_TITLE,
   BOOKMARKS_PER_PAGE,

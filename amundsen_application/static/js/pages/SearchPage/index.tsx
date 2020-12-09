@@ -10,7 +10,7 @@ import { Search as UrlSearch } from 'history';
 
 import PaginatedApiResourceList from 'components/ResourceList/PaginatedApiResourceList';
 import ResourceListHeader from 'components/ResourceList/ResourceListHeader';
-import ShimmeringResourceLoader from 'components/common/ShimmeringResourceLoader';
+import ShimmeringResourceLoader from 'components/ShimmeringResourceLoader';
 
 import { GlobalState } from 'ducks/rootReducer';
 import { submitSearchResource, urlDidUpdate } from 'ducks/search/reducer';
