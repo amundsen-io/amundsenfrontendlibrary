@@ -12,7 +12,7 @@ import { formatDate } from 'utils/dateUtils';
 
 import { ResourceType, DashboardResource } from 'interfaces';
 
-import { NO_TIMESTAMP_TEXT } from 'components/constants';
+import { NO_TIMESTAMP_TEXT } from '../../../../constants';
 import * as Constants from './constants';
 import { LoggingParams } from '../types';
 
