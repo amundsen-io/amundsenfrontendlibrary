@@ -5,7 +5,7 @@ import * as React from 'react';
 
 import { shallow } from 'enzyme';
 
-import InfoButton from 'components/common/InfoButton';
+import InfoButton from 'components/InfoButton';
 import EntityCardSection, { EntityCardSectionProps } from '.';
 
 describe('EntityCardSection', () => {

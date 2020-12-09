@@ -6,7 +6,7 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 import SanitizedHTML from 'react-sanitized-html';
 
 import { IconSizes } from 'interfaces';
-import { InformationIcon } from '../../SVGIcons';
+import { InformationIcon } from '../SVGIcons';
 
 import './styles.scss';
 

@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-import InfoButton from 'components/common/InfoButton';
+import InfoButton from 'components/InfoButton';
 
 import { IconSizes } from 'interfaces';
+
 import './styles.scss';
 
 export interface EntityCardSectionProps {
