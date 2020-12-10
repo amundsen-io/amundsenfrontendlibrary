@@ -69,6 +69,7 @@ class Config:
     PREVIEW_CLIENT_URL = os.getenv('PREVIEW_CLIENT_URL')  # type: Optional[str]
     PREVIEW_CLIENT_USERNAME = os.getenv('PREVIEW_CLIENT_USERNAME')  # type: Optional[str]
     PREVIEW_CLIENT_PASSWORD = os.getenv('PREVIEW_CLIENT_PASSWORD')  # type: Optional[str]
+    PREVIEW_CLIENT_CERTIFICATE = os.getenv('PREVIEW_CLIENT_CERTIFICATE')  # type: Optional[str]
 
     # Settings for Announcement Client integration
     ANNOUNCEMENT_CLIENT_ENABLED = os.getenv('ANNOUNCEMENT_CLIENT_ENABLED') == 'true'  # type: bool
