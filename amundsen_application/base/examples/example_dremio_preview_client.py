@@ -42,25 +42,15 @@ class DremioPreviewClient(BasePreviewClient):
     SQL_STATEMENT = 'SELECT * FROM {schema}."{table}" LIMIT 50'
 
     def __init__(self,) -> None:
-        self.client = self._get_flight_client()
+        self.url = app.config['PREVIEW_CLIENT_URL']
+        self.username = app.config['PREVIEW_CLIENT_USERNAME']
+        self.password = app.config['PREVIEW_CLIENT_PASSWORD']
 
-    def _get_flight_client(self,) -> flight.FlightClient:
-        """Get the flight client
-        """
-        url = app.config['PREVIEW_CLIENT_URL']
-        username = app.config['PREVIEW_CLIENT_USERNAME']
-        password = app.config['PREVIEW_CLIENT_PASSWORD']
-
-        connection_args = {}
+        self.connection_args = {}
         tls_root_certs_path = app.config['PREVIEW_CLIENT_CERTIFICATE']
         if tls_root_certs_path is not None:
             with open(tls_root_certs_path, "rb") as f:
-                connection_args["tls_root_certs"] = f.read()
-
-        client = flight.FlightClient(url, **connection_args)
-        client.authenticate(_DremioAuthHandler(username, password))
-
-        return client
+                self.connection_args["tls_root_certs"] = f.read()
 
     def get_preview_data(self, params: Dict, optionalHeaders: Dict = None) -> Response:
         """Preview data from Dremio source
@@ -77,9 +67,11 @@ class DremioPreviewClient(BasePreviewClient):
             sql = DremioPreviewClient.SQL_STATEMENT.format(schema=schema,
                                                            table=table)
 
+            client = flight.FlightClient(self.url, **self.connection_args)
+            client.authenticate(_DremioAuthHandler(self.username, self.password))
             flight_descriptor = flight.FlightDescriptor.for_command(sql)
-            flight_info = self.client.get_flight_info(flight_descriptor)
-            reader = self.client.do_get(flight_info.endpoints[0].ticket)
+            flight_info = client.get_flight_info(flight_descriptor)
+            reader = client.do_get(flight_info.endpoints[0].ticket)
             
             result = reader.read_all()
             names = result.schema.names
