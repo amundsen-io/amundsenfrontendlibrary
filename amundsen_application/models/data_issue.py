@@ -47,6 +47,10 @@ class DataIssue:
         self.priority = priority
 
     def serialize(self) -> dict:
+        
+        if type(self.priority) == str:
+            self.priority = Priority.from_jira_severity(self.priority)
+
         return {'issue_key': self.issue_key,
                 'title': self.title,
                 'url': self.url,
