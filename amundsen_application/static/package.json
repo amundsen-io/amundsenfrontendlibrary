@@ -352,6 +352,7 @@
       "camelcase": "off",
       "class-methods-use-this": "off",
       "consistent-return": "warn",
+      "arrow-body-style": "warn",
       "default-case": "warn",
       "func-names": "off",
       "guard-for-in": "off",
