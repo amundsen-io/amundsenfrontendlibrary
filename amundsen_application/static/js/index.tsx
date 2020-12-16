@@ -16,6 +16,10 @@ import { analyticsMiddleware } from 'ducks/middlewares';
 
 import { BrowserHistory } from 'utils/navigationUtils';
 
+import { pageViewed } from 'ducks/ui';
+import rootReducer from 'ducks/rootReducer';
+import rootSaga from 'ducks/rootSaga';
+
 import DashboardPage from './pages/DashboardPage';
 import AnnouncementPage from './pages/AnnouncementPage';
 import BrowsePage from './pages/BrowsePage';
@@ -28,9 +32,6 @@ import TableDetail from './pages/TableDetailPage';
 import Preloader from './components/Preloader';
 import Footer from './features/Footer';
 import NavBar from './features/NavBar';
-
-import rootReducer from './ducks/rootReducer';
-import rootSaga from './ducks/rootSaga';
 
 const sagaMiddleware = createSagaMiddleware();
 const createStoreWithMiddleware = applyMiddleware(
@@ -46,7 +47,7 @@ function Routes() {
   const history = BrowserHistory;
 
   function trackPageView() {
-    console.log(window.location.pathname);
+    store.dispatch(pageViewed(window.location.pathname));
   }
 
   React.useEffect(() => {
