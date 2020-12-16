@@ -42,26 +42,45 @@ const store = createStoreWithMiddleware(rootReducer);
 
 sagaMiddleware.run(rootSaga);
 
+function Routes() {
+  const history = BrowserHistory;
+
+  function trackPageView() {
+    console.log(window.location.pathname);
+  }
+
+  React.useEffect(() => {
+    trackPageView(); // To track the first pageview upon load
+    history.listen(trackPageView); // To track the subsequent pageviews
+  }, [history]);
+
+  return (
+    <>
+      <Route component={NavBar} />
+      <Switch>
+        <Route path="/announcements" component={AnnouncementPage} />
+        <Route path="/browse" component={BrowsePage} />
+        <Route path="/dashboard/:uri" component={DashboardPage} />
+        <Route path="/search" component={SearchPage} />
+        <Route
+          path="/table_detail/:cluster/:database/:schema/:table"
+          component={TableDetail}
+        />
+        <Route path="/user/:userId" component={ProfilePage} />
+        <Route path="/404" component={NotFoundPage} />
+        <Route path="/" component={HomePage} />
+      </Switch>
+    </>
+  );
+}
+
 ReactDOM.render(
   <DocumentTitle title="Amundsen - Data Discovery Portal">
     <Provider store={store}>
       <Router history={BrowserHistory}>
         <div id="main">
           <Preloader />
-          <Route component={NavBar} />
-          <Switch>
-            <Route path="/announcements" component={AnnouncementPage} />
-            <Route path="/browse" component={BrowsePage} />
-            <Route path="/dashboard/:uri" component={DashboardPage} />
-            <Route path="/search" component={SearchPage} />
-            <Route
-              path="/table_detail/:cluster/:database/:schema/:table"
-              component={TableDetail}
-            />
-            <Route path="/user/:userId" component={ProfilePage} />
-            <Route path="/404" component={NotFoundPage} />
-            <Route path="/" component={HomePage} />
-          </Switch>
+          <Routes />
           <Footer />
         </div>
       </Router>
