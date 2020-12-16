@@ -43,7 +43,7 @@ const store = createStoreWithMiddleware(rootReducer);
 
 sagaMiddleware.run(rootSaga);
 
-function Routes() {
+const Routes: React.FC = () => {
   const history = BrowserHistory;
 
   function trackPageView() {
@@ -73,7 +73,7 @@ function Routes() {
       </Switch>
     </>
   );
-}
+};
 
 ReactDOM.render(
   <DocumentTitle title="Amundsen - Data Discovery Portal">
