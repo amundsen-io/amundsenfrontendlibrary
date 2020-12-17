@@ -20,10 +20,6 @@ const SourceLink: React.FC<SourceLinkProps> = ({
 }: SourceLinkProps) => {
   if (tableSource === null || tableSource.source === null) return null;
 
-  const image = getDescriptionSourceIconPath(tableSource.source_type);
-
-  const displayName = getDescriptionSourceDisplayName(tableSource.source_type);
-
   return (
     <a
       className="header-link"
@@ -36,6 +32,7 @@ const SourceLink: React.FC<SourceLinkProps> = ({
       <AvatarLabel
         label={getDescriptionSourceDisplayName(tableSource.source_type)}
         src={getDescriptionSourceIconPath(tableSource.source_type)}
+        round={false}
       />
     </a>
   );
