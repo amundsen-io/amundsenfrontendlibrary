@@ -10,7 +10,7 @@ import { ResourceType, Badge } from 'interfaces';
 import { updateSearchState } from 'ducks/search/reducer';
 import { UpdateSearchStateRequest } from 'ducks/search/types';
 
-import BadgeList from 'components/common/BadgeList';
+import BadgeList from 'components/BadgeList';
 
 export interface DispatchFromProps {
   onBadgeClick: (badgeText: string) => UpdateSearchStateRequest;
@@ -20,8 +20,8 @@ export interface BadgeListFeatureProps {
   badges: Badge[];
 }
 
-export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators(
+export const mapDispatchToProps = (dispatch: any) =>
+  bindActionCreators(
     {
       onBadgeClick: (badgeText: string) =>
         updateSearchState({
@@ -33,7 +33,6 @@ export const mapDispatchToProps = (dispatch: any) => {
     },
     dispatch
   );
-};
 
 export default connect<null, DispatchFromProps, BadgeListFeatureProps>(
   null,

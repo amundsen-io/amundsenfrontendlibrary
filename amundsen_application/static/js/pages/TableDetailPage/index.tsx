@@ -28,14 +28,14 @@ import {
 } from 'config/config-utils';
 
 import BadgeList from 'features/BadgeList';
-import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
-import Breadcrumb from 'components/common/Breadcrumb';
-import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
-import TagInput from 'components/common/Tags/TagInput';
-import EditableText from 'components/common/EditableText';
-import LoadingSpinner from 'components/common/LoadingSpinner';
-import EditableSection from 'components/common/EditableSection';
-import ColumnList from 'components/ColumnList';
+import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
+import Breadcrumb from 'components/Breadcrumb';
+import TabsComponent, { TabInfo } from 'components/TabsComponent';
+import TagInput from 'components/Tags/TagInput';
+import EditableText from 'components/EditableText';
+import LoadingSpinner from 'components/LoadingSpinner';
+import EditableSection from 'components/EditableSection';
+import ColumnList from 'features/ColumnList';
 
 import { formatDateTimeShort } from 'utils/dateUtils';
 import { getLoggingParams } from 'utils/logUtils';
@@ -108,14 +108,12 @@ export type TableDetailProps = PropsFromState &
   DispatchFromProps &
   RouteComponentProps<MatchProps>;
 
-const ErrorMessage = () => {
-  return (
-    <div className="container error-label">
-      <Breadcrumb />
-      <label>{Constants.ERROR_MESSAGE}</label>
-    </div>
-  );
-};
+const ErrorMessage = () => (
+  <div className="container error-label">
+    <Breadcrumb />
+    <label>{Constants.ERROR_MESSAGE}</label>
+  </div>
+);
 
 export interface StateProps {
   sortedBy: SortCriteria;
@@ -450,22 +448,20 @@ export class TableDetail extends React.Component<
   }
 }
 
-export const mapStateToProps = (state: GlobalState) => {
-  return {
-    isLoading: state.tableMetadata.isLoading,
-    statusCode: state.tableMetadata.statusCode,
-    tableData: state.tableMetadata.tableData,
-    numRelatedDashboards: state.tableMetadata.dashboards
-      ? state.tableMetadata.dashboards.dashboards.length
-      : 0,
-    isLoadingDashboards: state.tableMetadata.dashboards
-      ? state.tableMetadata.dashboards.isLoading
-      : true,
-  };
-};
+export const mapStateToProps = (state: GlobalState) => ({
+  isLoading: state.tableMetadata.isLoading,
+  statusCode: state.tableMetadata.statusCode,
+  tableData: state.tableMetadata.tableData,
+  numRelatedDashboards: state.tableMetadata.dashboards
+    ? state.tableMetadata.dashboards.dashboards.length
+    : 0,
+  isLoadingDashboards: state.tableMetadata.dashboards
+    ? state.tableMetadata.dashboards.isLoading
+    : true,
+});
 
-export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators(
+export const mapDispatchToProps = (dispatch: any) =>
+  bindActionCreators(
     {
       getTableData,
       openRequestDescriptionDialog,
@@ -479,7 +475,6 @@ export const mapDispatchToProps = (dispatch: any) => {
     },
     dispatch
   );
-};
 
 export default connect<PropsFromState, DispatchFromProps>(
   mapStateToProps,

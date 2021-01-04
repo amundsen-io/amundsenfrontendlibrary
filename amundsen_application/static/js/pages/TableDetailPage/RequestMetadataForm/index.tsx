@@ -5,8 +5,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import './styles.scss';
-
 import {
   NotificationType,
   RequestMetadataType,
@@ -15,7 +13,7 @@ import {
   TableMetadata,
 } from 'interfaces';
 
-import FlashMessage from 'components/common/FlashMessage';
+import FlashMessage from 'components/FlashMessage';
 import { ImageIconType } from 'interfaces/Enums';
 
 import { GlobalState } from 'ducks/rootReducer';
@@ -29,6 +27,8 @@ import {
   submitNotification,
 } from 'ducks/notification/reducer';
 import * as Constants from './constants';
+
+import './styles.scss';
 
 interface StateFromProps {
   columnName?: string;
@@ -81,15 +81,13 @@ export class RequestMetadataForm extends React.Component<
     }
   };
 
-  renderFlashMessage = () => {
-    return (
-      <FlashMessage
-        iconClass={ImageIconType.MAIL}
-        message={this.getFlashMessageString()}
-        onClose={this.closeDialog}
-      />
-    );
-  };
+  renderFlashMessage = () => (
+    <FlashMessage
+      iconClass={ImageIconType.MAIL}
+      message={this.getFlashMessageString()}
+      onClose={this.closeDialog}
+    />
+  );
 
   extractDataFromForm = () => {
     const form = document.getElementById('RequestForm') as HTMLFormElement;
@@ -273,12 +271,11 @@ export const mapStateToProps = (state: GlobalState) => {
   return mappedProps;
 };
 
-export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators(
+export const mapDispatchToProps = (dispatch: any) =>
+  bindActionCreators(
     { submitNotification, closeRequestDescriptionDialog },
     dispatch
   );
-};
 
 export default connect<StateFromProps, DispatchFromProps>(
   mapStateToProps,

@@ -14,15 +14,14 @@ import { logClick } from 'ducks/utilMethods';
 import { UpdateSearchStateRequest } from 'ducks/search/types';
 import { updateSearchState } from 'ducks/search/reducer';
 
-import Breadcrumb from 'components/common/Breadcrumb';
-import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
-import EditableSection from 'components/common/EditableSection';
-import LoadingSpinner from 'components/common/LoadingSpinner';
-import TabsComponent, { TabInfo } from 'components/common/TabsComponent';
-import ResourceStatusMarker from 'components/common/ResourceStatusMarker';
-import ResourceList from 'components/common/ResourceList';
-import TagInput from 'components/common/Tags/TagInput';
-import { NO_TIMESTAMP_TEXT } from 'components/constants';
+import Breadcrumb from 'components/Breadcrumb';
+import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
+import EditableSection from 'components/EditableSection';
+import LoadingSpinner from 'components/LoadingSpinner';
+import TabsComponent, { TabInfo } from 'components/TabsComponent';
+import ResourceStatusMarker from 'components/ResourceStatusMarker';
+import ResourceList from 'components/ResourceList';
+import TagInput from 'components/Tags/TagInput';
 
 import { getSourceDisplayName, getSourceIconClass } from 'config/config-utils';
 import { formatDateTimeShort } from 'utils/dateUtils';
@@ -30,6 +29,7 @@ import { getLoggingParams } from 'utils/logUtils';
 
 import { ResourceType } from 'interfaces';
 import { DashboardMetadata } from 'interfaces/Dashboard';
+import { NO_TIMESTAMP_TEXT } from '../../constants';
 import {
   ADD_DESC_TEXT,
   EDIT_DESC_TEXT,
@@ -160,6 +160,8 @@ export class DashboardPage extends React.Component<
     const { dashboard, isLoading } = this.props;
     const hasDescription =
       dashboard.description && dashboard.description.length > 0;
+    const hasLastRunState =
+      dashboard.last_run_state && dashboard.last_run_state.length > 0;
 
     if (isLoading) {
       return <LoadingSpinner />;
@@ -294,40 +296,42 @@ export class DashboardPage extends React.Component<
                     uriKey={this.props.dashboard.uri}
                   />
                 </EditableSection>
-                <section className="metadata-section">
-                  <div className="section-title title-3">
-                    Last Successful Run
-                  </div>
-                  <time className="last-successful-run-timestamp body-2 text-primary">
-                    {dashboard.last_successful_run_timestamp
-                      ? formatDateTimeShort({
-                          epochTimestamp:
-                            dashboard.last_successful_run_timestamp,
-                        })
-                      : NO_TIMESTAMP_TEXT}
-                  </time>
-                </section>
-                <section className="metadata-section">
-                  <div className="section-title title-3">Last Run</div>
-                  <div>
-                    <time className="last-run-timestamp body-2 text-primary">
-                      {dashboard.last_run_timestamp
+                {hasLastRunState && [
+                  <section className="metadata-section">
+                    <div className="section-title title-3">
+                      Last Successful Run
+                    </div>
+                    <time className="last-successful-run-timestamp body-2 text-primary">
+                      {dashboard.last_successful_run_timestamp
                         ? formatDateTimeShort({
-                            epochTimestamp: dashboard.last_run_timestamp,
+                            epochTimestamp:
+                              dashboard.last_successful_run_timestamp,
                           })
                         : NO_TIMESTAMP_TEXT}
                     </time>
-                    <div className="last-run-state">
-                      <span className="status">{STATUS_TEXT}</span>
-                      <ResourceStatusMarker
-                        stateText={dashboard.last_run_state}
-                        succeeded={this.mapStatusToBoolean(
-                          dashboard.last_run_state
-                        )}
-                      />
+                  </section>,
+                  <section className="metadata-section">
+                    <div className="section-title title-3">Last Run</div>
+                    <div>
+                      <time className="last-run-timestamp body-2 text-primary">
+                        {dashboard.last_run_timestamp
+                          ? formatDateTimeShort({
+                              epochTimestamp: dashboard.last_run_timestamp,
+                            })
+                          : NO_TIMESTAMP_TEXT}
+                      </time>
+                      <div className="last-run-state">
+                        <span className="status">{STATUS_TEXT}</span>
+                        <ResourceStatusMarker
+                          stateText={dashboard.last_run_state}
+                          succeeded={this.mapStatusToBoolean(
+                            dashboard.last_run_state
+                          )}
+                        />
+                      </div>
                     </div>
-                  </div>
-                </section>
+                  </section>,
+                ]}
               </section>
             </section>
             <ImagePreview uri={this.state.uri} redirectUrl={dashboard.url} />
@@ -350,17 +354,14 @@ function searchDashboardGroup(
   });
 }
 
-export const mapStateToProps = (state: GlobalState) => {
-  return {
-    isLoading: state.dashboard.isLoading,
-    statusCode: state.dashboard.statusCode,
-    dashboard: state.dashboard.dashboard,
-  };
-};
+export const mapStateToProps = (state: GlobalState) => ({
+  isLoading: state.dashboard.isLoading,
+  statusCode: state.dashboard.statusCode,
+  dashboard: state.dashboard.dashboard,
+});
 
-export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ getDashboard, searchDashboardGroup }, dispatch);
-};
+export const mapDispatchToProps = (dispatch: any) =>
+  bindActionCreators({ getDashboard, searchDashboardGroup }, dispatch);
 
 export default connect<StateFromProps, DispatchFromProps>(
   mapStateToProps,

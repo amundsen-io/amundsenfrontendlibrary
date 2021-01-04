@@ -12,7 +12,7 @@ import {
 
 import { GlobalState } from 'ducks/rootReducer';
 import { FilterType, IconSizes } from 'interfaces';
-import InfoButton from 'components/common/InfoButton';
+import InfoButton from 'components/InfoButton';
 import { CLEAR_BTN_TEXT } from '../constants';
 
 import CheckBoxFilter, { CheckboxFilterProperties } from '../CheckBoxFilter';
@@ -115,15 +115,14 @@ export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators(
+export const mapDispatchToProps = (dispatch: any) =>
+  bindActionCreators(
     {
       clearFilter: (categoryId: string) =>
         updateFilterByCategory({ categoryId, value: undefined }),
     },
     dispatch
   );
-};
 
 export default connect<StateFromProps, DispatchFromProps, OwnProps>(
   mapStateToProps,

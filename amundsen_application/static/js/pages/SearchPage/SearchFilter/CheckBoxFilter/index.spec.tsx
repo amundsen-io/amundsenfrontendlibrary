@@ -4,13 +4,13 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 
-import CheckBoxItem from 'components/common/Inputs/CheckBoxItem';
+import CheckBoxItem from 'components/Inputs/CheckBoxItem';
 
 import globalState from 'fixtures/globalState';
 
 import { GlobalState } from 'ducks/rootReducer';
 
-import { FilterType, ResourceType } from 'interfaces';
+import { ResourceType } from 'interfaces';
 import {
   CheckBoxFilter,
   CheckBoxFilterProps,
@@ -38,8 +38,12 @@ describe('CheckBoxFilter', () => {
       updateFilter: jest.fn(),
       ...propOverrides,
     };
+    // eslint-disable-next-line react/jsx-props-no-spreading
     const wrapper = shallow<CheckBoxFilter>(<CheckBoxFilter {...props} />);
-    return { props, wrapper };
+    return {
+      props,
+      wrapper,
+    };
   };
 
   describe('createCheckBoxItem', () => {

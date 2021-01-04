@@ -11,7 +11,7 @@ import OwnerEditor, {
   ComponentProps,
   DispatchFromProps,
   StateFromProps,
-} from 'components/common/OwnerEditor';
+} from 'components/OwnerEditor';
 
 import { indexUsersEnabled } from 'config/config-utils';
 
@@ -39,9 +39,8 @@ export const mapStateToProps = (state: GlobalState) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ onUpdateList: updateTableOwner }, dispatch);
-};
+export const mapDispatchToProps = (dispatch: any) =>
+  bindActionCreators({ onUpdateList: updateTableOwner }, dispatch);
 
 export default connect<StateFromProps, DispatchFromProps, ComponentProps>(
   mapStateToProps,

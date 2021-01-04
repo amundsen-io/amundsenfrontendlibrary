@@ -7,18 +7,16 @@ import * as DocumentTitle from 'react-document-title';
 // TODO: Use css-modules instead of 'import'
 import './styles.scss';
 
-import Breadcrumb from 'components/common/Breadcrumb';
+import Breadcrumb from 'components/Breadcrumb';
 
-const NotFoundPage: React.FC<any> = () => {
-  return (
-    <DocumentTitle title="404 Page Not Found - Amundsen">
-      <div className="container not-found-page">
-        <Breadcrumb path="/" text="Home" />
-        <h1>404 Page Not Found</h1>
-        <img className="icon icon-alert" alt="" />
-      </div>
-    </DocumentTitle>
-  );
-};
+const NotFoundPage: React.FC<any> = () => (
+  <DocumentTitle title="404 Page Not Found - Amundsen">
+    <div className="container not-found-page">
+      <Breadcrumb path="/" text="Home" />
+      <h1>404 Page Not Found</h1>
+      <img className="icon icon-alert" alt="" />
+    </div>
+  </DocumentTitle>
+);
 
 export default NotFoundPage;

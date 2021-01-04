@@ -4,17 +4,16 @@
 import * as React from 'react';
 import * as ReactMarkdown from 'react-markdown';
 import * as History from 'history';
-
 import { shallow } from 'enzyme';
 
-import LoadingSpinner from 'components/common/LoadingSpinner';
-import Breadcrumb from 'components/common/Breadcrumb';
-import BookmarkIcon from 'components/common/Bookmark/BookmarkIcon';
-import ResourceList from 'components/common/ResourceList';
-import TabsComponent from 'components/common/TabsComponent';
+import LoadingSpinner from 'components/LoadingSpinner';
+import Breadcrumb from 'components/Breadcrumb';
+import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
+import ResourceList from 'components/ResourceList';
+import TabsComponent from 'components/TabsComponent';
 import { dashboardMetadata } from 'fixtures/metadata/dashboard';
-import { NO_TIMESTAMP_TEXT } from 'components/constants';
 import { ResourceType } from 'interfaces';
+import { NO_TIMESTAMP_TEXT } from '../../constants';
 import ChartList from './ChartList';
 import DashboardOwnerEditor from './DashboardOwnerEditor';
 import ImagePreview from './ImagePreview';
@@ -29,12 +28,8 @@ const MOCK_DISPLAY_NAME = 'displayName';
 const MOCK_ICON_CLASS = 'dashboard-icon';
 
 jest.mock('config/config-utils', () => ({
-  getSourceDisplayName: jest.fn(() => {
-    return MOCK_DISPLAY_NAME;
-  }),
-  getSourceIconClass: jest.fn(() => {
-    return MOCK_ICON_CLASS;
-  }),
+  getSourceDisplayName: jest.fn(() => MOCK_DISPLAY_NAME),
+  getSourceIconClass: jest.fn(() => MOCK_ICON_CLASS),
 }));
 const setStateSpy = jest.spyOn(DashboardPage.prototype, 'setState');
 

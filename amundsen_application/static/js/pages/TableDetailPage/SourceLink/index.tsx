@@ -8,7 +8,8 @@ import {
   getDescriptionSourceIconPath,
 } from 'config/config-utils';
 import { logClick } from 'ducks/utilMethods';
-import AvatarLabel from 'components/common/AvatarLabel';
+import AvatarLabel from 'components/AvatarLabel';
+
 import { TableSource } from 'interfaces';
 
 export interface SourceLinkProps {

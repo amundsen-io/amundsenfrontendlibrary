@@ -12,7 +12,7 @@ import {
   FilterOptions,
 } from 'ducks/search/filters/reducer';
 
-import CheckBoxItem from 'components/common/Inputs/CheckBoxItem';
+import CheckBoxItem from 'components/Inputs/CheckBoxItem';
 
 export interface CheckboxFilterProperties {
   label: string;
@@ -113,8 +113,8 @@ export const mapStateToProps = (state: GlobalState, ownProps: OwnProps) => {
   };
 };
 
-export const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators(
+export const mapDispatchToProps = (dispatch: any) =>
+  bindActionCreators(
     {
       updateFilter: (
         categoryId: string,
@@ -123,7 +123,6 @@ export const mapDispatchToProps = (dispatch: any) => {
     },
     dispatch
   );
-};
 
 export default connect<StateFromProps, DispatchFromProps, OwnProps>(
   mapStateToProps,

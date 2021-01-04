@@ -10,7 +10,7 @@ import globalState from 'fixtures/globalState';
 
 import { FilterType, ResourceType } from 'interfaces';
 
-import InfoButton from 'components/common/InfoButton';
+import InfoButton from 'components/InfoButton';
 import {
   FilterSection,
   FilterSectionProps,
@@ -28,8 +28,12 @@ const setup = (propOverrides?: Partial<FilterSectionProps>) => {
     type: FilterType.INPUT_SELECT,
     ...propOverrides,
   };
+  // eslint-disable-next-line react/jsx-props-no-spreading
   const wrapper = shallow<FilterSection>(<FilterSection {...props} />);
-  return { props, wrapper };
+  return {
+    props,
+    wrapper,
+  };
 };
 
 describe('FilterSection', () => {

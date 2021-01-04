@@ -4,14 +4,12 @@
 import * as React from 'react';
 import * as DocumentTitle from 'react-document-title';
 import * as Avatar from 'react-avatar';
-
 import { shallow } from 'enzyme';
 import { mocked } from 'ts-jest/utils';
 
-import Breadcrumb from 'components/common/Breadcrumb';
-import Flag from 'components/common/Flag';
-import ResourceList from 'components/common/ResourceList';
-import TabsComponent from 'components/common/TabsComponent';
+import Breadcrumb from 'components/Breadcrumb';
+import ResourceList from 'components/ResourceList';
+import TabsComponent from 'components/TabsComponent';
 
 import globalState from 'fixtures/globalState';
 import { getMockRouterProps } from 'fixtures/mockRouter';
@@ -20,7 +18,6 @@ import { ResourceType } from 'interfaces/Resources';
 import * as LogUtils from 'utils/logUtils';
 
 import { indexDashboardsEnabled } from 'config/config-utils';
-import { BadgeStyle } from 'config/config-types';
 import { AVATAR_SIZE } from './constants';
 import {
   mapDispatchToProps,
@@ -38,7 +35,9 @@ jest.mock('config/config-utils', () => ({
 describe('ProfilePage', () => {
   const setup = (propOverrides?: Partial<ProfilePageProps>) => {
     const routerProps = getMockRouterProps<RouteProps>(
-      { userId: 'test0' },
+      {
+        userId: 'test0',
+      },
       undefined
     );
     const props: ProfilePageProps = {
@@ -46,10 +45,18 @@ describe('ProfilePage', () => {
       resourceRelations: {
         [ResourceType.table]: {
           bookmarks: [
-            { type: ResourceType.table },
-            { type: ResourceType.table },
-            { type: ResourceType.table },
-            { type: ResourceType.table },
+            {
+              type: ResourceType.table,
+            },
+            {
+              type: ResourceType.table,
+            },
+            {
+              type: ResourceType.table,
+            },
+            {
+              type: ResourceType.table,
+            },
           ],
           read: [],
           own: [],
@@ -67,8 +74,12 @@ describe('ProfilePage', () => {
       ...routerProps,
       ...propOverrides,
     };
+    // eslint-disable-next-line react/jsx-props-no-spreading
     const wrapper = shallow<ProfilePage>(<ProfilePage {...props} />);
-    return { props, wrapper };
+    return {
+      props,
+      wrapper,
+    };
   };
 
   describe('componentDidMount', () => {

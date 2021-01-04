@@ -9,8 +9,8 @@ import { mocked } from 'ts-jest/utils';
 import { getMockRouterProps } from 'fixtures/mockRouter';
 import { tableMetadata } from 'fixtures/metadata/table';
 
-import LoadingSpinner from 'components/common/LoadingSpinner';
-import TabsComponent from 'components/common/TabsComponent';
+import LoadingSpinner from 'components/LoadingSpinner';
+import TabsComponent from 'components/TabsComponent';
 
 import { indexDashboardsEnabled } from 'config/config-utils';
 import { TableDetail, TableDetailProps, MatchProps } from '.';
@@ -45,6 +45,7 @@ const setup = (
     ...routerProps,
     ...propOverrides,
   };
+  // eslint-disable-next-line react/jsx-props-no-spreading
   const wrapper = mount<TableDetail>(<TableDetail {...props} />);
 
   return { props, wrapper };

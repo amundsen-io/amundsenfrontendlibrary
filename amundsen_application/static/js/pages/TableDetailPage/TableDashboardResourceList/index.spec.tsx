@@ -2,11 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
-
 import { shallow } from 'enzyme';
 
-import ResourceList from 'components/common/ResourceList';
-import ShimmeringResourceLoader from 'components/common/ShimmeringResourceLoader';
+import ResourceList from 'components/ResourceList';
+import ShimmeringResourceLoader from 'components/ShimmeringResourceLoader';
 
 import { dashboardSummary } from 'fixtures/metadata/dashboard';
 import globalState from 'fixtures/globalState';
@@ -27,6 +26,7 @@ const setup = (propOverrides?: Partial<TableDashboardResourceListProps>) => {
     ...propOverrides,
   };
   const wrapper = shallow<TableDashboardResourceList>(
+    // eslint-disable-next-line react/jsx-props-no-spreading
     <TableDashboardResourceList {...props} />
   );
 
