@@ -17,10 +17,10 @@ export interface AvatarLabelProps {
 
 const AvatarLabel: React.FC<AvatarLabelProps> = ({
   avatarClass,
-  labelClass,
-  label,
-  round,
-  src,
+  labelClass = 'text-secondary',
+  label = '',
+  round = true,
+  src = '',
 }: AvatarLabelProps) => (
   <div className="avatar-label-component">
     <Avatar
@@ -33,12 +33,5 @@ const AvatarLabel: React.FC<AvatarLabelProps> = ({
     <span className={`avatar-label body-2 ${labelClass}`}>{label}</span>
   </div>
 );
-
-AvatarLabel.defaultProps = {
-  labelClass: 'text-secondary',
-  label: '',
-  round: true,
-  src: '',
-};
 
 export default AvatarLabel;
