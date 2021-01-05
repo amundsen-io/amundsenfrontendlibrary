@@ -2,15 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from http import HTTPStatus
-import json
 import logging
-from random import randint
-from time import sleep
 from typing import Dict  # noqa: F401
 
 from flask import Response, jsonify, make_response, current_app as app
 from pyarrow import flight
-import requests
 
 from amundsen_application.base.base_superset_preview_client import BasePreviewClient
 from amundsen_application.models.preview_data import PreviewData, PreviewDataSchema, ColumnItem
@@ -24,8 +20,8 @@ class _DremioAuthHandler(flight.ClientAuthHandler):
         self.password = password
         super(flight.ClientAuthHandler, self).__init__()
 
-    def authenticate(self, outgoing, incoming):
-                     # ClientAuthSender flight.ClientAuthReader) -> None:
+    def authenticate(self, outgoing: flight.ClientAuthSender,
+                     incoming: flight.ClientAuthReader) -> None:
         """Authenticate with Dremio user credentials.
         """
         basic_auth = flight.BasicAuth(self.username, self.password)
@@ -37,6 +33,7 @@ class _DremioAuthHandler(flight.ClientAuthHandler):
         """
         return self.token
 
+
 class DremioPreviewClient(BasePreviewClient):
 
     SQL_STATEMENT = 'SELECT * FROM {schema}."{table}" LIMIT 50'
@@ -46,7 +43,7 @@ class DremioPreviewClient(BasePreviewClient):
         self.username = app.config['PREVIEW_CLIENT_USERNAME']
         self.password = app.config['PREVIEW_CLIENT_PASSWORD']
 
-        self.connection_args = {}
+        self.connection_args: Dict[str, bytes] = {}
         tls_root_certs_path = app.config['PREVIEW_CLIENT_CERTIFICATE']
         if tls_root_certs_path is not None:
             with open(tls_root_certs_path, "rb") as f:
@@ -72,14 +69,14 @@ class DremioPreviewClient(BasePreviewClient):
             flight_descriptor = flight.FlightDescriptor.for_command(sql)
             flight_info = client.get_flight_info(flight_descriptor)
             reader = client.do_get(flight_info.endpoints[0].ticket)
-            
+
             result = reader.read_all()
             names = result.schema.names
             types = result.schema.types
 
             columns = map(lambda x: x.to_pylist(), result.columns)
             rows = [dict(zip(names, row)) for row in zip(*columns)]
-            column_items = [ColumnItem(n,t) for n,t in zip(names, types)]
+            column_items = [ColumnItem(n, t) for n, t in zip(names, types)]
 
             preview_data = PreviewData(column_items, rows)
 
