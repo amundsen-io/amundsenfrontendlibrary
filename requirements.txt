@@ -6,7 +6,7 @@ flake8==3.8.4
 # A flake8 plugin that helps you write tidier imports.
 # License: ISCL
 # Upstream url: https://pypi.python.org/pypi/flake8-tidy-imports
-flake8-tidy-imports==1.1.0
+flake8-tidy-imports==4.2.1
 
 # A mature full-featured Python testing tool.
 # License: MIT
@@ -26,7 +26,7 @@ mock==4.0.3
 # Thin-wrapper around the mock package for easier use with py.test.
 # License: MIT
 # Upstream url: https://pypi.python.org/pypi/pytest-mock
-pytest-mock==1.1
+pytest-mock==3.4.0
 
 # Mypy is an optional static type checker for Python.
 # License: MIT
@@ -69,7 +69,7 @@ marshmallow-annotations>=2.4.0,<3.0
 responses==0.12.1
 
 # Required for announcement client
-SQLAlchemy==1.3.20
+SQLAlchemy==1.3.22
 
 # Required for Dremio preview client
 pyarrow==2.0.0
