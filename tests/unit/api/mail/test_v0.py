@@ -112,6 +112,7 @@ class MailTest(unittest.TestCase):
                 'notificationType': test_notification_type,
                 'options': test_options,
             })
+
             send_notification_mock.assert_called_with(
                 notification_type=test_notification_type,
                 options=test_options,

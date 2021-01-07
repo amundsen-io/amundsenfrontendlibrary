@@ -53,7 +53,10 @@ def feedback() -> Response:
             'form_data': data
         }
 
-        response = mail_client.send_email(html=html_content, subject=subject, optional_data=options)
+        # Get sender of the feedback.
+        sender = app.config['AUTH_USER_METHOD'](app).email
+
+        response = mail_client.send_email(html=html_content, subject=subject, optional_data=options, sender=sender)
         status_code = response.status_code
 
         if 200 <= status_code < 300:
