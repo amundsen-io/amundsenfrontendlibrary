@@ -50,6 +50,7 @@ setup(
     packages=find_packages(exclude=['tests*']),
     include_package_data=True,
     dependency_links=[],
+    setup_requires=['cython >= 0.29'],
     install_requires=requirements,
     extras_require={
         'oidc': ['flaskoidc==0.1.1']
