@@ -2,6 +2,9 @@
 
 <!--next-version-placeholder-->
 
+## v3.2.1 (2021-01-20)
+
+
 ## v3.2.0 (2021-01-19)
 ### Feature
 * Integration with Dremio ([#859](https://github.com/amundsen-io/amundsenfrontendlibrary/issues/859)) ([`e3b83d3`](https://github.com/amundsen-io/amundsenfrontendlibrary/commit/e3b83d325c8d842ab5ae0f8ab54806389d208c9c))
