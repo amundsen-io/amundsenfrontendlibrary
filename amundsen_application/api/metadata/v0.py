@@ -16,7 +16,7 @@ from amundsen_application.models.user import load_user, dump_user
 
 from amundsen_application.api.utils.metadata_utils import is_table_editable, marshall_table_partial, \
     marshall_table_full, marshall_dashboard_partial, marshall_dashboard_full, TableUri
-from amundsen_application.api.utils.request_utils import get_query_param, request_metadata
+from amundsen_application.api.utils.request_utils import get_query_param, request_metadata, request_search
 
 
 LOGGER = logging.getLogger(__name__)
@@ -377,6 +377,75 @@ def get_tags() -> Response:
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
+def _update_metadata_service(table_key: str, method: str, tag: str) -> int:
+    table_endpoint = _get_table_endpoint()
+    url = f'{table_endpoint}/{table_key}/tag/{tag}'
+    response = request_metadata(url=url, method=method)
+    status_code = response.status_code
+    if status_code != HTTPStatus.OK:
+        LOGGER.info(f"Fail to update tag in metadataservice, http status code: {status_code}")
+        LOGGER.debug(response.text)
+    return status_code
+
+
+def _update_search_service(table_key: str, method: str, tag: str) -> int:
+    searchservice_base = app.config['SEARCHSERVICE_BASE']
+    searchservice_get_table_url = f'{searchservice_base}/search_table'
+
+    # searchservice currently doesn't allow colon or / inside filters, thus can't get item based on key
+    # table key e.g: 'delta://gold.prod/workloads_sku_agg'
+    database = table_key[:table_key.find('://')]
+    schema = table_key[table_key.find('.') + 1:table_key.rfind('/')]
+    table = table_key[table_key.rfind('/') + 1:]
+    cluster = table_key[table_key.find('://') + 3:table_key.find('.')]
+
+    request_param_map = {
+        "search_request":
+            {
+                "type": "AND",
+                "filters":
+                    {
+                        "database": database,
+                        "schema": schema,
+                        "table": table,
+                        "cluster": cluster
+                    }
+            },
+        "query_term": ""
+    }
+
+    get_table_response = request_search(url=searchservice_get_table_url, method='POST', json=request_param_map)
+    get_status_code = get_table_response.status_code
+    if get_status_code != HTTPStatus.OK:
+        LOGGER.info(f"Fail to get table info from serviceservice, http status code: {get_status_code}")
+        LOGGER.debug(get_table_response.text)
+        return get_status_code
+
+    raw_data_map = json.loads(get_table_response.text)
+    # key is unique, thus (database, cluster, schema, table) should uniquely identify the table
+    table = raw_data_map['results'][0]
+
+    old_tags_list = table['tags']
+    new_tags_list = [item for item in old_tags_list if item['tag_name'] != tag]
+    if method != 'DELETE':
+        new_tags_list.append({'tag_name': tag})
+    table['tags'] = new_tags_list
+
+    # remove None values
+    pruned_table = {k: v for k, v in table.items() if v is not None}
+
+    post_param_map = {"data": pruned_table}
+    searchservice_update_url = f'{searchservice_base}/document_table'
+    update_table_response = request_search(url=searchservice_update_url, method='PUT', json=post_param_map)
+    update_status_code = update_table_response.status_code
+    if update_status_code != HTTPStatus.OK:
+        LOGGER.info(f"Fail to update table info in searchservice, http status code: {update_status_code}")
+        LOGGER.debug(update_table_response.text)
+        return update_table_response.status_code
+
+    return HTTPStatus.OK
+
+
 @metadata_blueprint.route('/update_table_tags', methods=['PUT', 'DELETE'])
 def update_table_tags() -> Response:
 
@@ -388,26 +457,26 @@ def update_table_tags() -> Response:
         args = request.get_json()
         method = request.method
 
-        table_endpoint = _get_table_endpoint()
         table_key = get_query_param(args, 'key')
 
         tag = get_query_param(args, 'tag')
 
-        url = f'{table_endpoint}/{table_key}/tag/{tag}'
-
         _log_update_table_tags(table_key=table_key, method=method, tag=tag)
 
-        response = request_metadata(url=url, method=method)
-        status_code = response.status_code
+        metadata_status_code = _update_metadata_service(table_key=table_key, method=method, tag=tag)
+        search_status_code = _update_search_service(table_key=table_key, method=method, tag=tag)
 
-        if status_code == HTTPStatus.OK:
+        http_status_code = HTTPStatus.OK
+        if metadata_status_code == HTTPStatus.OK and search_status_code == HTTPStatus.OK:
             message = 'Success'
         else:
             message = f'Encountered error: {method} table tag failed'
             logging.error(message)
+            http_status_code = HTTPStatus.INTERNAL_SERVER_ERROR
 
         payload = jsonify({'msg': message})
-        return make_response(payload, status_code)
+        return make_response(payload, http_status_code)
+
     except Exception as e:
         message = 'Encountered exception: ' + str(e)
         logging.exception(message)
