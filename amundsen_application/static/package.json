@@ -154,7 +154,7 @@
     "react-redux": "^5.1.0",
     "react-router-dom": "^4.3.1",
     "react-sanitized-html": "^2.0.0",
-    "react-select": "^2.4.4",
+    "react-select": "^4.0.2",
     "redux": "^4.0.0",
     "redux-promise": "^0.5.3",
     "sanitize-html": "^1.27.5",
