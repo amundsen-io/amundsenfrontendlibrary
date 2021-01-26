@@ -3,9 +3,7 @@
 
 import logging
 import json
-import urllib.parse
 
-from dataclasses import dataclass
 from http import HTTPStatus
 from typing import Any, Dict, Optional
 
