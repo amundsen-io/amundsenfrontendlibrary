@@ -3,6 +3,9 @@
 
 import logging
 import json
+import urllib.parse
+
+from dataclasses import dataclass
 from http import HTTPStatus
 from typing import Any, Dict, Optional
 
@@ -377,52 +380,60 @@ def get_tags() -> Response:
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
 
 
-def _update_metadata_service(table_key: str, method: str, tag: str) -> int:
+def _update_metadata_tag(table_key: str, method: str, tag: str) -> int:
     table_endpoint = _get_table_endpoint()
     url = f'{table_endpoint}/{table_key}/tag/{tag}'
     response = request_metadata(url=url, method=method)
     status_code = response.status_code
     if status_code != HTTPStatus.OK:
-        LOGGER.info(f"Fail to update tag in metadataservice, http status code: {status_code}")
+        LOGGER.info(f'Fail to update tag in metadataservice, http status code: {status_code}')
         LOGGER.debug(response.text)
     return status_code
 
 
-def _update_search_service(table_key: str, method: str, tag: str) -> int:
+def _update_search_tag(table_key: str, method: str, tag: str) -> int:
+    """
+    call the search service endpoint to get whole table information uniquely identified by table_key
+    update tags list, call search service endpoint again to write back the updated field
+    TODO: we should update dashboard tag in the future
+    :param table_key: table key e.g. 'delta://gold.prod/workloads_sku_agg'
+    :param method: PUT or DELETE
+    :param tag: tag name to be put/delete
+    :return: HTTP status code
+    """
     searchservice_base = app.config['SEARCHSERVICE_BASE']
     searchservice_get_table_url = f'{searchservice_base}/search_table'
 
     # searchservice currently doesn't allow colon or / inside filters, thus can't get item based on key
     # table key e.g: 'delta://gold.prod/workloads_sku_agg'
-    database = table_key[:table_key.find('://')]
-    schema = table_key[table_key.find('.') + 1:table_key.rfind('/')]
-    table = table_key[table_key.rfind('/') + 1:]
-    cluster = table_key[table_key.find('://') + 3:table_key.find('.')]
+    table_uri = TableUri.from_uri(table_key)
 
     request_param_map = {
-        "search_request":
+        'search_request':
             {
-                "type": "AND",
-                "filters":
+                'type': 'AND',
+                'filters':
                     {
-                        "database": database,
-                        "schema": schema,
-                        "table": table,
-                        "cluster": cluster
+                        'database': [table_uri.database],
+                        'schema': [table_uri.schema],
+                        'table': [table_uri.table],
+                        'cluster': [table_uri.cluster]
                     }
             },
-        "query_term": ""
+        'query_term': ''
     }
 
     get_table_response = request_search(url=searchservice_get_table_url, method='POST', json=request_param_map)
     get_status_code = get_table_response.status_code
     if get_status_code != HTTPStatus.OK:
-        LOGGER.info(f"Fail to get table info from serviceservice, http status code: {get_status_code}")
+        LOGGER.info(f'Fail to get table info from serviceservice, http status code: {get_status_code}')
         LOGGER.debug(get_table_response.text)
         return get_status_code
 
     raw_data_map = json.loads(get_table_response.text)
     # key is unique, thus (database, cluster, schema, table) should uniquely identify the table
+    if len(raw_data_map['results']) > 1:
+        LOGGER.error(f'Error! Duplicate table key: {table_key}')
     table = raw_data_map['results'][0]
 
     old_tags_list = table['tags']
@@ -439,7 +450,7 @@ def _update_search_service(table_key: str, method: str, tag: str) -> int:
     update_table_response = request_search(url=searchservice_update_url, method='PUT', json=post_param_map)
     update_status_code = update_table_response.status_code
     if update_status_code != HTTPStatus.OK:
-        LOGGER.info(f"Fail to update table info in searchservice, http status code: {update_status_code}")
+        LOGGER.info(f'Fail to update table info in searchservice, http status code: {update_status_code}')
         LOGGER.debug(update_table_response.text)
         return update_table_response.status_code
 
@@ -463,8 +474,8 @@ def update_table_tags() -> Response:
 
         _log_update_table_tags(table_key=table_key, method=method, tag=tag)
 
-        metadata_status_code = _update_metadata_service(table_key=table_key, method=method, tag=tag)
-        search_status_code = _update_search_service(table_key=table_key, method=method, tag=tag)
+        metadata_status_code = _update_metadata_tag(table_key=table_key, method=method, tag=tag)
+        search_status_code = _update_search_tag(table_key=table_key, method=method, tag=tag)
 
         http_status_code = HTTPStatus.OK
         if metadata_status_code == HTTPStatus.OK and search_status_code == HTTPStatus.OK:
