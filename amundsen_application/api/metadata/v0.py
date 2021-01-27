@@ -394,7 +394,7 @@ def _update_search_tag(table_key: str, method: str, tag: str) -> int:
     call the search service endpoint to get whole table information uniquely identified by table_key
     update tags list, call search service endpoint again to write back the updated field
     TODO: we should update dashboard tag in the future
-    :param table_key: table key e.g. 'delta://gold.prod/workloads_sku_agg'
+    :param table_key: table key e.g. 'database://cluster.schema/table'
     :param method: PUT or DELETE
     :param tag: tag name to be put/delete
     :return: HTTP status code
@@ -403,7 +403,7 @@ def _update_search_tag(table_key: str, method: str, tag: str) -> int:
     searchservice_get_table_url = f'{searchservice_base}/search_table'
 
     # searchservice currently doesn't allow colon or / inside filters, thus can't get item based on key
-    # table key e.g: 'delta://gold.prod/workloads_sku_agg'
+    # table key e.g: 'database://cluster.schema/table'
     table_uri = TableUri.from_uri(table_key)
 
     request_param_map = {
