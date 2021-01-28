@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - ".github/workflows/*"
     paths:
       # triggered when version is bumped
       - "setup.py"
