@@ -18,16 +18,17 @@ jobs:
         with:
           python-version: 3.6
       - name: Get version
+        id: vers
         run: |
           pip install python-semantic-release
-          echo "sem-version=$(semantic-release print-version --current)" >> $GITHUB_ENV
+          echo ::set-output name=version::$(semantic-release print-version --current)
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ env.sem-version }}
+          tag_name: ${{ steps.vers.outputs.version }}
           release_name: New features & Bug Fixes
       - name: Add wheel dependency
         run: pip install wheel
