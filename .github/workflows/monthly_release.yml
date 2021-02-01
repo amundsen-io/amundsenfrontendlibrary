@@ -30,7 +30,7 @@ jobs:
           git config user.email github-actions@github.com
           semantic-release version
           echo ::set-output name=version::$(semantic-release print-version --current)
-          echo semantic-release changelog > './CHANGELOG.md'
+          semantic-release changelog > './CHANGELOG.md'
       - name: Create release pull request
         uses: peter-evans/create-pull-request@v3
         with:
