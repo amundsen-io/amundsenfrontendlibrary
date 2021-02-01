@@ -31,7 +31,6 @@ jobs:
           semantic-release version
           echo ::set-output name=version::$(semantic-release print-version --current)
           echo semantic-release changelog > './CHANGELOG.md'
-          echo ::set-output name=difflog::"$(semantic-release changelog)"
       - name: Create release pull request
         uses: peter-evans/create-pull-request@v3
         with:
