@@ -41,7 +41,6 @@ jobs:
           title: Bumped version for release ${{ steps.semantic-release.outputs.version }}
           body: |
             Bumped version to ${{ steps.semantic-release.outputs.version }}
-            ${{ steps.semantic-release.outputs.difflog }}
           team-reviewers: amundsen-io/amundsen-committers
           branch: ${{ env.BRANCH_NAME }}
           delete-branch: true
