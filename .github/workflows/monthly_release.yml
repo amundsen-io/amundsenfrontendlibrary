@@ -35,13 +35,13 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "chore: "Bumped version to ${{ steps.semantic-release.outputs.version }}
+          commit-message: Bumped version to ${{ steps.semantic-release.outputs.version }}
           committer: github-actions <github-actions@github.com>
           author: github-actions <github-actions@github.com>
           signoff: true
           branch: ${{ env.BRANCH_NAME }}
           delete-branch: true
-          title: Bumped version for release ${{ steps.semantic-release.outputs.version }}
+          title: "chore: "Bumped version for release ${{ steps.semantic-release.outputs.version }}
           body: |
             Bumped version to ${{ steps.semantic-release.outputs.version }}
           team-reviewers: amundsen-io/amundsen-committers
