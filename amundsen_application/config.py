@@ -67,7 +67,6 @@ class Config:
     # Settings for Preview Client integration
     PREVIEW_CLIENT_ENABLED = os.getenv('PREVIEW_CLIENT_ENABLED') == 'true'  # type: bool
     # Maps to a class path and name
-    # type: Optional[str]
     PREVIEW_CLIENT = os.getenv('PREVIEW_CLIENT', None)  # type: Optional[str]
     PREVIEW_CLIENT_URL = os.getenv('PREVIEW_CLIENT_URL')  # type: Optional[str]
     PREVIEW_CLIENT_USERNAME = os.getenv('PREVIEW_CLIENT_USERNAME')  # type: Optional[str]
