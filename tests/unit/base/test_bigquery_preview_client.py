@@ -6,19 +6,13 @@ import json
 import unittest
 
 from http import HTTPStatus
-from requests import Response
-from typing import Dict
-from unittest.mock import Mock
 from amundsen_application.models.preview_data import (
-    ColumnItem,
     PreviewData,
-    PreviewDataSchema,
 )
 
 from amundsen_application.base.base_bigquery_preview_client import BaseBigqueryPreviewClient
 from google.cloud.bigquery import SchemaField, Row
 from flatten_dict import flatten
-from pprint import pprint
 
 app = flask.Flask(__name__)
 app.config.from_object('amundsen_application.config.LocalConfig')

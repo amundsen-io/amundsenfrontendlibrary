@@ -1,16 +1,10 @@
-from http import HTTPStatus
-from typing import Dict, List
 from amundsen_application.base.base_bigquery_preview_client import BaseBigqueryPreviewClient
 from amundsen_application.models.preview_data import (
-    ColumnItem,
     PreviewData,
-    PreviewDataSchema,
 )
-from flask import Response, make_response, jsonify
 from flask import current_app as app
 from google.cloud import bigquery
 from flatten_dict import flatten
-from flask import current_app as app
 
 
 class BigqueryPreviewClient(BaseBigqueryPreviewClient):
