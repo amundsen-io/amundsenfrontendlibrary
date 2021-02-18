@@ -67,11 +67,14 @@ class Config:
     # Settings for Preview Client integration
     PREVIEW_CLIENT_ENABLED = os.getenv('PREVIEW_CLIENT_ENABLED') == 'true'  # type: bool
     # Maps to a class path and name
+    # type: Optional[str]
     PREVIEW_CLIENT = os.getenv('PREVIEW_CLIENT', None)  # type: Optional[str]
     PREVIEW_CLIENT_URL = os.getenv('PREVIEW_CLIENT_URL')  # type: Optional[str]
     PREVIEW_CLIENT_USERNAME = os.getenv('PREVIEW_CLIENT_USERNAME')  # type: Optional[str]
     PREVIEW_CLIENT_PASSWORD = os.getenv('PREVIEW_CLIENT_PASSWORD')  # type: Optional[str]
     PREVIEW_CLIENT_CERTIFICATE = os.getenv('PREVIEW_CLIENT_CERTIFICATE')  # type: Optional[str]
+    PREVIEW_PROJECTS = []  # type : List[Optional[str]]
+    PREVIEW_LIMIT = os.getenv('PREVIEW_LIMIT', None)  # type: Optional[int] number of rows to show in preview
 
     # Settings for Announcement Client integration
     ANNOUNCEMENT_CLIENT_ENABLED = os.getenv('ANNOUNCEMENT_CLIENT_ENABLED') == 'true'  # type: bool
