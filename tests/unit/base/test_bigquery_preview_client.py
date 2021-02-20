@@ -68,9 +68,13 @@ expected_results = {'columns': [{'column_name': 'test_row', 'column_type': 'STRI
                     'error_text': ''}
 
 
+class BigQueryMockClient():
+    pass
+
+
 class MockClient(BaseBigqueryPreviewClient):
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(bq_client=BigQueryMockClient)
 
     def _bq_list_rows(
         self, gcp_project_id: str, table_project_name: str, table_name: str
@@ -92,8 +96,7 @@ class MockClient(BaseBigqueryPreviewClient):
 
 class MockClientNonPreviewableDataset(BaseBigqueryPreviewClient):
     def __init__(self) -> None:
-        super().__init__()
-        self.previewable_projects = ['test-project-y']
+        super().__init__(bq_client=BigQueryMockClient, previewable_projects=['test-project-y'])
 
     def _bq_list_rows(
         self, gcp_project_id: str, table_project_name: str, table_name: str

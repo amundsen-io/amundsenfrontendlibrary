@@ -1,8 +1,10 @@
+# Copyright Contributors to the Amundsen project.
+# SPDX-License-Identifier: Apache-2.0
+
 from amundsen_application.base.base_bigquery_preview_client import BaseBigqueryPreviewClient
 from amundsen_application.models.preview_data import (
     PreviewData,
 )
-from flask import current_app as app
 from google.cloud import bigquery
 from flatten_dict import flatten
 
@@ -17,11 +19,7 @@ class BigqueryPreviewClient(BaseBigqueryPreviewClient):
     def __init__(self) -> None:
         # Requires access to a service account eg.
         # GOOGLE_APPLICATION_CREDENTIALS=path/serviceaccount.json or a mounted service kubernetes service account.
-        self.bq_client = bigquery.Client()
-        # List of projects that can safely be previewed or None to allow all datasets.
-        self.previewable_projects = app.config["PREVIEW_PROJECTS"]
-        limit = app.config["PREVIEW_LIMIT"]
-        self.preview_limit = limit if limit else 5
+        super().__init__(bq_client=bigquery.Client("your project here"))
 
     def _bq_list_rows(
         self, gcp_project_id: str, table_project_name: str, table_name: str

@@ -1,3 +1,6 @@
+# Copyright Contributors to the Amundsen project.
+# SPDX-License-Identifier: Apache-2.0
+
 from http import HTTPStatus
 from typing import Dict, List
 from amundsen_application.base.base_preview_client import BasePreviewClient
@@ -7,7 +10,7 @@ from amundsen_application.models.preview_data import (
     PreviewDataSchema,
 )
 from flask import Response, make_response, jsonify
-from flask import current_app as app
+from google.cloud import bigquery
 
 
 class BaseBigqueryPreviewClient(BasePreviewClient):
@@ -17,8 +20,12 @@ class BaseBigqueryPreviewClient(BasePreviewClient):
     match amundsen_application.models.preview_data.PreviewDataSchema
     """
 
-    def __init__(self) -> None:
-        self.previewable_projects = app.config["PREVIEW_PROJECTS"]
+    def __init__(self, bq_client: bigquery.Client, preview_limit: int = 5, previewable_projects: List = None) -> None:
+        # Client passed from custom implementation. See example implementation.
+        self.bq_client = bq_client
+        self.preview_limit = preview_limit
+        # List of projects that are approved for whitelisting. None(Default) approves all google projects.
+        self.previewable_projects = previewable_projects
 
     def _bq_list_rows(
         self, gcp_project_id: str, table_project_name: str, table_name: str
@@ -28,7 +35,7 @@ class BaseBigqueryPreviewClient(BasePreviewClient):
         """
         pass  # pragma: no cover
 
-    def _column_item_from_bq_schema(self, schemafield, key=None) -> List:
+    def _column_item_from_bq_schema(self, schemafield: bigquery.SchemaField, key: str = None) -> List:
         """
         Recursively build ColumnItems from the bigquery schema
         """
