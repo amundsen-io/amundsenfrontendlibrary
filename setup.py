@@ -55,6 +55,7 @@ setup(
     extras_require={
         'oidc': ['flaskoidc==0.1.1'],
         'pyarrow': ['pyarrow==3.0.0'],
+        'bigquery_preview': ['google-cloud-bigquery>=2.8.0,<3.0.0', 'flatten-dict==0.3.0'],
     },
     python_requires=">=3.6",
     entry_points="""
