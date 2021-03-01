@@ -68,6 +68,7 @@ import ListSortingDropdown from './ListSortingDropdown';
 import * as Constants from './constants';
 
 import './styles.scss';
+import { hasColumnUsageStat } from 'features/ColumnList/utils';
 
 const SERVER_ERROR_CODE = 500;
 const DASHBOARDS_PER_PAGE = 10;
@@ -75,6 +76,7 @@ const TABLE_SOURCE = 'table_page';
 const SORT_CRITERIAS = {
   ...getTableSortCriterias(),
 };
+const DEFAULT_SORT_OPTION = SORT_CRITERIAS.sort_order;
 const COLUMN_TAB_KEY = 'columns';
 
 export interface PropsFromState {
@@ -129,7 +131,7 @@ export class TableDetail extends React.Component<
   private didComponentMount: boolean = false;
 
   state = {
-    sortedBy: SORT_CRITERIAS.sort_order,
+    sortedBy: DEFAULT_SORT_OPTION,
     currentTab: COLUMN_TAB_KEY,
   };
 
@@ -210,6 +212,18 @@ export class TableDetail extends React.Component<
         sortedBy: sorting,
       });
     }
+  };
+
+  getSortingOptions = () => {
+    if (
+      SORT_CRITERIAS.usage &&
+      !hasColumnUsageStat(this.props.tableData.columns)
+    ) {
+      const options = { ...SORT_CRITERIAS };
+      delete options.usage;
+      return options;
+    }
+    return SORT_CRITERIAS;
   };
 
   renderTabs(editText, editUrl) {
@@ -427,7 +441,7 @@ export class TableDetail extends React.Component<
             <main className="right-panel">
               {currentTab === COLUMN_TAB_KEY && (
                 <ListSortingDropdown
-                  options={SORT_CRITERIAS}
+                  options={this.getSortingOptions()}
                   onChange={this.handleSortingChange}
                 />
               )}

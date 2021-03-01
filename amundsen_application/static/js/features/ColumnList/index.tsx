@@ -29,6 +29,7 @@ import {
 } from 'interfaces';
 
 import BadgeList from 'features/BadgeList';
+import { hasColumnUsageStat } from './utils';
 import ColumnType from './ColumnType';
 import ColumnDescEditableText from './ColumnDescEditableText';
 import ColumnStats from './ColumnStats';
@@ -86,7 +87,7 @@ type ExpandedRowProps = {
 };
 
 // TODO: Move this into the configuration once we have more info about the rest of stats
-const USAGE_STAT_TYPE = 'column_usage';
+export const USAGE_STAT_TYPE = 'column_usage';
 const SHOW_STATS_THRESHOLD = 1;
 const DEFAULT_SORTING: SortCriteria = {
   name: 'Table Default',
@@ -218,9 +219,8 @@ const ColumnList: React.FC<ColumnListProps> = ({
       index,
     };
   });
-  const statsCount = formattedData.filter((item) => !!item.stats).length;
   const hasUsageStat =
-    getTableSortCriterias().usage && statsCount >= SHOW_STATS_THRESHOLD;
+    getTableSortCriterias().usage && hasColumnUsageStat(columns);
   let formattedAndOrderedData = formattedData.sort(
     getSortingFunction(formattedData, sortBy)
   );

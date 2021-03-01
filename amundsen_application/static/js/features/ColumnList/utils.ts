@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { formatDate } from 'utils/dateUtils';
+import { TableColumn } from 'interfaces/TableMetadata';
+import { USAGE_STAT_TYPE } from './index';
 
 export const getStatsInfoText = (startEpoch?: number, endEpoch?: number) => {
   const startDate = startEpoch
@@ -22,4 +24,18 @@ export const getStatsInfoText = (startEpoch?: number, endEpoch?: number) => {
   }
 
   return infoText;
+};
+
+export const hasColumnUsageStat = (columns: TableColumn[]) => {
+  let hasUsage = false;
+  columns.some((column) =>
+    column.stats.some((stat) => {
+      if (stat.stat_type === USAGE_STAT_TYPE) {
+        hasUsage = true;
+        return true;
+      }
+      return false;
+    })
+  );
+  return hasUsage;
 };
