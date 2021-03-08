@@ -135,7 +135,7 @@
     "analytics": "^0.7.3",
     "autosize": "^4.0.2",
     "axios": "0.21.1",
-    "core-js": "^3.6.5",
+    "core-js": "^3.9.1",
     "form-serialize": "^0.7.2",
     "fsevents": "*",
     "jquery": "^3.5.0",
