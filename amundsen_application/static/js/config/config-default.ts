@@ -212,6 +212,10 @@ const configDefault: AppConfig = {
     ) =>
       `https://DEFAULT_LINEAGE_URL?schema=${schema}&cluster=${cluster}&db=${database}&table=${table}`,
   },
+  inAppLineage: {
+    isTableListEnabled: false,
+    isColumnListEnabled: false,
+  },
   tableProfile: {
     isBeta: false,
     isExploreEnabled: false,

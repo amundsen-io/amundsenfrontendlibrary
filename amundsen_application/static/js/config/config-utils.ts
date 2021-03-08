@@ -316,3 +316,17 @@ export function getDocumentTitle(): string {
 export function getLogoTitle(): string {
   return AppConfig.logoTitle;
 }
+
+/**
+ * Returns whether the in-app table lineage list is enabled.
+ */
+export function isTableListLineageEnabled() {
+  return AppConfig.inAppLineage.isTableListEnabled;
+}
+
+/**
+ * Returns whether the in-app column list lineage is enabled.
+ */
+export function isColumnListLineageEnabled() {
+  return AppConfig.inAppLineage.isColumnListEnabled;
+}
