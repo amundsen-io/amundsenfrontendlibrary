@@ -184,7 +184,7 @@ export function* getTableLineageWorker(
   action: GetTableLineageRequest
 ): SagaIterator {
   try {
-    const response = yield call(API.getTableLineage, action.payload);
+    const response = yield call(API.getTableLineage, action.payload.key);
     const { data, status } = response;
     yield put(getTableLineageSuccess(data, status));
   } catch (error) {

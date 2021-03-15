@@ -188,11 +188,12 @@ export function getPreviewData(queryParams: PreviewQueryParams) {
     });
 }
 
-export function getTableLineage(queryParams: TableLineageParams) {
+export function getTableLineage(key: string) {
+  const queryString = getTableQueryParams(key);
   return axios({
-    url: '/api/...',
+    url: `${API_PATH}/get_table_lineage?${queryString}`,
     method: 'GET',
-    data: queryParams,
+    // data: queryParams,
   })
     .then((response: AxiosResponse<LineageAPI>) => ({
       data: response.data.lineage,
@@ -208,24 +209,24 @@ export function getTableLineage(queryParams: TableLineageParams) {
       return Promise.reject({ data, status });
     });
 }
-
-export function getColumnLineage(queryParams: ColumnLineageParams) {
-  return axios({
-    url: '/api/...',
-    method: 'GET',
-    data: queryParams,
-  })
-    .then((response: AxiosResponse<LineageAPI>) => ({
-      data: response.data.lineage,
-      status: response.status,
-    }))
-    .catch((e: AxiosError<LineageAPI>) => {
-      const { response } = e;
-      let data = {};
-      if (response && response.data && response.data.lineage) {
-        data = response.data.lineage;
-      }
-      const status = response ? response.status : null;
-      return Promise.reject({ data, status });
-    });
-}
+//
+// export function getColumnLineage(queryParams: ColumnLineageParams) {
+//   return axios({
+//     url: '/api/...',
+//     method: 'GET',
+//     data: queryParams,
+//   })
+//     .then((response: AxiosResponse<LineageAPI>) => ({
+//       data: response.data.lineage,
+//       status: response.status,
+//     }))
+//     .catch((e: AxiosError<LineageAPI>) => {
+//       const { response } = e;
+//       let data = {};
+//       if (response && response.data && response.data.lineage) {
+//         data = response.data.lineage;
+//       }
+//       const status = response ? response.status : null;
+//       return Promise.reject({ data, status });
+//     });
+// }

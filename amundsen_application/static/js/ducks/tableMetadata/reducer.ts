@@ -31,6 +31,7 @@ import {
   UpdateTableOwner,
   GetTableLineageResponse,
   GetTableLineage,
+  GetTableLineageRequest,
 } from './types';
 
 import tableOwnersReducer, {
@@ -52,10 +53,6 @@ export const initialTableDataState: TableMetadata = {
   is_view: false,
   key: '',
   last_updated_timestamp: 0,
-  lineage: {
-    upstream_entities: [],
-    downstream_entities: [],
-  },
   schema: '',
   name: '',
   description: '',
@@ -271,6 +268,13 @@ export function getPreviewDataSuccess(
       data,
       status,
     },
+  };
+}
+
+export function getTableLineage(key: string): GetTableLineageRequest {
+  return {
+    type: GetTableLineage.REQUEST,
+    payload: { key },
   };
 }
 

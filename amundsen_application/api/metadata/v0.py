@@ -789,3 +789,49 @@ def _get_related_dashboards_metadata(*, url: str) -> Dict[str, Any]:
         # explicitly raise the exception which will trigger 500 api response
         results_dict['status_code'] = getattr(e, 'code', HTTPStatus.INTERNAL_SERVER_ERROR)
         return results_dict
+
+"""
+    key: str  # down/upstream entity ex: database://cluster.schema/table_name
+    level: int  # ex: 1 level upstream/downstream
+    source: str  # ex: hive
+    badges: Optional[List[str]]  # ex: [“coco”, “beta”]
+    usage: int
+"""
+
+
+@metadata_blueprint.route('/get_table_lineage', methods=['GET'])
+def get_table_lineage() -> Response:
+    try:
+        table_endpoint = _get_table_endpoint()
+        table_key = get_query_param(request.args, 'key')
+        payload = jsonify({
+            'lineage': {
+                'downstream_entities': [
+                    {
+                        'key': 'database://cluster.schema/table_name',
+                        'source': 'hive',
+                        'badges': ['test'],
+                        'usage': 1234
+                    },
+                    {
+                        'key': 'database://cluster.schema/table_name',
+                        'source': 'hive',
+                        'badges': ['test'],
+                        'usage': 1234
+                    },
+                ],
+                'upstream_entities': [
+                    {
+                        'key': 'database://cluster.schema/table_name',
+                        'source': 'hive',
+                        'badges': ['test'],
+                        'usage': 1234
+                    },
+                ],
+            },
+            'msg': 'success',
+        })
+        return make_response(payload, 200)
+    except Exception as e:
+        payload = jsonify({'description': None, 'msg': 'Encountered exception: ' + str(e)})
+        return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)

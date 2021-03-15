@@ -9,10 +9,13 @@ import { bindActionCreators } from 'redux';
 import { RouteComponentProps } from 'react-router';
 
 import { GlobalState } from 'ducks/rootReducer';
-import { getTableData } from 'ducks/tableMetadata/reducer';
+import { getTableData, getTableLineage } from 'ducks/tableMetadata/reducer';
 import { openRequestDescriptionDialog } from 'ducks/notification/reducer';
 import { updateSearchState } from 'ducks/search/reducer';
-import { GetTableDataRequest } from 'ducks/tableMetadata/types';
+import {
+  GetTableDataRequest,
+  GetTableLineageRequest,
+} from 'ducks/tableMetadata/types';
 import { OpenRequestAction } from 'ducks/notification/types';
 import { UpdateSearchStateRequest } from 'ducks/search/types';
 import { logClick } from 'ducks/utilMethods';
@@ -25,6 +28,7 @@ import {
   getTableSortCriterias,
   indexDashboardsEnabled,
   issueTrackingEnabled,
+  isTableListLineageEnabled,
   notificationsEnabled,
 } from 'config/config-utils';
 
@@ -49,6 +53,7 @@ import {
   TableMetadata,
   RequestMetadataType,
   SortCriteria,
+  Lineage,
 } from 'interfaces';
 
 import DataPreviewButton from './DataPreviewButton';
@@ -71,6 +76,7 @@ import ListSortingDropdown from './ListSortingDropdown';
 import * as Constants from './constants';
 
 import './styles.scss';
+import LineageList from './LineageList';
 
 const SERVER_ERROR_CODE = 500;
 const DASHBOARDS_PER_PAGE = 10;
@@ -86,6 +92,7 @@ export interface PropsFromState {
   numRelatedDashboards: number;
   statusCode: number | null;
   tableData: TableMetadata;
+  tableLineage: Lineage;
 }
 export interface DispatchFromProps {
   getTableData: (
@@ -93,6 +100,7 @@ export interface DispatchFromProps {
     searchIndex?: string,
     source?: string
   ) => GetTableDataRequest;
+  getTableLineage: (key: string) => GetTableLineageRequest;
   openRequestDescriptionDialog: (
     requestMetadataType: RequestMetadataType,
     columnName: string
@@ -137,11 +145,15 @@ export class TableDetail extends React.Component<
   };
 
   componentDidMount() {
-    const { location, getTableData } = this.props;
+    const { location, getTableData, getTableLineage } = this.props;
     const { index, source } = getLoggingParams(location.search);
 
     this.key = this.getTableKey();
     getTableData(this.key, index, source);
+
+    if (isTableListLineageEnabled()) {
+      getTableLineage(this.key);
+    }
     this.didComponentMount = true;
   }
 
@@ -223,6 +235,7 @@ export class TableDetail extends React.Component<
       numRelatedDashboards,
       tableData,
       openRequestDescriptionDialog,
+      tableLineage,
     } = this.props;
     const { sortedBy } = this.state;
 
@@ -260,6 +273,20 @@ export class TableDetail extends React.Component<
         title: isLoadingDashboards
           ? loadingTitle
           : `Dashboards (${numRelatedDashboards})`,
+      });
+    }
+
+    if (isTableListLineageEnabled()) {
+      tabInfo.push({
+        content: <LineageList items={tableLineage.downstream_entities} />,
+        key: 'downstream',
+        title: 'Downstream',
+      });
+
+      tabInfo.push({
+        content: <LineageList items={tableLineage.upstream_entities} />,
+        key: 'upstream',
+        title: 'Upstream',
       });
     }
 
@@ -466,6 +493,7 @@ export const mapStateToProps = (state: GlobalState) => ({
   isLoading: state.tableMetadata.isLoading,
   statusCode: state.tableMetadata.statusCode,
   tableData: state.tableMetadata.tableData,
+  tableLineage: state.tableMetadata.tableLineage.lineage,
   numRelatedDashboards: state.tableMetadata.dashboards
     ? state.tableMetadata.dashboards.dashboards.length
     : 0,
@@ -478,6 +506,7 @@ export const mapDispatchToProps = (dispatch: any) =>
   bindActionCreators(
     {
       getTableData,
+      getTableLineage,
       openRequestDescriptionDialog,
       searchSchema: (schemaText: string) =>
         updateSearchState({

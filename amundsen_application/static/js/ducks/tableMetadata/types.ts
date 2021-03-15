@@ -165,7 +165,6 @@ export interface GetTableLineageRequest {
   type: GetTableLineage.REQUEST;
   payload: {
     key: string;
-    direction: string;
   };
 }
 export interface GetTableLineageResponse {
@@ -186,7 +185,6 @@ export interface GetColumnLineageRequest {
   payload: {
     key: string;
     column: string;
-    direction: string;
   };
 }
 export interface GetColumnLineageResponse {
