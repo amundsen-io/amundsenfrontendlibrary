@@ -13,6 +13,8 @@ import {
   getColumnDescriptionSuccess,
   getPreviewDataFailure,
   getPreviewDataSuccess,
+  getTableLineageSuccess,
+  getTableLineageFailure,
 } from './reducer';
 
 import {
@@ -28,6 +30,8 @@ import {
   UpdateColumnDescriptionRequest,
   UpdateTableDescription,
   UpdateTableDescriptionRequest,
+  GetTableLineageRequest,
+  GetTableLineage,
 } from './types';
 
 export function* getTableDataWorker(action: GetTableDataRequest): SagaIterator {
@@ -174,4 +178,20 @@ export function* getPreviewDataWorker(
 }
 export function* getPreviewDataWatcher(): SagaIterator {
   yield takeLatest(GetPreviewData.REQUEST, getPreviewDataWorker);
+}
+
+export function* getTableLineageWorker(
+  action: GetTableLineageRequest
+): SagaIterator {
+  try {
+    const response = yield call(API.getTableLineage, action.payload);
+    const { data, status } = response;
+    yield put(getTableLineageSuccess(data, status));
+  } catch (error) {
+    const { data, status } = error;
+    yield put(getTableLineageFailure(data, status));
+  }
+}
+export function* getTableLineageWatcher(): SagaIterator {
+  yield takeEvery(GetTableLineage.REQUEST, getTableLineageWorker);
 }

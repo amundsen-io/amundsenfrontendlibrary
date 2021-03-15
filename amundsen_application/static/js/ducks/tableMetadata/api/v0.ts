@@ -8,6 +8,9 @@ import {
   UpdateOwnerPayload,
   User,
   Tag,
+  Lineage,
+  TableLineageParams,
+  ColumnLineageParams,
 } from 'interfaces';
 
 /** HELPERS **/
@@ -36,6 +39,7 @@ export type TableDataAPI = { tableData: TableData } & MessageAPI;
 export type RelatedDashboardDataAPI = {
   dashboards: DashboardResource[];
 } & MessageAPI;
+export type LineageAPI = { lineage: Lineage } & MessageAPI;
 
 export function getTableData(
   tableKey: string,
@@ -178,6 +182,48 @@ export function getPreviewData(queryParams: PreviewQueryParams) {
       let data = {};
       if (response && response.data && response.data.previewData) {
         data = response.data.previewData;
+      }
+      const status = response ? response.status : null;
+      return Promise.reject({ data, status });
+    });
+}
+
+export function getTableLineage(queryParams: TableLineageParams) {
+  return axios({
+    url: '/api/...',
+    method: 'GET',
+    data: queryParams,
+  })
+    .then((response: AxiosResponse<LineageAPI>) => ({
+      data: response.data.lineage,
+      status: response.status,
+    }))
+    .catch((e: AxiosError<LineageAPI>) => {
+      const { response } = e;
+      let data = {};
+      if (response && response.data && response.data.lineage) {
+        data = response.data.lineage;
+      }
+      const status = response ? response.status : null;
+      return Promise.reject({ data, status });
+    });
+}
+
+export function getColumnLineage(queryParams: ColumnLineageParams) {
+  return axios({
+    url: '/api/...',
+    method: 'GET',
+    data: queryParams,
+  })
+    .then((response: AxiosResponse<LineageAPI>) => ({
+      data: response.data.lineage,
+      status: response.status,
+    }))
+    .catch((e: AxiosError<LineageAPI>) => {
+      const { response } = e;
+      let data = {};
+      if (response && response.data && response.data.lineage) {
+        data = response.data.lineage;
       }
       const status = response ? response.status : null;
       return Promise.reject({ data, status });

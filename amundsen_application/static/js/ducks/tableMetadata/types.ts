@@ -6,6 +6,7 @@ import {
   TableMetadata,
   UpdateOwnerPayload,
   Tag,
+  Lineage,
 } from 'interfaces';
 
 export enum GetTableData {
@@ -152,5 +153,45 @@ export interface UpdateTableOwnerResponse {
   type: UpdateTableOwner.SUCCESS | UpdateTableOwner.FAILURE;
   payload: {
     owners: OwnerDict;
+  };
+}
+
+export enum GetTableLineage {
+  REQUEST = 'amundsen/tableMetadata/GET_TABLE_LINEAGE_REQUEST',
+  SUCCESS = 'amundsen/tableMetadata/GET_TABLE_LINEAGE_SUCCESS',
+  FAILURE = 'amundsen/tableMetadata/GET_TABLE_LINEAGE_FAILURE',
+}
+export interface GetTableLineageRequest {
+  type: GetTableLineage.REQUEST;
+  payload: {
+    key: string;
+    direction: string;
+  };
+}
+export interface GetTableLineageResponse {
+  type: GetTableLineage.SUCCESS | GetTableLineage.FAILURE;
+  payload: {
+    lineage: Lineage;
+    status: number;
+  };
+}
+
+export enum GetColumnLineage {
+  REQUEST = 'amundsen/tableMetadata/GET_COLUMN_LINEAGE_REQUEST',
+  SUCCESS = 'amundsen/tableMetadata/GET_COLUMN_LINEAGE_SUCCESS',
+  FAILURE = 'amundsen/tableMetadata/GET_COLUMN_LINEAGE_FAILURE',
+}
+export interface GetColumnLineageRequest {
+  type: GetColumnLineage.REQUEST;
+  payload: {
+    key: string;
+    column: string;
+    direction: string;
+  };
+}
+export interface GetColumnLineageResponse {
+  type: GetColumnLineage.SUCCESS | GetColumnLineage.FAILURE;
+  payload: {
+    lineage: Lineage;
   };
 }

@@ -1,5 +1,7 @@
 import {
+  ColumnLineageMap,
   DashboardResource,
+  Lineage,
   OwnerDict,
   PreviewData,
   PreviewQueryParams,
@@ -27,6 +29,8 @@ import {
   GetPreviewDataRequest,
   GetPreviewDataResponse,
   UpdateTableOwner,
+  GetTableLineageResponse,
+  GetTableLineage,
 } from './types';
 
 import tableOwnersReducer, {
@@ -48,6 +52,10 @@ export const initialTableDataState: TableMetadata = {
   is_view: false,
   key: '',
   last_updated_timestamp: 0,
+  lineage: {
+    upstream_entities: [],
+    downstream_entities: [],
+  },
   schema: '',
   name: '',
   description: '',
@@ -60,12 +68,22 @@ export const initialTableDataState: TableMetadata = {
   programmatic_descriptions: {},
 };
 
+export const initialTableLineageState = {
+  lineage: {
+    upstream_entities: [],
+    downstream_entities: [],
+  },
+  status: null,
+};
+
 export const initialState: TableMetadataReducerState = {
   isLoading: true,
   preview: initialPreviewState,
   statusCode: null,
   tableData: initialTableDataState,
   tableOwners: initialOwnersState,
+  tableLineage: initialTableLineageState,
+  columnLineageMap: {},
 };
 
 /* ACTIONS */
@@ -256,6 +274,36 @@ export function getPreviewDataSuccess(
   };
 }
 
+export function getTableLineageSuccess(
+  data: Lineage,
+  status: number
+): GetTableLineageResponse {
+  return {
+    type: GetTableLineage.SUCCESS,
+    payload: {
+      lineage: data,
+      status,
+    },
+  };
+}
+
+export function getTableLineageFailure(
+  data: Lineage,
+  status: number
+): GetTableLineageResponse {
+  return {
+    type: GetTableLineage.FAILURE,
+    payload: {
+      lineage: data,
+      status,
+    },
+  };
+}
+
+// export function getColumnLineageSuccess()
+//
+// export function getColumnLineageFailure()
+
 /* REDUCER */
 export interface TableMetadataReducerState {
   dashboards?: {
@@ -271,6 +319,11 @@ export interface TableMetadataReducerState {
   statusCode: number | null;
   tableData: TableMetadata;
   tableOwners: TableOwnerReducerState;
+  tableLineage: {
+    status: number | null;
+    lineage: Lineage;
+  };
+  columnLineageMap: ColumnLineageMap;
 }
 
 export default function reducer(
@@ -327,6 +380,15 @@ export default function reducer(
       return {
         ...state,
         tableOwners: tableOwnersReducer(state.tableOwners, action),
+      };
+    case GetTableLineage.SUCCESS:
+    case GetTableLineage.FAILURE:
+      return {
+        ...state,
+        tableLineage: {
+          lineage: (<GetTableLineageResponse>action).payload.lineage,
+          status: (<GetTableLineageResponse>action).payload.status,
+        },
       };
     default:
       return state;

@@ -96,11 +96,13 @@ export interface TableMetadata {
   badges: Badge[];
   cluster: string;
   columns: TableColumn[];
+
   database: string;
   is_editable: boolean;
   is_view: boolean;
   key: string;
   last_updated_timestamp: number;
+  lineage: Lineage;
   schema: string;
   name: string;
   description: string;
@@ -123,4 +125,34 @@ export interface Watermark {
   partition_key: string;
   partition_value: string;
   watermark_type: string;
+}
+
+export interface LineageItem {
+  key: string;
+  level: number;
+  source: string;
+  badges?: string[];
+  usage: number;
+}
+
+export interface Lineage {
+  // key: string;
+  // direction: string;
+  upstream_entities: LineageItem[];
+  downstream_entities: LineageItem[];
+}
+
+export interface ColumnLineageMap {
+  [column: string]: Lineage;
+}
+
+export interface TableLineageParams {
+  key: string;
+  direction: string;
+}
+
+export interface ColumnLineageParams {
+  key: string;
+  column: string;
+  direction: string;
 }
