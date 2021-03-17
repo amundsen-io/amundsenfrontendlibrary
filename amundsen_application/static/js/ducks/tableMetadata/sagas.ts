@@ -188,8 +188,8 @@ export function* getTableLineageWorker(
     const { data, status } = response;
     yield put(getTableLineageSuccess(data, status));
   } catch (error) {
-    const { data, status } = error;
-    yield put(getTableLineageFailure(data, status));
+    const { status } = error;
+    yield put(getTableLineageFailure(status));
   }
 }
 export function* getTableLineageWatcher(): SagaIterator {

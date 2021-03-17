@@ -60,6 +60,7 @@ import DataPreviewButton from './DataPreviewButton';
 import ExploreButton from './ExploreButton';
 import FrequentUsers from './FrequentUsers';
 import LineageLink from './LineageLink';
+import LineageList from './LineageList';
 import TableOwnerEditor from './TableOwnerEditor';
 import SourceLink from './SourceLink';
 import TableDashboardResourceList from './TableDashboardResourceList';
@@ -76,7 +77,6 @@ import ListSortingDropdown from './ListSortingDropdown';
 import * as Constants from './constants';
 
 import './styles.scss';
-import LineageList from './LineageList';
 
 const SERVER_ERROR_CODE = 500;
 const DASHBOARDS_PER_PAGE = 10;
@@ -280,13 +280,13 @@ export class TableDetail extends React.Component<
       tabInfo.push({
         content: <LineageList items={tableLineage.downstream_entities} />,
         key: 'downstream',
-        title: 'Downstream',
+        title: `Downstream (${tableLineage.downstream_entities.length})`,
       });
 
       tabInfo.push({
         content: <LineageList items={tableLineage.upstream_entities} />,
         key: 'upstream',
-        title: 'Upstream',
+        title: `Upstream (${tableLineage.upstream_entities.length})`,
       });
     }
 

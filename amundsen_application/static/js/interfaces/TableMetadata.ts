@@ -126,18 +126,17 @@ export interface Watermark {
 }
 
 export interface LineageItem {
-  badges?: string[];
+  badges: string[];
   cluster: string;
   database: string;
   key: string;
   level: number;
+  name: string;
   schema: string;
-  table: string;
   usage: number;
 }
 
 export interface Lineage {
-  // key: string;
   downstream_entities: LineageItem[];
   upstream_entities: LineageItem[];
 }

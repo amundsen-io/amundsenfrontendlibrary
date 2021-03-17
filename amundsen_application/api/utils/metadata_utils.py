@@ -171,6 +171,20 @@ def marshall_dashboard_full(dashboard_dict: Dict) -> Dict:
     dashboard_dict['tables'] = [marshall_table_partial(table) for table in dashboard_dict['tables']]
     return dashboard_dict
 
+def marshall_lineage_table(table_dict: Dict) -> Dict:
+    """
+    Decorate lineage entries with database, schema, cluster, and table
+    :param table_dict:
+    :return: table entry with additional fields
+    """
+    table_uri = TableUri.from_uri(table_dict.get('key'))
+    table_dict['database'] = table_uri.database
+    table_dict['schema'] = table_uri.schema
+    table_dict['cluster'] = table_uri.cluster
+    table_dict['name'] = table_uri.table
+    print(table_dict)
+    return table_dict
+
 
 def _convert_prog_descriptions(prog_descriptions: List = None) -> Dict:
     """

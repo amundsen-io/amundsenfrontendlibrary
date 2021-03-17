@@ -292,13 +292,12 @@ export function getTableLineageSuccess(
 }
 
 export function getTableLineageFailure(
-  data: Lineage,
   status: number
 ): GetTableLineageResponse {
   return {
     type: GetTableLineage.FAILURE,
     payload: {
-      lineage: data,
+      lineage: initialTableLineageState.lineage,
       status,
     },
   };

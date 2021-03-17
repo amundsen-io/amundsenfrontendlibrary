@@ -193,17 +193,16 @@ export function getTableLineage(key: string) {
   return axios({
     url: `${API_PATH}/get_table_lineage?${queryString}`,
     method: 'GET',
-    // data: queryParams,
   })
     .then((response: AxiosResponse<LineageAPI>) => ({
-      data: response.data.lineage,
+      data: response.data,
       status: response.status,
     }))
     .catch((e: AxiosError<LineageAPI>) => {
       const { response } = e;
       let data = {};
-      if (response && response.data && response.data.lineage) {
-        data = response.data.lineage;
+      if (response && response.data) {
+        data = response.data;
       }
       const status = response ? response.status : null;
       return Promise.reject({ data, status });
