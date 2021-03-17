@@ -7,7 +7,7 @@ import { mount, shallow } from 'enzyme';
 import { mocked } from 'ts-jest/utils';
 
 import { getMockRouterProps } from 'fixtures/mockRouter';
-import { tableMetadata } from 'fixtures/metadata/table';
+import { tableMetadata, tableLineage } from 'fixtures/metadata/table';
 
 import LoadingSpinner from 'components/LoadingSpinner';
 import TabsComponent from 'components/TabsComponent';
@@ -34,12 +34,14 @@ const setup = (
     location
   );
   const props = {
+    tableLineage,
     isLoading: false,
     isLoadingDashboards: false,
     numRelatedDashboards: 0,
     statusCode: 200,
     tableData: tableMetadata,
     getTableData: jest.fn(),
+    getTableLineage: jest.fn(),
     openRequestDescriptionDialog: jest.fn(),
     searchSchema: jest.fn(),
     ...routerProps,
