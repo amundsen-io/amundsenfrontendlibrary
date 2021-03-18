@@ -11,6 +11,9 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-knobs',
   ],
+  core: {
+    builder: 'webpack5',
+  },
   webpackFinal: (config) => {
     return {
       ...config,
