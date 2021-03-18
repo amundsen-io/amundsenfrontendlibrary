@@ -3,6 +3,7 @@ import { BadgeStyle, BadgeStyleConfig } from 'config/config-types';
 import { TableMetadata } from 'interfaces/TableMetadata';
 import { convertText, CaseType } from 'utils/textUtils';
 
+import { table } from 'console';
 import { AnalyticsConfig, FilterConfig, LinkConfig } from './config-types';
 
 import { ResourceType } from '../interfaces';
@@ -58,6 +59,19 @@ export function getSourceIconClass(
   }
 
   return config.supportedSources[sourceId].iconClass;
+}
+
+/**
+ * Returns notifications for the given table name if present
+ */
+export function getTableNotification(tableName: string): string | false {
+  const { notifications } = AppConfig.resourceConfig[ResourceType.table];
+
+  if (notifications && notifications[tableName]) {
+    return notifications[tableName];
+  }
+
+  return false;
 }
 
 /**

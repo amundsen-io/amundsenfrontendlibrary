@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
+import SanitizedHTML from 'react-sanitized-html';
 
 import { IconSizes } from 'interfaces';
 import { AlertIcon } from '../SVGIcons';
@@ -51,10 +52,14 @@ const Alert: React.FC<AlertProps> = ({
     action = <span className="alert-action">{actionLink}</span>;
   }
 
+  // If we receive a string, we want to sanitize any html inside
+  const formattedMessage =
+    typeof message === 'string' ? <SanitizedHTML html={message} /> : message;
+
   return (
     <div className="alert">
       <AlertIcon stroke={STROKE_COLOR} size={IconSizes.SMALL} />
-      <p className="alert-message">{message}</p>
+      <p className="alert-message">{formattedMessage}</p>
       {action}
     </div>
   );

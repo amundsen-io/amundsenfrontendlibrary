@@ -21,6 +21,7 @@ import {
   getDescriptionSourceDisplayName,
   getMaxLength,
   getSourceIconClass,
+  getTableNotification,
   getTableSortCriterias,
   indexDashboardsEnabled,
   issueTrackingEnabled,
@@ -28,6 +29,8 @@ import {
 } from 'config/config-utils';
 
 import BadgeList from 'features/BadgeList';
+import ColumnList from 'features/ColumnList';
+
 import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import Breadcrumb from 'components/Breadcrumb';
 import TabsComponent, { TabInfo } from 'components/TabsComponent';
@@ -36,7 +39,6 @@ import EditableText from 'components/EditableText';
 import LoadingSpinner from 'components/LoadingSpinner';
 import EditableSection from 'components/EditableSection';
 import Alert from 'components/Alert';
-import ColumnList from 'features/ColumnList';
 
 import { formatDateTimeShort } from 'utils/dateUtils';
 import { getLoggingParams } from 'utils/logUtils';
@@ -297,6 +299,9 @@ export class TableDetail extends React.Component<
           )}`
         : '';
       const editUrl = data.source ? data.source.source : '';
+      const tableNotification = getTableNotification(
+        `${data.schema}.${data.name}`
+      );
 
       innerContent = (
         <div className="resource-detail-layout table-detail">
@@ -347,14 +352,7 @@ export class TableDetail extends React.Component<
           </header>
           <div className="column-layout-1">
             <aside className="left-panel">
-              <Alert
-                message={
-                  <span>
-                    There is a Core Concepts version of this table available at{' '}
-                    <a href="/">coco.rides</a>
-                  </span>
-                }
-              />
+              {!!tableNotification && <Alert message={tableNotification} />}
               <EditableSection
                 title={Constants.DESCRIPTION_TITLE}
                 readOnly={!data.is_editable}

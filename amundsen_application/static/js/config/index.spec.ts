@@ -67,6 +67,34 @@ describe('getDisplayNameByResource', () => {
   });
 });
 
+describe('getTableNotification', () => {
+  describe('when there is a notification', () => {
+    AppConfig.resourceConfig[ResourceType.table].notifications = {
+      testName: 'testMessage',
+    };
+
+    it('returns the notification', () => {
+      const expected = 'testMessage';
+      const actual = ConfigUtils.getTableNotification('testName');
+
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('when there is no notification', () => {
+    AppConfig.resourceConfig[ResourceType.table].notifications = {
+      testName: 'testMessage',
+    };
+
+    it('returns false', () => {
+      const expected = false;
+      const actual = ConfigUtils.getTableNotification('testNameNoThere');
+
+      expect(actual).toEqual(expected);
+    });
+  });
+});
+
 describe('getFilterConfigByResource', () => {
   it('returns the filter categories for a given resource', () => {
     const testResource = ResourceType.table;

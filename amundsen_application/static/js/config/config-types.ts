@@ -148,6 +148,12 @@ type StatsConfig = {
 };
 
 /**
+ * A list of notifications where the key is the 'schema.name' of the table and the value
+ * a string with html tags if needed
+ */
+type NotificationConfigType = Record<string, string>;
+
+/**
  * Base interface for all possible ResourceConfig objects
  *
  * displayName - The name displayed throughout the application to refer to this resource type
@@ -163,6 +169,7 @@ interface TableResourceConfig extends BaseResourceConfig {
   supportedDescriptionSources?: DescriptionSourceConfig;
   sortCriterias?: SortCriteriaConfig;
   stats?: StatsConfig;
+  notifications?: NotificationConfigType;
 }
 
 export enum BadgeStyle {
