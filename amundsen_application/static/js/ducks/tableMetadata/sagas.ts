@@ -203,17 +203,14 @@ export function* getTableLineageWatcher(): SagaIterator {
 export function* getColumnLineageWorker(
   action: GetColumnLineageRequest
 ): SagaIterator {
+  const { key, columnName } = action.payload;
   try {
-    const response = yield call(
-      API.getColumnLineage,
-      action.payload.key,
-      action.payload.columnName
-    );
+    const response = yield call(API.getColumnLineage, key, columnName);
     const { data, status } = response;
-    yield put(getColumnLineageSuccess(data, status));
+    yield put(getColumnLineageSuccess(data, columnName, status));
   } catch (error) {
     const { status } = error;
-    yield put(getColumnLineageFailure(status));
+    yield put(getColumnLineageFailure(columnName, status));
   }
 }
 export function* getColumnLineageWatcher(): SagaIterator {

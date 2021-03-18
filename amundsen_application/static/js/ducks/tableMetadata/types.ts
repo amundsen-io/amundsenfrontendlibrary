@@ -191,6 +191,7 @@ export interface GetColumnLineageResponse {
   type: GetColumnLineage.SUCCESS | GetColumnLineage.FAILURE;
   payload: {
     lineage: Lineage;
+    columnName: string;
     status: number;
   };
 }

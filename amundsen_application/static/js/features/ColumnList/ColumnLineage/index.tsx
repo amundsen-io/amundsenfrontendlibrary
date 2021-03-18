@@ -8,7 +8,7 @@ import { GlobalState } from 'ducks/rootReducer';
 // import { isColumnListLineageEnabled } from 'config/config-utils';
 import * as React from 'react';
 import { GetColumnLineageRequest } from 'ducks/tableMetadata/types';
-import { getColumnLineage } from 'ducks/tableMetadata/reducer';
+import { emptyLineage, getColumnLineage } from 'ducks/tableMetadata/reducer';
 
 interface ComponentProps {
   columnName: string;
@@ -36,7 +36,27 @@ export class ColumnLineageList extends React.Component<Props> {
   }
 
   render() {
-    return 'hello';
+    const { downstream_entities, upstream_entities } = this.props.columnLineage;
+    if (!downstream_entities.length && !upstream_entities.length) {
+      return null;
+    }
+    return (
+      // TODO - make pretty
+      <div>
+        <div>
+          <h2>upstream</h2>
+          {upstream_entities.map((item) => (
+            <div>{item.key}</div>
+          ))}
+        </div>
+        <div>
+          <h2>downstream</h2>
+          {downstream_entities.map((item) => (
+            <div>{item.key}</div>
+          ))}
+        </div>
+      </div>
+    );
   }
 }
 
@@ -45,7 +65,7 @@ export const mapStateToProps = (
   ownProps: ComponentProps
 ) => {
   const { columnLineageMap } = state.tableMetadata;
-  const columnLineage = columnLineageMap[ownProps.columnName];
+  const columnLineage = columnLineageMap[ownProps.columnName] || emptyLineage;
   return {
     columnLineage,
   };

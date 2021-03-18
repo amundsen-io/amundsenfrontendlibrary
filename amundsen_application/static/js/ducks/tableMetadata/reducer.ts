@@ -76,6 +76,11 @@ export const initialTableLineageState = {
   status: null,
 };
 
+export const emptyLineage = {
+  upstream_entities: [],
+  downstream_entities: [],
+};
+
 export const initialState: TableMetadataReducerState = {
   isLoading: true,
   preview: initialPreviewState,
@@ -318,23 +323,27 @@ export function getColumnLineage(
 
 export function getColumnLineageSuccess(
   data: Lineage,
+  columnName: string,
   status: number
 ): GetColumnLineageResponse {
   return {
     type: GetColumnLineage.SUCCESS,
     payload: {
-      lineage: data,
+      columnName,
       status,
+      lineage: data,
     },
   };
 }
 
 export function getColumnLineageFailure(
+  columnName: string,
   status: number
 ): GetColumnLineageResponse {
   return {
     type: GetColumnLineage.FAILURE,
     payload: {
+      columnName,
       lineage: initialTableLineageState.lineage,
       status,
     },
@@ -428,15 +437,16 @@ export default function reducer(
         },
       };
     case GetColumnLineage.SUCCESS:
-      // case GetColumnLineage.FAILURE:
+    case GetColumnLineage.FAILURE:
       const columnLineage = (<GetColumnLineageResponse>action).payload.lineage;
+      const { columnName } = (<GetColumnLineageResponse>action).payload;
       const { columnLineageMap } = state;
 
       return {
         ...state,
         columnLineageMap: {
           ...state.columnLineageMap,
-          ride_id: columnLineage,
+          [columnName]: columnLineage,
         },
       };
 
