@@ -9,8 +9,6 @@ import {
   User,
   Tag,
   Lineage,
-  TableLineageParams,
-  ColumnLineageParams,
 } from 'interfaces';
 
 /** HELPERS **/
@@ -41,12 +39,8 @@ export type RelatedDashboardDataAPI = {
 } & MessageAPI;
 export type LineageAPI = { lineage: Lineage } & MessageAPI;
 
-export function getTableData(
-  tableKey: string,
-  index?: string,
-  source?: string
-) {
-  const tableQueryParams = getTableQueryParams(tableKey, index, source);
+export function getTableData(key: string, index?: string, source?: string) {
+  const tableQueryParams = getTableQueryParams({ key, index, source });
   const tableURL = `${API_PATH}/table?${tableQueryParams}`;
   const tableRequest = axios.get<TableDataAPI>(tableURL);
 
@@ -87,7 +81,7 @@ export function getTableDashboards(tableKey: string) {
 }
 
 export function getTableDescription(tableData: TableMetadata) {
-  const tableParams = getTableQueryParams(tableData.key);
+  const tableParams = getTableQueryParams({ key: tableData.key });
   return axios
     .get(`${API_PATH}/get_table_description?${tableParams}`)
     .then((response: AxiosResponse<DescriptionAPI>) => {
@@ -107,8 +101,8 @@ export function updateTableDescription(
   });
 }
 
-export function getTableOwners(tableKey: string) {
-  const tableParams = getTableQueryParams(tableKey);
+export function getTableOwners(key: string) {
+  const tableParams = getTableQueryParams({ key });
   return axios
     .get(`${API_PATH}/table?${tableParams}`)
     .then((response: AxiosResponse<TableDataAPI>) =>
@@ -141,12 +135,13 @@ export function getColumnDescription(
   columnIndex: number,
   tableData: TableMetadata
 ) {
-  const tableParams = getTableQueryParams(tableData.key);
   const columnName = tableData.columns[columnIndex].name;
+  const tableParams = getTableQueryParams({
+    key: tableData.key,
+    column_name: columnName,
+  });
   return axios
-    .get(
-      `${API_PATH}/get_column_description?${tableParams}&column_name=${columnName}`
-    )
+    .get(`${API_PATH}/get_column_description?${tableParams}`)
     .then((response: AxiosResponse<DescriptionAPI>) => {
       tableData.columns[columnIndex].description = response.data.description;
       return tableData;
@@ -189,9 +184,9 @@ export function getPreviewData(queryParams: PreviewQueryParams) {
 }
 
 export function getTableLineage(key: string) {
-  const queryString = getTableQueryParams(key);
+  const tableQueryParams = getTableQueryParams({ key });
   return axios({
-    url: `${API_PATH}/get_table_lineage?${queryString}`,
+    url: `${API_PATH}/get_table_lineage?${tableQueryParams}`,
     method: 'GET',
   })
     .then((response: AxiosResponse<LineageAPI>) => ({
@@ -208,24 +203,27 @@ export function getTableLineage(key: string) {
       return Promise.reject({ data, status });
     });
 }
-//
-// export function getColumnLineage(queryParams: ColumnLineageParams) {
-//   return axios({
-//     url: '/api/...',
-//     method: 'GET',
-//     data: queryParams,
-//   })
-//     .then((response: AxiosResponse<LineageAPI>) => ({
-//       data: response.data.lineage,
-//       status: response.status,
-//     }))
-//     .catch((e: AxiosError<LineageAPI>) => {
-//       const { response } = e;
-//       let data = {};
-//       if (response && response.data && response.data.lineage) {
-//         data = response.data.lineage;
-//       }
-//       const status = response ? response.status : null;
-//       return Promise.reject({ data, status });
-//     });
-// }
+
+export function getColumnLineage(key: string, columnName: string) {
+  const tableQueryParams = getTableQueryParams({
+    key,
+    column_name: columnName,
+  });
+  return axios({
+    url: `${API_PATH}/get_column_lineage?${tableQueryParams}`,
+    method: 'GET',
+  })
+    .then((response: AxiosResponse<LineageAPI>) => ({
+      data: response.data,
+      status: response.status,
+    }))
+    .catch((e: AxiosError<LineageAPI>) => {
+      const { response } = e;
+      let data = {};
+      if (response && response.data) {
+        data = response.data;
+      }
+      const status = response ? response.status : null;
+      return Promise.reject({ data, status });
+    });
+}

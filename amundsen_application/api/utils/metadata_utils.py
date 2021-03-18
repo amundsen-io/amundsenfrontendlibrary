@@ -171,6 +171,7 @@ def marshall_dashboard_full(dashboard_dict: Dict) -> Dict:
     dashboard_dict['tables'] = [marshall_table_partial(table) for table in dashboard_dict['tables']]
     return dashboard_dict
 
+
 def marshall_lineage_table(table_dict: Dict) -> Dict:
     """
     Decorate lineage entries with database, schema, cluster, and table

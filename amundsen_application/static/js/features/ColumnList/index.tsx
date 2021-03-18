@@ -18,6 +18,7 @@ import {
   notificationsEnabled,
   getMaxLength,
   getTableSortCriterias,
+  isColumnListLineageEnabled,
 } from 'config/config-utils';
 
 import {
@@ -31,6 +32,7 @@ import {
 
 import BadgeList from 'features/BadgeList';
 import { getUniqueValues, filterOutUniqueValues } from 'utils/stats';
+import ColumnLineageList from 'features/ColumnList/ColumnLineage';
 import ColumnType from './ColumnType';
 import ColumnDescEditableText from './ColumnDescEditableText';
 import ColumnStats from './ColumnStats';
@@ -54,6 +56,7 @@ export interface ColumnListProps {
   editText?: string;
   editUrl?: string;
   sortBy?: SortCriteria;
+  tableKey: string;
 }
 
 type ContentType = {
@@ -77,6 +80,7 @@ type FormattedDataType = {
   editUrl: string | null;
   index: number;
   name: string;
+  tableKey: string;
   sort_order: string;
   isEditable: boolean;
   badges: Badge[];
@@ -187,6 +191,12 @@ const ExpandedRowComponent: React.FC<ExpandedRowProps> = (
       {uniqueValueStats && (
         <ExpandableUniqueValues uniqueValues={uniqueValueStats} />
       )}
+      {isColumnListLineageEnabled() && (
+        <ColumnLineageList
+          tableKey={rowValue.tableKey}
+          columnName={rowValue.name}
+        />
+      )}
     </div>
   );
 };
@@ -198,12 +208,14 @@ const ColumnList: React.FC<ColumnListProps> = ({
   editUrl,
   openRequestDescriptionDialog,
   sortBy = DEFAULT_SORTING,
+  tableKey,
 }: ColumnListProps) => {
   const hasColumnBadges = hasColumnWithBadge(columns);
   const formattedData: FormattedDataType[] = columns.map((item, index) => {
     const hasItemStats = !!item.stats.length;
 
     return {
+      tableKey,
       content: {
         title: item.name,
         description: item.description,

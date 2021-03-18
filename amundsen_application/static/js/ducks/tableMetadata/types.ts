@@ -184,12 +184,13 @@ export interface GetColumnLineageRequest {
   type: GetColumnLineage.REQUEST;
   payload: {
     key: string;
-    column: string;
+    columnName: string;
   };
 }
 export interface GetColumnLineageResponse {
   type: GetColumnLineage.SUCCESS | GetColumnLineage.FAILURE;
   payload: {
     lineage: Lineage;
+    status: number;
   };
 }

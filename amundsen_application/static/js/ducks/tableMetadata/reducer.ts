@@ -32,6 +32,9 @@ import {
   GetTableLineageResponse,
   GetTableLineage,
   GetTableLineageRequest,
+  GetColumnLineageResponse,
+  GetColumnLineage,
+  GetColumnLineageRequest,
 } from './types';
 
 import tableOwnersReducer, {
@@ -303,9 +306,40 @@ export function getTableLineageFailure(
   };
 }
 
-// export function getColumnLineageSuccess()
-//
-// export function getColumnLineageFailure()
+export function getColumnLineage(
+  key: string,
+  columnName: string
+): GetColumnLineageRequest {
+  return {
+    type: GetColumnLineage.REQUEST,
+    payload: { key, columnName },
+  };
+}
+
+export function getColumnLineageSuccess(
+  data: Lineage,
+  status: number
+): GetColumnLineageResponse {
+  return {
+    type: GetColumnLineage.SUCCESS,
+    payload: {
+      lineage: data,
+      status,
+    },
+  };
+}
+
+export function getColumnLineageFailure(
+  status: number
+): GetColumnLineageResponse {
+  return {
+    type: GetColumnLineage.FAILURE,
+    payload: {
+      lineage: initialTableLineageState.lineage,
+      status,
+    },
+  };
+}
 
 /* REDUCER */
 export interface TableMetadataReducerState {
@@ -393,6 +427,19 @@ export default function reducer(
           status: (<GetTableLineageResponse>action).payload.status,
         },
       };
+    case GetColumnLineage.SUCCESS:
+      // case GetColumnLineage.FAILURE:
+      const columnLineage = (<GetColumnLineageResponse>action).payload.lineage;
+      const { columnLineageMap } = state;
+
+      return {
+        ...state,
+        columnLineageMap: {
+          ...state.columnLineageMap,
+          ride_id: columnLineage,
+        },
+      };
+
     default:
       return state;
   }

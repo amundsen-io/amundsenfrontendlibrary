@@ -246,6 +246,7 @@ export class TableDetail extends React.Component<
           openRequestDescriptionDialog={openRequestDescriptionDialog}
           columns={tableData.columns}
           database={tableData.database}
+          tableKey={tableData.key}
           editText={editText}
           editUrl={editUrl}
           sortBy={sortedBy}

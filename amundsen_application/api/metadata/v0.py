@@ -814,3 +814,29 @@ def get_table_lineage() -> Response:
     except Exception as e:
         payload = jsonify({'msg': 'Encountered exception: ' + str(e)})
         return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+
+@metadata_blueprint.route('/get_column_lineage', methods=['GET'])
+def get_column_lineage() -> Response:
+    """
+    Call metadata service to fetch table lineage for a given table
+    :return:
+    """
+    try:
+        table_endpoint = _get_table_endpoint()
+        table_key = get_query_param(request.args, 'key')
+        column_name = get_query_param(request.args, 'column_name')
+        url = f'{table_endpoint}/{table_key}/column/{column_name}/lineage'
+        response = request_metadata(url=url, method=request.method)
+        json = response.json()
+        downstream = [marshall_lineage_table(table) for table in json.get('downstream_entities')]
+        upstream = [marshall_lineage_table(table) for table in json.get('upstream_entities')]
+
+        payload = {
+            'downstream_entities': downstream,
+            'upstream_entities': upstream,
+        }
+        return make_response(jsonify(payload), 200)
+    except Exception as e:
+        payload = jsonify({'msg': 'Encountered exception: ' + str(e)})
+        return make_response(payload, HTTPStatus.INTERNAL_SERVER_ERROR)
