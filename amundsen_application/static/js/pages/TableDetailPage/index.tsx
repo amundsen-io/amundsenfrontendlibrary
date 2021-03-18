@@ -35,6 +35,7 @@ import TagInput from 'components/Tags/TagInput';
 import EditableText from 'components/EditableText';
 import LoadingSpinner from 'components/LoadingSpinner';
 import EditableSection from 'components/EditableSection';
+import Alert from 'components/Alert';
 import ColumnList from 'features/ColumnList';
 
 import { formatDateTimeShort } from 'utils/dateUtils';
@@ -174,14 +175,15 @@ export class TableDetail extends React.Component<
   }
 
   handleClick = (e) => {
-    const { match } = this.props;
+    const { match, searchSchema } = this.props;
     const { params } = match;
     const schemaText = params.schema;
+
     logClick(e, {
       target_type: 'schema',
       label: schemaText,
     });
-    this.props.searchSchema(schemaText);
+    searchSchema(schemaText);
   };
 
   renderProgrammaticDesc = (
@@ -345,6 +347,14 @@ export class TableDetail extends React.Component<
           </header>
           <div className="column-layout-1">
             <aside className="left-panel">
+              <Alert
+                message={
+                  <span>
+                    There is a Core Concepts version of this table available at{' '}
+                    <a href="/">coco.rides</a>
+                  </span>
+                }
+              />
               <EditableSection
                 title={Constants.DESCRIPTION_TITLE}
                 readOnly={!data.is_editable}
