@@ -179,7 +179,6 @@ interface TableResourceConfig extends BaseResourceConfig {
   supportedDescriptionSources?: DescriptionSourceConfig;
   sortCriterias?: SortCriteriaConfig;
   stats?: StatsConfig;
-  notices?: NoticesConfigType;
 }
 
 export enum BadgeStyle {
