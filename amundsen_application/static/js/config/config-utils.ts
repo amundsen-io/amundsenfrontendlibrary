@@ -1,11 +1,14 @@
 import AppConfig from 'config/config';
 import { BadgeStyle, BadgeStyleConfig } from 'config/config-types';
-import { TableMetadata } from 'interfaces/TableMetadata';
 import { convertText, CaseType } from 'utils/textUtils';
 
-import { table } from 'console';
-import { AnalyticsConfig, FilterConfig, LinkConfig } from './config-types';
-
+import { TableMetadata } from 'interfaces/TableMetadata';
+import {
+  AnalyticsConfig,
+  FilterConfig,
+  LinkConfig,
+  NoticeType,
+} from './config-types';
 import { ResourceType } from '../interfaces';
 
 export const DEFAULT_DATABASE_ICON_CLASS = 'icon-database icon-color';
@@ -62,13 +65,13 @@ export function getSourceIconClass(
 }
 
 /**
- * Returns notifications for the given table name if present
+ * Returns notices for the given table name if present
  */
-export function getTableNotification(tableName: string): string | false {
-  const { notifications } = AppConfig.resourceConfig[ResourceType.table];
+export function getTableNotices(tableName: string): NoticeType | false {
+  const { notices } = AppConfig.resourceConfig[ResourceType.table];
 
-  if (notifications && notifications[tableName]) {
-    return notifications[tableName];
+  if (notices && notices[tableName]) {
+    return notices[tableName];
   }
 
   return false;

@@ -1,6 +1,6 @@
 import AppConfig from 'config/config';
 import * as ConfigUtils from 'config/config-utils';
-import { BadgeStyle } from 'config/config-types';
+import { BadgeStyle, NoticeSeverity } from 'config/config-types';
 
 import { ResourceType } from 'interfaces';
 
@@ -67,28 +67,35 @@ describe('getDisplayNameByResource', () => {
   });
 });
 
-describe('getTableNotification', () => {
-  describe('when there is a notification', () => {
-    AppConfig.resourceConfig[ResourceType.table].notifications = {
-      testName: 'testMessage',
+describe('getTableNotices', () => {
+  describe('when there is a notice', () => {
+    AppConfig.resourceConfig[ResourceType.table].notices = {
+      testName: {
+        severity: NoticeSeverity.WARNING,
+        message: 'testMessage',
+      },
     };
 
-    it('returns the notification', () => {
+    it('returns the notice', () => {
       const expected = 'testMessage';
-      const actual = ConfigUtils.getTableNotification('testName');
+      const notice = ConfigUtils.getTableNotices('testName');
+      const actual = notice && notice.message;
 
       expect(actual).toEqual(expected);
     });
   });
 
-  describe('when there is no notification', () => {
-    AppConfig.resourceConfig[ResourceType.table].notifications = {
-      testName: 'testMessage',
+  describe('when there is no notice', () => {
+    AppConfig.resourceConfig[ResourceType.table].notices = {
+      testName: {
+        severity: NoticeSeverity.WARNING,
+        message: 'testMessage',
+      },
     };
 
     it('returns false', () => {
       const expected = false;
-      const actual = ConfigUtils.getTableNotification('testNameNoThere');
+      const actual = ConfigUtils.getTableNotices('testNameNoThere');
 
       expect(actual).toEqual(expected);
     });

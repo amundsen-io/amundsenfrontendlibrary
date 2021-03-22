@@ -21,7 +21,7 @@ import {
   getDescriptionSourceDisplayName,
   getMaxLength,
   getSourceIconClass,
-  getTableNotification,
+  getTableNotices,
   getTableSortCriterias,
   indexDashboardsEnabled,
   issueTrackingEnabled,
@@ -299,9 +299,7 @@ export class TableDetail extends React.Component<
           )}`
         : '';
       const editUrl = data.source ? data.source.source : '';
-      const tableNotification = getTableNotification(
-        `${data.schema}.${data.name}`
-      );
+      const tableNotice = getTableNotices(`${data.schema}.${data.name}`);
 
       innerContent = (
         <div className="resource-detail-layout table-detail">
@@ -352,7 +350,12 @@ export class TableDetail extends React.Component<
           </header>
           <div className="column-layout-1">
             <aside className="left-panel">
-              {!!tableNotification && <Alert message={tableNotification} />}
+              {!!tableNotice && (
+                <Alert
+                  message={tableNotice.message}
+                  severity={tableNotice.severity}
+                />
+              )}
               <EditableSection
                 title={Constants.DESCRIPTION_TITLE}
                 readOnly={!data.is_editable}

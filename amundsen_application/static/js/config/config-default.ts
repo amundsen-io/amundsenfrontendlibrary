@@ -193,7 +193,7 @@ const configDefault: AppConfig = {
           iconPath: '/static/images/github.png',
         },
       },
-      notifications: {},
+      notices: {},
     },
     [ResourceType.user]: {
       displayName: 'People',

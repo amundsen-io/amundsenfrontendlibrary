@@ -140,6 +140,15 @@ type SortCriteriaConfig = {
   [key: string]: SortCriteria;
 };
 
+export enum NoticeSeverity {
+  INFO = 'info',
+  WARNING = 'warning',
+  ALERT = 'alert',
+}
+export interface NoticeType {
+  severity: NoticeSeverity;
+  message: string;
+}
 /**
  * Stats configuration options
  */
@@ -148,10 +157,10 @@ type StatsConfig = {
 };
 
 /**
- * A list of notifications where the key is the 'schema.name' of the table and the value
- * a string with html tags if needed
+ * A list of notices where the key is the 'schema.name' of the table and the value
+ * a Notice
  */
-type NotificationConfigType = Record<string, string>;
+type NoticesConfigType = Record<string, NoticeType>;
 
 /**
  * Base interface for all possible ResourceConfig objects
@@ -169,7 +178,7 @@ interface TableResourceConfig extends BaseResourceConfig {
   supportedDescriptionSources?: DescriptionSourceConfig;
   sortCriterias?: SortCriteriaConfig;
   stats?: StatsConfig;
-  notifications?: NotificationConfigType;
+  notices?: NoticesConfigType;
 }
 
 export enum BadgeStyle {
