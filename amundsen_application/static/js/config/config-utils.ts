@@ -67,7 +67,7 @@ export function getSourceIconClass(
 /**
  * Returns notices for the given table name if present
  */
-export function getTableNotices(tableName: string): NoticeType | false {
+export function getResourceNotices(tableName: string): NoticeType | false {
   const { notices } = AppConfig.resourceConfig[ResourceType.table];
 
   if (notices && notices[tableName]) {

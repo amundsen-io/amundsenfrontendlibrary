@@ -67,7 +67,7 @@ describe('getDisplayNameByResource', () => {
   });
 });
 
-describe('getTableNotices', () => {
+describe('getResourceNotices', () => {
   describe('when there is a notice', () => {
     AppConfig.resourceConfig[ResourceType.table].notices = {
       testName: {
@@ -78,7 +78,7 @@ describe('getTableNotices', () => {
 
     it('returns the notice', () => {
       const expected = 'testMessage';
-      const notice = ConfigUtils.getTableNotices('testName');
+      const notice = ConfigUtils.getResourceNotices('testName');
       const actual = notice && notice.message;
 
       expect(actual).toEqual(expected);
@@ -95,7 +95,7 @@ describe('getTableNotices', () => {
 
     it('returns false', () => {
       const expected = false;
-      const actual = ConfigUtils.getTableNotices('testNameNoThere');
+      const actual = ConfigUtils.getResourceNotices('testNameNoThere');
 
       expect(actual).toEqual(expected);
     });
