@@ -169,6 +169,7 @@ export class DashboardPage extends React.Component<
     const hasLastRunState =
       dashboard.last_run_state && dashboard.last_run_state.length > 0;
     const dashboardNotice = getResourceNotices(
+      ResourceType.dashboard,
       `${dashboard.product}.${dashboard.name}`
     );
 

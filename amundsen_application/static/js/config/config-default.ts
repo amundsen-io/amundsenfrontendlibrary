@@ -98,6 +98,7 @@ const configDefault: AppConfig = {
           type: FilterType.INPUT_SELECT,
         },
       ],
+      notices: {},
     },
     [ResourceType.table]: {
       displayName: 'Datasets',

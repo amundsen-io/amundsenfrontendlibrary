@@ -172,6 +172,7 @@ interface BaseResourceConfig {
   displayName: string;
   filterCategories?: FilterConfig;
   supportedSources?: SourcesConfig;
+  notices?: NoticesConfigType;
 }
 
 interface TableResourceConfig extends BaseResourceConfig {

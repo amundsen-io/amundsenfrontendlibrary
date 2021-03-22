@@ -78,7 +78,10 @@ describe('getResourceNotices', () => {
 
     it('returns the notice', () => {
       const expected = 'testMessage';
-      const notice = ConfigUtils.getResourceNotices('testName');
+      const notice = ConfigUtils.getResourceNotices(
+        ResourceType.table,
+        'testName'
+      );
       const actual = notice && notice.message;
 
       expect(actual).toEqual(expected);
@@ -95,9 +98,34 @@ describe('getResourceNotices', () => {
 
     it('returns false', () => {
       const expected = false;
-      const actual = ConfigUtils.getResourceNotices('testNameNoThere');
+      const actual = ConfigUtils.getResourceNotices(
+        ResourceType.table,
+        'testNameNoThere'
+      );
 
       expect(actual).toEqual(expected);
+    });
+  });
+
+  describe('when resource is a dashboard', () => {
+    describe('when there is a notice', () => {
+      AppConfig.resourceConfig[ResourceType.dashboard].notices = {
+        testName: {
+          severity: NoticeSeverity.WARNING,
+          message: 'testMessage',
+        },
+      };
+
+      it('returns the notice', () => {
+        const expected = 'testMessage';
+        const notice = ConfigUtils.getResourceNotices(
+          ResourceType.dashboard,
+          'testName'
+        );
+        const actual = notice && notice.message;
+
+        expect(actual).toEqual(expected);
+      });
     });
   });
 });

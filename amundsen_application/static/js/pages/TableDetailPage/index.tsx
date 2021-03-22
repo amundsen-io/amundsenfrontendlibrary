@@ -299,7 +299,10 @@ export class TableDetail extends React.Component<
           )}`
         : '';
       const editUrl = data.source ? data.source.source : '';
-      const tableNotice = getResourceNotices(`${data.schema}.${data.name}`);
+      const tableNotice = getResourceNotices(
+        ResourceType.table,
+        `${data.schema}.${data.name}`
+      );
 
       innerContent = (
         <div className="resource-detail-layout table-detail">
