@@ -4,134 +4,101 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 
-import ColumnStats, { ColumnStatsProps } from '.';
+import ExpandableUniqueValues, {
+  ExpandableUniqueValuesProps,
+  NUMBER_OF_VALUES_SUMMARY,
+} from '.';
 import TestDataBuilder from './testDataBuilder';
 
 const dataBuilder = new TestDataBuilder();
 
-const setup = (propOverrides?: Partial<ColumnStatsProps>) => {
+const setup = (propOverrides?: Partial<ExpandableUniqueValuesProps>) => {
   const props = {
-    stats: [],
+    uniqueValues: [],
     ...propOverrides,
   };
-  const wrapper = mount<typeof ColumnStats>(<ColumnStats {...props} />);
+  const wrapper = mount<typeof ExpandableUniqueValues>(
+    <ExpandableUniqueValues {...props} />
+  );
 
   return { props, wrapper };
 };
 
-xdescribe('ColumnStats', () => {
+describe('ExpandableUniqueValues', () => {
   describe('render', () => {
     describe('when stats are empty', () => {
-      const { stats } = dataBuilder.withEmptyStats().build();
+      const { uniqueValues } = dataBuilder.withEmptyUniqueValues().build();
 
       it('does not render the component', () => {
-        const { wrapper } = setup({ stats });
-        const expected = stats.length;
-        const actual = wrapper.find('.column-stats').length;
+        const { wrapper } = setup({ uniqueValues });
+        const expected = uniqueValues.length;
+        const actual = wrapper.find('.unique-values').length;
 
         expect(actual).toEqual(expected);
       });
     });
 
-    describe('when four stats are passed', () => {
-      const { stats } = dataBuilder.withFourStats().build();
+    describe('when one unique value is passed', () => {
+      const { uniqueValues } = dataBuilder.withOneUniqueValue().build();
 
       it('renders the component', () => {
-        const { wrapper } = setup({ stats });
+        const { wrapper } = setup({ uniqueValues });
         const expected = 1;
-        const actual = wrapper.find('.column-stats').length;
+        const actual = wrapper.find('.unique-values').length;
 
         expect(actual).toEqual(expected);
       });
 
-      it('renders two columns', () => {
-        const { wrapper } = setup({ stats });
-        const expected = 2;
-        const actual = wrapper.find('.column-stats-column').length;
-
-        expect(actual).toEqual(expected);
-      });
-
-      it('renders the stats info text', () => {
-        const { wrapper } = setup({ stats });
+      it('renders uique value title', () => {
+        const { wrapper } = setup({ uniqueValues });
         const expected = 1;
-        const actual = wrapper.find('.stat-collection-info').length;
+        const actual = wrapper.find('.unique-values-title').length;
 
         expect(actual).toEqual(expected);
       });
 
-      it('renders four stat rows', () => {
-        const { wrapper } = setup({ stats });
-        const expected = stats.length;
-        const actual = wrapper.find('.column-stat-row').length;
+      it('renders uique values list', () => {
+        const { wrapper } = setup({ uniqueValues });
+        const expected = 1;
+        const actual = wrapper.find('.unique-values-list').length;
+
+        expect(actual).toEqual(expected);
+      });
+
+      it('renders one unique value', () => {
+        const { wrapper } = setup({ uniqueValues });
+        const expected = uniqueValues.length;
+        const actual = wrapper.find('.unique-value-item').length;
 
         expect(actual).toEqual(expected);
       });
     });
 
-    describe('when three stats are passed', () => {
-      const { stats } = dataBuilder.withThreeStats().build();
+    describe(`when the unique values are less than the limit of ${NUMBER_OF_VALUES_SUMMARY}`, () => {
+      const { uniqueValues } = dataBuilder
+        .withVariableNumberOfUniqueValues(NUMBER_OF_VALUES_SUMMARY - 1)
+        .build();
 
-      it('renders three stat rows', () => {
-        const { wrapper } = setup({ stats });
-        const expected = stats.length;
-        const actual = wrapper.find('.column-stat-row').length;
-
-        expect(actual).toEqual(expected);
-      });
-
-      it('renders two rows in the first column', () => {
-        const { wrapper } = setup({ stats });
-        const expected = 2;
-        const actual = wrapper
-          .find('.column-stats-column')
-          .first()
-          .find('.column-stat-row').length;
-
-        expect(actual).toEqual(expected);
-      });
-
-      it('renders one row in the second column', () => {
-        const { wrapper } = setup({ stats });
-        const expected = 1;
-        const actual = wrapper
-          .find('.column-stats-column')
-          .last()
-          .find('.column-stat-row').length;
+      it(`renders ${
+        NUMBER_OF_VALUES_SUMMARY - 1
+      } unique values in the summary`, () => {
+        const { wrapper } = setup({ uniqueValues });
+        const expected = NUMBER_OF_VALUES_SUMMARY - 1;
+        const actual = wrapper.find('.unique-value-item').length;
 
         expect(actual).toEqual(expected);
       });
     });
 
-    describe('when eight stats are passed', () => {
-      const { stats } = dataBuilder.withEightStats().build();
+    describe(`when the unique values are over the limit of ${NUMBER_OF_VALUES_SUMMARY}`, () => {
+      const { uniqueValues } = dataBuilder
+        .withVariableNumberOfUniqueValues(NUMBER_OF_VALUES_SUMMARY + 1)
+        .build();
 
-      it('renders eight stat rows', () => {
-        const { wrapper } = setup({ stats });
-        const expected = stats.length;
-        const actual = wrapper.find('.column-stat-row').length;
-
-        expect(actual).toEqual(expected);
-      });
-    });
-
-    describe('when different stat values are passed', () => {
-      const { stats } = dataBuilder.withNonNumericStats().build();
-
-      it('displays formatted number', () => {
-        const { wrapper } = setup({ stats });
-        const actual = wrapper.find('.stat-value').first().text();
-
-        const expected = '12,345';
-
-        expect(actual).toEqual(expected);
-      });
-
-      it('displays date string', () => {
-        const { wrapper } = setup({ stats });
-        const actual = wrapper.find('.stat-value').last().text();
-
-        const expected = '2020-11-03';
+      it(`renders ${NUMBER_OF_VALUES_SUMMARY} unique values in the summary`, () => {
+        const { wrapper } = setup({ uniqueValues });
+        const expected = NUMBER_OF_VALUES_SUMMARY;
+        const actual = wrapper.find('.unique-value-item').length;
 
         expect(actual).toEqual(expected);
       });

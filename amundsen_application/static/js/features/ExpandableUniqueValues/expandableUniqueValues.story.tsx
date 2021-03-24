@@ -4,7 +4,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 
-import StorySection from 'components/common/StorySection';
+import StorySection from 'components/StorySection';
 import ExpandableUniqueValues from '.';
 
 // import TestDataBuilder from './testDataBuilder';

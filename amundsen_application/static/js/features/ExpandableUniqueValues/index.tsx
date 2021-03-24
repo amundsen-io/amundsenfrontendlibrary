@@ -9,7 +9,7 @@ import { formatNumber, isNumber } from 'utils/numberUtils';
 import './styles.scss';
 
 export const UNIQUE_VALUES_TITLE = 'Unique Values';
-const NUMBER_OF_VALUES_SUMMARY = 5;
+export const NUMBER_OF_VALUES_SUMMARY = 5;
 
 export interface ExpandableUniqueValuesProps {
   uniqueValues: ColumnUniqueValues[];
@@ -20,16 +20,14 @@ type UniqueValueRowProps = ColumnUniqueValues;
 const UniqueValueRow: React.FC<UniqueValueRowProps> = ({
   value,
   count,
-}: UniqueValueRowProps) => {
-  return (
-    <div className="column-stat-row">
-      <div className="stat-name body-3">{value.toUpperCase()}</div>
-      <div className="stat-value">
-        {isNumber(count) ? formatNumber(+count) : count}
-      </div>
+}: UniqueValueRowProps) => (
+  <div className="column-stat-row">
+    <div className="stat-name body-3">{value.toUpperCase()}</div>
+    <div className="stat-value">
+      {isNumber(count) ? formatNumber(+count) : count}
     </div>
-  );
-};
+  </div>
+);
 
 type UniqueValueSummaryProps = {
   uniqueValues: ColumnUniqueValues[];
@@ -41,12 +39,12 @@ const UniqueValueSummary: React.FC<UniqueValueSummaryProps> = ({
   const summaryItems = uniqueValues.slice(0, NUMBER_OF_VALUES_SUMMARY);
 
   return (
-    <div>
+    <div className="unique-values-list">
       {summaryItems.map(({ value }, index) => {
         const trailingSymbol = index === summaryItems.length - 1 ? '...' : ',';
 
         return (
-          <span>
+          <span className="unique-value-item" key={value}>
             {value}
             {trailingSymbol}
           </span>
@@ -64,9 +62,9 @@ const ExpandableUniqueValues: React.FC<ExpandableUniqueValuesProps> = ({
   }
 
   return (
-    <article className="column-stats">
-      <div className="stat-collection-info">
-        <span className="stat-title">{UNIQUE_VALUES_TITLE} </span>
+    <article className="unique-values">
+      <div className="unique-values-wrapper">
+        <span className="unique-values-title">{UNIQUE_VALUES_TITLE} </span>
         <UniqueValueSummary uniqueValues={uniqueValues} />
       </div>
       {/* <div className="column-stats-table">

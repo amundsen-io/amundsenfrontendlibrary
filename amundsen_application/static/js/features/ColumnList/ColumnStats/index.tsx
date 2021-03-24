@@ -3,9 +3,10 @@
 
 import * as React from 'react';
 
-import { TableColumnStats } from 'interfaces/index';
 import { formatNumber, isNumber } from 'utils/numberUtils';
-import { getStatsInfoText } from '../utils';
+import { filterOutUniqueValues, getStatsInfoText } from 'utils/stats';
+
+import { TableColumnStats } from 'interfaces/index';
 
 import { COLUMN_STATS_TITLE } from '../constants';
 
@@ -41,8 +42,9 @@ const ColumnStats: React.FC<ColumnStatsProps> = ({
   if (stats.length === 0) {
     return null;
   }
-  const startEpoch = Math.min(...stats.map(getStart));
-  const endEpoch = Math.max(...stats.map(getEnd));
+  const filteredStats = filterOutUniqueValues(stats);
+  const startEpoch = Math.min(...filteredStats.map(getStart));
+  const endEpoch = Math.max(...filteredStats.map(getEnd));
 
   return (
     <article className="column-stats">
@@ -52,7 +54,7 @@ const ColumnStats: React.FC<ColumnStatsProps> = ({
       </div>
       <div className="column-stats-table">
         <div className="column-stats-column">
-          {stats.map((stat, index) => {
+          {filteredStats.map((stat, index) => {
             if (index % 2 === 0) {
               return (
                 <ColumnStatRow
@@ -67,7 +69,7 @@ const ColumnStats: React.FC<ColumnStatsProps> = ({
           })}
         </div>
         <div className="column-stats-column">
-          {stats.map((stat, index) => {
+          {filteredStats.map((stat, index) => {
             if (index % 2 === 1) {
               return (
                 <ColumnStatRow

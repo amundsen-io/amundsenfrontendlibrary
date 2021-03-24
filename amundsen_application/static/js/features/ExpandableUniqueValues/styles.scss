@@ -4,11 +4,11 @@
 @import 'variables';
 @import 'typography';
 
-.column-stats {
-  .stat-collection-info {
+.unique-values {
+  .unique-values-wrapper {
     color: $text-secondary;
     font-style: italic;
-    margin: 8px 0;
+    margin: $spacer-1 0;
   }
 
   .column-stats-table {
@@ -52,7 +52,7 @@
     }
   }
 
-  .stat-title {
+  .unique-values-title {
     @extend %text-title-w3;
   }
 }

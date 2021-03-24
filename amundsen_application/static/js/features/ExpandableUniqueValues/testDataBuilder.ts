@@ -19,56 +19,36 @@ function TestDataBuilder(config = {}) {
     ...config,
   };
 
-  this.withEightStats = () => {
+  this.withSevenUniqueValues = () => {
     const attr = {
-      stats: [
+      uniqueValues: [
         {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'count',
-          stat_val: '12345',
+          value: '2020-11-28',
+          count: 2418200,
         },
         {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'count_null',
-          stat_val: '123',
+          value: '2020-11-26',
+          count: 2265000,
         },
         {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'count_distinct',
-          stat_val: '22',
+          value: '2020-12-01',
+          count: 1983000,
         },
         {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'count_zero',
-          stat_val: '44',
+          value: '2020-11-27',
+          count: 1903500,
         },
         {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'max',
-          stat_val: '1237466454',
+          value: '2020-11-30',
+          count: 1520800,
         },
         {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'min',
-          stat_val: '856',
+          value: '2020-11-29',
+          count: 1286900,
         },
         {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'avg',
-          stat_val: '2356575',
-        },
-        {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'stddev',
-          stat_val: '1234563',
+          value: '2020-11-25',
+          count: 281100,
         },
       ],
     };
@@ -76,32 +56,26 @@ function TestDataBuilder(config = {}) {
     return new this.Klass(attr);
   };
 
-  this.withFourStats = () => {
+  this.withVariableNumberOfUniqueValues = (numberOfValues) => {
+    const dummyValue = {
+      value: '2020-11-28',
+      count: 2418200,
+    };
     const attr = {
-      stats: [
+      uniqueValues: Array(numberOfValues)
+        .fill(dummyValue)
+        .map(({ value, count }, i) => ({ value: value + i, count })),
+    };
+
+    return new this.Klass(attr);
+  };
+
+  this.withOneUniqueValue = () => {
+    const attr = {
+      uniqueValues: [
         {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'count',
-          stat_val: '12345',
-        },
-        {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'count_null',
-          stat_val: '123',
-        },
-        {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'avg',
-          stat_val: '2356575',
-        },
-        {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'stddev',
-          stat_val: '1234563',
+          value: '2020-11-28',
+          count: 2418200,
         },
       ],
     };
@@ -109,55 +83,8 @@ function TestDataBuilder(config = {}) {
     return new this.Klass(attr);
   };
 
-  this.withThreeStats = () => {
-    const attr = {
-      stats: [
-        {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'count',
-          stat_val: '12345',
-        },
-        {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'avg',
-          stat_val: '2356575',
-        },
-        {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'stddev',
-          stat_val: '1234563',
-        },
-      ],
-    };
-
-    return new this.Klass(attr);
-  };
-  this.withNonNumericStats = () => {
-    const attr = {
-      stats: [
-        {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'count',
-          stat_val: '12345',
-        },
-        {
-          end_epoch: 1571616000,
-          start_epoch: 1571616000,
-          stat_type: 'date',
-          stat_val: '2020-11-03',
-        },
-      ],
-    };
-
-    return new this.Klass(attr);
-  };
-
-  this.withEmptyStats = () => {
-    const attr = { stats: [] };
+  this.withEmptyUniqueValues = () => {
+    const attr = { uniqueValues: [] };
 
     return new this.Klass(attr);
   };
