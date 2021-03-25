@@ -43,10 +43,7 @@ def create_app(config_module_class: str, template_folder: str = None) -> Flask:
     tmpl_dir = template_folder if template_folder else os.path.join(PROJECT_ROOT, static_dir, 'dist/templates')
     app = app_wrapper_class(__name__, static_folder=static_dir, template_folder=tmpl_dir, **args)
 
-    """ Support for importing a custom config class """
-    config_module_class = \
-        os.getenv('FRONTEND_SVC_CONFIG_MODULE_CLASS') or config_module_class
-
+    # Support for importing a custom config class
     app.config.from_object(config_module_class)
 
     if app.config.get('LOG_CONFIG_FILE'):
