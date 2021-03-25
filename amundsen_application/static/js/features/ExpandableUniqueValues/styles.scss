@@ -4,6 +4,8 @@
 @import 'variables';
 @import 'typography';
 
+$row-height: 32px;
+
 .unique-values {
   .unique-values-wrapper {
     color: $text-secondary;
@@ -11,44 +13,32 @@
     margin: $spacer-1 0;
   }
 
-  .column-stats-table {
+  .unique-values-table {
     display: flex;
-    max-width: 600px;
+  }
 
-    .column-stats-column {
-      flex-basis: 50%;
-      flex-grow: 1;
+  .unique-value-row {
+    border-top: 1px solid $divider;
+    display: flex;
+    line-height: $row-height;
 
-      &:first-child {
-        margin-right: 16px;
-      }
+    &:nth-child(odd) {
+      background-color: $body-bg-secondary;
+    }
 
-      .column-stat-row {
-        border-top: 1px solid $divider;
-        display: flex;
-        line-height: 32px;
+    &:last-child {
+      border-bottom: 1px solid $divider;
+    }
 
-        &:nth-child(odd) {
-          background-color: $body-bg-secondary;
-        }
+    .unique-value-name {
+      flex: 100px 1 0;
+      padding-left: $spacer-half;
+    }
 
-        &:last-child {
-          border-bottom: 1px solid $divider;
-        }
-
-        .stat-name {
-          flex: 100px 1 0;
-          padding-left: 4px;
-          text-transform: lowercase;
-        }
-
-        .stat-value {
-          flex: 100px 1 1;
-          padding-right: $spacer-half;
-          text-align: right;
-          font-style: $font-family-monospace-code;
-        }
-      }
+    .unique-value-value {
+      flex: 100px 1 1;
+      padding-right: $spacer-3;
+      text-align: right;
     }
   }
 

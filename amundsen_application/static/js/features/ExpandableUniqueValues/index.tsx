@@ -4,30 +4,18 @@
 import * as React from 'react';
 
 import { ColumnUniqueValues } from 'interfaces/index';
-import { formatNumber, isNumber } from 'utils/numberUtils';
+
+import UniqueValuesModal from './UniqueValuesModal';
 
 import './styles.scss';
 
 export const UNIQUE_VALUES_TITLE = 'Unique Values';
+export const SEE_MORE_LINK_TEXT = 'See all';
 export const NUMBER_OF_VALUES_SUMMARY = 5;
 
 export interface ExpandableUniqueValuesProps {
   uniqueValues: ColumnUniqueValues[];
 }
-
-type UniqueValueRowProps = ColumnUniqueValues;
-
-const UniqueValueRow: React.FC<UniqueValueRowProps> = ({
-  value,
-  count,
-}: UniqueValueRowProps) => (
-  <div className="column-stat-row">
-    <div className="stat-name body-3">{value.toUpperCase()}</div>
-    <div className="stat-value">
-      {isNumber(count) ? formatNumber(+count) : count}
-    </div>
-  </div>
-);
 
 type UniqueValueSummaryProps = {
   uniqueValues: ColumnUniqueValues[];
@@ -37,6 +25,16 @@ const UniqueValueSummary: React.FC<UniqueValueSummaryProps> = ({
   uniqueValues,
 }: UniqueValueSummaryProps) => {
   const summaryItems = uniqueValues.slice(0, NUMBER_OF_VALUES_SUMMARY);
+  const [showModal, setShowModal] = React.useState(false);
+
+  const handleSeeAll = () => {
+    console.log('see all!!');
+    setShowModal(true);
+  };
+  const handleCloseModal = () => {
+    console.log('close modal!!');
+    setShowModal(false);
+  };
 
   return (
     <div className="unique-values-list">
@@ -50,6 +48,19 @@ const UniqueValueSummary: React.FC<UniqueValueSummaryProps> = ({
           </span>
         );
       })}
+      <button
+        className="unique-values-expand-link"
+        type="button"
+        onClick={handleSeeAll}
+      >
+        {SEE_MORE_LINK_TEXT}
+      </button>
+      {showModal && (
+        <UniqueValuesModal
+          uniqueValues={uniqueValues}
+          onClose={handleCloseModal}
+        />
+      )}
     </div>
   );
 };
@@ -60,45 +71,12 @@ const ExpandableUniqueValues: React.FC<ExpandableUniqueValuesProps> = ({
   if (uniqueValues.length === 0) {
     return null;
   }
-
   return (
     <article className="unique-values">
       <div className="unique-values-wrapper">
         <span className="unique-values-title">{UNIQUE_VALUES_TITLE} </span>
         <UniqueValueSummary uniqueValues={uniqueValues} />
       </div>
-      {/* <div className="column-stats-table">
-        <div className="column-stats-column">
-          {uniqueValues.map((stat, index) => {
-            if (index % 2 === 0) {
-              return (
-                <UniqueValueRow
-                  key={stat.value}
-                  value={stat.value}
-                  count={stat.count}
-                />
-              );
-            }
-
-            return null;
-          })}
-        </div>
-        <div className="column-stats-column">
-          {uniqueValues.map((stat, index) => {
-            if (index % 2 === 1) {
-              return (
-                <UniqueValueRow
-                  key={stat.value}
-                  value={stat.value}
-                  count={stat.count}
-                />
-              );
-            }
-
-            return null;
-          })}
-        </div>
-      </div> */}
     </article>
   );
 };
