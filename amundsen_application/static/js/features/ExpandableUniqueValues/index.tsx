@@ -35,11 +35,11 @@ const UniqueValueSummary: React.FC<UniqueValueSummaryProps> = ({
     console.log('close modal!!');
     setShowModal(false);
   };
-
+  console.log('showModal', showModal);
   return (
     <div className="unique-values-list">
       {summaryItems.map(({ value }, index) => {
-        const trailingSymbol = index === summaryItems.length - 1 ? '...' : ',';
+        const trailingSymbol = index === summaryItems.length - 1 ? '...' : ', ';
 
         return (
           <span className="unique-value-item" key={value}>
@@ -49,7 +49,7 @@ const UniqueValueSummary: React.FC<UniqueValueSummaryProps> = ({
         );
       })}
       <button
-        className="unique-values-expand-link"
+        className="unique-values-expand-link btn-link"
         type="button"
         onClick={handleSeeAll}
       >

@@ -13,6 +13,15 @@ $row-height: 32px;
     margin: $spacer-1 0;
   }
 
+  .unique-values-list {
+    display: inline;
+    font-style: normal;
+  }
+
+  .unique-values-expand-link {
+    font-style: normal;
+  }
+
   .unique-values-table {
     display: flex;
   }
