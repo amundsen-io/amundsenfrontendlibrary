@@ -125,7 +125,7 @@ class EditableText extends React.Component<
       return (
         <div className="editable-text">
           <div className="markdown-wrapper">
-            <ReactMarkdown allowDangerousHtml={false}>{value}</ReactMarkdown>
+            <ReactMarkdown allowDangerousHtml={true}>{value}</ReactMarkdown>
           </div>
           {editable && !value && (
             <a
