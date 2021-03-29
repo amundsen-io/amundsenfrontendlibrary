@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import * as React from 'react';
+import { OverlayTrigger, Popover } from 'react-bootstrap';
 
 import { ColumnUniqueValues } from 'interfaces/index';
-
 import UniqueValuesModal from './UniqueValuesModal';
 
 import './styles.scss';
 
 export const UNIQUE_VALUES_TITLE = 'Unique Values';
 export const SEE_MORE_LINK_TEXT = 'See all';
+export const POPOVER_TEXT = 'Click to see a full list of unique values';
 export const NUMBER_OF_VALUES_SUMMARY = 5;
 
 export interface ExpandableUniqueValuesProps {
@@ -33,6 +34,9 @@ const UniqueValueSummary: React.FC<UniqueValueSummaryProps> = ({
   const handleCloseModal = () => {
     setShowModal(false);
   };
+  const popoverHoverFocus = (
+    <Popover id="popover-trigger-hover-focus">{POPOVER_TEXT}</Popover>
+  );
 
   return (
     <div className="unique-values-list">
@@ -46,13 +50,19 @@ const UniqueValueSummary: React.FC<UniqueValueSummaryProps> = ({
           </span>
         );
       })}
-      <button
-        className="unique-values-expand-link btn-link"
-        type="button"
-        onClick={handleSeeAll}
+      <OverlayTrigger
+        trigger={['hover', 'focus']}
+        placement="top"
+        overlay={popoverHoverFocus}
       >
-        {SEE_MORE_LINK_TEXT}
-      </button>
+        <button
+          className="unique-values-expand-link btn-link"
+          type="button"
+          onClick={handleSeeAll}
+        >
+          {SEE_MORE_LINK_TEXT}
+        </button>
+      </OverlayTrigger>
       <UniqueValuesModal
         shouldShow={showModal}
         uniqueValues={uniqueValues}
