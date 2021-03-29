@@ -3,8 +3,9 @@
 
 import * as React from 'react';
 import { mount } from 'enzyme';
-
 import { Modal } from 'react-bootstrap';
+
+import UniqueValuesModal from './UniqueValuesModal';
 
 import ExpandableUniqueValues, {
   ExpandableUniqueValuesProps,
@@ -122,11 +123,11 @@ describe('ExpandableUniqueValues', () => {
 
       it('renders the modal', () => {
         const { wrapper } = setup({ uniqueValues });
-        const expected = 1;
+        const expected = true;
 
         wrapper.find('.unique-values-expand-link').simulate('click');
 
-        const actual = wrapper.find('.unique-values-modal').length;
+        const actual = wrapper.find(UniqueValuesModal).props().shouldShow;
 
         expect(actual).toEqual(expected);
       });
@@ -137,14 +138,14 @@ describe('ExpandableUniqueValues', () => {
 
       it('hides the modal', () => {
         const { wrapper } = setup({ uniqueValues });
-        const expected = 0;
+        const expected = false;
 
         // We open the modan and then close it
         wrapper.find('.unique-values-expand-link').simulate('click');
         // @ts-ignore
         wrapper.find(Modal).invoke('onHide')();
 
-        const actual = wrapper.find(Modal).length;
+        const actual = wrapper.find(UniqueValuesModal).props().shouldShow;
 
         expect(actual).toEqual(expected);
       });

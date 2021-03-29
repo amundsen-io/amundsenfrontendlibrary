@@ -15,6 +15,7 @@ const setup = (propOverrides?: Partial<UniqueValuesModalProps>) => {
   const props = {
     uniqueValues: [],
     onClose: jest.fn(),
+    shouldShow: true,
     ...propOverrides,
   };
   const wrapper = mount<typeof UniqueValuesModal>(
@@ -33,7 +34,7 @@ describe('UniqueValuesModal', () => {
       it('renders the modal', () => {
         const { wrapper } = setup({ uniqueValues });
         const expected = uniqueValues.length;
-        const actual = wrapper.find('.unique-values-modal').length;
+        const actual = wrapper.find(Modal).length;
 
         expect(actual).toEqual(expected);
       });

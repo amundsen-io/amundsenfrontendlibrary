@@ -28,14 +28,12 @@ const UniqueValueSummary: React.FC<UniqueValueSummaryProps> = ({
   const [showModal, setShowModal] = React.useState(false);
 
   const handleSeeAll = () => {
-    console.log('see all!!');
     setShowModal(true);
   };
   const handleCloseModal = () => {
-    console.log('close modal!!');
     setShowModal(false);
   };
-  console.log('showModal', showModal);
+
   return (
     <div className="unique-values-list">
       {summaryItems.map(({ value }, index) => {
@@ -55,12 +53,11 @@ const UniqueValueSummary: React.FC<UniqueValueSummaryProps> = ({
       >
         {SEE_MORE_LINK_TEXT}
       </button>
-      {showModal && (
-        <UniqueValuesModal
-          uniqueValues={uniqueValues}
-          onClose={handleCloseModal}
-        />
-      )}
+      <UniqueValuesModal
+        shouldShow={showModal}
+        uniqueValues={uniqueValues}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };

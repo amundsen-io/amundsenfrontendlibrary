@@ -8,6 +8,8 @@ import { formatNumber, isNumber } from 'utils/numberUtils';
 
 import { ColumnUniqueValues } from 'interfaces/index';
 
+const UNIQUE_VALUES_MODAL_TITLE = 'Unique Values';
+
 type UniqueValueRowProps = ColumnUniqueValues;
 
 const UniqueValueRow: React.FC<UniqueValueRowProps> = ({
@@ -25,15 +27,22 @@ const UniqueValueRow: React.FC<UniqueValueRowProps> = ({
 export type UniqueValuesModalProps = {
   uniqueValues: ColumnUniqueValues[];
   onClose: () => void;
+  shouldShow: boolean;
 };
 
 const UniqueValuesModal: React.FC<UniqueValuesModalProps> = ({
   uniqueValues,
   onClose,
+  shouldShow,
 }: UniqueValuesModalProps) => (
-  <Modal className="unique-values-modal" onHide={onClose}>
-    <Modal.Header className="unique-values-modal-header" closeButton={false}>
-      <Modal.Title>Unique Values</Modal.Title>
+  <Modal
+    className="unique-values-modal"
+    onHide={onClose}
+    show={shouldShow}
+    scrollable="true"
+  >
+    <Modal.Header className="unique-values-modal-header" closeButton>
+      <Modal.Title>{UNIQUE_VALUES_MODAL_TITLE}</Modal.Title>
     </Modal.Header>
     <Modal.Body>
       <div className="unique-values-table">
