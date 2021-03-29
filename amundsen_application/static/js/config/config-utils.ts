@@ -83,6 +83,14 @@ export function getAnalyticsConfig(): AnalyticsConfig {
   return AppConfig.analytics;
 }
 
+/**
+ * Returns the stat type name for the distinct stat type
+ * @returns string or undefined
+ */
+export function getDistinctStatTypeName(): string | undefined {
+  return AppConfig.resourceConfig[ResourceType.table].stats?.distinctTypeName;
+}
+
 /*
  * Given a badge name, this will return a badge style and a display name.
  * If these are not specified by config, it will default to some simple rules:

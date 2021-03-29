@@ -1,7 +1,8 @@
 import { formatDate } from 'utils/dateUtils';
 
+import { getDistinctStatTypeName } from 'config/config-utils';
+
 import { ColumnUniqueValues } from 'interfaces/index';
-import { UNIQUE_VALUES_KEY } from '../constants';
 
 type StatType = Record<string, any>;
 
@@ -21,8 +22,13 @@ const parseRawUniqueValues = (uniqueValues: string) =>
 export const getUniqueValues = (
   statsList: StatType[]
 ): ColumnUniqueValues[] | [] => {
+  const uniqueValuesKey = getDistinctStatTypeName();
+  if (!uniqueValuesKey) {
+    return [];
+  }
+
   const uniqueValues = statsList.find(
-    (item) => item.stat_type === UNIQUE_VALUES_KEY
+    (item) => item.stat_type === uniqueValuesKey
   );
 
   if (uniqueValues) {
@@ -39,8 +45,11 @@ export const getUniqueValues = (
  * @param statsList
  * @returns StatType[]
  */
-export const filterOutUniqueValues = (statsList: StatType[]) =>
-  statsList.filter((item) => item.stat_type !== UNIQUE_VALUES_KEY);
+export const filterOutUniqueValues = (statsList: StatType[]) => {
+  const uniqueValuesKey = getDistinctStatTypeName();
+
+  return statsList.filter((item) => item.stat_type !== uniqueValuesKey);
+};
 
 /**
  * Creates the stats info message from the start and end epoch timestamps
