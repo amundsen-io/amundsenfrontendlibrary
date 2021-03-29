@@ -46,10 +46,10 @@ def marshall_table_partial(table_dict: Dict) -> Dict:
 
     TODO - Unify data format returned by search and metadata.
     """
-    schema = PopularTableSchema(strict=True)
+    schema = PopularTableSchema()
     # TODO: consider migrating to validate() instead of roundtripping
-    table: PopularTable = schema.load(table_dict).data
-    results = schema.dump(table).data
+    table: PopularTable = schema.load(table_dict)
+    results = schema.dump(table)
     # TODO: fix popular tables to provide these? remove if we're not using them?
     # TODO: Add the 'key' or 'id' to the base PopularTableSchema
     results['key'] = f'{table.database}://{table.cluster}.{table.schema}/{table.name}'
@@ -104,10 +104,10 @@ def marshall_table_full(table_dict: Dict) -> Dict:
     :return: Table Dict with sanitized fields
     """
 
-    schema = TableSchema(strict=True)
+    schema = TableSchema()
     # TODO: consider migrating to validate() instead of roundtripping
-    table: Table = schema.load(table_dict).data
-    results: Dict[str, Any] = schema.dump(table).data
+    table: Table = schema.load(table_dict)
+    results: Dict[str, Any] = schema.dump(table)
 
     is_editable = is_table_editable(results['schema'], results['name'])
     results['is_editable'] = is_editable
@@ -149,9 +149,9 @@ def marshall_dashboard_partial(dashboard_dict: Dict) -> Dict:
     :param dashboard_dict: Dict of partial dashboard metadata
     :return: partial dashboard Dict
     """
-    schema = DashboardSummarySchema(strict=True)
-    dashboard: DashboardSummary = schema.load(dashboard_dict).data
-    results = schema.dump(dashboard).data
+    schema = DashboardSummarySchema()
+    dashboard: DashboardSummary = schema.load(dashboard_dict)
+    results = schema.dump(dashboard)
     results['type'] = 'dashboard'
     # TODO: Bookmark logic relies on key, opting to add this here to avoid messy logic in
     # React app and we have to clean up later.

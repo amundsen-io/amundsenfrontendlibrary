@@ -7,6 +7,7 @@ import logging
 from http import HTTPStatus
 
 from flask import jsonify, make_response, Response
+from marshmallow import ValidationError
 
 from amundsen_application.models.announcements import Announcements, AnnouncementsSchema
 
@@ -38,12 +39,12 @@ class BaseAnnouncementClient(abc.ABC):
                 return _create_error_response(message)
 
             # validate the returned object
-            data, errors = AnnouncementsSchema().dump(announcements)
-            if not errors:
+            try:
+                data = AnnouncementsSchema().dump(announcements)
                 payload = jsonify({'posts': data.get('posts'), 'msg': 'Success'})
                 return make_response(payload, HTTPStatus.OK)
-            else:
-                message = 'Announcement data dump returned errors: ' + str(errors)
+            except ValidationError as err:
+                message = 'Announcement data dump returned errors: ' + str(err.messages)
                 return _create_error_response(message)
         except Exception as e:
             message = 'Encountered exception: ' + str(e)
