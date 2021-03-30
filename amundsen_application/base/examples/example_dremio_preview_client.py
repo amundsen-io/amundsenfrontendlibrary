@@ -81,8 +81,8 @@ class DremioPreviewClient(BasePreviewClient):
 
             preview_data = PreviewData(column_items, rows)
             try:
-                PreviewDataSchema().load(preview_data)
                 data = PreviewDataSchema().dump(preview_data)
+                PreviewDataSchema().load(data)  # for validation only
                 payload = jsonify({'preview_data': data})
                 return make_response(payload, HTTPStatus.OK)
             except ValidationError as err:

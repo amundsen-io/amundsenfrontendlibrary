@@ -9,7 +9,7 @@ from http import HTTPStatus
 
 from flask import Response, jsonify, make_response, request, current_app as app
 from flask.blueprints import Blueprint
-from marshmallow import EXCLUDE, ValidationError
+from marshmallow import ValidationError
 from werkzeug.utils import import_string
 
 from amundsen_application.models.preview_data import PreviewDataSchema

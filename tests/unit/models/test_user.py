@@ -88,7 +88,7 @@ class UserTest(unittest.TestCase):
         """
         with app.test_request_context():
             with self.assertRaises(ValidationError):
-                data = UserSchema().load({'display_name': 'Test User'})
+                UserSchema().load({'display_name': 'Test User'})
 
     def test_str_no_value(self) -> None:
         """

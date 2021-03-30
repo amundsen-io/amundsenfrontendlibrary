@@ -64,7 +64,7 @@ class BaseBigqueryPreviewClient(BasePreviewClient):
         )
         try:
             data = PreviewDataSchema().dump(preview_data)
-            PreviewDataSchema().load(data)
+            PreviewDataSchema().load(data)  # for validation only
             payload = jsonify({"preview_data": data})
             return make_response(payload, HTTPStatus.OK)
         except ValidationError as err:
