@@ -9,7 +9,7 @@ from typing import List
 import flask
 
 from amundsen_application.base.base_announcement_client import BaseAnnouncementClient
-from amundsen_application.models.announcements import Announcements
+from amundsen_application.models.announcements import Announcements, Post
 
 app = flask.Flask(__name__)
 app.config.from_object('amundsen_application.config.LocalConfig')
@@ -75,7 +75,7 @@ class AnnouncementClientTest(unittest.TestCase):
                 {
                     'title': 'Test Title',
                     'date': 'December 31, 1999',
-                    'info_list': ['Test announcement'],
+                    'html_content': 'content',
                 }
             ]
             response = MockClient(success_posts)._get_posts()

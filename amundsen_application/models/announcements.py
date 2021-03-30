@@ -29,10 +29,11 @@ class AnnouncementsSchema(Schema):
     posts = fields.Nested(PostSchema, many=True)
 
     @post_dump
-    def validate_data(self, data: Dict) -> None:
+    def validate_data(self, data: Dict, **kwargs) -> None:
         posts = data.get('posts', [])
         for post in posts:
             if post.get('date') is None:
                 raise ValidationError('All posts must have a date')
             if post.get('title') is None:
                 raise ValidationError('All posts must have a title')
+        return data
