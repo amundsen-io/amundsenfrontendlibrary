@@ -129,7 +129,7 @@ class SupersetPreviewClientTest(unittest.TestCase):
         """
         with app.test_request_context():
             response = MockBadDataClient().get_preview_data(params={})
-            self.assertEqual(json.loads(response.data).get('preview_data'), {})
+            self.assertEqual(json.loads(response).get('preview_data'), {})
             self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     def test_post_sql_json_correct_data_shape(self) -> None:
