@@ -23,12 +23,12 @@ It verifies the shape of the data before returning it to the application. If the
 
 ```python
 # validate the returned object
-data, errors = AnnouncementsSchema().dump(announcements)
-if not errors:
+try:
+    data = AnnouncementsSchema().dump(announcements)
     payload = jsonify({'posts': data.get('posts'), 'msg': 'Success'})
     return make_response(payload, HTTPStatus.OK)
-else:
-    message = 'Announcement data dump returned errors: ' + str(errors)
+except ValidationError as err:
+    message = 'Announcement data dump returned errors: ' + str(err.messages)
     return _create_error_response(message)
 ```
 

@@ -27,11 +27,11 @@ It verifies the shape of the data before returning it to the application. If the
 response_dict = response.json()
 columns = [ColumnItem(c['name'], c['type']) for c in response_dict['columns']]
 preview_data = PreviewData(columns, response_dict['data'])
-data, errors = PreviewDataSchema().dump(preview_data)
-if not errors:
+try:
+    data = PreviewDataSchema().dump(preview_data)
     payload = jsonify({'preview_data': data})
     return make_response(payload, response.status_code)
-else:
+except ValidationError as err:
     return make_response(jsonify({'preview_data': {}}), HTTPStatus.INTERNAL_SERVER_ERROR)
 ```
 
