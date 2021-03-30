@@ -85,8 +85,8 @@ class UserTest(unittest.TestCase):
         Error is raised if deserialization of Dict will not generate a user_id
         :return:
         """
-        with app.test_request_context():
-            self.assertRaises(ValidationError, UserSchema().load({'display_name': 'Test User'}))
+        with app.test_request_context(), self.assertRaises(ValidationError):
+            UserSchema().load({'display_name': 'Test User'})
 
     def test_str_no_value(self) -> None:
         """
