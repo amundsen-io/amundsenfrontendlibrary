@@ -170,7 +170,7 @@ export class DashboardPage extends React.Component<
       dashboard.last_run_state && dashboard.last_run_state.length > 0;
     const dashboardNotice = getResourceNotices(
       ResourceType.dashboard,
-      `${dashboard.product}.${dashboard.name}`
+      `${dashboard.product}.${dashboard.cluster}.${dashboard.group_name}.${dashboard.name}`
     );
 
     if (isLoading) {
@@ -245,7 +245,7 @@ export class DashboardPage extends React.Component<
           <aside className="left-panel">
             {!!dashboardNotice && (
               <Alert
-                message={dashboardNotice.message}
+                message={dashboardNotice.messageHtml}
                 severity={dashboardNotice.severity}
               />
             )}

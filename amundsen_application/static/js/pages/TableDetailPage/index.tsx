@@ -301,7 +301,7 @@ export class TableDetail extends React.Component<
       const editUrl = data.source ? data.source.source : '';
       const tableNotice = getResourceNotices(
         ResourceType.table,
-        `${data.schema}.${data.name}`
+        `${data.cluster}.${data.database}.${data.schema}.${data.name}`
       );
 
       innerContent = (
@@ -355,7 +355,7 @@ export class TableDetail extends React.Component<
             <aside className="left-panel">
               {!!tableNotice && (
                 <Alert
-                  message={tableNotice.message}
+                  message={tableNotice.messageHtml}
                   severity={tableNotice.severity}
                 />
               )}

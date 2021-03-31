@@ -171,25 +171,35 @@ A notice is a small box with an icon and a message containing HTML markup (like 
   <img src='img/notices-alert-table.png' width='50%' />
 </figure>
 
-To set them up, we'll use the current configuration objects for the resources. For example, if company X wants to deprecate the use of one table, they can opt to add a new notice in their configuration file:
+To set them up, we'll use the current configuration objects for the resources. For example, if company X wants to deprecate the use of one table or dashboard, they can opt to add new notices in their configuration file:
 
 ```
   resourceConfig: {
     [ResourceType.table]: {
       ... //Table Resource Configuration
       notices: {
-          "<SCHEMANAME>.<TABLENAME>": {
+          "<CLUSTER>.<DATABASE>.<SCHEMA>.<TABLENAME>": {
             severity: NoticeSeverity.ALERT,
-            message: `<span>This table is deprecated, please use <a href="<LINKTONEWTABLEDETAILPAGE>">this new table</a> instead.</span>`,
+            messageHtml: `This table is deprecated, please use <a href="<LINKTONEWTABLEDETAILPAGE>">this new table</a> instead.`,
           },
       },
     },
+    [ResourceType.dashboard]: {
+      ... //Dashboard Resource Configuration
+      notices: {
+          "<PRODUCT>.<CLUSTER>.<GROUPNAME>.<DASHBOARDNAME>": {
+            severity: NoticeSeverity.WARNING,
+            messageHtml: `This dashboard is deprecated, please use <a href="<LINKTONEWDASHBOARDDETAILPAGE>">this new dashboard</a> instead.`,
+          },
+      },
+    },
+
   },
 ```
 
-The above code will show a notice with a red exclamation icon whenever a final user visits the table's Table Detail page.
+The above code will show a notice with a red exclamation icon whenever a final user visits the table's Table Detail page or the Dashboard Detail page.
 
-This feature's ultimate goal is to allow Amundsen administrators to point their users to more trusted/higher quality data without removing the old references.
+This feature's ultimate goal is to allow Amundsen administrators to point their users to more trusted/higher quality resources without removing the old references.
 
 Learn more about the future developments for this feature in [its RFC](https://github.com/amundsen-io/rfcs/blob/master/rfcs/029-resource-notices.md).
 

@@ -147,7 +147,7 @@ export enum NoticeSeverity {
 }
 export interface NoticeType {
   severity: NoticeSeverity;
-  message: string;
+  messageHtml: string;
 }
 /**
  * Stats configuration options

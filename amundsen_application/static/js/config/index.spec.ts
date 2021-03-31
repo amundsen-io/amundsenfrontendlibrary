@@ -72,7 +72,7 @@ describe('getResourceNotices', () => {
     AppConfig.resourceConfig[ResourceType.table].notices = {
       testName: {
         severity: NoticeSeverity.WARNING,
-        message: 'testMessage',
+        messageHtml: 'testMessage',
       },
     };
 
@@ -82,7 +82,7 @@ describe('getResourceNotices', () => {
         ResourceType.table,
         'testName'
       );
-      const actual = notice && notice.message;
+      const actual = notice && notice.messageHtml;
 
       expect(actual).toEqual(expected);
     });
@@ -92,7 +92,7 @@ describe('getResourceNotices', () => {
     AppConfig.resourceConfig[ResourceType.table].notices = {
       testName: {
         severity: NoticeSeverity.WARNING,
-        message: 'testMessage',
+        messageHtml: 'testMessage',
       },
     };
 
@@ -112,7 +112,7 @@ describe('getResourceNotices', () => {
       AppConfig.resourceConfig[ResourceType.dashboard].notices = {
         testName: {
           severity: NoticeSeverity.WARNING,
-          message: 'testMessage',
+          messageHtml: 'testMessage',
         },
       };
 
@@ -122,7 +122,7 @@ describe('getResourceNotices', () => {
           ResourceType.dashboard,
           'testName'
         );
-        const actual = notice && notice.message;
+        const actual = notice && notice.messageHtml;
 
         expect(actual).toEqual(expected);
       });
