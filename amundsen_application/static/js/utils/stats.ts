@@ -2,9 +2,7 @@ import { formatDate } from 'utils/dateUtils';
 
 import { getDistinctStatTypeName } from 'config/config-utils';
 
-import { ColumnUniqueValues } from 'interfaces/index';
-
-type StatType = Record<string, any>;
+import { ColumnUniqueValues, TableColumnStats } from 'interfaces/index';
 
 const mapIntoUniqueValueFormat = ([k, v]): ColumnUniqueValues => ({
   value: k,
@@ -20,7 +18,7 @@ const parseRawUniqueValues = (uniqueValues: string) =>
  * @returns ColumnUniqueValues[]
  */
 export const getUniqueValues = (
-  statsList: StatType[]
+  statsList: TableColumnStats[]
 ): ColumnUniqueValues[] | [] => {
   const uniqueValuesKey = getDistinctStatTypeName();
   if (!uniqueValuesKey) {
@@ -43,9 +41,9 @@ export const getUniqueValues = (
 /**
  * Removes any stat identified as a distinct value
  * @param statsList
- * @returns StatType[]
+ * @returns TableColumnStats[]
  */
-export const filterOutUniqueValues = (statsList: StatType[]) => {
+export const filterOutUniqueValues = (statsList: TableColumnStats[]) => {
   const uniqueValuesKey = getDistinctStatTypeName();
 
   return statsList.filter((item) => item.stat_type !== uniqueValuesKey);

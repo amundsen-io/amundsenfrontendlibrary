@@ -30,7 +30,7 @@ import {
 } from 'interfaces';
 
 import BadgeList from 'features/BadgeList';
-import { getUniqueValues } from 'utils/stats';
+import { getUniqueValues, filterOutUniqueValues } from 'utils/stats';
 import ColumnType from './ColumnType';
 import ColumnDescEditableText from './ColumnDescEditableText';
 import ColumnStats from './ColumnStats';
@@ -163,7 +163,8 @@ const ExpandedRowComponent: React.FC<ExpandedRowProps> = (
 
     return true;
   };
-  const uniqueValues = rowValue.stats && getUniqueValues(rowValue.stats);
+  const normalStats = rowValue.stats && filterOutUniqueValues(rowValue.stats);
+  const uniqueValueStats = rowValue.stats && getUniqueValues(rowValue.stats);
 
   return (
     <div className="expanded-row-container">
@@ -182,13 +183,9 @@ const ExpandedRowComponent: React.FC<ExpandedRowProps> = (
           />
         </EditableSection>
       )}
-      {rowValue.stats && (
-        <>
-          <ColumnStats stats={rowValue.stats} />
-          {uniqueValues && (
-            <ExpandableUniqueValues uniqueValues={uniqueValues} />
-          )}
-        </>
+      {normalStats && <ColumnStats stats={normalStats} />}
+      {uniqueValueStats && (
+        <ExpandableUniqueValues uniqueValues={uniqueValueStats} />
       )}
     </div>
   );
