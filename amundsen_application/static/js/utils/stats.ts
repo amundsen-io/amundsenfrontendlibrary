@@ -1,6 +1,6 @@
 import { formatDate } from 'utils/dateUtils';
 
-import { getDistinctStatTypeName } from 'config/config-utils';
+import { getUniqueValueStatTypeName } from 'config/config-utils';
 
 import { ColumnUniqueValues, TableColumnStats } from 'interfaces/index';
 
@@ -12,7 +12,7 @@ const parseRawUniqueValues = (uniqueValues: string) =>
   JSON.parse(uniqueValues.split("'").join('"'));
 
 /**
- * Parses the stats' distinct values key into an array of
+ * Parses the stats' unique values key into an array of
  * objects with value and count properties
  * @param statsList
  * @returns ColumnUniqueValues[]
@@ -20,7 +20,7 @@ const parseRawUniqueValues = (uniqueValues: string) =>
 export const getUniqueValues = (
   statsList: TableColumnStats[]
 ): ColumnUniqueValues[] | [] => {
-  const uniqueValuesKey = getDistinctStatTypeName();
+  const uniqueValuesKey = getUniqueValueStatTypeName();
   if (!uniqueValuesKey) {
     return [];
   }
@@ -39,12 +39,12 @@ export const getUniqueValues = (
 };
 
 /**
- * Removes any stat identified as a distinct value
+ * Removes any stat identified as a unique value
  * @param statsList
  * @returns TableColumnStats[]
  */
 export const filterOutUniqueValues = (statsList: TableColumnStats[]) => {
-  const uniqueValuesKey = getDistinctStatTypeName();
+  const uniqueValuesKey = getUniqueValueStatTypeName();
 
   return statsList.filter((item) => item.stat_type !== uniqueValuesKey);
 };

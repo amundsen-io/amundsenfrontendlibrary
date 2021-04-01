@@ -86,15 +86,15 @@ describe('getAnalyticsConfig', () => {
   });
 });
 
-describe('getDistinctStatTypeName', () => {
-  it('returns the distinct stat type key name', () => {
+describe('getUniqueValueStatTypeName', () => {
+  it('returns the unique value stat type key name', () => {
     const expectedValue = 'test';
 
     AppConfig.resourceConfig[ResourceType.table].stats = {
-      distinctTypeName: expectedValue,
+      uniqueValueTypeName: expectedValue,
     };
 
-    expect(ConfigUtils.getDistinctStatTypeName()).toBe(expectedValue);
+    expect(ConfigUtils.getUniqueValueStatTypeName()).toBe(expectedValue);
   });
 });
 

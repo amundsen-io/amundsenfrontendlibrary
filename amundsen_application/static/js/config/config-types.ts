@@ -144,7 +144,7 @@ type SortCriteriaConfig = {
  * Stats configuration options
  */
 type StatsConfig = {
-  distinctTypeName: string;
+  uniqueValueTypeName: string;
 };
 
 /**

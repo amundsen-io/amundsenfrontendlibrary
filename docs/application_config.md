@@ -140,7 +140,7 @@ To achieve this, you will need to modify your custom configuration (config-custo
 [ResourceType.table]: {
   //...
   stats: {
-    distinctTypeName: "keyNameExample",
+    uniqueValueTypeName: "keyNameExample",
   },
 }
 ```

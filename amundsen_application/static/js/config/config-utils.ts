@@ -84,11 +84,12 @@ export function getAnalyticsConfig(): AnalyticsConfig {
 }
 
 /**
- * Returns the stat type name for the distinct stat type
+ * Returns the stat type name for the unique value stat type
  * @returns string or undefined
  */
-export function getDistinctStatTypeName(): string | undefined {
-  return AppConfig.resourceConfig[ResourceType.table].stats?.distinctTypeName;
+export function getUniqueValueStatTypeName(): string | undefined {
+  return AppConfig.resourceConfig[ResourceType.table].stats
+    ?.uniqueValueTypeName;
 }
 
 /*

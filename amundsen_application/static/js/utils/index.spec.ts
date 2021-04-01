@@ -8,7 +8,7 @@ import * as NumberUtils from './numberUtils';
 import * as StatUtils from './stats';
 
 jest.mock('config/config-utils', () => ({
-  getDistinctStatTypeName: jest.fn(() => 'distinctValues'),
+  getUniqueValueStatTypeName: jest.fn(() => 'distinctValues'),
   getNumberFormat: jest.fn(() => null),
 }));
 
