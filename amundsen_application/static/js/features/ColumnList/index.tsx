@@ -45,8 +45,12 @@ import {
 } from './constants';
 
 import './styles.scss';
+import { GetColumnLineageRequest } from 'ducks/tableMetadata/types';
+import { bindActionCreators } from 'redux';
+import { getColumnLineage } from 'ducks/tableMetadata/reducer';
+import { connect } from 'react-redux';
 
-export interface ColumnListProps {
+export interface ComponentProps {
   columns: TableColumn[];
   openRequestDescriptionDialog: (
     requestMetadataType: RequestMetadataType,
@@ -58,6 +62,15 @@ export interface ColumnListProps {
   sortBy?: SortCriteria;
   tableKey: string;
 }
+
+export interface DispatchFromProps {
+  getColumnLineage: (
+    key: string,
+    columnName: string
+  ) => GetColumnLineageRequest;
+}
+
+type ColumnListProps = ComponentProps & DispatchFromProps;
 
 type ContentType = {
   title: string;
@@ -142,15 +155,6 @@ const getUsageStat = (item) => {
   return null;
 };
 
-const handleRowExpand = (rowValues) => {
-  logAction({
-    command: 'click',
-    label: `${rowValues.content.title} ${rowValues.type.type}`,
-    target_id: `column::${rowValues.content.title}`,
-    target_type: 'column stats',
-  });
-};
-
 // @ts-ignore
 const ExpandedRowComponent: React.FC<ExpandedRowProps> = (
   rowValue: FormattedDataType
@@ -200,7 +204,7 @@ const ExpandedRowComponent: React.FC<ExpandedRowProps> = (
     </div>
   );
 };
-
+// export class ColumnLineageList extends React.Component<Props>
 const ColumnList: React.FC<ColumnListProps> = ({
   columns,
   database,
@@ -209,6 +213,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
   openRequestDescriptionDialog,
   sortBy = DEFAULT_SORTING,
   tableKey,
+  getColumnLineage,
 }: ColumnListProps) => {
   const hasColumnBadges = hasColumnWithBadge(columns);
   const formattedData: FormattedDataType[] = columns.map((item, index) => {
@@ -337,6 +342,19 @@ const ColumnList: React.FC<ColumnListProps> = ({
     ];
   }
 
+  const openedColumnsMap = {};
+  const handleRowExpand = (rowValues) => {
+    if (openedColumnsMap[rowValues.name]) return;
+    openedColumnsMap[rowValues.name] = true;
+    logAction({
+      command: 'click',
+      label: `${rowValues.content.title} ${rowValues.type.type}`,
+      target_id: `column::${rowValues.content.title}`,
+      target_type: 'column stats',
+    });
+    getColumnLineage(rowValues.tableKey, rowValues.name);
+  };
+
   return (
     <Table
       columns={formattedColumns}
@@ -352,4 +370,10 @@ const ColumnList: React.FC<ColumnListProps> = ({
   );
 };
 
-export default ColumnList;
+export const mapDispatchToProps = (dispatch: any) =>
+  bindActionCreators({ getColumnLineage }, dispatch);
+
+export default connect<{}, DispatchFromProps, ComponentProps>(
+  null,
+  mapDispatchToProps
+)(ColumnList);

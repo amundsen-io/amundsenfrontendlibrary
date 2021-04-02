@@ -2,13 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { GlobalState } from 'ducks/rootReducer';
-// import { isColumnListLineageEnabled } from 'config/config-utils';
 import * as React from 'react';
 import { GetColumnLineageRequest } from 'ducks/tableMetadata/types';
-import { emptyLineage, getColumnLineage } from 'ducks/tableMetadata/reducer';
+import { emptyLineage } from 'ducks/tableMetadata/reducer';
 
 interface ComponentProps {
   columnName: string;
@@ -29,10 +27,21 @@ interface StateFromProps {
 type Props = ComponentProps & DispatchFromProps & StateFromProps;
 
 export class ColumnLineageList extends React.Component<Props> {
-  componentDidMount() {
-    // TODO - Delay calling this until the user expands this particular column
-    const { getColumnLineage, tableKey, columnName } = this.props;
-    getColumnLineage(tableKey, columnName);
+  getLink = (table) =>
+    `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}` +
+    `?source=column_lineage`;
+
+  renderLineageLinks(entity, index) {
+    if (index >= 5) {
+      return null;
+    }
+    return (
+      <div>
+        <a href={this.getLink(entity)} target="_blank" rel="noreferrer">
+          {entity.schema}.{entity.name}
+        </a>
+      </div>
+    );
   }
 
   render() {
@@ -41,21 +50,16 @@ export class ColumnLineageList extends React.Component<Props> {
       return null;
     }
     return (
-      // TODO - make pretty
-      <div>
-        <div>
-          <h2>upstream</h2>
-          {upstream_entities.map((item) => (
-            <div>{item.key}</div>
-          ))}
+      <section className="column-lineage row">
+        <div className="lineage-column col-xs-6">
+          <div className="title-3">Top 5 Upstream Columns</div>
+          {upstream_entities.map(this.renderLineageLinks)}
         </div>
-        <div>
-          <h2>downstream</h2>
-          {downstream_entities.map((item) => (
-            <div>{item.key}</div>
-          ))}
+        <div className="lineage-column col-xs-6">
+          <div className="title-3">Top 5 Downstream Columns</div>
+          {downstream_entities.map(this.renderLineageLinks)}
         </div>
-      </div>
+      </section>
     );
   }
 }
@@ -71,10 +75,6 @@ export const mapStateToProps = (
   };
 };
 
-export const mapDispatchToProps = (dispatch: any) =>
-  bindActionCreators({ getColumnLineage }, dispatch);
-
-export default connect<StateFromProps, DispatchFromProps, ComponentProps>(
-  mapStateToProps,
-  mapDispatchToProps
-)(ColumnLineageList);
+export default connect<StateFromProps, {}, ComponentProps>(mapStateToProps)(
+  ColumnLineageList
+);
