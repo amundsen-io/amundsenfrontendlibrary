@@ -4,6 +4,17 @@
 @import 'variables';
 @import 'typography';
 
-section.column-lineage {
+section.column-lineage-wrapper {
   margin-top: 24px;
+  display: flex;
+  max-width: 600px;
+
+  .column-lineage-list {
+    flex-basis: 50%;
+    flex-grow: 1;
+
+    &:first-child {
+      margin-right: 16px;
+    }
+  }
 }

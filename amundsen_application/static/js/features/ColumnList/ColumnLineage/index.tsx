@@ -5,39 +5,32 @@ import { connect } from 'react-redux';
 
 import { GlobalState } from 'ducks/rootReducer';
 import * as React from 'react';
-import { GetColumnLineageRequest } from 'ducks/tableMetadata/types';
 import { emptyLineage } from 'ducks/tableMetadata/reducer';
+import './styles.scss';
 
 interface ComponentProps {
   columnName: string;
   tableKey: string;
 }
 
-interface DispatchFromProps {
-  getColumnLineage: (
-    key: string,
-    columnName: string
-  ) => GetColumnLineageRequest;
-}
-
 interface StateFromProps {
   columnLineage: any;
 }
 
-type Props = ComponentProps & DispatchFromProps & StateFromProps;
+type Props = ComponentProps & StateFromProps;
+
+const getLink = (table) =>
+  `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}` +
+  `?source=column_lineage`;
 
 export class ColumnLineageList extends React.Component<Props> {
-  getLink = (table) =>
-    `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}` +
-    `?source=column_lineage`;
-
   renderLineageLinks(entity, index) {
     if (index >= 5) {
       return null;
     }
     return (
       <div>
-        <a href={this.getLink(entity)} target="_blank" rel="noreferrer">
+        <a href={getLink(entity)} target="_blank" rel="noreferrer">
           {entity.schema}.{entity.name}
         </a>
       </div>
@@ -50,13 +43,23 @@ export class ColumnLineageList extends React.Component<Props> {
       return null;
     }
     return (
-      <section className="column-lineage row">
-        <div className="lineage-column col-xs-6">
-          <div className="title-3">Top 5 Upstream Columns</div>
+      <section className="column-lineage-wrapper">
+        <div className="column-lineage-list">
+          <div className="title-3">
+            Top 5 Upstream Columns &nbsp;
+            <a href="/" target="_blank">
+              See More
+            </a>
+          </div>
           {upstream_entities.map(this.renderLineageLinks)}
         </div>
-        <div className="lineage-column col-xs-6">
-          <div className="title-3">Top 5 Downstream Columns</div>
+        <div className="column-lineage-list">
+          <div className="title-3">
+            Top 5 Downstream Columns &nbsp;
+            <a href="/" target="_blank">
+              See More
+            </a>
+          </div>
           {downstream_entities.map(this.renderLineageLinks)}
         </div>
       </section>
