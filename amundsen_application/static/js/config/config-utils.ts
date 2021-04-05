@@ -321,12 +321,28 @@ export function getLogoTitle(): string {
  * Returns whether the in-app table lineage list is enabled.
  */
 export function isTableListLineageEnabled() {
-  return AppConfig.inAppLineage.isTableListEnabled;
+  return AppConfig.tableLineage.inAppListEnabled;
 }
 
 /**
  * Returns whether the in-app column list lineage is enabled.
  */
 export function isColumnListLineageEnabled() {
-  return AppConfig.inAppLineage.isColumnListEnabled;
+  return AppConfig.columnLineage.inAppListEnabled;
+}
+
+/**
+ * Returns the lineage link for a given column
+ */
+export function getColumnLineageLink(
+  tableData: TableMetadata,
+  columnName: string
+) {
+  return AppConfig.columnLineage.urlGenerator(
+    tableData.database,
+    tableData.cluster,
+    tableData.schema,
+    tableData.name,
+    columnName
+  );
 }

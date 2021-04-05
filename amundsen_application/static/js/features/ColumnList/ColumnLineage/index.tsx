@@ -6,7 +6,10 @@ import { connect } from 'react-redux';
 import { GlobalState } from 'ducks/rootReducer';
 import * as React from 'react';
 import { emptyLineage } from 'ducks/tableMetadata/reducer';
+
+import { getColumnLineageLink } from 'config/config-utils';
 import './styles.scss';
+import { Lineage, TableMetadata } from 'interfaces/TableMetadata';
 
 interface ComponentProps {
   columnName: string;
@@ -14,7 +17,8 @@ interface ComponentProps {
 }
 
 interface StateFromProps {
-  columnLineage: any;
+  columnLineage: Lineage;
+  tableData: TableMetadata;
 }
 
 type Props = ComponentProps & StateFromProps;
@@ -38,25 +42,27 @@ export class ColumnLineageList extends React.Component<Props> {
   }
 
   render() {
-    const { downstream_entities, upstream_entities } = this.props.columnLineage;
+    const { columnName, columnLineage, tableData } = this.props;
+    const { downstream_entities, upstream_entities } = columnLineage;
     if (!downstream_entities.length && !upstream_entities.length) {
       return null;
     }
+    const externalLink = getColumnLineageLink(tableData, columnName);
     return (
       <section className="column-lineage-wrapper">
         <div className="column-lineage-list">
-          <div className="title-3">
-            Top 5 Upstream Columns &nbsp;
-            <a href="/" target="_blank">
+          <div className="header-row">
+            <span className="title-3">Top 5 Upstream Columns&nbsp;</span>
+            <a href={externalLink} rel="noreferrer" target="_blank">
               See More
             </a>
           </div>
           {upstream_entities.map(this.renderLineageLinks)}
         </div>
         <div className="column-lineage-list">
-          <div className="title-3">
-            Top 5 Downstream Columns &nbsp;
-            <a href="/" target="_blank">
+          <div className="header-row">
+            <span className="title-3">Top 5 Downstream Columns&nbsp;</span>
+            <a href={externalLink} rel="noreferrer" target="_blank">
               See More
             </a>
           </div>
@@ -71,10 +77,11 @@ export const mapStateToProps = (
   state: GlobalState,
   ownProps: ComponentProps
 ) => {
-  const { columnLineageMap } = state.tableMetadata;
+  const { columnLineageMap, tableData } = state.tableMetadata;
   const columnLineage = columnLineageMap[ownProps.columnName] || emptyLineage;
   return {
     columnLineage,
+    tableData,
   };
 };
 

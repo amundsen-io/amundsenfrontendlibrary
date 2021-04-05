@@ -24,8 +24,8 @@ export interface AppConfig {
   announcements: AnnoucementsFeaturesConfig;
   navLinks: Array<LinkConfig>;
   resourceConfig: ResourceConfig;
-  tableLineage: TableLineageLinkConfig;
-  inAppLineage: LineageConfig;
+  tableLineage: TableLineageConfig;
+  columnLineage: ColumnLineageConfig;
   tableProfile: TableProfileConfig;
 }
 
@@ -47,8 +47,8 @@ export interface AppConfigCustom {
   announcements?: AnnoucementsFeaturesConfig;
   navLinks?: Array<LinkConfig>;
   resourceConfig?: ResourceConfig;
-  tableLineage?: TableLineageLinkConfig;
-  inAppLineage?: LineageConfig;
+  tableLineage?: TableLineageConfig;
+  columnLineage?: ColumnLineageConfig;
   tableProfile?: TableProfileConfig;
 }
 
@@ -269,16 +269,16 @@ interface TableProfileConfig {
 }
 
 /**
- * TableLineageLinkConfig - Customize the "Table Lineage" links of the "Table Details" page.
- * This feature is intended to link to an external lineage provider. For in-app lineage
- * refer to the 'LineageConfig' configuration.
+ * TableLineageConfig - Customize the "Table Lineage" links of the "Table Details" page.
+ * This feature is intended to link to an external lineage provider.
  *
  * iconPath - Path to an icon image to display next to the lineage URL.
  * isBeta - Adds a "beta" tag to the section header.
  * isEnabled - Whether to show or hide this section
  * urlGenerator - Generate a URL to the third party lineage website
+ * inAppListEnabled - Enable the in app Upstream/Downstream tabs for table lineage. Requires backend support.
  */
-interface TableLineageLinkConfig {
+interface TableLineageConfig {
   iconPath: string;
   isBeta: boolean;
   isEnabled: boolean;
@@ -288,18 +288,23 @@ interface TableLineageLinkConfig {
     schema: string,
     table: string
   ) => string;
+  inAppListEnabled: boolean;
 }
 
 /**
- * LineageConfig - Customize the in-app lineage features for table-to-table and column-to-column
- * level lineage on the table details page
+ * ColumnLineageConfig - Configure column level lineage features in Amundsen.
  *
- * isTableListEnabled - Enables the upstream and downstream tabs in the table details page.
- * isColumnListEnabled - Enables the upstream and downstream columns for individual columns.
+ * inAppListEnabled
  */
-interface LineageConfig {
-  isTableListEnabled: boolean;
-  isColumnListEnabled: boolean;
+interface ColumnLineageConfig {
+  inAppListEnabled: boolean;
+  urlGenerator: (
+    database: string,
+    cluster: string,
+    schema: string,
+    table: string,
+    column: string
+  ) => string;
 }
 
 export interface LinkConfig {
