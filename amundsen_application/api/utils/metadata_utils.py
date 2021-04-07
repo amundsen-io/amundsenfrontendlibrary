@@ -183,7 +183,6 @@ def marshall_lineage_table(table_dict: Dict) -> Dict:
     table_dict['schema'] = table_uri.schema
     table_dict['cluster'] = table_uri.cluster
     table_dict['name'] = table_uri.table
-    print(table_dict)
     return table_dict
 
 

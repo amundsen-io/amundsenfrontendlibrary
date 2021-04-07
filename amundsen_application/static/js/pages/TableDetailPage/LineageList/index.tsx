@@ -3,12 +3,12 @@
 
 import * as React from 'react';
 
-import { logClick } from 'ducks/utilMethods';
-import { LineageItem } from 'interfaces/TableMetadata';
 import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import { getSourceDisplayName } from 'config/config-utils';
+import { logClick } from 'ducks/utilMethods';
 import BadgeList from 'features/BadgeList';
 import { ResourceType } from 'interfaces/Resources';
+import { LineageItem } from 'interfaces/TableMetadata';
 
 export interface LineageListProps {
   items: LineageItem[];

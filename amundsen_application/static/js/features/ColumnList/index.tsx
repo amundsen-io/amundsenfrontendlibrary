@@ -3,6 +3,8 @@
 
 import * as React from 'react';
 import { Dropdown, MenuItem } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { OpenRequestAction } from 'ducks/notification/types';
 
@@ -46,9 +48,7 @@ import {
 
 import './styles.scss';
 import { GetColumnLineageRequest } from 'ducks/tableMetadata/types';
-import { bindActionCreators } from 'redux';
 import { getColumnLineage } from 'ducks/tableMetadata/reducer';
-import { connect } from 'react-redux';
 
 export interface ComponentProps {
   columns: TableColumn[];
@@ -204,7 +204,7 @@ const ExpandedRowComponent: React.FC<ExpandedRowProps> = (
     </div>
   );
 };
-// export class ColumnLineageList extends React.Component<Props>
+
 const ColumnList: React.FC<ColumnListProps> = ({
   columns,
   database,
