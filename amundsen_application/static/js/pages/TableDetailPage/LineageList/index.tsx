@@ -5,10 +5,10 @@ import * as React from 'react';
 
 import BookmarkIcon from 'components/Bookmark/BookmarkIcon';
 import { getSourceDisplayName } from 'config/config-utils';
-import { logClick } from 'ducks/utilMethods';
 import BadgeList from 'features/BadgeList';
 import { ResourceType } from 'interfaces/Resources';
 import { LineageItem } from 'interfaces/TableMetadata';
+import { RightIcon } from 'components/SVGIcons';
 
 export interface LineageListProps {
   items: LineageItem[];
@@ -19,9 +19,9 @@ const LineageList: React.FC<LineageListProps> = ({
 }: LineageListProps) => (
   <div className="list-group">
     {items.map((table, index) => {
-      const link =
-        `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}` +
-        `?index=${index}&source=table_lineage_list`;
+      const { cluster, database, schema, name } = table;
+      const link = `/table_detail/${cluster}/${database}/${schema}/${name}?index=${index}&source=table_lineage_list`;
+      // TODO - test badges
       const badges = table.badges.map((badgeName) => ({
         badge_name: badgeName,
       }));
@@ -29,11 +29,9 @@ const LineageList: React.FC<LineageListProps> = ({
       return (
         <li key={index} className="list-group-item clickable">
           <a
-            className="resource-list-item"
             href={link}
+            className="resource-list-item"
             target="_blank"
-            id=""
-            onClick={logClick}
             rel="noreferrer"
           >
             <div className="resource-info">
@@ -60,7 +58,7 @@ const LineageList: React.FC<LineageListProps> = ({
                   </div>
                 </div>
               )}
-              <img className="icon icon-right" alt="" />
+              <RightIcon />
             </div>
           </a>
         </li>

@@ -1,15 +1,19 @@
 // Copyright Contributors to the Amundsen project.
 // SPDX-License-Identifier: Apache-2.0
 
+import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { GlobalState } from 'ducks/rootReducer';
-import * as React from 'react';
 import { emptyLineage } from 'ducks/tableMetadata/reducer';
-
 import { getColumnLineageLink } from 'config/config-utils';
-import './styles.scss';
 import { Lineage, TableMetadata } from 'interfaces/TableMetadata';
+import {
+  COLUMN_LINEAGE_LIST_SIZE,
+  COLUMN_LINEAGE_MORE_TEXT,
+} from '../constants';
+
+import './styles.scss';
 
 interface ComponentProps {
   columnName: string;
@@ -23,18 +27,24 @@ interface StateFromProps {
 
 type Props = ComponentProps & StateFromProps;
 
-const getLink = (table) =>
-  `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}` +
-  `?source=column_lineage`;
+const getLink = (table) => {
+  const { cluster, database, schema, name } = table;
+  return `/table_detail/${cluster}/${database}/${schema}/${name}?source=column_lineage`;
+};
 
 export class ColumnLineageList extends React.Component<Props> {
   renderLineageLinks(entity, index) {
-    if (index >= 5) {
+    if (index >= COLUMN_LINEAGE_LIST_SIZE) {
       return null;
     }
     return (
       <div>
-        <a href={getLink(entity)} target="_blank" rel="noreferrer">
+        <a
+          href={getLink(entity)}
+          className="body-link"
+          target="_blank"
+          rel="noreferrer"
+        >
           {entity.schema}.{entity.name}
         </a>
       </div>
@@ -53,8 +63,13 @@ export class ColumnLineageList extends React.Component<Props> {
         <div className="column-lineage-list">
           <div className="header-row">
             <span className="title-3">Top 5 Upstream Columns&nbsp;</span>
-            <a href={externalLink} rel="noreferrer" target="_blank">
-              See More
+            <a
+              href={externalLink}
+              className="body-link"
+              rel="noreferrer"
+              target="_blank"
+            >
+              {COLUMN_LINEAGE_MORE_TEXT}
             </a>
           </div>
           {upstream_entities.map(this.renderLineageLinks)}
@@ -62,8 +77,13 @@ export class ColumnLineageList extends React.Component<Props> {
         <div className="column-lineage-list">
           <div className="header-row">
             <span className="title-3">Top 5 Downstream Columns&nbsp;</span>
-            <a href={externalLink} rel="noreferrer" target="_blank">
-              See More
+            <a
+              href={externalLink}
+              className="body-link"
+              rel="noreferrer"
+              target="_blank"
+            >
+              {COLUMN_LINEAGE_MORE_TEXT}
             </a>
           </div>
           {downstream_entities.map(this.renderLineageLinks)}

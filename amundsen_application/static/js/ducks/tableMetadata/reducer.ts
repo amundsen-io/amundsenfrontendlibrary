@@ -438,10 +438,9 @@ export default function reducer(
       };
     case GetColumnLineage.SUCCESS:
     case GetColumnLineage.FAILURE:
-      const columnLineage = (<GetColumnLineageResponse>action).payload.lineage;
-      const { columnName } = (<GetColumnLineageResponse>action).payload;
-      const { columnLineageMap } = state;
-
+      const { columnName, lineage: columnLineage } = (<
+        GetColumnLineageResponse
+      >action).payload;
       return {
         ...state,
         columnLineageMap: {

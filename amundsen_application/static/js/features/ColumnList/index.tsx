@@ -344,7 +344,9 @@ const ColumnList: React.FC<ColumnListProps> = ({
 
   const openedColumnsMap = {};
   const handleRowExpand = (rowValues) => {
-    if (openedColumnsMap[rowValues.name]) return;
+    if (openedColumnsMap[rowValues.name]) {
+      return;
+    }
     openedColumnsMap[rowValues.name] = true;
     logAction({
       command: 'click',
