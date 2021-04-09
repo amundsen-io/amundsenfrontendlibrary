@@ -64,7 +64,7 @@ export interface ComponentProps {
 }
 
 export interface DispatchFromProps {
-  getColumnLineage: (
+  getColumnLineageDispatch: (
     key: string,
     columnName: string
   ) => GetColumnLineageRequest;
@@ -213,7 +213,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
   openRequestDescriptionDialog,
   sortBy = DEFAULT_SORTING,
   tableKey,
-  getColumnLineage,
+  getColumnLineageDispatch,
 }: ColumnListProps) => {
   const hasColumnBadges = hasColumnWithBadge(columns);
   const formattedData: FormattedDataType[] = columns.map((item, index) => {
@@ -354,7 +354,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
       target_id: `column::${rowValues.content.title}`,
       target_type: 'column stats',
     });
-    getColumnLineage(rowValues.tableKey, rowValues.name);
+    getColumnLineageDispatch(rowValues.tableKey, rowValues.name);
   };
 
   return (
@@ -373,7 +373,7 @@ const ColumnList: React.FC<ColumnListProps> = ({
 };
 
 export const mapDispatchToProps = (dispatch: any) =>
-  bindActionCreators({ getColumnLineage }, dispatch);
+  bindActionCreators({ getColumnLineageDispatch: getColumnLineage }, dispatch);
 
 export default connect<{}, DispatchFromProps, ComponentProps>(
   null,

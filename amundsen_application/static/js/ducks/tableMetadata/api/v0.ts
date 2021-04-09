@@ -195,12 +195,8 @@ export function getTableLineage(key: string) {
     }))
     .catch((e: AxiosError<LineageAPI>) => {
       const { response } = e;
-      let data = {};
-      if (response && response.data) {
-        data = response.data;
-      }
       const status = response ? response.status : null;
-      return Promise.reject({ data, status });
+      return Promise.reject({ status });
     });
 }
 
@@ -219,11 +215,7 @@ export function getColumnLineage(key: string, columnName: string) {
     }))
     .catch((e: AxiosError<LineageAPI>) => {
       const { response } = e;
-      let data = {};
-      if (response && response.data) {
-        data = response.data;
-      }
       const status = response ? response.status : null;
-      return Promise.reject({ data, status });
+      return Promise.reject({ status });
     });
 }

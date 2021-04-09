@@ -99,7 +99,7 @@ export interface DispatchFromProps {
     searchIndex?: string,
     source?: string
   ) => GetTableDataRequest;
-  getTableLineage: (key: string) => GetTableLineageRequest;
+  getTableLineageDispatch: (key: string) => GetTableLineageRequest;
   openRequestDescriptionDialog: (
     requestMetadataType: RequestMetadataType,
     columnName: string
@@ -144,14 +144,14 @@ export class TableDetail extends React.Component<
   };
 
   componentDidMount() {
-    const { location, getTableData, getTableLineage } = this.props;
+    const { location, getTableData, getTableLineageDispatch } = this.props;
     const { index, source } = getLoggingParams(location.search);
 
     this.key = this.getTableKey();
     getTableData(this.key, index, source);
 
     if (isTableListLineageEnabled()) {
-      getTableLineage(this.key);
+      getTableLineageDispatch(this.key);
     }
     this.didComponentMount = true;
   }
@@ -506,7 +506,7 @@ export const mapDispatchToProps = (dispatch: any) =>
   bindActionCreators(
     {
       getTableData,
-      getTableLineage,
+      getTableLineageDispatch: getTableLineage,
       openRequestDescriptionDialog,
       searchSchema: (schemaText: string) =>
         updateSearchState({
