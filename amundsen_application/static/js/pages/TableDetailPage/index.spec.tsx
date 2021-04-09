@@ -42,7 +42,7 @@ const setup = (
     statusCode: 200,
     tableData: tableMetadata,
     getTableData: jest.fn(),
-    getTableLineage: jest.fn(),
+    getTableLineageDispatch: jest.fn(),
     openRequestDescriptionDialog: jest.fn(),
     searchSchema: jest.fn(),
     ...routerProps,
