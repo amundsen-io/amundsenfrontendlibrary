@@ -1,4 +1,5 @@
 import {
+  AnalyticsEvent,
   DashboardResource,
   OwnerDict,
   PreviewData,
@@ -185,6 +186,9 @@ export interface GetColumnLineageRequest {
   payload: {
     key: string;
     columnName: string;
+  };
+  meta: {
+    analytics: AnalyticsEvent;
   };
 }
 export interface GetColumnLineageResponse {

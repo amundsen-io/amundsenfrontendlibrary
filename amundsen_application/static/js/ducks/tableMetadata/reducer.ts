@@ -318,6 +318,15 @@ export function getColumnLineage(
   return {
     type: GetColumnLineage.REQUEST,
     payload: { key, columnName },
+    meta: {
+      analytics: {
+        name: `getColumnLineage`,
+        payload: {
+          category: 'lineage',
+          label: `${key}/${columnName}`,
+        },
+      },
+    },
   };
 }
 

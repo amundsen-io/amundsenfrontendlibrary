@@ -4,17 +4,25 @@
 @import 'variables';
 @import 'typography';
 
-section.column-lineage-wrapper {
-  margin-top: 24px;
+$column-lineage-max-width: 800px;
+
+article.column-lineage-wrapper {
+  margin-top: $spacer-3;
   display: flex;
-  max-width: 600px;
+  max-width: $column-lineage-max-width;
+
+  .column-lineage-title {
+    @extend %text-title-w3;
+
+    color: $text-secondary;
+  }
 
   .column-lineage-list {
     flex-basis: 50%;
     flex-grow: 1;
 
     &:first-child {
-      margin-right: 16px;
+      margin-right: $spacer-2;
     }
   }
 }

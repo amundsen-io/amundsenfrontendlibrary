@@ -19,13 +19,8 @@ const LineageList: React.FC<LineageListProps> = ({
 }: LineageListProps) => (
   <div className="list-group">
     {items.map((table, index) => {
-      const { cluster, database, schema, name } = table;
+      const { cluster, database, schema, name, badges } = table;
       const link = `/table_detail/${cluster}/${database}/${schema}/${name}?index=${index}&source=table_lineage_list`;
-      // TODO - test badges
-      const badges = table.badges.map((badgeName) => ({
-        badge_name: badgeName,
-      }));
-
       return (
         <li key={index} className="list-group-item clickable">
           <a
@@ -36,7 +31,7 @@ const LineageList: React.FC<LineageListProps> = ({
           >
             <div className="resource-info">
               <div className="resource-info-text my-auto">
-                <div className="resource-name title-2">
+                <div className="resource-name">
                   <div className="truncated">
                     {table.schema}.{table.name}
                   </div>
@@ -51,13 +46,7 @@ const LineageList: React.FC<LineageListProps> = ({
               {getSourceDisplayName(table.database, ResourceType.table)}
             </div>
             <div className="resource-badges">
-              {!!table.badges && table.badges.length > 0 && (
-                <div>
-                  <div className="body-secondary-3">
-                    <BadgeList badges={badges} />
-                  </div>
-                </div>
-              )}
+              {!!badges && badges.length > 0 && <BadgeList badges={badges} />}
               <RightIcon />
             </div>
           </a>

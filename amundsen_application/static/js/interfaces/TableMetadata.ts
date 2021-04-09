@@ -126,7 +126,7 @@ export interface Watermark {
 }
 
 export interface LineageItem {
-  badges: string[];
+  badges: Badge[];
   cluster: string;
   database: string;
   key: string;

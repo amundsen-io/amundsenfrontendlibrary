@@ -7,15 +7,17 @@ import { connect } from 'react-redux';
 import { GlobalState } from 'ducks/rootReducer';
 import { emptyLineage } from 'ducks/tableMetadata/reducer';
 import { getColumnLineageLink } from 'config/config-utils';
-import { Lineage, TableMetadata } from 'interfaces/TableMetadata';
+import { Lineage, LineageItem, TableMetadata } from 'interfaces/TableMetadata';
 import {
   COLUMN_LINEAGE_LIST_SIZE,
+  COLUMN_LINEAGE_DOWNSTREAM_TITLE,
+  COLUMN_LINEAGE_UPSTREAM_TITLE,
   COLUMN_LINEAGE_MORE_TEXT,
 } from '../constants';
 
 import './styles.scss';
 
-interface ComponentProps {
+interface ColumnLineageListOwnProps {
   columnName: string;
   tableKey: string;
 }
@@ -25,32 +27,55 @@ interface StateFromProps {
   tableData: TableMetadata;
 }
 
-type Props = ComponentProps & StateFromProps;
+type ColumnLineageListProps = ColumnLineageListOwnProps & StateFromProps;
+
+interface LineageListProps {
+  link: string;
+  title: string;
+  lineageItems: LineageItem[];
+}
 
 const getLink = (table) => {
   const { cluster, database, schema, name } = table;
   return `/table_detail/${cluster}/${database}/${schema}/${name}?source=column_lineage`;
 };
 
-export class ColumnLineageList extends React.Component<Props> {
-  renderLineageLinks(entity, index) {
-    if (index >= COLUMN_LINEAGE_LIST_SIZE) {
-      return null;
-    }
-    return (
-      <div>
-        <a
-          href={getLink(entity)}
-          className="body-link"
-          target="_blank"
-          rel="noreferrer"
-        >
-          {entity.schema}.{entity.name}
-        </a>
-      </div>
-    );
+const renderLineageLinks = (entity, index) => {
+  if (index >= COLUMN_LINEAGE_LIST_SIZE) {
+    return null;
   }
+  return (
+    <div>
+      <a
+        href={getLink(entity)}
+        className="body-link"
+        target="_blank"
+        rel="noreferrer"
+      >
+        {entity.schema}.{entity.name}
+      </a>
+    </div>
+  );
+};
 
+const LineageList: React.FC<LineageListProps> = ({
+  link,
+  title,
+  lineageItems,
+}) => (
+  <div className="column-lineage-list">
+    <div className="header-row">
+      <span className="column-lineage-title">{title}</span>
+      &nbsp;
+      <a href={link} className="body-link" rel="noreferrer" target="_blank">
+        {COLUMN_LINEAGE_MORE_TEXT}
+      </a>
+    </div>
+    {lineageItems.map(renderLineageLinks)}
+  </div>
+);
+
+export class ColumnLineageList extends React.Component<ColumnLineageListProps> {
   render() {
     const { columnName, columnLineage, tableData } = this.props;
     const { downstream_entities, upstream_entities } = columnLineage;
@@ -59,43 +84,25 @@ export class ColumnLineageList extends React.Component<Props> {
     }
     const externalLink = getColumnLineageLink(tableData, columnName);
     return (
-      <section className="column-lineage-wrapper">
-        <div className="column-lineage-list">
-          <div className="header-row">
-            <span className="title-3">Top 5 Upstream Columns&nbsp;</span>
-            <a
-              href={externalLink}
-              className="body-link"
-              rel="noreferrer"
-              target="_blank"
-            >
-              {COLUMN_LINEAGE_MORE_TEXT}
-            </a>
-          </div>
-          {upstream_entities.map(this.renderLineageLinks)}
-        </div>
-        <div className="column-lineage-list">
-          <div className="header-row">
-            <span className="title-3">Top 5 Downstream Columns&nbsp;</span>
-            <a
-              href={externalLink}
-              className="body-link"
-              rel="noreferrer"
-              target="_blank"
-            >
-              {COLUMN_LINEAGE_MORE_TEXT}
-            </a>
-          </div>
-          {downstream_entities.map(this.renderLineageLinks)}
-        </div>
-      </section>
+      <article className="column-lineage-wrapper">
+        <LineageList
+          link={externalLink}
+          title={COLUMN_LINEAGE_UPSTREAM_TITLE}
+          lineageItems={upstream_entities}
+        />
+        <LineageList
+          link={externalLink}
+          title={COLUMN_LINEAGE_DOWNSTREAM_TITLE}
+          lineageItems={downstream_entities}
+        />
+      </article>
     );
   }
 }
 
 export const mapStateToProps = (
   state: GlobalState,
-  ownProps: ComponentProps
+  ownProps: ColumnLineageListOwnProps
 ) => {
   const { columnLineageMap, tableData } = state.tableMetadata;
   const columnLineage = columnLineageMap[ownProps.columnName] || emptyLineage;
@@ -105,6 +112,6 @@ export const mapStateToProps = (
   };
 };
 
-export default connect<StateFromProps, {}, ComponentProps>(mapStateToProps)(
-  ColumnLineageList
-);
+export default connect<StateFromProps, {}, ColumnLineageListOwnProps>(
+  mapStateToProps
+)(ColumnLineageList);
