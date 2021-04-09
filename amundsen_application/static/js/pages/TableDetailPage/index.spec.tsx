@@ -17,6 +17,7 @@ import { TableDetail, TableDetailProps, MatchProps } from '.';
 
 jest.mock('config/config-utils', () => ({
   indexDashboardsEnabled: jest.fn(),
+  isTableListLineageEnabled: jest.fn(),
   getTableSortCriterias: jest.fn(),
 }));
 
@@ -59,7 +60,7 @@ describe('TableDetail', () => {
     beforeAll(() => {
       wrapper = setup().wrapper;
     });
-    it('renders one tab when dashboards are not enabled', () => {
+    it('does not render dashboard tab when disabled', () => {
       mocked(indexDashboardsEnabled).mockImplementation(() => false);
       const content = shallow(<div>{wrapper.instance().renderTabs()}</div>);
       expect(content.find(TabsComponent).props().tabs.length).toEqual(1);

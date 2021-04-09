@@ -84,7 +84,6 @@ const TABLE_SOURCE = 'table_page';
 const SORT_CRITERIAS = {
   ...getTableSortCriterias(),
 };
-const COLUMN_TAB_KEY = 'columns';
 
 export interface PropsFromState {
   isLoading: boolean;
@@ -141,7 +140,7 @@ export class TableDetail extends React.Component<
 
   state = {
     sortedBy: SORT_CRITERIAS.sort_order,
-    currentTab: COLUMN_TAB_KEY,
+    currentTab: Constants.COLUMN_TAB_KEY,
   };
 
   componentDidMount() {
@@ -252,7 +251,7 @@ export class TableDetail extends React.Component<
           sortBy={sortedBy}
         />
       ),
-      key: 'columns',
+      key: Constants.COLUMN_TAB_KEY,
       title: `Columns (${tableData.columns.length})`,
     });
 
@@ -270,7 +269,7 @@ export class TableDetail extends React.Component<
             source={TABLE_SOURCE}
           />
         ),
-        key: 'dashboards',
+        key: Constants.DASHBOARD_TAB_KEY,
         title: isLoadingDashboards
           ? loadingTitle
           : `Dashboards (${numRelatedDashboards})`,
@@ -280,13 +279,13 @@ export class TableDetail extends React.Component<
     if (isTableListLineageEnabled()) {
       tabInfo.push({
         content: <LineageList items={tableLineage.downstream_entities} />,
-        key: 'downstream',
+        key: Constants.DOWNSTREAM_TAB_KEY,
         title: `Downstream (${tableLineage.downstream_entities.length})`,
       });
 
       tabInfo.push({
         content: <LineageList items={tableLineage.upstream_entities} />,
-        key: 'upstream',
+        key: Constants.UPSTREAM_TAB_KEY,
         title: `Upstream (${tableLineage.upstream_entities.length})`,
       });
     }
@@ -294,7 +293,7 @@ export class TableDetail extends React.Component<
     return (
       <TabsComponent
         tabs={tabInfo}
-        defaultTab="columns"
+        defaultTab={Constants.COLUMN_TAB_KEY}
         onSelect={(key) => {
           this.setState({ currentTab: key });
         }}
@@ -467,7 +466,7 @@ export class TableDetail extends React.Component<
               )}
             </aside>
             <main className="right-panel">
-              {currentTab === COLUMN_TAB_KEY && (
+              {currentTab === Constants.COLUMN_TAB_KEY && (
                 <ListSortingDropdown
                   options={SORT_CRITERIAS}
                   onChange={this.handleSortingChange}

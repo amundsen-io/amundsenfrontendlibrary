@@ -178,7 +178,8 @@ def marshall_lineage_table(table_dict: Dict) -> Dict:
     :param table_dict:
     :return: table entry with additional fields
     """
-    table_uri = TableUri.from_uri(table_dict.get('key'))
+    table_key = str(table_dict.get('key'))
+    table_uri = TableUri.from_uri(table_key)
     table_dict['database'] = table_uri.database
     table_dict['schema'] = table_uri.schema
     table_dict['cluster'] = table_uri.cluster

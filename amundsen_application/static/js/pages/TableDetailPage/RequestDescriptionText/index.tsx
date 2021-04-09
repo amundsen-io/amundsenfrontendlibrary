@@ -35,7 +35,7 @@ export class RequestDescriptionText extends React.Component<
   render() {
     return (
       <a
-        className="body-link"
+        className="request-description body-link"
         href="JavaScript:void(0)"
         onClick={this.openRequest}
       >
