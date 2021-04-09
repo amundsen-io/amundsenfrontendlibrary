@@ -75,30 +75,31 @@ const LineageList: React.FC<LineageListProps> = ({
   </div>
 );
 
-export class ColumnLineageList extends React.Component<ColumnLineageListProps> {
-  render() {
-    const { columnName, columnLineage, tableData } = this.props;
-    const { downstream_entities, upstream_entities } = columnLineage;
-    if (!downstream_entities.length && !upstream_entities.length) {
-      return null;
-    }
-    const externalLink = getColumnLineageLink(tableData, columnName);
-    return (
-      <article className="column-lineage-wrapper">
-        <LineageList
-          link={externalLink}
-          title={COLUMN_LINEAGE_UPSTREAM_TITLE}
-          lineageItems={upstream_entities}
-        />
-        <LineageList
-          link={externalLink}
-          title={COLUMN_LINEAGE_DOWNSTREAM_TITLE}
-          lineageItems={downstream_entities}
-        />
-      </article>
-    );
+export const ColumnLineageList: React.FC<ColumnLineageListProps> = ({
+  columnName,
+  columnLineage,
+  tableData,
+}) => {
+  const { downstream_entities, upstream_entities } = columnLineage;
+  if (!downstream_entities.length && !upstream_entities.length) {
+    return null;
   }
-}
+  const externalLink = getColumnLineageLink(tableData, columnName);
+  return (
+    <article className="column-lineage-wrapper">
+      <LineageList
+        link={externalLink}
+        title={COLUMN_LINEAGE_UPSTREAM_TITLE}
+        lineageItems={upstream_entities}
+      />
+      <LineageList
+        link={externalLink}
+        title={COLUMN_LINEAGE_DOWNSTREAM_TITLE}
+        lineageItems={downstream_entities}
+      />
+    </article>
+  );
+};
 
 export const mapStateToProps = (
   state: GlobalState,

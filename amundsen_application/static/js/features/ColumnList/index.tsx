@@ -7,6 +7,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { OpenRequestAction } from 'ducks/notification/types';
+import { GetColumnLineageRequest } from 'ducks/tableMetadata/types';
+import { getColumnLineage } from 'ducks/tableMetadata/reducer';
 
 import EditableSection from 'components/EditableSection';
 import Table, {
@@ -47,8 +49,6 @@ import {
 } from './constants';
 
 import './styles.scss';
-import { GetColumnLineageRequest } from 'ducks/tableMetadata/types';
-import { getColumnLineage } from 'ducks/tableMetadata/reducer';
 
 export interface ComponentProps {
   columns: TableColumn[];

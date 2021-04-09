@@ -446,7 +446,7 @@ export default function reducer(
         },
       };
     case GetColumnLineage.SUCCESS:
-    case GetColumnLineage.FAILURE:
+    case GetColumnLineage.FAILURE: {
       const { columnName, lineage: columnLineage } = (<
         GetColumnLineageResponse
       >action).payload;
@@ -457,7 +457,7 @@ export default function reducer(
           [columnName]: columnLineage,
         },
       };
-
+    }
     default:
       return state;
   }
