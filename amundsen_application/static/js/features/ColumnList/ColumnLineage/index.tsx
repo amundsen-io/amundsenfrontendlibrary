@@ -16,6 +16,7 @@ import {
 } from '../constants';
 
 import './styles.scss';
+import LoadingSpinner from 'components/LoadingSpinner';
 
 interface ColumnLineageListOwnProps {
   columnName: string;
@@ -25,6 +26,7 @@ interface ColumnLineageListOwnProps {
 interface StateFromProps {
   columnLineage: Lineage;
   tableData: TableMetadata;
+  isLoading: boolean;
 }
 
 type ColumnLineageListProps = ColumnLineageListOwnProps & StateFromProps;
@@ -79,7 +81,12 @@ export const ColumnLineageList: React.FC<ColumnLineageListProps> = ({
   columnName,
   columnLineage,
   tableData,
+  isLoading,
 }) => {
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
   const { downstream_entities, upstream_entities } = columnLineage;
   if (!downstream_entities.length && !upstream_entities.length) {
     return null;
@@ -106,10 +113,14 @@ export const mapStateToProps = (
   ownProps: ColumnLineageListOwnProps
 ) => {
   const { columnLineageMap, tableData } = state.tableMetadata;
-  const columnLineage = columnLineageMap[ownProps.columnName] || emptyLineage;
+  const columnStateObject = columnLineageMap[ownProps.columnName];
+  const lineage =
+    (columnStateObject && columnStateObject.lineage) || emptyLineage;
+  const isLoading = columnStateObject && columnStateObject.isLoading;
   return {
-    columnLineage,
     tableData,
+    isLoading,
+    columnLineage: lineage,
   };
 };
 
