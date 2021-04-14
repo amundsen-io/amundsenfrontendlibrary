@@ -93,16 +93,20 @@ export const ColumnLineageList: React.FC<ColumnLineageListProps> = ({
   const externalLink = getColumnLineageLink(tableData, columnName);
   return (
     <article className="column-lineage-wrapper">
-      <LineageList
-        link={externalLink}
-        title={COLUMN_LINEAGE_UPSTREAM_TITLE}
-        lineageItems={upstream_entities}
-      />
-      <LineageList
-        link={externalLink}
-        title={COLUMN_LINEAGE_DOWNSTREAM_TITLE}
-        lineageItems={downstream_entities}
-      />
+      {upstream_entities.length && (
+        <LineageList
+          link={externalLink}
+          title={COLUMN_LINEAGE_UPSTREAM_TITLE}
+          lineageItems={upstream_entities}
+        />
+      )}
+      {upstream_entities.length && (
+        <LineageList
+          link={externalLink}
+          title={COLUMN_LINEAGE_DOWNSTREAM_TITLE}
+          lineageItems={downstream_entities}
+        />
+      )}
     </article>
   );
 };
