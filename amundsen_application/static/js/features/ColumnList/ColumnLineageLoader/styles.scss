@@ -4,7 +4,7 @@
 @import 'variables';
 
 $shimmer-height: 120px;
-$shimmer-block-spacing: $spacer-2;
+$shimmer-block-spacing: $spacer-1;
 $shimmer-max-width: 800px;
 $shimmer-header-height: 24px;
 
@@ -33,7 +33,7 @@ $shimmer-header-height: 24px;
       }
 
       &.header {
-        height: 24px;
+        height: $shimmer-header-height;
       }
 
       &.content {
