@@ -85,12 +85,11 @@ export const ColumnLineageList: React.FC<ColumnLineageListProps> = ({
   if (isLoading) {
     return <ColumnLineageLoader />;
   }
-
   const { downstream_entities, upstream_entities } = columnLineage;
+  const externalLink = getColumnLineageLink(tableData, columnName);
   if (!downstream_entities.length && !upstream_entities.length) {
     return null;
   }
-  const externalLink = getColumnLineageLink(tableData, columnName);
   return (
     <article className="column-lineage-wrapper">
       {upstream_entities.length && (
@@ -100,7 +99,7 @@ export const ColumnLineageList: React.FC<ColumnLineageListProps> = ({
           lineageItems={upstream_entities}
         />
       )}
-      {upstream_entities.length && (
+      {downstream_entities.length && (
         <LineageList
           link={externalLink}
           title={COLUMN_LINEAGE_DOWNSTREAM_TITLE}
