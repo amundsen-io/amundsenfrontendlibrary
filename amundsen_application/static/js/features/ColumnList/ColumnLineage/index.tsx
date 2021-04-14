@@ -8,6 +8,7 @@ import { GlobalState } from 'ducks/rootReducer';
 import { emptyLineage } from 'ducks/tableMetadata/reducer';
 import { getColumnLineageLink } from 'config/config-utils';
 import { Lineage, LineageItem, TableMetadata } from 'interfaces/TableMetadata';
+import ColumnLineageLoader from '../ColumnLineageLoader';
 import {
   COLUMN_LINEAGE_LIST_SIZE,
   COLUMN_LINEAGE_DOWNSTREAM_TITLE,
@@ -16,7 +17,6 @@ import {
 } from '../constants';
 
 import './styles.scss';
-import LoadingSpinner from 'components/LoadingSpinner';
 
 interface ColumnLineageListOwnProps {
   columnName: string;
@@ -68,7 +68,6 @@ const LineageList: React.FC<LineageListProps> = ({
   <div className="column-lineage-list">
     <div className="header-row">
       <span className="column-lineage-title">{title}</span>
-      &nbsp;
       <a href={link} className="body-link" rel="noreferrer" target="_blank">
         {COLUMN_LINEAGE_MORE_TEXT}
       </a>
@@ -84,7 +83,7 @@ export const ColumnLineageList: React.FC<ColumnLineageListProps> = ({
   isLoading,
 }) => {
   if (isLoading) {
-    return <LoadingSpinner />;
+    return <ColumnLineageLoader />;
   }
 
   const { downstream_entities, upstream_entities } = columnLineage;

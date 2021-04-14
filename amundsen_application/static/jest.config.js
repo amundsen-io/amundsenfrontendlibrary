@@ -13,7 +13,7 @@ module.exports = {
       statements: 75, // 75
     },
     './js/pages': {
-      branches: 65, // 75
+      branches: 64, // 75
       functions: 72, // 75
       lines: 81, // 75
       statements: 78, // 75
