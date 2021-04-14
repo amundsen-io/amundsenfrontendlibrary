@@ -36,7 +36,7 @@ STATIC_ROOT = os.getenv('STATIC_ROOT', 'static')
 static_dir = os.path.join(PROJECT_ROOT, STATIC_ROOT)
 
 
-def create_app(config_module_class: str, template_folder: str = None) -> Flask:
+def create_app(config_module_class: str = None, template_folder: str = None) -> Flask:
     """ Support for importing arguments for a subclass of flask.Flask """
     args = ast.literal_eval(os.getenv('APP_WRAPPER_ARGS', '')) if os.getenv('APP_WRAPPER_ARGS') else {}
 
@@ -44,6 +44,9 @@ def create_app(config_module_class: str, template_folder: str = None) -> Flask:
     app = app_wrapper_class(__name__, static_folder=static_dir, template_folder=tmpl_dir, **args)
 
     # Support for importing a custom config class
+    if not config_module_class:
+        config_module_class = os.getenv('FRONTEND_SVC_CONFIG_MODULE_CLASS')
+
     app.config.from_object(config_module_class)
 
     if app.config.get('LOG_CONFIG_FILE'):
