@@ -29,10 +29,8 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
     );
   };
 
-  generateResourceIconClass = (
-    databaseId: string,
-    resource: ResourceType
-  ): string => `icon resource-icon ${getSourceIconClass(databaseId, resource)}`;
+  generateResourceIconClass = (databaseId: string): string =>
+    `icon resource-icon ${getSourceIconClass(databaseId, ResourceType.table)}`;
 
   render() {
     const { table } = this.props;
@@ -44,12 +42,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
           to={this.getLink()}
         >
           <div className="resource-info">
-            <span
-              className={this.generateResourceIconClass(
-                table.database,
-                table.type
-              )}
-            />
+            <span className={this.generateResourceIconClass(table.database)} />
             <div className="resource-info-text my-auto">
               <div className="resource-name">
                 <div className="truncated">
@@ -64,7 +57,7 @@ class TableListItem extends React.Component<TableListItemProps, {}> {
                 </div>
                 <BookmarkIcon
                   bookmarkKey={table.key}
-                  resourceType={table.type}
+                  resourceType={ResourceType.table}
                 />
               </div>
               <div className="body-secondary-3 truncated">

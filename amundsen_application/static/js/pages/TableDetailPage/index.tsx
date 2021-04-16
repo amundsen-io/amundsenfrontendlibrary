@@ -18,7 +18,7 @@ import {
 } from 'ducks/tableMetadata/types';
 import { OpenRequestAction } from 'ducks/notification/types';
 import { UpdateSearchStateRequest } from 'ducks/search/types';
-import { logClick } from 'ducks/utilMethods';
+import { logAction, logClick } from 'ducks/utilMethods';
 
 import {
   getDescriptionSourceDisplayName,
@@ -299,6 +299,11 @@ export class TableDetail extends React.Component<
         defaultTab={Constants.COLUMN_TAB_KEY}
         onSelect={(key) => {
           this.setState({ currentTab: key });
+          logAction({
+            command: 'click',
+            target_id: 'table_detail_tab',
+            label: key,
+          });
         }}
       />
     );

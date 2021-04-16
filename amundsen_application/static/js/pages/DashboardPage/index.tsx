@@ -10,7 +10,7 @@ import * as ReactMarkdown from 'react-markdown';
 import { getDashboard } from 'ducks/dashboard/reducer';
 import { GetDashboardRequest } from 'ducks/dashboard/types';
 import { GlobalState } from 'ducks/rootReducer';
-import { logClick } from 'ducks/utilMethods';
+import { logAction, logClick } from 'ducks/utilMethods';
 import { UpdateSearchStateRequest } from 'ducks/search/types';
 import { updateSearchState } from 'ducks/search/reducer';
 
@@ -159,7 +159,19 @@ export class DashboardPage extends React.Component<
       title: `Queries (${dashboard.queries.length})`,
     });
 
-    return <TabsComponent tabs={tabInfo} defaultTab="tables" />;
+    return (
+      <TabsComponent
+        tabs={tabInfo}
+        defaultTab="tables"
+        onSelect={(key) => {
+          logAction({
+            command: 'click',
+            target_id: 'dashboard_page_tab',
+            label: key,
+          });
+        }}
+      />
+    );
   }
 
   render() {

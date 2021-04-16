@@ -17,6 +17,7 @@ import {
 } from '../constants';
 
 import './styles.scss';
+import { logClick } from 'ducks/utilMethods';
 
 interface ColumnLineageListOwnProps {
   columnName: string;
@@ -42,6 +43,18 @@ const getLink = (table) => {
   return `/table_detail/${cluster}/${database}/${schema}/${name}?source=column_lineage`;
 };
 
+const onLineageClick = (e) => {
+  logClick(e, {
+    target_id: 'column_lineage',
+  });
+};
+
+const onSeeMoreClick = (e) => {
+  logClick(e, {
+    target_id: 'column_lineage_see_more',
+  });
+};
+
 const renderLineageLinks = (entity, index) => {
   if (index >= COLUMN_LINEAGE_LIST_SIZE) {
     return null;
@@ -53,6 +66,7 @@ const renderLineageLinks = (entity, index) => {
         className="body-link"
         target="_blank"
         rel="noreferrer"
+        onClick={onLineageClick}
       >
         {entity.schema}.{entity.name}
       </a>
@@ -68,7 +82,13 @@ const LineageList: React.FC<LineageListProps> = ({
   <div className="column-lineage-list">
     <div className="header-row">
       <span className="column-lineage-title">{title}</span>
-      <a href={link} className="body-link" rel="noreferrer" target="_blank">
+      <a
+        href={link}
+        className="body-link"
+        rel="noreferrer"
+        target="_blank"
+        onClick={onSeeMoreClick}
+      >
         {COLUMN_LINEAGE_MORE_TEXT}
       </a>
     </div>
