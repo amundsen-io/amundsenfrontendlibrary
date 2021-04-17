@@ -51,6 +51,8 @@ class RedashSimplePreviewClient(BaseRedashPreviewClient):
         For example, Snowflake account that has two databases would require two
         separate connections in Redash. This would require at least one query
         template per connection.
+
+        The query ID can be found in the URL of the query when using the Redash GUI.
         """
         db_cluster_key = _build_db_cluster_key(params)
         return SOURCE_DB_QUERY_MAP.get(db_cluster_key)

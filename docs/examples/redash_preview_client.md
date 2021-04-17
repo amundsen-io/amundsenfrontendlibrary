@@ -13,8 +13,6 @@ You will need to complete the following steps to use Redash to serve your Amunds
 3. Create a custom `RedashPreviewClient` class
 4. Update your `setup.py` and re-install the Amundsen frontend
 
-Implement the `base_superset_preview_client` to make a request to an instance of Superset.
-
 ### 1. Creating a query template in Redash
 
 In order for Amundsen to execute a query through Redash the query must already exist and be saved in Redash. Redash allows queries to be built using parameters and Amundsen uses these parameters to inject the `{schema}.{table}` into the query. When defining a new query the following SQL should be used:
@@ -38,10 +36,10 @@ To select an API key on the fly based off of the database, cluster, schema and t
 
 ### 3. Create a custom `RedashPreviewClient` class
 
-The file [`base_redash_preview_client`](https://github.com/lyft/amundsenfrontendlibrary/tree/master/amundsen_application/base/base_superset_preview_client.py) provides two examples for implementing the Redash preview client.
+The file [`base_redash_preview_client`](https://github.com/lyft/amundsenfrontendlibrary/tree/master/amundsen_application/base/base_redash_preview_client.py) provides two examples for implementing the Redash preview client.
 
 - One [simple implementation](../../amundsen_application/base/base_redash_preview_client.py#L38) that only implements the minimal requirements: a User API key and a way to look up which Redash query ID to execute
-- One [complex implementation](../../amundsen_application/base/base_redash_preview_client.py#L59) which uses a different API key per query, increases the # of records returned to 100, reduces the max cache time in Redash to 1 hour, provides custom field masking in the query and creates custom where clauses for specific tables to filter the correct data returned to the preview client.
+- One [complex implementation](../../amundsen_application/base/base_redash_preview_client.py#L61) which uses a different API key per query, increases the # of records returned to 100, reduces the max cache time in Redash to 1 hour, provides custom field masking in the query and creates custom where clauses for specific tables to filter the correct data returned to the preview client.
 
 #### Using params to lookup resources
 

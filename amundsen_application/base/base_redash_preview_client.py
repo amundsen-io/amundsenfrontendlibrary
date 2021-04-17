@@ -76,6 +76,8 @@ class BaseRedashPreviewClient(BasePreviewClient):
         separate connections in Redash. This would require at least one query
         template per connection.
 
+        The query ID can be found in the URL of the query when using the Redash GUI.
+
         :param params: A dictionary of input parameters containing the database,
             cluster, schema and tableName
         :returns: the ID for the query in Redash. Can be None if one does not exist.
