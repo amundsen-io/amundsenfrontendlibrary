@@ -22,6 +22,10 @@ REDASH_TRACK_JOB_ENDPOINT = '{redash_host}/api/jobs/{job_id}'
 REDASH_QUERY_RESULTS_ENDPOINT = '{redash_host}/api/query_results/{query_result_id}'
 
 
+class RedashApiKeyNotProvidedException(Exception):
+    pass
+
+
 class RedashQueryCouldNotCompleteException(Exception):
     pass
 
@@ -54,9 +58,10 @@ class BaseRedashPreviewClient(BasePreviewClient):
     function.
     """
 
-    def __init__(self, redash_host: str = None) -> None:
+    def __init__(self, redash_host: str, user_api_key: Optional[str] = None) -> None:
         self.redash_host = redash_host
-        self.headers: Dict = dict()
+        self.user_api_key: Optional[str] = user_api_key
+        self.headers: Optional[Dict] = None
         self.default_query_limit = 50
         self.max_redash_cache_age = 86400  # One day
 
@@ -76,6 +81,26 @@ class BaseRedashPreviewClient(BasePreviewClient):
         :returns: the ID for the query in Redash. Can be None if one does not exist.
         """
         pass  # pragma: no cover
+
+    def _build_headers(self, params: Dict) -> None:
+        """
+        Generates the headers to use for the API invocation. Attemps to use a
+        Query API key, if it exists, then falls back to a User API if no
+        query API key is returned.
+
+        Background on Redash API keys: https://redash.io/help/user-guide/integrations-and-api/api
+        """
+        api_key = self._get_query_api_key(params) or self.user_api_key
+        if api_key is None:
+            raise RedashApiKeyNotProvidedException('No API key provided')
+        self.headers = {"Authorization": "Key {}".format(api_key)}
+
+    def _get_query_api_key(self, params: Dict) -> Optional[str]:
+        """
+        This function can be overridden by sub classes to look up the specific
+        API key to use for a given database / cluster / schema / table combination.
+        """
+        return None
 
     def get_select_fields(self, params: Dict) -> str:
         """
@@ -213,6 +238,9 @@ class BaseRedashPreviewClient(BasePreviewClient):
             query_id = self.get_redash_query_id(params)
             if query_id is None:
                 raise RedashQueryTemplateDoesNotExistForResource('Could not find query for params: %s', params)
+
+            # Build headers to use the Query API key or User API key
+            self._build_headers(params)
 
             query_params = self.build_redash_query_params(params)
             query_results, cached_result = self._start_redash_query(query_id=query_id, query_params=query_params)

@@ -24,7 +24,7 @@ SOURCE_DB_QUERY_MAP = {
 }
 
 # This example uses a common, system user, for the API key
-REDASH_API_KEY = os.environ.get('REDASH_API_KEY', '')
+REDASH_USER_API_KEY = os.environ.get('REDASH_USER_API_KEY', '')
 
 
 def _build_db_cluster_key(params: Dict) -> str:
@@ -39,9 +39,8 @@ class RedashSimplePreviewClient(BaseRedashPreviewClient):
     def __init__(self,
                  *,
                  redash_host: str = DEFAULT_URL,
-                 api_key: str = REDASH_API_KEY) -> None:
-        super().__init__(redash_host=redash_host)
-        self.headers = {"Authorization": "Key {}".format(api_key)}
+                 user_api_key: Optional[str] = REDASH_USER_API_KEY) -> None:
+        super().__init__(redash_host=redash_host, user_api_key=user_api_key)
 
     def get_redash_query_id(self, params: Dict) -> Optional[int]:
         """
@@ -61,11 +60,15 @@ class RedashComplexPreviewClient(BaseRedashPreviewClient):
     def __init__(self,
                  *,
                  redash_host: str = DEFAULT_URL,
-                 api_key: str = REDASH_API_KEY) -> None:
-        super().__init__(redash_host=redash_host)
-        self.headers = {"Authorization": "Key {}".format(api_key)}
+                 user_api_key: Optional[str] = REDASH_USER_API_KEY) -> None:
+        super().__init__(redash_host=redash_host, user_api_key=user_api_key)
         self.default_query_limit = 100
         self.max_redash_cache_age = 3600  # One Hour
+
+    def _get_query_api_key(self, params: Dict) -> Optional[str]:
+        if params.get('database') in ['redshift']:
+            return os.environ.get('REDSHIFT_USER_API_KEY', '')
+        return None
 
     def get_redash_query_id(self, params: Dict) -> Optional[int]:
         db_cluster_key = _build_db_cluster_key(params)

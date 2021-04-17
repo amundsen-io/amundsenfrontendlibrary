@@ -84,7 +84,7 @@ REDASH_QUERY_JOB_RESP = {
 
 class MockRedashClient(BaseRedashPreviewClient):
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(redash_host='', user_api_key='n/a')
 
     def get_redash_query_id(self, params: Dict) -> Optional[int]:
         return 1
@@ -92,15 +92,34 @@ class MockRedashClient(BaseRedashPreviewClient):
 
 class MockRedashNoQueryIdClient(BaseRedashPreviewClient):
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(redash_host='', user_api_key='n/a')
 
     def get_redash_query_id(self, params: Dict) -> Optional[int]:
         return None
 
 
+class MockRedashNoApiKeyClient(BaseRedashPreviewClient):
+    def __init__(self) -> None:
+        super().__init__(redash_host='')
+
+    def get_redash_query_id(self, params: Dict) -> Optional[int]:
+        return None
+
+
+class MockMulitpleApiKeyClient(BaseRedashPreviewClient):
+    def __init__(self) -> None:
+        super().__init__(redash_host='', user_api_key='base-key')
+
+    def get_redash_query_id(self, params: Dict) -> Optional[int]:
+        return None
+
+    def _get_query_api_key(self, params: Dict) -> Optional[str]:
+        return 'override-key'
+
+
 class MockRedashCachedResultClient(BaseRedashPreviewClient):
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(redash_host='', user_api_key='n/a')
 
     def get_redash_query_id(self, params: Dict) -> Optional[int]:
         return 1
@@ -111,7 +130,7 @@ class MockRedashCachedResultClient(BaseRedashPreviewClient):
 
 class MockRedashNewQueryJobClient(BaseRedashPreviewClient):
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(redash_host='', user_api_key='n/a')
 
     def get_redash_query_id(self, params: Dict) -> Optional[int]:
         return 1
@@ -128,7 +147,7 @@ class MockRedashNewQueryJobClient(BaseRedashPreviewClient):
 
 class MockRedashBadDataResultClient(BaseRedashPreviewClient):
     def __init__(self) -> None:
-        super().__init__()
+        super().__init__(redash_host='', user_api_key='n/a')
 
     def get_redash_query_id(self, params: Dict) -> Optional[int]:
         return 1
@@ -147,6 +166,25 @@ class RedashPreviewClientTest(unittest.TestCase):
         with app.test_request_context():
             response = MockRedashNoQueryIdClient().get_preview_data(params={})
             self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+    def test_no_api_key_raises_error(self) -> None:
+        """
+        Tests that returning no api key returns an error.
+        :return:
+        """
+        with app.test_request_context():
+            response = MockRedashNoApiKeyClient().get_preview_data(params={})
+            self.assertEqual(response.status_code, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+    def test_query_api_key_overrides_default_api_key(self) -> None:
+        """
+        Tests that returning no api key returns an error.
+        :return:
+        """
+        with app.test_request_context():
+            mocK_client = MockMulitpleApiKeyClient()
+            mocK_client._build_headers(params={})
+            self.assertEqual(mocK_client.headers, {'Authorization': 'Key override-key'})
 
     def test_build_redash_query_params(self) -> None:
         sample_params = {'schema': 'test_schema', 'tableName': 'test_table'}
