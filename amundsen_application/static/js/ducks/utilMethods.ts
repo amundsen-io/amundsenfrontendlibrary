@@ -1,5 +1,6 @@
 import { Tag } from 'interfaces';
-import { ActionLogParams, postActionLog } from './log/api/v0';
+import { ActionLogParams, ClickLogParams, postActionLog } from './log/api/v0';
+import { trackEvent } from '../utils/analytics';
 
 export function sortTagsAlphabetical(a: Tag, b: Tag): number {
   return a.tag_name.localeCompare(b.tag_name);
@@ -30,16 +31,17 @@ export function filterFromObj(
 }
 
 export function logAction(declaredProps: ActionLogParams) {
-  const inferredProps = {
+  const props = {
     location: window.location.pathname,
+    ...declaredProps,
   };
-
-  postActionLog({ ...inferredProps, ...declaredProps });
+  postActionLog(declaredProps);
+  trackEvent(declaredProps.command, declaredProps);
 }
 
 export function logClick(
   event: React.MouseEvent<HTMLElement>,
-  declaredProps?: ActionLogParams
+  declaredProps?: ClickLogParams
 ) {
   const target = event.currentTarget;
   const inferredProps: ActionLogParams = {
