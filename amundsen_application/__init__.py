@@ -29,31 +29,31 @@ if os.getenv('APP_WRAPPER') and os.getenv('APP_WRAPPER_CLASS'):
     moduleName = os.getenv('APP_WRAPPER', '')
     module = importlib.import_module(moduleName)
     moduleClass = os.getenv('APP_WRAPPER_CLASS', '')
-    app_wrapper_class = getattr(module, moduleClass)
+    app_wrapper_class = getattr(module, moduleClass)  # type: ignore
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.getenv('STATIC_ROOT', 'static')
 static_dir = os.path.join(PROJECT_ROOT, STATIC_ROOT)
 
 
-def create_app(config_module_class: str, template_folder: str = None) -> Flask:
+def create_app(config_module_class: str = None, template_folder: str = None) -> Flask:
     """ Support for importing arguments for a subclass of flask.Flask """
     args = ast.literal_eval(os.getenv('APP_WRAPPER_ARGS', '')) if os.getenv('APP_WRAPPER_ARGS') else {}
 
     tmpl_dir = template_folder if template_folder else os.path.join(PROJECT_ROOT, static_dir, 'dist/templates')
     app = app_wrapper_class(__name__, static_folder=static_dir, template_folder=tmpl_dir, **args)
 
-    """ Support for importing a custom config class """
-    config_module_class = \
-        os.getenv('FRONTEND_SVC_CONFIG_MODULE_CLASS') or config_module_class
+    # Support for importing a custom config class
+    if not config_module_class:
+        config_module_class = os.getenv('FRONTEND_SVC_CONFIG_MODULE_CLASS')
 
     app.config.from_object(config_module_class)
 
     if app.config.get('LOG_CONFIG_FILE'):
-        logging.config.fileConfig(app.config.get('LOG_CONFIG_FILE'), disable_existing_loggers=False)
+        logging.config.fileConfig(app.config['LOG_CONFIG_FILE'], disable_existing_loggers=False)
     else:
-        logging.basicConfig(format=app.config.get('LOG_FORMAT'), datefmt=app.config.get('LOG_DATE_FORMAT'))
-        logging.getLogger().setLevel(app.config.get('LOG_LEVEL'))
+        logging.basicConfig(format=app.config['LOG_FORMAT'], datefmt=app.config.get('LOG_DATE_FORMAT'))
+        logging.getLogger().setLevel(app.config['LOG_LEVEL'])
 
     logging.info('Created app with config name {}'.format(config_module_class))
     logging.info('Using metadata service at {}'.format(app.config.get('METADATASERVICE_BASE')))
