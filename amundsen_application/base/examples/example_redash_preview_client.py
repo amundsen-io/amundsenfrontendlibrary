@@ -17,6 +17,7 @@ LOGGER = logging.getLogger(__name__)
 DEFAULT_URL = 'http://localhost:5010'
 
 
+# Update this mapping with your database.cluster and Redash query ID
 SOURCE_DB_QUERY_MAP = {
     'snowflake.ca_covid': 1
 }
@@ -78,6 +79,7 @@ class RedashComplexPreviewClient(BaseRedashPreviewClient):
         """
         Manually defining the dictionary in this function for readability
         """
+        # These are sample values to show how table-level select clauses work
         field_select_vals = {
             'snowflake.ca_covid': {
                 'open_data.case_demographics_age': (

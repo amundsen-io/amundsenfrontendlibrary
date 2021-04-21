@@ -37,11 +37,10 @@ class RedashQueryTemplateDoesNotExistForResource(Exception):
 
 class RedashApiResponse(Enum):
     PENDING = 1  # (waiting to be executed)
-    STARTED = 2  #(executing)
+    STARTED = 2  # (executing)
     SUCCESS = 3
     FAILURE = 4
     CANCELLED = 5
-
 
 
 class BaseRedashPreviewClient(BasePreviewClient):
