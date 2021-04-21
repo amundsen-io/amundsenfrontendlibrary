@@ -13,7 +13,7 @@ import {
   RESULT_LIST_FOOTER_SUFFIX,
 } from '../../constants';
 
-jest.mock('ducks/utilMethods', () => ({
+jest.mock('utils/analytics', () => ({
   logClick: jest.fn(() => {}),
 }));
 

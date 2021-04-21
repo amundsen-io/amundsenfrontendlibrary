@@ -62,7 +62,7 @@ describe('TableListItem', () => {
 
   describe('getLink', () => {
     it('getLink returns correct string', () => {
-      const { props, wrapper } = setup();
+      const { props } = setup();
       const { table, logging } = props;
       expect(getLink(table, logging)).toEqual(
         `/table_detail/${table.cluster}/${table.database}/${table.schema}/${table.name}?index=${logging.index}&source=${logging.source}`
@@ -71,10 +71,6 @@ describe('TableListItem', () => {
   });
 
   describe('generateResourceIconClass', () => {
-    let wrapper;
-    beforeAll(() => {
-      wrapper = setup().wrapper;
-    });
     it('calls getSourceIconClass with given database id', () => {
       const testValue = 'noEffectOnTest';
       const givenResource = ResourceType.table;

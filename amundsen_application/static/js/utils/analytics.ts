@@ -49,8 +49,8 @@ export function logAction(declaredProps: ActionLogParams) {
     location: window.location.pathname,
     ...declaredProps,
   };
-  postActionLog(declaredProps);
-  trackEvent(declaredProps.command, declaredProps);
+  postActionLog(props);
+  trackEvent(declaredProps.command, props);
 }
 
 export function logClick(
