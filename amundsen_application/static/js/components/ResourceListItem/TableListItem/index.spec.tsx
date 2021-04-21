@@ -53,7 +53,7 @@ describe('TableListItem', () => {
       ...propOverrides,
     };
     // eslint-disable-next-line react/jsx-props-no-spreading
-    const wrapper = shallow<TableListItem>(<TableListItem {...props} />);
+    const wrapper = shallow(<TableListItem {...props} />);
     return {
       props,
       wrapper,

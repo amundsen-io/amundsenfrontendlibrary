@@ -6,7 +6,6 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 
 import { ResourceType } from 'interfaces';
-import { logClick } from 'ducks/utilMethods';
 import ResultItemList, { ResultItemListProps } from '..';
 
 import {

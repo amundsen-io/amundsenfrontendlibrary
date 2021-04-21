@@ -8,6 +8,7 @@ import { GlobalState } from 'ducks/rootReducer';
 import { emptyLineage } from 'ducks/tableMetadata/reducer';
 import { getColumnLineageLink } from 'config/config-utils';
 import { Lineage, LineageItem, TableMetadata } from 'interfaces/TableMetadata';
+import { logClick } from 'utils/analytics';
 import ColumnLineageLoader from '../ColumnLineageLoader';
 import {
   COLUMN_LINEAGE_LIST_SIZE,
@@ -17,7 +18,6 @@ import {
 } from '../constants';
 
 import './styles.scss';
-import { logClick } from 'ducks/utilMethods';
 
 interface ColumnLineageListOwnProps {
   columnName: string;
