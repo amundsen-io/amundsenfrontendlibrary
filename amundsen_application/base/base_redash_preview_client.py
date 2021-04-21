@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 import abc
+from enum import Enum
 import logging
 import requests as r
 import time
@@ -32,6 +33,15 @@ class RedashQueryCouldNotCompleteException(Exception):
 
 class RedashQueryTemplateDoesNotExistForResource(Exception):
     pass
+
+
+class RedashApiResponse(Enum):
+    PENDING = 1  # (waiting to be executed)
+    STARTED = 2  #(executing)
+    SUCCESS = 3
+    FAILURE = 4
+    CANCELLED = 5
+
 
 
 class BaseRedashPreviewClient(BasePreviewClient):
@@ -158,7 +168,7 @@ class BaseRedashPreviewClient(BasePreviewClient):
         :return: A tuple of the response object and boolean. The response object
             changes based off of whether or not the result from Redash came from
             the cache.
-            The boolean is True if the result came from the cache, otherwise False.
+            The boolean is True if the result came from the Redash cache, otherwise False.
         """
         url_inputs = {'redash_host': self.redash_host, 'query_id': query_id}
         query_url = REDASH_SUBMIT_QUERY_ENDPOINT.format(**url_inputs)
@@ -168,23 +178,19 @@ class BaseRedashPreviewClient(BasePreviewClient):
 
         LOGGER.debug('Response from redash query: %s', resp_json)
 
+        # When submitting a query, Redash can return 2 distinct payloads. One if the
+        # query result has been cached by Redash and one if the query was submitted
+        # to be executed. The 'job' object is returned if the query is not cached.
         if 'job' in resp_json:
-            cached = False
+            redash_cached = False
         else:
-            cached = True
+            redash_cached = True
 
-        return resp_json, cached
+        return resp_json, redash_cached
 
     def _wait_for_query_finish(self, job_id: str, max_wait: int = 60) -> str:
         """
         Waits for the query to finish and validates that a successful response is returned.
-
-        Redash job statuses:
-            1 == PENDING (waiting to be executed)
-            2 == STARTED (executing)
-            3 == SUCCESS
-            4 == FAILURE
-            5 == CANCELLED
 
         :param job_id: the ID for the job executing the query
         :return: a query result ID tha can be used to fetch the results
@@ -202,13 +208,13 @@ class BaseRedashPreviewClient(BasePreviewClient):
             LOGGER.debug('Received response from Redash job %s: %s', job_id, resp_json)
 
             job_info = resp_json['job']
-            job_status = job_info['status']
+            job_status = RedashApiResponse(job_info['status'])
 
-            if job_status == 3:
+            if job_status == RedashApiResponse.SUCCESS:
                 query_result_id = job_info['query_result_id']
                 break
 
-            elif job_status == 4:
+            elif job_status == RedashApiResponse.FAILURE:
                 raise RedashQueryCouldNotCompleteException(job_info['error'])
             time.sleep(.5)
 

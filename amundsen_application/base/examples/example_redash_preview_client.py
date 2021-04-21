@@ -18,9 +18,7 @@ DEFAULT_URL = 'http://localhost:5010'
 
 
 SOURCE_DB_QUERY_MAP = {
-    'snowflake.ca_covid': 1,
-    'snowflake.demo_data': 37,
-    'redshift.marketing': 245
+    'snowflake.ca_covid': 1
 }
 
 # This example uses a common, system user, for the API key
@@ -109,10 +107,10 @@ class RedashComplexPreviewClient(BaseRedashPreviewClient):
         schema_tbl_key = f"{params.get('schema')}.{params.get('tableName')}"
 
         # Always returns a value, defaults to an empty string ('') if nothing is defined
-        where_caluse = where_vals.get(db_cluster_key, {}).get(schema_tbl_key, '')
+        where_clause = where_vals.get(db_cluster_key, {}).get(schema_tbl_key, '')
 
         # Add the word where if a custom where clause is applied
-        if where_caluse:
-            where_caluse = f'WHERE {where_caluse}'
+        if where_clause:
+            where_clause = f'WHERE {where_clause}'
 
-        return where_caluse
+        return where_clause
