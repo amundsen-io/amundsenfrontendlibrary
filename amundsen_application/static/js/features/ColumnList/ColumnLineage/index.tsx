@@ -43,13 +43,13 @@ const getLink = (table) => {
   return `/table_detail/${cluster}/${database}/${schema}/${name}?source=column_lineage`;
 };
 
-const onLineageClick = (e) => {
+const handleLineageClick = (e) => {
   logClick(e, {
     target_id: 'column_lineage',
   });
 };
 
-const onSeeMoreClick = (e) => {
+const handleSeeMoreClick = (e) => {
   logClick(e, {
     target_id: 'column_lineage_see_more',
   });
@@ -66,7 +66,7 @@ const renderLineageLinks = (entity, index) => {
         className="body-link"
         target="_blank"
         rel="noreferrer"
-        onClick={onLineageClick}
+        onClick={handleLineageClick}
       >
         {entity.schema}.{entity.name}
       </a>
@@ -87,7 +87,7 @@ const LineageList: React.FC<LineageListProps> = ({
         className="body-link"
         rel="noreferrer"
         target="_blank"
-        onClick={onSeeMoreClick}
+        onClick={handleSeeMoreClick}
       >
         {COLUMN_LINEAGE_MORE_TEXT}
       </a>
