@@ -1,0 +1,55 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "13:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: amundsen-common
+    versions:
+    - 0.8.1
+  - dependency-name: mypy
+    versions:
+    - "0.812"
+- package-ecosystem: npm
+  directory: "/amundsen_application/static"
+  schedule:
+    interval: monthly
+    time: "13:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: core-js
+    versions:
+    - 3.9.1
+  - dependency-name: "@storybook/react"
+    versions:
+    - 6.1.21
+  - dependency-name: react-redux
+    versions:
+    - 7.2.2
+  - dependency-name: typescript
+    versions:
+    - 4.2.2
+  - dependency-name: "@storybook/theming"
+    versions:
+    - 6.1.20
+  - dependency-name: webpack-sources
+    versions:
+    - 2.2.0
+  - dependency-name: "@typescript-eslint/eslint-plugin-tslint"
+    versions:
+    - 4.14.2
+  - dependency-name: eslint-config-airbnb-typescript
+    versions:
+    - 12.3.1
+  - dependency-name: react-avatar
+    versions:
+    - 3.9.7
+  - dependency-name: react-select
+    versions:
+    - 4.0.2
+  - dependency-name: webpack-merge
+    versions:
+    - 5.7.3
