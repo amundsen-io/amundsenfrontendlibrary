@@ -1,3 +1,5 @@
+# Due to inactivity, this project was archived in September 2026. The contents will remain available for historical purposes.
+
 # Deprecated: please visit https://github.com/amundsen-io/amundsen/tree/main/frontend
 
 The Amundsen project [moved to a monorepo](https://github.com/amundsen-io/rfcs/pull/31). This repository will be kept up temporarily to allow users to transition gracefully.
